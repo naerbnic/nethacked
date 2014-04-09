@@ -835,10 +835,6 @@ cl_eos()			/* free after Robert Viduya */
 
 #include <curses.h>
 
-#ifndef LINUX
-extern char *tparm();
-#endif
-
 #  ifndef COLOR_BLACK	/* trust include file */
 #   ifndef _M_UNIX	/* guess BGR */
 #define COLOR_BLACK   0
