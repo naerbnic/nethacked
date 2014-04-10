@@ -1,7 +1,6 @@
 *.orig
 *.o
 .*
-Makefile
 /dat/options
 /include/date.h
 /include/onames.h
