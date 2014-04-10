@@ -1,0 +1,21 @@
+lev_parser_c, lev_parser_h = CFile(
+    source = 'lev_comp.y', target = ['y.tab.c'], YACCFLAGS = ['-d'])
+
+lev_lexer_c = CFile(source = 'lev_comp.l')
+
+dgn_parser_c, dgn_parser_h = CFile(
+    source = 'dgn_comp.y', target = ['dgn_yacc.c'], YACCFLAGS = ['-d'])
+dgn_lexer_c = CFile(source = 'dgn_comp.l')
+
+print(lev_lexer_c)
+
+files = [
+  dgn_parser_c,
+  'dgn_main.c',
+  'makedefs.c',
+]
+
+objects = []
+for file in files:
+  objects = Object(source = [file], CPPPATH = [ '#include' ]);
+

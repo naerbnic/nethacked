@@ -1621,8 +1621,6 @@ do_questtxt()
 	in_msg = FALSE;
 
 	while (fgets(in_line, 80, ifp) != 0) {
-	    SpinCursor (3);
-
 	    qt_line++;
 	    if(qt_control(in_line)) do_qt_control(in_line);
 	    else if(qt_comment(in_line)) continue;
@@ -1686,8 +1684,6 @@ do_objs()
 	Fprintf(ofp,"#ifndef ONAMES_H\n#define ONAMES_H\n\n");
 
 	for(i = 0; !i || objects[i].oc_class != ILLOBJ_CLASS; i++) {
-		SpinCursor(3);
-
 		objects[i].oc_name_idx = objects[i].oc_descr_idx = i;	/* init */
 		if (!(objnam = tmpdup(OBJ_NAME(objects[i])))) continue;
 
@@ -1759,8 +1755,6 @@ do_objs()
 	Fprintf(ofp, "\n/* Artifacts (unique objects) */\n\n");
 
 	for (i = 1; artifact_names[i]; i++) {
-		SpinCursor(3);
-
 		for (c = objnam = tmpdup(artifact_names[i]); *c; c++)
 		    if (*c >= 'a' && *c <= 'z') *c -= (char)('a' - 'A');
 		    else if (*c < 'A' || *c > 'Z') *c = '_';
@@ -1823,8 +1817,6 @@ do_vision()
 		xclear[i][j] = '\001';
 #endif /* VISION_TABLES */
 
-    SpinCursor(3);
-
     /*
      * create the include file, "vis_tab.h"
      */
@@ -1846,8 +1838,6 @@ do_vision()
     Fprintf(ofp,"\n#endif /* VISION_TABLES */\n");
     Fclose(ofp);
 
-    SpinCursor(3);
-
     /*
      * create the source file, "vis_tab.c"
      */
@@ -1867,15 +1857,11 @@ do_vision()
     Fprintf(ofp,"#ifdef VISION_TABLES\n");
     Fprintf(ofp,"#include \"vis_tab.h\"\n");
 
-    SpinCursor(3);
-
 #ifdef VISION_TABLES
     C_close_gen();
     C_far_gen();
     Fprintf(ofp,"\nvoid vis_tab_init() { return; }\n");
 #endif /* VISION_TABLES */
-
-    SpinCursor(3);
 
     Fprintf(ofp,"\n#endif /* VISION_TABLES */\n");
     Fprintf(ofp,"\n/*vis_tab.c*/\n");
@@ -2008,8 +1994,6 @@ C_close_gen()
 		    Fprintf(ofp, "%s%s", CLOSE_OFF_TABLE_STRING, delim);
 		    continue;
 		}
-		SpinCursor(3);
-
 		/* Find the first column that we can see. */
 		for (i = block_col+1; i < MAX_COL; i++) {
 		    if (clear_path(src_row,src_col,block_row-this_row,i))
@@ -2064,7 +2048,6 @@ C_far_gen()
 								this_row++) {
 		delim = (this_row < block_row + TEST_HEIGHT - 1) ? "," : "";
 
-		SpinCursor(3);
 		/* Find first col that we can see. */
 		for (i = 0; i <= block_col; i++) {
 		    if (clear_path(src_row,src_col,this_row,i)) break;
