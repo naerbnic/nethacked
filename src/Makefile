@@ -45,15 +45,6 @@ LINK=$(CC)
 SYSSRC = ../sys/share/ioctl.c ../sys/share/unixtty.c ../sys/unix/unixmain.c \
 	../sys/unix/unixunix.c ../sys/unix/unixres.c
 SYSOBJ = ioctl.o unixmain.o unixtty.o unixunix.o unixres.o
-#
-# for Systos
-# SYSSRC = ../sys/atari/tos.c ../sys/share/pcmain.c ../sys/share/pcsys.c \
-#	../sys/share/pctty.c ../sys/share/pcunix.c
-# SYSOBJ = tos.o pcmain.o pcsys.o pctty.o pcunix.o
-#
-# for BeOS
-#SYSSRC = ../sys/be/bemain.c ../sys/share/unixtty.c ../sys/share/ioctl.c
-#SYSOBJ = bemain.o unixtty.o ioctl.o
 
 
 # if you are using gcc as your compiler:
@@ -81,221 +72,25 @@ SYSOBJ = ioctl.o unixmain.o unixtty.o unixunix.o unixres.o
 # if you're debugging and want gcc to check as much as possible, use:
 # CC = gcc -W -Wimplicit -Wreturn-type -Wunused -Wformat -Wswitch -Wshadow -Wcast-qual -Wwrite-strings -DGCC_WARN
 
-# flags may have to be changed as required
-# flags for 286 Xenix:
-# CFLAGS = -Ml2t16 -O -LARGE -I../include
-# LFLAGS = -Ml -F 4000 -SEG 512
-
-# flags for 286 Microport SysV-AT
-# CFLAGS = -DDUMB -Ml -I../include
-# LFLAGS = -Ml
-
-# flags for Atari gcc (3.2.1)
-# CFLAGS = -O -I../include
-# LFLAGS = -s
-# flags for Atari gcc (3.3)
-# CFLAGS = -mshort -O2 -fomit-frame-pointer -I../include
-# LFLAGS = -mshort -s
-
-# flags for AIX 3.1 cc on IBM RS/6000 to define
-# a suitable subset of standard libraries
-# (note that there is more info regarding the "-qchars=signed"
-# switch in file Install.unx note 8)
-# CFLAGS = -D_NO_PROTO -D_XOPEN_SOURCE -O -I../include -qchars=signed
-#
-# Some of our subroutines are complex enough that this is required for full
-# optimization under AIX 3.2 (I don't know about 3.1).
-#
-# CFLAGS = -D_NO_PROTO -D_XOPEN_SOURCE -D_ALL_SOURCE -O -I../include -qchars=signed -qmaxmem=5000
-
-# flags for A/UX 2.01 using native cc or c89
-# gcc predefines AUX so that's not needed there
-# Remember to use -lcurses for WINLIB below !
-# CFLAGS = -ZS -D_POSIX_SOURCE -O -I../include -DAUX
-
-# flags for IRIX 4.0.x using native cc
-# The include files are __STDC__, but have bugs involving const
-# CFLAGS = -O -I../include -D__STDC__ -Dconst= -woff 100,293
-# LFLAGS = -s
-
-# flags for BSD/OS 2.0
-# CFLAGS = -O -I../include -I/usr/X11/include
-# LFLAGS = -L/usr/X11/lib
-
-# flags for Linux
-#   compile normally
-# CFLAGS = -O2 -fomit-frame-pointer -I../include
-# LFLAGS = -L/usr/X11R6/lib
-#   OR compile backwards compatible a.out format
-# CFLAGS = -O2 -b i486-linuxaout -fomit-frame-pointer -I../include
-# LFLAGS = -b i486-linuxaout -L/usr/X11R6/lib
-
-# flags for BeOS
-#   on a Mac/BeBox:
-#CC = mwcc
-#CFLAGS = -r -I../include
-#LINK = mwld
-#LFLAGS = -map nethack.xMAP
-#   on Intel:
-#CFLAGS = -O -I../include
-#LINK = gcc
-#LFLAGS = -Xlinker -soname=_APP_
-
-# Only used for the Gnome interface.
-# When including the Gnome interface, you need to include gnome specific
-# directories.  The ones given below is the usual spot for linux systems.
-# The paths are for glibconfig.h and gnomesupport.h respectively.
-#
-GNOMEINC=-I/usr/lib/glib/include -I/usr/lib/gnome-libs/include -I../win/gnome
-
-# flags for debugging:
-# CFLAGS = -g -I../include
-
 CFLAGS = -O -I../include
 LFLAGS = 
 
-# The Qt and Be window systems are written in C++, while the rest of
-# NetHack is standard C.  If using Qt, uncomment the LINK line here to get
-# the C++ libraries linked in.
-CXXFLAGS = $(CFLAGS) -I. -I$(QTDIR)/include
-CXX=g++
-#LINK=g++
-#	For cross-compiling, eg. with gcc on Linux (see also CC further up):
-#CXX=arm-linux-g++
-#LINK=arm-linux-gcc
-
-# Set the WINSRC, WINOBJ, and WINLIB lines to correspond to your desired
-# combination of windowing systems.  Also set windowing systems in config.h.
-# Note that if you are including multiple tiled window systems, you don't
-# want two copies of tile.o, so comment out all but the first.
-#
-# files for a straight tty port using no native windowing system
-WINTTYSRC = ../win/tty/getline.c ../win/tty/termcap.c ../win/tty/topl.c \
+WINSRC = ../win/tty/getline.c ../win/tty/termcap.c ../win/tty/topl.c \
 	../win/tty/wintty.c
-WINTTYOBJ = getline.o termcap.o topl.o wintty.o
-#
-# files for an X11 port
-# (tile.c is a generated source file)
-WINX11SRC = ../win/X11/Window.c ../win/X11/dialogs.c ../win/X11/winX.c \
-	../win/X11/winmap.c  ../win/X11/winmenu.c ../win/X11/winmesg.c \
-	../win/X11/winmisc.c ../win/X11/winstat.c ../win/X11/wintext.c \
-	../win/X11/winval.c tile.c
-WINX11OBJ = Window.o dialogs.o winX.o winmap.o winmenu.o winmesg.o \
-	winmisc.o winstat.o wintext.o winval.o tile.o
-#
-# Files for a Qt port
-#
-WINQTSRC = ../win/Qt/qt_win.cpp ../win/Qt/qt_clust.cpp ../win/Qt/qttableview.cpp
-WINQTOBJ = qt_win.o qt_clust.o qttableview.o tile.o
-#
-# Files for a Gnome port
-#
-WINGNOMESRC = ../win/gnome/gnaskstr.c ../win/gnome/gnbind.c \
-	../win/gnome/gnglyph.c ../win/gnome/gnmain.c ../win/gnome/gnmap.c \
-	../win/gnome/gnmenu.c ../win/gnome/gnmesg.c ../win/gnome/gnopts.c \
-	../win/gnome/gnplayer.c ../win/gnome/gnsignal.c \
-	../win/gnome/gnstatus.c ../win/gnome/gntext.c ../win/gnome/gnyesno.c \
-	../win/gnome/gnworn.c
-WINGNOMEOBJ = gnaskstr.o gnbind.o gnglyph.o gnmain.o gnmap.o gnmenu.o \
-	gnmesg.o gnopts.o gnplayer.o gnsignal.o gnstatus.o gntext.o \
-	gnyesno.o gnworn.o tile.o
-#
-# Files for a Gem port
-WINGEMSRC = ../win/gem/wingem.c ../win/gem/wingem1.c ../win/gem/load_img.c \
-	../win/gem/gr_rect.c tile.c
-WINGEMOBJ = wingem.o wingem1.o load_img.o gr_rect.o tile.o
-#
-# Files for a BeOS InterfaceKit port -- not ready for prime time
-WINBESRC =
-WINBEOBJ =
-#WINBESRC = ../win/BeOS/winbe.cpp ../win/BeOS/NHWindow.cpp \
-#	../win/BeOS/NHMenuWindow.cpp ../win/BeOS/NHMapWindow.cpp tile.c
-#WINBEOBJ = winbe.o NHWindow.o NHMenuWindow.o NHMapWindow.o tile.o
+WINOBJ = getline.o termcap.o topl.o wintty.o
 
-#
-#
-WINSRC = $(WINTTYSRC)
-WINOBJ = $(WINTTYOBJ)
+WINLIB = -lcurses
 
-# on some systems the termcap library is in -ltermcap or -lcurses
-# on 386 Xenix, the -ltermlib tputs() seems not to work; use -lcurses instead
-# Sysatt uses shared library in lieu of this option
-# Systos needs -lcurses16 if you use -mshort
-# AIX 3.1 on RS/6000 likes -lcurses if TERMINFO defined in unixconf.h
-# and -ltermcap otherwise
-# Linux uses -lncurses (newer) or -ltermcap (older)
-# Be uses -ltermcap
-#
-# libraries for tty ports
-# WINTTYLIB = -ltermcap
-# WINTTYLIB = -lcurses
-# WINTTYLIB = -lcurses16
-# WINTTYLIB = -lncurses
-WINTTYLIB = -ltermlib
-#
-# libraries for X11
-# If USE_XPM is defined in config.h, you will also need -lXpm here.
-WINX11LIB = -lXaw -lXmu -lXext -lXt -lX11
-# WINX11LIB = -lXaw -lXmu -lXt -lX11
-# WINX11LIB = -lXaw -lXmu -lXext -lXt -lXpm -lX11 -lm
-# WINX11LIB = -lXaw -lXmu -lXpm -lXext -lXt -lX11 -lSM -lICE -lm # BSD/OS 2.0
-#
-# libraries for Qt
-WINQTLIB = -L$(QTDIR)/lib -lqt
-#
-# libraries for KDE (with Qt)
-WINKDELIB = -lkdecore -lkdeui -lXext
-#
-# libraries for Gnome
-WINGNOMELIB = -lgnomeui -lgnome -lart_lgpl -lgtk -lgdk -lpopt
-#
-# libraries for Gem port
-WINGEMLIB = -le_gem -lgem
-#
-# libraries for BeOS 
-WINBELIB = -lbe
-
-WINLIB = $(WINTTYLIB)
-
-# any other strange libraries your system needs (for Sysunix only -- the more
-# specialized targets should already be right)
-#
-# on HP-UX 8.x, the malloc(3x) routines in libmalloc.a seem to align things
-# better than the malloc(3) ones in libc.a
-# LIBS = -lmalloc
-#
-# DPX/2's also use the malloc(3x) routines.  In addition, if you are building
-# for X11, you must include libinet.a.
-# LIBS = -lmalloc -linet
-#
-# Linux NetHack uses some bsd style ioctl functions, thus it is necessary to
-# use the bsd libs.  (Only if still compiling as BSD in unixconf.h; recent
-# versions compile fine using SYSV without this.)
-# LIBS = -lbsd
-#
-# for CYGWIN32 aka cygwin 1.1.1
-# LIBS = -lcygwin
-#
-# Solaris 2.x seems to work with the following
-# LIBS = -lsocket -lnsl
-#
-# IRIX 4.0.x needs -lsun if NIS (YP) is being used for passwd file lookup
-# LIBS = -lsun
-#
 LIBS =
 
 # make NetHack
 GAME     = nethacked
-# GAME     = nethack.prg
 
 # if you defined RANDOM in unixconf.h/tosconf.h since your system did not come
 # with a reasonable random number generator
 # RANDOBJ = random.o
 RANDOBJ =
 
-
-# used by `make depend' to reconstruct this Makefile; you shouldn't need this
-AWK	= nawk
 
 # ----------------------------------------
 #
@@ -337,16 +132,11 @@ SYSCSRC = ../sys/atari/tos.c ../sys/share/pcmain.c ../sys/share/pcsys.c \
 # generated source files (tile.c is handled separately via WINxxxSRC)
 GENCSRC = monstr.c vis_tab.c	#tile.c
 
-# all windowing-system-dependent .c (for dependencies and such)
-WINCSRC = $(WINTTYSRC) $(WINX11SRC) $(WINGNOMESRC) $(WINGEMSRC)
-# all windowing-system-dependent .cpp (for dependencies and such)
-WINCXXSRC = $(WINQTSRC) $(WINBESRC)
-
 # .c files for this version (for date.h)
 VERSOURCES = $(HACKCSRC) $(SYSSRC) $(WINSRC) $(GENCSRC)
 
 # .c files for all versions using this Makefile (for lint and tags)
-CSOURCES = $(HACKCSRC) $(SYSSRC) $(WINCSRC) $(GENCSRC)
+CSOURCES = $(HACKCSRC) $(SYSSRC) $(WINSRC) $(GENCSRC)
 
 
 # all .h files except date.h, onames.h, pm.h, and vis_tab.h which would
@@ -395,33 +185,6 @@ Sysunix:	$(HOBJ) Makefile
 	$(LINK) $(LFLAGS) -o $(GAME) $(HOBJ) $(WINLIB) $(LIBS)
 	@touch Sysunix
 
-Sys3B2:	$(HOBJ) Makefile
-	@echo "Loading ..."
-	@$(LINK) $(LFLAGS) -o $(GAME) $(HOBJ) $(WINLIB) -lmalloc
-	@touch Sys3B2
-
-Sysatt:	$(HOBJ) Makefile
-	@echo "Loading ..."
-	@$(LD) $(LFLAGS) /lib/crt0s.o /lib/shlib.ifile -o $(GAME) $(HOBJ)
-	@touch Sysatt
-
-Systos:	$(HOBJ) Makefile
-	@echo "Loading ..."
-	@$(LINK) $(LFLAGS) -o $(GAME) $(HOBJ) $(WINLIB)
-	@touch Systos
-
-SysV-AT:	DUMB.Setup $(HOBJ) Makefile
-	@echo "Loading ..."
-	@$(LINK) $(LFLAGS) -o $(GAME) $(HOBJ) $(WINLIB)
-	@touch SysV-AT
-
-SysBe: $(HOBJ) Makefile
-	@echo "Loading ..."
-	@$(LINK) $(LFLAGS) -o $(GAME) $(HOBJ) $(WINLIB) $(LIBS)
-	@xres -o $(GAME) ../win/BeOS/nethack.rsrc
-	@mimeset -f $(GAME)
-	@touch SysBe
-
 DUMB.Setup:	../include/extern.h
 	cp ../include/extern.h ../include/extern.h.BAK
 	cat ../include/extern.h | \
@@ -459,23 +222,6 @@ objects.o:
 	$(CC) $(CFLAGS) -c objects.c
 	@rm -f $(MAKEDEFS)
 
-# Qt windowport meta-object-compiler output
-qt_kde0.moc: ../include/qt_kde0.h
-	$(QTDIR)/bin/moc -o qt_kde0.moc ../include/qt_kde0.h
-
-qt_win.moc: ../include/qt_win.h
-	$(QTDIR)/bin/moc -o qt_win.moc ../include/qt_win.h
-
-qttableview.moc: ../include/qttableview.h
-	$(QTDIR)/bin/moc -o qttableview.moc ../include/qttableview.h
-
-$(MAKEDEFS): ../util/makedefs.c  $(CONFIG_H) ../include/permonst.h \
-		../include/objclass.h ../include/monsym.h \
-		../include/artilist.h ../include/dungeon.h ../include/obj.h \
-		../include/monst.h ../include/you.h ../include/flag.h \
-		../include/dlb.h ../include/patchlevel.h ../include/qtext.h
-	@( cd ../util ; $(MAKE) makedefs)
-
 ../include/onames.h: $(MAKEDEFS)
 	@( cd ../util ; $(MAKE) ../include/onames.h )
 ../include/pm.h: $(MAKEDEFS)
@@ -488,9 +234,6 @@ monstr.c: $(MAKEDEFS)
 vis_tab.c: ../include/vis_tab.h
 tile.c: ../win/share/tilemap.c $(HACK_H)
 	@( cd ../util ; $(MAKE) ../src/tile.c )
-
-../win/gnome/gn_rip.h: ../win/X11/rip.xpm
-	cp ../win/X11/rip.xpm ../win/gnome/gn_rip.h
 
 #	date.h should be remade any time any of the source or include code
 #	is modified.  Unfortunately, this would make the contents of this
@@ -526,13 +269,12 @@ spotless: clean
 	-rm -f a.out core $(GAME) Sys*
 	-rm -f ../include/date.h ../include/onames.h ../include/pm.h
 	-rm -f monstr.c ../include/vis_tab.h vis_tab.c tile.c *.moc
-	-rm -f ../win/gnome/gn_rip.h
 
 
 depend: ../sys/unix/depend.awk \
-		$(SYSCSRC) $(WINCSRC) $(WINCXXSRC) $(GENCSRC) $(HACKCSRC)
+		$(SYSCSRC) $(WINSRC) $(GENCSRC) $(HACKCSRC)
 	$(AWK) -f ../sys/unix/depend.awk ../include/*.h \
-		$(SYSCSRC) $(WINCSRC) $(WINCXXSRC) $(GENCSRC) $(HACKCSRC) >makedep
+		$(SYSCSRC) $(WINSRC) $(GENCSRC) $(HACKCSRC) >makedep
 	@echo '/^# DO NOT DELETE THIS LINE OR CHANGE ANYTHING BEYOND IT/+2,$$d' >eddep
 	@echo '$$r makedep' >>eddep
 	@echo 'w' >>eddep
