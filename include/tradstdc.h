@@ -105,8 +105,6 @@
 #endif
 #endif /* NEED_VARARGS */
 
-#if defined(NHSTDC) || defined(MSDOS) || defined(MAC) || defined(ULTRIX_PROTO) || defined(__BEOS__)
-
 /*
  * Used for robust ANSI parameter forward declarations:
  * int VDECL(sprintf, (char *, const char *, ...));
@@ -160,28 +158,6 @@
 #   define const
 #  endif
 # endif
-
-#else /* NHSTDC */	/* a "traditional" C  compiler */
-
-# define NDECL(f)	f()
-# define FDECL(f,p)	f()
-# define VDECL(f,p)	f()
-
-# if defined(AMIGA) || defined(HPUX) || defined(POSIX_TYPES) || defined(__DECC) || defined(__BORLANDC__)
-#  define genericptr	void *
-# endif
-# ifndef genericptr
-#  define genericptr	char *
-# endif
-
-/*
- * Traditional C compilers don't have "signed", "const", or "volatile".
- */
-# define signed
-# define const
-# define volatile
-
-#endif /* NHSTDC */
 
 
 #ifndef genericptr_t

@@ -501,43 +501,43 @@ LFLAGSN	= $(LDFLAGSN) $(LNSTACK) $(LWCASE) $(LMAXSEG) $(INTOVL) $(LMAXALL) \
 	@type schema$(SCHEMA).bc | find "$(@B)_o" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGUO) >> $(VROOMMCFG)
-	$(CC) $(FLAGUO) $(COBJNAM)$@ $<
+	$(CXX) $(FLAGUO) $(COBJNAM)$@ $<
 
 {$(SRC)}.c{$(OBJ)}.o:
 	@type schema$(SCHEMA).bc | find "$(@B)_o" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGUO) >> $(VROOMMCFG)
-	$(CC) $(FLAGUO) $(COBJNAM)$@ $<
+	$(CXX) $(FLAGUO) $(COBJNAM)$@ $<
 
 {$(SRC)}.c{$(OBJ)}.0:
 	@type schema$(SCHEMA).bc | find "$(@B)_0" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGU0) >> $(VROOMMCFG)
-	$(CC) $(FLAGU0) $(COBJNAM)$@ $<
+	$(CXX) $(FLAGU0) $(COBJNAM)$@ $<
 
 {$(SRC)}.c{$(OBJ)}.1:
 	@type schema$(SCHEMA).bc | find "$(@B)_1" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGU1) >> $(VROOMMCFG)
-	$(CC) $(FLAGU1) $(COBJNAM)$@ $<
+	$(CXX) $(FLAGU1) $(COBJNAM)$@ $<
 
 {$(SRC)}.c{$(OBJ)}.2:
 	@type schema$(SCHEMA).bc | find "$(@B)_2" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGU2) >> $(VROOMMCFG)
-	$(CC) $(FLAGU2) $(COBJNAM)$@ $<
+	$(CXX) $(FLAGU2) $(COBJNAM)$@ $<
 
 {$(SRC)}.c{$(OBJ)}.3:
 	@type schema$(SCHEMA).bc | find "$(@B)_3" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGU3) >> $(VROOMMCFG)
-	$(CC) $(FLAGU3) $(COBJNAM)$@ $<
+	$(CXX) $(FLAGU3) $(COBJNAM)$@ $<
 
 {$(SRC)}.c{$(OBJ)}.B:
 	@type schema$(SCHEMA).bc | find "$(@B)_b" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGUB) >> $(VROOMMCFG)
-	$(CC) $(FLAGUB) $(COBJNAM)$@ $<
+	$(CXX) $(FLAGUB) $(COBJNAM)$@ $<
 
 #
 # Rules for files in sys\share
@@ -547,37 +547,37 @@ LFLAGSN	= $(LDFLAGSN) $(LNSTACK) $(LWCASE) $(LMAXSEG) $(INTOVL) $(LMAXALL) \
 	@type schema$(SCHEMA).bc | find "$(@B)_o" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGUO) >> $(VROOMMCFG)
-	$(CC) $(FLAGUO) $(COBJNAM)$@ $<
+	$(CXX) $(FLAGUO) $(COBJNAM)$@ $<
 
 {$(SYS)}.c{$(OBJ)}.0:
 	@type schema$(SCHEMA).bc | find "$(@B)_0" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGU0) >> $(VROOMMCFG)
-	$(CC) $(FLAGU0) $(COBJNAM)$@ $<
+	$(CXX) $(FLAGU0) $(COBJNAM)$@ $<
 
 {$(SYS)}.c{$(OBJ)}.1:
 	@type schema$(SCHEMA).bc | find "$(@B)_1" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGU1) >> $(VROOMMCFG)
-	$(CC) $(FLAGU1) $(COBJNAM)$@ $<
+	$(CXX) $(FLAGU1) $(COBJNAM)$@ $<
 
 {$(SYS)}.c{$(OBJ)}.2:
 	@type schema$(SCHEMA).bc | find "$(@B)_2" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGU2) >> $(VROOMMCFG)
-	$(CC) $(FLAGU2) $(COBJNAM)$@ $<
+	$(CXX) $(FLAGU2) $(COBJNAM)$@ $<
 
 {$(SYS)}.c{$(OBJ)}.3:
 	@type schema$(SCHEMA).bc | find "$(@B)_3" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGU3) >> $(VROOMMCFG)
-	$(CC) $(FLAGU3) $(COBJNAM)$@ $<
+	$(CXX) $(FLAGU3) $(COBJNAM)$@ $<
 
 {$(SYS)}.c{$(OBJ)}.B:
 	@type schema$(SCHEMA).bc | find "$(@B)_b" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGUB) >> $(VROOMMCFG)
-	$(CC) $(FLAGUB) $(COBJNAM)$@ $<
+	$(CXX) $(FLAGUB) $(COBJNAM)$@ $<
 
 #
 # Rules for files in sys\msdos
@@ -587,37 +587,37 @@ LFLAGSN	= $(LDFLAGSN) $(LNSTACK) $(LWCASE) $(LMAXSEG) $(INTOVL) $(LMAXALL) \
 	@type schema$(SCHEMA).bc | find "$(@B)_o" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGUO) >> $(VROOMMCFG)
-	$(CC) $(FLAGUO) $(COBJNAM)$@ $<
+	$(CXX) $(FLAGUO) $(COBJNAM)$@ $<
 
 {$(MSYS)}.c{$(OBJ)}.0:
 	@type schema$(SCHEMA).bc | find "$(@B)_0" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGU0) >> $(VROOMMCFG)
-	$(CC) $(FLAGU0) $(COBJNAM)$@ $<
+	$(CXX) $(FLAGU0) $(COBJNAM)$@ $<
 
 {$(MSYS)}.c{$(OBJ)}.1:
 	@type schema$(SCHEMA).bc | find "$(@B)_1" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGU1) >> $(VROOMMCFG)
-	$(CC) $(FLAGU1) $(COBJNAM)$@ $<
+	$(CXX) $(FLAGU1) $(COBJNAM)$@ $<
 
 {$(MSYS)}.c{$(OBJ)}.2:
 	@type schema$(SCHEMA).bc | find "$(@B)_2" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGU2) >> $(VROOMMCFG)
-	$(CC) $(FLAGU2) $(COBJNAM)$@ $<
+	$(CXX) $(FLAGU2) $(COBJNAM)$@ $<
 
 {$(MSYS)}.c{$(OBJ)}.3:
 	@type schema$(SCHEMA).bc | find "$(@B)_3" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGU3) >> $(VROOMMCFG)
-	$(CC) $(FLAGU3) $(COBJNAM)$@ $<
+	$(CXX) $(FLAGU3) $(COBJNAM)$@ $<
 
 {$(MSYS)}.c{$(OBJ)}.B:
 	@type schema$(SCHEMA).bc | find "$(@B)_b" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGUB) >> $(VROOMMCFG)
-	$(CC) $(FLAGUB) $(COBJNAM)$@ $<
+	$(CXX) $(FLAGUB) $(COBJNAM)$@ $<
 
 {$(MSYS)}.h{$(INCL)}.h:
 	@copy $< $@
@@ -630,7 +630,7 @@ LFLAGSN	= $(LDFLAGSN) $(LNSTACK) $(LWCASE) $(LMAXSEG) $(INTOVL) $(LMAXALL) \
 	@type schema$(SCHEMA).bc | find "$(@B)_o" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	$(CC) $(CFLAGSU) (COBJNAM)$@ $<
+	$(CXX) $(CFLAGSU) (COBJNAM)$@ $<
 
 #
 # Rules for files in win\share
@@ -640,13 +640,13 @@ LFLAGSN	= $(LDFLAGSN) $(LNSTACK) $(LWCASE) $(LMAXSEG) $(INTOVL) $(LMAXALL) \
 	@type schema$(SCHEMA).bc | find "$(@B)_o" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGUO) >> $(VROOMMCFG)
-	@$(CC) $(FLAGUO) $(COBJNAM)$@ $<
+	@$(CXX) $(FLAGUO) $(COBJNAM)$@ $<
 
 {$(WSHR)}.c{$(OBJ)}.o:
 	@type schema$(SCHEMA).bc | find "$(@B)_o" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGUO) >> $(VROOMMCFG)
-	@$(CC) $(FLAGUO) $(COBJNAM)$@ $<
+	@$(CXX) $(FLAGUO) $(COBJNAM)$@ $<
 
 {$(WSHR)}.h{$(INCL)}.h:
 	@copy $< $@
@@ -662,37 +662,37 @@ LFLAGSN	= $(LDFLAGSN) $(LNSTACK) $(LWCASE) $(LMAXSEG) $(INTOVL) $(LMAXALL) \
 	@type schema$(SCHEMA).bc | find "$(@B)_o" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGUO) >> $(VROOMMCFG)
-	$(CC) $(FLAGUO) $(COBJNAM)$@ $<
+	$(CXX) $(FLAGUO) $(COBJNAM)$@ $<
 
 {$(WTTY)}.c{$(OBJ)}.0:
 	@type schema$(SCHEMA).bc | find "$(@B)_0" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGU0) >> $(VROOMMCFG)
-	$(CC) $(FLAGU0) $(COBJNAM)$@ $<
+	$(CXX) $(FLAGU0) $(COBJNAM)$@ $<
 
 {$(WTTY)}.c{$(OBJ)}.1:
 	@type schema$(SCHEMA).bc | find "$(@B)_1" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGU1) >> $(VROOMMCFG)
-	$(CC) $(FLAGU1) $(COBJNAM)$@ $<
+	$(CXX) $(FLAGU1) $(COBJNAM)$@ $<
 
 {$(WTTY)}.c{$(OBJ)}.2:
 	@type schema$(SCHEMA).bc | find "$(@B)_2" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGU2) >> $(VROOMMCFG)
-	$(CC) $(FLAGU2) $(COBJNAM)$@ $<
+	$(CXX) $(FLAGU2) $(COBJNAM)$@ $<
 
 {$(WTTY)}.c{$(OBJ)}.3:
 	@type schema$(SCHEMA).bc | find "$(@B)_3" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGU3) >> $(VROOMMCFG)
-	$(CC) $(FLAGU3) $(COBJNAM)$@ $<
+	$(CXX) $(FLAGU3) $(COBJNAM)$@ $<
 
 {$(WTTY)}.c{$(OBJ)}.B:
 	@type schema$(SCHEMA).bc | find "$(@B)_b" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGUB) >> $(VROOMMCFG)
-	$(CC) $(FLAGUB) $(COBJNAM)$@ $<
+	$(CXX) $(FLAGUB) $(COBJNAM)$@ $<
 
 #
 # NETHACK OBJECTS
@@ -1030,7 +1030,7 @@ $(O)makedefs.o: $(CONFIG_H)	    $(PERMONST_H)      $(OBJCLASS_H) \
 		 $(U)makedefs.c
 	@echo $(BCOPTS1) > $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	@$(CC) $(CFLAGSU) $(COBJNAM)$@ $(U)makedefs.c
+	@$(CXX) $(CFLAGSU) $(COBJNAM)$@ $(U)makedefs.c
 
 #
 #  date.h should be remade every time any of the source or include
@@ -1077,18 +1077,18 @@ $(U)lev_comp.exe:  $(SPLEVOBJS)
 $(O)lev_yacc.o:  $(HACK_H)   $(SP_LEV_H) $(INCL)\lev_comp.h $(U)lev_yacc.c
 	@echo $(BCOPTS1) > $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	@$(CC) $(CFLAGSU) $(COBJNAM)$@ $(U)lev_yacc.c
+	@$(CXX) $(CFLAGSU) $(COBJNAM)$@ $(U)lev_yacc.c
 
 $(O)lev_$(LEX).o:  $(HACK_H)   $(INCL)\lev_comp.h $(SP_LEV_H) \
 	$(U)lev_$(LEX).c
 	@echo $(BCOPTS1) > $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	$(CC) $(CFLAGSU) $(COBJNAM)$@ $(U)lev_$(LEX).c
+	$(CXX) $(CFLAGSU) $(COBJNAM)$@ $(U)lev_$(LEX).c
 
 $(O)lev_main.o:	$(U)lev_main.c $(HACK_H)   $(SP_LEV_H)
 	@echo $(BCOPTS1) > $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	@$(CC) $(CFLAGSU) $(COBJNAM)$@ $(U)lev_main.c
+	@$(CXX) $(CFLAGSU) $(COBJNAM)$@ $(U)lev_main.c
 
 $(U)lev_yacc.c $(INCL)\lev_comp.h : $(U)lev_comp.y
 !	IF "$(DO_YACC)"=="YACC_ACT"
@@ -1147,18 +1147,18 @@ $(O)dgn_yacc.o:	$(HACK_H)   $(DGN_FILE_H) $(INCL)\dgn_comp.h \
 	$(U)dgn_yacc.c
 	@echo $(BCOPTS1) > $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	@$(CC) $(CFLAGSU) $(COBJNAM)$@ $(U)dgn_yacc.c
+	@$(CXX) $(CFLAGSU) $(COBJNAM)$@ $(U)dgn_yacc.c
 
 $(O)dgn_$(LEX).o: $(HACK_H)   $(DGN_FILE_H)  $(INCL)\dgn_comp.h \
 	$(U)dgn_$(LEX).c
 	@echo $(BCOPTS1) > $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	@$(CC) $(CFLAGSU) $(COBJNAM)$@ $(U)dgn_$(LEX).c
+	@$(CXX) $(CFLAGSU) $(COBJNAM)$@ $(U)dgn_$(LEX).c
 
 $(O)dgn_main.o:	$(HACK_H) $(U)dgn_main.c
 	@echo $(BCOPTS1) > $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	@$(CC) $(CFLAGSU) $(COBJNAM)$@ $(U)dgn_main.c
+	@$(CXX) $(CFLAGSU) $(COBJNAM)$@ $(U)dgn_main.c
 
 $(U)dgn_yacc.c $(INCL)\dgn_comp.h : $(U)dgn_comp.y
 !	IF "$(DO_YACC)"=="YACC_ACT"
@@ -1257,7 +1257,7 @@ $(U)tilemap.exe: $(O)tilemap.o
 $(O)tilemap.o:  $(WSHR)\tilemap.c $(HACK_H)
 	@echo $(BCOPTS1) > $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	$(CC) $(CFLAGSU) $(COBJNAM)$@ $(WSHR)\tilemap.c
+	$(CXX) $(CFLAGSU) $(COBJNAM)$@ $(WSHR)\tilemap.c
 
 
 #
@@ -1341,17 +1341,17 @@ $(U)thintile.exe: $(O)thintile.o
 $(O)thintile.o:  $(HACK_H) $(INCL)\tile.h $(WSHR)\thintile.c
 	@echo $(BCOPTS1) > $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	$(CC) $(CFLAGSU) $(COBJNAM)$@ $(WSHR)\thintile.c
+	$(CXX) $(CFLAGSU) $(COBJNAM)$@ $(WSHR)\thintile.c
 
 $(O)tile2bin.o:  $(HACK_H) $(TILE_H) $(PCVIDEO_H)
 	@echo $(BCOPTS1) > $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	$(CC) $(CFLAGSU) $(COBJNAM)$@ $(MSYS)\tile2bin.c
+	$(CXX) $(CFLAGSU) $(COBJNAM)$@ $(MSYS)\tile2bin.c
 
 $(O)til2bin2.o:  $(HACK_H) $(TILE_H) $(PCVIDEO_H)
 	@echo $(BCOPTS1) > $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	$(CC) $(CFLAGSU) $(CDEFINE)TILE_X=8 $(CDEFINE)OVERVIEW_FILE \
+	$(CXX) $(CFLAGSU) $(CDEFINE)TILE_X=8 $(CDEFINE)OVERVIEW_FILE \
 		$(COBJNAM)$@ $(MSYS)\tile2bin.c
 
 
@@ -1386,7 +1386,7 @@ $(U)dlb_main.exe: $(DLBOBJS)
 $(O)dlb_main.o: $(U)dlb_main.c $(INCL)\config.h $(DLB_H)
 	@echo $(BCOPTS1) > $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	$(CC) $(CFLAGSU) $(COBJNAM)$@ $(U)dlb_main.c
+	$(CXX) $(CFLAGSU) $(COBJNAM)$@ $(U)dlb_main.c
 
 #
 # Housekeeping
@@ -1454,32 +1454,32 @@ PHO$(CPCHEXT): $(HACK_H) pch.c
 	@echo Generating new precompiled header for .O files
 	@echo $(BCOPTS1) > $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGCO) >> $(VROOMMCFG)
-	@$(CC) $(FLAGCO) pch.c
+	@$(CXX) $(FLAGCO) pch.c
 PH0$(CPCHEXT): $(HACK_H) pch.c
 	@echo Generating new precompiled header for .0 files
 	@echo $(BCOPTS1) > $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGC0) >> $(VROOMMCFG)
-	@$(CC) $(FLAGC0) pch.c
+	@$(CXX) $(FLAGC0) pch.c
 PH1$(CPCHEXT): $(HACK_H) pch.c
 	@echo Generating new precompiled header for .1 files
 	@echo $(BCOPTS1) > $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGC1) >> $(VROOMMCFG)
-	@$(CC) $(FLAGC1) pch.c
+	@$(CXX) $(FLAGC1) pch.c
 PH2$(CPCHEXT): $(HACK_H) pch.c
 	@echo Generating new precompiled header for .2 files
 	@echo $(BCOPTS1) > $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGC2) >> $(VROOMMCFG)
-	@$(CC) $(FLAGC2) pch.c
+	@$(CXX) $(FLAGC2) pch.c
 PH3$(CPCHEXT): $(HACK_H) pch.c
 	@echo Generating new precompiled header for .3 files
 	@echo $(BCOPTS1) > $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGC3) >> $(VROOMMCFG)
-	@$(CC) $(FLAGC3) pch.c
+	@$(CXX) $(FLAGC3) pch.c
 PHB$(CPCHEXT): $(HACK_H) pch.c
 	@echo Generating new precompiled header for .B files
 	@echo $(BCOPTS1) > $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGCB) >> $(VROOMMCFG)
-	@$(CC) $(FLAGCB) pch.c
+	@$(CXX) $(FLAGCB) pch.c
 
 
 # Overlay initialization routines used by pcmain() at startup to
@@ -1494,7 +1494,7 @@ $(O)ovlinit.o: $(MSYS)\ovlinit.c $(HACK_H)
 	@type schema$(SCHEMA).bc | find "$(@B)_o" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	$(CC) $(CFLAGSN) $(RECOGNIZE_XMS) $(COBJNAM)$@ $(MSYS)\ovlinit.c
+	$(CXX) $(CFLAGSN) $(RECOGNIZE_XMS) $(COBJNAM)$@ $(MSYS)\ovlinit.c
 
 #
 # dat dependencies
@@ -1525,12 +1525,12 @@ $(DAT)\dungeon: $(U)utility.tag  $(DAT)\dungeon.def
 $(O)panic.o:   $(U)panic.c $(CONFIG_H)
 	@echo $(BCOPTS1) > $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	$(CC) $(CFLAGSU) $(COBJNAM)$@ $(U)panic.c
+	$(CXX) $(CFLAGSU) $(COBJNAM)$@ $(U)panic.c
 
 $(O)recover.o: $(CONFIG_H) $(U)recover.c
 	@echo $(BCOPTS1) > $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	$(CC) $(CFLAGSU) $(COBJNAM)$@ $(U)recover.c
+	$(CXX) $(CFLAGSU) $(COBJNAM)$@ $(U)recover.c
 
 #
 #  from win\share
@@ -1539,43 +1539,43 @@ $(O)recover.o: $(CONFIG_H) $(U)recover.c
 $(O)tiletxt.o:  $(WSHR)\tilemap.c $(HACK_H)
 	@echo $(BCOPTS1) > $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	$(CC) $(CFLAGSU) $(CDEFINE)TILETEXT $(COBJNAM)$@ $(WSHR)\tilemap.c
+	$(CXX) $(CFLAGSU) $(CDEFINE)TILETEXT $(COBJNAM)$@ $(WSHR)\tilemap.c
 
 $(O)tiletxt2.o:  $(WSHR)\tilemap.c $(HACK_H)
 	@echo $(BCOPTS1) > $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	$(CC) $(CFLAGSU) $(CDEFINE)TILETEXT \
+	$(CXX) $(CFLAGSU) $(CDEFINE)TILETEXT \
 		$(CDEFINE)TILE_X=8 $(COBJNAM)$@ $(WSHR)\tilemap.c
 
 $(O)gifread.o:  $(WSHR)\gifread.c  $(CONFIG_H) $(INCL)\tile.h
 	@echo $(BCOPTS1) > $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	$(CC) $(CFLAGSU) $(COBJNAM)$@ $(WSHR)\gifread.c
+	$(CXX) $(CFLAGSU) $(COBJNAM)$@ $(WSHR)\gifread.c
 
 $(O)gifread2.o:  $(WSHR)\gifread.c  $(CONFIG_H) $(INCL)\tile.h
 	@echo $(BCOPTS1) > $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	$(CC) $(CFLAGSU) $(COBJNAM)$@ $(CDEFINE)TILE_X=8 $(WSHR)\gifread.c
+	$(CXX) $(CFLAGSU) $(COBJNAM)$@ $(CDEFINE)TILE_X=8 $(WSHR)\gifread.c
 
 $(O)ppmwrite.o: $(WSHR)\ppmwrite.c $(CONFIG_H) $(INCL)\tile.h
 	@echo $(BCOPTS1) > $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	$(CC) $(CFLAGSU) $(COBJNAM)$@ $(WSHR)\ppmwrite.c
+	$(CXX) $(CFLAGSU) $(COBJNAM)$@ $(WSHR)\ppmwrite.c
 
 $(O)ppmwrit2.o: $(WSHR)\ppmwrite.c $(CONFIG_H) $(INCL)\tile.h
 	@echo $(BCOPTS1) > $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	$(CC) $(CFLAGSU) $(COBJNAM)$@ $(CDEFINE)TILE_X=8 $(WSHR)\ppmwrite.c
+	$(CXX) $(CFLAGSU) $(COBJNAM)$@ $(CDEFINE)TILE_X=8 $(WSHR)\ppmwrite.c
 
 $(O)tiletext.o:   $(WSHR)\tiletext.c  $(CONFIG_H) $(INCL)\tile.h
 	@echo $(BCOPTS1) > $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	$(CC) $(CFLAGSU) $(COBJNAM)$@ $(WSHR)\tiletext.c
+	$(CXX) $(CFLAGSU) $(COBJNAM)$@ $(WSHR)\tiletext.c
 
 $(O)tiletex2.o:   $(WSHR)\tiletext.c  $(CONFIG_H) $(INCL)\tile.h
 	@echo $(BCOPTS1) > $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	$(CC) $(CFLAGSU) $(CDEFINE)TILE_X=8 $(COBJNAM)$@ $(WSHR)\tiletext.c
+	$(CXX) $(CFLAGSU) $(CDEFINE)TILE_X=8 $(COBJNAM)$@ $(WSHR)\tiletext.c
 
 #
 #  from win\tty
@@ -1585,55 +1585,55 @@ $(O)getline.1:  $(PCH1) $(WTTY)\getline.c  $(HACK_H) $(WINTTY_H) $(FUNC_TAB_H)
 	@type schema$(SCHEMA).bc | find "$(@B)_1" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGU1) >> $(VROOMMCFG)
-	$(CC) $(FLAGU1) $(COBJNAM)$@ $(WTTY)\getline.c
+	$(CXX) $(FLAGU1) $(COBJNAM)$@ $(WTTY)\getline.c
 
 $(O)getline.2:  $(PCH2) $(WTTY)\getline.c  $(HACK_H) $(WINTTY_H) $(FUNC_TAB_H)
 	@type schema$(SCHEMA).bc | find "$(@B)_2" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGU2) >> $(VROOMMCFG)
-	$(CC) $(FLAGU2) $(COBJNAM)$@ $(WTTY)\getline.c
+	$(CXX) $(FLAGU2) $(COBJNAM)$@ $(WTTY)\getline.c
 
 $(O)termcap.0:  $(PCH0) $(WTTY)\termcap.c  $(HACK_H) $(WINTTY_H) $(TERMCAP_H)
 	@type schema$(SCHEMA).bc | find "$(@B)_0" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGU0) >> $(VROOMMCFG)
-	$(CC) $(FLAGU0) $(COBJNAM)$@ $(WTTY)\termcap.c
+	$(CXX) $(FLAGU0) $(COBJNAM)$@ $(WTTY)\termcap.c
 
 $(O)termcap.1:  $(PCH1) $(WTTY)\termcap.c  $(HACK_H) $(WINTTY_H) $(TERMCAP_H)
 	@type schema$(SCHEMA).bc | find "$(@B)_1" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGU1) >> $(VROOMMCFG)
-	$(CC) $(FLAGU1) $(COBJNAM)$@ $(WTTY)\termcap.c
+	$(CXX) $(FLAGU1) $(COBJNAM)$@ $(WTTY)\termcap.c
 
 $(O)termcap.B:  $(PCHB) $(WTTY)\termcap.c  $(HACK_H) $(WINTTY_H) $(TERMCAP_H)
 	@type schema$(SCHEMA).bc | find "$(@B)_b" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGUB) >> $(VROOMMCFG)
-	$(CC) $(FLAGUB) $(COBJNAM)$@ $(WTTY)\termcap.c
+	$(CXX) $(FLAGUB) $(COBJNAM)$@ $(WTTY)\termcap.c
 
 $(O)topl.1:     $(PCH1) $(WTTY)\topl.c     $(HACK_H) $(TERMCAP_H) $(WINTTY_H)
 	@type schema$(SCHEMA).bc | find "$(@B)_1" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGU1) >> $(VROOMMCFG)
-	$(CC) $(FLAGU1) $(COBJNAM)$@ $(WTTY)\topl.c
+	$(CXX) $(FLAGU1) $(COBJNAM)$@ $(WTTY)\topl.c
 
 $(O)topl.2:     $(PCH2) $(WTTY)\topl.c     $(HACK_H) $(TERMCAP_H) $(WINTTY_H)
 	@type schema$(SCHEMA).bc | find "$(@B)_2" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGU2) >> $(VROOMMCFG)
-	$(CC) $(FLAGU2) $(COBJNAM)$@ $(WTTY)\topl.c
+	$(CXX) $(FLAGU2) $(COBJNAM)$@ $(WTTY)\topl.c
 
 $(O)topl.B:     $(PCHB) $(WTTY)\topl.c     $(HACK_H) $(TERMCAP_H) $(WINTTY_H)
 	@type schema$(SCHEMA).bc | find "$(@B)_b" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGUB) >> $(VROOMMCFG)
-	$(CC) $(FLAGUB) $(COBJNAM)$@ $(WTTY)\topl.c
+	$(CXX) $(FLAGUB) $(COBJNAM)$@ $(WTTY)\topl.c
 
 $(O)wintty.o: $(PCHO) $(CONFIG_H) $(WTTY)\wintty.c $(PATCHLEVEL_H)
 	@type schema$(SCHEMA).bc | find "$(@B)_o" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGUO) >> $(VROOMMCFG)
-	$(CC) $(FLAGUO) $(COBJNAM)$@ $(WTTY)\wintty.c
+	$(CXX) $(FLAGUO) $(COBJNAM)$@ $(WTTY)\wintty.c
 
 #
 # from sys\share
@@ -1643,43 +1643,43 @@ $(O)pcmain.0:   $(PCH0) $(HACK_H) $(SYS)\pcmain.c
 	@type schema$(SCHEMA).bc | find "$(@B)_0" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGU0) >> $(VROOMMCFG)
-	$(CC)  $(FLAGU0) $(COBJNAM)$@ $(SYS)\pcmain.c
+	$(CXX)  $(FLAGU0) $(COBJNAM)$@ $(SYS)\pcmain.c
 
 $(O)pcmain.1:   $(PCH1) $(HACK_H) $(SYS)\pcmain.c
 	@type schema$(SCHEMA).bc | find "$(@B)_1" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGU1) >> $(VROOMMCFG)
-	$(CC)  $(FLAGU1) $(COBJNAM)$@ $(SYS)\pcmain.c
+	$(CXX)  $(FLAGU1) $(COBJNAM)$@ $(SYS)\pcmain.c
 
 $(O)pcmain.B:   $(PCHB) $(HACK_H) $(SYS)\pcmain.c
 	@type schema$(SCHEMA).bc | find "$(@B)_b" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGUB) >> $(VROOMMCFG)
-	$(CC)  $(FLAGUB) $(COBJNAM)$@ $(SYS)\pcmain.c
+	$(CXX)  $(FLAGUB) $(COBJNAM)$@ $(SYS)\pcmain.c
 
 $(O)pcunix.B:   $(PCHB) $(SYS)\pcunix.c   $(HACK_H)
 	@type schema$(SCHEMA).bc | find "$(@B)_b" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGUB) >> $(VROOMMCFG)
-	$(CC) $(FLAGUB) $(COBJNAM)$@ $(SYS)\pcunix.c
+	$(CXX) $(FLAGUB) $(COBJNAM)$@ $(SYS)\pcunix.c
 
 $(O)tty.o:     $(HACK_H) $(WINTTY_H) $(SYS)\pctty.c
 	@type schema$(SCHEMA).bc | find "$(@B)_o" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	$(CC)  $(CFLAGSN) $(COBJNAM)$@  $(SYS)\pctty.c
+	$(CXX)  $(CFLAGSN) $(COBJNAM)$@  $(SYS)\pctty.c
 
 $(O)sys.o:    $(HACK_H) $(SYS)\pcsys.c
 	@type schema$(SCHEMA).bc | find "$(@B)_o" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	$(CC)  $(CFLAGSN) $(COBJNAM)$@ $(SYS)\pcsys.c
+	$(CXX)  $(CFLAGSN) $(COBJNAM)$@ $(SYS)\pcsys.c
 
 $(O)random.o: $(PCHO) $(HACK_H) $(SYS)\random.c
 	@type schema$(SCHEMA).bc | find "$(@B)_o" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGUO) >> $(VROOMMCFG)
-	$(CC) $(FLAGUO) $(COBJNAM)$@ $(SYS)\random.c
+	$(CXX) $(FLAGUO) $(COBJNAM)$@ $(SYS)\random.c
 
 #
 # from sys\msdos
@@ -1689,103 +1689,103 @@ $(O)msdos.0: $(MSYS)\msdos.c   $(HACK_H) $(PCVIDEO_H)
 	@type schema$(SCHEMA).bc | find "$(@B)_0" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	$(CC) $(CFLAGSN) $(COVL0) $(COBJNAM)$@ $(MSYS)\msdos.c
+	$(CXX) $(CFLAGSN) $(COVL0) $(COBJNAM)$@ $(MSYS)\msdos.c
 
 $(O)msdos.B: $(MSYS)\msdos.c   $(HACK_H) $(PCVIDEO_H)
 	@type schema$(SCHEMA).bc | find "$(@B)_b" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2)  >> $(VROOMMCFG)
-	$(CC) $(CFLAGSN) $(COVLB) $(COBJNAM)$@ $(MSYS)\msdos.c
+	$(CXX) $(CFLAGSN) $(COVLB) $(COBJNAM)$@ $(MSYS)\msdos.c
 
 $(O)pctiles.0: $(PCH0) $(MSYS)\pctiles.c $(HACK_H) $(TILE_H) $(PCVIDEO_H)
 	@type schema$(SCHEMA).bc | find "$(@B)_0" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGU0) >> $(VROOMMCFG)
-	$(CC) $(FLAGU0) $(COBJNAM)$@ $(MSYS)\pctiles.c
+	$(CXX) $(FLAGU0) $(COBJNAM)$@ $(MSYS)\pctiles.c
 
 $(O)pctiles.B: $(PCHB) $(MSYS)\pctiles.c $(HACK_H) $(TILE_H) $(PCVIDEO_H)
 	@type schema$(SCHEMA).bc | find "$(@B)_b" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGUB) >> $(VROOMMCFG)
-	$(CC) $(FLAGUB) $(COBJNAM)$@ $(MSYS)\pctiles.c
+	$(CXX) $(FLAGUB) $(COBJNAM)$@ $(MSYS)\pctiles.c
 
 $(O)sound.o: $(PCH0) $(MSYS)\sound.c   $(HACK_H) $(INCL)\portio.h
 	@type schema$(SCHEMA).bc | find "$(@B)_o" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGUO) >> $(VROOMMCFG)
-	$(CC) $(FLAGUO) $(COBJNAM)$@ $(MSYS)\sound.c
+	$(CXX) $(FLAGUO) $(COBJNAM)$@ $(MSYS)\sound.c
 
 $(O)pckeys.o: $(PCHO) $(MSYS)\pckeys.c   $(HACK_H) $(PCVIDEO_H)
 	@type schema$(SCHEMA).bc | find "$(@B)_o" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGUO) >> $(VROOMMCFG)
-	$(CC) $(FLAGUO) $(COBJNAM)$@ $(MSYS)\pckeys.c
+	$(CXX) $(FLAGUO) $(COBJNAM)$@ $(MSYS)\pckeys.c
 
 $(O)stubvid.o : $(MSYS)\video.c $(HACK_H)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGUO) >> $(VROOMMCFG)
-	$(CC) $(FLAGUO) $(CDEFINE)STUBVIDEO $(COBJNAM)$@ $(MSYS)\video.c
+	$(CXX) $(FLAGUO) $(CDEFINE)STUBVIDEO $(COBJNAM)$@ $(MSYS)\video.c
 
 $(O)video.0: $(PCH0) $(MSYS)\video.c   $(HACK_H) $(WINTTY_H) $(PCVIDEO_H) \
                 $(TILE_H)
 	@type schema$(SCHEMA).bc | find "$(@B)_0" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGU0) >> $(VROOMMCFG)
-	$(CC) $(FLAGU0) $(COBJNAM)$@ $(MSYS)\video.c
+	$(CXX) $(FLAGU0) $(COBJNAM)$@ $(MSYS)\video.c
 
 $(O)video.1: $(PCH1) $(MSYS)\video.c   $(HACK_H) $(WINTTY_H) $(PCVIDEO_H) \
                 $(TILE_H)
 	@type schema$(SCHEMA).bc | find "$(@B)_1" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGU1) >> $(VROOMMCFG)
-	$(CC) $(FLAGU1) $(COBJNAM)$@ $(MSYS)\video.c
+	$(CXX) $(FLAGU1) $(COBJNAM)$@ $(MSYS)\video.c
 
 $(O)video.B: $(PCHB) $(MSYS)\video.c   $(HACK_H) $(WINTTY_H) $(PCVIDEO_H) \
                 $(TILE_H)
 	@type schema$(SCHEMA).bc | find "$(@B)_b" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGUB) >> $(VROOMMCFG)
-	$(CC) $(FLAGUB) $(COBJNAM)$@ $(MSYS)\video.c
+	$(CXX) $(FLAGUB) $(COBJNAM)$@ $(MSYS)\video.c
 
 $(O)vidtxt.0: $(MSYS)\vidtxt.c  $(HACK_H) $(WINTTY_H) $(PCVIDEO_H)
 	@type schema$(SCHEMA).bc | find "$(@B)_0" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	$(CC) $(CFLAGSN) $(COVL0) $(COBJNAM)$@ $(MSYS)\vidtxt.c
+	$(CXX) $(CFLAGSN) $(COVL0) $(COBJNAM)$@ $(MSYS)\vidtxt.c
 
 $(O)vidtxt.B: $(MSYS)\vidtxt.c  $(HACK_H) $(WINTTY_H) $(PCVIDEO_H)
 	@type schema$(SCHEMA).bc | find "$(@B)_b" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	$(CC) $(CFLAGSN) $(COVLB) $(COBJNAM)$@ $(MSYS)\vidtxt.c
+	$(CXX) $(CFLAGSN) $(COVLB) $(COBJNAM)$@ $(MSYS)\vidtxt.c
 
 $(O)vidvga.0: $(PCH0) $(MSYS)\vidvga.c  $(HACK_H) $(WINTTY_H) $(PCVIDEO_H) \
 		$(TILE_H)
 	@type schema$(SCHEMA).bc | find "$(@B)_0" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGU0) >> $(VROOMMCFG)
-	$(CC) $(FLAGU0) $(COBJNAM)$@ $(MSYS)\vidvga.c
+	$(CXX) $(FLAGU0) $(COBJNAM)$@ $(MSYS)\vidvga.c
 
 $(O)vidvga.1: $(PCH1) $(MSYS)\vidvga.c  $(HACK_H) $(WINTTY_H) $(PCVIDEO_H) \
 		$(TILE_H)
 	@type schema$(SCHEMA).bc | find "$(@B)_1" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGU1) >> $(VROOMMCFG)
-	$(CC) $(FLAGU1) $(COBJNAM)$@ $(MSYS)\vidvga.c
+	$(CXX) $(FLAGU1) $(COBJNAM)$@ $(MSYS)\vidvga.c
 
 $(O)vidvga.2: $(PCH2) $(MSYS)\vidvga.c  $(HACK_H) $(WINTTY_H) $(PCVIDEO_H) \
 		$(TILE_H)
 	@type schema$(SCHEMA).bc | find "$(@B)_2" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGU2) >> $(VROOMMCFG)
-	$(CC) $(FLAGU2) $(COBJNAM)$@ $(MSYS)\vidvga.c
+	$(CXX) $(FLAGU2) $(COBJNAM)$@ $(MSYS)\vidvga.c
 
 $(O)vidvga.B: $(PCHB) $(MSYS)\vidvga.c  $(HACK_H) $(WINTTY_H) $(PCVIDEO_H) \
 		$(TILE_H)
 	@type schema$(SCHEMA).bc | find "$(@B)_b" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) $(CFLAGUB) >> $(VROOMMCFG)
-	$(CC) $(FLAGUB) $(COBJNAM)$@ $(MSYS)\vidvga.c
+	$(CXX) $(FLAGUB) $(COBJNAM)$@ $(MSYS)\vidvga.c
 
 #
 # from src
@@ -1795,7 +1795,7 @@ $(O)alloc.o:     $(SRC)\alloc.c    $(CONFIG_H)
 	@type schema$(SCHEMA).bc | find "$(@B)_o" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	$(CC) $(CFLAGSN) $(COBJNAM)$@ $(SRC)\alloc.c
+	$(CXX) $(CFLAGSN) $(COBJNAM)$@ $(SRC)\alloc.c
 $(O)ball.o:      $(PCHO) $(SRC)\ball.c     $(HACK_H)
 $(O)bones.o:     $(PCHO) $(SRC)\bones.c    $(HACK_H) $(LEV_H)
 $(O)decl.o:      $(PCHO) $(SRC)\decl.c     $(HACK_H) $(QUEST_H)
@@ -1806,19 +1806,19 @@ $(O)dlb.o:	 $(SRC)\dlb.c	   $(DLB_H) $(HACK_H)
 	@type schema$(SCHEMA).bc | find "$(@B)_o" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	$(CC) $(CFLAGSN) $(COBJNAM)$@ $(SRC)\dlb.c
+	$(CXX) $(CFLAGSN) $(COBJNAM)$@ $(SRC)\dlb.c
 $(O)dokick.o:    $(PCHO) $(SRC)\dokick.c   $(HACK_H) $(ESHK_H)
 $(O)dothrow.o:   $(PCHO) $(SRC)\dothrow.c  $(HACK_H)
 $(O)drawing.o:   $(SRC)\drawing.c  $(HACK_H) $(TERMCAP_H)
 	@type schema$(SCHEMA).bc | find "$(@B)_o" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	$(CC) $(CFLAGSN) $(COBJNAM)$@ $(SRC)\drawing.c
+	$(CXX) $(CFLAGSN) $(COBJNAM)$@ $(SRC)\drawing.c
 $(O)end.o:       $(SRC)\end.c      $(HACK_H) $(ESHK_H) $(DLB_H)
 	@type schema$(SCHEMA).bc | find "$(@B)_o" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	$(CC) $(CFLAGSN) $(COBJNAM)$@ $(SRC)\end.c
+	$(CXX) $(CFLAGSN) $(COBJNAM)$@ $(SRC)\end.c
 $(O)exper.o:     $(PCHO) $(SRC)\exper.c    $(HACK_H)
 $(O)extralev.o:  $(PCHO) $(SRC)\extralev.c $(HACK_H)
 $(O)files.o:	 $(PCHO) $(SRC)\files.c    $(HACK_H) $(DLB_H)
@@ -1833,12 +1833,12 @@ $(O)monst.o:     $(SRC)\monst.c    $(CONFIG_H) $(PERMONST_H) $(MONSYM_H) \
 	@type schema$(SCHEMA).bc | find "$(@B)_o" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	$(CC) $(CFLAGSN) $(COBJNAM)$@ $(SRC)\monst.c
+	$(CXX) $(CFLAGSN) $(COBJNAM)$@ $(SRC)\monst.c
 $(O)monstr.o:    $(SRC)\monstr.c   $(CONFIG_H)
 	@type schema$(SCHEMA).bc | find "$(@B)_o" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	$(CC) $(CFLAGSN) $(COBJNAM)$@ $(SRC)\monstr.c
+	$(CXX) $(CFLAGSN) $(COBJNAM)$@ $(SRC)\monstr.c
 $(O)mplayer.o:   $(PCHO) $(SRC)\mplayer.c  $(HACK_H)
 $(O)muse.o:      $(PCHO) $(SRC)\muse.c     $(HACK_H)
 $(O)music.o:     $(PCHO) $(SRC)\music.c    $(HACK_H)
@@ -1848,17 +1848,17 @@ $(O)objects.o:   $(SRC)\objects.c  $(CONFIG_H) $(OBJ_H) $(OBJCLASS_H) \
 	@type schema$(SCHEMA).bc | find "$(@B)_o" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	$(CC) $(CFLAGSN) $(COBJNAM)$@ $(SRC)\objects.c
+	$(CXX) $(CFLAGSN) $(COBJNAM)$@ $(SRC)\objects.c
 $(O)options.o:	 $(SRC)\options.c  $(HACK_H) $(TERMCAP_H) $(OBJCLASS_H)
 	@type schema$(SCHEMA).bc | find "$(@B)_o" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	$(CC) $(CFLAGSN) $(COBJNAM)$@ $(SRC)\options.c
+	$(CXX) $(CFLAGSN) $(COBJNAM)$@ $(SRC)\options.c
 $(O)pager.o:	 $(SRC)\pager.c    $(HACK_H) $(DLB_H)
 	@type schema$(SCHEMA).bc | find "$(@B)_o" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	$(CC) $(CFLAGNO) $(COBJNAM)$@ $(SRC)\pager.c
+	$(CXX) $(CFLAGNO) $(COBJNAM)$@ $(SRC)\pager.c
 $(O)pickup.o:    $(PCHO) $(SRC)\pickup.c   $(HACK_H)
 $(O)pray.o:      $(PCHO) $(SRC)\pray.c     $(HACK_H) $(EPRI_H)
 $(O)quest.o:     $(PCHO) $(SRC)\quest.c    $(HACK_H) $(QUEST_H) $(QTEXT_H)
@@ -1886,7 +1886,7 @@ $(O)vis_tab.o:   $(SRC)\vis_tab.c  $(HACK_H) $(VIS_TAB_H)
 	@type schema$(SCHEMA).bc | find "$(@B)_o" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	$(CC) $(CFLAGSN) $(COBJNAM)$@ $(SRC)\vis_tab.c
+	$(CXX) $(CFLAGSN) $(COBJNAM)$@ $(SRC)\vis_tab.c
 $(O)wield.o:     $(PCHO) $(SRC)\wield.c    $(HACK_H)
 $(O)windows.o:   $(PCHO) $(SRC)\windows.c  $(HACK_H) $(WINTTY_H)
 $(O)worm.o:      $(PCHO) $(SRC)\worm.c     $(HACK_H) $(LEV_H)
@@ -2058,7 +2058,7 @@ $(O)pline.B:    $(SRC)\pline.c    $(HACK_H) $(EPRI_H)
 	@type schema$(SCHEMA).bc | find "$(@B)_b" > $(VROOMMCFG)
 	@echo $(BCOPTS1) >> $(VROOMMCFG)
 	@echo $(BCOPTS2) >> $(VROOMMCFG)
-	$(CC) $(CFLAGSN) $(COBJNAM)$@ $(SRC)\pline.c
+	$(CXX) $(CFLAGSN) $(COBJNAM)$@ $(SRC)\pline.c
 $(O)polyself.B: $(PCHB) $(SRC)\polyself.c $(HACK_H)
 $(O)potion.B:   $(PCHB) $(SRC)\potion.c   $(HACK_H)
 $(O)priest.B:   $(PCHB) $(SRC)\priest.c   $(HACK_H) $(MFNDPOS_H) $(ESHK_H) \

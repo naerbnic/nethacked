@@ -26,30 +26,17 @@
 #include "patchlevel.h"
 #endif
 
-#ifdef MAC
-# if defined(__SC__) || defined(__MRC__)	/* MPW compilers */
-#  define MPWTOOL
-#include <CursorCtl.h>
 #include <string.h>
 #include <ctype.h>
-# else		/* MAC without MPWTOOL */
-#  define MACsansMPWTOOL
-# endif
-#endif /* MAC */
+#include <errno.h>
 
-#ifndef MPWTOOL
-# define SpinCursor(x)
-#endif
 
 #define Fprintf	(void) fprintf
 #define Fclose	(void) fclose
 #define Unlink	(void) unlink
-#if !defined(AMIGA) || defined(AZTEC_C)
-#define rewind(fp) fseek((fp),0L,SEEK_SET)	/* guarantee a return value */
-#endif
 
 #if defined(UNIX) && !defined(LINT) && !defined(GCC_WARN)
-static	const char	SCCS_Id[] = "@(#)makedefs.c\t3.4\t2002/02/03";
+static	const char	SCCS_Id[] = "@(#)makedefs.cc\t3.4\t2002/02/03";
 #endif
 
 	/* names of files to be generated */
@@ -228,11 +215,7 @@ main(void)
 
 #else /* ! MAC */
 
-int
-main(argc, argv)
-int	argc;
-char	*argv[];
-{
+int main(int argc, char *argv[]) {
 	if ( (argc != 2)
 #ifdef FILE_PREFIX
 		&& (argc != 3)
@@ -257,10 +240,7 @@ char	*argv[];
 
 #endif
 
-void
-do_makedefs(options)
-char	*options;
-{
+void do_makedefs(char *options) {
 	boolean more_than_one;
 
 	/* Note:  these initializers don't do anything except guarantee that
@@ -325,9 +305,7 @@ char	*options;
 
 
 /* trivial text encryption routine which can't be broken with `tr' */
-static
-char *xcrypt(str)
-const char *str;
+static char *xcrypt(char const* str)
 {				/* duplicated in src/hacklib.c */
 	static char buf[BUFSZ];
 	register const char *p;
@@ -358,7 +336,7 @@ do_rumors()
 		perror(filename);
 		exit(EXIT_FAILURE);
 	}
-	Fprintf(ofp,Dont_Edit_Data);
+	fputs(Dont_Edit_Data, ofp);
 
 	Sprintf(infile, DATA_IN_TEMPLATE, RUMOR_FILE);
 	Strcat(infile, ".tru");
@@ -508,10 +486,7 @@ make_version()
 	return;
 }
 
-static char *
-version_string(outbuf)
-char *outbuf;
-{
+static char * version_string(char* outbuf) {
     Sprintf(outbuf, "%d.%d.%d", VERSION_MAJOR, VERSION_MINOR, PATCHLEVEL);
 #ifdef BETA
     Sprintf(eos(outbuf), "-%d", EDITLEVEL);
@@ -519,11 +494,7 @@ char *outbuf;
     return outbuf;
 }
 
-static char *
-version_id_string(outbuf, build_date)
-char *outbuf;
-const char *build_date;
-{
+static char * version_id_string(char* outbuf, char const* build_date) {
     char subbuf[64], versbuf[64];
 
     subbuf[0] = '\0';
@@ -557,7 +528,7 @@ do_date()
 		exit(EXIT_FAILURE);
 	}
 	Fprintf(ofp,"/*\tSCCS Id: @(#)date.h\t3.4\t2002/02/03 */\n\n");
-	Fprintf(ofp,Dont_Edit_Code);
+	fputs(Dont_Edit_Code, ofp);
 
 #ifdef KR1ED
 	(void) time(&clocktim);
@@ -901,10 +872,7 @@ do_options()
 }
 
 /* routine to decide whether to discard something from data.base */
-static boolean
-d_filter(line)
-    char *line;
-{
+static boolean d_filter(char* line) {
     if (*line == '#') return TRUE;	/* ignore comment lines */
     return FALSE;
 }
@@ -999,7 +967,9 @@ do_data()
 
 	/* reprocess the scratch file; 1st format an error msg, just in case */
 	Sprintf(in_line, "rewind of \"%s\"", tempfile);
-	if (rewind(tfp) != 0)  goto dead_data;
+	errno = 0;
+	rewind(tfp);
+	if (errno != 0)  goto dead_data;
 	/* copy all lines of text from the scratch file into the output file */
 	while (fgets(in_line, sizeof in_line, tfp))
 	    (void) fputs(in_line, ofp);
@@ -1010,7 +980,9 @@ do_data()
 
 	/* update the first record of the output file; prepare error msg 1st */
 	Sprintf(in_line, "rewind of \"%s\"", filename);
-	ok = (rewind(ofp) == 0);
+	errno = 0;
+	rewind(ofp);
+	ok = (errno == 0);
 	if (ok) {
 	   Sprintf(in_line, "header rewrite of \"%s\"", filename);
 	   ok = (fprintf(ofp, "%s%08lx\n", Dont_Edit_Data, txt_offset) >= 0);
@@ -1030,14 +1002,9 @@ dead_data:  perror(in_line);	/* report the problem */
 }
 
 /* routine to decide whether to discard something from oracles.txt */
-static boolean
-h_filter(line)
-    char *line;
-{
+static boolean h_filter(char* line) {
     static boolean skip = FALSE;
     char tag[sizeof in_line];
-
-    SpinCursor(3);
 
     if (*line == '#') return TRUE;	/* ignore comment lines */
     if (sscanf(line, "----- %s", tag) == 1) {
@@ -1118,7 +1085,6 @@ do_oracles()
 	    (void) fputs(xcrypt(special_oracle[i]), tfp);
 	    (void) fputc('\n', tfp);
 	}
-	SpinCursor(3);
 
 	oracle_cnt = 1;
 	(void) fputs("---\n", tfp);
@@ -1126,8 +1092,6 @@ do_oracles()
 	in_oracle = FALSE;
 
 	while (fgets(in_line, sizeof in_line, ifp)) {
-	    SpinCursor(3);
-
 	    if (h_filter(in_line)) continue;
 	    if (!strncmp(in_line, "-----", 5)) {
 		if (!in_oracle) continue;
@@ -1154,7 +1118,9 @@ do_oracles()
 
 	/* reprocess the scratch file; 1st format an error msg, just in case */
 	Sprintf(in_line, "rewind of \"%s\"", tempfile);
-	if (rewind(tfp) != 0)  goto dead_data;
+	errno = 0;
+	rewind(tfp);
+	if (errno != 0)  goto dead_data;
 	/* copy all lines of text from the scratch file into the output file */
 	while (fgets(in_line, sizeof in_line, tfp))
 	    (void) fputs(in_line, ofp);
@@ -1165,7 +1131,9 @@ do_oracles()
 
 	/* update the first record of the output file; prepare error msg 1st */
 	Sprintf(in_line, "rewind of \"%s\"", filename);
-	ok = (rewind(ofp) == 0);
+	errno = 0;
+	rewind(ofp);
+	ok = (errno == 0);
 	if (ok) {
 	    Sprintf(in_line, "header rewrite of \"%s\"", filename);
 	    ok = (fprintf(ofp, "%s%5d\n", Dont_Edit_Data, oracle_cnt) >=0);
@@ -1222,10 +1190,7 @@ static	struct deflist {
 #endif
 	      { 0, 0 } };
 
-static int
-check_control(s)
-	char	*s;
-{
+static int check_control(char* s) {
 	int	i;
 
 	if(s[0] != '%') return(-1);
@@ -1237,10 +1202,7 @@ check_control(s)
 	return(-1);
 }
 
-static char *
-without_control(s)
-	char *s;
-{
+static char* without_control(char* s) {
 	return(s + 1 + strlen(deflist[check_control(in_line)].defname));
 }
 
@@ -1263,11 +1225,9 @@ do_dungeon()
 		perror(filename);
 		exit(EXIT_FAILURE);
 	}
-	Fprintf(ofp,Dont_Edit_Data);
+	fputs(Dont_Edit_Data, ofp);
 
 	while (fgets(in_line, sizeof in_line, ifp) != 0) {
-	    SpinCursor(3);
-
 	    rcnt++;
 	    if(in_line[0] == '#') continue;	/* discard comments */
 recheck:
@@ -1293,10 +1253,8 @@ recheck:
 	return;
 }
 
-static boolean
-ranged_attk(ptr)	/* returns TRUE if monster can attack at range */
-	register struct permonst *ptr;
-{
+/* returns TRUE if monster can attack at range */
+static boolean ranged_attk(struct permonst *ptr) {
 	register int	i, j;
 	register int atk_mask = (1<<AT_BREA) | (1<<AT_SPIT) | (1<<AT_GAZE);
 
@@ -1312,9 +1270,7 @@ ranged_attk(ptr)	/* returns TRUE if monster can attack at range */
  * an approximation of monster strength.  It uses a similar method of
  * determination as "experience()" to arrive at the strength.
  */
-static int
-mstrength(ptr)
-struct permonst *ptr;
+static int mstrength(struct permonst *ptr)
 {
 	int	i, tmp2, n, tmp = ptr->mlevel;
 
@@ -1385,12 +1341,10 @@ do_monstr()
 	perror(filename);
 	exit(EXIT_FAILURE);
     }
-    Fprintf(ofp,Dont_Edit_Code);
+    fputs(Dont_Edit_Code,ofp);
     Fprintf(ofp,"#include \"config.h\"\n");
     Fprintf(ofp,"\nconst int monstr[] = {\n");
     for (ptr = &mons[0], j = 0; ptr->mlet; ptr++) {
-
-	SpinCursor(3);
 
 	i = mstrength(ptr);
 	Fprintf(ofp,"%2d,%c", i, (++j & 15) ? ' ' : '\n');
@@ -1426,15 +1380,13 @@ do_permonst()
 		exit(EXIT_FAILURE);
 	}
 	Fprintf(ofp,"/*\tSCCS Id: @(#)pm.h\t3.4\t2002/02/03 */\n\n");
-	Fprintf(ofp,Dont_Edit_Code);
+	fputs(Dont_Edit_Code, ofp);
 	Fprintf(ofp,"#ifndef PM_H\n#define PM_H\n");
 
 	if (strcmp(mons[0].mname, "playermon") != 0)
 		Fprintf(ofp,"\n#define\tPM_PLAYERMON\t(-1)");
 
 	for (i = 0; mons[i].mlet; i++) {
-		SpinCursor(3);
-
 		Fprintf(ofp,"\n#define\tPM_");
 		if (mons[i].mlet == S_HUMAN &&
 				!strncmp(mons[i].mname, "were", 4))
@@ -1463,25 +1415,16 @@ static int	qt_line;
 static boolean	in_msg;
 #define NO_MSG	1	/* strlen of a null line returned by fgets() */
 
-static boolean
-qt_comment(s)
-	char *s;
-{
+static boolean qt_comment(char* s) {
 	if(s[0] == '#') return(TRUE);
 	return((boolean)(!in_msg  && strlen(s) == NO_MSG));
 }
 
-static boolean
-qt_control(s)
-	char *s;
-{
+static boolean qt_control(char* s) {
 	return((boolean)(s[0] == '%' && (s[1] == 'C' || s[1] == 'E')));
 }
 
-static int
-get_hdr (code)
-	char *code;
-{
+static int get_hdr (char* code) {
 	int	i;
 
 	for(i = 0; i < qt_hdr.n_hdr; i++)
@@ -1490,10 +1433,7 @@ get_hdr (code)
 	return(0);
 }
 
-static boolean
-new_id (code)
-	char *code;
-{
+static boolean new_id (char* code) {
 	if(qt_hdr.n_hdr >= N_HDR) {
 	    Fprintf(stderr, OUT_OF_HEADERS, qt_line);
 	    return(FALSE);
@@ -1742,7 +1682,7 @@ do_objs()
 		exit(EXIT_FAILURE);
 	}
 	Fprintf(ofp,"/*\tSCCS Id: @(#)onames.h\t3.4\t2002/02/03 */\n\n");
-	Fprintf(ofp,Dont_Edit_Code);
+	fputs(Dont_Edit_Code, ofp);
 	Fprintf(ofp,"#ifndef ONAMES_H\n#define ONAMES_H\n\n");
 
 	for(i = 0; !i || objects[i].oc_class != ILLOBJ_CLASS; i++) {
@@ -1897,7 +1837,7 @@ do_vision()
 	perror(filename);
 	exit(EXIT_FAILURE);
     }
-    Fprintf(ofp,Dont_Edit_Code);
+    fputs(Dont_Edit_Code, ofp);
     Fprintf(ofp,"#ifdef VISION_TABLES\n");
 #ifdef VISION_TABLES
     H_close_gen();
@@ -1922,7 +1862,7 @@ do_vision()
 	Unlink(filename);
 	exit(EXIT_FAILURE);
     }
-    Fprintf(ofp,Dont_Edit_Code);
+    fputs(Dont_Edit_Code, ofp);
     Fprintf(ofp,"#include \"config.h\"\n");
     Fprintf(ofp,"#ifdef VISION_TABLES\n");
     Fprintf(ofp,"#include \"vis_tab.h\"\n");

@@ -62,7 +62,7 @@ X#
 XSRCS = cpp1.c cpp2.c cpp3.c cpp4.c cpp5.c cpp6.c
 XOBJS = cpp1.o cpp2.o cpp3.o cpp4.o cpp5.o cpp6.o
 Xcpp: $(OBJS)
-X	$(CC) $(CFLAGS) $(OBJS) -o cpp
+X	$(CXX) $(CFLAGS) $(OBJS) -o cpp
 X
 X#
 X# ** Test cpp by preprocessing itself, compiling the result,
@@ -78,7 +78,7 @@ X	cpp cpp3.c $(LINEFIX) >old.tmp3.c
 X	cpp cpp4.c $(LINEFIX) >old.tmp4.c
 X	cpp cpp5.c $(LINEFIX) >old.tmp5.c
 X	cpp cpp6.c $(LINEFIX) >old.tmp6.c
-X	$(CC) $(CFLAGS) old.tmp[123456].c
+X	$(CXX) $(CFLAGS) old.tmp[123456].c
 X	a.out cpp1.c >new.tmp1.c
 X	a.out cpp2.c >new.tmp2.c
 X	a.out cpp3.c >new.tmp3.c
@@ -122,10 +122,10 @@ X# ** Uses the Decus C archive utility.
 X#
 X
 Xarchc:	archc.c
-X	$(CC) $(CFLAGS) archc.c -o archc
+X	$(CXX) $(CFLAGS) archc.c -o archc
 X
 Xarchx:	archx.c
-X	$(CC) $(CFLAGS) archx.c -o archx
+X	$(CXX) $(CFLAGS) archx.c -o archx
 X
 Xarchive: archc
 X	archc readme.txt cpp.mem archx.c archc.c cpp.rno makefile.txt \

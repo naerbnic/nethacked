@@ -88,7 +88,7 @@ CC = gcc -c
 ASM = as
 
 # Compilation flags for selected C Compiler:
-#   $(CFLAGS) should appear before filename arguments of $(CC) command line.
+#   $(CFLAGS) should appear before filename arguments of $(CXX) command line.
 
 CFLAGS = -O3 -I $(I)
 
@@ -349,7 +349,7 @@ link: $(HOBJ)
 
 ## dlb support
 $(OO)dlb_main.o:	$(UTIL)dlb_main.c $(HDEP) $(I)dlb.h $(I)date.h
-	$(CC) $(CFLAGS) $(OBJSPEC)$(OO)dlb_main.o $(UTIL)dlb_main.c
+	$(CXX) $(CFLAGS) $(OBJSPEC)$(OO)dlb_main.o $(UTIL)dlb_main.c
 
 $(SBIN)dlb:	$(OO)dlb_main.o $(O)dlb.o $(O)alloc.o $(OO)panic.o
 	$(LINK) $(PNSPEC) $(SBIN)dlb $(LIN) $(OO)dlb_main.o $(O)dlb.o \
@@ -370,7 +370,7 @@ SUFFIXES = .lev .des
 
 #$(O)%.o: $(NHS)%.c
 .c.o:
-	$(CC) $(CFLAGS) $(CSYM) $(OBJSPEC)$@ $<
+	$(CXX) $(CFLAGS) $(CSYM) $(OBJSPEC)$@ $<
 
 clean:
 	-delete $(O)\#?.o $(OO)\#?.o
@@ -434,7 +434,7 @@ $(SBIN)makedefs: $(MAKEOBJS)
 
 $(OO)makedefs.o:  $(UTIL)makedefs.c $(I)config.h $(I)permonst.h $(I)monsym.h \
 		$(I)objclass.h  $(I)patchlevel.h $(I)qtext.h $(I)artilist.h
-	$(CC) $(DEFSPEC)MAKEDEFS_C $(CFLAGS) $(OBJSPEC)$@ $(UTIL)makedefs.c
+	$(CXX) $(DEFSPEC)MAKEDEFS_C $(CFLAGS) $(OBJSPEC)$@ $(UTIL)makedefs.c
 
 $(SBIN)lev_comp:  $(SPLEVOBJS)
 	$(LINK) $(LNSPEC) $(SBIN)lev_comp $(LIN) $(SPLEVOBJS) $(FBFIL) $(FLLIB)
@@ -444,31 +444,31 @@ $(SBIN)dgn_comp:  $(DGNCOMPOBJS)
 
 $(OO)lev_yacc.o:  $(UTIL)lev_yacc.c $(HDEP) $(I)sp_lev.h $(I)pm.h $(I)onames.h
 #	setdate $(UTIL)lev_yacc.c
-	$(CC) $(DEFSPEC)LEV_LEX_C $(DEFSPEC)PREFIX="NH:slib/" $(CFLAGS) \
+	$(CXX) $(DEFSPEC)LEV_LEX_C $(DEFSPEC)PREFIX="NH:slib/" $(CFLAGS) \
 		$(DEFSPEC)alloca=malloc $(OBJSPEC)$@ $(UTIL)lev_yacc.c
 
 $(OO)lev_lex.o: $(UTIL)lev_lex.c $(HDEP) $(I)lev_comp.h $(I)sp_lev.h
-	$(CC) $(DEFSPEC)LEV_LEX_C $(CFLAGS) $(OBJSPEC)$@ $(UTIL)lev_lex.c
+	$(CXX) $(DEFSPEC)LEV_LEX_C $(CFLAGS) $(OBJSPEC)$@ $(UTIL)lev_lex.c
 
 $(OO)lev_main.o:  $(UTIL)lev_main.c $(HDEP) $(I)pm.h $(I)onames.h $(I)date.h
-	$(CC) $(DEFSPEC)LEV_LEX_C $(DEFSPEC)AMIGA $(CFLAGS) $(OBJSPEC)$@ \
+	$(CXX) $(DEFSPEC)LEV_LEX_C $(DEFSPEC)AMIGA $(CFLAGS) $(OBJSPEC)$@ \
 		$(UTIL)lev_main.c
 
 $(OO)dgn_yacc.o:  $(UTIL)dgn_yacc.c $(HDEP) $(I)dgn_file.h $(I)patchlevel.h
-	$(CC) $(DEFSPEC)LEV_LEX_C $(CFLAGS) $(DEFSPEC)alloca=malloc \
+	$(CXX) $(DEFSPEC)LEV_LEX_C $(CFLAGS) $(DEFSPEC)alloca=malloc \
 		$(OBJSPEC)$@ $(UTIL)dgn_yacc.c
 
 $(OO)dgn_lex.o: $(UTIL)dgn_lex.c $(I)config.h $(I)dgn_comp.h $(I)dgn_file.h
-	$(CC) $(DEFSPEC)LEV_LEX_C $(CFLAGS) $(OBJSPEC)$@ $(UTIL)dgn_lex.c
+	$(CXX) $(DEFSPEC)LEV_LEX_C $(CFLAGS) $(OBJSPEC)$@ $(UTIL)dgn_lex.c
 
 $(OO)dgn_main.o: $(UTIL)dgn_main.c $(I)config.h $(I)date.h
-	$(CC) $(DEFSPEC)LEV_LEX_C $(DEFSPEC)AMIGA $(CFLAGS) $(OBJSPEC)$@ \
+	$(CXX) $(DEFSPEC)LEV_LEX_C $(DEFSPEC)AMIGA $(CFLAGS) $(OBJSPEC)$@ \
 		$(UTIL)dgn_main.c
 
 $(OO)panic.o: $(UTIL)panic.c $(HDEP)
 
 $(OO)recover.o: $(UTIL)recover.c $(I)config.h $(I)date.h
-	$(CC) $(DEFSPEC)LEV_LEX_C $(DEFSPEC)AMIGA $(CFLAGS) $(OBJSPEC)$@ \
+	$(CXX) $(DEFSPEC)LEV_LEX_C $(DEFSPEC)AMIGA $(CFLAGS) $(OBJSPEC)$@ \
 		$(UTIL)recover.c
 
 $(NETHACK)recover: $(OO)recover.o
@@ -619,20 +619,20 @@ WBH	= $(AMI)wbdefs.h $(AMI)wbstruct.h $(AMI)wbprotos.h
 ASP	= $(AMI)splitter
 $(OO)wb.o: $(WBH) $(AMI)wb.c $(AMI)wbwin.c $(AMI)wbdata.c $(AMI)wbgads.c \
 		$(I)patchlevel.h
-	$(CC) $(WBCFLAGS) $(SPLFLAGS) $(OBJSPEC)$(OO)wb.o $(AMI)wb.c
+	$(CXX) $(WBCFLAGS) $(SPLFLAGS) $(OBJSPEC)$(OO)wb.o $(AMI)wb.c
 
 $(OO)wbx.o: $(WBH) $(AMI)wbcli.c $(AMI)wbwin.c $(AMI)wbdata.c \
 		$(I)patchlevel.h $(I)date.h
-	$(CC) $(WBCFLAGS) $(SPLFLAGS) $(OBJSPEC)$(OO)wbx.o $(AMI)wbcli.c
+	$(CXX) $(WBCFLAGS) $(SPLFLAGS) $(OBJSPEC)$(OO)wbx.o $(AMI)wbcli.c
 
 $(OO)loader.o: $(ASP)/loader.c $(ASP)/split.h $(ASP)/amiout.h $(ASP)/multi.h
-	$(CC) $(WBCFLAGS) $(SPLFLAGS) $(OBJSPEC)$(OO)loader.o $(ASP)/loader.c
+	$(CXX) $(WBCFLAGS) $(SPLFLAGS) $(OBJSPEC)$(OO)loader.o $(ASP)/loader.c
 
 $(OO)multi.o: $(ASP)/multi.c $(ASP)/multi.h
-	$(CC) $(WBCFLAGS) $(SPLFLAGS) $(OBJSPEC)$(OO)multi.o $(ASP)/multi.c
+	$(CXX) $(WBCFLAGS) $(SPLFLAGS) $(OBJSPEC)$(OO)multi.o $(ASP)/multi.c
 
 $(OO)cli.o: $(WBH) $(AMI)wbcli.c $(I)patchlevel.h $(I)date.h
-	$(CC) $(WBCFLAGS) $(WBC2FLAGS) $(SPLFLAGS) $(OBJSPEC)$(OO)cli.o \
+	$(CXX) $(WBCFLAGS) $(WBC2FLAGS) $(SPLFLAGS) $(OBJSPEC)$(OO)cli.o \
 		$(AMI)wbcli.c
 
 ####
@@ -645,11 +645,11 @@ $(NETHACK)NetHack.dir:	$(SBIN)splitter $(SBIN)NetHack
 	$(SBIN)splitter $(SBIN)NetHack
 
 $(OO)splitter.o:	$(ASP)/splitter.c $(ASP)/split.h $(ASP)/amiout.h $(ASP)/arg.h
-	$(CC) $(WBCFLAGS) $(SPLFLAGS) $(OBJSPEC)$(OO)splitter.o \
+	$(CXX) $(WBCFLAGS) $(SPLFLAGS) $(OBJSPEC)$(OO)splitter.o \
 		$(ASP)/splitter.c
 
 $(OO)arg.o:	$(ASP)/arg.c $(ASP)/arg.h
-	$(CC) $(WBCFLAGS) $(SPLFLAGS) $(OBJSPEC)$(OO)arg.o $(ASP)/arg.c 
+	$(CXX) $(WBCFLAGS) $(SPLFLAGS) $(OBJSPEC)$(OO)arg.o $(ASP)/arg.c 
 
 # Create/copy other stuff into NetHack: directory:
 
@@ -657,7 +657,7 @@ $(NETHACK)tomb.iff:	$(SBIN)xpm2iff $(AMI)grave16.xpm
 	$(SBIN)xpm2iff $(AMI)grave16.xpm $(NETHACK)tomb.iff
 
 $(OO)xpm2iff.o:	$(AMI)xpm2iff.c
-	$(CC) $(CFLAGS) $(INCLSPEC)$(WSHARE) $(OBJSPEC)$@ $(AMI)xpm2iff.c
+	$(CXX) $(CFLAGS) $(INCLSPEC)$(WSHARE) $(OBJSPEC)$@ $(AMI)xpm2iff.c
 
 $(SBIN)xpm2iff:	$(OO)xpm2iff.o
 	$(LINK) $(LNSPEC) $@ $(LIN) $(OO)xpm2iff.o $(FLLIB)
@@ -669,17 +669,17 @@ $(NETHACK)tiles:
 	-makedir $(NETHACK)tiles
 
 $(OO)txt2iff.o:	$(AMI)txt2iff.c
-	$(CC) $(CFLAGS) $(CSYM) $(INCLSPEC)$(WSHARE) $(OBJSPEC)$@ \
+	$(CXX) $(CFLAGS) $(CSYM) $(INCLSPEC)$(WSHARE) $(OBJSPEC)$@ \
 		$(AMI)txt2iff.c
 
 $(OO)ppmwrite.o: $(WSHARE)ppmwrite.c
-	$(CC) $(CFLAGS) $(CSYM) $(INCLSPEC)$(WSHARE) $(OBJSPEC)$@ $(WSHARE)ppmwrite.c
+	$(CXX) $(CFLAGS) $(CSYM) $(INCLSPEC)$(WSHARE) $(OBJSPEC)$@ $(WSHARE)ppmwrite.c
 
 $(OO)tiletext.o:	$(WSHARE)tiletext.c $(I)config.h $(WSHARE)tile.h
-	$(CC) $(CFLAGS) $(CSYM) $(INCLSPEC)$(WSHARE) $(OBJSPEC)$@ $(WSHARE)tiletext.c
+	$(CXX) $(CFLAGS) $(CSYM) $(INCLSPEC)$(WSHARE) $(OBJSPEC)$@ $(WSHARE)tiletext.c
 
 $(OO)tiletxt.o:	$(WSHARE)tilemap.c $(I)hack.h
-	$(CC) $(CFLAGS) $(CSYM) $(DEFSPEC)TILETEXT $(INCLSPEC)$(WSHARE) $(OBJSPEC)$@ $(WSHARE)tilemap.c
+	$(CXX) $(CFLAGS) $(CSYM) $(DEFSPEC)TILETEXT $(INCLSPEC)$(WSHARE) $(OBJSPEC)$@ $(WSHARE)tilemap.c
 
 NAMEOBJS = $(O)drawing.o $(O)decl.o $(O)monst.o $(O)objects.o
 
@@ -1016,7 +1016,7 @@ $(O)allmain.o:  $(NHS)allmain.c $(HDEP)
 $(O)alloc.o:  $(NHS)alloc.c $(I)config.h
 
 $(O)apply.o:  $(NHS)apply.c $(HDEP) $(I)edog.h
-	$(CC) $(CFLAGS) $(CFLAGS2) $(OBJSPEC)$@ $(NHS)apply.c
+	$(CXX) $(CFLAGS) $(CFLAGS2) $(OBJSPEC)$@ $(NHS)apply.c
 
 $(O)artifact.o:  $(NHS)artifact.c $(HDEP) $(I)artifact.h $(I)artilist.h
 
@@ -1057,7 +1057,7 @@ $(O)dokick.o:  $(NHS)dokick.c $(HDEP) $(I)eshk.h
 $(O)dothrow.o:  $(NHS)dothrow.c $(HDEP)
 
 $(O)drawing.o:  $(NHS)drawing.c $(HDEP) $(I)tcap.h
-	$(CC) $(CFLAGS) $(CFLAGS2) $(OBJSPEC)$@ $(NHS)drawing.c
+	$(CXX) $(CFLAGS) $(CFLAGS2) $(OBJSPEC)$@ $(NHS)drawing.c
 
 $(O)dungeon.o:  $(NHS)dungeon.c $(HDEP) $(I)dgn_file.h $(I)dlb.h
 
@@ -1098,7 +1098,7 @@ $(O)mcastu.o:  $(NHS)mcastu.c $(HDEP)
 $(O)mhitm.o:  $(NHS)mhitm.c $(HDEP) $(I)artifact.h $(I)edog.h
 
 $(O)mhitu.o:  $(NHS)mhitu.c $(HDEP) $(I)artifact.h $(I)edog.h
-	$(CC) $(CFLAGS) $(CFLAGS2) $(OBJSPEC)$@ $(NHS)mhitu.c
+	$(CXX) $(CFLAGS) $(CFLAGS2) $(OBJSPEC)$@ $(NHS)mhitu.c
 
 $(O)minion.o:  $(NHS)minion.c $(HDEP) $(I)emin.h $(I)epri.h
 
@@ -1128,7 +1128,7 @@ $(O)mplayer.o:	$(NHS)mplayer.c $(HDEP)
 $(O)mthrowu.o:  $(NHS)mthrowu.c $(HDEP)
 
 $(O)muse.o:	$(NHS)muse.c $(HDEP)
-	$(CC) $(CFLAGS) $(CFLAGS2) $(OBJSPEC)$@ $(NHS)muse.c
+	$(CXX) $(CFLAGS) $(CFLAGS2) $(OBJSPEC)$@ $(NHS)muse.c
 
 $(O)music.o:  $(NHS)music.c $(HDEP) #interp.c
 
@@ -1136,7 +1136,7 @@ $(O)o_init.o:  $(NHS)o_init.c $(HDEP) $(I)lev.h
 
 $(O)objects.o:  $(NHS)objects.c $(I)config.h $(I)obj.h $(I)objclass.h \
 		$(I)prop.h $(I)skills.h $(I)color.h
-	$(CC) $(CFLAGS) $(INCLSPEC)$(NHS) $(OBJSPEC)$@ $(NHS)objects.c
+	$(CXX) $(CFLAGS) $(INCLSPEC)$(NHS) $(OBJSPEC)$@ $(NHS)objects.c
 
 $(O)objnam.o:  $(NHS)objnam.c $(HDEP)
 
@@ -1179,7 +1179,7 @@ $(O)rumors.o:  $(NHS)rumors.c $(HDEP) $(I)dlb.h
 $(O)save.o:  $(NHS)save.c $(HDEP) $(I)lev.h $(I)quest.h
 
 $(O)shk.o:  $(NHS)shk.c $(HDEP) $(I)eshk.h
-	$(CC) $(CFLAGS) $(CFLAGS2) $(OBJSPEC)$@ $(NHS)shk.c
+	$(CXX) $(CFLAGS) $(CFLAGS2) $(OBJSPEC)$@ $(NHS)shk.c
 
 $(O)shknam.o:  $(NHS)shknam.c $(HDEP) $(I)eshk.h
 
@@ -1204,12 +1204,12 @@ $(O)topten.o:  $(NHS)topten.c $(HDEP) $(I)dlb.h
 $(O)track.o:  $(NHS)track.c $(HDEP)
 
 $(O)trap.o:  $(NHS)trap.c $(HDEP)
-	$(CC) $(CFLAGS) $(CFLAGS2) $(OBJSPEC)$@ $(NHS)trap.c
+	$(CXX) $(CFLAGS) $(CFLAGS2) $(OBJSPEC)$@ $(NHS)trap.c
 
 $(O)u_init.o:  $(NHS)u_init.c $(HDEP)
 
 $(O)uhitm.o:  $(NHS)uhitm.c $(HDEP)
-	$(CC) $(CFLAGS) $(CFLAGS2) $(OBJSPEC)$@ $(NHS)uhitm.c
+	$(CXX) $(CFLAGS) $(CFLAGS2) $(OBJSPEC)$@ $(NHS)uhitm.c
 
 $(O)vault.o:  $(NHS)vault.c $(HDEP) $(I)vault.h
 
@@ -1234,7 +1234,7 @@ $(O)worn.o:  $(NHS)worn.c $(HDEP)
 $(O)write.o:  $(NHS)write.c $(HDEP)
 
 $(O)zap.o:  $(NHS)zap.c $(HDEP)
-	$(CC) $(CFLAGS) $(CFLAGS2) $(OBJSPEC)$@ $(NHS)zap.c
+	$(CXX) $(CFLAGS) $(CFLAGS2) $(OBJSPEC)$@ $(NHS)zap.c
 
 $(O)getline.o:	$(TTY)getline.c $(HDEP) $(I)wintty.h
 
@@ -1248,7 +1248,7 @@ $(O)wintty.o:	$(TTY)wintty.c $(HDEP) $(I)wintty.h $(I)tcap.h \
 $(O)amitty.o:	$(AMI)amitty.c $(HDEP)
 
 $(O)amistack.o:	$(AMI)amistack.c
-	$(CC) $(CFLAGS3) $(CSYM) $(OBJSPEC)$@ $(AMI)amistack.c
+	$(CXX) $(CFLAGS3) $(CSYM) $(OBJSPEC)$@ $(AMI)amistack.c
 
 $(O)rip.o:	$(NHS)rip.c $(HDEP)
 

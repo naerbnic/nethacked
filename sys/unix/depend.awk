@@ -112,9 +112,9 @@ function format_dep(target, source,		n, i, list)
     if (source ~ /\.cpp$/ )
       print "\t$(CXX) $(CXXFLAGS) -c " source
     else if (source ~ /\/gnome\//)	# "../win/gnome/foo.c"
-      print "\t$(CC) $(CFLAGS) $(GNOMEINC) -c " source
+      print "\t$(CXX) $(CFLAGS) $(GNOMEINC) -c " source
     else
-      print "\t$(CC) $(CFLAGS) -c " source
+      print "\t$(CXX) $(CFLAGS) -c " source
   }
 }
 
