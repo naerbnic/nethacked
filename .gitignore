@@ -13,4 +13,8 @@
 /src/nethacked
 /src/vis_tab.c
 makedefs
+/util/dgn_comp.c
+/util/dgn_yacc.*
+/util/lev_comp.c
+/util/y.tab.*
 
