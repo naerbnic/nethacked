@@ -1,5 +1,6 @@
 *.orig
 *.o
+*.a
 .*
 /dat/options
 /include/date.h
@@ -13,6 +14,7 @@
 /src/nethacked
 /src/vis_tab.c
 makedefs
+*_comp
 /util/dgn_comp.c
 /util/dgn_yacc.*
 /util/lev_comp.c

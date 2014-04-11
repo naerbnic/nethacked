@@ -7,7 +7,7 @@
 #define DGN_COMP
 
 #include "config.h"
-#include "dgn_comp.h"
+#include "dgn_yacc.h"
 #include "dgn_file.h"
 
 /*

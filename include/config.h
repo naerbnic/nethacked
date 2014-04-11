@@ -5,133 +5,16 @@
 #ifndef CONFIG_H /* make sure the compiler does not see the typedefs twice */
 #define CONFIG_H
 
-
-/*
- * Section 1:	Operating and window systems selection.
- *		Select the version of the OS you are using.
- *		For "UNIX" select BSD, ULTRIX, SYSV, or HPUX in unixconf.h.
- *		A "VMS" option is not needed since the VMS C-compilers
- *		provide it (no need to change sec#1, vmsconf.h handles it).
- */
-
 #define UNIX		/* delete if no fork(), exec() available */
-
-/* #define MSDOS */	/* in case it's not auto-detected */
-
-/* #define OS2 */	/* define for OS/2 */
-
-/* #define TOS */	/* define for Atari ST/TT */
-
-/* #define STUPID */	/* avoid some complicated expressions if
-			   your C compiler chokes on them */
-/* #define MINIMAL_TERM */
-			/* if a terminal handles highlighting or tabs poorly,
-			   try this define, used in pager.c and termcap.c */
-/* #define ULTRIX_CC20 */
-			/* define only if using cc v2.0 on a DECstation */
-/* #define ULTRIX_PROTO */
-			/* define for Ultrix 4.0 (or higher) on a DECstation;
-			 * if you get compiler errors, don't define this. */
-			/* Hint: if you're not developing code, don't define
-			   ULTRIX_PROTO. */
 
 #include "config1.h"	/* should auto-detect MSDOS, MAC, AMIGA, and WIN32 */
 
 
-/* Windowing systems...
- * Define all of those you want supported in your binary.
- * Some combinations make no sense.  See the installation document.
- */
 #define TTY_GRAPHICS	/* good old tty based graphics */
-/* #define X11_GRAPHICS */	/* X11 interface */
-/* #define QT_GRAPHICS */	/* Qt interface */
-/* #define GNOME_GRAPHICS */	/* Gnome interface */
-/* #define MSWIN_GRAPHICS */	/* Windows NT, CE, Graphics */
-
-/*
- * Define the default window system.  This should be one that is compiled
- * into your system (see defines above).  Known window systems are:
- *
- *	tty, X11, mac, amii, BeOS, Qt, Gem, Gnome
- */
-
-/* MAC also means MAC windows */
-#ifdef MAC
-# ifndef	AUX
-#  define DEFAULT_WINDOW_SYS "mac"
-# endif
-#endif
-
-/* Amiga supports AMII_GRAPHICS and/or TTY_GRAPHICS */
-#ifdef AMIGA
-# define AMII_GRAPHICS			/* (optional) */
-# define DEFAULT_WINDOW_SYS "amii"	/* "amii", "amitile" or "tty" */
-#endif
-
-/* Atari supports GEM_GRAPHICS and/or TTY_GRAPHICS */
-#ifdef TOS
-# define GEM_GRAPHICS			/* Atari GEM interface (optional) */
-# define DEFAULT_WINDOW_SYS "Gem"	/* "Gem" or "tty" */
-#endif
-
-#ifdef __BEOS__
-#define BEOS_GRAPHICS /* (optional) */
-#define DEFAULT_WINDOW_SYS "BeOS"  /* "tty" */
-#ifndef HACKDIR	/* override the default hackdir below */
-# define HACKDIR "/boot/apps/NetHack"
-#endif
-#endif
-
-#ifdef QT_GRAPHICS
-# define DEFAULT_WC_TILED_MAP   /* Default to tiles if users doesn't say wc_ascii_map */
-# define USER_SOUNDS		/* Use sounds */
-# ifndef __APPLE__
-#  define USER_SOUNDS_REGEX
-# endif
-# define USE_XPM		/* Use XPM format for images (required) */
-# define GRAPHIC_TOMBSTONE	/* Use graphical tombstone (rip.ppm) */
-# ifndef DEFAULT_WINDOW_SYS
-#  define DEFAULT_WINDOW_SYS "Qt"
-# endif
-#endif
-
-#ifdef GNOME_GRAPHICS
-# define USE_XPM		/* Use XPM format for images (required) */
-# define GRAPHIC_TOMBSTONE	/* Use graphical tombstone (rip.ppm) */
-# ifndef DEFAULT_WINDOW_SYS
-#  define DEFAULT_WINDOW_SYS "Gnome"
-# endif
-#endif
-
-#ifdef MSWIN_GRAPHICS
-# ifdef TTY_GRAPHICS
-# undef TTY_GRAPHICS
-# endif
-# ifndef DEFAULT_WINDOW_SYS
-#  define DEFAULT_WINDOW_SYS "mswin"
-# endif
-# define HACKDIR "\\nethack"
-#endif
 
 #ifndef DEFAULT_WINDOW_SYS
 # define DEFAULT_WINDOW_SYS "tty"
 #endif
-
-#ifdef X11_GRAPHICS
-/*
- * There are two ways that X11 tiles may be defined.  (1) using a custom
- * format loaded by NetHack code, or (2) using the XPM format loaded by
- * the free XPM library.  The second option allows you to then use other
- * programs to generate tiles files.  For example, the PBMPlus tools
- * would allow:
- *  xpmtoppm <x11tiles.xpm | pnmscale 1.25 | ppmquant 90 >x11tiles_big.xpm
- */
-/* # define USE_XPM */		/* Disable if you do not have the XPM library */
-# ifdef USE_XPM
-#  define GRAPHIC_TOMBSTONE	/* Use graphical tombstone (rip.xpm) */
-# endif
-#endif
-
 
 /*
  * Section 2:	Some global parameters and filenames.
@@ -168,18 +51,12 @@
  *	compression.
  */
 
-#ifdef UNIX
 /* path and file name extension for compression program */
 #define COMPRESS "/usr/bin/compress"	/* Lempel-Ziv compression */
 #define COMPRESS_EXTENSION ".Z"		/* compress's extension */
 /* An example of one alternative you might want to use: */
 /* #define COMPRESS "/usr/local/bin/gzip" */	/* FSF gzip compression */
 /* #define COMPRESS_EXTENSION ".gz" */		/* normal gzip extension */
-#endif
-
-#ifndef COMPRESS
-# define INTERNAL_COMP	/* control use of NetHack's compression routines */
-#endif
 
 /*
  *	Data librarian.  Defining DLB places most of the support files into
@@ -195,11 +72,6 @@
  */
 #define INSURANCE	/* allow crashed game recovery */
 
-#ifndef MAC
-# define CHDIR		/* delete if no chdir() available */
-#endif
-
-#ifdef CHDIR
 /*
  * If you define HACKDIR, then this will be the default playground;
  * otherwise it will be the current directory.
@@ -222,7 +94,6 @@
  * simultaneously, define HACKDIR, SECURE and MAX_NR_OF_PLAYERS.
  * #define MAX_NR_OF_PLAYERS 6
  */
-#endif /* CHDIR */
 
 
 

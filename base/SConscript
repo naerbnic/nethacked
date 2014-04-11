@@ -1,0 +1,2 @@
+baselib = Library(target = 'base', source = ['alloc.c', 'decl.c'], CPPPATH = [ '#include' ])
+Return('baselib')

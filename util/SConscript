@@ -1,3 +1,5 @@
+Import(['baselib', 'entitylib'])
+
 lev_parser_c, lev_parser_h = CFile(
     source = 'lev_comp.y', target = ['y.tab.c'], YACCFLAGS = ['-d'])
 lev_lexer_c = CFile(source = 'lev_comp.l')
@@ -8,14 +10,16 @@ dgn_lexer_c = CFile(source = 'dgn_comp.l')
 
 print(lev_lexer_c)
 
+Program(target = 'lev_comp', source = [lev_parser_c, lev_lexer_c, 'lev_main.c', baselib, entitylib], CPPPATH = ['#include'])
+Program(target = 'dgn_comp', source = [dgn_parser_c, dgn_lexer_c, 'dgn_main.c', baselib, entitylib], CPPPATH = ['#include'])
+
 files = [
-  lev_parser_c,
-  dgn_parser_c,
-  'dgn_main.c',
   'makedefs.c',
+  'panic.c',
 ]
 
 objects = []
 for file in files:
-  objects = Object(source = [file], CPPPATH = [ '#include' ]);
+  objects.append(Object(source = [file], CPPPATH = [ '#include' ]));
 
+Program(target = 'makedefs', source = objects + [baselib, entitylib])
