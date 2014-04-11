@@ -28,21 +28,8 @@ long *FDECL(alloc,(unsigned int));
 extern void VDECL(panic, (const char *,...)) PRINTF_F(1,2);
 
 
-long *
-alloc(lth)
-register unsigned int lth;
+long* alloc(unsigned int lth)
 {
-#ifdef LINT
-/*
- * a ridiculous definition, suppressing
- *	"possible pointer alignment problem" for (long *) malloc()
- * from lint
- */
-	long dummy = ftell(stderr);
-
-	if(lth) dummy = 0;	/* make sure arg is used */
-	return(&dummy);
-#else
 	register genericptr_t ptr;
 
 	ptr = malloc(lth);
@@ -50,7 +37,6 @@ register unsigned int lth;
 	if (!ptr) panic("Memory allocation failure; cannot get %u bytes", lth);
 #endif
 	return((long *) ptr);
-#endif
 }
 
 
