@@ -1113,10 +1113,14 @@ STATIC_OVL int arti_invoke(register struct obj *obj) {
 	    long creamed = (long)u.ucreamed;
 
 	    if (Upolyd) healamt = (u.mhmax + 1 - u.mh) / 2;
-	    if (healamt || Sick || Slimed || Blinded > creamed)
+	    if (healamt || Sick || Slimed || Blinded > creamed) {
 		You_feel("better.");
-	    else
-		goto nothing_special;
+            } else {
+              /* you had the property from some other source too */
+              if (carried(obj))
+                You_feel("a surge of power, but nothing seems to happen.");
+              return 1;
+            }
 	    if (healamt > 0) {
 		if (Upolyd) u.mh += healamt;
 		else u.uhp += healamt;
@@ -1135,8 +1139,12 @@ STATIC_OVL int arti_invoke(register struct obj *obj) {
 		You_feel("re-energized.");
 		u.uen += epboost;
 		flags.botl = 1;
-	    } else
-		goto nothing_special;
+	    } else {
+              /* you had the property from some other source too */
+              if (carried(obj))
+                You_feel("a surge of power, but nothing seems to happen.");
+	      return 1;
+            }
 	    break;
 	  }
 	case UNTRAP: {
@@ -1190,7 +1198,9 @@ STATIC_OVL int arti_invoke(register struct obj *obj) {
 		n = select_menu(tmpwin, PICK_ONE, &selected);
 		if (n <= 0) {
 		    destroy_nhwindow(tmpwin);
-		    goto nothing_special;
+                    if (carried(obj))
+                      You_feel("a surge of power, but nothing seems to happen.");
+                    return 1;
 		}
 		i = selected[0].item.a_int - 1;
 		free((genericptr_t)selected);
@@ -1225,7 +1235,12 @@ STATIC_OVL int arti_invoke(register struct obj *obj) {
 	case CREATE_AMMO: {
 	    struct obj *otmp = mksobj(ARROW, TRUE, FALSE);
 
-	    if (!otmp) goto nothing_special;
+	    if (!otmp) {
+              /* you had the property from some other source too */
+              if (carried(obj))
+                  You_feel("a surge of power, but nothing seems to happen.");
+              return 1;
+            }
 	    otmp->blessed = obj->blessed;
 	    otmp->cursed = obj->cursed;
 	    otmp->bknown = obj->bknown;
@@ -1262,7 +1277,6 @@ STATIC_OVL int arti_invoke(register struct obj *obj) {
 	}
 
 	if ((eprop & ~W_ARTI) || iprop) {
-nothing_special:
 	    /* you had the property from some other source too */
 	    if (carried(obj))
 		You_feel("a surge of power, but nothing seems to happen.");
@@ -1280,7 +1294,12 @@ nothing_special:
 	    } else (void) float_down(I_SPECIAL|TIMEOUT, W_ARTI);
 	    break;
 	case INVIS:
-	    if (BInvis || Blind) goto nothing_special;
+	    if (BInvis || Blind) {
+              /* you had the property from some other source too */
+              if (carried(obj))
+                  You_feel("a surge of power, but nothing seems to happen.");
+              return 1;
+            }
 	    newsym(u.ux, u.uy);
 	    if (on)
 		Your("body takes on a %s transparency...",

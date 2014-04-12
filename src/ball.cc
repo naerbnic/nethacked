@@ -341,15 +341,13 @@ void move_bc(int before, int control, xchar ballx, xchar bally, xchar chainx, xc
  * drag the chain, while an identical-looking movement must drag both the ball
  * and chain.
  */
-boolean
-drag_ball(x, y, bc_control, ballx, bally, chainx, chainy, cause_delay,
-    allow_drag)
-xchar x, y;
-int *bc_control;
-xchar *ballx, *bally, *chainx, *chainy;
-boolean *cause_delay;
-boolean allow_drag;
-{
+boolean drag_ball(
+    xchar x, xchar y,
+    int* bc_control,
+    xchar* ballx, xchar* bally,
+    xchar* chainx, xchar* chainy,
+    boolean* cause_delay,
+    boolean allow_drag) {
 	struct trap *t = (struct trap *)0;
 	boolean already_in_rock;
 

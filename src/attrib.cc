@@ -167,10 +167,8 @@ void gainstr(register struct obj *otmp, register int incr) {
 	(void) adjattrib(A_STR, (otmp && otmp->cursed) ? -num : num, TRUE);
 }
 
-void
-losestr(num)	/* may kill you; cause may be poison or monster like 'a' */
-	register int num;
-{
+/* may kill you; cause may be poison or monster like 'a' */
+void losestr(int num) {
 	int ustr = ABASE(A_STR) - num;
 
 	while(ustr < 3) {

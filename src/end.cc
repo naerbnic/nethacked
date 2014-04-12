@@ -98,9 +98,7 @@ extern const char * const killed_by_prefix[];	/* from topten.c */
 FILE *dump_fp = (FILE *)0;  /* file pointer for dumps */
 /* functions dump_init, dump_exit and dump are from the dump patch */
 
-void
-dump_init ()
-{
+void dump_init () {
   if (dump_fn[0]) {
     char *p = (char *) strstr(dump_fn, "%n");
     if (p) {

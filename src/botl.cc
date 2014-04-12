@@ -2,6 +2,8 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include <string.h>
+
 #include "hack.h"
 #if defined(HPMON) && defined(TEXTCOLOR)
 # ifndef WINTTY_H
@@ -236,17 +238,7 @@ int describe_level(char *buf) {
 	return ret;
 }
 
-#ifdef DUMP_LOG
-void bot2str(newbot2)
-char* newbot2;
-#else
-STATIC_OVL void
-bot2()
-#endif
-{
-#ifndef DUMP_LOG
-	char  newbot2[MAXCO];
-#endif
+void bot2str(char* newbot2) {
 	register char *nb;
 	int hp, hpmax;
 #ifdef HPMON
@@ -347,12 +339,10 @@ bot2()
 	if(Slimed)         Sprintf(nb = eos(nb), " Slime");
 	if(cap > UNENCUMBERED)
 		Sprintf(nb = eos(nb), " %s", enc_stat[cap]);
-#ifdef DUMP_LOG
 }
 STATIC_OVL void bot2() {
 	char newbot2[MAXCO];
 	bot2str(newbot2);
-#endif
 	curs(WIN_STATUS, 1, 1);
 	putstr(WIN_STATUS, 0, newbot2);
 }

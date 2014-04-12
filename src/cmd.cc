@@ -2,6 +2,8 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include <string.h>
+
 #include "hack.h"
 #include "func_tab.h"
 /* #define DEBUG */	/* uncomment for debugging */
@@ -199,11 +201,7 @@ void reset_occupations() {
  * function times out by its own means.
  */
 void
-set_occupation(fn, txt, xtime)
-int NDECL((*fn));
-const char *txt;
-int xtime;
-{
+set_occupation(int (*fn)(), char const* txt, int xtime) {
 	if (xtime) {
 		occupation = timed_occupation;
 		timed_occ_fn = fn;
