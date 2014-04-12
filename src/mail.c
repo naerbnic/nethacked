@@ -81,9 +81,7 @@ static long laststattime;
 #  define MAILPATH "/usr/mail/"
 # endif
 
-void
-getmailstatus()
-{
+void getmailstatus() {
 	if(!mailbox && !(mailbox = nh_getenv("MAIL"))) {
 #  ifdef MAILPATH
 #   ifdef AMS
@@ -124,10 +122,7 @@ getmailstatus()
  * Pick coordinates for a starting position for the mail daemon.  Called
  * from newmail() and newphone().
  */
-STATIC_OVL boolean
-md_start(startp)
-    coord *startp;
-{
+STATIC_OVL boolean md_start(coord *startp) {
     coord testcc;	/* scratch coordinates */
     int row;		/* current row we are checking */
     int lax;		/* if TRUE, pick a position in sight. */
@@ -225,11 +220,7 @@ retry:
  * enexto().  Use enexto() as a last resort because enexto() chooses
  * its point randomly, which is not what we want.
  */
-STATIC_OVL boolean
-md_stop(stopp, startp)
-    coord *stopp;	/* stopping position (we fill it in) */
-    coord *startp;	/* starting positon (read only) */
-{
+STATIC_OVL boolean md_stop(coord *stopp, coord *startp) {
     int x, y, distance, min_distance = -1;
 
     for (x = u.ux-1; x <= u.ux+1; x++)
@@ -269,11 +260,7 @@ static NEARDATA const char *mail_text[] = {
  * FALSE if the md gets stuck in a position where there is a monster.  Return
  * TRUE otherwise.
  */
-STATIC_OVL boolean
-md_rush(md,tx,ty)
-    struct monst *md;
-    register int tx, ty;		/* destination of mail daemon */
-{
+STATIC_OVL boolean md_rush(struct monst *md, register int tx, register int ty) {
     struct monst *mon;			/* displaced monster */
     register int dx, dy;		/* direction counters */
     int fx = md->mx, fy = md->my;	/* current location */
@@ -365,10 +352,7 @@ md_rush(md,tx,ty)
 
 /* Deliver a scroll of mail. */
 /*ARGSUSED*/
-STATIC_OVL void
-newmail(info)
-struct mail_info *info;
-{
+STATIC_OVL void newmail(struct mail_info *info) {
     struct monst *md;
     coord start, stop;
     boolean message_seen = FALSE;
@@ -416,9 +400,7 @@ give_up:
 
 # if !defined(UNIX) && !defined(VMS) && !defined(LAN_MAIL)
 
-void
-ckmailstatus()
-{
+void ckmailstatus() {
 	if (u.uswallow || !flags.biff) return;
 	if (mustgetmail < 0) {
 #if defined(AMIGA) || defined(MSDOS) || defined(TOS)
@@ -435,10 +417,7 @@ ckmailstatus()
 }
 
 /*ARGSUSED*/
-void
-readmail(otmp)
-struct obj *otmp;
-{
+void readmail(struct obj *otmp) {
     static char *junk[] = {
     "Please disregard previous letter.",
     "Welcome to NetHack.",
@@ -461,9 +440,7 @@ struct obj *otmp;
 
 # ifdef UNIX
 
-void
-ckmailstatus()
-{
+void ckmailstatus() {
 	if(!mailbox || u.uswallow || !flags.biff
 #  ifdef MAILCKFREQ
 		    || moves < laststattime + MAILCKFREQ
@@ -497,10 +474,7 @@ ckmailstatus()
 }
 
 /*ARGSUSED*/
-void
-readmail(otmp)
-struct obj *otmp;
-{
+void readmail(struct obj *otmp) {
 #  ifdef DEF_MAILREADER			/* This implies that UNIX is defined */
 	register const char *mr = 0;
 
@@ -531,9 +505,7 @@ extern NDECL(struct mail_info *parse_next_broadcast);
 
 volatile int broadcasts = 0;
 
-void
-ckmailstatus()
-{
+void ckmailstatus() {
     struct mail_info *brdcst;
 
     if (u.uswallow || !flags.biff) return;
@@ -547,10 +519,7 @@ ckmailstatus()
     }
 }
 
-void
-readmail(otmp)
-struct obj *otmp;
-{
+void readmail(struct obj *otmp) {
 #  ifdef SHELL	/* can't access mail reader without spawning subprocess */
     const char *txt, *cmd;
     char *p, buf[BUFSZ], qbuf[BUFSZ];
@@ -581,9 +550,7 @@ struct obj *otmp;
 
 # ifdef LAN_MAIL
 
-void
-ckmailstatus()
-{
+void ckmailstatus() {
 	static int laststattime = 0;
 	
 	if(u.uswallow || !flags.biff
@@ -609,10 +576,7 @@ ckmailstatus()
 }
 
 /*ARGSUSED*/
-void
-readmail(otmp)
-struct obj *otmp;
-{
+void readmail(struct obj *otmp) {
 	lan_mail_read(otmp);
 }
 

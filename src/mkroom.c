@@ -34,10 +34,7 @@ extern const struct shclass shtypes[];	/* defined in shknam.c */
 
 #ifdef OVLB
 
-STATIC_OVL boolean
-isbig(sroom)
-register struct mkroom *sroom;
-{
+STATIC_OVL boolean isbig(register struct mkroom *sroom) {
 	register int area = (sroom->hx - sroom->lx + 1)
 			   * (sroom->hy - sroom->ly + 1);
 	return((boolean)( area > 20 ));
@@ -65,9 +62,7 @@ int	roomtype;
     }
 }
 
-STATIC_OVL void
-mkshop()
-{
+STATIC_OVL void mkshop() {
 	register struct mkroom *sroom;
 	int i = -1;
 #ifdef WIZARD
@@ -211,10 +206,7 @@ register boolean strict;
 	return (struct mkroom *)0;
 }
 
-STATIC_OVL void
-mkzoo(type)
-int type;
-{
+STATIC_OVL void mkzoo(int type) {
 	register struct mkroom *sroom;
 
 	if ((sroom = pick_room(FALSE)) != 0) {
@@ -223,10 +215,7 @@ int type;
 	}
 }
 
-void
-fill_zoo(sroom)
-struct mkroom *sroom;
-{
+void fill_zoo(struct mkroom *sroom) {
 	struct monst *mon;
 	register int sx,sy,i;
 	int sh, tx, ty, goldlim, type = sroom->rtype;
@@ -391,12 +380,7 @@ struct mkroom *sroom;
 }
 
 /* make a swarm of undead around mm */
-void
-mkundead(mm, revive_corpses, mm_flags)
-coord *mm;
-boolean revive_corpses;
-int mm_flags;
-{
+void mkundead(coord *mm, boolean revive_corpses, int mm_flags) {
 	int cnt = (level_difficulty() + 1)/10 + rnd(5);
 	struct permonst *mdat;
 	struct obj *otmp;
@@ -413,9 +397,7 @@ int mm_flags;
 	level.flags.graveyard = TRUE;	/* reduced chance for undead corpse */
 }
 
-STATIC_OVL struct permonst *
-morguemon()
-{
+STATIC_OVL struct permonst * morguemon() {
 	register int i = rn2(100), hd = rn2(level_difficulty());
 
 	if(hd > 10 && i < 10)
@@ -428,9 +410,7 @@ morguemon()
 			: (i < 40) ? &mons[PM_WRAITH] : mkclass(S_ZOMBIE,0));
 }
 
-STATIC_OVL struct permonst *
-antholemon()
-{
+STATIC_OVL struct permonst * antholemon() {
 	int mtyp;
 
 	/* Same monsters within a level, different ones between levels */
@@ -480,10 +460,7 @@ mkswamp()	/* Michiel Huisjes & Fred de Wilde */
 	}
 }
 
-STATIC_OVL coord *
-shrine_pos(roomno)
-int roomno;
-{
+STATIC_OVL coord * shrine_pos(int roomno) {
 	static coord buf;
 	struct mkroom *troom = &rooms[roomno - ROOMOFFSET];
 
@@ -492,9 +469,7 @@ int roomno;
 	return(&buf);
 }
 
-STATIC_OVL void
-mktemple()
-{
+STATIC_OVL void mktemple() {
 	register struct mkroom *sroom;
 	coord *shrine_spot;
 	register struct rm *lev;
@@ -516,10 +491,7 @@ mktemple()
 	level.flags.has_temple = 1;
 }
 
-boolean
-nexttodoor(sx,sy)
-register int sx, sy;
-{
+boolean nexttodoor(register int sx, register int sy) {
 	register int dx, dy;
 	register struct rm *lev;
 	for(dx = -1; dx <= 1; dx++) for(dy = -1; dy <= 1; dy++) {
@@ -531,10 +503,7 @@ register int sx, sy;
 	return(FALSE);
 }
 
-boolean
-has_dnstairs(sroom)
-register struct mkroom *sroom;
-{
+boolean has_dnstairs(register struct mkroom *sroom) {
 	if (sroom == dnstairs_room)
 		return TRUE;
 	if (sstairs.sx && !sstairs.up)
@@ -542,10 +511,7 @@ register struct mkroom *sroom;
 	return FALSE;
 }
 
-boolean
-has_upstairs(sroom)
-register struct mkroom *sroom;
-{
+boolean has_upstairs(register struct mkroom *sroom) {
 	if (sroom == upstairs_room)
 		return TRUE;
 	if (sstairs.sx && sstairs.up)
@@ -556,34 +522,20 @@ register struct mkroom *sroom;
 #endif /* OVLB */
 #ifdef OVL0
 
-int
-somex(croom)
-register struct mkroom *croom;
-{
+int somex(register struct mkroom *croom) {
 	return rn2(croom->hx-croom->lx+1) + croom->lx;
 }
 
-int
-somey(croom)
-register struct mkroom *croom;
-{
+int somey(register struct mkroom *croom) {
 	return rn2(croom->hy-croom->ly+1) + croom->ly;
 }
 
-boolean
-inside_room(croom, x, y)
-struct mkroom *croom;
-xchar x, y;
-{
+boolean inside_room(struct mkroom *croom, xchar x, xchar y) {
 	return((boolean)(x >= croom->lx-1 && x <= croom->hx+1 &&
 		y >= croom->ly-1 && y <= croom->hy+1));
 }
 
-boolean
-somexy(croom, c)
-struct mkroom *croom;
-coord *c;
-{
+boolean somexy(struct mkroom *croom, coord *c) {
 	int try_cnt = 0;
 	int i;
 
@@ -637,10 +589,7 @@ you_lose:	;
  *		- ANY_TYPE
  */
 
-struct mkroom *
-search_special(type)
-schar type;
-{
+struct mkroom * search_special(schar type) {
 	register struct mkroom *croom;
 
 	for(croom = &rooms[0]; croom->hx >= 0; croom++)
@@ -659,9 +608,7 @@ schar type;
 #endif /* OVL0 */
 #ifdef OVLB
 
-struct permonst *
-courtmon()
-{
+struct permonst * courtmon() {
 	int     i = rn2(60) + rn2(3*level_difficulty());
 	if (i > 100)		return(mkclass(S_DRAGON,0));
 	else if (i > 95)	return(mkclass(S_GIANT,0));
@@ -709,11 +656,7 @@ gotone:
  * (if any).
  */
 
-STATIC_OVL void
-save_room(fd, r)
-int	fd;
-struct mkroom *r;
-{
+STATIC_OVL void save_room(int fd, struct mkroom *r) {
 	short i;
 	/*
 	 * Well, I really should write only useful information instead
@@ -729,10 +672,7 @@ struct mkroom *r;
  * save_rooms : Save all the rooms on disk!
  */
 
-void
-save_rooms(fd)
-int fd;
-{
+void save_rooms(int fd) {
 	short i;
 
 	/* First, write the number of rooms */
@@ -741,11 +681,7 @@ int fd;
 	    save_room(fd, &rooms[i]);
 }
 
-STATIC_OVL void
-rest_room(fd, r)
-int fd;
-struct mkroom *r;
-{
+STATIC_OVL void rest_room(int fd, struct mkroom *r) {
 	short i;
 
 	mread(fd, (genericptr_t) r, sizeof(struct mkroom));
@@ -761,10 +697,7 @@ struct mkroom *r;
  * the disk.
  */
 
-void
-rest_rooms(fd)
-int	fd;
-{
+void rest_rooms(int fd) {
 	short i;
 
 	mread(fd, (genericptr_t) &nroom, sizeof(nroom));

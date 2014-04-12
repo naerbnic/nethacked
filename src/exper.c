@@ -7,19 +7,13 @@
 STATIC_DCL long FDECL(newuexp, (int));
 STATIC_DCL int FDECL(enermod, (int));
 
-STATIC_OVL long
-newuexp(lev)
-int lev;
-{
+STATIC_OVL long newuexp(int lev) {
 	if (lev < 10) return (10L * (1L << lev));
 	if (lev < 20) return (10000L * (1L << (lev - 10)));
 	return (10000000L * ((long)(lev - 19)));
 }
 
-STATIC_OVL int
-enermod(en)
-int en;
-{
+STATIC_OVL int enermod(int en) {
 	switch (Role_switch) {
 	case PM_PRIEST:
 	case PM_WIZARD:
@@ -95,10 +89,7 @@ experience(mtmp, nk)	/* return # of exp points for mtmp after nk killed */
 	return(tmp);
 }
 
-void
-more_experienced(exp, rexp)
-	register int exp, rexp;
-{
+void more_experienced(register int exp, register int rexp) {
 	u.uexp += exp;
 	u.urexp += 4*exp + rexp;
 	if(exp
@@ -170,17 +161,12 @@ const char *drainer;	/* cause of death, if drain should be fatal */
  * After all, how much real experience does one get shooting a wand of death
  * at a dragon created with a wand of polymorph??
  */
-void
-newexplevel()
-{
+void newexplevel() {
 	if (u.ulevel < MAXULEV && u.uexp >= newuexp(u.ulevel))
 	    pluslvl(TRUE);
 }
 
-void
-pluslvl(incr)
-boolean incr;	/* true iff via incremental experience growth */
-{		/*	(false for potion of gain level)      */
+void pluslvl(boolean incr) {
 	register int num;
 
 	if (!incr) You_feel("more experienced.");
@@ -220,10 +206,7 @@ boolean incr;	/* true iff via incremental experience growth */
 /* compute a random amount of experience points suitable for the hero's
    experience level:  base number of points needed to reach the current
    level plus a random portion of what it takes to get to the next level */
-long
-rndexp(gaining)
-boolean gaining;	/* gaining XP via potion vs setting XP for polyself */
-{
+long rndexp(boolean gaining) {
 	long minexp, maxexp, diff, factor, result;
 
 	minexp = (u.ulevel == 1) ? 0L : newuexp(u.ulevel - 1);

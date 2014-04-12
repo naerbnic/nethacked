@@ -122,10 +122,7 @@ struct substitute {
 /*
  * entry is the position of the tile within the monsters/objects/other set
  */
-const char *
-tilename(set, entry)
-int set, entry;
-{
+const char * tilename(int set, int entry) {
 	int i, j, condnum, tilenum;
 	static char buf[BUFSZ];
 
@@ -291,9 +288,7 @@ int lastmontile, lastobjtile, lastothtile;
  * of cmap), as well as the "flash" glyphs for the new warning system
  * introduced in 3.3.1.
  */
-void
-init_tilemap()
-{
+void init_tilemap() {
 	int i, j, condnum, tilenum;
 	int corpsetile, swallowbase;
 
@@ -414,10 +409,7 @@ const char *epilog[] = {
 };
 
 /* write out the substitutions in an easily-used form. */
-void
-process_substitutions(ofp)
-FILE *ofp;
-{
+void process_substitutions(FILE *ofp) {
 	int i, j, k, span, start;
 
 	fprintf(ofp, "\n\n");

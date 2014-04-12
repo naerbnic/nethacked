@@ -65,10 +65,7 @@ char *lan_username()
 
 # ifdef LAN_MAIL
 #if 0
-static void
-mail_by_pline(msg)
-struct lan_mail_struct *msg;
-{
+static void mail_by_pline(struct lan_mail_struct *msg) {
 	long	size;
 
 	for (size = 0; size < qt_msg->size; size += (long)strlen(in_line)) {
@@ -80,10 +77,7 @@ struct lan_mail_struct *msg;
 }
 #endif /* 0 */
 
-static void
-mail_by_window(msg)
-struct lan_mail_struct *msg;
-{
+static void mail_by_window(struct lan_mail_struct *msg) {
 	char buf[BUFSZ];
 	winid datawin = create_nhwindow(NHW_TEXT);
 	char *get, *put;

@@ -21,11 +21,7 @@ STATIC_PTR void FDECL(findone,(int,int,genericptr_t));
 STATIC_PTR void FDECL(openone,(int,int,genericptr_t));
 
 /* Recursively search obj for an object in class oclass and return 1st found */
-struct obj *
-o_in(obj, oclass)
-struct obj* obj;
-char oclass;
-{
+struct obj * o_in(struct obj* obj, char oclass) {
     register struct obj* otmp;
     struct obj *temp;
 
@@ -41,11 +37,7 @@ char oclass;
 }
 
 /* Recursively search obj for an object made of specified material and return 1st found */
-struct obj *
-o_material(obj, material)
-struct obj* obj;
-unsigned material;
-{
+struct obj * o_material(struct obj* obj, unsigned material) {
     register struct obj* otmp;
     struct obj *temp;
 
@@ -60,10 +52,7 @@ unsigned material;
     return (struct obj *) 0;
 }
 
-STATIC_OVL void
-do_dknown_of(obj)
-struct obj *obj;
-{
+STATIC_OVL void do_dknown_of(struct obj *obj) {
     struct obj *otmp;
 
     obj->dknown = 1;
@@ -74,12 +63,7 @@ struct obj *obj;
 }
 
 /* Check whether the location has an outdated object displayed on it. */
-STATIC_OVL boolean
-check_map_spot(x, y, oclass, material)
-int x, y;
-register char oclass;
-unsigned material;
-{
+STATIC_OVL boolean check_map_spot(int x, int y, register char oclass, unsigned material) {
 	register int glyph;
 	register struct obj *otmp;
 	register struct monst *mtmp;
@@ -140,11 +124,7 @@ unsigned material;
    reappear after the detection has completed.  Return true if noticeable
    change occurs.
  */
-STATIC_OVL boolean
-clear_stale_map(oclass, material)
-register char oclass;
-unsigned material;
-{
+STATIC_OVL boolean clear_stale_map(register char oclass, unsigned material) {
 	register int zx, zy;
 	register boolean change_made = FALSE;
 
@@ -159,10 +139,7 @@ unsigned material;
 }
 
 /* look for gold, on the floor or in monsters' possession */
-int
-gold_detect(sobj)
-register struct obj *sobj;
-{
+int gold_detect(register struct obj *sobj) {
     register struct obj *obj;
     register struct monst *mtmp;
     int uw = u.uinwater;
@@ -290,10 +267,7 @@ outgoldmap:
 
 /* returns 1 if nothing was detected		*/
 /* returns 0 if something was detected		*/
-int
-food_detect(sobj)
-register struct obj	*sobj;
-{
+int food_detect(register struct obj *sobj) {
     register struct obj *obj;
     register struct monst *mtmp;
     register int ct = 0, ctu = 0;
@@ -396,11 +370,7 @@ register struct obj	*sobj;
  *	1 - nothing was detected
  *	0 - something was detected
  */
-int
-object_detect(detector, class)
-struct obj	*detector;	/* object doing the detecting */
-int		class;		/* an object class, 0 for all */
-{
+int object_detect(struct obj *detector, int class) {
     register int x, y;
     char stuff[BUFSZ];
     int is_cursed = (detector && detector->cursed);
@@ -579,11 +549,7 @@ int		class;		/* an object class, 0 for all */
  * Returns 1 if nothing was detected.
  * Returns 0 if something was detected.
  */
-int
-monster_detect(otmp, mclass)
-register struct obj *otmp;	/* detecting object (if any) */
-int mclass;			/* monster class, 0 for all */
-{
+int monster_detect(register struct obj *otmp, int mclass) {
     register struct monst *mtmp;
     int mcnt = 0;
 
@@ -641,12 +607,7 @@ int mclass;			/* monster class, 0 for all */
     return 0;
 }
 
-STATIC_OVL void
-sense_trap(trap, x, y, src_cursed)
-struct trap *trap;
-xchar x, y;
-int src_cursed;
-{
+STATIC_OVL void sense_trap(struct trap *trap, xchar x, xchar y, int src_cursed) {
     if (Hallucination || src_cursed) {
 	struct obj obj;			/* fake object */
 	if (trap) {
@@ -744,10 +705,7 @@ outtrapmap:
     return(0);
 }
 
-const char *
-level_distance(where)
-d_level *where;
-{
+const char * level_distance(d_level *where) {
     register schar ll = depth(&u.uz) - depth(where);
     register boolean indun = (u.uz.dnum == where->dnum);
 
@@ -786,10 +744,7 @@ static const struct {
   { "the Wizard of Yendor's tower", &wiz1_level },
 };
 
-void
-use_crystal_ball(obj)
-struct obj *obj;
-{
+void use_crystal_ball(struct obj *obj) {
     char ch;
     int oops;
 
@@ -907,10 +862,7 @@ struct obj *obj;
     return;
 }
 
-STATIC_OVL void
-show_map_spot(x, y)
-register int x, y;
-{
+STATIC_OVL void show_map_spot(register int x, register int y) {
     register struct rm *lev;
 
     if (Confusion && rn2(7)) return;
@@ -938,9 +890,7 @@ register int x, y;
     }
 }
 
-void
-do_mapping()
-{
+void do_mapping() {
     register int zx, zy;
     int uw = u.uinwater;
 
@@ -957,9 +907,7 @@ do_mapping()
     }
 }
 
-void
-do_vicinity_map()
-{
+void do_vicinity_map() {
     register int zx, zy;
     int lo_y = (u.uy-5 < 0 ? 0 : u.uy-5),
 	hi_y = (u.uy+6 > ROWNO ? ROWNO : u.uy+6),
@@ -978,10 +926,7 @@ do_vicinity_map()
 }
 
 /* convert a secret door into a normal door */
-void
-cvt_sdoor_to_door(lev)
-struct rm *lev;
-{
+void cvt_sdoor_to_door(struct rm *lev) {
 	int newmask = lev->doormask & ~WM_MASK;
 
 #ifdef REINCARNATION
@@ -998,11 +943,7 @@ struct rm *lev;
 }
 
 
-STATIC_PTR void
-findone(zx,zy,num)
-int zx,zy;
-genericptr_t num;
-{
+STATIC_PTR void findone(int zx, int zy, genericptr_t num) {
 	register struct trap *ttmp;
 	register struct monst *mtmp;
 
@@ -1044,11 +985,7 @@ genericptr_t num;
 	}
 }
 
-STATIC_PTR void
-openone(zx,zy,num)
-int zx,zy;
-genericptr_t num;
-{
+STATIC_PTR void openone(int zx, int zy, genericptr_t num) {
 	register struct trap *ttmp;
 	register struct obj *otmp;
 
@@ -1125,10 +1062,7 @@ openit()	/* returns number of things found and opened */
 	return(num);
 }
 
-void
-find_trap(trap)
-struct trap *trap;
-{
+void find_trap(struct trap *trap) {
     int tt = what_trap(trap->ttyp);
     boolean cleared = FALSE;
 
@@ -1155,10 +1089,7 @@ struct trap *trap;
     }
 }
 
-int
-dosearch0(aflag)
-register int aflag;
-{
+int dosearch0(register int aflag) {
 #ifdef GCC_BUG
 /* some versions of gcc seriously muck up nested loops. if you get strange
    crashes while searching in a version compiled with gcc, try putting
@@ -1263,16 +1194,12 @@ register int aflag;
 	return(1);
 }
 
-int
-dosearch()
-{
+int dosearch() {
 	return(dosearch0(0));
 }
 
 /* Pre-map the sokoban levels */
-void
-sokoban_detect()
-{
+void sokoban_detect() {
 	register int x, y;
 	register struct trap *ttmp;
 	register struct obj *obj;

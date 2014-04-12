@@ -83,11 +83,7 @@ struct monst *mon;
 	}
 }
 
-void
-summon_minion(alignment, talk)
-aligntyp alignment;
-boolean talk;
-{
+void summon_minion(aligntyp alignment, boolean talk) {
     register struct monst *mon;
     int mnum;
 
@@ -203,10 +199,7 @@ register struct monst *mtmp;
 	return(1);
 }
 
-long
-bribe(mtmp)
-struct monst *mtmp;
-{
+long bribe(struct monst *mtmp) {
 	char buf[BUFSZ];
 	long offer;
 #ifdef GOLDOBJ
@@ -247,10 +240,7 @@ struct monst *mtmp;
 	return(offer);
 }
 
-int
-dprince(atyp)
-aligntyp atyp;
-{
+int dprince(aligntyp atyp) {
 	int tryct, pm;
 
 	for (tryct = 0; tryct < 20; tryct++) {
@@ -262,10 +252,7 @@ aligntyp atyp;
 	return(dlord(atyp));	/* approximate */
 }
 
-int
-dlord(atyp)
-aligntyp atyp;
-{
+int dlord(aligntyp atyp) {
 	int tryct, pm;
 
 	for (tryct = 0; tryct < 20; tryct++) {
@@ -278,18 +265,14 @@ aligntyp atyp;
 }
 
 /* create lawful (good) lord */
-int
-llord()
-{
+int llord() {
 	if (!(mvitals[PM_ARCHON].mvflags & G_GONE))
 		return(PM_ARCHON);
 
 	return(lminion());	/* approximate */
 }
 
-int
-lminion()
-{
+int lminion() {
 	int	tryct;
 	struct	permonst *ptr;
 
@@ -302,10 +285,7 @@ lminion()
 	return NON_PM;
 }
 
-int
-ndemon(atyp)
-aligntyp atyp;
-{
+int ndemon(aligntyp atyp) {
 	int	tryct;
 	struct	permonst *ptr;
 

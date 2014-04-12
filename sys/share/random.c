@@ -362,9 +362,7 @@ setstate( arg_state )
  * Returns a 31-bit random number.
  */
 
-long
-random()
-{
+long random() {
 	long		i;
 	
 	if(  rand_type  ==  TYPE_0  )  {

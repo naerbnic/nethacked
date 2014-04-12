@@ -20,11 +20,7 @@ char msgs[DUMPMSGS][BUFSZ];
 int lastmsg = -1;
 #endif
 
-void
-msgpline_add(typ, pattern)
-     int typ;
-     char *pattern;
-{
+void msgpline_add(int typ, char *pattern) {
     struct _plinemsg *tmp = (struct _plinemsg *) alloc(sizeof(struct _plinemsg));
     if (!tmp) return;
     tmp->msgtype = typ;
@@ -33,9 +29,7 @@ msgpline_add(typ, pattern)
     pline_msg = tmp;
 }
 
-void
-msgpline_free()
-{
+void msgpline_free() {
     struct _plinemsg *tmp = pline_msg;
     struct _plinemsg *tmp2;
     while (tmp) {
@@ -47,10 +41,7 @@ msgpline_free()
     pline_msg = NULL;
 }
 
-int
-msgpline_type(msg)
-     char *msg;
-{
+int msgpline_type(char *msg) {
     struct _plinemsg *tmp = pline_msg;
     while (tmp) {
 	if (pmatch(tmp->pattern, msg)) return tmp->msgtype;
@@ -142,10 +133,7 @@ Norep VA_DECL(const char *, line)
 static char *you_buf = 0;
 static int you_buf_siz = 0;
 
-static char *
-You_buf(siz)
-int siz;
-{
+static char * You_buf(int siz) {
 	if (siz > you_buf_siz) {
 		if (you_buf) free((genericptr_t) you_buf);
 		you_buf_siz = siz + 10;
@@ -154,9 +142,7 @@ int siz;
 	return you_buf;
 }
 
-void
-free_youbuf()
-{
+void free_youbuf() {
 	if (you_buf) free((genericptr_t) you_buf),  you_buf = (char *)0;
 	you_buf_siz = 0;
 }
@@ -320,10 +306,7 @@ impossible VA_DECL(const char *, s)
 	VA_END();
 }
 
-const char *
-align_str(alignment)
-    aligntyp alignment;
-{
+const char * align_str(aligntyp alignment) {
     switch ((int)alignment) {
 	case A_CHAOTIC: return "chaotic";
 	case A_NEUTRAL: return "neutral";
@@ -333,10 +316,7 @@ align_str(alignment)
     return "unknown";
 }
 
-void
-mstatusline(mtmp)
-register struct monst *mtmp;
-{
+void mstatusline(register struct monst *mtmp) {
 	aligntyp alignment;
 	char info[BUFSZ], monnambuf[BUFSZ];
 
@@ -412,9 +392,7 @@ register struct monst *mtmp;
 		info);
 }
 
-void
-ustatusline()
-{
+void ustatusline() {
 	char info[BUFSZ];
 
 	info[0] = '\0';
@@ -485,9 +463,7 @@ ustatusline()
 		info);
 }
 
-void
-self_invis_message()
-{
+void self_invis_message() {
 	pline("%s %s.",
 	    Hallucination ? "Far out, man!  You" : "Gee!  All of a sudden, you",
 	    See_invisible ? "can see right through yourself" :

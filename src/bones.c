@@ -15,10 +15,7 @@ STATIC_DCL void FDECL(goodfruit, (int));
 STATIC_DCL void FDECL(resetobjs,(struct obj *,BOOLEAN_P));
 STATIC_DCL void FDECL(drop_upon_death, (struct monst *, struct obj *));
 
-STATIC_OVL boolean
-no_bones_level(lev)
-d_level *lev;
-{
+STATIC_OVL boolean no_bones_level(d_level *lev) {
 	extern d_level save_dlevel;		/* in do.c */
 	s_level *sptr;
 
@@ -39,10 +36,7 @@ d_level *lev;
  * ID is positive instead of negative).  This way, when we later save the
  * chain of fruit types, we know to only save the types that exist.
  */
-STATIC_OVL void
-goodfruit(id)
-int id;
-{
+STATIC_OVL void goodfruit(int id) {
 	register struct fruit *f;
 
 	for(f=ffruit; f; f=f->nextf) {
@@ -53,11 +47,7 @@ int id;
 	}
 }
 
-STATIC_OVL void
-resetobjs(ochain,restore)
-struct obj *ochain;
-boolean restore;
-{
+STATIC_OVL void resetobjs(struct obj *ochain, boolean restore) {
 	struct obj *otmp;
 
 	for (otmp = ochain; otmp; otmp = otmp->nobj) {
@@ -118,11 +108,7 @@ boolean restore;
 	}
 }
 
-STATIC_OVL void
-drop_upon_death(mtmp, cont)
-struct monst *mtmp;
-struct obj *cont;
-{
+STATIC_OVL void drop_upon_death(struct monst *mtmp, struct obj *cont) {
 	struct obj *otmp;
 
 	uswapwep = 0; /* ensure curse() won't cause swapwep to drop twice */
@@ -158,9 +144,7 @@ struct obj *cont;
 }
 
 /* check whether bones are feasible */
-boolean
-can_make_bones()
-{
+boolean can_make_bones() {
 	register struct trap *ttmp;
 
 	if (ledger_no(&u.uz) <= 0 || ledger_no(&u.uz) > maxledgerno())
@@ -189,10 +173,7 @@ can_make_bones()
 }
 
 /* save bones and possessions of a deceased adventurer */
-void
-savebones(corpse)
-struct obj *corpse;
-{
+void savebones(struct obj *corpse) {
 	int fd, x, y;
 	struct trap *ttmp;
 	struct monst *mtmp;
@@ -371,9 +352,7 @@ struct obj *corpse;
 	compress_bonesfile();
 }
 
-int
-getbones()
-{
+int getbones() {
 	register int fd;
 	register int ok;
 	char c, *bonesid, oldbonesid[10];

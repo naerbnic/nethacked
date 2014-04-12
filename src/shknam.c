@@ -224,9 +224,7 @@ const struct shclass shtypes[] = {
 #if 0
 /* validate shop probabilities; otherwise incorrect local changes could
    end up provoking infinite loops or wild subscripts fetching garbage */
-void
-init_shop_selection()
-{
+void init_shop_selection() {
 	register int i, j, item_prob, shop_prob;
 
 	for (shop_prob = 0, i = 0; i < SIZE(shtypes); i++) {
@@ -270,11 +268,7 @@ int sx, sy;
 }
 
 /* extract a shopkeeper name for the given shop type */
-STATIC_OVL void
-nameshk(shk, nlp)
-struct monst *shk;
-const char * const *nlp;
-{
+STATIC_OVL void nameshk(struct monst *shk, const char * const *nlp) {
 	int i, trycnt, names_avail;
 	const char *shname = 0;
 	struct monst *mtmp;
@@ -421,11 +415,7 @@ struct mkroom	*sroom;
 }
 
 /* stock a newly-created room with objects */
-void
-stock_room(shp_indx, sroom)
-int shp_indx;
-register struct mkroom *sroom;
-{
+void stock_room(int shp_indx, register struct mkroom *sroom) {
     /*
      * Someday soon we'll dispatch on the shdist field of shclass to do
      * different placements in this routine. Currently it only supports
@@ -493,11 +483,7 @@ register struct mkroom *sroom;
 #ifdef OVL0
 
 /* does shkp's shop stock this item type? */
-boolean
-saleable(shkp, obj)
-struct monst *shkp;
-struct obj *obj;
-{
+boolean saleable(struct monst *shkp, struct obj *obj) {
     int i, shp_indx = ESHK(shkp)->shoptype - SHOPBASE;
     const struct shclass *shp = &shtypes[shp_indx];
 
@@ -511,10 +497,7 @@ struct obj *obj;
 }
 
 /* positive value: class; negative value: specific object type */
-int
-get_shop_item(type)
-int type;
-{
+int get_shop_item(int type) {
 	const struct shclass *shp = shtypes+type;
 	register int i,j;
 

@@ -35,9 +35,7 @@ static void FDECL(maybe_tame, (struct monst *,struct obj *));
 
 STATIC_PTR void FDECL(set_lit, (int,int,genericptr_t));
 
-int
-doread()
-{
+int doread() {
 	register struct obj *scroll;
 	register boolean confused;
 
@@ -152,10 +150,7 @@ doread()
 	return(1);
 }
 
-static void
-stripspe(obj)
-register struct obj *obj;
-{
+static void stripspe(register struct obj *obj) {
 	if (obj->blessed) pline(nothing_happens);
 	else {
 		if (obj->spe > 0) {
@@ -167,19 +162,12 @@ register struct obj *obj;
 	}
 }
 
-static void
-p_glow1(otmp)
-register struct obj	*otmp;
-{
+static void p_glow1(register struct obj *otmp) {
 	Your("%s %s briefly.", xname(otmp),
 	     otense(otmp, Blind ? "vibrate" : "glow"));
 }
 
-static void
-p_glow2(otmp,color)
-register struct obj	*otmp;
-register const char *color;
-{
+static void p_glow2(register struct obj *otmp, register const char *color) {
 	Your("%s %s%s%s for a moment.",
 		xname(otmp),
 		otense(otmp, Blind ? "vibrate" : "glow"),
@@ -189,10 +177,7 @@ register const char *color;
 
 /* Is the object chargeable?  For purposes of inventory display; it is */
 /* possible to be able to charge things for which this returns FALSE. */
-boolean
-is_chargeable(obj)
-struct obj *obj;
-{
+boolean is_chargeable(struct obj *obj) {
 	if (obj->oclass == WAND_CLASS) return TRUE;
 	/* known && !uname is possible after amnesia/mind flayer */
 	if (obj->oclass == RING_CLASS)
@@ -209,11 +194,7 @@ struct obj *obj;
  * recharge an object; curse_bless is -1 if the recharging implement
  * was cursed, +1 if blessed, 0 otherwise.
  */
-void
-recharge(obj, curse_bless)
-struct obj *obj;
-int curse_bless;
-{
+void recharge(struct obj *obj, int curse_bless) {
 	register int n;
 	boolean is_cursed, is_blessed;
 
@@ -428,10 +409,7 @@ int curse_bless;
 
 
 /* Forget known information about this object class. */
-static void
-forget_single_object(obj_id)
-	int obj_id;
-{
+static void forget_single_object(int obj_id) {
 	objects[obj_id].oc_name_known = 0;
 	objects[obj_id].oc_pre_discovered = 0;	/* a discovery when relearned */
 	if (objects[obj_id].oc_uname) {
@@ -446,10 +424,7 @@ forget_single_object(obj_id)
 
 #if 0	/* here if anyone wants it.... */
 /* Forget everything known about a particular object class. */
-static void
-forget_objclass(oclass)
-	int oclass;
-{
+static void forget_objclass(int oclass) {
 	int i;
 
 	for (i=bases[oclass];
@@ -460,11 +435,7 @@ forget_objclass(oclass)
 
 
 /* randomize the given list of numbers  0 <= i < count */
-static void
-randomize(indices, count)
-	int *indices;
-	int count;
-{
+static void randomize(int *indices, int count) {
 	int i, iswap, temp;
 
 	for (i = count - 1; i > 0; i--) {
@@ -477,10 +448,7 @@ randomize(indices, count)
 
 
 /* Forget % of known objects. */
-void
-forget_objects(percent)
-	int percent;
-{
+void forget_objects(int percent) {
 	int i, count;
 	int indices[NUM_OBJECTS];
 
@@ -505,10 +473,7 @@ forget_objects(percent)
 
 
 /* Forget some or all of map (depends on parameters). */
-void
-forget_map(howmuch)
-	int howmuch;
-{
+void forget_map(int howmuch) {
 	register int zx, zy;
 
 	if (In_sokoban(&u.uz))
@@ -525,9 +490,7 @@ forget_map(howmuch)
 }
 
 /* Forget all traps on the level. */
-void
-forget_traps()
-{
+void forget_traps() {
 	register struct trap *trap;
 
 	/* forget all traps (except the one the hero is in :-) */
@@ -540,10 +503,7 @@ forget_traps()
  * Forget given % of all levels that the hero has visited and not forgotten,
  * except this one.
  */
-void
-forget_levels(percent)
-	int percent;
-{
+void forget_levels(int percent) {
 	int i, count;
 	xchar  maxl, this_lev;
 	int indices[MAXLINFO];
@@ -597,10 +557,7 @@ forget_levels(percent)
  *	howmuch & ALL_MAP	= forget whole map
  *	howmuch & ALL_SPELLS	= forget all spells
  */
-static void
-forget(howmuch)
-int howmuch;
-{
+static void forget(int howmuch) {
 
 	if (Punished) u.bc_felt = 0;	/* forget felt ball&chain */
 
@@ -628,11 +585,7 @@ int howmuch;
 }
 
 /* monster is hit by scroll of taming's effect */
-static void
-maybe_tame(mtmp, sobj)
-struct monst *mtmp;
-struct obj *sobj;
-{
+static void maybe_tame(struct monst *mtmp, struct obj *sobj) {
 	if (sobj->cursed) {
 	    setmangry(mtmp);
 	} else {
@@ -643,10 +596,7 @@ struct obj *sobj;
 	}
 }
 
-int
-seffects(sobj)
-register struct obj	*sobj;
-{
+int seffects(register struct obj *sobj) {
 	register int cval;
 	register boolean confused = (Confusion != 0);
 	register struct obj *otmp;
@@ -1301,10 +1251,7 @@ register struct obj	*sobj;
 	return(0);
 }
 
-static void
-wand_explode(obj)
-register struct obj *obj;
-{
+static void wand_explode(register struct obj *obj) {
     obj->in_use = TRUE;	/* in case losehp() is fatal */
     Your("%s vibrates violently, and explodes!",xname(obj));
     nhbell();
@@ -1316,11 +1263,7 @@ register struct obj *obj;
 /*
  * Low-level lit-field update routine.
  */
-STATIC_PTR void
-set_lit(x,y,val)
-int x, y;
-genericptr_t val;
-{
+STATIC_PTR void set_lit(int x, int y, genericptr_t val) {
 	if (val)
 	    levl[x][y].lit = 1;
 	else {
@@ -1329,11 +1272,7 @@ genericptr_t val;
 	}
 }
 
-void
-litroom(on,obj)
-register boolean on;
-struct obj *obj;
-{
+void litroom(register boolean on, struct obj *obj) {
 	char is_lit;	/* value is irrelevant; we use its address
 			   as a `not null' flag for set_lit() */
 
@@ -1424,9 +1363,7 @@ do_it:
 	vision_full_recalc = 1;	/* delayed vision recalculation */
 }
 
-static void
-do_class_genocide()
-{
+static void do_class_genocide() {
 	int i, j, immunecnt, gonecnt, goodcnt, class, feel_dead = 0;
 	char buf[BUFSZ];
 	boolean gameover = FALSE;	/* true iff killed self */
@@ -1729,10 +1666,7 @@ int how;
 	}
 }
 
-void
-punish(sobj)
-register struct obj	*sobj;
-{
+void punish(register struct obj *sobj) {
 	/* KMH -- Punishment is still okay when you are riding */
 	You("are being punished for your misbehavior!");
 	if(Punished){
@@ -1760,9 +1694,7 @@ register struct obj	*sobj;
 	}
 }
 
-void
-unpunish()
-{	    /* remove the ball and chain */
+void unpunish() {
 	struct obj *savechain = uchain;
 
 	obj_extract_self(uchain);
@@ -1777,11 +1709,7 @@ unpunish()
  * normal locations -- if the player tries to create one elsewhere, or to revive
  * one, the disoriented creature becomes a zombie
  */
-boolean
-cant_create(mtype, revival)
-int *mtype;
-boolean revival;
-{
+boolean cant_create(int *mtype, boolean revival) {
 
 	/* SHOPKEEPERS can be revived now */
 	if (*mtype==PM_GUARD || (*mtype==PM_SHOPKEEPER && !revival)
@@ -1803,9 +1731,7 @@ boolean revival;
  * "strange object" (']') symbol produces a random monster rather
  * than a mimic; this behavior quirk is useful so don't "fix" it...
  */
-boolean
-create_particular()
-{
+boolean create_particular() {
 	char buf[BUFSZ], *bufp, monclass = MAXMCLASSES;
 	int which, tries, i;
 	struct permonst *whichpm;

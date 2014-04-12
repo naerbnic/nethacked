@@ -20,10 +20,7 @@ extern void NDECL(port_help);
 #endif
 
 /* Returns "true" for characters that could represent a monster's stomach. */
-STATIC_OVL boolean
-is_swallow_sym(c)
-int c;
-{
+STATIC_OVL boolean is_swallow_sym(int c) {
     int i;
     for (i = S_sw_tl; i <= S_sw_br; i++)
 	if ((int)showsyms[i] == c) return TRUE;
@@ -35,11 +32,7 @@ int c;
  * a substring of buf.  Return 1 if the string was appended, 0 otherwise.
  * It is expected that buf is of size BUFSZ.
  */
-STATIC_OVL int
-append_str(buf, new_str)
-    char *buf;
-    const char *new_str;
-{
+STATIC_OVL int append_str(char *buf, const char *new_str) {
     int space_left;	/* space remaining in buf */
 
     if (strstri(buf, new_str)) return 0;
@@ -54,11 +47,7 @@ append_str(buf, new_str)
  * Return the name of the glyph found at (x,y).
  * If not hallucinating and the glyph is a monster, also monster data.
  */
-STATIC_OVL struct permonst *
-lookat(x, y, buf, monbuf)
-    int x, y;
-    char *buf, *monbuf;
-{
+STATIC_OVL struct permonst * lookat(int x, int y, char *buf, char *monbuf) {
     register struct monst *mtmp = (struct monst *) 0;
     struct permonst *pm = (struct permonst *) 0;
     int glyph;
@@ -298,12 +287,7 @@ lookat(x, y, buf, monbuf)
  *	 lcase() for data.base lookup so that we can have a clean key.
  *	 Therefore, we create a copy of inp _just_ for data.base lookup.
  */
-STATIC_OVL void
-checkfile(inp, pm, user_typed_name, without_asking)
-    char *inp;
-    struct permonst *pm;
-    boolean user_typed_name, without_asking;
-{
+STATIC_OVL void checkfile(char *inp, struct permonst *pm, boolean user_typed_name, boolean without_asking) {
     dlb *fp;
     char buf[BUFSZ], newstr[BUFSZ];
     char *ep, *dbase_str;
@@ -454,10 +438,7 @@ bad_data_file:	impossible("'data' file in wrong format");
 /* also used by getpos hack in do_name.c */
 const char what_is_an_unknown_object[] = "an unknown object";
 
-STATIC_OVL int
-do_look(quick)
-    boolean quick;	/* use cursor && don't search for "more info" */
-{
+STATIC_OVL int do_look(boolean quick) {
     char    out_str[BUFSZ], look_buf[BUFSZ];
     const char *x_str, *firstmatch = 0;
     struct permonst *pm = 0;
@@ -747,21 +728,15 @@ do_look(quick)
 }
 
 
-int
-dowhatis()
-{
+int dowhatis() {
 	return do_look(FALSE);
 }
 
-int
-doquickwhatis()
-{
+int doquickwhatis() {
 	return do_look(TRUE);
 }
 
-int
-doidtrap()
-{
+int doidtrap() {
 	register struct trap *trap;
 	int x, y, tt;
 
@@ -791,11 +766,7 @@ doidtrap()
 	return 0;
 }
 
-char *
-dowhatdoes_core(q, cbuf)
-char q;
-char *cbuf;
-{
+char * dowhatdoes_core(char q, char *cbuf) {
 	dlb *fp;
 	char bufr[BUFSZ];
 	register char *buf = &bufr[6], *ep, ctrl, meta;
@@ -836,9 +807,7 @@ char *cbuf;
 	return (char *)0;
 }
 
-int
-dowhatdoes()
-{
+int dowhatdoes() {
 	char bufr[BUFSZ];
 	char q, *reslt;
 
@@ -882,10 +851,7 @@ static const char *help_menu_items[] = {
 	(char *)0
 };
 
-STATIC_OVL boolean
-help_menu(sel)
-	int *sel;
-{
+STATIC_OVL boolean help_menu(int *sel) {
 	winid tmpwin = create_nhwindow(NHW_MENU);
 #ifdef PORT_HELP
 	char helpbuf[QBUFSZ];
@@ -926,9 +892,7 @@ help_menu(sel)
 	return FALSE;
 }
 
-int
-dohelp()
-{
+int dohelp() {
 	int sel = 0;
 
 	if (help_menu(&sel)) {
@@ -954,9 +918,7 @@ dohelp()
 	return 0;
 }
 
-int
-dohistory()
-{
+int dohistory() {
 	display_file(HISTORY, TRUE);
 	return 0;
 }

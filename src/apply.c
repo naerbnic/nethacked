@@ -49,10 +49,7 @@ void FDECL( amii_speaker, ( struct obj *, char *, int ) );
 static const char no_elbow_room[] = "don't have enough elbow-room to maneuver.";
 
 #ifdef TOURIST
-STATIC_OVL int
-use_camera(obj)
-	struct obj *obj;
-{
+STATIC_OVL int use_camera(struct obj *obj) {
 	register struct monst *mtmp;
 
 	if(Underwater) {
@@ -88,10 +85,7 @@ use_camera(obj)
 }
 #endif
 
-STATIC_OVL int
-use_towel(obj)
-	struct obj *obj;
-{
+STATIC_OVL int use_towel(struct obj *obj) {
 	if(!freehand()) {
 		You("have no free %s!", body_part(HAND));
 		return 0;
@@ -158,10 +152,7 @@ use_towel(obj)
 }
 
 /* maybe give a stethoscope message based on floor objects */
-STATIC_OVL boolean
-its_dead(rx, ry, resp)
-int rx, ry, *resp;
-{
+STATIC_OVL boolean its_dead(int rx, int ry, int *resp) {
 	struct obj *otmp;
 	struct trap *ttmp;
 
@@ -200,10 +191,7 @@ static const char hollow_str[] = "a hollow sound.  This must be a secret %s!";
    not take any time; however, unless it did, the stethoscope would be
    almost useless.  As a compromise, one use per turn is free, another
    uses up the turn; this makes curse status have a tangible effect. */
-STATIC_OVL int
-use_stethoscope(obj)
-	register struct obj *obj;
-{
+STATIC_OVL int use_stethoscope(register struct obj *obj) {
 	static long last_used_move = -1;
 	static short last_used_movement = 0;
 	struct monst *mtmp;
@@ -309,18 +297,12 @@ use_stethoscope(obj)
 
 static const char whistle_str[] = "produce a %s whistling sound.";
 
-STATIC_OVL void
-use_whistle(obj)
-struct obj *obj;
-{
+STATIC_OVL void use_whistle(struct obj *obj) {
 	You(whistle_str, obj->cursed ? "shrill" : "high");
 	wake_nearby();
 }
 
-STATIC_OVL void
-use_magic_whistle(obj)
-struct obj *obj;
-{
+STATIC_OVL void use_magic_whistle(struct obj *obj) {
 	register struct monst *mtmp, *nextmon;
 
 	if(obj->cursed && !rn2(2)) {
@@ -347,16 +329,11 @@ struct obj *obj;
 	}
 }
 
-boolean
-um_dist(x,y,n)
-register xchar x, y, n;
-{
+boolean um_dist(register xchar x, register xchar y, register xchar n) {
 	return((boolean)(abs(u.ux - x) > n  || abs(u.uy - y) > n));
 }
 
-int
-number_leashed()
-{
+int number_leashed() {
 	register int i = 0;
 	register struct obj *obj;
 
@@ -412,10 +389,7 @@ unleash_all()		/* player is about to die (for bones) */
 #define MAXLEASHED	2
 
 /* ARGSUSED */
-STATIC_OVL void
-use_leash(obj)
-struct obj *obj;
-{
+STATIC_OVL void use_leash(struct obj *obj) {
 	coord cc;
 	register struct monst *mtmp;
 	int spotmon;
@@ -505,9 +479,7 @@ register struct monst *mtmp;
 #endif /* OVLB */
 #ifdef OVL1
 
-boolean
-next_to_u()
-{
+boolean next_to_u() {
 	register struct monst *mtmp;
 	register struct obj *otmp;
 
@@ -538,10 +510,7 @@ next_to_u()
 #endif /* OVL1 */
 #ifdef OVL0
 
-void
-check_leash(x, y)
-register xchar x, y;
-{
+void check_leash(register xchar x, register xchar y) {
 	register struct obj *otmp;
 	register struct monst *mtmp;
 
@@ -603,10 +572,7 @@ register xchar x, y;
 
 static const char look_str[] = "look %s.";
 
-STATIC_OVL int
-use_mirror(obj)
-struct obj *obj;
-{
+STATIC_OVL int use_mirror(struct obj *obj) {
 	register struct monst *mtmp;
 	register char mlet;
 	boolean vis;
@@ -740,10 +706,7 @@ struct obj *obj;
 	return 1;
 }
 
-STATIC_OVL void
-use_bell(optr)
-struct obj **optr;
-{
+STATIC_OVL void use_bell(struct obj **optr) {
 	register struct obj *obj = *optr;
 	struct monst *mtmp;
 	boolean wakem = FALSE, learno = FALSE,
@@ -858,10 +821,7 @@ struct obj **optr;
 	if (wakem) wake_nearby();
 }
 
-STATIC_OVL void
-use_candelabrum(obj)
-register struct obj *obj;
-{
+STATIC_OVL void use_candelabrum(register struct obj *obj) {
 	const char *s = (obj->spe != 1) ? "candles" : "candle";
 
 	if(Underwater) {
@@ -909,10 +869,7 @@ register struct obj *obj;
 	begin_burn(obj, FALSE);
 }
 
-STATIC_OVL void
-use_candle(optr)
-struct obj **optr;
-{
+STATIC_OVL void use_candle(struct obj **optr) {
 	register struct obj *obj = *optr;
 	register struct obj *otmp;
 	const char *s = (obj->quan != 1) ? "candles" : "candle";
@@ -1000,10 +957,7 @@ register struct obj *otmp;
 /* called when lit lamp is hit by water or put into a container or
    you've been swallowed by a monster; obj might be in transit while
    being thrown or dropped so don't assume that its location is valid */
-boolean
-snuff_lit(obj)
-struct obj *obj;
-{
+boolean snuff_lit(struct obj *obj) {
 	xchar x, y;
 
 	if (obj->lamplit) {
@@ -1022,10 +976,7 @@ struct obj *obj;
 
 /* Called when potentially lightable object is affected by fire_damage().
    Return TRUE if object was lit and FALSE otherwise --ALI */
-boolean
-catch_lit(obj)
-struct obj *obj;
-{
+boolean catch_lit(struct obj *obj) {
 	xchar x, y;
 
 	if (!obj->lamplit && (obj->otyp == MAGIC_LAMP || ignitable(obj))) {
@@ -1058,10 +1009,7 @@ struct obj *obj;
 	return FALSE;
 }
 
-STATIC_OVL void
-use_lamp(obj)
-struct obj *obj;
-{
+STATIC_OVL void use_lamp(struct obj *obj) {
 	char buf[BUFSZ];
 
 	if(Underwater) {
@@ -1109,10 +1057,7 @@ struct obj *obj;
 	}
 }
 
-STATIC_OVL void
-light_cocktail(obj)
-	struct obj *obj;	/* obj is a potion of oil */
-{
+STATIC_OVL void light_cocktail(struct obj *obj) {
 	char buf[BUFSZ];
 
 	if (u.uswallow) {
@@ -1162,9 +1107,7 @@ light_cocktail(obj)
 
 static NEARDATA const char cuddly[] = { TOOL_CLASS, GEM_CLASS, 0 };
 
-int
-dorub()
-{
+int dorub() {
 	struct obj *obj = getobj(cuddly, "rub");
 
 	if (obj && obj->oclass == GEM_CLASS) {
@@ -1201,17 +1144,12 @@ dorub()
 	return 1;
 }
 
-int
-dojump()
-{
+int dojump() {
 	/* Physical jump */
 	return jump(0);
 }
 
-int
-jump(magic)
-int magic; /* 0=Physical, otherwise skill level */
-{
+int jump(int magic) {
 	coord cc;
 
 	if (!magic && (nolimbs(youmonst.data) || slithy(youmonst.data))) {
@@ -1365,19 +1303,13 @@ int magic; /* 0=Physical, otherwise skill level */
 	}
 }
 
-boolean
-tinnable(corpse)
-struct obj *corpse;
-{
+boolean tinnable(struct obj *corpse) {
 	if (corpse->oeaten) return 0;
 	if (!mons[corpse->corpsenm].cnutrit) return 0;
 	return 1;
 }
 
-STATIC_OVL void
-use_tinning_kit(obj)
-register struct obj *obj;
-{
+STATIC_OVL void use_tinning_kit(register struct obj *obj) {
 	register struct obj *corpse, *can;
 
 	/* This takes only 1 move.  If this is to be changed to take many
@@ -1441,10 +1373,7 @@ register struct obj *obj;
 	} else impossible("Tinning failed.");
 }
 
-void
-use_unicorn_horn(obj)
-struct obj *obj;
-{
+void use_unicorn_horn(struct obj *obj) {
 #define PROP_COUNT 6		/* number of properties we're dealing with */
 #define ATTR_COUNT (A_MAX*3)	/* number of attribute points we might fix */
 	int idx, val, val_limit,
@@ -1590,11 +1519,7 @@ struct obj *obj;
 /*
  * Timer callback routine: turn figurine into monster
  */
-void
-fig_transform(arg, timeout)
-genericptr_t arg;
-long timeout;
-{
+void fig_transform(genericptr_t arg, long timeout) {
 	struct obj *figurine = (struct obj *)arg;
 	struct monst *mtmp;
 	coord cc;
@@ -1679,12 +1604,7 @@ long timeout;
 	if (redraw) newsym(cc.x, cc.y);
 }
 
-STATIC_OVL boolean
-figurine_location_checks(obj, cc, quietly)
-struct obj *obj;
-coord *cc;
-boolean quietly;
-{
+STATIC_OVL boolean figurine_location_checks(struct obj *obj, coord *cc, boolean quietly) {
 	xchar x,y;
 
 	if (carried(obj) && u.uswallow) {
@@ -1714,10 +1634,7 @@ boolean quietly;
 	return TRUE;
 }
 
-STATIC_OVL void
-use_figurine(optr)
-struct obj **optr;
-{
+STATIC_OVL void use_figurine(struct obj **optr) {
 	register struct obj *obj = *optr;
 	xchar x, y;
 	coord cc;
@@ -1753,10 +1670,7 @@ static NEARDATA const char lubricables[] = { ALL_CLASSES, ALLOW_NONE, 0 };
 static NEARDATA const char need_to_remove_outer_armor[] =
 			"need to remove your %s to grease your %s.";
 
-STATIC_OVL void
-use_grease(obj)
-struct obj *obj;
-{
+STATIC_OVL void use_grease(struct obj *obj) {
 	struct obj *otmp;
 	char buf[BUFSZ];
 
@@ -1824,18 +1738,13 @@ static struct trapinfo {
 	boolean force_bungle;
 } trapinfo;
 
-void
-reset_trapset()
-{
+void reset_trapset() {
 	trapinfo.tobj = 0;
 	trapinfo.force_bungle = 0;
 }
 
 /* touchstones - by Ken Arnold */
-STATIC_OVL void
-use_stone(tstone)
-struct obj *tstone;
-{
+STATIC_OVL void use_stone(struct obj *tstone) {
     struct obj *obj;
     boolean do_scratch;
     const char *streak_color, *choices;
@@ -1971,10 +1880,7 @@ struct obj *tstone;
 }
 
 /* Place a landmine/bear trap.  Helge Hafting */
-STATIC_OVL void
-use_trap(otmp)
-struct obj *otmp;
-{
+STATIC_OVL void use_trap(struct obj *otmp) {
 	int ttyp, tmp;
 	const char *what = (char *)0;
 	char buf[BUFSZ];
@@ -2066,9 +1972,7 @@ struct obj *otmp;
 }
 
 STATIC_PTR
-int
-set_trap()
-{
+int set_trap() {
 	struct obj *otmp = trapinfo.tobj;
 	struct trap *ttmp;
 	int ttyp;
@@ -2106,10 +2010,7 @@ set_trap()
 	return 0;
 }
 
-STATIC_OVL int
-use_whip(obj)
-struct obj *obj;
-{
+STATIC_OVL int use_whip(struct obj *obj) {
     char buf[BUFSZ];
     struct monst *mtmp;
     struct obj *otmp;
@@ -2430,10 +2331,7 @@ use_pole (obj)
 	return (1);
 }
 
-STATIC_OVL int
-use_cream_pie(obj)
-struct obj *obj;
-{
+STATIC_OVL int use_cream_pie(struct obj *obj) {
 	boolean wasblind = Blind;
 	boolean wascreamed = u.ucreamed;
 	boolean several = FALSE;
@@ -2596,10 +2494,7 @@ use_grapple (obj)
 #define BY_OBJECT	((struct monst *)0)
 
 /* return 1 if the wand is broken, hence some time elapsed */
-STATIC_OVL int
-do_break_wand(obj)
-    struct obj *obj;
-{
+STATIC_OVL int do_break_wand(struct obj *obj) {
     static const char nothing_else_happens[] = "But nothing else happens...";
     register int i, x, y;
     register struct monst *mon;
@@ -2754,9 +2649,7 @@ do_break_wand(obj)
     return 1;
 }
 
-STATIC_OVL boolean
-uhave_graystone()
-{
+STATIC_OVL boolean uhave_graystone() {
 	register struct obj *otmp;
 
 	for(otmp = invent; otmp; otmp = otmp->nobj)
@@ -2765,20 +2658,14 @@ uhave_graystone()
 	return FALSE;
 }
 
-STATIC_OVL void
-add_class(cl, class)
-char *cl;
-char class;
-{
+STATIC_OVL void add_class(char *cl, char class) {
 	char tmp[2];
 	tmp[0] = class;
 	tmp[1] = '\0';
 	Strcat(cl, tmp);
 }
 
-int
-doapply()
-{
+int doapply() {
 	struct obj *obj;
 	register int res = 1;
 	char class_list[MAXOCLASSES+2];
@@ -3023,10 +2910,7 @@ doapply()
 /* Keep track of unfixable troubles for purposes of messages saying you feel
  * great.
  */
-int
-unfixable_trouble_count(is_horn)
-	boolean is_horn;
-{
+int unfixable_trouble_count(boolean is_horn) {
 	int unfixable_trbl = 0;
 
 	if (Stoned) unfixable_trbl++;

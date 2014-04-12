@@ -492,10 +492,7 @@ static const struct def_skill Skill_W[] = {
 };
 
 
-STATIC_OVL void
-knows_object(obj)
-register int obj;
-{
+STATIC_OVL void knows_object(register int obj) {
 	discover_object(obj,TRUE,FALSE);
 	objects[obj].oc_pre_discovered = 1;	/* not a "discovery" */
 }
@@ -503,19 +500,14 @@ register int obj;
 /* Know ordinary (non-magical) objects of a certain class,
  * like all gems except the loadstone and luckstone.
  */
-STATIC_OVL void
-knows_class(sym)
-register char sym;
-{
+STATIC_OVL void knows_class(register char sym) {
 	register int ct;
 	for (ct = 1; ct < NUM_OBJECTS; ct++)
 		if (objects[ct].oc_class == sym && !objects[ct].oc_magic)
 			knows_object(ct);
 }
 
-void
-u_init()
-{
+void u_init() {
 	register int i;
 
 	flags.female = flags.initgend;
@@ -846,10 +838,7 @@ u_init()
 }
 
 /* skills aren't initialized, so we use the role-specific skill lists */
-STATIC_OVL boolean
-restricted_spell_discipline(otyp)
-int otyp;
-{
+STATIC_OVL boolean restricted_spell_discipline(int otyp) {
     const struct def_skill *skills;
     int this_skill = spell_skilltype(otyp);
 
@@ -879,10 +868,7 @@ int otyp;
     return TRUE;
 }
 
-STATIC_OVL void
-ini_inv(trop)
-register struct trobj *trop;
-{
+STATIC_OVL void ini_inv(register struct trobj *trop) {
 	struct obj *obj;
 	int otyp, i;
 

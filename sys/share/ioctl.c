@@ -78,17 +78,13 @@ extern void NDECL(linux_mapoff);
 #endif
 
 #ifdef AUX
-void
-catch_stp()
-{
+void catch_stp() {
     signal(SIGTSTP, SIG_DFL);
     dosuspend();
 }
 #endif /* AUX */
 
-void
-getwindowsz()
-{
+void getwindowsz() {
 #ifdef USE_WIN_IOCTL
     /*
      * ttysize is found on Suns and BSD
@@ -109,9 +105,7 @@ getwindowsz()
 #endif
 }
 
-void
-getioctls()
-{
+void getioctls() {
 #ifdef BSD_JOB_CONTROL
 	(void) ioctl(fileno(stdin), (int) TIOCGLTC, (char *) &ltchars);
 	(void) ioctl(fileno(stdin), (int) TIOCSLTC, (char *) &ltchars0);
@@ -132,9 +126,7 @@ getioctls()
 #endif
 }
 
-void
-setioctls()
-{
+void setioctls() {
 #ifdef BSD_JOB_CONTROL
 	(void) ioctl(fileno(stdin), (int) TIOCSLTC, (char *) &ltchars);
 #else
@@ -151,9 +143,7 @@ setioctls()
 }
 
 #ifdef SUSPEND		/* No longer implies BSD */
-int
-dosuspend()
-{
+int dosuspend() {
 # ifdef SIGTSTP
 	if(signal(SIGTSTP, SIG_IGN) == SIG_DFL) {
 		suspend_nhwindows((char *)0);

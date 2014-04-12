@@ -33,11 +33,7 @@ long* alloc(unsigned int lth)
 # define PTR_TYP genericptr_t
 
 /* format a pointer for display purposes; caller supplies the result buffer */
-char *
-fmt_ptr(ptr, buf)
-const genericptr ptr;
-char *buf;
-{
+char * fmt_ptr(const genericptr ptr, char *buf) {
 	Sprintf(buf, PTR_FMT, (PTR_TYP)ptr);
 	return buf;
 }

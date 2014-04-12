@@ -33,20 +33,11 @@ extern char erase_char, kill_char;	/* from appropriate tty.c file */
  * Reading can be interrupted by an escape ('\033') - now the
  * resulting string is "\033".
  */
-void
-tty_getlin(query, bufp)
-const char *query;
-register char *bufp;
-{
+void tty_getlin(const char *query, register char *bufp) {
     hooked_tty_getlin(query, bufp, (getlin_hook_proc) 0);
 }
 
-STATIC_OVL void
-hooked_tty_getlin(query, bufp, hook)
-const char *query;
-register char *bufp;
-getlin_hook_proc hook;
-{
+STATIC_OVL void hooked_tty_getlin(const char *query, register char *bufp, getlin_hook_proc hook) {
 	register char *obufp = bufp;
 	register int c;
 	struct WinDesc *cw = wins[WIN_MESSAGE];
@@ -177,10 +168,7 @@ getlin_hook_proc hook;
 	clear_nhwindow(WIN_MESSAGE);	/* clean up after ourselves */
 }
 
-void
-xwaitforspace(s)
-register const char *s;	/* chars allowed besides return */
-{
+void xwaitforspace(register const char *s) {
     register int c, x = ttyDisplay ? (int) ttyDisplay->dismiss_more : '\n';
 
     morc = 0;
@@ -212,10 +200,7 @@ register const char *s;	/* chars allowed besides return */
  *	+ we don't change the characters that are already in base
  *	+ base has enough room to hold our string
  */
-STATIC_OVL boolean
-ext_cmd_getlin_hook(base)
-	char *base;
-{
+STATIC_OVL boolean ext_cmd_getlin_hook(char *base) {
 	int oindex, com_index;
 
 	com_index = -1;
@@ -239,9 +224,7 @@ ext_cmd_getlin_hook(base)
  * Read in an extended command, doing command line completion.  We
  * stop when we have found enough characters to make a unique command.
  */
-int
-tty_get_ext_cmd()
-{
+int tty_get_ext_cmd() {
 	int i;
 	char buf[BUFSZ];
 

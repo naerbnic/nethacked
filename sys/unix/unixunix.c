@@ -29,10 +29,7 @@ extern int errno;
 static struct stat buf;
 
 /* see whether we should throw away this xlock file */
-static int
-veryold(fd)
-int fd;
-{
+static int veryold(int fd) {
 	time_t date;
 
 	if(fstat(fd, &buf)) return(0);			/* cannot get status */
@@ -66,9 +63,7 @@ int fd;
 	return(1);
 }
 
-static int
-eraseoldlocks()
-{
+static int eraseoldlocks() {
 	register int i;
 
 	/* cannot use maxledgerno() here, because we need to find a lock name
@@ -86,9 +81,7 @@ eraseoldlocks()
 	return(1);					/* success! */
 }
 
-void
-getlock()
-{
+void getlock() {
 	register int i = 0, fd, c;
 	const char *fq_lock;
 
@@ -222,10 +215,7 @@ register char *s;
 #if defined(TIMED_DELAY) && !defined(msleep) && defined(SYSV)
 #include <poll.h>
 
-void
-msleep(msec)
-unsigned msec;				/* milliseconds */
-{
+void msleep(unsigned msec) {
 	struct pollfd unused;
 	int msecs = msec;		/* poll API is signed */
 
@@ -235,9 +225,7 @@ unsigned msec;				/* milliseconds */
 #endif /* TIMED_DELAY for SYSV */
 
 #ifdef SHELL
-int
-dosh()
-{
+int dosh() {
 	register char *str;
 	if(child(0)) {
 		if((str = getenv("SHELL")) != (char*)0)
@@ -252,10 +240,7 @@ dosh()
 #endif /* SHELL */
 
 #if defined(SHELL) || defined(DEF_PAGER) || defined(DEF_MAILREADER)
-int
-child(wt)
-int wt;
-{
+int child(int wt) {
 	register int f;
 	suspend_nhwindows((char *)0);	/* also calls end_screen() */
 #ifdef _M_UNIX

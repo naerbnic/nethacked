@@ -53,22 +53,14 @@ static callback_proc callbacks[] = {
 };
 
 /* Should be inlined. */
-boolean
-inside_rect(r, x, y)
-NhRect *r;
-int x, y;
-{
+boolean inside_rect(NhRect *r, int x, int y) {
     return (x >= r->lx && x <= r->hx && y >= r->ly && y <= r->hy);
 }
 
 /*
  * Check if a point is inside a region.
  */
-boolean
-inside_region(reg, x, y)
-NhRegion *reg;
-int x, y;
-{
+boolean inside_region(NhRegion *reg, int x, int y) {
     int i;
 
     if (reg == NULL || !inside_rect(&(reg->bounding_box), x, y))
@@ -82,11 +74,7 @@ int x, y;
 /*
  * Create a region. It does not activate it.
  */
-NhRegion *
-create_region(rects, nrect)
-NhRect *rects;
-int nrect;
-{
+NhRegion * create_region(NhRect *rects, int nrect) {
     int i;
     NhRegion *reg;
 
@@ -137,11 +125,7 @@ int nrect;
 /*
  * Add rectangle to region.
  */
-void
-add_rect_to_reg(reg, rect)
-NhRegion *reg;
-NhRect *rect;
-{
+void add_rect_to_reg(NhRegion *reg, NhRect *rect) {
     NhRect *tmp_rect;
 
     tmp_rect = (NhRect *) alloc(sizeof (NhRect) * (reg->nrects + 1));
@@ -167,11 +151,7 @@ NhRect *rect;
 /*
  * Add a monster to the region
  */
-void
-add_mon_to_reg(reg, mon)
-NhRegion *reg;
-struct monst *mon;
-{
+void add_mon_to_reg(NhRegion *reg, struct monst *mon) {
     int i;
     unsigned *tmp_m;
 
@@ -192,11 +172,7 @@ struct monst *mon;
 /*
  * Remove a monster from the region list (it left or died...)
  */
-void
-remove_mon_from_reg(reg, mon)
-NhRegion *reg;
-struct monst *mon;
-{
+void remove_mon_from_reg(NhRegion *reg, struct monst *mon) {
     register int i;
 
     for (i = 0; i < reg->n_monst; i++)
@@ -212,11 +188,7 @@ struct monst *mon;
  * It's probably quicker to check with the region internal list
  * than to check for coordinates.
  */
-boolean
-mon_in_region(reg, mon)
-NhRegion *reg;
-struct monst *mon;
-{
+boolean mon_in_region(NhRegion *reg, struct monst *mon) {
     int i;
 
     for (i = 0; i < reg->n_monst; i++)
@@ -231,10 +203,7 @@ struct monst *mon;
 /*
  * Clone (make a standalone copy) the region.
  */
-NhRegion *
-clone_region(reg)
-NhRegion *reg;
-{
+NhRegion * clone_region(NhRegion *reg) {
     NhRegion *ret_reg;
 
     ret_reg = create_region(reg->rects, reg->nrects);
@@ -264,10 +233,7 @@ NhRegion *reg;
 /*
  * Free mem from region.
  */
-void
-free_region(reg)
-NhRegion *reg;
-{
+void free_region(NhRegion *reg) {
     if (reg) {
 	if (reg->rects)
 	    free((genericptr_t) reg->rects);
@@ -281,10 +247,7 @@ NhRegion *reg;
  * Add a region to the list.
  * This actually activates the region.
  */
-void
-add_region(reg)
-NhRegion *reg;
-{
+void add_region(NhRegion *reg) {
     NhRegion **tmp_reg;
     int i, j;
 
@@ -321,10 +284,7 @@ NhRegion *reg;
 /*
  * Remove a region from the list & free it.
  */
-void
-remove_region(reg)
-NhRegion *reg;
-{
+void remove_region(NhRegion *reg) {
     register int i, x, y;
 
     for (i = 0; i < n_regions; i++)
@@ -350,9 +310,7 @@ NhRegion *reg;
  * Remove all regions and clear all related data (This must be down
  * when changing level, for instance).
  */
-void
-clear_regions()
-{
+void clear_regions() {
     register int i;
 
     for (i = 0; i < n_regions; i++)
@@ -369,9 +327,7 @@ clear_regions()
  * It makes the regions age, if necessary and calls the appropriate
  * callbacks when needed.
  */
-void
-run_regions()
-{
+void run_regions() {
     register int i, j, k;
     int f_indx;
 
@@ -466,11 +422,7 @@ xchar
 /*
  * check wether a monster enters/leaves one or more region.
 */
-boolean
-m_in_out_region(mon, x, y)
-struct monst *mon;
-xchar x, y;
-{
+boolean m_in_out_region(struct monst *mon, xchar x, xchar y) {
     int i, f_indx;
 
     /* First check if we can do the move */
@@ -514,9 +466,7 @@ xchar x, y;
 /*
  * Checks player's regions after a teleport for instance.
  */
-void
-update_player_regions()
-{
+void update_player_regions() {
     register int i;
 
     for (i = 0; i < n_regions; i++)
@@ -529,10 +479,7 @@ update_player_regions()
 /*
  * Ditto for a specified monster.
  */
-void
-update_monster_region(mon)
-struct monst *mon;
-{
+void update_monster_region(struct monst *mon) {
     register int i;
 
     for (i = 0; i < n_regions; i++) {
@@ -554,10 +501,7 @@ struct monst *mon;
  * This happens, for instance, when a monster grows and
  * need a new structure (internally that is).
  */
-void
-replace_mon_regions(monold, monnew)
-struct monst *monold, *monnew;
-{
+void replace_mon_regions(struct monst *monold, struct monst *monnew) {
     register int i;
 
     for (i = 0; i < n_regions; i++)
@@ -570,10 +514,7 @@ struct monst *monold, *monnew;
 /*
  * Remove monster from all regions it was in (ie monster just died)
  */
-void
-remove_mon_from_regions(mon)
-struct monst *mon;
-{
+void remove_mon_from_regions(struct monst *mon) {
     register int i;
 
     for (i = 0; i < n_regions; i++)
@@ -587,10 +528,7 @@ struct monst *mon;
  * Check if a spot is under a visible region (eg: gas cloud).
  * Returns NULL if not, otherwise returns region.
  */
-NhRegion *
-visible_region_at(x, y)
-xchar x, y;
-{
+NhRegion * visible_region_at(xchar x, xchar y) {
     register int i;
 
     for (i = 0; i < n_regions; i++)
@@ -600,22 +538,14 @@ xchar x, y;
     return (NhRegion *) 0;
 }
 
-void
-show_region(reg, x, y)
-NhRegion *reg;
-xchar x, y;
-{
+void show_region(NhRegion *reg, xchar x, xchar y) {
     show_glyph(x, y, reg->glyph);
 }
 
 /**
  * save_regions :
  */
-void
-save_regions(fd, mode)
-int fd;
-int mode;
-{
+void save_regions(int fd, int mode) {
     int i, j;
     unsigned n;
 
@@ -661,11 +591,7 @@ skip_lots:
 	clear_regions();
 }
 
-void
-rest_regions(fd, ghostly)
-int fd;
-boolean ghostly; /* If a bones file restore */
-{
+void rest_regions(int fd, boolean ghostly) {
     int i, j;
     unsigned n;
     long tmstamp;
@@ -750,10 +676,7 @@ boolean ghostly; /* If a bones file restore */
 }
 
 /* update monster IDs for region being loaded from bones; `ghostly' implied */
-static void
-reset_region_mids(reg)
-NhRegion *reg;
-{
+static void reset_region_mids(NhRegion *reg) {
     int i = 0, n = reg->n_monst;
     unsigned *mid_list = reg->monsters;
 
@@ -778,13 +701,7 @@ NhRegion *reg;
  *								*
  *--------------------------------------------------------------*/
 
-NhRegion *
-create_msg_region(x, y, w, h, msg_enter, msg_leave)
-xchar x, y;
-xchar w, h;
-const char *msg_enter;
-const char *msg_leave;
-{
+NhRegion * create_msg_region(xchar x, xchar y, xchar w, xchar h, const char *msg_enter, const char *msg_leave) {
     NhRect tmprect;
     NhRegion *reg = create_region((NhRect *) 0, 0);
 
@@ -806,11 +723,7 @@ const char *msg_leave;
  *			(unused yet)				*
  *--------------------------------------------------------------*/
 
-boolean
-enter_force_field(p1, p2)
-genericptr_t p1;
-genericptr_t p2;
-{
+boolean enter_force_field(genericptr_t p1, genericptr_t p2) {
     struct monst *mtmp;
 
     if (p2 == NULL) {		/* That means the player */
@@ -828,11 +741,7 @@ genericptr_t p2;
     return FALSE;
 }
 
-NhRegion *
-create_force_field(x, y, radius, ttl)
-xchar x, y;
-int radius, ttl;
-{
+NhRegion * create_force_field(xchar x, xchar y, int radius, int ttl) {
     int i;
     NhRegion *ff;
     int nrect;
@@ -872,11 +781,7 @@ int radius, ttl;
  * Here is an example of an expire function that may prolong
  * region life after some mods...
  */
-boolean
-expire_gas_cloud(p1, p2)
-genericptr_t p1;
-genericptr_t p2;
-{
+boolean expire_gas_cloud(genericptr_t p1, genericptr_t p2) {
     NhRegion *reg;
     int damage;
 
@@ -893,11 +798,7 @@ genericptr_t p2;
     return TRUE;		/* OK, it's gone, you can free it! */
 }
 
-boolean
-inside_gas_cloud(p1, p2)
-genericptr_t p1;
-genericptr_t p2;
-{
+boolean inside_gas_cloud(genericptr_t p1, genericptr_t p2) {
     NhRegion *reg;
     struct monst *mtmp;
     int dam;
@@ -947,12 +848,7 @@ genericptr_t p2;
     return FALSE;		/* Monster is still alive */
 }
 
-NhRegion *
-create_gas_cloud(x, y, radius, damage)
-xchar x, y;
-int radius;
-int damage;
-{
+NhRegion * create_gas_cloud(xchar x, xchar y, int radius, int damage) {
     NhRegion *cloud;
     int i, nrect;
     NhRect tmprect;

@@ -50,29 +50,18 @@ STATIC_DCL const char *NDECL(rank);
 #ifdef OVL1
 
 /* convert experience level (1..30) to rank index (0..8) */
-int
-xlev_to_rank(xlev)
-int xlev;
-{
+int xlev_to_rank(int xlev) {
 	return (xlev <= 2) ? 0 : (xlev <= 30) ? ((xlev + 2) / 4) : 8;
 }
 
 #if 0	/* not currently needed */
 /* convert rank index (0..8) to experience level (1..30) */
-int
-rank_to_xlev(rank)
-int rank;
-{
+int rank_to_xlev(int rank) {
 	return (rank <= 0) ? 1 : (rank <= 8) ? ((rank * 4) - 2) : 30;
 }
 #endif
 
-const char *
-rank_of(lev, monnum, female)
-	int lev;
-	short monnum;
-	boolean female;
-{
+const char * rank_of(int lev, short monnum, boolean female) {
 	register struct Role *role;
 	register int i;
 
@@ -97,17 +86,11 @@ rank_of(lev, monnum, female)
 }
 
 
-STATIC_OVL const char *
-rank()
-{
+STATIC_OVL const char * rank() {
 	return(rank_of(u.ulevel, Role_switch, flags.female));
 }
 
-int
-title_to_mon(str, rank_indx, title_length)
-const char *str;
-int *rank_indx, *title_length;
-{
+int title_to_mon(const char *str, int *rank_indx, int *title_length) {
 	register int i, j;
 
 
@@ -134,9 +117,7 @@ int *rank_indx, *title_length;
 #endif /* OVL1 */
 #ifdef OVLB
 
-void
-max_rank_sz()
-{
+void max_rank_sz() {
 	register int i, r, maxr = 0;
 	for (i = 0; i < 9; i++) {
 	    if (urole.rank[i].m && (r = strlen(urole.rank[i].m)) > maxr) maxr = r;
@@ -150,9 +131,7 @@ max_rank_sz()
 #ifdef OVL0
 
 #ifdef SCORE_ON_BOTL
-long
-botl_score()
-{
+long botl_score() {
     int deepest = deepest_lev_reached(FALSE);
 #ifndef GOLDOBJ
     long ugold = u.ugold + hidden_gold();
@@ -228,9 +207,7 @@ bot1()
 #endif
 #ifdef DUMP_LOG
 }
-STATIC_OVL void
-bot1()
-{
+STATIC_OVL void bot1() {
 	char newbot1[MAXCO];
 
 	bot1str(newbot1);
@@ -240,10 +217,7 @@ bot1()
 }
 
 /* provide the name of the current level for display by various ports */
-int
-describe_level(buf)
-char *buf;
-{
+int describe_level(char *buf) {
 	int ret = 1;
 
 	/* TODO:	Add in dungeon name */
@@ -375,9 +349,7 @@ bot2()
 		Sprintf(nb = eos(nb), " %s", enc_stat[cap]);
 #ifdef DUMP_LOG
 }
-STATIC_OVL void
-bot2()
-{
+STATIC_OVL void bot2() {
 	char newbot2[MAXCO];
 	bot2str(newbot2);
 #endif
@@ -385,9 +357,7 @@ bot2()
 	putstr(WIN_STATUS, 0, newbot2);
 }
 
-void
-bot()
-{
+void bot() {
 	bot1();
 	bot2();
 	flags.botl = flags.botlx = 0;

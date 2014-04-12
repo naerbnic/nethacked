@@ -15,19 +15,14 @@ static NEARDATA const char steeds[] = {
 STATIC_DCL boolean FDECL(landing_spot, (coord *, int, int));
 
 /* caller has decided that hero can't reach something while mounted */
-void
-rider_cant_reach()
-{
+void rider_cant_reach() {
      You("aren't skilled enough to reach from %s.", y_monnam(u.usteed));
 }
 
 /*** Putting the saddle on ***/
 
 /* Can this monster wear a saddle? */
-boolean
-can_saddle(mtmp)
-	struct monst *mtmp;
-{
+boolean can_saddle(struct monst *mtmp) {
 	struct permonst *ptr = mtmp->data;
 
 	return (index(steeds, ptr->mlet) && (ptr->msize >= MZ_MEDIUM) &&
@@ -37,10 +32,7 @@ can_saddle(mtmp)
 }
 
 
-int
-use_saddle(otmp)
-	struct obj *otmp;
-{
+int use_saddle(struct obj *otmp) {
 	struct monst *mtmp;
 	struct permonst *ptr;
 	int chance;
@@ -157,19 +149,14 @@ use_saddle(otmp)
 /*** Riding the monster ***/
 
 /* Can we ride this monster?  Caller should also check can_saddle() */
-boolean
-can_ride(mtmp)
-	struct monst *mtmp;
-{
+boolean can_ride(struct monst *mtmp) {
 	return (mtmp->mtame && humanoid(youmonst.data) &&
 			!verysmall(youmonst.data) && !bigmonst(youmonst.data) &&
 			(!Underwater || is_swimmer(mtmp->data)));
 }
 
 
-int
-doride()
-{
+int doride() {
 	boolean forcemount = FALSE;
 
 	if (u.usteed)
@@ -187,11 +174,7 @@ doride()
 
 
 /* Start riding, with the given monster */
-boolean
-mount_steed(mtmp, force)
-	struct monst *mtmp;	/* The animal */
-	boolean force;		/* Quietly force this animal */
-{
+boolean mount_steed(struct monst *mtmp, boolean force) {
 	struct obj *otmp;
 	char buf[BUFSZ];
 	struct permonst *ptr;
@@ -345,9 +328,7 @@ mount_steed(mtmp, force)
 
 
 /* You and your steed have moved */
-void
-exercise_steed()
-{
+void exercise_steed() {
 	if (!u.usteed)
 		return;
 
@@ -361,9 +342,7 @@ exercise_steed()
 
 
 /* The player kicks or whips the steed */
-void
-kick_steed()
-{
+void kick_steed() {
 	char He[4];
 	if (!u.usteed)
 	    return;
@@ -414,12 +393,7 @@ kick_steed()
  * room's walls, which is not what we want.
  * Adapted from mail daemon code.
  */
-STATIC_OVL boolean
-landing_spot(spot, reason, forceit)
-coord *spot;	/* landing position (we fill it in) */
-int reason;
-int forceit;
-{
+STATIC_OVL boolean landing_spot(coord *spot, int reason, int forceit) {
     int i = 0, x, y, distance, min_distance = -1;
     boolean found = FALSE;
     struct trap *t;
@@ -458,10 +432,7 @@ int forceit;
 }
 
 /* Stop riding the current steed */
-void
-dismount_steed(reason)
-	int reason;		/* Player was thrown off etc. */
-{
+void dismount_steed(int reason) {
 	struct monst *mtmp;
 	struct obj *otmp;
 	coord cc;
@@ -620,11 +591,7 @@ dismount_steed(reason)
 	return;
 }
 
-void
-place_monster(mon, x, y)
-struct monst *mon;
-int x, y;
-{
+void place_monster(struct monst *mon, int x, int y) {
     if (mon == u.usteed ||
 	    /* special case is for convoluted vault guard handling */
 	    (DEADMONSTER(mon) && !(mon->isgd && x == 0 && y == 0))) {

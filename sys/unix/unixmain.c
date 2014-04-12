@@ -44,11 +44,7 @@ static void NDECL(wd_message);
 static boolean wiz_error_flag = FALSE;
 #endif
 
-int
-main(argc,argv)
-int argc;
-char *argv[];
-{
+int main(int argc, char *argv[]) {
 	register int fd;
 #ifdef CHDIR
 	register char *dir;
@@ -289,11 +285,7 @@ not_recovered:
 	return(0);
 }
 
-static void
-process_options(argc, argv)
-int argc;
-char *argv[];
-{
+static void process_options(int argc, char *argv[]) {
 	int i;
 
 
@@ -406,11 +398,7 @@ char *argv[];
 }
 
 #ifdef CHDIR
-static void
-chdirx(dir, wr)
-const char *dir;
-boolean wr;
-{
+static void chdirx(const char *dir, boolean wr) {
 	if (dir					/* User specified directory? */
 # ifdef HACKDIR
 	       && strcmp(dir, HACKDIR)		/* and not the default? */
@@ -489,9 +477,7 @@ whoami() {
 }
 
 #ifdef PORT_HELP
-void
-port_help()
-{
+void port_help() {
 	/*
 	 * Display unix-specific help.   Just show contents of the helpfile
 	 * named by PORT_HELP.
@@ -500,9 +486,7 @@ port_help()
 }
 #endif
 
-static void
-wd_message()
-{
+static void wd_message() {
 #ifdef WIZARD
 	if (wiz_error_flag) {
 		pline("Only user \"%s\" may access debug (wizard) mode.",
@@ -522,10 +506,7 @@ wd_message()
  * Add a slash to any name not ending in /. There must
  * be room for the /
  */
-void
-append_slash(name)
-char *name;
-{
+void append_slash(char *name) {
 	char *ptr;
 
 	if (!*name)

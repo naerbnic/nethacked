@@ -21,9 +21,7 @@ STATIC_DCL void FDECL(removetopl, (int));
 
 #ifdef OVLB
 
-int
-tty_doprev_message()
-{
+int tty_doprev_message() {
     register struct WinDesc *cw = wins[WIN_MESSAGE];
 
     winid prevmsg_win;
@@ -120,10 +118,7 @@ tty_doprev_message()
 #endif /* OVLB */
 #ifdef OVL1
 
-STATIC_OVL void
-redotoplin(str)
-    const char *str;
-{
+STATIC_OVL void redotoplin(const char *str) {
 	int otoplin = ttyDisplay->toplin;
 	home();
 	if(*str & 0x80) {
@@ -140,9 +135,7 @@ redotoplin(str)
 		more();
 }
 
-STATIC_OVL void
-remember_topl()
-{
+STATIC_OVL void remember_topl() {
     register struct WinDesc *cw = wins[WIN_MESSAGE];
     int idx = cw->maxrow;
     unsigned len = strlen(toplines) + 1;
@@ -157,10 +150,7 @@ remember_topl()
     cw->maxcol = cw->maxrow = (idx + 1) % cw->rows;
 }
 
-void
-addtopl(s)
-const char *s;
-{
+void addtopl(const char *s) {
     register struct WinDesc *cw = wins[WIN_MESSAGE];
 
     tty_curs(BASE_WINDOW,cw->curx+1,cw->cury);
@@ -172,9 +162,7 @@ const char *s;
 #endif /* OVL1 */
 #ifdef OVL2
 
-void
-more()
-{
+void more() {
     struct WinDesc *cw = wins[WIN_MESSAGE];
 
     /* avoid recursion -- only happens from interrupts */
@@ -210,10 +198,7 @@ more()
     ttyDisplay->inmore = 0;
 }
 
-void
-update_topl(bp)
-	register const char *bp;
-{
+void update_topl(register const char *bp) {
 	register char *tl, *otl;
 	register int n0;
 	int notdied = 1;
@@ -259,10 +244,7 @@ update_topl(bp)
 }
 
 STATIC_OVL
-void
-topl_putsym(c)
-    char c;
-{
+void topl_putsym(char c) {
     register struct WinDesc *cw = wins[WIN_MESSAGE];
 
     if(cw == (struct WinDesc *) 0) panic("Putsym window MESSAGE nonexistant");
@@ -299,18 +281,12 @@ topl_putsym(c)
 #endif
 }
 
-void
-putsyms(str)
-    const char *str;
-{
+void putsyms(const char *str) {
     while(*str)
 	topl_putsym(*str++);
 }
 
-STATIC_OVL void
-removetopl(n)
-register int n;
-{
+STATIC_OVL void removetopl(register int n) {
     /* assume addtopl() has been done, so ttyDisplay->toplin is already set */
     while (n-- > 0) putsyms("\b \b");
 }

@@ -21,11 +21,7 @@ STATIC_DCL void FDECL(move_update, (BOOLEAN_P));
 
 #ifdef OVL2
 
-boolean
-revive_nasty(x, y, msg)
-int x,y;
-const char *msg;
-{
+boolean revive_nasty(int x, int y, const char *msg) {
     register struct obj *otmp, *otmp2;
     struct monst *mtmp;
     coord cc;
@@ -57,9 +53,7 @@ const char *msg;
     return (revived);
 }
 
-STATIC_OVL int
-moverock()
-{
+STATIC_OVL int moverock() {
     register xchar rx, ry, sx, sy;
     register struct obj *otmp;
     register struct trap *ttmp;
@@ -309,10 +303,7 @@ moverock()
  *  Chew on a wall, door, or boulder.  Returns TRUE if still eating, FALSE
  *  when done.
  */
-STATIC_OVL int
-still_chewing(x,y)
-    xchar x, y;
-{
+STATIC_OVL int still_chewing(xchar x, xchar y) {
     struct rm *lev = &levl[x][y];
     struct obj *boulder = sobj_at(BOULDER,x,y);
     const char *digtxt = (char *)0, *dmgtxt = (char *)0;
@@ -432,11 +423,7 @@ still_chewing(x,y)
 #endif /* OVL2 */
 #ifdef OVLB
 
-void
-movobj(obj, ox, oy)
-register struct obj *obj;
-register xchar ox, oy;
-{
+void movobj(register struct obj *obj, register xchar ox, register xchar oy) {
 	/* optimize by leaving on the fobj chain? */
 	remove_object(obj);
 	newsym(obj->ox, obj->oy);
@@ -447,9 +434,7 @@ register xchar ox, oy;
 #ifdef SINKS
 static NEARDATA const char fell_on_sink[] = "fell onto a sink";
 
-STATIC_OVL void
-dosinkfall()
-{
+STATIC_OVL void dosinkfall() {
 	register struct obj *obj;
 
 	if (is_floater(youmonst.data) || (HLevitation & FROMOUTSIDE)) {
@@ -508,10 +493,7 @@ register xchar x,y;
 			(levl[x][y].wall_info & W_NONDIGGABLE)));
 }
 
-boolean
-may_passwall(x,y)
-register xchar x,y;
-{
+boolean may_passwall(register xchar x, register xchar y) {
    return (boolean)(!(IS_STWALL(levl[x][y].typ) &&
 			(levl[x][y].wall_info & W_NONPASSWALL)));
 }
@@ -519,21 +501,14 @@ register xchar x,y;
 #endif /* OVLB */
 #ifdef OVL1
 
-boolean
-bad_rock(mdat,x,y)
-struct permonst *mdat;
-register xchar x,y;
-{
+boolean bad_rock(struct permonst *mdat, register xchar x, register xchar y) {
 	return((boolean) ((In_sokoban(&u.uz) && sobj_at(BOULDER,x,y)) ||
 	       (IS_ROCK(levl[x][y].typ)
 		    && (!tunnels(mdat) || needspick(mdat) || !may_dig(x,y))
 		    && !(passes_walls(mdat) && may_passwall(x,y)))));
 }
 
-boolean
-invocation_pos(x, y)
-xchar x, y;
-{
+boolean invocation_pos(xchar x, xchar y) {
 	return((boolean)(Invocation_lev(&u.uz) && x == inv_pos.x && y == inv_pos.y));
 }
 
@@ -543,11 +518,7 @@ xchar x, y;
 /* return TRUE if (dx,dy) is an OK place to move
  * mode is one of DO_MOVE, TEST_MOVE or TEST_TRAV
  */
-boolean 
-test_move(ux, uy, dx, dy, mode)
-int ux, uy, dx, dy;
-int mode;
-{
+boolean test_move(int ux, int uy, int dx, int dy, int mode) {
     int x = ux+dx;
     int y = uy+dy;
     register struct rm *tmpr = &levl[x][y];
@@ -709,10 +680,7 @@ int mode;
  * inaccessible locations as valid intermediate path points.
  * Returns TRUE if a path was found.
  */
-static boolean
-findtravelpath(guess)
-boolean guess;
-{
+static boolean findtravelpath(boolean guess) {
     /* if travel to adjacent, reachable location, use normal movement rules */
     if (!guess && iflags.travel1 && distmin(u.ux, u.uy, u.tx, u.ty) == 1) {
 	flags.run = 0;
@@ -859,9 +827,7 @@ found:
     return FALSE;
 }
 
-void
-domove()
-{
+void domove() {
 	register struct monst *mtmp;
 	register struct rm *tmpr;
 	register xchar x,y;
@@ -1428,9 +1394,7 @@ domove()
 	}
 }
 
-void
-invocation_message()
-{
+void invocation_message() {
 	/* a special clue-msg when on the Invocation position */
 	if(invocation_pos(u.ux, u.uy) && !On_stairs(u.ux, u.uy)) {
 	    char buf[BUFSZ];
@@ -1454,10 +1418,7 @@ invocation_message()
 #endif /* OVL3 */
 #ifdef OVL2
 
-void
-spoteffects(pick)
-boolean pick;
-{
+void spoteffects(boolean pick) {
 	register struct monst *mtmp;
 
 	if(u.uinwater) {
@@ -1565,11 +1526,7 @@ stillinwater:;
 	}
 }
 
-STATIC_OVL boolean
-monstinroom(mdat,roomno)
-struct permonst *mdat;
-int roomno;
-{
+STATIC_OVL boolean monstinroom(struct permonst *mdat, int roomno) {
 	register struct monst *mtmp;
 
 	for(mtmp = fmon; mtmp; mtmp = mtmp->nmon)
@@ -1579,11 +1536,7 @@ int roomno;
 	return(FALSE);
 }
 
-char *
-in_rooms(x, y, typewanted)
-register xchar x, y;
-register int typewanted;
-{
+char * in_rooms(register xchar x, register xchar y, register int typewanted) {
 	static char buf[5];
 	char rno, *ptr = &buf[4];
 	int typefound, min_x, min_y, max_x, max_y_offset, step;
@@ -1648,10 +1601,7 @@ register int typewanted;
 }
 
 /* is (x,y) in a town? */
-boolean
-in_town(x, y)
-register int x, y;
-{
+boolean in_town(register int x, register int y) {
 	s_level *slev = Is_special(&u.uz);
 	register struct mkroom *sroom;
 	boolean has_subrooms = FALSE;
@@ -1672,10 +1622,7 @@ register int x, y;
 	return !has_subrooms;
 }
 
-STATIC_OVL void
-move_update(newlev)
-register boolean newlev;
-{
+STATIC_OVL void move_update(register boolean newlev) {
 	char *ptr1, *ptr2, *ptr3, *ptr4;
 
 	Strcpy(u.urooms0, u.urooms);
@@ -1714,10 +1661,7 @@ register boolean newlev;
 	*ptr2 = '\0';
 }
 
-void
-check_special_room(newlev)
-register boolean newlev;
-{
+void check_special_room(register boolean newlev) {
 	register struct monst *mtmp;
 	char *ptr;
 
@@ -1832,9 +1776,7 @@ register boolean newlev;
 #endif /* OVL2 */
 #ifdef OVLB
 
-int
-dopickup()
-{
+int dopickup() {
 	int count;
 	struct trap *traphere = t_at(u.ux, u.uy);
  	/* awful kludge to work around parse()'s pre-decrement */
@@ -1913,9 +1855,7 @@ dopickup()
 /* stop running if we see something interesting */
 /* turn around a corner if that is the only way we can proceed */
 /* do not turn left or right twice */
-void
-lookaround()
-{
+void lookaround() {
     register int x, y, i, x0 = 0, y0 = 0, m0 = 1, i0 = 9;
     register int corrct = 0, noturn = 0;
     register struct monst *mtmp;
@@ -2038,9 +1978,7 @@ stop:
 
 /* something like lookaround, but we are not running */
 /* react only to monsters that might hit us */
-int
-monster_nearby()
-{
+int monster_nearby() {
 	register int x,y;
 	register struct monst *mtmp;
 
@@ -2063,11 +2001,7 @@ monster_nearby()
 	return(0);
 }
 
-void
-nomul(nval, txt)
-register int nval;
-const char *txt;
-{
+void nomul(register int nval, const char *txt) {
 	if(multi < nval) return;	/* This is a bug fix by ab@unido */
 	u.uinvulnerable = FALSE;	/* Kludge to avoid ctrl-C bug -dlc */
 	u.usleep = 0;
@@ -2080,10 +2014,7 @@ const char *txt;
 }
 
 /* called when a non-movement, multi-turn action has completed */
-void
-unmul(msg_override)
-const char *msg_override;
-{
+void unmul(const char *msg_override) {
 	multi = 0;	/* caller will usually have done this already */
 	(void) memset(multi_txt, 0, BUFSZ);
 	if (msg_override) nomovemsg = msg_override;
@@ -2098,9 +2029,7 @@ const char *msg_override;
 #endif /* OVL2 */
 #ifdef OVL1
 
-STATIC_OVL void
-maybe_wail()
-{
+STATIC_OVL void maybe_wail() {
     static short powers[] = { TELEPORT, SEE_INVIS, POISON_RES, COLD_RES,
 			      SHOCK_RES, FIRE_RES, SLEEP_RES, DISINT_RES,
 			      TELEPORT_CONTROL, STEALTH, FAST, INVIS };
@@ -2129,12 +2058,7 @@ maybe_wail()
     }
 }
 
-void
-losehp(n, knam, k_format)
-register int n;
-register const char *knam;
-boolean k_format;
-{
+void losehp(register int n, register const char *knam, boolean k_format) {
 	if (Upolyd) {
 		u.mh -= n;
 		if (u.mhmax < u.mh) u.mhmax = u.mh;
@@ -2160,9 +2084,7 @@ boolean k_format;
 	}
 }
 
-int
-weight_cap()
-{
+int weight_cap() {
 	register long carrcap;
 
 	carrcap = 25*(ACURRSTR + ACURR(A_CON)) + 50;
@@ -2198,9 +2120,7 @@ static int wc;	/* current weight_cap(); valid after call to inv_weight() */
 
 /* returns how far beyond the normal capacity the player is currently. */
 /* inv_weight() is negative if the player is below normal capacity. */
-int
-inv_weight()
-{
+int inv_weight() {
 	register struct obj *otmp = invent;
 	register int wt = 0;
 
@@ -2231,10 +2151,7 @@ inv_weight()
  * Returns 0 if below normal capacity, or the number of "capacity units"
  * over the normal capacity the player is loaded.  Max is 5.
  */
-int
-calc_capacity(xtra_wt)
-int xtra_wt;
-{
+int calc_capacity(int xtra_wt) {
     int cap, wt = inv_weight() + xtra_wt;
 
     if (wt <= 0) return UNENCUMBERED;
@@ -2243,24 +2160,17 @@ int xtra_wt;
     return min(cap, OVERLOADED);
 }
 
-int
-near_capacity()
-{
+int near_capacity() {
     return calc_capacity(0);
 }
 
-int
-max_capacity()
-{
+int max_capacity() {
     int wt = inv_weight();
 
     return (wt - (2 * wc));
 }
 
-boolean
-check_capacity(str)
-const char *str;
-{
+boolean check_capacity(const char *str) {
     if(near_capacity() >= EXT_ENCUMBER) {
 	if(str)
 	    pline(str);
@@ -2274,9 +2184,7 @@ const char *str;
 #endif /* OVL1 */
 #ifdef OVLB
 
-int
-inv_cnt()
-{
+int inv_cnt() {
 	register struct obj *otmp = invent;
 	register int ct = 0;
 
@@ -2292,10 +2200,7 @@ inv_cnt()
 /* Intended use is for your or some monsters inventory, */
 /* now that u.gold/m.gold is gone.*/
 /* Counting money in a container might be possible too. */
-long
-money_cnt(otmp)
-struct obj *otmp;
-{
+long money_cnt(struct obj *otmp) {
         while(otmp) {
 	        /* Must change when silver & copper is implemented: */
  	        if (otmp->oclass == COIN_CLASS) return otmp->quan;

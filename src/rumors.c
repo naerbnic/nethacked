@@ -37,10 +37,7 @@ static int oracle_flg = 0;  /* -1=>don't use, 0=>need init, 1=>init done */
 static unsigned oracle_cnt = 0;
 static long *oracle_loc = 0;
 
-STATIC_OVL void
-init_rumors(fp)
-dlb *fp;
-{
+STATIC_OVL void init_rumors(dlb *fp) {
 	char line[BUFSZ];
 
 	(void) dlb_fgets(line, sizeof line, fp); /* skip "don't edit" comment */
@@ -63,12 +60,7 @@ dlb *fp;
  * cookies should not appear.  This has no effect for true rumors since none
  * of them contain such references anyway.
  */
-char *
-getrumor(truth, rumor_buf, exclude_cookie)
-int truth; /* 1=true, -1=false, 0=either */
-char *rumor_buf;
-boolean exclude_cookie; 
-{
+char * getrumor(int truth, char *rumor_buf, boolean exclude_cookie) {
 	dlb	*rumors;
 	long tidbit, beginning;
 	char	*endp, line[BUFSZ], xbuf[BUFSZ];
@@ -134,11 +126,7 @@ boolean exclude_cookie;
 	return rumor_buf;
 }
 
-void
-outrumor(truth, mechanism)
-int truth; /* 1=true, -1=false, 0=either */
-int mechanism;
-{
+void outrumor(int truth, int mechanism) {
 	static const char fortune_msg[] =
 		"This cookie has a scrap of paper inside.";
 	const char *line;
@@ -179,10 +167,7 @@ int mechanism;
 	pline("%s", line);
 }
 
-STATIC_OVL void
-init_oracles(fp)
-dlb *fp;
-{
+STATIC_OVL void init_oracles(dlb *fp) {
 	register int i;
 	char line[BUFSZ];
 	int cnt = 0;
@@ -201,10 +186,7 @@ dlb *fp;
 	return;
 }
 
-void
-save_oracles(fd, mode)
-int fd, mode;
-{
+void save_oracles(int fd, int mode) {
 	if (perform_bwrite(mode)) {
 	    bwrite(fd, (genericptr_t) &oracle_cnt, sizeof oracle_cnt);
 	    if (oracle_cnt)
@@ -218,10 +200,7 @@ int fd, mode;
 	}
 }
 
-void
-restore_oracles(fd)
-int fd;
-{
+void restore_oracles(int fd) {
 	mread(fd, (genericptr_t) &oracle_cnt, sizeof oracle_cnt);
 	if (oracle_cnt) {
 	    oracle_loc = (long *) alloc(oracle_cnt * sizeof (long));
@@ -230,11 +209,7 @@ int fd;
 	}
 }
 
-void
-outoracle(special, delphi)
-boolean special;
-boolean delphi;
-{
+void outoracle(boolean special, boolean delphi) {
 	char	line[COLNO];
 	char	*endp;
 	dlb	*oracles;
@@ -283,10 +258,7 @@ boolean delphi;
 	}
 }
 
-int
-doconsult(oracl)
-register struct monst *oracl;
-{
+int doconsult(register struct monst *oracl) {
 #ifdef GOLDOBJ
         long umoney = money_cnt(invent);
 #endif

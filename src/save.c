@@ -55,9 +55,7 @@ extern struct menucoloring *menu_colorings;
 /* need to preserve these during save to avoid accessing freed memory */
 static unsigned ustuck_id = 0, usteed_id = 0;
 
-int
-dosave()
-{
+int dosave() {
 	clear_nhwindow(WIN_MESSAGE);
 	if(yn("Really save?") == 'n') {
 		clear_nhwindow(WIN_MESSAGE);
@@ -113,9 +111,7 @@ int sig_unused;
 #endif
 
 /* returns 1 if save successful */
-int
-dosave0()
-{
+int dosave0() {
 	const char *fq_save;
 	register int fd, ofd;
 	xchar ltmp;
@@ -274,10 +270,7 @@ dosave0()
 	return(1);
 }
 
-STATIC_OVL void
-savegamestate(fd, mode)
-register int fd, mode;
-{
+STATIC_OVL void savegamestate(register int fd, register int mode) {
 	int uid;
 #if defined(RECORD_REALTIME) || defined(REALTIME_ON_BOTL)
         time_t realtime;
@@ -341,9 +334,7 @@ register int fd, mode;
 }
 
 #ifdef INSURANCE
-void
-savestateinlock()
-{
+void savestateinlock() {
 	int fd, hpid;
 	static boolean havestate = TRUE;
 	char whynot[BUFSZ];
@@ -416,12 +407,7 @@ savestateinlock()
 #endif
 
 #ifdef MFLOPPY
-boolean
-savelev(fd, lev, mode)
-int fd;
-xchar lev;
-int mode;
-{
+boolean savelev(int fd, xchar lev, int mode) {
 	if (mode & COUNT_SAVE) {
 		bytes_counted = 0;
 		savelev0(fd, lev, COUNT_SAVE);
@@ -597,10 +583,7 @@ static NEARDATA boolean compressing = FALSE;
     HUP printf("outbufp %d outrunlength %d\n", outbufp,outrunlength);
 }*/
 
-STATIC_OVL void
-bputc(c)
-int c;
-{
+STATIC_OVL void bputc(int c) {
 #ifdef MFLOPPY
     bytes_counted++;
     if (count_only)
@@ -614,19 +597,13 @@ int c;
 }
 
 /*ARGSUSED*/
-void
-bufon(fd)
-int fd;
-{
+void bufon(int fd) {
     compressing = TRUE;
     return;
 }
 
 /*ARGSUSED*/
-void
-bufoff(fd)
-int fd;
-{
+void bufoff(int fd) {
     if (outbufp) {
 	outbufp = 0;
 	panic("closing file with buffered data still unwritten");
@@ -661,12 +638,7 @@ register int fd;
     }
 }
 
-void
-bwrite(fd, loc, num)
-int fd;
-genericptr_t loc;
-register unsigned num;
-{
+void bwrite(int fd, genericptr_t loc, register unsigned num) {
     register unsigned char *bp = (unsigned char *)loc;
 
     if (!compressing) {
@@ -699,10 +671,7 @@ register unsigned num;
     }
 }
 
-void
-bclose(fd)
-int fd;
-{
+void bclose(int fd) {
     bufoff(fd);
     (void) close(fd);
     return;
@@ -714,10 +683,7 @@ static int bw_fd = -1;
 static FILE *bw_FILE = 0;
 static boolean buffering = FALSE;
 
-void
-bufon(fd)
-    int fd;
-{
+void bufon(int fd) {
 #ifdef UNIX
     if(bw_fd >= 0)
 	panic("double buffering unexpected");
@@ -728,18 +694,12 @@ bufon(fd)
     buffering = TRUE;
 }
 
-void
-bufoff(fd)
-int fd;
-{
+void bufoff(int fd) {
     bflush(fd);
     buffering = FALSE;
 }
 
-void
-bflush(fd)
-    int fd;
-{
+void bflush(int fd) {
 #ifdef UNIX
     if(fd == bw_fd) {
 	if(fflush(bw_FILE) == EOF)
@@ -749,12 +709,7 @@ bflush(fd)
     return;
 }
 
-void
-bwrite(fd,loc,num)
-register int fd;
-register genericptr_t loc;
-register unsigned num;
-{
+void bwrite(register int fd, register genericptr_t loc, register unsigned num) {
 	boolean failed;
 
 #ifdef MFLOPPY
@@ -789,10 +744,7 @@ register unsigned num;
 	}
 }
 
-void
-bclose(fd)
-    int fd;
-{
+void bclose(int fd) {
     bufoff(fd);
 #ifdef UNIX
     if (fd == bw_fd) {
@@ -806,10 +758,7 @@ bclose(fd)
 }
 #endif /* ZEROCOMP */
 
-STATIC_OVL void
-savelevchn(fd, mode)
-register int fd, mode;
-{
+STATIC_OVL void savelevchn(register int fd, register int mode) {
 	s_level	*tmplev, *tmplev2;
 	int cnt = 0;
 
@@ -828,10 +777,7 @@ register int fd, mode;
 	    sp_levchn = 0;
 }
 
-STATIC_OVL void
-savedamage(fd, mode)
-register int fd, mode;
-{
+STATIC_OVL void savedamage(register int fd, register int mode) {
 	register struct damage *damageptr, *tmp_dam;
 	unsigned int xl = 0;
 
@@ -853,11 +799,7 @@ register int fd, mode;
 	    level.damagelist = 0;
 }
 
-STATIC_OVL void
-saveobjchn(fd, otmp, mode)
-register int fd, mode;
-register struct obj *otmp;
-{
+STATIC_OVL void saveobjchn(register int fd, register struct obj *otmp, register int mode) {
 	register struct obj *otmp2;
 	unsigned int xl;
 	int minusone = -1;
@@ -885,11 +827,7 @@ register struct obj *otmp;
 	    bwrite(fd, (genericptr_t) &minusone, sizeof(int));
 }
 
-STATIC_OVL void
-savemonchn(fd, mtmp, mode)
-register int fd, mode;
-register struct monst *mtmp;
-{
+STATIC_OVL void savemonchn(register int fd, register struct monst *mtmp, register int mode) {
 	register struct monst *mtmp2;
 	unsigned int xl;
 	int minusone = -1;
@@ -915,11 +853,7 @@ register struct monst *mtmp;
 	    bwrite(fd, (genericptr_t) &minusone, sizeof(int));
 }
 
-STATIC_OVL void
-savetrapchn(fd, trap, mode)
-register int fd, mode;
-register struct trap *trap;
-{
+STATIC_OVL void savetrapchn(register int fd, register struct trap *trap, register int mode) {
 	register struct trap *trap2;
 
 	while (trap) {
@@ -939,10 +873,7 @@ register struct trap *trap;
  * we only want to save the fruits which exist on the bones level; the bones
  * level routine marks nonexistent fruits by making the fid negative.
  */
-void
-savefruitchn(fd, mode)
-register int fd, mode;
-{
+void savefruitchn(register int fd, register int mode) {
 	register struct fruit *f2, *f1;
 
 	f1 = ffruit;
@@ -961,9 +892,7 @@ register int fd, mode;
 }
 
 /* also called by prscore(); this probably belongs in dungeon.c... */
-void
-free_dungeons()
-{
+void free_dungeons() {
 #ifdef FREE_ALL_MEMORY
 	savelevchn(0, FREE_SAVE);
 	save_dungeon(0, FALSE, TRUE);
@@ -972,9 +901,7 @@ free_dungeons()
 }
 
 #ifdef MENU_COLOR
-void
-free_menu_coloring()
-{
+void free_menu_coloring() {
     struct menucoloring *tmp = menu_colorings;
 
     while (tmp) {
@@ -990,9 +917,7 @@ free_menu_coloring()
 }
 #endif /* MENU_COLOR */
 
-void
-freedynamicdata()
-{
+void freedynamicdata() {
 	unload_qtlist();
 	free_invbuf();	/* let_to_name (invent.c) */
 	free_youbuf();	/* You_buf,&c (pline.c) */
@@ -1062,10 +987,7 @@ freedynamicdata()
 }
 
 #ifdef MFLOPPY
-boolean
-swapin_file(lev)
-int lev;
-{
+boolean swapin_file(int lev) {
 	char to[PATHLEN], from[PATHLEN];
 
 	Sprintf(from, "%s%s", permbones, alllevels);
@@ -1121,10 +1043,7 @@ swapout_oldest() {
 	return TRUE;
 }
 
-STATIC_OVL void
-copyfile(from, to)
-char *from, *to;
-{
+STATIC_OVL void copyfile(char *from, char *to) {
 # ifdef TOS
 
 	if (_copyfile(from, to))

@@ -80,10 +80,7 @@ STATIC_DCL int FDECL(ready_weapon, (struct obj *));
  * responsibility to handle that.  It's also the caller's responsibility
  * to print the appropriate messages.
  */
-void
-setuwep(obj)
-register struct obj *obj;
-{
+void setuwep(register struct obj *obj) {
 	struct obj *olduwep = uwep;
 
 	if (obj == uwep) return; /* necessary to not set unweapon */
@@ -112,10 +109,7 @@ register struct obj *obj;
 	update_inventory();
 }
 
-STATIC_OVL int
-ready_weapon(wep)
-struct obj *wep;
-{
+STATIC_OVL int ready_weapon(struct obj *wep) {
 	/* Separated function so swapping works easily */
 	int res = 0;
 
@@ -203,18 +197,12 @@ struct obj *wep;
 	return(res);
 }
 
-void
-setuqwep(obj)
-register struct obj *obj;
-{
+void setuqwep(register struct obj *obj) {
 	setworn(obj, W_QUIVER);
 	update_inventory();
 }
 
-void
-setuswapwep(obj)
-register struct obj *obj;
-{
+void setuswapwep(register struct obj *obj) {
 	setworn(obj, W_SWAPWEP);
 	update_inventory();
 }
@@ -229,9 +217,7 @@ static NEARDATA const char ready_objs[] =
 static NEARDATA const char bullets[] =	/* (note: different from dothrow.c) */
 	{ ALL_CLASSES, ALLOW_NONE, GEM_CLASS, WEAPON_CLASS, 0 };
 
-int
-dowield()
-{
+int dowield() {
 	register struct obj *wep, *oldwep;
 	int result;
 
@@ -283,9 +269,7 @@ dowield()
 	return (result);
 }
 
-int
-doswapweapon()
-{
+int doswapweapon() {
 	register struct obj *oldwep, *oldswap;
 	int result = 0;
 
@@ -327,9 +311,7 @@ doswapweapon()
 	return (result);
 }
 
-int
-dowieldquiver()
-{
+int dowieldquiver() {
 	register struct obj *newquiver;
 	const char *quivee_types = (uslinging() ||
 		  (uswapwep && objects[uswapwep->otyp].oc_skill == P_SLING)) ?
@@ -399,11 +381,7 @@ dowieldquiver()
 
 /* used for #rub and for applying pick-axe, whip, grappling hook, or polearm */
 /* (moved from apply.c) */
-boolean
-wield_tool(obj, verb)
-struct obj *obj;
-const char *verb;	/* "rub",&c */
-{
+boolean wield_tool(struct obj *obj, const char *verb) {
     const char *what;
     boolean more_than_1;
 
@@ -465,9 +443,7 @@ const char *verb;	/* "rub",&c */
     return TRUE;
 }
 
-int
-can_twoweapon()
-{
+int can_twoweapon() {
 	struct obj *otmp;
 
 #define NOT_WEAPON(obj) (!is_weptool(obj) && obj->oclass != WEAPON_CLASS)
@@ -510,9 +486,7 @@ can_twoweapon()
 	return (FALSE);
 }
 
-void
-drop_uswapwep()
-{
+void drop_uswapwep() {
 	char str[BUFSZ];
 	struct obj *obj = uswapwep;
 
@@ -522,9 +496,7 @@ drop_uswapwep()
 	dropx(obj);
 }
 
-int
-dotwoweapon()
-{
+int dotwoweapon() {
 	/* You can always toggle it off */
 	if (u.twoweap) {
 		You("switch to your primary weapon.");
@@ -550,9 +522,7 @@ dotwoweapon()
  * 1.  The item has been eaten, stolen, burned away, or rotted away.
  * 2.  Making an item disappear for a bones pile.
  */
-void
-uwepgone()
-{
+void uwepgone() {
 	if (uwep) {
 		if (artifact_light(uwep) && uwep->lamplit) {
 		    end_burn(uwep, FALSE);
@@ -564,27 +534,21 @@ uwepgone()
 	}
 }
 
-void
-uswapwepgone()
-{
+void uswapwepgone() {
 	if (uswapwep) {
 		setworn((struct obj *)0, W_SWAPWEP);
 		update_inventory();
 	}
 }
 
-void
-uqwepgone()
-{
+void uqwepgone() {
 	if (uquiver) {
 		setworn((struct obj *)0, W_QUIVER);
 		update_inventory();
 	}
 }
 
-void
-untwoweapon()
-{
+void untwoweapon() {
 	if (u.twoweap) {
 		You("can no longer use two weapons at once.");
 		u.twoweap = FALSE;
@@ -594,12 +558,7 @@ untwoweapon()
 }
 
 /* Maybe rust object, or corrode it if acid damage is called for */
-void
-erode_obj(target, acid_dmg, fade_scrolls)
-struct obj *target;		/* object (e.g. weapon or armor) to erode */
-boolean acid_dmg;
-boolean fade_scrolls;
-{
+void erode_obj(struct obj *target, boolean acid_dmg, boolean fade_scrolls) {
 	int erosion;
 	struct monst *victim;
 	boolean vismon;
@@ -683,11 +642,7 @@ boolean fade_scrolls;
 	}
 }
 
-int
-chwepon(otmp, amount)
-register struct obj *otmp;
-register int amount;
-{
+int chwepon(register struct obj *otmp, register int amount) {
 	const char *color = hcolor((amount < 0) ? NH_BLACK : NH_BLUE);
 	const char *xtime;
 	int otyp = STRANGE_OBJECT;
@@ -772,10 +727,7 @@ register int amount;
 	return(1);
 }
 
-int
-welded(obj)
-register struct obj *obj;
-{
+int welded(register struct obj *obj) {
 	if (obj && obj == uwep && will_weld(obj)) {
 		obj->bknown = TRUE;
 		return 1;
@@ -783,10 +735,7 @@ register struct obj *obj;
 	return 0;
 }
 
-void
-weldmsg(obj)
-register struct obj *obj;
-{
+void weldmsg(register struct obj *obj) {
 	long savewornmask;
 
 	savewornmask = obj->owornmask;

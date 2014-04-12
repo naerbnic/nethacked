@@ -5,9 +5,7 @@
 #include "hack.h"
 #include "artifact.h"
 
-void
-take_gold()
-{
+void take_gold() {
 #ifndef GOLDOBJ
 	if (u.ugold <= 0)  {
 		You_feel("a strange sensation.");
@@ -35,9 +33,7 @@ take_gold()
 #endif
 }
 
-int
-dosit()
-{
+int dosit() {
 	static const char sit_message[] = "sit on the %s.";
 	register struct trap *trap;
 	register int typ = levl[u.ux][u.uy].typ;

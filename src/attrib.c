@@ -101,11 +101,7 @@ STATIC_DCL void NDECL(exerper);
 STATIC_DCL void FDECL(postadjabil, (long *));
 
 /* adjust an attribute; return TRUE if change is made, FALSE otherwise */
-boolean
-adjattrib(ndx, incr, msgflg)
-	int	ndx, incr;
-	int	msgflg;	    /* positive => no message, zero => message, and */
-{			    /* negative => conditional (msg if change made) */
+boolean adjattrib(int ndx, int incr, int msgflg) {
 	if (Fixed_abil || !incr) return FALSE;
 
 	if ((ndx == A_INT || ndx == A_WIS)
@@ -160,11 +156,7 @@ adjattrib(ndx, incr, msgflg)
 	return TRUE;
 }
 
-void
-gainstr(otmp, incr)
-	register struct obj *otmp;
-	register int incr;
-{
+void gainstr(register struct obj *otmp, register int incr) {
 	int num = 1;
 
 	if(incr) num = incr;
@@ -195,19 +187,13 @@ losestr(num)	/* may kill you; cause may be poison or monster like 'a' */
 	(void) adjattrib(A_STR, -num, TRUE);
 }
 
-void
-change_luck(n)
-	register schar n;
-{
+void change_luck(register schar n) {
 	u.uluck += n;
 	if (u.uluck < 0 && u.uluck < LUCKMIN)	u.uluck = LUCKMIN;
 	if (u.uluck > 0 && u.uluck > LUCKMAX)	u.uluck = LUCKMAX;
 }
 
-int
-stone_luck(parameter)
-boolean parameter; /* So I can't think up of a good name.  So sue me. --KAA */
-{
+int stone_luck(boolean parameter) {
 	register struct obj *otmp;
 	register long bonchance = 0;
 
@@ -222,9 +208,7 @@ boolean parameter; /* So I can't think up of a good name.  So sue me. --KAA */
 }
 
 /* there has just been an inventory change affecting a luck-granting item */
-void
-set_moreluck()
-{
+void set_moreluck() {
 	int luckbon = stone_luck(TRUE);
 
 	if (!luckbon && !carrying(LUCKSTONE)) u.moreluck = 0;
@@ -235,9 +219,7 @@ set_moreluck()
 #endif /* OVLB */
 #ifdef OVL1
 
-void
-restore_attrib()
-{
+void restore_attrib() {
 	int	i;
 
 	for(i = 0; i < A_MAX; i++) {	/* all temporary losses/gains */
@@ -259,11 +241,7 @@ restore_attrib()
 
 #define AVAL	50		/* tune value for exercise gains */
 
-void
-exercise(i, inc_or_dec)
-int	i;
-boolean	inc_or_dec;
-{
+void exercise(int i, boolean inc_or_dec) {
 #ifdef DEBUG
 	pline("Exercise:");
 #endif
@@ -302,9 +280,7 @@ boolean	inc_or_dec;
 #define FAINTED		5
 #define STARVED		6
 
-STATIC_OVL void
-exerper()
-{
+STATIC_OVL void exerper() {
 	if(!(moves % 10)) {
 		/* Hunger Checks */
 
@@ -363,9 +339,7 @@ exerper()
 	}
 }
 
-void
-exerchk()
-{
+void exerchk() {
 	int	i, mod_val;
 
 	/*	Check out the periodic accumulations */
@@ -446,17 +420,12 @@ exerchk()
 }
 
 /* next_check will otherwise have its initial 600L after a game restore */
-void
-reset_attribute_clock()
-{
+void reset_attribute_clock() {
 	if (moves > 600L) next_check = moves + rn1(50,800);
 }
 
 
-void
-init_attr(np)
-	register int	np;
-{
+void init_attr(register int np) {
 	register int	i, x, tryct;
 
 
@@ -503,9 +472,7 @@ init_attr(np)
 	}
 }
 
-void
-redist_attr()
-{
+void redist_attr() {
 	register int i, tmp;
 
 	for(i = 0; i < A_MAX; i++) {
@@ -523,19 +490,13 @@ redist_attr()
 }
 
 STATIC_OVL
-void
-postadjabil(ability)
-long *ability;
-{
+void postadjabil(long *ability) {
 	if (!ability) return;
 	if (ability == &(HWarning) || ability == &(HSee_invisible))
 		see_monsters();
 }
 
-void
-adjabil(oldlevel,newlevel)
-int oldlevel, newlevel;
-{
+void adjabil(int oldlevel, int newlevel) {
 	register const struct innate *abil, *rabil;
 	long mask = FROMEXPER;
 
@@ -617,9 +578,7 @@ int oldlevel, newlevel;
 }
 
 
-int
-newhp()
-{
+int newhp() {
 	int	hp, conplus;
 
 
@@ -661,10 +620,7 @@ newhp()
 #endif /* OVLB */
 #ifdef OVL0
 
-schar
-acurr(x)
-int x;
-{
+schar acurr(int x) {
 	register int tmp = (u.abon.a[x] + u.atemp.a[x] + u.acurr.a[x]);
 
 	if (x == A_STR) {
@@ -693,9 +649,7 @@ int x;
 
 /* condense clumsy ACURR(A_STR) value into value that fits into game formulas
  */
-schar
-acurrstr()
-{
+schar acurrstr() {
 	register int str = ACURR(A_STR);
 
 	if (str <= 18) return((schar)str);
@@ -709,10 +663,7 @@ acurrstr()
 /* avoid possible problems with alignment overflow, and provide a centralized
  * location for any future alignment limits
  */
-void
-adjalign(n)
-register int n;
-{
+void adjalign(register int n) {
 	register int newalign = u.ualign.record + n;
 
 	if(n < 0) {

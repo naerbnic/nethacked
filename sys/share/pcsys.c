@@ -58,9 +58,7 @@ extern int GUILaunched;    /* from nttty.c */
 
 #if defined(MICRO) || defined(WIN32)
 
-void
-flushout()
-{
+void flushout() {
 	(void) fflush(stdout);
 	return;
 }
@@ -75,9 +73,7 @@ static const char *COMSPEC =
 #define getcomspec() nh_getenv(COMSPEC)
 
 # ifdef SHELL
-int
-dosh()
-{
+int dosh() {
 	extern char orgdir[];
 	char *comspec;
 # ifndef __GO32__
@@ -138,10 +134,7 @@ dosh()
 
 # ifdef MFLOPPY
 
-void
-eraseall(path, files)
-const char *path, *files;
-{
+void eraseall(const char *path, const char *files) {
 	char buf[PATHLEN];
 	char *foundfile;
 
@@ -158,10 +151,7 @@ const char *path, *files;
 /*
  * Rewritten for version 3.3 to be faster
  */
-void
-copybones(mode)
-int mode;
-{
+void copybones(int mode) {
 	char from[PATHLEN], to[PATHLEN], last[13];
 	char *frompath, *topath;
 	char *foundfile;
@@ -248,9 +238,7 @@ error_copying:
 	return;
 }
 
-void
-playwoRAMdisk()
-{
+void playwoRAMdisk() {
 	int c;
 
 	msmsg("Do you wish to play without a RAMdisk? [yn] (n)");
@@ -268,10 +256,7 @@ playwoRAMdisk()
 	return;
 }
 
-int
-saveDiskPrompt(start)
-int start;
-{
+int saveDiskPrompt(int start) {
 	char buf[BUFSIZ], *bp;
 	char qbuf[QBUFSZ];
 
@@ -306,9 +291,7 @@ int start;
 }
 
 /* Return 1 if the record file was found */
-STATIC_OVL boolean
-record_exists()
-{
+STATIC_OVL boolean record_exists() {
 	FILE *fp;
 
 	fp = fopen_datafile(RECORD, "r", TRUE);
@@ -325,9 +308,7 @@ record_exists()
 # else
 #  ifdef MFLOPPY
 /* Return 1 if the comspec was found */
-STATIC_OVL boolean
-comspec_exists()
-{
+STATIC_OVL boolean comspec_exists() {
 	int fd;
 	char *comspec;
 
@@ -345,9 +326,7 @@ comspec_exists()
 # ifdef MFLOPPY
 /* Prompt for game disk, then check for record file.
  */
-void
-gameDiskPrompt()
-{
+void gameDiskPrompt() {
 	if (flags.asksavedisk) {
 		if (record_exists() && comspec_exists())
 			return;
@@ -372,10 +351,7 @@ gameDiskPrompt()
  * Add a backslash to any name not ending in /, \ or :	 There must
  * be room for the \
  */
-void
-append_slash(name)
-char *name;
-{
+void append_slash(char *name) {
 	char *ptr;
 
 	if (!*name)
@@ -392,10 +368,7 @@ char *name;
 boolean getreturn_enabled;
 #endif
 
-void
-getreturn(str)
-const char *str;
-{
+void getreturn(const char *str) {
 #ifdef WIN32
 	if (!getreturn_enabled) return;
 #endif
@@ -437,10 +410,7 @@ msmsg VA_DECL(const char *, fmt)
 #define PATHSEP ';'
 #endif
 
-FILE *
-fopenp(name, mode)
-const char *name, *mode;
-{
+FILE * fopenp(const char *name, const char *mode) {
 	char buf[BUFSIZ], *bp, *pp, lastch = 0;
 	FILE *fp;
 

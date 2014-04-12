@@ -68,11 +68,7 @@ boolean FDECL(fopen_gif_file, (const char *, const char *));
 boolean FDECL(read_gif_tile, (pixel(*)[]));
 int NDECL(fclose_gif_file);
 
-static int
-GetDataBlock(fd, buf)
-FILE		*fd;
-unsigned char	*buf;
-{
+static int GetDataBlock(FILE *fd, unsigned char *buf) {
 	unsigned char	count;
 
 	if (!ReadOK(fd,&count,1)) {
@@ -90,11 +86,7 @@ unsigned char	*buf;
 	return count;
 }
 
-static void
-DoExtension(fd, label)
-FILE	*fd;
-int	label;
-{
+static void DoExtension(FILE *fd, int label) {
 	static char	buf[256];
 	char		*str;
 
@@ -160,11 +152,7 @@ int	label;
 }
 
 static
-boolean
-ReadColorMap(fd,number)
-FILE		*fd;
-int		number;
-{
+boolean ReadColorMap(FILE *fd, int number) {
 	int		i;
 	unsigned char	rgb[3];
 
@@ -185,10 +173,7 @@ int		number;
  * Read gif header, including colormaps.  We expect only one image per
  * file, so if that image has a local colormap, overwrite the global one.
  */
-static void
-read_header(fd)
-FILE	*fd;
-{
+static void read_header(FILE *fd) {
 	unsigned char	buf[16];
 	unsigned char	c;
 	char		version[4];
@@ -287,12 +272,7 @@ FILE	*fd;
 	}
 }
 
-static int
-GetCode(fd, code_size, flag)
-FILE	*fd;
-int	code_size;
-int	flag;
-{
+static int GetCode(FILE *fd, int code_size, int flag) {
 	static unsigned char	buf[280];
 	static int		curbit, lastbit, done, last_byte;
 	int			i, j, ret;
@@ -331,12 +311,7 @@ int	flag;
 	return ret;
 }
 
-static int
-LWZReadByte(fd, flag, input_code_size)
-FILE	*fd;
-int	flag;
-int	input_code_size;
-{
+static int LWZReadByte(FILE *fd, int flag, int input_code_size) {
 	static int	fresh = FALSE;
 	int		code, incode;
 	static int	code_size, set_code_size;
@@ -448,11 +423,7 @@ int	input_code_size;
 }
 
 
-static void
-ReadInterleavedImage(fd, len, height)
-FILE	*fd;
-int	len, height;
-{
+static void ReadInterleavedImage(FILE *fd, int len, int height) {
 	int		v;
 	int		xpos = 0, ypos = 0, pass = 0;
 
@@ -497,11 +468,7 @@ fini:
 }
 
 static
-void
-ReadTileStrip(fd,len)
-FILE *fd;
-int len;
-{
+void ReadTileStrip(FILE *fd, int len) {
 	int	v;
 	int	xpos = 0, ypos = 0;
 
@@ -522,11 +489,7 @@ int len;
 
 
 
-boolean
-fopen_gif_file(filename, type)
-const char *filename;
-const char *type;
-{
+boolean fopen_gif_file(const char *filename, const char *type) {
 	int i;
 
 	if (strcmp(type, RDBMODE)) {
@@ -637,9 +600,7 @@ pixel (*pixels)[TILE_X];
 	return FALSE;
 }
 
-int
-fclose_gif_file()
-{
+int fclose_gif_file() {
 	int i;
 
 	if (GifScreen.Interlace) {
@@ -662,11 +623,7 @@ static char *std_args[] = { "tilemap",	/* dummy argv[0] */
 			"objects.gif",  "objects.txt",
 			"other.gif",    "other.txt" };
 
-int
-main(argc, argv)
-int argc;
-char *argv[];
-{
+int main(int argc, char *argv[]) {
 	pixel pixels[TILE_Y][TILE_X];
 
 	if (argc == 1) {

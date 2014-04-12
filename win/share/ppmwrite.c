@@ -20,16 +20,12 @@ static pixel **image;
 static void NDECL(write_header);
 static void NDECL(WriteTileStrip);
 
-static void
-write_header()
-{
+static void write_header() {
 	(void) fprintf(ppm_file, "P6 %03d %03d 255\n",
 				PpmScreen.Width, PpmScreen.Height);
 }
 
-static void
-WriteTileStrip()
-{
+static void WriteTileStrip() {
 	int i, j;
 
 	for (j = 0; j < TILE_Y; j++) {
@@ -41,11 +37,7 @@ WriteTileStrip()
 	}
 }
 
-boolean
-fopen_ppm_file(filename, type)
-const char *filename;
-const char *type;
-{
+boolean fopen_ppm_file(const char *filename, const char *type) {
 	int i;
 
 	if (strcmp(type, WRBMODE)) {
@@ -100,9 +92,7 @@ pixel (*pixels)[TILE_X];
 	return TRUE;
 }
 
-int
-fclose_ppm_file()
-{
+int fclose_ppm_file() {
 	int i, j;
 
 	if (curr_tiles_across) {	/* partial row */
@@ -136,11 +126,7 @@ fclose_ppm_file()
 }
 
 
-int
-main(argc, argv)
-int argc;
-char *argv[];
-{
+int main(int argc, char *argv[]) {
 	pixel pixels[TILE_Y][TILE_X];
 
 	if (argc != 3) {

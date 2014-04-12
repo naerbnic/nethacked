@@ -80,18 +80,14 @@ static char origdir[255]="";
  *  C dir	chdir to dir (used ONCE, not like tar's -C)
  */
 
-static void
-usage()
-{
+static void usage() {
     (void) printf("Usage: %s [ctxCIfv] arguments... [files...]\n", progname);
     (void) printf("  default library is %s\n", library_file);
     (void) printf("  default list file is %s\n", list_file);
     xexit(EXIT_FAILURE);
 }
 
-static void
-verbose_help()
-{
+static void verbose_help() {
     static const char *long_help[] = {
 	"",
 	"dlb COMMANDoptions args... files...",
@@ -116,12 +112,7 @@ verbose_help()
     usage();
 }
 
-static void
-Write(out,buf,len)
-    int out;
-    char *buf;
-    long len;
-{
+static void Write(int out, char *buf, long len) {
 #if defined(MSDOS) && !defined(__DJGPP__)
     unsigned short slen;
 
@@ -141,20 +132,14 @@ Write(out,buf,len)
 }
 
 
-char *
-eos(s)
-    char *s;
-{
+char * eos(char *s) {
     while (*s) s++;
     return s;
 }
 
 
 #ifdef VMS	/* essential to have punctuation, to avoid logical names */
-static FILE *
-vms_fopen(filename, mode)
-const char *filename, *mode;
-{
+static FILE * vms_fopen(const char *filename, const char *mode) {
     char tmp[BUFSIZ];
 
     if (!index(filename, '.') && !index(filename, ';'))
@@ -165,21 +150,14 @@ const char *filename, *mode;
 #endif	/* VMS */
 
 /* open_library(dlb.c) needs this (which normally comes from src/files.c) */
-FILE *
-fopen_datafile(filename, mode)
-const char *filename, *mode;
-{
+FILE * fopen_datafile(const char *filename, const char *mode) {
     return fopen(filename, mode);
 }
 
 #endif	/* DLBLIB */
 #endif	/* DLB */
 
-int
-main(argc, argv)
-    int argc;
-    char **argv;
-{
+int main(int argc, char **argv) {
 #ifdef DLB
 #ifdef DLBLIB
     int i, r;
@@ -488,12 +466,7 @@ main(argc, argv)
 #ifdef DLB
 #ifdef DLBLIB
 
-static void
-write_dlb_directory(out, nfiles, ld, slen, dir_size, flen)
-int out, nfiles;
-libdir *ld;
-long slen, dir_size, flen;
-{
+static void write_dlb_directory(int out, int nfiles, libdir *ld, long slen, long dir_size, long flen) {
     char buf[BUFSIZ];
     int i;
 
@@ -522,10 +495,7 @@ long slen, dir_size, flen;
 #endif	/* DLBLIB */
 #endif	/* DLB */
 
-static void
-xexit(retcd)
-    int retcd;
-{
+static void xexit(int retcd) {
 #ifdef DLB
 #ifdef AMIGA
     if (origdir[0]) chdir(origdir);

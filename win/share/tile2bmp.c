@@ -162,11 +162,7 @@ int yoffset,xoffset;
 char bmpname[128];
 FILE *fp;
 
-int
-main(argc, argv)
-int argc;
-char *argv[];
-{
+int main(int argc, char *argv[]) {
 	int i, j;
 
 	if (argc != 2) {
@@ -246,10 +242,7 @@ char *argv[];
 }
 
 
-static void
-build_bmfh(pbmfh)
-BITMAPFILEHEADER *pbmfh;
-{
+static void build_bmfh(BITMAPFILEHEADER *pbmfh) {
 	pbmfh->bfType = leshort(0x4D42);
 	pbmfh->bfSize = lelong(BMPFILESIZE);
 	pbmfh->bfReserved1 = (UINT)0;
@@ -258,10 +251,7 @@ BITMAPFILEHEADER *pbmfh;
 			   (RGBQUAD_COUNT * sizeof(RGBQUAD)));
 }
 
-static void
-build_bmih(pbmih)
-BITMAPINFOHEADER *pbmih;
-{
+static void build_bmih(BITMAPINFOHEADER *pbmih) {
 	WORD cClrBits;
 	int w,h;
 	pbmih->biSize = lelong(sizeof(bmp.bmih));

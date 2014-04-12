@@ -38,9 +38,7 @@ static const char *developers[] = {
 
 
 /* return a randomly chosen developer name */
-STATIC_OVL const char *
-dev_name()
-{
+STATIC_OVL const char * dev_name() {
 	register int i, m = 0, n = SIZE(developers);
 	register struct monst *mtmp;
 	register boolean match;
@@ -63,11 +61,7 @@ dev_name()
 	return(developers[i]);
 }
 
-STATIC_OVL void
-get_mplname(mtmp, nam)
-register struct monst *mtmp;
-char *nam;
-{
+STATIC_OVL void get_mplname(register struct monst *mtmp, char *nam) {
 	boolean fmlkind = is_female(mtmp->data);
 	const char *devnam;
 
@@ -88,11 +82,7 @@ char *nam;
 			    (boolean)mtmp->female));
 }
 
-STATIC_OVL void
-mk_mplayer_armor(mon, typ)
-struct monst *mon;
-short typ;
-{
+STATIC_OVL void mk_mplayer_armor(struct monst *mon, short typ) {
 	struct obj *obj;
 
 	if (typ == STRANGE_OBJECT) return;
@@ -108,12 +98,7 @@ short typ;
 	(void) mpickobj(mon, obj);
 }
 
-struct monst *
-mk_mplayer(ptr, x, y, special)
-register struct permonst *ptr;
-xchar x, y;
-register boolean special;
-{
+struct monst * mk_mplayer(register struct permonst *ptr, xchar x, xchar y, register boolean special) {
 	register struct monst *mtmp;
 	char nam[PL_NSIZ];
 
@@ -286,11 +271,7 @@ register boolean special;
  * developers array, otherwise a bunch of Adams and Eves will
  * fill up the overflow.
  */
-void
-create_mplayers(num, special)
-register int num;
-boolean special;
-{
+void create_mplayers(register int num, boolean special) {
 	int pm, x, y;
 	struct monst fakemon;
 
@@ -315,10 +296,7 @@ boolean special;
 	}
 }
 
-void
-mplayer_talk(mtmp)
-register struct monst *mtmp;
-{
+void mplayer_talk(register struct monst *mtmp) {
 	static const char *same_class_msg[3] = {
 		"I can't win, and neither will you!",
 		"You don't deserve to win!",

@@ -16,10 +16,7 @@ STATIC_DCL void NDECL(ghost_from_bottle);
 STATIC_DCL short FDECL(mixtype, (struct obj *,struct obj *));
 
 /* force `val' to be within valid range for intrinsic timeout value */
-STATIC_OVL long
-itimeout(val)
-long val;
-{
+STATIC_OVL long itimeout(long val) {
     if (val >= TIMEOUT) val = TIMEOUT;
     else if (val < 1) val = 0;
 
@@ -27,37 +24,22 @@ long val;
 }
 
 /* increment `old' by `incr' and force result to be valid intrinsic timeout */
-STATIC_OVL long
-itimeout_incr(old, incr)
-long old;
-int incr;
-{
+STATIC_OVL long itimeout_incr(long old, int incr) {
     return itimeout((old & TIMEOUT) + (long)incr);
 }
 
 /* set the timeout field of intrinsic `which' */
-void
-set_itimeout(which, val)
-long *which, val;
-{
+void set_itimeout(long *which, long val) {
     *which &= ~TIMEOUT;
     *which |= itimeout(val);
 }
 
 /* increment the timeout field of intrinsic `which' */
-void
-incr_itimeout(which, incr)
-long *which;
-int incr;
-{
+void incr_itimeout(long *which, int incr) {
     set_itimeout(which, itimeout_incr(*which, incr));
 }
 
-void
-make_confused(xtime,talk)
-long xtime;
-boolean talk;
-{
+void make_confused(long xtime, boolean talk) {
 	long old = HConfusion;
 
 	if (!xtime && old) {
@@ -70,11 +52,7 @@ boolean talk;
 	set_itimeout(&HConfusion, xtime);
 }
 
-void
-make_stunned(xtime,talk)
-long xtime;
-boolean talk;
-{
+void make_stunned(long xtime, boolean talk) {
 	long old = HStun;
 
 	if (!xtime && old) {
@@ -97,13 +75,7 @@ boolean talk;
 	set_itimeout(&HStun, xtime);
 }
 
-void
-make_sick(xtime, cause, talk, type)
-long xtime;
-const char *cause;	/* sickness cause */
-boolean talk;
-int type;
-{
+void make_sick(long xtime, const char *cause, boolean talk, int type) {
 	long old = Sick;
 
 	if (xtime > 0L) {
@@ -144,11 +116,7 @@ int type;
 	    u.usick_cause[0] = 0;
 }
 
-void
-make_vomiting(xtime, talk)
-long xtime;
-boolean talk;
-{
+void make_vomiting(long xtime, boolean talk) {
 	long old = Vomiting;
 
 	if(!xtime && old)
@@ -160,11 +128,7 @@ boolean talk;
 static const char vismsg[] = "vision seems to %s for a moment but is %s now.";
 static const char eyemsg[] = "%s momentarily %s.";
 
-void
-make_blinded(xtime, talk)
-long xtime;
-boolean talk;
-{
+void make_blinded(long xtime, boolean talk) {
 	long old = Blinded;
 	boolean u_could_see, can_see_now;
 	int eyecnt;
@@ -238,12 +202,7 @@ boolean talk;
 	}
 }
 
-boolean
-make_hallucinated(xtime, talk, mask)
-long xtime;	/* nonzero if this is an attempt to turn on hallucination */
-boolean talk;
-long mask;	/* nonzero if resistance status should change by mask */
-{
+boolean make_hallucinated(long xtime, boolean talk, long mask) {
 	long old = HHallucination;
 	boolean changed = 0;
 	const char *message, *verb;
@@ -299,9 +258,7 @@ long mask;	/* nonzero if resistance status should change by mask */
 	return changed;
 }
 
-STATIC_OVL void
-ghost_from_bottle()
-{
+STATIC_OVL void ghost_from_bottle() {
 	struct monst *mtmp = makemon(&mons[PM_GHOST], u.ux, u.uy, NO_MM_FLAGS);
 
 	if (!mtmp) {
@@ -322,9 +279,7 @@ ghost_from_bottle()
 
 /* "Quaffing is like drinking, except you spill more."  -- Terry Pratchett
  */
-int
-dodrink()
-{
+int dodrink() {
 	register struct obj *otmp;
 	const char *potion_descr;
 
@@ -382,10 +337,7 @@ dodrink()
 	return dopotion(otmp);
 }
 
-int
-dopotion(otmp)
-register struct obj *otmp;
-{
+int dopotion(register struct obj *otmp) {
 	int retval;
 
 	otmp->in_use = TRUE;
@@ -408,10 +360,7 @@ register struct obj *otmp;
 	return(1);
 }
 
-int
-peffects(otmp)
-	register struct obj	*otmp;
-{
+int peffects(register struct obj *otmp) {
 	register int i, ii, lim;
 
 	switch(otmp->otyp){
@@ -903,11 +852,7 @@ peffects(otmp)
 	return(-1);
 }
 
-void
-healup(nhp, nxtra, curesick, cureblind)
-	int nhp, nxtra;
-	register boolean curesick, cureblind;
-{
+void healup(int nhp, int nxtra, register boolean curesick, register boolean cureblind) {
 	if (nhp) {
 		if (Upolyd) {
 			u.mh += nhp;
@@ -923,11 +868,7 @@ healup(nhp, nxtra, curesick, cureblind)
 	return;
 }
 
-void
-strange_feeling(obj,txt)
-register struct obj *obj;
-register const char *txt;
-{
+void strange_feeling(register struct obj *obj, register const char *txt) {
 	if (flags.beginner || !txt)
 		You("have a %s feeling for a moment, then it passes.",
 		Hallucination ? "normal" : "strange");
@@ -948,18 +889,11 @@ const char *bottlenames[] = {
 };
 
 
-const char *
-bottlename()
-{
+const char * bottlename() {
 	return bottlenames[rn2(SIZE(bottlenames))];
 }
 
-void
-potionhit(mon, obj, your_fault)
-register struct monst *mon;
-register struct obj *obj;
-boolean your_fault;
-{
+void potionhit(register struct monst *mon, register struct obj *obj, boolean your_fault) {
 	register const char *botlnam = bottlename();
 	boolean isyou = (mon == &youmonst);
 	int distance;
@@ -1178,10 +1112,7 @@ boolean your_fault;
 }
 
 /* vapors are inhaled or get in your eyes */
-void
-potionbreathe(obj)
-register struct obj *obj;
-{
+void potionbreathe(register struct obj *obj) {
 	register int i, ii, isdone, kn = 0;
 
 	switch(obj->otyp) {
@@ -1521,9 +1452,7 @@ register struct obj *obj;
 	return FALSE;
 }
 
-int
-dodip()
-{
+int dodip() {
 	register struct obj *potion, *obj;
 	struct obj *singlepotion;
 	const char *tmp;
@@ -1940,10 +1869,7 @@ dodip()
 }
 
 
-void
-djinni_from_bottle(obj)
-register struct obj *obj;
-{
+void djinni_from_bottle(register struct obj *obj) {
 	struct monst *mtmp;
 	int chance;
 

@@ -91,10 +91,7 @@ STATIC_DCL int FDECL(isqrt, (int));
 static const char explodes[] = "radiates explosive energy";
 
 /* convert a letter into a number in the range 0..51, or -1 if not a letter */
-STATIC_OVL int
-spell_let_to_idx(ilet)
-char ilet;
-{
+STATIC_OVL int spell_let_to_idx(char ilet) {
     int indx;
 
     indx = ilet - 'a';
@@ -105,10 +102,7 @@ char ilet;
 }
 
 /* TRUE: book should be destroyed by caller */
-STATIC_OVL boolean
-cursed_book(bp)
-	struct obj *bp;
-{
+STATIC_OVL boolean cursed_book(struct obj *bp) {
 	int lev = objects[bp->otyp].oc_level;
 
 	switch(rn2(lev)) {
@@ -175,10 +169,7 @@ cursed_book(bp)
 }
 
 /* study while confused: returns TRUE if the book is destroyed */
-STATIC_OVL boolean
-confused_book(spellbook)
-struct obj *spellbook;
-{
+STATIC_OVL boolean confused_book(struct obj *spellbook) {
 	boolean gone = FALSE;
 
 	if (!rn2(3) && spellbook->otyp != SPE_BOOK_OF_THE_DEAD) {
@@ -200,10 +191,7 @@ struct obj *spellbook;
 }
 
 /* special effects for The Book of the Dead */
-STATIC_OVL void
-deadbook(book2)
-struct obj *book2;
-{
+STATIC_OVL void deadbook(struct obj *book2) {
     struct monst *mtmp, *mtmp2;
     coord mm;
 
@@ -312,9 +300,7 @@ raise_dead:
     return;
 }
 
-STATIC_PTR int
-learn()
-{
+STATIC_PTR int learn() {
 	int i;
 	short booktype;
 	char splname[BUFSZ];
@@ -386,10 +372,7 @@ learn()
 	return(0);
 }
 
-int
-study_book(spellbook)
-register struct obj *spellbook;
-{
+int study_book(register struct obj *spellbook) {
 	register int	 booktype = spellbook->otyp;
 	register boolean confused = (Confusion != 0);
 	boolean too_hard = FALSE;
@@ -496,27 +479,19 @@ register struct obj *spellbook;
 
 /* a spellbook has been destroyed or the character has changed levels;
    the stored address for the current book is no longer valid */
-void
-book_disappears(obj)
-struct obj *obj;
-{
+void book_disappears(struct obj *obj) {
 	if (obj == book) book = (struct obj *)0;
 }
 
 /* renaming an object usually results in it having a different address;
    so the sequence start reading, get interrupted, name the book, resume
    reading would read the "new" book from scratch */
-void
-book_substitution(old_obj, new_obj)
-struct obj *old_obj, *new_obj;
-{
+void book_substitution(struct obj *old_obj, struct obj *new_obj) {
 	if (old_obj == book) book = new_obj;
 }
 
 /* called from moveloop() */
-void
-age_spells()
-{
+void age_spells() {
 	int i;
 	/*
 	 * The time relative to the hero (a pass through move
@@ -534,10 +509,7 @@ age_spells()
  * Return TRUE if a spell was picked, with the spell index in the return
  * parameter.  Otherwise return FALSE.
  */
-STATIC_OVL boolean
-getspell(spell_no)
-	int *spell_no;
-{
+STATIC_OVL boolean getspell(int *spell_no) {
 	int nspells, idx;
 	char ilet, lets[BUFSZ], qbuf[QBUFSZ];
 
@@ -577,9 +549,7 @@ getspell(spell_no)
 }
 
 /* the 'Z' command -- cast a spell */
-int
-docast()
-{
+int docast() {
 	int spell_no;
 
 	if (getspell(&spell_no))
@@ -587,10 +557,7 @@ docast()
 	return 0;
 }
 
-STATIC_OVL const char *
-spelltypemnemonic(skill)
-int skill;
-{
+STATIC_OVL const char * spelltypemnemonic(int skill) {
 	switch (skill) {
 	    case P_ATTACK_SPELL:
 		return "attack";
@@ -612,16 +579,11 @@ int skill;
 	}
 }
 
-int
-spell_skilltype(booktype)
-int booktype;
-{
+int spell_skilltype(int booktype) {
 	return (objects[booktype].oc_skill);
 }
 
-STATIC_OVL void
-cast_protection()
-{
+STATIC_OVL void cast_protection() {
 	int loglev = 0;
 	int l = u.ulevel;
 	int natac = u.uac - u.uspellprot;
@@ -681,10 +643,7 @@ cast_protection()
 }
 
 /* attempting to cast a forgotten spell will cause disorientation */
-STATIC_OVL void
-spell_backfire(spell)
-int spell;
-{
+STATIC_OVL void spell_backfire(int spell) {
     long duration = (long)((spellev(spell) + 1) * 3);	 /* 6..24 */
 
     /* prior to 3.4.1, the only effect was confusion; it still predominates */
@@ -709,11 +668,7 @@ int spell;
     return;
 }
 
-int
-spelleffects(spell, atme)
-int spell;
-boolean atme;
-{
+int spelleffects(int spell, boolean atme) {
 	int energy, damage, chance, n, intell;
 	int skill, role_skill;
 	boolean confused = (Confusion != 0);
@@ -964,9 +919,7 @@ boolean atme;
 }
 
 /* Choose location where spell takes effect. */
-STATIC_OVL int
-throwspell()
-{
+STATIC_OVL int throwspell() {
 	coord cc;
 
 	if (u.uinwater) {
@@ -1000,9 +953,7 @@ throwspell()
 	}
 }
 
-void
-losespells()
-{
+void losespells() {
 	boolean confused = (Confusion != 0);
 	int  n, nzap, i;
 
@@ -1020,9 +971,7 @@ losespells()
 }
 
 /* the '+' command -- view known spells */
-int
-dovspell()
-{
+int dovspell() {
 	char qbuf[QBUFSZ];
 	int splnum, othnum;
 	struct spell spl_tmp;
@@ -1044,12 +993,7 @@ dovspell()
 	return 0;
 }
 
-STATIC_OVL boolean
-dospellmenu(prompt, splaction, spell_no)
-const char *prompt;
-int splaction;	/* SPELLMENU_CAST, SPELLMENU_VIEW, or spl_book[] index */
-int *spell_no;
-{
+STATIC_OVL boolean dospellmenu(const char *prompt, int splaction, int *spell_no) {
 	winid tmpwin;
 	int i, n, how;
 	char buf[BUFSZ];
@@ -1115,9 +1059,7 @@ int *spell_no;
 }
 
 #ifdef DUMP_LOG
-void 
-dump_spells()
-{
+void dump_spells() {
 	int i;
 	char buf[BUFSZ];
 
@@ -1144,10 +1086,7 @@ dump_spells()
 #endif
 
 /* Integer square root function without using floating point. */
-STATIC_OVL int
-isqrt(val)
-int val;
-{
+STATIC_OVL int isqrt(int val) {
     int rt = 0;
     int odd = 1;
     while(val >= odd) {
@@ -1158,10 +1097,7 @@ int val;
     return rt;
 }
 
-STATIC_OVL int
-percent_success(spell)
-int spell;
-{
+STATIC_OVL int percent_success(int spell) {
 	/* Intrinsic and learned ability are combined to calculate
 	 * the probability of player's success at cast a given spell.
 	 */
@@ -1267,10 +1203,7 @@ int spell;
 
 
 /* Learn a spell during creation of the initial inventory */
-void
-initialspell(obj)
-struct obj *obj;
-{
+void initialspell(struct obj *obj) {
 	int i;
 
 	for (i = 0; i < MAXSPELL; i++) {

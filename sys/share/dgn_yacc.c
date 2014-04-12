@@ -332,9 +332,7 @@ short yyss[YYSTACKSIZE];
 YYSTYPE yyvs[YYSTACKSIZE];
 #define yystacksize YYSTACKSIZE
 
-void
-init_dungeon()
-{
+void init_dungeon() {
 	if(++n_dgns > MAXDUNGEON) {
 	    (void) fprintf(stderr, "FATAL - Too many dungeons (limit: %d).\n",
 		    MAXDUNGEON);
@@ -354,9 +352,7 @@ init_dungeon()
 	tmpdungeon[n_dgns].entry_lev = 0;
 }
 
-void
-init_level()
-{
+void init_level() {
 	if(++n_levs > LEV_LIMIT) {
 
 		yyerror("FATAL - Too many special levels defined.");
@@ -371,9 +367,7 @@ init_level()
 	tmplevel[n_levs].chain = -1;
 }
 
-void
-init_branch()
-{
+void init_branch() {
 	if(++n_brs > BRANCH_LIMIT) {
 
 		yyerror("FATAL - Too many special levels defined.");
@@ -385,10 +379,7 @@ init_branch()
 	tmpbranch[n_brs].chain = -1;
 }
 
-int
-getchain(s)
-	char	*s;
-{
+int getchain(char *s) {
 	int i;
 
 	if(strlen(s)) {
@@ -411,9 +402,7 @@ getchain(s)
  *	- A dungeon must have a proper depth (at least (1, 0)).
  */
 
-int
-check_dungeon()
-{
+int check_dungeon() {
 	int i;
 
 	for(i = 0; i < n_dgns; i++)
@@ -448,9 +437,7 @@ check_dungeon()
  *	  have a 100% chance of existing).
  */
 
-int
-check_level()
-{
+int check_level() {
 	int i;
 
 	if(!in_dungeon) {
@@ -490,9 +477,7 @@ check_level()
  *	  have a 100% chance of existing).
  */
 
-int
-check_branch()
-{
+int check_branch() {
 	int i;
 
 	if(!in_dungeon) {
@@ -537,9 +522,7 @@ check_branch()
  *	  ...
  */
 
-void
-output_dgn()
-{
+void output_dgn() {
 	int	nd, cl = 0, nl = 0,
 		    cb = 0, nb = 0;
 	static struct version_info version_data = {
@@ -581,9 +564,7 @@ output_dgn()
 #define YYREJECT goto yyabort
 #define YYACCEPT goto yyaccept
 #define YYERROR goto yyerrlab
-int
-yyparse()
-{
+int yyparse() {
     register int yym, yyn, yystate;
 #if YYDEBUG
     register char *yys;

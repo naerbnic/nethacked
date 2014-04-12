@@ -93,11 +93,7 @@ extern unsigned _stklen;
  * WinMain exist, the resulting executable won't work correctly.
  */
 #ifndef MSWIN_GRAPHICS
-int
-main(argc,argv)
-int argc;
-char *argv[];
-{
+int main(int argc, char *argv[]) {
      pcmain(argc,argv);
 #ifdef LAN_FEATURES
      init_lan_features();
@@ -111,11 +107,7 @@ char *argv[];
 #endif /*OVL0*/
 #ifdef OVL1
 
-void
-pcmain(argc,argv)
-int argc;
-char *argv[];
-{
+void pcmain(int argc, char *argv[]) {
 
 	register int fd;
 	register char *dir;
@@ -456,11 +448,7 @@ not_recovered:
 	return;
 }
 
-STATIC_OVL void
-process_options(argc, argv)
-int argc;
-char *argv[];
-{
+STATIC_OVL void process_options(int argc, char *argv[]) {
 	int i;
 
 
@@ -589,9 +577,7 @@ char *argv[];
 	}
 }
 
-STATIC_OVL void 
-nhusage()
-{
+STATIC_OVL void nhusage() {
 	char buf1[BUFSZ], buf2[BUFSZ], *bufptr;
 
 	buf1[0] = '\0';
@@ -633,11 +619,7 @@ nhusage()
 }
 
 #ifdef CHDIR
-void
-chdirx(dir, wr)
-char *dir;
-boolean wr;
-{
+void chdirx(char *dir, boolean wr) {
 # ifdef AMIGA
 	static char thisdir[] = "";
 # else
@@ -664,9 +646,7 @@ boolean wr;
 
 #ifdef PORT_HELP
 # if defined(MSDOS) || defined(WIN32)
-void
-port_help()
-{
+void port_help() {
     /* display port specific help file */
     display_file( PORT_HELP, 1 );
 }

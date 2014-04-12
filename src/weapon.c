@@ -82,10 +82,7 @@ STATIC_VAR NEARDATA const char * const barehands_or_martial[] = {
     "bare handed combat", "martial arts"
 };
 
-STATIC_OVL void
-give_may_advance_msg(skill)
-int skill;
-{
+STATIC_OVL void give_may_advance_msg(int skill) {
 	You_feel("more confident in your %sskills.",
 		skill == P_NONE ?
 			"" :
@@ -125,11 +122,7 @@ static NEARDATA const char kebabable[] = {
  *	hitval returns an integer representing the "to hit" bonuses
  *	of "otmp" against the monster.
  */
-int
-hitval(otmp, mon)
-struct obj *otmp;
-struct monst *mon;
-{
+int hitval(struct obj *otmp, struct monst *mon) {
 	int	tmp = 0;
 	struct permonst *ptr = mon->data;
 	boolean Is_weapon = (otmp->oclass == WEAPON_CLASS || is_weptool(otmp));
@@ -196,11 +189,7 @@ struct monst *mon;
  *	dmgval returns an integer representing the damage bonuses
  *	of "otmp" against the monster.
  */
-int
-dmgval(otmp, mon)
-struct obj *otmp;
-struct monst *mon;
-{
+int dmgval(struct obj *otmp, struct monst *mon) {
 	int tmp = 0, otyp = otmp->otyp;
 	struct permonst *ptr = mon->data;
 	boolean Is_weapon = (otmp->oclass == WEAPON_CLASS || is_weptool(otmp));
@@ -324,11 +313,7 @@ struct monst *mon;
 STATIC_DCL struct obj *FDECL(oselect, (struct monst *,int));
 #define Oselect(x)	if ((otmp = oselect(mtmp, x)) != 0) return(otmp);
 
-STATIC_OVL struct obj *
-oselect(mtmp, x)
-struct monst *mtmp;
-int x;
-{
+STATIC_OVL struct obj * oselect(struct monst *mtmp, int x) {
 	struct obj *otmp;
 
 	for (otmp = mtmp->minvent; otmp; otmp = otmp->nobj) {
@@ -526,11 +511,7 @@ register struct monst *mtmp;
 /* Called after polymorphing a monster, robbing it, etc....  Monsters
  * otherwise never unwield stuff on their own.  Might print message.
  */
-void
-possibly_unwield(mon, polyspot)
-struct monst *mon;
-boolean polyspot;
-{
+void possibly_unwield(struct monst *mon, boolean polyspot) {
 	struct obj *obj, *mw_tmp;
 
 	if (!(mw_tmp = MON_WEP(mon)))
@@ -581,10 +562,7 @@ boolean polyspot;
 /* Let a monster try to wield a weapon, based on mon->weapon_check.
  * Returns 1 if the monster took time to do it, 0 if it did not.
  */
-int
-mon_wield_item(mon)
-register struct monst *mon;
-{
+int mon_wield_item(register struct monst *mon) {
 	struct obj *obj;
 
 	/* This case actually should never happen */
@@ -735,11 +713,7 @@ dbon()		/* damage bonus for strength */
 
 
 /* copy the skill level name into the given buffer */
-STATIC_OVL char *
-skill_level_name(skill, buf)
-int skill;
-char *buf;
-{
+STATIC_OVL char * skill_level_name(int skill, char *buf) {
     const char *ptr;
 
     switch (P_SKILL(skill)) {
@@ -757,10 +731,7 @@ char *buf;
 }
 
 /* return the # of slots required to advance the skill */
-STATIC_OVL int
-slots_required(skill)
-int skill;
-{
+STATIC_OVL int slots_required(int skill) {
     int tmp = P_SKILL(skill);
 
     /* The more difficult the training, the more slots it takes.
@@ -783,11 +754,7 @@ int skill;
 
 /* return true if this skill can be advanced */
 /*ARGSUSED*/
-STATIC_OVL boolean
-can_advance(skill, speedy)
-int skill;
-boolean speedy;
-{
+STATIC_OVL boolean can_advance(int skill, boolean speedy) {
     return !P_RESTRICTED(skill)
 	    && P_SKILL(skill) < P_MAX_SKILL(skill) && (
 #ifdef WIZARD
@@ -800,10 +767,7 @@ boolean speedy;
 }
 
 /* return true if this skill could be advanced if more slots were available */
-STATIC_OVL boolean
-could_advance(skill)
-int skill;
-{
+STATIC_OVL boolean could_advance(int skill) {
     return !P_RESTRICTED(skill)
 	    && P_SKILL(skill) < P_MAX_SKILL(skill) && (
 	    (P_ADVANCE(skill) >=
@@ -813,20 +777,14 @@ int skill;
 
 /* return true if this skill has reached its maximum and there's been enough
    practice to become eligible for the next step if that had been possible */
-STATIC_OVL boolean
-peaked_skill(skill)
-int skill;
-{
+STATIC_OVL boolean peaked_skill(int skill) {
     return !P_RESTRICTED(skill)
 	    && P_SKILL(skill) >= P_MAX_SKILL(skill) && (
 	    (P_ADVANCE(skill) >=
 		(unsigned) practice_needed_to_advance(P_SKILL(skill))));
 }
 
-STATIC_OVL void
-skill_advance(skill)
-int skill;
-{
+STATIC_OVL void skill_advance(int skill) {
     u.weapon_slots -= slots_required(skill);
     P_SKILL(skill)++;
     u.skill_record[u.skills_advanced++] = skill;
@@ -1061,10 +1019,7 @@ int enhance_skill(boolean want_dump)
  * Change from restricted to unrestricted, allowing P_BASIC as max.  This
  * function may be called with with P_NONE.  Used in pray.c.
  */
-void
-unrestrict_weapon_skill(skill)
-int skill;
-{
+void unrestrict_weapon_skill(int skill) {
     if (skill < P_NUM_SKILLS && P_RESTRICTED(skill)) {
 	P_SKILL(skill) = P_UNSKILLED;
 	P_MAX_SKILL(skill) = P_BASIC;
@@ -1075,11 +1030,7 @@ int skill;
 #endif /* OVL1 */
 #ifdef OVLB
 
-void
-use_skill(skill,degree)
-int skill;
-int degree;
-{
+void use_skill(int skill, int degree) {
     boolean advance_before;
 
     if (skill != P_NONE && !P_RESTRICTED(skill)) {
@@ -1090,10 +1041,7 @@ int degree;
     }
 }
 
-void
-add_weapon_skill(n)
-int n;	/* number of slots to gain; normally one */
-{
+void add_weapon_skill(int n) {
     int i, before, after;
 
     for (i = 0, before = 0; i < P_NUM_SKILLS; i++)
@@ -1105,10 +1053,7 @@ int n;	/* number of slots to gain; normally one */
 	give_may_advance_msg(P_NONE);
 }
 
-void
-lose_weapon_skill(n)
-int n;	/* number of slots to lose; normally one */
-{
+void lose_weapon_skill(int n) {
     int skill;
 
     while (--n >= 0) {
@@ -1129,10 +1074,7 @@ int n;	/* number of slots to lose; normally one */
     }
 }
 
-int
-weapon_type(obj)
-struct obj *obj;
-{
+int weapon_type(struct obj *obj) {
 	/* KMH -- now uses the object table */
 	int type;
 
@@ -1147,9 +1089,7 @@ struct obj *obj;
 	return ((type < 0) ? -type : type);
 }
 
-int
-uwep_skill_type()
-{
+int uwep_skill_type() {
 	if (u.twoweap)
 		return P_TWO_WEAPON_COMBAT;
 	return weapon_type(uwep);
@@ -1159,10 +1099,7 @@ uwep_skill_type()
  * Return hit bonus/penalty based on skill of weapon.
  * Treat restricted weapons as unskilled.
  */
-int
-weapon_hit_bonus(weapon)
-struct obj *weapon;
-{
+int weapon_hit_bonus(struct obj *weapon) {
     int type, wep_type, skill, bonus = 0;
     static const char bad_skill[] = "weapon_hit_bonus: bad skill %d";
 
@@ -1228,10 +1165,7 @@ struct obj *weapon;
  * Return damage bonus/penalty based on skill of weapon.
  * Treat restricted weapons as unskilled.
  */
-int
-weapon_dam_bonus(weapon)
-struct obj *weapon;
-{
+int weapon_dam_bonus(struct obj *weapon) {
     int type, wep_type, skill, bonus = 0;
 
     wep_type = weapon_type(weapon);
@@ -1298,10 +1232,7 @@ struct obj *weapon;
  * hero is holding, finally reading the given array that sets
  * maximums.
  */
-void
-skill_init(class_skill)
-const struct def_skill *class_skill;
-{
+void skill_init(const struct def_skill *class_skill) {
 	struct obj *obj;
 	int skmax, skill;
 
@@ -1364,11 +1295,7 @@ const struct def_skill *class_skill;
 	}
 }
 
-void
-setmnotwielded(mon,obj)
-register struct monst *mon;
-register struct obj *obj;
-{
+void setmnotwielded(register struct monst *mon, register struct obj *obj) {
     if (!obj) return;
     if (artifact_light(obj) && obj->lamplit) {
 	end_burn(obj, FALSE);

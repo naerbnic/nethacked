@@ -20,10 +20,7 @@ STATIC_DCL const char *NDECL(lock_action);
 STATIC_DCL boolean FDECL(obstructed,(int,int));
 STATIC_DCL void FDECL(chest_shatter_msg, (struct obj *));
 
-boolean
-picking_lock(x, y)
-	int *x, *y;
-{
+boolean picking_lock(int *x, int *y) {
 	if (occupation == picklock) {
 	    *x = u.ux + u.dx;
 	    *y = u.uy + u.dy;
@@ -34,17 +31,12 @@ picking_lock(x, y)
 	}
 }
 
-boolean
-picking_at(x, y)
-int x, y;
-{
+boolean picking_at(int x, int y) {
 	return (boolean)(occupation == picklock && xlock.door == &levl[x][y]);
 }
 
 /* produce an occupation string appropriate for the current activity */
-STATIC_OVL const char *
-lock_action()
-{
+STATIC_OVL const char * lock_action() {
 	/* "unlocking"+2 == "locking" */
 	static const char *actions[] = {
 		/* [0] */	"unlocking the door",
@@ -211,9 +203,7 @@ forcelock()	/* try to force a locked chest */
 #endif /* OVLB */
 #ifdef OVL0
 
-void
-reset_pick()
-{
+void reset_pick() {
 	xlock.usedtime = xlock.chance = xlock.picktyp = 0;
 	xlock.door = 0;
 	xlock.box = 0;
@@ -609,10 +599,7 @@ doopen()		/* try to open a door */
 }
 
 STATIC_OVL
-boolean
-obstructed(x,y)
-register int x, y;
-{
+boolean obstructed(register int x, register int y) {
 	register struct monst *mtmp = m_at(x, y);
 
 	if(mtmp && mtmp->m_ap_type != M_AP_FURNITURE) {
@@ -905,10 +892,7 @@ int x, y;
 	return res;
 }
 
-STATIC_OVL void
-chest_shatter_msg(otmp)
-struct obj *otmp;
-{
+STATIC_OVL void chest_shatter_msg(struct obj *otmp) {
 	const char *disposition;
 	const char *thing;
 	long save_Blinded;

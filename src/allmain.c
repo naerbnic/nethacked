@@ -16,9 +16,7 @@ STATIC_DCL void NDECL(do_positionbar);
 
 #ifdef OVL0
 
-void
-moveloop()
-{
+void moveloop() {
 #if defined(MICRO) || defined(WIN32)
     char ch;
     int abort_lev;
@@ -436,9 +434,7 @@ moveloop()
 #endif /* OVL0 */
 #ifdef OVL1
 
-void
-stop_occupation()
-{
+void stop_occupation() {
 	if(occupation) {
 		if (!maybe_finished_meal(TRUE))
 		    You("stop %s.", occtxt);
@@ -457,9 +453,7 @@ stop_occupation()
 #endif /* OVL1 */
 #ifdef OVLB
 
-void
-display_gamewindows()
-{
+void display_gamewindows() {
     WIN_MESSAGE = create_nhwindow(NHW_MESSAGE);
     WIN_STATUS = create_nhwindow(NHW_STATUS);
     WIN_MAP = create_nhwindow(NHW_MAP);
@@ -486,9 +480,7 @@ display_gamewindows()
     display_nhwindow(WIN_MAP, FALSE);
 }
 
-void
-newgame()
-{
+void newgame() {
 	int i;
 
 #ifdef MFLOPPY
@@ -566,10 +558,7 @@ newgame()
 }
 
 /* show "welcome [back] to nethack" message at program startup */
-void
-welcome(new_game)
-boolean new_game;	/* false => restoring an old game */
-{
+void welcome(boolean new_game) {
     char buf[BUFSZ];
     boolean currentgend = Upolyd ? u.mfemale : flags.female;
 
@@ -596,9 +585,7 @@ boolean new_game;	/* false => restoring an old game */
 }
 
 #ifdef POSITIONBAR
-STATIC_DCL void
-do_positionbar()
-{
+STATIC_DCL void do_positionbar() {
 	static char pbar[COLNO];
 	char *p;
 	

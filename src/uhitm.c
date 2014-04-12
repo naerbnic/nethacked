@@ -31,11 +31,7 @@ static boolean override_confirmation = FALSE;
 
 /* modified from hurtarmor() in mhitu.c */
 /* This is not static because it is also used for monsters rusting monsters */
-void
-hurtmarmor(mdef, attk)
-struct monst *mdef;
-int attk;
-{
+void hurtmarmor(struct monst *mdef, int attk) {
 	int	hurt;
 	struct obj *target;
 
@@ -93,11 +89,7 @@ int attk;
 }
 
 /* FALSE means it's OK to attack */
-boolean
-attack_checks(mtmp, wep)
-register struct monst *mtmp;
-struct obj *wep;	/* uwep for attack(), null for kick_monster() */
-{
+boolean attack_checks(register struct monst *mtmp, struct obj *wep) {
 	char qbuf[QBUFSZ];
 #ifdef PARANOID
 	char buf[BUFSZ];
@@ -231,10 +223,7 @@ struct obj *wep;	/* uwep for attack(), null for kick_monster() */
 /*
  * It is unchivalrous for a knight to attack the defenseless or from behind.
  */
-void
-check_caitiff(mtmp)
-struct monst *mtmp;
-{
+void check_caitiff(struct monst *mtmp) {
 	if (Role_if(PM_KNIGHT) && u.ualign.type == A_LAWFUL &&
 	    (!mtmp->mcanmove || mtmp->msleeping ||
 	     (mtmp->mflee && !mtmp->mavenge)) &&
@@ -244,10 +233,7 @@ struct monst *mtmp;
 	}
 }
 
-schar
-find_roll_to_hit(mtmp)
-register struct monst *mtmp;
-{
+schar find_roll_to_hit(register struct monst *mtmp) {
 	schar tmp;
 	int tmp2;
 
@@ -307,10 +293,7 @@ register struct monst *mtmp;
 
 /* try to attack; return FALSE if monster evaded */
 /* u.dx and u.dy must be set */
-boolean
-attack(mtmp)
-register struct monst *mtmp;
-{
+boolean attack(register struct monst *mtmp) {
 	schar tmp;
 	register struct permonst *mdat = mtmp->data;
 
@@ -520,12 +503,7 @@ int thrown;
 }
 
 /* guts of hmon() */
-STATIC_OVL boolean
-hmon_hitmon(mon, obj, thrown)
-struct monst *mon;
-struct obj *obj;
-int thrown;
-{
+STATIC_OVL boolean hmon_hitmon(struct monst *mon, struct obj *obj, int thrown) {
 	int tmp;
 	struct permonst *mdat = mon->data;
 	int barehand_silver_rings = 0;
@@ -1083,10 +1061,7 @@ int thrown;
 	return((boolean)(destroyed ? FALSE : TRUE));
 }
 
-STATIC_OVL boolean
-shade_aware(obj)
-struct obj *obj;
-{
+STATIC_OVL boolean shade_aware(struct obj *obj) {
 	if (!obj) return FALSE;
 	/*
 	 * The things in this list either
@@ -1106,11 +1081,7 @@ struct obj *obj;
 
 /* check whether slippery clothing protects from hug or wrap attack */
 /* [currently assumes that you are the attacker] */
-STATIC_OVL boolean
-m_slips_free(mdef, mattk)
-struct monst *mdef;
-struct attack *mattk;
-{
+STATIC_OVL boolean m_slips_free(struct monst *mdef, struct attack *mattk) {
 	struct obj *obj;
 
 	if (mattk->adtyp == AD_DRIN) {
@@ -1149,11 +1120,7 @@ struct attack *mattk;
 }
 
 /* used when hitting a monster with a lance while mounted */
-STATIC_OVL int	/* 1: joust hit; 0: ordinary hit; -1: joust but break lance */
-joust(mon, obj)
-struct monst *mon;	/* target */
-struct obj *obj;	/* weapon */
-{
+STATIC_OVL int	/* 1: joust hit; 0: ordinary hit; -1: joust but break lance */ joust(struct monst *mon, struct obj *obj) {
     int skill_rating, joust_dieroll;
 
     if (Fumbling || Stunned) return 0;
@@ -1183,9 +1150,7 @@ struct obj *obj;	/* weapon */
  * (DR4 and DR4.5) screws up with an internal error 5 "Expression Too Complex."
  * Pulling it out makes it work.
  */
-STATIC_OVL void
-demonpet()
-{
+STATIC_OVL void demonpet() {
 	int i;
 	struct permonst *pm;
 	struct monst *dtmp;
@@ -1210,11 +1175,7 @@ demonpet()
  * If that ever changes, the check for touching a cockatrice corpse
  * will need to be smarter about whether to break out of the theft loop.
  */
-STATIC_OVL void
-steal_it(mdef, mattk)
-struct monst *mdef;
-struct attack *mattk;
-{
+STATIC_OVL void steal_it(struct monst *mdef, struct attack *mattk) {
 	struct obj *otmp, *stealoid, **minvent_ptr;
 	long unwornmask;
 
@@ -1289,11 +1250,7 @@ struct attack *mattk;
 	}
 }
 
-int
-damageum(mdef, mattk)
-register struct monst *mdef;
-register struct attack *mattk;
-{
+int damageum(register struct monst *mdef, register struct attack *mattk) {
 	register struct permonst *pd = mdef->data;
 	register int	tmp = d((int)mattk->damn, (int)mattk->damd);
 	int armpro;
@@ -1671,11 +1628,7 @@ register struct attack *mattk;
 	return(1);
 }
 
-STATIC_OVL int
-explum(mdef, mattk)
-register struct monst *mdef;
-register struct attack *mattk;
-{
+STATIC_OVL int explum(register struct monst *mdef, register struct attack *mattk) {
 	register int tmp = d((int)mattk->damn, (int)mattk->damd);
 
 	You("explode!");
@@ -1727,10 +1680,7 @@ common:
 	return(1);
 }
 
-STATIC_OVL void
-start_engulf(mdef)
-struct monst *mdef;
-{
+STATIC_OVL void start_engulf(struct monst *mdef) {
 	if (!Invisible) {
 		map_location(u.ux, u.uy, TRUE);
 		tmp_at(DISP_ALWAYS, mon_to_glyph(&youmonst));
@@ -1741,20 +1691,14 @@ struct monst *mdef;
 	delay_output();
 }
 
-STATIC_OVL void
-end_engulf()
-{
+STATIC_OVL void end_engulf() {
 	if (!Invisible) {
 		tmp_at(DISP_END, 0);
 		newsym(u.ux, u.uy);
 	}
 }
 
-STATIC_OVL int
-gulpum(mdef,mattk)
-register struct monst *mdef;
-register struct attack *mattk;
-{
+STATIC_OVL int gulpum(register struct monst *mdef, register struct attack *mattk) {
 	register int tmp;
 	register int dam = d((int)mattk->damn, (int)mattk->damd);
 	struct obj *otmp;
@@ -1931,11 +1875,7 @@ register struct attack *mattk;
 	return(0);
 }
 
-void
-missum(mdef,mattk)
-register struct monst *mdef;
-register struct attack *mattk;
-{
+void missum(register struct monst *mdef, register struct attack *mattk) {
 	if (could_seduce(&youmonst, mdef, mattk))
 		You("pretend to be friendly to %s.", mon_nam(mdef));
 	else if(canspotmon(mdef) && flags.verbose)
@@ -2147,13 +2087,7 @@ use_weapon:
 
 /*	Special (passive) attacks on you by monsters done here.		*/
 
-int
-passive(mon, mhit, malive, aatyp)
-register struct monst *mon;
-register boolean mhit;
-register int malive;
-uchar aatyp;
-{
+int passive(register struct monst *mon, register boolean mhit, register int malive, uchar aatyp) {
 	register struct permonst *ptr = mon->data;
 	register int i, tmp;
 
@@ -2356,12 +2290,7 @@ uchar aatyp;
  * Special (passive) attacks on an attacking object by monsters done here.
  * Assumes the attack was successful.
  */
-void
-passive_obj(mon, obj, mattk)
-register struct monst *mon;
-register struct obj *obj;	/* null means pick uwep, uswapwep or uarmg */
-struct attack *mattk;		/* null means we find one internally */
-{
+void passive_obj(register struct monst *mon, register struct obj *obj, struct attack *mattk) {
 	register struct permonst *ptr = mon->data;
 	register int i;
 
@@ -2415,10 +2344,7 @@ struct attack *mattk;		/* null means we find one internally */
 }
 
 /* Note: caller must ascertain mtmp is mimicking... */
-void
-stumble_onto_mimic(mtmp)
-struct monst *mtmp;
-{
+void stumble_onto_mimic(struct monst *mtmp) {
 	const char *fmt = "Wait!  That's %s!",
 		   *generic = "a monster",
 		   *what = 0;
@@ -2454,10 +2380,7 @@ struct monst *mtmp;
 	wakeup(mtmp);	/* clears mimicking */
 }
 
-STATIC_OVL void
-nohandglow(mon)
-struct monst *mon;
-{
+STATIC_OVL void nohandglow(struct monst *mon) {
 	char *hands=makeplural(body_part(HAND));
 
 	if (!u.umconf || mon->mconf) return;
@@ -2476,11 +2399,7 @@ struct monst *mon;
 	u.umconf--;
 }
 
-int
-flash_hits_mon(mtmp, otmp)
-struct monst *mtmp;
-struct obj *otmp;	/* source of flash */
-{
+int flash_hits_mon(struct monst *mtmp, struct obj *otmp) {
 	int tmp, amt, res = 0, useeit = canseemon(mtmp);
 
 	if (mtmp->msleeping) {

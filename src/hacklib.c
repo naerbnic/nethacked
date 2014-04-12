@@ -103,10 +103,7 @@ upstart(s)		/* convert first character of a string to uppercase */
 }
 
 /* remove excess whitespace from a string buffer (in place) */
-char *
-mungspaces(bp)
-char *bp;
-{
+char * mungspaces(char *bp) {
     register char c, *p, *p2;
     boolean was_space = TRUE;
 
@@ -415,12 +412,7 @@ strstri(str, sub)	/* case insensitive substring search */
 
 /* compare two strings for equality, ignoring the presence of specified
    characters (typically whitespace) and possibly ignoring case */
-boolean
-fuzzymatch(s1, s2, ignore_chars, caseblind)
-    const char *s1, *s2;
-    const char *ignore_chars;
-    boolean caseblind;
-{
+boolean fuzzymatch(const char *s1, const char *s2, const char *ignore_chars, boolean caseblind) {
     register char c1, c2;
 
     do {
@@ -457,9 +449,7 @@ extern struct tm *FDECL(localtime,(time_t *));
 #endif
 static struct tm *NDECL(getlt);
 
-void
-setrandom()
-{
+void setrandom() {
 	/* the types are different enough here that sweeping the different
 	 * routine names into one via #defines is even more confusing
 	 */
@@ -485,9 +475,7 @@ setrandom()
 #endif
 }
 
-static struct tm *
-getlt()
-{
+static struct tm * getlt() {
 	time_t date;
 
 #if defined(BSD) && !defined(POSIX_TYPES)
@@ -502,18 +490,13 @@ getlt()
 #endif
 }
 
-int
-getyear()
-{
+int getyear() {
 	return(1900 + getlt()->tm_year);
 }
 
 #if 0
 /* This routine is no longer used since in 2000 it will yield "100mmdd". */
-char *
-yymmdd(date)
-time_t date;
-{
+char * yymmdd(time_t date) {
 	Static char datestr[10];
 	struct tm *lt;
 
@@ -532,10 +515,7 @@ time_t date;
 }
 #endif
 
-long
-yyyymmdd(date)
-time_t date;
-{
+long yyyymmdd(time_t date) {
 	long datenum;
 	struct tm *lt;
 
@@ -589,25 +569,19 @@ phase_of_the_moon()		/* 0-7, with 0: new, 4: full */
 	return( (((((diy + epact) * 6) + 11) % 177) / 22) & 7 );
 }
 
-boolean
-friday_13th()
-{
+boolean friday_13th() {
 	register struct tm *lt = getlt();
 
 	return((boolean)(lt->tm_wday == 5 /* friday */ && lt->tm_mday == 13));
 }
 
-int
-night()
-{
+int night() {
 	register int hour = getlt()->tm_hour;
 
 	return(hour < 6 || hour > 21);
 }
 
-int
-midnight()
-{
+int midnight() {
 	return(getlt()->tm_hour == 0);
 }
 #endif /* OVL2 */

@@ -33,12 +33,7 @@ STATIC_OVL NEARDATA const char *breathwep[] = {
 };
 
 /* hero is hit by something other than a monster */
-int
-thitu(tlev, dam, obj, name)
-int tlev, dam;
-struct obj *obj;
-const char *name;	/* if null, then format `obj' */
-{
+int thitu(int tlev, int dam, struct obj *obj, const char *name) {
 	const char *onm, *knm;
 	boolean is_acid;
 	int kprefix = KILLED_BY_AN;
@@ -92,12 +87,7 @@ const char *name;	/* if null, then format `obj' */
  * Returns 0 if object still exists (not destroyed).
  */
 
-STATIC_OVL int
-drop_throw(obj, ohit, x, y)
-register struct obj *obj;
-boolean ohit;
-int x,y;
-{
+STATIC_OVL int drop_throw(register struct obj *obj, boolean ohit, int x, int y) {
 	int retvalu = 1;
 	int create;
 	struct monst *mtmp;
@@ -241,12 +231,7 @@ boolean verbose;  /* give message(s) even when you can't see what happened */
 	return 0;
 }
 
-void
-m_throw(mon, x, y, dx, dy, range, obj)
-	register struct monst *mon;
-	register int x,y,dx,dy,range;		/* direction and range */
-	register struct obj *obj;
-{
+void m_throw(register struct monst *mon, register int x, register int y, register int dx, register int dy, register int range, register struct obj *obj) {
 	register struct monst *mtmp;
 	struct obj *singleobj;
 	char sym = obj->oclass;
@@ -458,11 +443,7 @@ m_throw(mon, x, y, dx, dy, range, obj)
 #ifdef OVLB
 
 /* Remove an item from the monster's inventory and destroy it. */
-void
-m_useup(mon, obj)
-struct monst *mon;
-struct obj *obj;
-{
+void m_useup(struct monst *mon, struct obj *obj) {
 	if (obj->quan > 1L) {
 		obj->quan--;
 		obj->owt = weight(obj);
@@ -481,10 +462,7 @@ struct obj *obj;
 #ifdef OVL1
 
 /* monster attempts ranged weapon attack against player */
-void
-thrwmu(mtmp)
-struct monst *mtmp;
-{
+void thrwmu(struct monst *mtmp) {
 	struct obj *otmp, *mwep;
 	xchar x, y;
 	schar skill;
@@ -698,10 +676,7 @@ breamu(mtmp, mattk)			/* monster breathes at you (ranged) */
 	return(1);
 }
 
-boolean
-linedup(ax, ay, bx, by)
-register xchar ax, ay, bx, by;
-{
+boolean linedup(register xchar ax, register xchar ay, register xchar bx, register xchar by) {
 	tbx = ax - bx;	/* These two values are set for use */
 	tby = ay - by;	/* after successful return.	    */
 
@@ -729,11 +704,7 @@ lined_up(mtmp)		/* is mtmp in position to use ranged attack? */
 
 /* Check if a monster is carrying a particular item.
  */
-struct obj *
-m_carrying(mtmp, type)
-struct monst *mtmp;
-int type;
-{
+struct obj * m_carrying(struct monst *mtmp, int type) {
 	register struct obj *otmp;
 
 	for(otmp = mtmp->minvent; otmp; otmp = otmp->nobj)
@@ -743,13 +714,7 @@ int type;
 }
 
 /* TRUE iff thrown/kicked/rolled object doesn't pass through iron bars */
-boolean
-hits_bars(obj_p, x, y, always_hit, whodidit)
-struct obj **obj_p;	/* *obj_p will be set to NULL if object breaks */
-int x, y;
-int always_hit;	/* caller can force a hit for items which would fit through */
-int whodidit;	/* 1==hero, 0=other, -1==just check whether it'll pass thru */
-{
+boolean hits_bars(struct obj **obj_p, int x, int y, int always_hit, int whodidit) {
     struct obj *otmp = *obj_p;
     int obj_type = otmp->otyp;
     boolean hits = always_hit;

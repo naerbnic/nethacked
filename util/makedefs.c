@@ -321,9 +321,7 @@ static char *xcrypt(char const* str)
 	return buf;
 }
 
-void
-do_rumors()
-{
+void do_rumors() {
 	char	infile[60];
 	long	true_rumor_size;
 
@@ -398,9 +396,7 @@ do_rumors()
 				| (1L << 23)	/* TIMED_DELAY */ \
 				)
 
-static void
-make_version()
-{
+static void make_version() {
 	register int i;
 
 	/*
@@ -511,9 +507,7 @@ static char * version_id_string(char* outbuf, char const* build_date) {
     return outbuf;
 }
 
-void
-do_date()
-{
+void do_date() {
 	long clocktim = 0;
 	char *c, cbuf[60], buf[BUFSZ];
 	const char *ul_sfx;
@@ -579,9 +573,7 @@ do_date()
 
 static char save_bones_compat_buf[BUFSZ];
 
-static void
-build_savebones_compat_string()
-{
+static void build_savebones_compat_string() {
 #ifdef VERSION_COMPATIBILITY
 	unsigned long uver = VERSION_COMPATIBILITY;
 #endif
@@ -814,9 +806,7 @@ static const char *window_opts[] = {
 		0
 	};
 
-void
-do_options()
-{
+void do_options() {
 	register int i, length;
 	register const char *str, *indent = "    ";
 
@@ -899,9 +889,7 @@ text-b/text-c		at fseek(0x01234567L + 456L)
     *
     */
 
-void
-do_data()
-{
+void do_data() {
 	char	infile[60], tempfile[60];
 	boolean ok;
 	long	txt_offset;
@@ -1041,9 +1029,7 @@ static const char *special_oracle[] = {
    "-----" lines.
  */
 
-void
-do_oracles()
-{
+void do_oracles() {
 	char	infile[60], tempfile[60];
 	boolean in_oracle, ok;
 	long	txt_offset, offset, fpos;
@@ -1206,9 +1192,7 @@ static char* without_control(char* s) {
 	return(s + 1 + strlen(deflist[check_control(in_line)].defname));
 }
 
-void
-do_dungeon()
-{
+void do_dungeon() {
 	int rcnt = 0;
 
 	Sprintf(filename, DATA_IN_TEMPLATE, DGN_I_FILE);
@@ -1323,9 +1307,7 @@ static int mstrength(struct permonst *ptr)
 	return((tmp >= 0) ? tmp : 0);
 }
 
-void
-do_monstr()
-{
+void do_monstr() {
     register struct permonst *ptr;
     register int i, j;
 
@@ -1364,9 +1346,7 @@ do_monstr()
     return;
 }
 
-void
-do_permonst()
-{
+void do_permonst() {
 	int	i;
 	char	*c, *nam;
 
@@ -1445,10 +1425,7 @@ static boolean new_id (char* code) {
 	return(TRUE);
 }
 
-static boolean
-known_msg(num, id)
-	int num, id;
-{
+static boolean known_msg(int num, int id) {
 	int i;
 
 	for(i = 0; i < msg_hdr[num].n_msg; i++)
@@ -1458,11 +1435,7 @@ known_msg(num, id)
 }
 
 
-static void
-new_msg(s, num, id)
-	char *s;
-	int num, id;
-{
+static void new_msg(char *s, int num, int id) {
 	struct	qtmsg	*qt_msg;
 
 	if(msg_hdr[num].n_msg >= N_MSG) {
@@ -1477,10 +1450,7 @@ new_msg(s, num, id)
 	}
 }
 
-static void
-do_qt_control(s)
-	char *s;
-{
+static void do_qt_control(char *s) {
 	char code[BUFSZ];
 	int num, id = 0;
 
@@ -1516,10 +1486,7 @@ do_qt_control(s)
 	}
 }
 
-static void
-do_qt_text(s)
-	char *s;
-{
+static void do_qt_text(char *s) {
 	if (!in_msg) {
 	    Fprintf(stderr, TEXT_NOT_IN_MSG, qt_line);
 	}
@@ -1527,9 +1494,7 @@ do_qt_text(s)
 	return;
 }
 
-static void
-adjust_qt_hdrs()
-{
+static void adjust_qt_hdrs() {
 	int	i, j;
 	long count = 0L, hdr_offset = sizeof(int) +
 			(sizeof(char)*LEN_HDR + sizeof(long)) * qt_hdr.n_hdr;
@@ -1548,9 +1513,7 @@ adjust_qt_hdrs()
 	return;
 }
 
-static void
-put_qt_hdrs()
-{
+static void put_qt_hdrs() {
 	int	i;
 
 	/*
@@ -1596,9 +1559,7 @@ put_qt_hdrs()
 	}
 }
 
-void
-do_questtxt()
-{
+void do_questtxt() {
 	Sprintf(filename, DATA_IN_TEMPLATE, QTXT_I_FILE);
 	if(!(ifp = fopen(filename, RDTMODE))) {
 		perror(filename);
@@ -1660,9 +1621,7 @@ int	pref;
 	return temp;
 }
 
-void
-do_objs()
-{
+void do_objs() {
 	int i, sum = 0;
 	char *c, *objnam;
 	int nspell = 0;
@@ -1776,10 +1735,7 @@ do_objs()
 	return;
 }
 
-static char *
-tmpdup(str)
-const char *str;
-{
+static char * tmpdup(const char *str) {
 	static char buf[128];
 
 	if (!str) return (char *)0;
@@ -1787,10 +1743,7 @@ const char *str;
 	return buf;
 }
 
-static char *
-eos(str)
-char *str;
-{
+static char * eos(char *str) {
     while (*str) str++;
     return str;
 }
@@ -1800,9 +1753,7 @@ char *str;
  *      VISION_TABLES => generate tables
  */
 
-void
-do_vision()
-{
+void do_vision() {
 #ifdef VISION_TABLES
     int i, j;
 
@@ -1924,9 +1875,7 @@ do_vision()
  *
 \*--------------  vision tables  --------------*/
 
-static void
-H_close_gen()
-{
+static void H_close_gen() {
     Fprintf(ofp,"\n/* Close */\n");
     Fprintf(ofp,"#define CLOSE_MAX_SB_DY %2d\t/* |src row - block row| - 1\t*/\n",
 	    TEST_HEIGHT-1);
@@ -1941,9 +1890,7 @@ H_close_gen()
     return;
 }
 
-static void
-H_far_gen()
-{
+static void H_far_gen() {
     Fprintf(ofp,"\n/* Far */\n");
     Fprintf(ofp,"#define FAR_MAX_SB_DY %2d\t/* |src row - block row|\t*/\n",
 	    TEST_HEIGHT);
@@ -1958,9 +1905,7 @@ H_far_gen()
     return;
 }
 
-static void
-C_close_gen()
-{
+static void C_close_gen() {
     int i,dx,dy;
     int src_row, src_col;	/* source */
     int block_row, block_col;	/* block */
@@ -2016,9 +1961,7 @@ C_close_gen()
     return;
 }
 
-static void
-C_far_gen()
-{
+static void C_far_gen() {
     int i,dx,dy;
     int src_row, src_col;	/* source */
     int block_row, block_col;	/* block */
@@ -2085,10 +2028,7 @@ C_far_gen()
  *  NOTE:  This had better *not* be called from a position on the
  *  same row as the hero.
  */
-static int
-clear_path(you_row,you_col,y2,x2)
-    int you_row, you_col, y2, x2;
-{
+static int clear_path(int you_row, int you_col, int y2, int x2) {
     int dx, dy, s1, s2;
     register int i, error, x, y, dxs, dys;
 

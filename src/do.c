@@ -32,9 +32,7 @@ static NEARDATA const char drop_types[] =
 	{ ALLOW_COUNT, COIN_CLASS, ALL_CLASSES, 0 };
 
 /* 'd' command: drop one inventory item */
-int
-dodrop()
-{
+int dodrop() {
 #ifndef GOLDOBJ
 	int result, i = (invent || u.ugold) ? 0 : (SIZE(drop_types) - 1);
 #else
@@ -56,12 +54,7 @@ dodrop()
  * in a pool, it either fills the pool up or sinks away.  In either case,
  * it's gone for good...  If the destination is not a pool, returns FALSE.
  */
-boolean
-boulder_hits_pool(otmp, rx, ry, pushing)
-struct obj *otmp;
-register int rx, ry;
-boolean pushing;
-{
+boolean boulder_hits_pool(struct obj *otmp, register int rx, register int ry, boolean pushing) {
 	if (!otmp || otmp->otyp != BOULDER)
 	    impossible("Not a boulder?");
 	else if (!Is_waterlevel(&u.uz) && (is_pool(rx,ry) || is_lava(rx,ry))) {
@@ -130,12 +123,7 @@ boolean pushing;
  * called with the object not in any chain.  Returns TRUE if the object goes
  * away.
  */
-boolean
-flooreffects(obj,x,y,verb)
-struct obj *obj;
-int x,y;
-const char *verb;
-{
+boolean flooreffects(struct obj *obj, int x, int y, const char *verb) {
 	struct trap *t;
 	struct monst *mtmp;
 
@@ -252,10 +240,7 @@ doaltarobj(obj)  /* obj is an object dropped on an altar */
 
 #ifdef SINKS
 STATIC_OVL
-void
-trycall(obj)
-register struct obj *obj;
-{
+void trycall(register struct obj *obj) {
 	if(!objects[obj->otyp].oc_name_known &&
 	   !objects[obj->otyp].oc_uname)
 	   docall(obj);
@@ -408,11 +393,7 @@ giveback:
 #ifdef OVL0
 
 /* some common tests when trying to drop or throw items */
-boolean
-canletgo(obj,word)
-register struct obj *obj;
-register const char *word;
-{
+boolean canletgo(register struct obj *obj, register const char *word) {
 	if(obj->owornmask & (W_ARMOR | W_RING | W_AMUL | W_TOOL)){
 		if (*word)
 			Norep("You cannot %s %s you are wearing.",word,
@@ -453,10 +434,7 @@ register const char *word;
 }
 
 STATIC_PTR
-int
-drop(obj)
-register struct obj *obj;
-{
+int drop(register struct obj *obj) {
 	if(!obj) return(0);
 	if(!canletgo(obj,"drop"))
 		return(0);
@@ -514,10 +492,7 @@ register struct obj *obj;
 
 /* Called in several places - may produce output */
 /* eg ship_object() and dropy() -> sellobj() both produce output */
-void
-dropx(obj)
-register struct obj *obj;
-{
+void dropx(register struct obj *obj) {
 #ifndef GOLDOBJ
 	if (obj->oclass != COIN_CLASS || obj == invent) freeinv(obj);
 #else
@@ -533,10 +508,7 @@ register struct obj *obj;
 	dropy(obj);
 }
 
-void
-dropy(obj)
-register struct obj *obj;
-{
+void dropy(register struct obj *obj) {
 	if (obj == uwep) setuwep((struct obj *)0);
 	if (obj == uquiver) setuqwep((struct obj *)0);
 	if (obj == uswapwep) setuswapwep((struct obj *)0);
@@ -594,10 +566,7 @@ register struct obj *obj;
 
 /* things that must change when not held; recurse into containers.
    Called for both player and monsters */
-void
-obj_no_longer_held(obj)
-struct obj *obj;
-{
+void obj_no_longer_held(struct obj *obj) {
 	if (!obj) {
 	    return;
 	} else if ((Is_container(obj) || obj->otyp == STATUE) && obj->cobj) {
@@ -618,9 +587,7 @@ struct obj *obj;
 }
 
 /* 'D' command: drop several things */
-int
-doddrop()
-{
+int doddrop() {
 	int result = 0;
 
 	add_valid_menu_class(0); /* clear any classes already there */
@@ -635,10 +602,7 @@ doddrop()
 }
 
 /* Drop things from the hero's inventory, using a menu. */
-STATIC_OVL int
-menu_drop(retry)
-int retry;
-{
+STATIC_OVL int menu_drop(int retry) {
     int n, i, n_dropped = 0;
     long cnt;
     struct obj *otmp, *otmp2;
@@ -747,9 +711,7 @@ int retry;
 /* on a ladder, used in goto_level */
 static NEARDATA boolean at_ladder = FALSE;
 
-int
-dodown()
-{
+int dodown() {
 	struct trap *trap = 0;
 	boolean stairs_down = ((u.ux == xdnstair && u.uy == ydnstair) ||
 		    (u.ux == sstairs.sx && u.uy == sstairs.sy && !sstairs.up)),
@@ -835,9 +797,7 @@ dodown()
 	return(1);
 }
 
-int
-doup()
-{
+int doup() {
 	if( (u.ux != xupstair || u.uy != yupstair)
 	     && (!xupladder || u.ux != xupladder || u.uy != yupladder)
 	     && (!sstairs.sx || u.ux != sstairs.sx || u.uy != sstairs.sy
@@ -884,9 +844,7 @@ doup()
 d_level save_dlevel = {0, 0};
 
 /* check that we can write out the current level */
-STATIC_OVL int
-currentlevel_rewrite()
-{
+STATIC_OVL int currentlevel_rewrite() {
 	register int fd;
 	char whynot[BUFSZ];
 
@@ -920,9 +878,7 @@ currentlevel_rewrite()
 }
 
 #ifdef INSURANCE
-void
-save_currentstate()
-{
+void save_currentstate() {
 	int fd;
 
 	if (flags.ins_chkpt) {
@@ -940,20 +896,13 @@ save_currentstate()
 #endif
 
 /*
-static boolean
-badspot(x, y)
-register xchar x, y;
-{
+static boolean badspot(register xchar x, register xchar y) {
 	return((levl[x][y].typ != ROOM && levl[x][y].typ != AIR &&
 			 levl[x][y].typ != CORR) || MON_AT(x, y));
 }
 */
 
-void
-goto_level(newlevel, at_stairs, falling, portal)
-d_level *newlevel;
-boolean at_stairs, falling, portal;
-{
+void goto_level(d_level *newlevel, boolean at_stairs, boolean falling, boolean portal) {
 	int fd, l_idx;
 	xchar new_ledger;
 	boolean cant_go_back,
@@ -1362,9 +1311,7 @@ boolean at_stairs, falling, portal;
 	(void) pickup(1);
 }
 
-STATIC_OVL void
-final_level()
-{
+STATIC_OVL void final_level() {
 	struct monst *mtmp;
 	struct obj *otmp;
 	coord mm;
@@ -1430,13 +1377,7 @@ static char *dfr_pre_msg = 0,	/* pline() before level change */
 	    *dfr_post_msg = 0;	/* pline() after level change */
 
 /* change levels at the end of this turn, after monsters finish moving */
-void
-schedule_goto(tolev, at_stairs, falling, portal_flag, pre_msg, post_msg)
-d_level *tolev;
-boolean at_stairs, falling;
-int portal_flag;
-const char *pre_msg, *post_msg;
-{
+void schedule_goto(d_level *tolev, boolean at_stairs, boolean falling, int portal_flag, const char *pre_msg, const char *post_msg) {
 	int typmask = 0100;		/* non-zero triggers `deferred_goto' */
 
 	/* destination flags (`goto_level' args) */
@@ -1455,9 +1396,7 @@ const char *pre_msg, *post_msg;
 }
 
 /* handle something like portal ejection */
-void
-deferred_goto()
-{
+void deferred_goto() {
 	if (!on_level(&u.uz, &u.utolev)) {
 	    d_level dest;
 	    int typmask = u.utotype; /* save it; goto_level zeroes u.utotype */
@@ -1489,10 +1428,7 @@ deferred_goto()
  * Return TRUE if we created a monster for the corpse.  If successful, the
  * corpse is gone.
  */
-boolean
-revive_corpse(corpse)
-struct obj *corpse;
-{
+boolean revive_corpse(struct obj *corpse) {
     struct monst *mtmp, *mcarry;
     boolean is_uwep, chewed;
     xchar where;
@@ -1575,11 +1511,7 @@ struct obj *corpse;
 
 /* Revive the corpse via a timeout. */
 /*ARGSUSED*/
-void
-revive_mon(arg, timeout)
-genericptr_t arg;
-long timeout;
-{
+void revive_mon(genericptr_t arg, long timeout) {
     struct obj *body = (struct obj *) arg;
 
     /* if we succeed, the corpse is gone, otherwise, rot it away */
@@ -1591,18 +1523,14 @@ long timeout;
     }
 }
 
-int
-donull()
-{
+int donull() {
 	return(1);	/* Do nothing, but let other things happen */
 }
 
 #endif /* OVL3 */
 #ifdef OVLB
 
-STATIC_PTR int
-wipeoff()
-{
+STATIC_PTR int wipeoff() {
 	if(u.ucreamed < 4)	u.ucreamed = 0;
 	else			u.ucreamed -= 4;
 	if (Blinded < 4)	Blinded = 0;
@@ -1620,9 +1548,7 @@ wipeoff()
 	return(1);		/* still busy */
 }
 
-int
-dowipe()
-{
+int dowipe() {
 	if(u.ucreamed)  {
 		static NEARDATA char buf[39];
 
@@ -1637,11 +1563,7 @@ dowipe()
 	return(1);
 }
 
-void
-set_wounded_legs(side, timex)
-register long side;
-register int timex;
-{
+void set_wounded_legs(register long side, register int timex) {
 	/* KMH -- STEED
 	 * If you are riding, your steed gets the wounded legs instead.
 	 * You still call this function, but don't lose hp.
@@ -1659,9 +1581,7 @@ register int timex;
 	(void)encumber_msg();
 }
 
-void
-heal_legs()
-{
+void heal_legs() {
 	if(Wounded_legs) {
 		if (ATEMP(A_DEX) < 0) {
 			ATEMP(A_DEX)++;

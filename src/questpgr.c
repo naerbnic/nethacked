@@ -50,12 +50,7 @@ dump_qtlist()	/* dump the character msg list to check appearance */
 }
 #endif /* DEBUG */
 
-static void
-Fread(ptr, size, nitems, stream)
-genericptr_t	ptr;
-int	size, nitems;
-dlb	*stream;
-{
+static void Fread(genericptr_t ptr, int size, int nitems, dlb *stream) {
 	int cnt;
 
 	if ((cnt = dlb_fread(ptr, size, nitems, stream)) != nitems) {
@@ -65,10 +60,7 @@ dlb	*stream;
 	}
 }
 
-STATIC_OVL struct qtmsg *
-construct_qtlist(hdr_offset)
-long	hdr_offset;
-{
+STATIC_OVL struct qtmsg * construct_qtlist(long hdr_offset) {
 	struct qtmsg *msg_list;
 	int	n_msgs;
 
@@ -86,9 +78,7 @@ long	hdr_offset;
 	return(msg_list);
 }
 
-void
-load_qtlist()
-{
+void load_qtlist() {
 
 	int	n_classes, i;
 	char	qt_classes[N_HDR][LEN_HDR];
@@ -134,9 +124,7 @@ load_qtlist()
 }
 
 /* called at program exit */
-void
-unload_qtlist()
-{
+void unload_qtlist() {
 	if (msg_file)
 	    (void) dlb_fclose(msg_file),  msg_file = 0;
 	if (qt_list.common)
@@ -146,10 +134,7 @@ unload_qtlist()
 	return;
 }
 
-short
-quest_info(typ)
-int typ;
-{
+short quest_info(int typ) {
 	switch (typ) {
 	    case 0:		return (urole.questarti);
 	    case MS_LEADER:	return (urole.ldrnum);
@@ -177,10 +162,7 @@ intermed()	/* return your intermediate target string */
 	return (urole.intermed);
 }
 
-boolean
-is_quest_artifact(otmp)
-struct obj *otmp;
-{
+boolean is_quest_artifact(struct obj *otmp) {
 	return((boolean)(otmp->oartifact == urole.questarti));
 }
 
@@ -209,11 +191,7 @@ homebase()	/* return your role leader's location */
 	return(urole.homebase);
 }
 
-STATIC_OVL struct qtmsg *
-msg_in(qtm_list, msgnum)
-struct qtmsg *qtm_list;
-int	msgnum;
-{
+STATIC_OVL struct qtmsg * msg_in(struct qtmsg *qtm_list, int msgnum) {
 	struct qtmsg *qt_msg;
 
 	for (qt_msg = qtm_list; qt_msg->msgnum > 0; qt_msg++)
@@ -222,10 +200,7 @@ int	msgnum;
 	return((struct qtmsg *)0);
 }
 
-STATIC_OVL void
-convert_arg(c)
-char c;
-{
+STATIC_OVL void convert_arg(char c) {
 	register const char *str;
 
 	switch (c) {
@@ -284,9 +259,7 @@ char c;
 	Strcpy(cvt_buf, str);
 }
 
-STATIC_OVL void
-convert_line()
-{
+STATIC_OVL void convert_line() {
 	char *c, *cc;
 	char xbuf[BUFSZ];
 
@@ -355,10 +328,7 @@ convert_line()
 	return;
 }
 
-STATIC_OVL void
-deliver_by_pline(qt_msg)
-struct qtmsg *qt_msg;
-{
+STATIC_OVL void deliver_by_pline(struct qtmsg *qt_msg) {
 	long	size;
 
 	for (size = 0; size < qt_msg->size; size += (long)strlen(in_line)) {
@@ -369,11 +339,7 @@ struct qtmsg *qt_msg;
 
 }
 
-STATIC_OVL void
-deliver_by_window(qt_msg, how)
-struct qtmsg *qt_msg;
-int how;
-{
+STATIC_OVL void deliver_by_window(struct qtmsg *qt_msg, int how) {
 	long	size;
 	winid datawin = create_nhwindow(how);
 
@@ -386,10 +352,7 @@ int how;
 	destroy_nhwindow(datawin);
 }
 
-void
-com_pager(msgnum)
-int	msgnum;
-{
+void com_pager(int msgnum) {
 	struct qtmsg *qt_msg;
 
 	if (!(qt_msg = msg_in(qt_list.common, msgnum))) {
@@ -404,10 +367,7 @@ int	msgnum;
 	return;
 }
 
-void
-qt_pager(msgnum)
-int	msgnum;
-{
+void qt_pager(int msgnum) {
 	struct qtmsg *qt_msg;
 
 	if (!(qt_msg = msg_in(qt_list.chrole, msgnum))) {
@@ -422,9 +382,7 @@ int	msgnum;
 	return;
 }
 
-struct permonst *
-qt_montype()
-{
+struct permonst * qt_montype() {
 	int qpm;
 
 	if (rn2(5)) {

@@ -21,9 +21,7 @@ extern int NDECL(rand);
 static int reseed_period = 0;
 static int reseed_count = 0;
 
-void
-check_reseed()
-{
+void check_reseed() {
     reseed_count++;
     if (reseed_count > reseed_period) {
 	FILE *fptr = NULL;
@@ -124,10 +122,7 @@ register int n, x;
 #endif /* OVL1 */
 #ifdef OVLB
 
-int
-rne(x)
-register int x;
-{
+int rne(register int x) {
 	register int tmp, utmp;
 
 	utmp = (u.ulevel < 15) ? 5 : u.ulevel/3;
@@ -145,10 +140,7 @@ register int x;
 	 */
 }
 
-int
-rnz(i)
-int i;
-{
+int rnz(int i) {
 #ifdef LINT
 	int x = i;
 	int tmp = 1000;

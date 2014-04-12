@@ -296,9 +296,7 @@ struct realtime_data realtime_data = { 0, 0, 0 };
 #endif
 
 /* dummy routine used to force linkage */
-void
-decl_init()
-{
+void decl_init() {
     return;
 }
 

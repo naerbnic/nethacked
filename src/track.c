@@ -12,9 +12,7 @@ STATIC_VAR NEARDATA coord utrack[UTSZ];
 
 #ifdef OVLB
 
-void
-initrack()
-{
+void initrack() {
 	utcnt = utpnt = 0;
 }
 
@@ -22,9 +20,7 @@ initrack()
 #ifdef OVL1
 
 /* add to track */
-void
-settrack()
-{
+void settrack() {
 	if(utcnt < UTSZ) utcnt++;
 	if(utpnt == UTSZ) utpnt = 0;
 	utrack[utpnt].x = u.ux;
@@ -35,10 +31,7 @@ settrack()
 #endif /* OVL1 */
 #ifdef OVL0
 
-coord *
-gettrack(x, y)
-register int x, y;
-{
+coord * gettrack(register int x, register int y) {
     register int cnt, ndist;
     register coord *tc;
     cnt = utcnt;

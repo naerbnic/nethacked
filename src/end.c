@@ -173,9 +173,7 @@ int sig_unused;
 
 
 /* "#quit" command or keyboard interrupt */
-int
-done2()
-{
+int done2() {
 #ifdef PARANOID
 	char buf[BUFSZ];
 	int really_quit = FALSE;
@@ -256,10 +254,7 @@ int sig;
 # endif
 #endif /* NO_SIGNAL */
 
-void
-done_in_by(mtmp)
-register struct monst *mtmp;
-{
+void done_in_by(register struct monst *mtmp) {
 	char buf[BUFSZ];
 	boolean distorted = (boolean)(Hallucination && canspotmon(mtmp));
 
@@ -392,11 +387,7 @@ panic VA_DECL(const char *, str)
 	done(PANICKED);
 }
 
-STATIC_OVL boolean
-should_query_disclose_option(category, defquery)
-int category;
-char *defquery;
-{
+STATIC_OVL boolean should_query_disclose_option(int category, char *defquery) {
     int idx;
     char *dop = index(disclosure_options, category);
 
@@ -430,11 +421,7 @@ char *defquery;
     return TRUE;
 }
 
-STATIC_OVL void
-disclose(how,taken)
-int how;
-boolean taken;
-{
+STATIC_OVL void disclose(int how, boolean taken) {
 	char	c = 0, defquery;
 	char	qbuf[QBUFSZ];
 	boolean ask;
@@ -523,10 +510,7 @@ boolean taken;
 }
 
 /* try to get the player back in a viable state after being killed */
-STATIC_OVL void
-savelife(how)
-int how;
-{
+STATIC_OVL void savelife(int how) {
 	u.uswldtim = 0;
 	u.uhp = u.uhpmax;
 	if (u.uhunger < 500) {
@@ -553,10 +537,7 @@ int how;
  * Get valuables from the given list.  Revised code: the list always remains
  * intact.
  */
-STATIC_OVL void
-get_valuables(list)
-struct obj *list;	/* inventory or container contents */
-{
+STATIC_OVL void get_valuables(struct obj *list) {
     register struct obj *obj;
     register int i;
 
@@ -586,11 +567,7 @@ struct obj *list;	/* inventory or container contents */
  *  Sort collected valuables, most frequent to least.  We could just
  *  as easily use qsort, but we don't care about efficiency here.
  */
-STATIC_OVL void
-sort_valuables(list, size)
-struct valuable_data list[];
-int size;		/* max value is less than 20 */
-{
+STATIC_OVL void sort_valuables(struct valuable_data list[], int size) {
     register int i, j;
     struct valuable_data ltmp;
 
@@ -609,12 +586,7 @@ int size;		/* max value is less than 20 */
 }
 
 /* called twice; first to calculate total, then to list relevant items */
-STATIC_OVL void
-artifact_score(list, counting, endwin)
-struct obj *list;
-boolean counting;	/* true => add up points; false => display them */
-winid endwin;
-{
+STATIC_OVL void artifact_score(struct obj *list, boolean counting, winid endwin) {
     char pbuf[BUFSZ];
     struct obj *otmp;
     long value, points;
@@ -652,10 +624,7 @@ winid endwin;
 }
 
 /* Be careful not to call panic from here! */
-void
-done(how)
-int how;
-{
+void done(int how) {
 #if defined(WIZARD) && defined(PARANOID)
 	char paranoid_buf[BUFSZ];
 	int really_bon = TRUE;
@@ -1247,10 +1216,7 @@ boolean identified, all_containers, want_dump, want_disp;
 
 
 /* should be called with either EXIT_SUCCESS or EXIT_FAILURE */
-void
-terminate(status)
-int status;
-{
+void terminate(int status) {
 #ifdef MAC
 	getreturn("to exit");
 #endif
@@ -1376,9 +1342,7 @@ boolean want_dump;
 }
 
 /* number of monster species which have been genocided */
-int
-num_genocides()
-{
+int num_genocides() {
     int i, n = 0;
 
     for (i = LOW_PM; i < NUMMONS; ++i)

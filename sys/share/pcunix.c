@@ -35,10 +35,7 @@ static int NDECL(eraseoldlocks);
 #endif
 
 #if 0
-int
-uptodate(fd)
-int fd;
-{
+int uptodate(int fd) {
 # ifdef WANT_GETHDATE
     if(fstat(fd, &buf)) {
 	pline("Cannot get status of saved level? ");
@@ -74,9 +71,7 @@ int fd;
 #endif
 
 #ifdef PC_LOCKING
-static int
-eraseoldlocks()
-{
+static int eraseoldlocks() {
 	register int i;
 
 	/* cannot use maxledgerno() here, because we need to find a lock name
@@ -97,9 +92,7 @@ eraseoldlocks()
 	return(1);					/* success! */
 }
 
-void
-getlock()
-{
+void getlock() {
 	register int fd, c, ci, ct, ern;
 	char tbuf[BUFSZ];
 	const char *fq_lock;

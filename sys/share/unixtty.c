@@ -138,10 +138,7 @@ static boolean settty_needed = FALSE;
 struct termstruct inittyb, curttyb;
 
 #ifdef POSIX_TYPES
-static int
-speednum(speed)
-speed_t speed;
-{
+static int speednum(speed_t speed) {
 	switch (speed) {
 		case B0:	return 0;
 		case B50:	return 1;
@@ -165,9 +162,7 @@ speed_t speed;
 }
 #endif
 
-static void
-setctty()
-{
+static void setctty() {
 	if(STTY(&curttyb) < 0 || STTY2(&curttyb2) < 0)
 		perror("NetHack (setctty)");
 }
@@ -177,9 +172,7 @@ setctty()
  * and switch off tab expansion if necessary.
  * Called by startup() in termcap.c and after returning from ! or ^Z
  */
-void
-gettty()
-{
+void gettty() {
 	if(GTTY(&inittyb) < 0 || GTTY2(&inittyb2) < 0)
 		perror("NetHack (gettty)");
 	curttyb = inittyb;
@@ -199,10 +192,7 @@ gettty()
 }
 
 /* reset terminal to original state */
-void
-settty(s)
-const char *s;
-{
+void settty(const char *s) {
 	end_screen();
 	if(s) raw_print(s);
 	if(STTY(&inittyb) < 0 || STTY2(&inittyb2) < 0)
@@ -213,9 +203,7 @@ const char *s;
 	setioctls();
 }
 
-void
-setftty()
-{
+void setftty() {
 register int ef = 0;			/* desired value of flags & ECHO */
 #ifdef LINT	/* cf = CBRKON(CBRKMASK); const expr to initialize is ok */
 register int cf = 0;
@@ -324,9 +312,7 @@ void NDECL(sco_mapoff);
 void NDECL(check_sco_console);
 void NDECL(init_sco_cons);
 
-void
-sco_mapon()
-{
+void sco_mapon() {
 # ifdef TTY_GRAPHICS
 	if (!strcmp(windowprocs.name, "tty") && sco_flag_console) {
 		if (sco_map_valid != -1) {
@@ -337,9 +323,7 @@ sco_mapon()
 # endif
 }
 
-void
-sco_mapoff()
-{
+void sco_mapoff() {
 # ifdef TTY_GRAPHICS
 	if (!strcmp(windowprocs.name, "tty") && sco_flag_console) {
 		sco_map_valid = ioctl(0,LDGMAP,sco_chanmap_buf);
@@ -350,17 +334,13 @@ sco_mapoff()
 # endif
 }
 
-void
-check_sco_console()
-{
+void check_sco_console() {
 	if (isatty(0) && ioctl(0,CONS_GET,0) != -1) {
 		sco_flag_console = 1;
 	}
 }
 
-void
-init_sco_cons()
-{
+void init_sco_cons() {
 # ifdef TTY_GRAPHICS
 	if (!strcmp(windowprocs.name, "tty") && sco_flag_console) {
 		atexit(sco_mapon);
@@ -386,9 +366,7 @@ void NDECL(linux_mapoff);
 void NDECL(check_linux_console);
 void NDECL(init_linux_cons);
 
-void
-linux_mapon()
-{
+void linux_mapon() {
 # ifdef TTY_GRAPHICS
 	if (!strcmp(windowprocs.name, "tty") && linux_flag_console) {
 		write(1, "\033(B", 3);
@@ -396,9 +374,7 @@ linux_mapon()
 # endif
 }
 
-void
-linux_mapoff()
-{
+void linux_mapoff() {
 # ifdef TTY_GRAPHICS
 	if (!strcmp(windowprocs.name, "tty") && linux_flag_console) {
 		write(1, "\033(U", 3);
@@ -406,9 +382,7 @@ linux_mapoff()
 # endif
 }
 
-void
-check_linux_console()
-{
+void check_linux_console() {
 	struct vt_mode vtm;
 
 	if (isatty(0) && ioctl(0,VT_GETMODE,&vtm) >= 0) {
@@ -416,9 +390,7 @@ check_linux_console()
 	}
 }
 
-void
-init_linux_cons()
-{
+void init_linux_cons() {
 # ifdef TTY_GRAPHICS
 	if (!strcmp(windowprocs.name, "tty") && linux_flag_console) {
 		atexit(linux_mapon);

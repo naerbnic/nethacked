@@ -89,10 +89,7 @@ STATIC_VAR char tgotobuf[20];
 
 #ifdef OVLB
 
-void
-tty_startup(wid, hgt)
-int *wid, *hgt;
-{
+void tty_startup(int *wid, int *hgt) {
 	register int i;
 #ifdef TERMLIB
 	register const char *term;
@@ -341,9 +338,7 @@ int *wid, *hgt;
 
 /* note: at present, this routine is not part of the formal window interface */
 /* deallocate resources prior to final termination */
-void
-tty_shutdown()
-{
+void tty_shutdown() {
 #if defined(TEXTCOLOR) && defined(TERMLIB)
 	kill_hilite();
 #endif
@@ -351,10 +346,7 @@ tty_shutdown()
 	return;
 }
 
-void
-tty_number_pad(state)
-int state;
-{
+void tty_number_pad(int state) {
 	switch (state) {
 	    case -1:	/* activate keypad mode (escape sequences) */
 		    if (KS && *KS) xputs(KS);
@@ -379,9 +371,7 @@ static void NDECL(tty_decgraphics_termcap_fixup);
    call xputs() from the option setting or graphics assigning routines,
    so this is a convenient hook.
  */
-static void
-tty_decgraphics_termcap_fixup()
-{
+static void tty_decgraphics_termcap_fixup() {
 	static char ctrlN[]   = "\016";
 	static char ctrlO[]   = "\017";
 	static char appMode[] = "\033=";
@@ -437,9 +427,7 @@ extern void NDECL((*ibmgraphics_mode_callback));    /* defined in drawing.c */
 extern void NDECL((*ascgraphics_mode_callback));    /* defined in drawing.c */
 static void NDECL(tty_ascgraphics_hilite_fixup);
 
-static void
-tty_ascgraphics_hilite_fixup()
-{
+static void tty_ascgraphics_hilite_fixup() {
     register int c;
 
     for (c = 0; c < CLR_MAX / 2; c++)
@@ -454,9 +442,7 @@ tty_ascgraphics_hilite_fixup()
 }
 #endif /* PC9800 */
 
-void
-tty_start_screen()
-{
+void tty_start_screen() {
 	xputs(TI);
 	xputs(VS);
 #ifdef PC9800
@@ -479,9 +465,7 @@ tty_start_screen()
 	if (iflags.num_pad) tty_number_pad(1);	/* make keypad send digits */
 }
 
-void
-tty_end_screen()
-{
+void tty_end_screen() {
 	clear_screen();
 	xputs(VE);
 	xputs(TE);
@@ -498,10 +482,7 @@ tty_end_screen()
    and or xputc() is taken out of the ROOT overlay, then action must be taken
    in trampoli.[ch]. */
 
-void
-nocmov(x, y)
-int x,y;
-{
+void nocmov(int x, int y) {
 	if ((int) ttyDisplay->cury > y) {
 		if(UP) {
 			while ((int) ttyDisplay->cury > y) {	/* Go up. */
@@ -545,10 +526,7 @@ int x,y;
 	}
 }
 
-void
-cmov(x, y)
-register int x, y;
-{
+void cmov(register int x, register int y) {
 	xputs(tgoto(nh_CM, x, y));
 	ttyDisplay->cury = y;
 	ttyDisplay->curx = x;
@@ -566,10 +544,7 @@ char c;
 	(void) putchar(c);
 }
 
-void
-xputs(s)
-const char *s;
-{
+void xputs(const char *s) {
 # ifndef TERMLIB
 	(void) fputs(s, stdout);
 # else
@@ -581,9 +556,7 @@ const char *s;
 # endif
 }
 
-void
-cl_end()
-{
+void cl_end() {
 	if(CE)
 		xputs(CE);
 	else {	/* no-CE fix - free after Harold Rynes */
@@ -603,9 +576,7 @@ cl_end()
 #endif /* OVL0 */
 #ifdef OVLB
 
-void
-clear_screen()
-{
+void clear_screen() {
 	/* note: if CL is null, then termcap initialization failed,
 		so don't attempt screen-oriented I/O during final cleanup.
 	 */
@@ -618,9 +589,7 @@ clear_screen()
 #endif /* OVLB */
 #ifdef OVL0
 
-void
-home()
-{
+void home() {
 	if(HO)
 		xputs(HO);
 	else if(nh_CM)
@@ -630,34 +599,24 @@ home()
 	ttyDisplay->curx = ttyDisplay->cury = 0;
 }
 
-void
-standoutbeg()
-{
+void standoutbeg() {
 	if(SO) xputs(SO);
 }
 
-void
-standoutend()
-{
+void standoutend() {
 	if(SE) xputs(SE);
 }
 
 #if 0	/* if you need one of these, uncomment it (here and in extern.h) */
-void
-revbeg()
-{
+void revbeg() {
 	if(MR) xputs(MR);
 }
 
-void
-boldbeg()
-{
+void boldbeg() {
 	if(MD) xputs(MD);
 }
 
-void
-blinkbeg()
-{
+void blinkbeg() {
 	if(MB) xputs(MB);
 }
 
@@ -668,9 +627,7 @@ dimbeg()
 	if(MH) xputs(MH);
 }
 
-void
-m_end()
-{
+void m_end() {
 	if(ME) xputs(ME);
 }
 #endif
@@ -678,15 +635,11 @@ m_end()
 #endif /* OVL0 */
 #ifdef OVLB
 
-void
-backsp()
-{
+void backsp() {
 	xputs(BC);
 }
 
-void
-tty_nhbell()
-{
+void tty_nhbell() {
 	if (flags.silent) return;
 	(void) putchar('\007');		/* curx does not change */
 	(void) fflush(stdout);
@@ -724,9 +677,7 @@ static const short tmspc10[] = {		/* from termcap */
 #endif
 
 /* delay 50 ms */
-void
-tty_delay_output()
-{
+void tty_delay_output() {
 #if defined(MICRO)
 	register int i;
 #endif
@@ -870,9 +821,7 @@ const struct {int ti_color, nh_color, nh_bright_color;} ti_map[6] =
 	{COLOR_CYAN,CLR_CYAN,CLR_BRIGHT_CYAN}
 };
 
-static void
-init_hilite()
-{
+static void init_hilite() {
 	register int c;
 	char *setf, *scratch;
 	int length_md;
@@ -950,9 +899,7 @@ init_hilite()
 	}
 }
 
-static void
-kill_hilite()
-{
+static void kill_hilite() {
 	/* if colors weren't usable, no freeing needed */
 	if (hilites[CLR_BLACK] == nh_HI)
 		return;
@@ -1041,9 +988,7 @@ int *fg, *bg;
  * scanned to find foreground and background colors.
  */
 
-static void
-init_hilite()
-{
+static void init_hilite() {
 	register int c;
 #  ifdef TOS
 	extern unsigned long tos_numcolors;	/* in tos.c */
@@ -1122,9 +1067,7 @@ init_hilite()
 #  endif /* TOS */
 }
 
-static void
-kill_hilite()
-{
+static void kill_hilite() {
 # ifndef TOS
 	register int c;
 
@@ -1144,10 +1087,7 @@ kill_hilite()
 
 static char nulstr[] = "";
 
-static char *
-s_atr2str(n)
-int n;
-{
+static char * s_atr2str(int n) {
     switch (n) {
 	    case ATR_ULINE:
 		    if(nh_US) return nh_US;
@@ -1163,10 +1103,7 @@ int n;
     return nulstr;
 }
 
-static char *
-e_atr2str(n)
-int n;
-{
+static char * e_atr2str(int n) {
     switch (n) {
 	    case ATR_ULINE:
 		    if(nh_UE) return nh_UE;
@@ -1180,61 +1117,43 @@ int n;
 }
 
 
-void
-term_start_attr(attr)
-int attr;
-{
+void term_start_attr(int attr) {
 	if (attr) {
 		xputs(s_atr2str(attr));
 	}
 }
 
 
-void
-term_end_attr(attr)
-int attr;
-{
+void term_end_attr(int attr) {
 	if(attr) {
 		xputs(e_atr2str(attr));
 	}
 }
 
 
-void
-term_start_raw_bold()
-{
+void term_start_raw_bold() {
 	xputs(nh_HI);
 }
 
 
-void
-term_end_raw_bold()
-{
+void term_end_raw_bold() {
 	xputs(nh_HE);
 }
 
 
 #ifdef TEXTCOLOR
 
-void
-term_end_color()
-{
+void term_end_color() {
 	xputs(nh_HE);
 }
 
 
-void
-term_start_color(color)
-int color;
-{
+void term_start_color(int color) {
 	xputs(hilites[color]);
 }
 
 
-int
-has_color(color)
-int color;
-{
+int has_color(int color) {
 #ifdef X11_GRAPHICS
 	/* XXX has_color() should be added to windowprocs */
 	if (windowprocs.name != NULL &&

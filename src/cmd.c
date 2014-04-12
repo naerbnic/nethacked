@@ -163,16 +163,12 @@ STATIC_DCL boolean FDECL(help_dir, (CHAR_P,const char *));
 
 #ifdef OVL1
 
-STATIC_PTR int
-doprev_message()
-{
+STATIC_PTR int doprev_message() {
     return nh_doprev_message();
 }
 
 /* Count down by decrementing multi */
-STATIC_PTR int
-timed_occupation()
-{
+STATIC_PTR int timed_occupation() {
 	(*timed_occ_fn)();
 	if (multi > 0)
 		multi--;
@@ -193,9 +189,7 @@ timed_occupation()
  *			Picking Locks / Forcing Chests.
  *			Setting traps.
  */
-void
-reset_occupations()
-{
+void reset_occupations() {
 	reset_remarm();
 	reset_pick();
 	reset_trapset();
@@ -256,10 +250,7 @@ pgetchar() {		/* curtesy of aeb@cwi.nl */
 }
 
 /* A ch == 0 resets the pushq */
-void
-pushch(ch)
-char ch;
-{
+void pushch(char ch) {
 	if (!ch)
 		phead = ptail = 0;
 	if (phead < BSIZE)
@@ -270,10 +261,7 @@ char ch;
 /* A ch == 0 resets the saveq.	Only save keystrokes when not
  * replaying a previous command.
  */
-void
-savech(ch)
-char ch;
-{
+void savech(char ch) {
 	if (!in_doagain) {
 		if (!ch)
 			phead = ptail = shead = stail = 0;
@@ -449,9 +437,7 @@ extcmd_via_menu()	/* here after # - now show pick-list of possible commands */
 #endif
 
 /* #monster command - use special monster ability while polymorphed */
-STATIC_PTR int
-domonability()
-{
+STATIC_PTR int domonability() {
 	if (can_breathe(youmonst.data)) return dobreathe();
 	else if (attacktype(youmonst.data, AT_SPIT)) return dospit();
 	else if (youmonst.data->mlet == S_NYMPH) return doremove();
@@ -479,9 +465,7 @@ domonability()
 	return 0;
 }
 
-STATIC_PTR int
-enter_explore_mode()
-{
+STATIC_PTR int enter_explore_mode() {
 #ifdef PARANOID
 	char buf[BUFSZ];
 	int really_xplor = FALSE;
@@ -533,18 +517,14 @@ wiz_wish()	/* Unlimited wishes for debug mode by Paul Polderman */
 }
 
 /* ^I command - identify hero's inventory */
-STATIC_PTR int
-wiz_identify()
-{
+STATIC_PTR int wiz_identify() {
 	if (wizard)	identify_pack(0);
 	else		pline("Unavailable command '^I'.");
 	return 0;
 }
 
 /* ^F command - reveal the level map and any traps on it */
-STATIC_PTR int
-wiz_map()
-{
+STATIC_PTR int wiz_map() {
 	if (wizard) {
 	    struct trap *t;
 	    long save_Hconf = HConfusion,
@@ -564,45 +544,35 @@ wiz_map()
 }
 
 /* ^G command - generate monster(s); a count prefix will be honored */
-STATIC_PTR int
-wiz_genesis()
-{
+STATIC_PTR int wiz_genesis() {
 	if (wizard)	(void) create_particular();
 	else		pline("Unavailable command '^G'.");
 	return 0;
 }
 
 /* ^O command - display dungeon layout */
-STATIC_PTR int
-wiz_where()
-{
+STATIC_PTR int wiz_where() {
 	if (wizard) (void) print_dungeon(FALSE, (schar *)0, (xchar *)0);
 	else	    pline("Unavailable command '^O'.");
 	return 0;
 }
 
 /* ^E command - detect unseen (secret doors, traps, hidden monsters) */
-STATIC_PTR int
-wiz_detect()
-{
+STATIC_PTR int wiz_detect() {
 	if(wizard)  (void) findit();
 	else	    pline("Unavailable command '^E'.");
 	return 0;
 }
 
 /* ^V command - level teleport */
-STATIC_PTR int
-wiz_level_tele()
-{
+STATIC_PTR int wiz_level_tele() {
 	if (wizard)	level_tele();
 	else		pline("Unavailable command '^V'.");
 	return 0;
 }
 
 /* #monpolycontrol command - choose new form for shapechangers, polymorphees */
-STATIC_PTR int
-wiz_mon_polycontrol()
-{
+STATIC_PTR int wiz_mon_polycontrol() {
     iflags.mon_polycontrol = !iflags.mon_polycontrol;
     pline("Monster polymorph control is %s.",
 	  iflags.mon_polycontrol ? "on" : "off");
@@ -610,9 +580,7 @@ wiz_mon_polycontrol()
 }
 
 /* #levelchange command - adjust hero's experience level */
-STATIC_PTR int
-wiz_level_change()
-{
+STATIC_PTR int wiz_level_change() {
     char buf[BUFSZ];
     int newlevel;
     int ret;
@@ -650,26 +618,20 @@ wiz_level_change()
 }
 
 /* #panic command - test program's panic handling */
-STATIC_PTR int
-wiz_panic()
-{
+STATIC_PTR int wiz_panic() {
 	if (yn("Do you want to call panic() and end your game?") == 'y')
 		panic("crash test.");
         return 0;
 }
 
 /* #polyself command - change hero's form */
-STATIC_PTR int
-wiz_polyself()
-{
+STATIC_PTR int wiz_polyself() {
         polyself(TRUE);
         return 0;
 }
 
 /* #seenv command */
-STATIC_PTR int
-wiz_show_seenv()
-{
+STATIC_PTR int wiz_show_seenv() {
 	winid win;
 	int x, y, v, startx, stopx, curx;
 	char row[COLNO+1];
@@ -709,9 +671,7 @@ wiz_show_seenv()
 }
 
 /* #vision command */
-STATIC_PTR int
-wiz_show_vision()
-{
+STATIC_PTR int wiz_show_vision() {
 	winid win;
 	int x, y, v;
 	char row[COLNO+1];
@@ -746,9 +706,7 @@ wiz_show_vision()
 }
 
 /* #wmode command */
-STATIC_PTR int
-wiz_show_wmodes()
-{
+STATIC_PTR int wiz_show_wmodes() {
 	winid win;
 	int x,y;
 	char row[COLNO+1];
@@ -807,10 +765,7 @@ static const char
 #define you_have_never(badthing) enl_msg(You_,have_never,never,badthing)
 #define you_have_X(something)	enl_msg(You_,have,(const char *)"",something)
 
-static void
-enlght_line(start, middle, end)
-const char *start, *middle, *end;
-{
+static void enlght_line(const char *start, const char *middle, const char *end) {
 	char buf[BUFSZ];
 
 	Sprintf(buf, "%s%s%s.", start, middle, end);
@@ -818,12 +773,7 @@ const char *start, *middle, *end;
 }
 
 /* format increased damage or chance to hit */
-static char *
-enlght_combatinc(inctyp, incamt, final, outbuf)
-const char *inctyp;
-int incamt, final;
-char *outbuf;
-{
+static char * enlght_combatinc(const char *inctyp, int incamt, int final, char *outbuf) {
 	char numbuf[24];
 	const char *modif, *bonus;
 
@@ -854,10 +804,7 @@ char *outbuf;
 	return outbuf;
 }
 
-void
-enlightenment(final)
-int final;	/* 0 => still in progress; 1 => over, survived; 2 => dead */
-{
+void enlightenment(int final) {
 	int ltmp;
 	char buf[BUFSZ];
 
@@ -1155,10 +1102,7 @@ int final;	/* 0 => still in progress; 1 => over, survived; 2 => dead */
 }
 
 #ifdef DUMP_LOG
-void
-dump_enlightenment(final)
-int final;
-{
+void dump_enlightenment(int final) {
 	int ltmp;
 	char buf[BUFSZ];
 	char buf2[BUFSZ];
@@ -1458,9 +1402,7 @@ int final;
  * to help refresh them about who/what they are.
  * Returns FALSE if menu cancelled (dismissed with ESC), TRUE otherwise.
  */
-STATIC_OVL boolean
-minimal_enlightenment()
-{
+STATIC_OVL boolean minimal_enlightenment() {
 	winid tmpwin;
 	menu_item *selected;
 	anything any;
@@ -1557,9 +1499,7 @@ minimal_enlightenment()
 	return (n != -1);
 }
 
-STATIC_PTR int
-doattributes()
-{
+STATIC_PTR int doattributes() {
 	if (!minimal_enlightenment())
 		return 0;
 	if (wizard || discover)
@@ -1570,17 +1510,12 @@ doattributes()
 /* KMH, #conduct
  * (shares enlightenment's tense handling)
  */
-STATIC_PTR int
-doconduct()
-{
+STATIC_PTR int doconduct() {
 	show_conduct(0);
 	return 0;
 }
 
-void
-show_conduct(final)
-int final;
-{
+void show_conduct(int final) {
 	char buf[BUFSZ];
 	int ngenocided;
 
@@ -1669,10 +1604,7 @@ int final;
 }
 
 #ifdef DUMP_LOG
-void
-dump_conduct(final)
-int final;
-{
+void dump_conduct(int final) {
 	char buf[BUFSZ];
 	int ngenocided;
 
@@ -1991,9 +1923,7 @@ static const struct ext_func_tab debug_extcmdlist[] = {
  * You must add entries in ext_func_tab every time you add one to the
  * debug_extcmdlist().
  */
-void
-add_debug_extended_commands()
-{
+void add_debug_extended_commands() {
 	int i, j, k, n;
 
 	/* count the # of help entries */
@@ -2017,14 +1947,7 @@ static const char template[] = "%-18s %4ld  %6ld";
 static const char count_str[] = "                   count  bytes";
 static const char separator[] = "------------------ -----  ------";
 
-STATIC_OVL void
-count_obj(chain, total_count, total_size, top, recurse)
-	struct obj *chain;
-	long *total_count;
-	long *total_size;
-	boolean top;
-	boolean recurse;
-{
+STATIC_OVL void count_obj(struct obj *chain, long *total_count, long *total_size, boolean top, boolean recurse) {
 	long count, size;
 	struct obj *obj;
 
@@ -2040,14 +1963,7 @@ count_obj(chain, total_count, total_size, top, recurse)
 	*total_size += size;
 }
 
-STATIC_OVL void
-obj_chain(win, src, chain, total_count, total_size)
-	winid win;
-	const char *src;
-	struct obj *chain;
-	long *total_count;
-	long *total_size;
-{
+STATIC_OVL void obj_chain(winid win, const char *src, struct obj *chain, long *total_count, long *total_size) {
 	char buf[BUFSZ];
 	long count = 0, size = 0;
 
@@ -2058,14 +1974,7 @@ obj_chain(win, src, chain, total_count, total_size)
 	putstr(win, 0, buf);
 }
 
-STATIC_OVL void
-mon_invent_chain(win, src, chain, total_count, total_size)
-	winid win;
-	const char *src;
-	struct monst *chain;
-	long *total_count;
-	long *total_size;
-{
+STATIC_OVL void mon_invent_chain(winid win, const char *src, struct monst *chain, long *total_count, long *total_size) {
 	char buf[BUFSZ];
 	long count = 0, size = 0;
 	struct monst *mon;
@@ -2078,13 +1987,7 @@ mon_invent_chain(win, src, chain, total_count, total_size)
 	putstr(win, 0, buf);
 }
 
-STATIC_OVL void
-contained(win, src, total_count, total_size)
-	winid win;
-	const char *src;
-	long *total_count;
-	long *total_size;
-{
+STATIC_OVL void contained(winid win, const char *src, long *total_count, long *total_size) {
 	char buf[BUFSZ];
 	long count = 0, size = 0;
 	struct monst *mon;
@@ -2105,14 +2008,7 @@ contained(win, src, total_count, total_size)
 	putstr(win, 0, buf);
 }
 
-STATIC_OVL void
-mon_chain(win, src, chain, total_count, total_size)
-	winid win;
-	const char *src;
-	struct monst *chain;
-	long *total_count;
-	long *total_size;
-{
+STATIC_OVL void mon_chain(winid win, const char *src, struct monst *chain, long *total_count, long *total_size) {
 	char buf[BUFSZ];
 	long count, size;
 	struct monst *mon;
@@ -2130,9 +2026,7 @@ mon_chain(win, src, chain, total_count, total_size)
 /*
  * Display memory usage of all monsters and objects on the level.
  */
-static int
-wiz_show_stats()
-{
+static int wiz_show_stats() {
 	char buf[BUFSZ];
 	winid win;
 	long total_obj_size = 0, total_obj_count = 0;
@@ -2188,17 +2082,13 @@ wiz_show_stats()
 	return 0;
 }
 
-void
-sanity_check()
-{
+void sanity_check() {
 	obj_sanity_check();
 	timer_sanity_check();
 }
 
 #ifdef DEBUG_MIGRATING_MONS
-static int
-wiz_migrate_mons()
-{
+static int wiz_migrate_mons() {
 	int mcount = 0;
 	char inbuf[BUFSZ];
 	struct permonst *ptr;
@@ -2230,10 +2120,7 @@ wiz_migrate_mons()
 #define unmeta(c)	(0x7f & (c))
 
 
-void
-rhack(cmd)
-register char *cmd;
-{
+void rhack(register char *cmd) {
 	boolean do_walk, do_rush, prefix_seen, bad_command,
 		firsttime = (cmd == 0);
 
@@ -2505,10 +2392,7 @@ coord *cc;
 	return 1;
 }
 
-int
-getdir(s)
-const char *s;
-{
+int getdir(const char *s) {
 	char dirsym;
 
 #ifdef REDO
@@ -2538,11 +2422,7 @@ const char *s;
 	return 1;
 }
 
-STATIC_OVL boolean
-help_dir(sym, msg)
-char sym;
-const char *msg;
-{
+STATIC_OVL boolean help_dir(char sym, const char *msg) {
 	char ctrl;
 	winid win;
 	static const char wiz_only_list[] = "EFGIOVW";
@@ -2621,9 +2501,7 @@ const char *msg;
 #endif /* OVL1 */
 #ifdef OVLB
 
-void
-confdir()
-{
+void confdir() {
 	register int x = (u.umonnum == PM_GRID_BUG) ? 2*rn2(4) : rn2(8);
 	u.dx = xdir[x];
 	u.dy = ydir[x];
@@ -2633,10 +2511,7 @@ confdir()
 #endif /* OVLB */
 #ifdef OVL0
 
-int
-isok(x,y)
-register int x, y;
-{
+int isok(register int x, register int y) {
 	/* x corresponds to curx, so x==1 is the first column. Ach. %% */
 	return x >= 1 && x <= COLNO-1 && y >= 0 && y <= ROWNO-1;
 }
@@ -2646,10 +2521,7 @@ static NEARDATA int last_multi;
 /*
  * convert a MAP window position into a movecmd
  */
-const char *
-click_to_cmd(x, y, mod)
-    int x, y, mod;
-{
+const char * click_to_cmd(int x, int y, int mod) {
     int dir;
     static char cmd[4];
     cmd[1]=0;
@@ -2746,9 +2618,7 @@ click_to_cmd(x, y, mod)
     return cmd;
 }
 
-STATIC_OVL char *
-parse()
-{
+STATIC_OVL char * parse() {
 #ifdef LINT	/* static char in_line[COLNO]; */
 	char in_line[COLNO];
 #else
@@ -2818,9 +2688,7 @@ parse()
 
 #ifdef UNIX
 static
-void
-end_of_input()
-{
+void end_of_input() {
 #ifndef NOSAVEONHANGUP
 	if (!program_state.done_hup++ && program_state.something_worth_saving)
 	    (void) dosave0();
@@ -2834,9 +2702,7 @@ end_of_input()
 #endif /* OVLB */
 #ifdef OVL0
 
-char
-readchar()
-{
+char readchar() {
 	register int sym;
 	int x = u.ux, y = u.uy, mod = 0;
 
@@ -2876,9 +2742,7 @@ readchar()
 	return((char) sym);
 }
 
-STATIC_PTR int
-dotravel()
-{
+STATIC_PTR int dotravel() {
 	/* Keyboard travel command */
 	static char cmd[2];
 	coord cc;
@@ -2910,9 +2774,7 @@ extern void NDECL(win32con_debug_keystrokes);
 extern void NDECL(win32con_handler_info);
 # endif
 
-int
-wiz_port_debug()
-{
+int wiz_port_debug() {
 	int n, k;
 	winid win;
 	anything any;
@@ -2961,11 +2823,7 @@ wiz_port_debug()
  *   the core from sending too long a prompt string to the
  *   window port causing a buffer overflow there.
  */
-char
-yn_function(query,resp, def)
-const char *query,*resp;
-char def;
-{
+char yn_function(const char *query, const char *resp, char def) {
 	char qbuf[QBUFSZ];
 	unsigned truncspot, reduction = sizeof(" [N]  ?") + 1;
 

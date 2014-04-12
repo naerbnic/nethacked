@@ -60,11 +60,7 @@ extern unsigned _stklen = STKSIZ;
 char savename[SAVESIZE]; /* holds relative path of save file from playground */
 
 
-int
-main(argc, argv)
-int argc;
-char *argv[];
-{
+int main(int argc, char *argv[]) {
 	int argno;
 	const char *dir = (char *)0;
 #ifdef AMIGA
@@ -144,10 +140,7 @@ char *argv[];
 
 static char lock[256];
 
-void
-set_levelfile_name(lev)
-int lev;
-{
+void set_levelfile_name(int lev) {
 	char *tf;
 
 	tf = rindex(lock, '.');
@@ -158,10 +151,7 @@ int lev;
 #endif
 }
 
-int
-open_levelfile(lev)
-int lev;
-{
+int open_levelfile(int lev) {
 	int fd;
 
 	set_levelfile_name(lev);
@@ -173,9 +163,7 @@ int lev;
 	return fd;
 }
 
-int
-create_savefile()
-{
+int create_savefile() {
 	int fd;
 
 #if defined(MICRO) || defined(WIN32) || defined(MSDOS)
@@ -186,10 +174,7 @@ create_savefile()
 	return fd;
 }
 
-void
-copy_bytes(ifd, ofd)
-int ifd, ofd;
-{
+void copy_bytes(int ifd, int ofd) {
 	char buf[BUFSIZ];
 	int nfrom, nto;
 
@@ -203,10 +188,7 @@ int ifd, ofd;
 	} while (nfrom == BUFSIZ);
 }
 
-int
-restore_savefile(basename)
-char *basename;
-{
+int restore_savefile(char *basename) {
 	int gfd, lfd, sfd;
 	int lev, savelev, hpid;
 	xchar levc;

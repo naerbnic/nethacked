@@ -17,18 +17,12 @@
 /* #define BETA_INFO "" */	/* "[ beta n]" */
 
 /* fill buffer with short version (so caller can avoid including date.h) */
-char *
-version_string(buf)
-char *buf;
-{
+char * version_string(char *buf) {
 	return strcpy(buf, VERSION_STRING);
 }
 
 /* fill and return the given buffer with the long nethack version string */
-char *
-getversionstring(buf)
-char *buf;
-{
+char * getversionstring(char *buf) {
 	Strcpy(buf, VERSION_ID);
 #if defined(BETA) && defined(BETA_INFO)
 	Sprintf(eos(buf), " %s", BETA_INFO);
@@ -39,37 +33,25 @@ char *buf;
 	return buf;
 }
 
-int
-doversion()
-{
+int doversion() {
 	char buf[BUFSZ];
 
 	pline("%s", getversionstring(buf));
 	return 0;
 }
 
-int
-doextversion()
-{
+int doextversion() {
 	display_file(OPTIONS_USED, TRUE);
 	return 0;
 }
 
 #ifdef MICRO
-boolean
-comp_times(filetime)
-long filetime;
-{
+boolean comp_times(long filetime) {
 	return((boolean)(filetime < BUILD_TIME));
 }
 #endif
 
-boolean
-check_version(version_data, filename, complain)
-struct version_info *version_data;
-const char *filename;
-boolean complain;
-{
+boolean check_version(struct version_info *version_data, const char *filename, boolean complain) {
 	if (
 #ifdef VERSION_COMPATIBILITY
 	    version_data->incarnation < VERSION_COMPATIBILITY ||
@@ -100,11 +82,7 @@ boolean complain;
 
 /* this used to be based on file date and somewhat OS-dependant,
    but now examines the initial part of the file's contents */
-boolean
-uptodate(fd, name)
-int fd;
-const char *name;
-{
+boolean uptodate(int fd, const char *name) {
     int rlen;
     struct version_info vers_info;
     boolean verbose = name ? TRUE : FALSE;
@@ -125,10 +103,7 @@ const char *name;
     return TRUE;
 }
 
-void
-store_version(fd)
-int fd;
-{
+void store_version(int fd) {
 	const static struct version_info version_data = {
 			VERSION_NUMBER, VERSION_FEATURES,
 			VERSION_SANITY1, VERSION_SANITY2
@@ -145,10 +120,7 @@ int fd;
 const char amiga_version_string[] = AMIGA_VERSION_STRING;
 #endif
 
-unsigned long
-get_feature_notice_ver(str)
-char *str;
-{
+unsigned long get_feature_notice_ver(char *str) {
 	char buf[BUFSZ];
 	int ver_maj, ver_min, patch;
 	char *istr[3];
@@ -176,9 +148,7 @@ char *str;
 	/* macro from hack.h */
 }
 
-unsigned long
-get_current_feature_ver()
-{
+unsigned long get_current_feature_ver() {
 	return FEATURE_NOTICE_VER(VERSION_MAJOR,VERSION_MINOR,PATCHLEVEL);
 }
 

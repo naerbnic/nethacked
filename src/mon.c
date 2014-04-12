@@ -53,10 +53,7 @@ STATIC_DCL void FDECL(m_detach, (struct monst *, struct permonst *));
 STATIC_DCL void FDECL(lifesaved_monster, (struct monst *));
 
 /* convert the monster index of an undead to its living counterpart */
-int
-undead_to_corpse(mndx)
-int mndx;
-{
+int undead_to_corpse(int mndx) {
 	switch (mndx) {
 	case PM_KOBOLD_ZOMBIE:
 	case PM_KOBOLD_MUMMY:	mndx = PM_KOBOLD;  break;
@@ -90,10 +87,7 @@ int mndx;
  * Return associated character class monster, rather than species
  * if mode is 1.
  */
-int
-genus(mndx, mode)
-int mndx, mode;
-{
+int genus(int mndx, int mode) {
 	switch (mndx) {
 /* Quest guardians */
 	case PM_STUDENT:     mndx = mode ? PM_ARCHEOLOGIST  : PM_HUMAN; break;
@@ -126,10 +120,7 @@ int mndx, mode;
 }
 
 /* convert monster index to chameleon index */
-int
-pm_to_cham(mndx)
-int mndx;
-{
+int pm_to_cham(int mndx) {
 	int mcham;
 
 	switch (mndx) {
@@ -165,10 +156,7 @@ STATIC_VAR short cham_to_pm[] = {
  * G_NOCORPSE set in order to prevent wishing for one, finding tins of one,
  * etc....
  */
-STATIC_OVL struct obj *
-make_corpse(mtmp)
-register struct monst *mtmp;
-{
+STATIC_OVL struct obj * make_corpse(register struct monst *mtmp) {
 	register struct permonst *mdat = mtmp->data;
 	int num;
 	struct obj *obj = (struct obj *)0;
@@ -327,9 +315,7 @@ register struct monst *mtmp;
 
 #if 0
 /* part of the original warning code which was replaced in 3.3.1 */
-STATIC_OVL void
-warn_effects()
-{
+STATIC_OVL void warn_effects() {
     if (warnlevel == 100) {
 	if(!Blind && uwep &&
 	    (warnlevel > lastwarnlev || moves > lastwarntime + warnDelay)) {
@@ -377,10 +363,7 @@ warn_effects()
 #endif /* 0 */
 
 /* check mtmp and water/lava for compatibility, 0 (survived), 1 (died) */
-int
-minliquid(mtmp)
-register struct monst *mtmp;
-{
+int minliquid(register struct monst *mtmp) {
     boolean inpool, inlava, infountain;
 
     inpool = is_pool(mtmp->mx,mtmp->my) &&
@@ -485,10 +468,7 @@ register struct monst *mtmp;
 }
 
 
-int
-mcalcmove(mon)
-struct monst *mon;
-{
+int mcalcmove(struct monst *mon) {
     int mmove = mon->data->mmove;
 
     /* Note: MSLOW's `+ 1' prevents slowed speed 1 getting reduced to 0;
@@ -515,9 +495,7 @@ struct monst *mon;
 /* actions that happen once per ``turn'', regardless of each
    individual monster's metabolism; some of these might need to
    be reclassified to occur more in proportion with movement rate */
-void
-mcalcdistress()
-{
+void mcalcdistress() {
     struct monst *mtmp;
 
     for (mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
@@ -550,9 +528,7 @@ mcalcdistress()
     }
 }
 
-int
-movemon()
-{
+int movemon() {
     register struct monst *mtmp, *nmtmp;
     register boolean somebody_can_move = FALSE;
 #if 0
@@ -657,10 +633,7 @@ movemon()
  * that can't happen at present because nothing which eats objects
  * has young and old forms).
  */
-int
-meatmetal(mtmp)
-	register struct monst *mtmp;
-{
+int meatmetal(register struct monst *mtmp) {
 	register struct obj *otmp;
 	struct permonst *ptr;
 	int poly, grow, heal, mstone;
@@ -836,10 +809,7 @@ meatobj(mtmp)		/* for gelatinous cubes */
 	return ((count > 0) || (ecount > 0)) ? 1 : 0;
 }
 
-void
-mpickgold(mtmp)
-	register struct monst *mtmp;
-{
+void mpickgold(register struct monst *mtmp) {
     register struct obj *gold;
     int mat_idx;
 
@@ -863,11 +833,7 @@ mpickgold(mtmp)
 #endif /* OVLB */
 #ifdef OVL2
 
-boolean
-mpickstuff(mtmp, str)
-	register struct monst *mtmp;
-	register const char *str;
-{
+boolean mpickstuff(register struct monst *mtmp, register const char *str) {
 	register struct obj *otmp, *otmp2;
 
 /*	prevent shopkeepers from leaving the door of their shop */
@@ -909,10 +875,7 @@ mpickstuff(mtmp, str)
 #endif /* OVL2 */
 #ifdef OVL0
 
-int
-curr_mon_load(mtmp)
-register struct monst *mtmp;
-{
+int curr_mon_load(register struct monst *mtmp) {
 	register int curload = 0;
 	register struct obj *obj;
 
@@ -924,10 +887,7 @@ register struct monst *mtmp;
 	return curload;
 }
 
-int
-max_mon_load(mtmp)
-register struct monst *mtmp;
-{
+int max_mon_load(register struct monst *mtmp) {
 	register long maxload;
 
 	/* Base monster carrying capacity is equal to human maximum
@@ -953,11 +913,7 @@ register struct monst *mtmp;
 }
 
 /* for restricting monsters' object-pickup */
-boolean
-can_carry(mtmp,otmp)
-struct monst *mtmp;
-struct obj *otmp;
-{
+boolean can_carry(struct monst *mtmp, struct obj *otmp) {
 	int otyp = otmp->otyp, newload = otmp->owt;
 	struct permonst *mdat = mtmp->data;
 
@@ -996,13 +952,7 @@ struct obj *otmp;
 }
 
 /* return number of acceptable neighbour positions */
-int
-mfndpos(mon, poss, info, flag)
-	register struct monst *mon;
-	coord *poss;	/* coord poss[9] */
-	long *info;	/* long info[9] */
-	long flag;
-{
+int mfndpos(register struct monst *mon, coord *poss, long *info, long flag) {
 	struct permonst *mdat = mon->data;
 	register xchar x,y,nx,ny;
 	register int cnt = 0;
@@ -1240,9 +1190,7 @@ register int x,y;
 }
 
 /* really free dead monsters */
-void
-dmonsfree()
-{
+void dmonsfree() {
     struct monst **mtmp;
     int count = 0;
 
@@ -1266,10 +1214,7 @@ dmonsfree()
 #ifdef OVLB
 
 /* called when monster is moved to larger structure */
-void
-replmon(mtmp, mtmp2)
-register struct monst *mtmp, *mtmp2;
-{
+void replmon(register struct monst *mtmp, register struct monst *mtmp2) {
     struct obj *otmp;
 
     /* transfer the monster's inventory */
@@ -1313,10 +1258,7 @@ register struct monst *mtmp, *mtmp2;
 }
 
 /* release mon from display and monster list */
-void
-relmon(mon)
-register struct monst *mon;
-{
+void relmon(register struct monst *mon) {
 	register struct monst *mtmp;
 
 	if (fmon == (struct monst *)0)  panic ("relmon: no fmon available.");
@@ -1332,11 +1274,7 @@ register struct monst *mon;
 }
 
 /* remove effects of mtmp from other data structures */
-STATIC_OVL void
-m_detach(mtmp, mptr)
-struct monst *mtmp;
-struct permonst *mptr;	/* reflects mtmp->data _prior_ to mtmp's death */
-{
+STATIC_OVL void m_detach(struct monst *mtmp, struct permonst *mptr) {
 	if (mtmp->mleashed) m_unleash(mtmp, FALSE);
 	    /* to prevent an infinite relobj-flooreffects-hmon-killed loop */
 	mtmp->mtrapped = 0;
@@ -1355,10 +1293,7 @@ struct permonst *mptr;	/* reflects mtmp->data _prior_ to mtmp's death */
 }
 
 /* find the worn amulet of life saving which will save a monster */
-struct obj *
-mlifesaver(mon)
-struct monst *mon;
-{
+struct obj * mlifesaver(struct monst *mon) {
 	if (!nonliving(mon->data)) {
 	    struct obj *otmp = which_armor(mon, W_AMUL);
 
@@ -1368,10 +1303,7 @@ struct monst *mon;
 	return (struct obj *)0;
 }
 
-STATIC_OVL void
-lifesaved_monster(mtmp)
-struct monst *mtmp;
-{
+STATIC_OVL void lifesaved_monster(struct monst *mtmp) {
 	struct obj *lifesave = mlifesaver(mtmp);
 
 	if (lifesave) {
@@ -1409,10 +1341,7 @@ struct monst *mtmp;
 	mtmp->mhp = 0;
 }
 
-void
-mondead(mtmp)
-register struct monst *mtmp;
-{
+void mondead(register struct monst *mtmp) {
 	struct permonst *mptr;
 	int tmp;
 
@@ -1493,12 +1422,7 @@ register struct monst *mtmp;
 }
 
 /* TRUE if corpse might be dropped, magr may die if mon was swallowed */
-boolean
-corpse_chance(mon, magr, was_swallowed)
-struct monst *mon;
-struct monst *magr;			/* killer, if swallowed */
-boolean was_swallowed;			/* digestion */
-{
+boolean corpse_chance(struct monst *mon, struct monst *magr, boolean was_swallowed) {
 	struct permonst *mdat = mon->data;
 	int i, tmp;
 
@@ -1564,10 +1488,7 @@ boolean was_swallowed;			/* digestion */
 }
 
 /* drop (perhaps) a cadaver and remove monster */
-void
-mondied(mdef)
-register struct monst *mdef;
-{
+void mondied(register struct monst *mdef) {
 	mondead(mdef);
 	if (mdef->mhp > 0) return;	/* lifesaved */
 
@@ -1577,10 +1498,7 @@ register struct monst *mdef;
 }
 
 /* monster disappears, not dies */
-void
-mongone(mdef)
-register struct monst *mdef;
-{
+void mongone(register struct monst *mdef) {
 	mdef->mhp = 0;	/* can skip some inventory bookkeeping */
 #ifdef STEED
 	/* Player is thrown from his steed when it disappears */
@@ -1600,10 +1518,7 @@ register struct monst *mdef;
 }
 
 /* drop a statue or rock and remove monster */
-void
-monstone(mdef)
-register struct monst *mdef;
-{
+void monstone(register struct monst *mdef) {
 	struct obj *otmp, *obj, *oldminvent;
 	xchar x = mdef->mx, y = mdef->my;
 	boolean wasinside = FALSE;
@@ -1686,12 +1601,7 @@ register struct monst *mdef;
 }
 
 /* another monster has killed the monster mdef */
-void
-monkilled(mdef, fltxt, how)
-register struct monst *mdef;
-const char *fltxt;
-int how;
-{
+void monkilled(register struct monst *mdef, const char *fltxt, int how) {
 	boolean be_sad = FALSE;		/* true if unseen pet is killed */
 
 	if ((mdef->wormno ? worm_known(mdef) : cansee(mdef->mx, mdef->my))
@@ -1714,10 +1624,7 @@ int how;
 	    You("have a sad feeling for a moment, then it passes.");
 }
 
-void
-unstuck(mtmp)
-register struct monst *mtmp;
-{
+void unstuck(register struct monst *mtmp) {
 	if(u.ustuck == mtmp) {
 		if(u.uswallow){
 			u.ux = mtmp->mx;
@@ -1732,10 +1639,7 @@ register struct monst *mtmp;
 	}
 }
 
-void
-killed(mtmp)
-register struct monst *mtmp;
-{
+void killed(register struct monst *mtmp) {
 	xkilled(mtmp, 1);
 }
 
@@ -1911,10 +1815,7 @@ cleanup:
 
 /* changes the monster into a stone monster of the same type */
 /* this should only be called when poly_when_stoned() is true */
-void
-mon_to_stone(mtmp)
-    register struct monst *mtmp;
-{
+void mon_to_stone(register struct monst *mtmp) {
     if(mtmp->data->mlet == S_GOLEM) {
 	/* it's a golem, and not a stone golem */
 	if(canseemon(mtmp))
@@ -1956,12 +1857,7 @@ mnexto(mtmp)	/* Make monster mtmp next to you (if possible) */
  *	1 - if a monster was moved from x, y to put mtmp at x, y.
  *	0 - in most cases.
  */
-boolean
-mnearto(mtmp,x,y,move_other)
-register struct monst *mtmp;
-xchar x, y;
-boolean move_other;	/* make sure mtmp gets to x, y! so move m_at(x, y) */
-{
+boolean mnearto(register struct monst *mtmp, xchar x, xchar y, boolean move_other) {
 	struct monst *othermon = (struct monst *)0;
 	xchar newx, newy;
 	coord mm;
@@ -2015,11 +1911,7 @@ poisontell(typ)
 	pline("You%s.", poiseff[typ]);
 }
 
-void
-poisoned(string, typ, pname, fatal)
-const char *string, *pname;
-int  typ, fatal;
-{
+void poisoned(const char *string, int typ, const char *pname, int fatal) {
 	int i, plural, kprefix = KILLED_BY_AN;
 	boolean thrown_weapon = (fatal < 0);
 
@@ -2072,10 +1964,7 @@ int  typ, fatal;
 
 /* monster responds to player action; not the same as a passive attack */
 /* assumes reason for response has been tested, and response _must_ be made */
-void
-m_respond(mtmp)
-register struct monst *mtmp;
-{
+void m_respond(register struct monst *mtmp) {
     if(mtmp->data->msound == MS_SHRIEK) {
 	if(flags.soundok) {
 	    pline("%s shrieks.", Monnam(mtmp));
@@ -2103,10 +1992,7 @@ register struct monst *mtmp;
 #endif /* OVLB */
 #ifdef OVL2
 
-void
-setmangry(mtmp)
-register struct monst *mtmp;
-{
+void setmangry(register struct monst *mtmp) {
 	mtmp->mstrategy &= ~STRAT_WAITMASK;
 	if(!mtmp->mpeaceful) return;
 	if(mtmp->mtame) return;
@@ -2143,10 +2029,7 @@ register struct monst *mtmp;
 	}
 }
 
-void
-wakeup(mtmp)
-register struct monst *mtmp;
-{
+void wakeup(register struct monst *mtmp) {
 	mtmp->msleeping = 0;
 	mtmp->meating = 0;	/* assume there's no salvagable food left */
 	setmangry(mtmp);
@@ -2158,9 +2041,7 @@ register struct monst *mtmp;
 }
 
 /* Wake up nearby monsters. */
-void
-wake_nearby()
-{
+void wake_nearby() {
 	register struct monst *mtmp;
 
 	for(mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
@@ -2173,10 +2054,7 @@ wake_nearby()
 }
 
 /* Wake up monsters near some particular location. */
-void
-wake_nearto(x, y, distance)
-register int x, y, distance;
-{
+void wake_nearto(register int x, register int y, register int distance) {
 	register struct monst *mtmp;
 
 	for (mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
@@ -2187,10 +2065,7 @@ register int x, y, distance;
 }
 
 /* NOTE: we must check for mimicry before calling this routine */
-void
-seemimic(mtmp)
-register struct monst *mtmp;
-{
+void seemimic(register struct monst *mtmp) {
 	unsigned old_app = mtmp->mappearance;
 	uchar old_ap_type = mtmp->m_ap_type;
 
@@ -2210,9 +2085,7 @@ register struct monst *mtmp;
 }
 
 /* force all chameleons to become normal */
-void
-rescham()
-{
+void rescham() {
 	register struct monst *mtmp;
 	int mcham;
 
@@ -2236,9 +2109,7 @@ rescham()
 }
 
 /* Let the chameleons change again -dgk */
-void
-restartcham()
-{
+void restartcham() {
 	register struct monst *mtmp;
 
 	for (mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
@@ -2255,10 +2126,7 @@ restartcham()
 /* called when restoring a monster from a saved level; protection
    against shape-changing might be different now than it was at the
    time the level was saved. */
-void
-restore_cham(mon)
-struct monst *mon;
-{
+void restore_cham(struct monst *mon) {
 	int mcham;
 
 	if (Protection_from_shape_changers) {
@@ -2275,10 +2143,7 @@ struct monst *mon;
 }
 
 /* unwatched hiders may hide again; if so, a 1 is returned.  */
-STATIC_OVL boolean
-restrap(mtmp)
-register struct monst *mtmp;
-{
+STATIC_OVL boolean restrap(register struct monst *mtmp) {
 	if(mtmp->cham || mtmp->mcan || mtmp->m_ap_type ||
 	   cansee(mtmp->mx, mtmp->my) || rn2(3) || (mtmp == u.ustuck) ||
 	   (sensemon(mtmp) && distu(mtmp->mx, mtmp->my) <= 2))
@@ -2299,10 +2164,7 @@ register struct monst *mtmp;
 short *animal_list = 0;		/* list of PM values for animal monsters */
 int animal_list_count;
 
-void
-mon_animal_list(construct)
-boolean construct;
-{
+void mon_animal_list(boolean construct) {
 	if (construct) {
 	    short animal_temp[SPECIAL_PM];
 	    int i, n;
@@ -2324,18 +2186,13 @@ boolean construct;
 	}
 }
 
-STATIC_OVL int
-pick_animal()
-{
+STATIC_OVL int pick_animal() {
 	if (!animal_list) mon_animal_list(TRUE);
 
 	return animal_list[rn2(animal_list_count)];
 }
 
-STATIC_OVL int
-select_newcham_form(mon)
-struct monst *mon;
-{
+STATIC_OVL int select_newcham_form(struct monst *mon) {
 	int mndx = NON_PM;
 
 	switch (mon->cham) {
@@ -2384,13 +2241,7 @@ struct monst *mon;
 }
 
 /* make a chameleon look like a new monster; returns 1 if it actually changed */
-int
-newcham(mtmp, mdat, polyspot, msg)
-struct monst *mtmp;
-struct permonst *mdat;
-boolean polyspot;	/* change is the result of wand or spell of polymorph */
-boolean msg;		/* "The oldmon turns into a newmon!" */
-{
+int newcham(struct monst *mtmp, struct permonst *mdat, boolean polyspot, boolean msg) {
 	int mhp, hpn, hpd;
 	int mndx, tryct;
 	struct permonst *olddata = mtmp->data;
@@ -2583,10 +2434,7 @@ boolean msg;		/* "The oldmon turns into a newmon!" */
  * Return the monster number to use as the egg's corpsenm.  Return
  * NON_PM if the given monster can't be hatched.
  */
-int
-can_be_hatched(mnum)
-int mnum;
-{
+int can_be_hatched(int mnum) {
     /* ranger quest nemesis has the oviparous bit set, making it
        be possible to wish for eggs of that unique monster; turn
        such into ordinary eggs rather than forbidding them outright */
@@ -2605,11 +2453,7 @@ int mnum;
 }
 
 /* type of egg laid by #sit; usually matches parent */
-int
-egg_type_from_parent(mnum, force_ordinary)
-int mnum;	/* parent monster; caller must handle lays_eggs() check */
-boolean force_ordinary;
-{
+int egg_type_from_parent(int mnum, boolean force_ordinary) {
     if (force_ordinary || !BREEDER_EGG) {
 	if (mnum == PM_QUEEN_BEE) mnum = PM_KILLER_BEE;
 	else if (mnum == PM_WINGED_GARGOYLE) mnum = PM_GARGOYLE;
@@ -2619,11 +2463,7 @@ boolean force_ordinary;
 
 /* decide whether an egg of the indicated monster type is viable; */
 /* also used to determine whether an egg or tin can be created... */
-boolean
-dead_species(m_idx, egg)
-int m_idx;
-boolean egg;
-{
+boolean dead_species(int m_idx, boolean egg) {
 	/*
 	 * For monsters with both baby and adult forms, genociding either
 	 * form kills all eggs of that monster.  Monsters with more than
@@ -2639,10 +2479,7 @@ boolean egg;
 }
 
 /* kill off any eggs of genocided monsters */
-STATIC_OVL void
-kill_eggs(obj_list)
-struct obj *obj_list;
-{
+STATIC_OVL void kill_eggs(struct obj *obj_list) {
 	struct obj *otmp;
 
 	for (otmp = obj_list; otmp; otmp = otmp->nobj)
@@ -2670,9 +2507,7 @@ struct obj *obj_list;
 }
 
 /* kill all members of genocided species */
-void
-kill_genocided_monsters()
-{
+void kill_genocided_monsters() {
 	struct monst *mtmp, *mtmp2;
 	boolean kill_cham[CHAM_MAX_INDX+1];
 	int mndx;
@@ -2712,11 +2547,7 @@ kill_genocided_monsters()
 #endif /* OVL2 */
 #ifdef OVLB
 
-void
-golemeffects(mon, damtype, dam)
-register struct monst *mon;
-int damtype, dam;
-{
+void golemeffects(register struct monst *mon, int damtype, int dam) {
     int heal = 0, slow = 0;
 
     if (mon->data == &mons[PM_FLESH_GOLEM]) {
@@ -2742,10 +2573,7 @@ int damtype, dam;
     }
 }
 
-boolean
-angry_guards(silent)
-register boolean silent;
-{
+boolean angry_guards(register boolean silent) {
 	register struct monst *mtmp;
 	register int ct = 0, nct = 0, sct = 0, slct = 0;
 
@@ -2784,9 +2612,7 @@ register boolean silent;
 	return(FALSE);
 }
 
-void
-pacify_guards()
-{
+void pacify_guards() {
 	register struct monst *mtmp;
 
 	for (mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
@@ -2797,11 +2623,7 @@ pacify_guards()
 	}
 }
 
-void
-mimic_hit_msg(mtmp, otyp)
-struct monst *mtmp;
-short otyp;
-{
+void mimic_hit_msg(struct monst *mtmp, short otyp) {
 	short ap = mtmp->mappearance;
 
 	switch(mtmp->m_ap_type) {

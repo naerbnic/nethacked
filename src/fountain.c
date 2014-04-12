@@ -12,10 +12,7 @@ STATIC_DCL void NDECL(dowaternymph);
 STATIC_PTR void FDECL(gush, (int,int,genericptr_t));
 STATIC_DCL void NDECL(dofindgem);
 
-void
-floating_above(what)
-const char *what;
-{
+void floating_above(const char *what) {
     You("are floating high above the %s.", what);
 }
 
@@ -101,11 +98,7 @@ int drinking;
 	}
 }
 
-STATIC_PTR void
-gush(x, y, poolcnt)
-int x, y;
-genericptr_t poolcnt;
-{
+STATIC_PTR void gush(int x, int y, genericptr_t poolcnt) {
 	register struct monst *mtmp;
 	register struct trap *ttmp;
 
@@ -145,11 +138,7 @@ dofindgem() /* Find a gem in the sparkling waters. */
 	exercise(A_WIS, TRUE);			/* a discovery! */
 }
 
-void
-dryup(x, y, isyou)
-xchar x, y;
-boolean isyou;
-{
+void dryup(xchar x, xchar y, boolean isyou) {
 	if (IS_FOUNTAIN(levl[x][y].typ) &&
 	    (!rn2(3) || FOUNTAIN_IS_WARNED(x,y))) {
 		if(isyou && in_town(x, y) && !FOUNTAIN_IS_WARNED(x,y)) {
@@ -191,9 +180,7 @@ boolean isyou;
 	}
 }
 
-void
-drinkfountain()
-{
+void drinkfountain() {
 	/* What happens when you drink from a fountain? */
 	register boolean mgkftn = (levl[u.ux][u.uy].blessedftn == 1);
 	register int fate = rnd(30);
@@ -347,10 +334,7 @@ drinkfountain()
 	dryup(u.ux, u.uy, TRUE);
 }
 
-void
-dipfountain(obj)
-register struct obj *obj;
-{
+void dipfountain(register struct obj *obj) {
 	if (Levitation) {
 		floating_above("fountain");
 		return;
@@ -493,10 +477,7 @@ register struct obj *obj;
 }
 
 #ifdef SINKS
-void
-breaksink(x,y)
-int x, y;
-{
+void breaksink(int x, int y) {
     if(cansee(x,y) || (x == u.ux && y == u.uy))
 	pline_The("pipes break!  Water spurts out!");
     level.flags.nsinks--;
@@ -506,9 +487,7 @@ int x, y;
     newsym(x,y);
 }
 
-void
-drinksink()
-{
+void drinksink() {
 	struct obj *otmp;
 	struct monst *mtmp;
 

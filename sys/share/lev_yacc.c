@@ -908,9 +908,7 @@ YYSTYPE yyvs[YYSTACKSIZE];
 #define YYREJECT goto yyabort
 #define YYACCEPT goto yyaccept
 #define YYERROR goto yyerrlab
-int
-yyparse()
-{
+int yyparse() {
     register int yym, yyn, yystate;
 #if YYDEBUG
     register char *yys;
