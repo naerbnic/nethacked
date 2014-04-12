@@ -120,7 +120,8 @@ def process_file(file_name):
         lines = list(f)
     new_lines = process_lines(lines)
     new_file_contents = ''.join(new_lines)
-    print(''.join(new_lines))
+    with open(file_name, 'w') as f:
+        f.write(new_file_contents)
 
 if __name__ == '__main__':
     main(sys.argv)
