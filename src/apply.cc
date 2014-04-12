@@ -2,6 +2,8 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include <string.h>
+
 #include "hack.h"
 #include "edog.h"
 
@@ -342,10 +344,8 @@ int number_leashed() {
 	return(i);
 }
 
-void
-o_unleash(otmp)		/* otmp is about to be destroyed or stolen */
-register struct obj *otmp;
-{
+/* otmp is about to be destroyed or stolen */
+void o_unleash(register struct obj *otmp) {
 	register struct monst *mtmp;
 
 	for(mtmp = fmon; mtmp; mtmp = mtmp->nmon)
@@ -354,11 +354,8 @@ register struct obj *otmp;
 	otmp->leashmon = 0;
 }
 
-void
-m_unleash(mtmp, feedback)	/* mtmp is about to die, or become untame */
-register struct monst *mtmp;
-boolean feedback;
-{
+/* mtmp is about to die, or become untame */
+void m_unleash(register struct monst *mtmp, boolean feedback) {
 	register struct obj *otmp;
 
 	if (feedback) {
@@ -374,9 +371,8 @@ boolean feedback;
 	mtmp->mleashed = 0;
 }
 
-void
-unleash_all()		/* player is about to die (for bones) */
-{
+/* player is about to die (for bones) */
+void unleash_all() {
 	register struct obj *otmp;
 	register struct monst *mtmp;
 
@@ -461,9 +457,7 @@ STATIC_OVL void use_leash(struct obj *obj) {
 	return;
 }
 
-struct obj *
-get_mleash(mtmp)	/* assuming mtmp->mleashed has been checked */
-register struct monst *mtmp;
+struct obj *get_mleash(struct monst *mtmp)
 {
 	register struct obj *otmp;
 
@@ -930,9 +924,7 @@ STATIC_OVL void use_candle(struct obj **optr) {
 	}
 }
 
-boolean
-snuff_candle(otmp)  /* call in drop, throw, and put in box, etc. */
-register struct obj *otmp;
+boolean snuff_candle(struct obj *otmp)  /* call in drop, throw, and put in box, etc. */
 {
 	register boolean candle = Is_candle(otmp);
 
@@ -2264,10 +2256,7 @@ static const char
 	cant_reach[] = "can't reach that spot from here.";
 
 /* Distance attacks by pole-weapons */
-STATIC_OVL int
-use_pole (obj)
-	struct obj *obj;
-{
+STATIC_OVL int use_pole (struct obj *obj) {
 	int res = 0, typ, max_range = 4, min_range = 4;
 	coord cc;
 	struct monst *mtmp;
@@ -2367,10 +2356,7 @@ STATIC_OVL int use_cream_pie(struct obj *obj) {
 	return(0);
 }
 
-STATIC_OVL int
-use_grapple (obj)
-	struct obj *obj;
-{
+STATIC_OVL int use_grapple(struct obj *obj) {
 	int res = 0, typ, max_range = 4, tohit;
 	coord cc;
 	struct monst *mtmp;
@@ -2658,9 +2644,9 @@ STATIC_OVL boolean uhave_graystone() {
 	return FALSE;
 }
 
-STATIC_OVL void add_class(char *cl, char class) {
+STATIC_OVL void add_class(char *cl, char cls) {
 	char tmp[2];
-	tmp[0] = class;
+	tmp[0] = cls;
 	tmp[1] = '\0';
 	Strcat(cl, tmp);
 }

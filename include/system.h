@@ -9,66 +9,9 @@
 
 #define E extern
 
-/* some old <sys/types.h> may not define off_t and size_t; if your system is
- * one of these, define them by hand below
- */
-#if (defined(VMS) && !defined(__GNUC__)) || defined(MAC)
-#include <types.h>
-#else
-# ifndef AMIGA
-#include <sys/types.h>
-# endif
-#endif
-
-#if (defined(MICRO) && !defined(TOS)) || defined(ANCIENT_VAXC)
-# if !defined(_SIZE_T) && !defined(__size_t) /* __size_t for CSet/2 */
-#  define _SIZE_T
-#  if !((defined(MSDOS) || defined(OS2)) && defined(_SIZE_T_DEFINED)) /* MSC 5.1 */
-#   if !(defined(__GNUC__) && defined(AMIGA))
-typedef unsigned int	size_t;
-#   endif
-#  endif
-# endif
-#endif	/* MICRO && !TOS */
-
-#if defined(__TURBOC__) || defined(MAC)
-#include <time.h>	/* time_t is not in <sys/types.h> */
-#endif
-#if defined(ULTRIX) && !(defined(ULTRIX_PROTO) || defined(NHSTDC))
-/* The Ultrix v3.0 <sys/types.h> seems to be very wrong. */
-# define time_t long
-#endif
-
-#if defined(ULTRIX) || defined(VMS)
-# define off_t long
-#endif
-#if defined(AZTEC) || defined(THINKC4) || defined(__TURBOC__)
-typedef long	off_t;
-#endif
-
 #endif /* !__cplusplus && !__GO32__ */
 
-/* You may want to change this to fit your system, as this is almost
- * impossible to get right automatically.
- * This is the type of signal handling functions.
- */
-#if !defined(OS2) && (defined(_MSC_VER) || defined(__TURBOC__) || defined(__SC__) || defined(WIN32))
-# define SIG_RET_TYPE void (__cdecl *)(int)
-#endif
-#ifndef SIG_RET_TYPE
-# if defined(NHSTDC) || defined(POSIX_TYPES) || defined(OS2) || defined(__DECC)
-#  define SIG_RET_TYPE void (*)()
-# endif
-#endif
-#ifndef SIG_RET_TYPE
-# if defined(ULTRIX) || defined(SUNOS4) || defined(SVR3) || defined(SVR4)
-	/* SVR3 is defined automatically by some systems */
-#  define SIG_RET_TYPE void (*)()
-# endif
-#endif
-#ifndef SIG_RET_TYPE	/* BSD, SIII, SVR2 and earlier, Sun3.5 and earlier */
-# define SIG_RET_TYPE int (*)()
-#endif
+#define SIG_RET_TYPE void (*)(int)
 
 #if !defined(__cplusplus) && !defined(__GO32__)
 

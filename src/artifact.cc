@@ -2,6 +2,8 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include <string.h>
+
 #include "hack.h"
 #include "artifact.h"
 #ifdef OVLB
@@ -240,11 +242,8 @@ boolean arti_reflects(struct obj *obj) {
 #endif /* OVL0 */
 #ifdef OVLB
 
-boolean
-restrict_name(otmp, name)  /* returns 1 if name is restricted for otmp->otyp */
-register struct obj *otmp;
-register const char *name;
-{
+/* returns 1 if name is restricted for otmp->otyp */
+boolean restrict_name(struct obj *otmp, const char *name) {
 	register const struct artifact *a;
 	register const char *aname;
 
