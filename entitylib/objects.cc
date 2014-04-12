@@ -975,7 +975,7 @@ OBJECT(OBJ("acid venom", "splash of venom"),
 #  undef OBJ
 #  undef OBJECT
 #  define OBJECTS_PASS_2_
-#include "objects.c"
+#include "objects.cc"
 
 void NDECL(objects_init);
 

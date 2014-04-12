@@ -7,5 +7,5 @@ def main(args):
     new_path = c_file.with_suffix('.cc')
     c_file.rename(new_path)
 
-def __name__ == '__main__':
+if __name__ == '__main__':
   main(sys.argv)

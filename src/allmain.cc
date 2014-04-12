@@ -4,11 +4,8 @@
 
 /* various code that was replicated in *main.c */
 
-#include "hack.h"
-
-#ifndef NO_SIGNAL
 #include <signal.h>
-#endif
+#include "hack.h"
 
 #ifdef POSITIONBAR
 STATIC_DCL void NDECL(do_positionbar);

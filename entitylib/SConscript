@@ -1,5 +1,5 @@
 entitylib = Library(
-    target = 'entitylib', source = ['monst.c', 'objects.c', 'drawing.c'],
+    target = 'entitylib', source = ['monst.cc', 'objects.cc', 'drawing.cc'],
     CPPPATH = [ '#include' ])
 
 Return('entitylib')

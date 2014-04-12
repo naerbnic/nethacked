@@ -15,8 +15,8 @@
 /src/vis_tab.c
 makedefs
 *_comp
-/util/dgn_comp.c
+/util/dgn_comp.*
 /util/dgn_yacc.*
-/util/lev_comp.c
+/util/lev_comp.*
 /util/y.tab.*
 
