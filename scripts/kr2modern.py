@@ -96,7 +96,12 @@ def process_lines(lines_arg):
 
         type_line = lines[fn_line_index - 1].strip()
         parsed_fn = parse_fn_line(lines[fn_line_index])
-        arg_decls = [arg_decl_map[arg] for arg in parsed_fn.args]
+        try:
+            arg_decls = [arg_decl_map[arg] for arg in parsed_fn.args]
+        except KeyError:
+            out_lines.extend(lines[0:brace_index + 1])
+            del lines[0:brace_index + 1]
+            continue
         new_fn_line = (
                 type_line + ' ' + parsed_fn.name + '(' +
                 ', '.join(arg_decls) + ') {\n')
@@ -111,8 +116,10 @@ def process_lines(lines_arg):
 
 
 def process_file(file_name):
-    lines = list(open(file_name, 'r'))
+    with open(file_name, 'r') as f:
+        lines = list(f)
     new_lines = process_lines(lines)
+    new_file_contents = ''.join(new_lines)
     print(''.join(new_lines))
 
 if __name__ == '__main__':
