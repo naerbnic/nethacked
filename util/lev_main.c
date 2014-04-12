@@ -16,30 +16,6 @@
 #include "tcap.h"
 #endif
 
-#ifdef MAC
-# if defined(__SC__) || defined(__MRC__)
-#  define MPWTOOL
-#  define PREFIX ":dungeon:"	/* place output files here */
-#  include <CursorCtl.h>
-# else
-#  if !defined(__MACH__)
-#   define PREFIX ":lib:"	/* place output files here */
-#  endif
-# endif
-#endif
-
-#ifdef WIN_CE
-#define PREFIX "\\nethack\\dat\\"
-#endif
-
-#ifndef MPWTOOL
-# define SpinCursor(x)
-#endif
-
-#if defined(AMIGA) && defined(DLB)
-# define PREFIX "NH:slib/"
-#endif
-
 #ifndef O_WRONLY
 #include <fcntl.h>
 #endif
@@ -170,11 +146,6 @@ const char *fname = "(stdin)";
 int fatal_error = 0;
 int want_warnings = 0;
 
-#ifdef FLEX23_BUG
-/* Flex 2.3 bug work around; not needed for 2.3.6 or later */
-int yy_more_len = 0;
-#endif
-
 extern char tmpmessage[];
 extern altar *tmpaltar[];
 extern lad *tmplad[];
@@ -218,37 +189,6 @@ char **argv;
 	FILE *fin;
 	int i;
 	boolean errors_encountered = FALSE;
-#if defined(MAC) && (defined(THINK_C) || defined(__MWERKS__))
-	static char *mac_argv[] = {	"lev_comp",	/* dummy argv[0] */
-				":dat:Arch.des",
-				":dat:Barb.des",
-				":dat:Caveman.des",
-				":dat:Healer.des",
-				":dat:Knight.des",
-				":dat:Monk.des",
-				":dat:Priest.des",
-				":dat:Ranger.des",
-				":dat:Rogue.des",
-				":dat:Samurai.des",
-				":dat:Tourist.des",
-				":dat:Valkyrie.des",
-				":dat:Wizard.des",
-				":dat:bigroom.des",
-				":dat:castle.des",
-				":dat:endgame.des",
-				":dat:gehennom.des",
-				":dat:knox.des",
-				":dat:medusa.des",
-				":dat:mines.des",
-				":dat:oracle.des",
-				":dat:sokoban.des",
-				":dat:tower.des",
-				":dat:yendor.des"
-				};
-
-	argc = SIZE(mac_argv);
-	argv = mac_argv;
-#endif
 	/* Note:  these initializers don't do anything except guarantee that
 		we're linked properly.
 	*/
@@ -343,7 +283,6 @@ char c;
 {
 	int val;
 
-	SpinCursor(3);
 	val = what_map_char(c);
 	if(val == INVALID_TYPE) {
 	    val = ERR;
@@ -361,7 +300,6 @@ char *s;
 {
 	register int i;
 
-	SpinCursor(3);
 	for(i=0; room_types[i].name; i++)
 	    if (!strcmp(s, room_types[i].name))
 		return ((int) room_types[i].type);
@@ -377,7 +315,6 @@ char *s;
 {
 	register int i;
 
-	SpinCursor(3);
 	for (i=0; trap_types[i].name; i++)
 	    if(!strcmp(s,trap_types[i].name))
 		return trap_types[i].type;
@@ -394,7 +331,6 @@ char c;
 {
 	register int i, class;
 
-	SpinCursor(3);
 	class = c ? def_char_to_monclass(c) : 0;
 	if (class == MAXMCLASSES) return ERR;
 
@@ -415,7 +351,6 @@ char c;		/* class */
 	int i, class;
 	const char *objname;
 
-	SpinCursor(3);
 	class = (c > 0) ? def_char_to_objclass(c) : 0;
 	if (class == MAXOCLASSES) return ERR;
 
@@ -470,7 +405,6 @@ char
 what_map_char(c)
 char c;
 {
-	SpinCursor(3);
 	switch(c) {
 		  case ' '  : return(STONE);
 		  case '#'  : return(CORR);
@@ -593,7 +527,6 @@ wallify_map()
 	unsigned int x, y, xx, yy, lo_xx, lo_yy, hi_xx, hi_yy;
 
 	for (y = 0; y <= max_y_map; y++) {
-	    SpinCursor(3);
 	    lo_yy = (y > 0) ? y - 1 : 0;
 	    hi_yy = (y < max_y_map) ? y + 1 : max_y_map;
 	    for (x = 0; x <= max_x_map; x++) {
@@ -1119,11 +1052,7 @@ specialmaze *maze_level;
 	Strcat(lbuf, filename);
 	Strcat(lbuf, LEV_EXT);
 
-#if defined(MAC) && (defined(__SC__) || defined(__MRC__))
-	fout = open(lbuf, O_WRONLY|O_CREAT|O_BINARY);
-#else
 	fout = open(lbuf, O_WRONLY|O_CREAT|O_BINARY, OMASK);
-#endif
 	if (fout < 0) return FALSE;
 
 	if (room_level) {
@@ -1169,17 +1098,7 @@ specialmaze *maze;
 	    for(j=0;j<pt->ysize;j++) {
 		if(!maze->init_lev.init_present ||
 		   pt->xsize > 1 || pt->ysize > 1) {
-#if !defined(_MSC_VER) && !defined(__BORLANDC__)
 			Write(fd, pt->map[j], pt->xsize * sizeof *pt->map[j]);
-#else
-			/*
-			 * On MSVC and Borland C compilers the Write macro above caused:
-			 * warning '!=' : signed/unsigned mismatch
-			 */
-			unsigned reslt, sz = pt->xsize * sizeof *pt->map[j];
-			reslt = write(fd, (genericptr_t)(pt->map[j]), sz);
-			if (reslt != sz) return FALSE;
-#endif
 		}
 		Free(pt->map[j]);
 	    }
