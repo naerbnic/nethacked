@@ -33,20 +33,6 @@
 /* Assorted definitions that may depend on selections in config.h. */
 
 /*
- * for DUMB preprocessor and compiler, e.g., cpp and pcc supplied
- * with Microport SysV/AT, which have small symbol tables;
- * DUMB if needed is defined in CFLAGS
- */
-#ifdef DUMB
-#ifdef BITFIELDS
-#undef BITFIELDS
-#endif
-#ifndef STUPID
-#define STUPID
-#endif
-#endif	/* DUMB */
-
-/*
  * type xchar: small integers in the range 0 - 127, usually coordinates
  * although they are nonnegative they must not be declared unsigned
  * since otherwise comparisons with signed quantities are done incorrectly
@@ -84,29 +70,18 @@ typedef xchar	boolean;		/* 0 or 1 */
 #define Bitfield(x,n)	uchar x
 #endif
 
-# define CHAR_P char
-# define SCHAR_P schar
-# define UCHAR_P uchar
-# define XCHAR_P xchar
-# define SHORT_P short
+#define CHAR_P char
+#define SCHAR_P schar
+#define UCHAR_P uchar
+#define XCHAR_P xchar
+#define SHORT_P short
 #ifndef SKIP_BOOLEAN
 # define BOOLEAN_P boolean
 #endif
-# define ALIGNTYP_P aligntyp
-#if defined(ULTRIX_PROTO) && !defined(__STDC__)
-/* The ultrix 2.0 and 2.1 compilers (on Ultrix 4.0 and 4.2 respectively) can't
- * handle "struct obj *" constructs in prototypes.  Their bugs are different,
- * but both seem to work if we put "void*" in the prototype instead.  This
- * gives us minimal prototype checking but avoids the compiler bugs.
- *
- * OBJ_P and MONST_P should _only_ be used for declaring function pointers.
- */
-#define OBJ_P void*
-#define MONST_P void*
-#else
+#define ALIGNTYP_P aligntyp
+
 #define OBJ_P struct obj*
 #define MONST_P struct monst*
-#endif
 
 #define SIZE(x) (int)(sizeof(x) / sizeof(x[0]))
 
@@ -130,113 +105,14 @@ typedef xchar	boolean;		/* 0 or 1 */
  * Please don't change the order.  It does matter.
  */
 
-#ifdef VMS
-#include "vmsconf.h"
-#endif
-
 #ifdef UNIX
 #include "unixconf.h"
 #endif
 
-#ifdef OS2
-#include "os2conf.h"
-#endif
-
-#ifdef MSDOS
-#include "pcconf.h"
-#endif
-
-#ifdef TOS
-#include "tosconf.h"
-#endif
-
-#ifdef AMIGA
-#include "amiconf.h"
-#endif
-
-#ifdef MAC
-#include "macconf.h"
-#endif
-
-#ifdef __BEOS__
-#include "beconf.h"
-#endif
-
-#ifdef WIN32
-#ifdef WIN_CE
-#include "wceconf.h"
-#else
-#include "ntconf.h"
-#endif
-#endif
-
 /* Displayable name of this port; don't redefine if defined in *conf.h */
-#ifndef PORT_ID
-# ifdef AMIGA
-#  define PORT_ID	"Amiga"
-# endif
-# ifdef MAC
-#  define PORT_ID	"Mac"
-# endif
-# ifdef MSDOS
-#  ifdef PC9800
-#  define PORT_ID	"PC-9800"
-#  else
-#  define PORT_ID	"PC"
-#  endif
-#  ifdef DJGPP
-#  define PORT_SUB_ID	"djgpp"
-#  else
-#   ifdef OVERLAY
-#  define PORT_SUB_ID	"overlaid"
-#   else
-#  define PORT_SUB_ID	"non-overlaid"
-#   endif
-#  endif
-# endif
-# ifdef OS2
-#  define PORT_ID	"OS/2"
-# endif
-# ifdef TOS
-#  define PORT_ID	"ST"
-# endif
 # ifdef UNIX
 #  define PORT_ID	"Unix"
 # endif
-# ifdef VMS
-#  define PORT_ID	"VMS"
-# endif
-# ifdef WIN32
-#  define PORT_ID	"Windows"
-#  ifndef PORT_SUB_ID
-#   ifdef MSWIN_GRAPHICS
-#    define PORT_SUB_ID	"graphical"
-#   else
-#    define PORT_SUB_ID	"tty"
-#   endif
-#  endif
-# endif
-#endif
-
-#if defined(MICRO)
-#if !defined(AMIGA) && !defined(TOS) && !defined(OS2_HPFS)
-#define SHORT_FILENAMES		/* filenames are 8.3 */
-#endif
-#endif
-
-#ifdef VMS
-/* vms_exit() (sys/vms/vmsmisc.c) expects the non-VMS EXIT_xxx values below.
- * these definitions allow all systems to be treated uniformly, provided
- * main() routines do not terminate with return(), whose value is not
- * so massaged.
- */
-# ifdef EXIT_SUCCESS
-#  undef EXIT_SUCCESS
-# endif
-# ifdef EXIT_FAILURE
-#  undef EXIT_FAILURE
-# endif
-#endif
 
 #ifndef EXIT_SUCCESS
 # define EXIT_SUCCESS 0
@@ -244,18 +120,6 @@ typedef xchar	boolean;		/* 0 or 1 */
 #ifndef EXIT_FAILURE
 # define EXIT_FAILURE 1
 #endif
-
-#if defined(X11_GRAPHICS) || defined(QT_GRAPHICS) || defined(GNOME_GRAPHICS) || defined(MSWIN_GRAPHICS)
-# ifndef USE_TILES
-#  define USE_TILES		/* glyph2tile[] will be available */
-# endif
-#endif
-#if defined(AMII_GRAPHICS) || defined(GEM_GRAPHICS)
-# ifndef USE_TILES
-#  define USE_TILES
-# endif
-#endif
-
 
 #define Sprintf  (void) sprintf
 #define Strcat   (void) strcat
