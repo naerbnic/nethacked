@@ -2,6 +2,8 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include <string.h>
+
 #include "hack.h"
 
 #ifdef OVLB
@@ -553,10 +555,9 @@ const char * rndghostname() {
 /* Bug: if the monster is a priest or shopkeeper, not every one of these
  * options works, since those are special cases.
  */
-char *
-x_monnam(mtmp, article, adjective, suppress, called)
-register struct monst *mtmp;
-int article;
+char* x_monnam(
+    struct monst* mtmp, 
+    int article,
 /* ARTICLE_NONE, ARTICLE_THE, ARTICLE_A: obvious
  * ARTICLE_YOUR: "your" on pets, "the" on everything else
  *
@@ -564,13 +565,12 @@ int article;
  * _and_ there is no adjective, "invisible", "saddled", etc., override this
  * and always use no article.
  */
-const char *adjective;
-int suppress;
+    char const* adjective,
+    int suppress,
 /* SUPPRESS_IT, SUPPRESS_INVISIBLE, SUPPRESS_HALLUCINATION, SUPPRESS_SADDLE.
  * EXACT_NAME: combination of all the above
  */
-boolean called;
-{
+    boolean called) {
 #ifdef LINT	/* static char buf[BUFSZ]; */
 	char buf[BUFSZ];
 #else

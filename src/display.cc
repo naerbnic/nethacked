@@ -115,6 +115,9 @@
  *	horizontal - Indicates whether the wall or door is horizontal or
  *		     vertical.
  */
+
+#include <string.h>
+
 #include "hack.h"
 #include "region.h"
 
@@ -328,13 +331,12 @@ void map_location(int x, int y, int show) {
  *
  */
 STATIC_OVL void
-display_monster(x, y, mon, sightflags, worm_tail)
-    register xchar x, y;	/* display position */
-    register struct monst *mon;	/* monster to display */
-    int sightflags;		/* 1 if the monster is physically seen */
+display_monster(
+    xchar x, xchar y, 	/* display position */
+    struct monst* mon, /* monster to display */
+    int sightflags,   /* 1 if the monster is physically seen */
     				/* 2 if detected using Detect_monsters */
-    register xchar worm_tail;	/* mon is actually a worm tail */
-{
+    xchar worm_tail) {	/* mon is actually a worm tail */
     register boolean mon_mimic = (mon->m_ap_type != M_AP_NOTHING);
     register int sensed = mon_mimic &&
 	(Protection_from_shape_changers || sensemon(mon));
@@ -1133,7 +1135,7 @@ void docrt() {
 /* Glyph Buffering (3rd screen) ============================================ */
 
 typedef struct {
-    xchar new;		/* perhaps move this bit into the rm strucure. */
+    xchar is_new;		/* perhaps move this bit into the rm strucure. */
     int   glyph;
 } gbuf_entry;
 
@@ -1199,7 +1201,7 @@ void show_glyph(int x, int y, int glyph) {
 
     if (gbuf[y][x].glyph != glyph) {
 	gbuf[y][x].glyph = glyph;
-	gbuf[y][x].new   = 1;
+	gbuf[y][x].is_new   = 1;
 	if (gbuf_start[y] > x) gbuf_start[y] = x;
 	if (gbuf_stop[y]  < x) gbuf_stop[y]  = x;
     }
@@ -1276,9 +1278,9 @@ void flush_screen(int cursor_on_u) {
     for (y = 0; y < ROWNO; y++) {
 	register gbuf_entry *gptr = &gbuf[y][x = gbuf_start[y]];
 	for (; x <= gbuf_stop[y]; gptr++, x++)
-	    if (gptr->new) {
+	    if (gptr->is_new) {
 		print_glyph(WIN_MAP,x,y,gptr->glyph);
-		gptr->new = 0;
+		gptr->is_new = 0;
 	    }
     }
 
@@ -1293,9 +1295,7 @@ void flush_screen(int cursor_on_u) {
 
 #ifdef DUMP_LOG
 /* D: Added to dump screen to output file */
-STATIC_PTR uchar get_glyph_char(glyph)
-int glyph;
-{
+STATIC_PTR uchar get_glyph_char(int glyph) {
     uchar   ch;
     register int offset;
 

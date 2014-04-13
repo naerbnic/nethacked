@@ -4,6 +4,8 @@
 
 /* Contains code for 'd', 'D' (drop), '>', '<' (up, down) */
 
+#include <string.h>
+
 #include "hack.h"
 #include "lev.h"
 
@@ -906,7 +908,7 @@ void goto_level(d_level *newlevel, boolean at_stairs, boolean falling, boolean p
 		newdungeon = (u.uz.dnum != newlevel->dnum),
 		was_in_W_tower = In_W_tower(u.ux, u.uy, &u.uz),
 		familiar = FALSE;
-	boolean new = FALSE;	/* made a new level? */
+	boolean is_new = FALSE;	/* made a is_new level? */
 	struct monst *mtmp;
 	char whynot[BUFSZ];
 
@@ -925,7 +927,7 @@ void goto_level(d_level *newlevel, boolean at_stairs, boolean falling, boolean p
 	 * up a set of stairs sometimes does some very strange things!
 	 * Biased against law and towards chaos, but not nearly as strongly
 	 * as it used to be (prior to 3.2.0).
-	 * Odds:	    old				    new
+	 * Odds:	    old				    is_new
 	 *	"up"    L      N      C		"up"    L      N      C
 	 *	 +1   75.0   75.0   75.0	 +1   75.0   75.0   75.0
 	 *	  0    0.0   12.5   25.0	  0    6.25   8.33  12.5
@@ -1041,7 +1043,7 @@ void goto_level(d_level *newlevel, boolean at_stairs, boolean falling, boolean p
 		    level_info[new_ledger].flags &= ~(FORGOTTEN|VISITED);
 		}
 		mklev();
-		new = TRUE;	/* made the level */
+		is_new = TRUE;	/* made the level */
 	} else {
 		/* returning to previously visited level; reload it */
 		fd = open_levelfile(new_ledger, whynot);
@@ -1063,7 +1065,7 @@ void goto_level(d_level *newlevel, boolean at_stairs, boolean falling, boolean p
 	flush_screen(-1);	/* ensure all map flushes are postponed */
 
 	if (portal && !In_endgame(&u.uz)) {
-	    /* find the portal on the new level */
+	    /* find the portal on the is_new level */
 	    register struct trap *ttrap;
 
 	    for (ttrap = ftrap; ttrap; ttrap = ttrap->ntrap)
@@ -1263,7 +1265,7 @@ void goto_level(d_level *newlevel, boolean at_stairs, boolean falling, boolean p
 	}
 
 #ifdef REINCARNATION
-	if (new && Is_rogue_level(&u.uz))
+	if (is_new && Is_rogue_level(&u.uz))
 	    You("enter what seems to be an older, more primitive world.");
 #endif
 	/* Final confrontation */
@@ -1285,7 +1287,7 @@ void goto_level(d_level *newlevel, boolean at_stairs, boolean falling, boolean p
 	}
 
 	/* once Croesus is dead, his alarm doesn't work any more */
-	if (Is_knox(&u.uz) && (new || !mvitals[PM_CROESUS].died)) {
+	if (Is_knox(&u.uz) && (is_new || !mvitals[PM_CROESUS].died)) {
 		You("penetrated a high security area!");
 		pline("An alarm sounds!");
 		for(mtmp = fmon; mtmp; mtmp = mtmp->nmon)
