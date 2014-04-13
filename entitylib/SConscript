@@ -1,5 +1,8 @@
-entitylib = Library(
-    target = 'entitylib', source = ['monst.cc', 'objects.cc', 'drawing.cc'],
-    CPPPATH = [ '#include' ])
+Import(['env'])
+
+entitylib = env.Library(
+    target = 'entitylib', 
+    source = ['monst.cc', 'objects.cc', 'drawing.cc'],
+) 
 
 Return('entitylib')
