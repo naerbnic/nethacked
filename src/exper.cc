@@ -2,6 +2,8 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include <string.h>
+
 #include "hack.h"
 
 STATIC_DCL long FDECL(newuexp, (int));
@@ -29,14 +31,8 @@ STATIC_OVL int enermod(int en) {
 	}
 }
 
-int
-experience(mtmp, nk)	/* return # of exp points for mtmp after nk killed */
-	register struct	monst *mtmp;
-	register int	nk;
-#if defined(macintosh) && (defined(__SC__) || defined(__MRC__))
-# pragma unused(nk)
-#endif
-{
+/* return # of exp points for mtmp after nk killed */
+int experience(struct monst* mtmp, int nk) {
 	register struct permonst *ptr = mtmp->data;
 	int	i, tmp, tmp2;
 

@@ -2,6 +2,8 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include <string.h>
+
 #include "hack.h"
 #include "dlb.h"
 
@@ -1285,13 +1287,7 @@ boolean lock_file(const char *filename, int whichprefix, int retryct) {
 #endif
 
 /* unlock file, which must be currently locked by lock_file */
-void
-unlock_file(filename)
-const char *filename;
-#if defined(macintosh) && (defined(__SC__) || defined(__MRC__))
-# pragma unused(filename)
-#endif
-{
+void unlock_file(char const* filename) {
 	char locknambuf[BUFSZ];
 	const char *lockname;
 
