@@ -2,6 +2,8 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include <string.h>
+
 #include "hack.h"
 #include "dgn_file.h"
 #include "dlb.h"
@@ -1251,11 +1253,8 @@ void assign_level(d_level *dest, d_level *src) {
 	dest->dlevel = src->dlevel;
 }
 
-void
-assign_rnd_level(dest, src, range)	/* dest = src + rn1(range) */
-d_level	*dest, *src;
-int range;
-{
+/* dest = src + rn1(range) */
+void assign_rnd_level(d_level* dest, d_level* src, int range) {
 	dest->dnum = src->dnum;
 	dest->dlevel = src->dlevel + ((range > 0) ? rnd(range) : -rnd(-range)) ;
 

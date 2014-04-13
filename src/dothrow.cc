@@ -4,6 +4,8 @@
 
 /* Contains code for 't' (throw) */
 
+#include <string.h>
+
 #include "hack.h"
 #include "edog.h"
 
@@ -346,13 +348,11 @@ void hitfloor(register struct obj *obj) {
  * and return FALSE.  If stopped early, dest_cc will be the location
  * before the failed callback.
  */
-boolean
-walk_path(src_cc, dest_cc, check_proc, arg)
-    coord *src_cc;
-    coord *dest_cc;
-    boolean FDECL((*check_proc), (genericptr_t, int, int));
-    genericptr_t arg;
-{
+boolean walk_path(
+    coord* src_cc,
+    coord* dest_cc,
+    boolean (*check_proc)(genericptr_t, int, int),
+    genericptr_t arg) {
     int x, y, dx, dy, x_change, y_change, err, i, prev_x, prev_y;
     boolean keep_going = TRUE;
 
@@ -771,19 +771,21 @@ STATIC_OVL boolean toss_up(struct obj *obj, boolean hitsroof) {
 	} else if (obj->otyp == CORPSE && touch_petrifies(&mons[obj->corpsenm])) {
 	    if (!Stone_resistance &&
 		    !(poly_when_stoned(youmonst.data) && polymon(PM_STONE_GOLEM))) {
- petrify:
-		killer_format = KILLED_BY;
-		killer = "elementary physics";	/* "what goes up..." */
-		You("turn to stone.");
-		if (obj) dropy(obj);	/* bypass most of hitfloor() */
-		done(STONING);
-		return obj ? TRUE : FALSE;
+                goto petrify;
 	    }
 	}
 	hitfloor(obj);
 	losehp(dmg, "falling object", KILLED_BY_AN);
     }
     return TRUE;
+
+ petrify:
+    killer_format = KILLED_BY;
+    killer = "elementary physics";	/* "what goes up..." */
+    You("turn to stone.");
+    if (obj) dropy(obj);	/* bypass most of hitfloor() */
+    done(STONING);
+    return obj ? TRUE : FALSE;
 }
 
 /* return true for weapon meant to be thrown; excludes ammo */
