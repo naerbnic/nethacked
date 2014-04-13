@@ -333,16 +333,13 @@ do_pit:		    chasm = maketrap(x,y,PIT);
 
 STATIC_OVL int do_improvisation(struct obj *instr) {
 	int damage, do_spec = !Confusion;
-#if defined(MAC) || defined(AMIGA) || defined(VPIX_MUSIC) || defined (PCMUSIC)
+#if defined(AMIGA) || defined(VPIX_MUSIC) || defined (PCMUSIC)
 	struct obj itmp;
 
 	itmp = *instr;
 	/* if won't yield special effect, make sound of mundane counterpart */
 	if (!do_spec || instr->spe <= 0)
 	    while (objects[itmp.otyp].oc_magic) itmp.otyp -= 1;
-# ifdef MAC
-	mac_speaker(&itmp, "C");
-# endif
 # ifdef AMIGA
 	amii_speaker(&itmp, "Cw", AMII_OKAY_VOLUME);
 # endif
@@ -353,7 +350,7 @@ STATIC_OVL int do_improvisation(struct obj *instr) {
 #ifdef PCMUSIC
 	  pc_speaker ( &itmp, "C");
 #endif
-#endif /* MAC || AMIGA || VPIX_MUSIC || PCMUSIC */
+#endif /* AMIGA || VPIX_MUSIC || PCMUSIC */
 
 	if (!do_spec)
 	    pline("What you produce is quite far from music...");
@@ -490,9 +487,6 @@ int do_play_instrument(struct obj *instr) {
 #ifdef VPIX_MUSIC
 	if (sco_flag_console)
 	    speaker(instr, buf);
-#endif
-#ifdef MAC
-	mac_speaker ( instr , buf ) ;
 #endif
 #ifdef PCMUSIC
 	pc_speaker ( instr, buf );

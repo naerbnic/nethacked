@@ -80,7 +80,7 @@ static struct Bool_Opt
 #ifdef CONFIRM_LOCKING
 	{"confirm_locking", &iflags.confirm_locking, TRUE, SET_IN_GAME},
 #endif
-#if defined(TERMLIB) && !defined(MAC_GRAPHICS_ENV)
+#if defined(TERMLIB)
 	{"DECgraphics", &iflags.DECgraphics, FALSE, SET_IN_GAME},
 #else
 	{"DECgraphics", (boolean *)0, FALSE, SET_IN_FILE},
@@ -111,20 +111,12 @@ static struct Bool_Opt
 #else
 	{"IBMgraphics", (boolean *)0, FALSE, SET_IN_FILE},
 #endif
-#ifndef MAC
 	{"ignintr", &flags.ignintr, FALSE, SET_IN_GAME},
-#else
-	{"ignintr", (boolean *)0, FALSE, SET_IN_FILE},
-#endif
 	{"large_font", &iflags.obsolete, FALSE, SET_IN_FILE},	/* OBSOLETE */
 	{"legacy", &flags.legacy, TRUE, DISP_IN_GAME},
 	{"lit_corridor", &flags.lit_corridor, FALSE, SET_IN_GAME},
 	{"lootabc", &iflags.lootabc, FALSE, SET_IN_GAME},
-#ifdef MAC_GRAPHICS_ENV
-	{"Macgraphics", &iflags.MACgraphics, TRUE, SET_IN_GAME},
-#else
 	{"Macgraphics", (boolean *)0, FALSE, SET_IN_FILE},
-#endif
 #ifdef MAIL
 	{"mail", &flags.biff, TRUE, SET_IN_GAME},
 #else
@@ -152,11 +144,7 @@ static struct Bool_Opt
 	{"news", (boolean *)0, FALSE, SET_IN_FILE},
 #endif
 	{"null", &flags.null, TRUE, SET_IN_GAME},
-#ifdef MAC
-	{"page_wait", &flags.page_wait, TRUE, SET_IN_GAME},
-#else
 	{"page_wait", (boolean *)0, FALSE, SET_IN_FILE},
-#endif
 #ifdef PARANOID
 	{"paranoid_hit", &iflags.paranoid_hit, FALSE, SET_IN_GAME},
 	{"paranoid_quit", &iflags.paranoid_quit, FALSE, SET_IN_GAME},
@@ -319,10 +307,6 @@ static struct Comp_Opt
 #ifdef CHANGE_COLOR
 	{ "palette",  "palette (00c/880/-fff is blue/yellow/reverse white)",
 						15 , SET_IN_GAME },
-# if defined(MAC)
-	{ "hicolor",  "same as palette, only order is reversed",
-						15, SET_IN_FILE },
-# endif
 #endif
 	{ "pettype",  "your preferred initial pet type", 4, DISP_IN_GAME },
 	{ "pickup_burden",  "maximum burden picked up before prompt",
@@ -517,9 +501,7 @@ char * nh_getenv(const char *ev) {
 }
 
 void initoptions() {
-#ifndef MAC
 	char *opts;
-#endif
 	int i;
 
 	/* initialize the random number generator */
@@ -599,15 +581,11 @@ void initoptions() {
 	}
 # endif
 
-#ifdef MAC_GRAPHICS_ENV
-	switch_graphics(MAC_GRAPHICS);
-#endif /* MAC_GRAPHICS_ENV */
 	flags.menu_style = MENU_FULL;
 
 	/* since this is done before init_objects(), do partial init here */
 	objects[SLIME_MOLD].oc_name_idx = SLIME_MOLD;
 	nmcpy(pl_fruit, OBJ_NAME(objects[SLIME_MOLD]), PL_FSIZ);
-#ifndef MAC
 	opts = getenv("NETHACKOPTIONS");
 	if (!opts) opts = getenv("HACKOPTIONS");
 	if (opts) {
@@ -624,7 +602,6 @@ void initoptions() {
 			parseoptions(opts, TRUE, FALSE);
 		}
 	} else
-#endif
 		read_config_file((char *)0);
 
 	(void)fruitadd(pl_fruit);
@@ -723,9 +700,6 @@ STATIC_OVL void badoption(const char *opts) {
 		pline("Bad syntax: %s.  Enter \"?g\" for help.", opts);
 	    return;
 	}
-#ifdef MAC
-	else return;
-#endif
 
 	if(from_file)
 	    raw_printf("Bad syntax in OPTIONS in %s: %s.", configfile, opts);
@@ -903,13 +877,6 @@ void set_duplicate_opt_detection(int on_or_off) {
 
 STATIC_OVL void duplicate_opt_detection(const char *opts, int bool_or_comp) {
 	int i, *optptr;
-#if defined(MAC)
-	/* the Mac has trouble dealing with the output of messages while
-	 * processing the config file.  That should get fixed one day.
-	 * For now just return.
-	 */
-	return;
-#endif
 	if ((bool_or_comp == 0) && iflags.opt_booldup && initial && from_file) {
 	    for (i = 0; boolopt[i].name; i++) {
 		if (match_optname(opts, boolopt[i].name, 3, FALSE)) {
@@ -1364,40 +1331,21 @@ void parseoptions(register char *opts, boolean tinitial, boolean tfrom_file) {
 		if (wintype > 0 &&
 		    (op = string_for_opt(opts, FALSE)) != 0) {
 			wc_set_font_name(wintype, op);
-#ifdef MAC
-			set_font_name (wintype, op);
-#endif
 			return;
 		} else if (negated) bad_negation(fullname, TRUE);
 		return;
 	}
 #ifdef CHANGE_COLOR
 	if (match_optname(opts, "palette", 3, TRUE)
-# ifdef MAC
-	    || match_optname(opts, "hicolor", 3, TRUE)
-# endif
 							) {
 	    int color_number, color_incr;
 
-# ifdef MAC
-	    if (match_optname(opts, "hicolor", 3, TRUE)) {
-		if (negated) {
-		    bad_negation("hicolor", FALSE);
-		    return;
-		}
-		color_number = CLR_MAX + 4;	/* HARDCODED inverse number */
-		color_incr = -1;
-	    } else {
-# endif
 		if (negated) {
 		    bad_negation("palette", FALSE);
 		    return;
 		}
 		color_number = 0;
 		color_incr = 1;
-# ifdef MAC
-	    }
-# endif
 	    if ((op = string_for_opt(opts, FALSE)) != (char *)0) {
 		char *pt = op;
 		int cnt, tmp, reverse;
@@ -2289,16 +2237,13 @@ goodfruit:
 
 			duplicate_opt_detection(boolopt[i].name, 0);
 
-#if defined(TERMLIB) || defined(ASCIIGRAPH) || defined(MAC_GRAPHICS_ENV)
+#if defined(TERMLIB) || defined(ASCIIGRAPH)
 			if (FALSE
 # ifdef TERMLIB
 				 || (boolopt[i].addr) == &iflags.DECgraphics
 # endif
 # ifdef ASCIIGRAPH
 				 || (boolopt[i].addr) == &iflags.IBMgraphics
-# endif
-# ifdef MAC_GRAPHICS_ENV
-				 || (boolopt[i].addr) == &iflags.MACgraphics
 # endif
 				) {
 # ifdef REINCARNATION
@@ -2316,17 +2261,12 @@ goodfruit:
 				switch_graphics(iflags.IBMgraphics ?
 						IBM_GRAPHICS : ASCII_GRAPHICS);
 # endif
-# ifdef MAC_GRAPHICS_ENV
-			    if ((boolopt[i].addr) == &iflags.MACgraphics)
-				switch_graphics(iflags.MACgraphics ?
-						MAC_GRAPHICS : ASCII_GRAPHICS);
-# endif
 # ifdef REINCARNATION
 			    if (!initial && Is_rogue_level(&u.uz))
 				assign_rogue_graphics(TRUE);
 # endif
 			}
-#endif /* TERMLIB || ASCIIGRAPH || MAC_GRAPHICS_ENV */
+#endif /* TERMLIB || ASCIIGRAPH */
 
 			/* only do processing below if setting with doset() */
 			if (initial) return;
@@ -2455,7 +2395,7 @@ char map_menu_cmd(char ch) {
 }
 
 
-#if defined(MICRO) || defined(MAC) || defined(WIN32)
+#if defined(MICRO) || defined(WIN32)
 # define OPTIONS_HEADING "OPTIONS"
 #else
 # define OPTIONS_HEADING "NETHACKOPTIONS"
@@ -3422,7 +3362,7 @@ static const char *opt_intro[] = {
 	"",
 #define CONFIG_SLOT 3	/* fill in next value at run-time */
 	(char *)0,
-#if !defined(MICRO) && !defined(MAC)
+#if !defined(MICRO)
 	"or use `NETHACKOPTIONS=\"<options>\"' in your environment",
 #endif
 	"(<options> is a list of options separated by commas)",
