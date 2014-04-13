@@ -3,6 +3,8 @@
 /* Copyright (c) Robert Patrick Rankin, 1991		  */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include <string.h>
+
 /* We could include only config.h, except for the overlay definitions... */
 #include "hack.h"
 /*=
@@ -108,20 +110,15 @@ char * mungspaces(char *bp) {
 #endif /* OVLB */
 
 #ifdef OVL0
-char *
-eos(s)			/* return the end of a string (pointing at '\0') */
-    register char *s;
-{
+/* return the end of a string (pointing at '\0') */
+char * eos(char* s) {
     while (*s) s++;	/* s += strlen(s); */
     return s;
 }
 
 /* strcat(s, {c,'\0'}); */
-char *
-strkitten(s, c)		/* append a character to a string (in place) */
-    char *s;
-    char c;
-{
+/* append a character to a string (in place) */
+char * strkitten(char* s, char c) {
     char *p = eos(s);
 
     *p++ = c;
@@ -143,11 +140,8 @@ char * s_suffix(const char *s) {
     return buf;
 }
 
-char *
-xcrypt(str, buf)	/* trivial text encryption routine (see makedefs) */
-const char *str;
-char *buf;
-{
+/* trivial text encryption routine (see makedefs) */
+char * xcrypt(char const* str, char* buf) {
     register const char *p;
     register char *q;
     register int bitmask;
@@ -278,10 +272,8 @@ int dist2(int x0, int y0, int x1, int y1) {
     return dx * dx + dy * dy;
 }
 
-boolean
-online2(x0, y0, x1, y1) /* are two points lined up (on a straight line)? */
-    int x0, y0, x1, y1;
-{
+/* are two points lined up (on a straight line)? */
+boolean online2(int x0, int y0, int x1, int y1) {
     int dx = x0 - x1, dy = y0 - y1;
     /*  If either delta is zero then they're on an orthogonal line,
      *  else if the deltas are equal (signs ignored) they're on a diagonal.

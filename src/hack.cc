@@ -2,6 +2,8 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include <string.h>
+
 #include "hack.h"
 
 #ifdef OVL1
@@ -484,10 +486,8 @@ STATIC_OVL void dosinkfall() {
 }
 #endif
 
-boolean
-may_dig(x,y)
-register xchar x,y;
 /* intended to be called only on ROCKs */
+boolean may_dig(xchar x, xchar y)
 {
     return (boolean)(!(IS_STWALL(levl[x][y].typ) &&
 			(levl[x][y].wall_info & W_NONDIGGABLE)));

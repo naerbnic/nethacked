@@ -80,10 +80,8 @@ STATIC_OVL void dowaternymph() {
 		   You_hear("a loud pop.");
 }
 
-void
-dogushforth(drinking) /* Gushing forth along LOS from (u.ux, u.uy) */
-int drinking;
-{
+/* Gushing forth along LOS from (u.ux, u.uy) */
+void dogushforth(int drinking) {
 	int madepool = 0;
 
 	do_clear_area(u.ux, u.uy, 7, gush, (genericptr_t)&madepool);
