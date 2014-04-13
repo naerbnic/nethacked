@@ -1,3 +1,9 @@
+Import([
+    'baselib',
+    'entitylib',
+    'env',
+])
+
 hack_src = [
   'allmain.cc',
   'apply.cc',

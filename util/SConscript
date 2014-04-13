@@ -1,14 +1,12 @@
-Import(['baselib', 'entitylib'])
+Import(['baselib', 'entitylib', 'env'])
 
 lev_parser_c, lev_parser_h = CFile(
     source = 'lev_comp.y', target = ['lev_yacc.cc'], YACCFLAGS = ['-d'])
-lev_lexer_c = CFile(target = ['lev_lex.cc'], source = 'lev_comp.l')
+lev_lexer_c, = CFile(target = ['lev_lex.cc'], source = 'lev_comp.l')
 
 dgn_parser_c, dgn_parser_h = CFile(
     source = 'dgn_comp.y', target = ['dgn_yacc.cc'], YACCFLAGS = ['-d'])
-dgn_lexer_c = CFile(target = ['dgn_lex.cc'], source = 'dgn_comp.l')
-
-print(lev_lexer_c)
+dgn_lexer_c, = CFile(target = ['dgn_lex.cc'], source = 'dgn_comp.l')
 
 panic_obj = Object(source = 'panic.cc', CPPPATH = ['#include'])
 
