@@ -28,9 +28,10 @@ def find_prev_fn(lines, index):
     return -1;
 
 class ParsedFunction:
-    def __init__(self, name, args):
+    def __init__(self, name, args, comment):
         self.name = name
         self.args = args
+        self.comment = comment
 
 def parse_fn_line(fn_line):
     m = fn_line_re.match(fn_line)
@@ -38,7 +39,7 @@ def parse_fn_line(fn_line):
     args_string = m.group('args')
     # args_string should be a comma-separated sequence of simple identifiers
     args = [ arg.strip() for arg in args_string.split(',') if not len(arg.strip()) == 0 ]
-    return ParsedFunction(m.group('name'), args)
+    return ParsedFunction(m.group('name'), args, m.group('comment').strip())
 
 c_param_re = re.compile(r'^\**([a-zA-Z_][a-zA-Z0-9_]*)(\[\])*$')
 
@@ -102,7 +103,12 @@ def process_lines(lines_arg):
             out_lines.extend(lines[0:brace_index + 1])
             del lines[0:brace_index + 1]
             continue
+        if parsed_fn.comment != '':
+          comment_line = parsed_fn.comment + '\n'
+        else:
+          comment_line = ''
         new_fn_line = (
+                comment_line +
                 type_line + ' ' + parsed_fn.name + '(' +
                 ', '.join(arg_decls) + ') {\n')
         out_lines.extend(lines[0:fn_line_index - 1])
