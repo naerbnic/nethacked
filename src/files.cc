@@ -1362,7 +1362,7 @@ STATIC_OVL FILE * fopen_config_file(const char *filename) {
 	}
 # endif
 	if (errno != ENOENT) {
-	    char *details;
+	    char const* details;
 
 	    /* e.g., problems when setuid NetHack can't search home
 	     * directory restricted to user */
