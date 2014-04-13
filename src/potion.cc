@@ -1251,11 +1251,8 @@ void potionbreathe(register struct obj *obj) {
 	}
 }
 
-STATIC_OVL short
-mixtype(o1, o2)
-register struct obj *o1, *o2;
 /* returns the potion type when o1 is dipped in o2 */
-{
+STATIC_OVL short mixtype(struct obj* o1, struct obj* o2) {
 	/* cut down on the number of cases below */
 	if (o1->oclass == POTION_CLASS &&
 	    (o2->otyp == POT_GAIN_LEVEL ||
@@ -1349,11 +1346,8 @@ register struct obj *o1, *o2;
 }
 
 
-boolean
-get_wet(obj)
-register struct obj *obj;
 /* returns TRUE if something happened (potion should be used up) */
-{
+boolean get_wet(struct obj* obj) {
 	char Your_buf[BUFSZ];
 
 	if (snuff_lit(obj)) return(TRUE);
@@ -1526,12 +1520,7 @@ int dodip() {
 					  hcolor(NH_AMBER));
 				uncurse(obj);
 				obj->bknown=1;
-	poof:
-				if(!(objects[potion->otyp].oc_name_known) &&
-				   !(objects[potion->otyp].oc_uname))
-					docall(potion);
-				useup(potion);
-				return(1);
+                                goto poof;
 			} else if(!obj->blessed) {
 				if (useeit) {
 				    tmp = hcolor(NH_LIGHT_BLUE);
@@ -1868,6 +1857,13 @@ int dodip() {
 
 	pline("Interesting...");
 	return(1);
+poof:
+        if (!(objects[potion->otyp].oc_name_known) &&
+            !(objects[potion->otyp].oc_uname)) {
+          docall(potion);
+        }
+        useup(potion);
+        return(1);
 }
 
 
@@ -1917,10 +1913,12 @@ void djinni_from_bottle(register struct obj *obj) {
 /* clone a gremlin or mold (2nd arg non-null implies heat as the trigger);
    hit points are cut in half (odd HP stays with original) */
 struct monst *
-split_mon(mon, mtmp)
-struct monst *mon,	/* monster being split */
-	     *mtmp;	/* optional attacker whose heat triggered it */
-{
+split_mon(
+    /* monster being split */
+    struct monst* mon,
+
+    /* optional attacker whose heat triggered it */
+    struct monst* mtmp) {
 	struct monst *mtmp2;
 	char reason[BUFSZ];
 

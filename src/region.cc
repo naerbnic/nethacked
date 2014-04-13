@@ -2,6 +2,8 @@
 /* Copyright (c) 1996 by Jean-Christophe Collet	 */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include <string.h>
+
 #include "hack.h"
 #include "lev.h"
 
@@ -153,11 +155,11 @@ void add_rect_to_reg(NhRegion *reg, NhRect *rect) {
  */
 void add_mon_to_reg(NhRegion *reg, struct monst *mon) {
     int i;
-    unsigned *tmp_m;
+    unsigned long* tmp_m;
 
     if (reg->max_monst <= reg->n_monst) {
-	tmp_m = (unsigned *)
-		    alloc(sizeof (unsigned) * (reg->max_monst + MONST_INC));
+	tmp_m = (unsigned long *)
+		    alloc(sizeof (unsigned long) * (reg->max_monst + MONST_INC));
 	if (reg->max_monst > 0) {
 	    for (i = 0; i < reg->max_monst; i++)
 		tmp_m[i] = reg->monsters[i];
@@ -371,11 +373,7 @@ void run_regions() {
 /*
  * check whether player enters/leaves one or more regions.
  */
-boolean
-in_out_region(x, y)
-xchar
-    x, y;
-{
+boolean in_out_region(xchar x, xchar y) {
     int i, f_indx;
 
     /* First check if we can do the move */
@@ -655,7 +653,7 @@ void rest_regions(int fd, boolean ghostly) {
 	mread(fd, (genericptr_t) &regions[i]->n_monst, sizeof (short));
 	if (regions[i]->n_monst > 0)
 	    regions[i]->monsters =
-		(unsigned *) alloc(sizeof (unsigned) * regions[i]->n_monst);
+		(unsigned long *) alloc(sizeof (unsigned long) * regions[i]->n_monst);
 	else
 	    regions[i]->monsters = NULL;
 	regions[i]->max_monst = regions[i]->n_monst;
@@ -678,7 +676,7 @@ void rest_regions(int fd, boolean ghostly) {
 /* update monster IDs for region being loaded from bones; `ghostly' implied */
 static void reset_region_mids(NhRegion *reg) {
     int i = 0, n = reg->n_monst;
-    unsigned *mid_list = reg->monsters;
+    unsigned long *mid_list = reg->monsters;
 
     while (i < n)
 	if (!lookup_id_mapping(mid_list[i], &mid_list[i])) {
@@ -783,10 +781,10 @@ NhRegion * create_force_field(xchar x, xchar y, int radius, int ttl) {
  */
 boolean expire_gas_cloud(genericptr_t p1, genericptr_t p2) {
     NhRegion *reg;
-    int damage;
+    unsigned long damage;
 
     reg = (NhRegion *) p1;
-    damage = (int) reg->arg;
+    damage = (unsigned long) reg->arg;
 
     /* If it was a thick cloud, it dissipates a little first */
     if (damage >= 5) {
@@ -801,10 +799,10 @@ boolean expire_gas_cloud(genericptr_t p1, genericptr_t p2) {
 boolean inside_gas_cloud(genericptr_t p1, genericptr_t p2) {
     NhRegion *reg;
     struct monst *mtmp;
-    int dam;
+    long dam;
 
     reg = (NhRegion *) p1;
-    dam = (int) reg->arg;
+    dam = (long) reg->arg;
     if (p2 == NULL) {		/* This means *YOU* Bozo! */
 	if (nonliving(youmonst.data) || Breathless)
 	    return FALSE;

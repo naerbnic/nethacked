@@ -50,7 +50,7 @@ typedef struct {
   short inside_f;		/* Function to call every turn if player's
 				   inside */
   boolean player_flags;	/* (see above) */
-  unsigned int* monsters;	/* Monsters currently inside this region */
+  unsigned long* monsters;	/* Monsters currently inside this region */
   short n_monst;		/* Number of monsters inside this region */
   short max_monst;		/* Maximum number of monsters that can be
 				   listed without having to grow the array */

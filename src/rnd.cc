@@ -36,10 +36,8 @@ void check_reseed() {
     }
 }
 
-int
-rn2(x)		/* 0 <= rn2(x) < x */
-register int x;
-{
+/* 0 <= rn2(x) < x */
+int rn2(int x) {
     check_reseed();
 #ifdef DEBUG
 	if (x <= 0) {
@@ -56,10 +54,9 @@ register int x;
 #endif /* OVL0 */
 #ifdef OVLB
 
-int
-rnl(x)		/* 0 <= rnl(x) < x; sometimes subtracting Luck */
-register int x;	/* good luck approaches 0, bad luck approaches (x-1) */
-{
+/* 0 <= rnl(x) < x; sometimes subtracting Luck */
+/* good luck approaches 0, bad luck approaches (x-1) */
+int rnl(int x) {
 	register int i;
     check_reseed();
 #ifdef DEBUG
@@ -82,10 +79,8 @@ register int x;	/* good luck approaches 0, bad luck approaches (x-1) */
 #endif /* OVLB */
 #ifdef OVL0
 
-int
-rnd(x)		/* 1 <= rnd(x) <= x */
-register int x;
-{
+/* 1 <= rnd(x) <= x */
+int rnd(int x) {
     check_reseed();
 #ifdef DEBUG
 	if (x <= 0) {
@@ -102,10 +97,8 @@ register int x;
 #endif /* OVL0 */
 #ifdef OVL1
 
-int
-d(n,x)		/* n <= d(n,x) <= (n*x) */
-register int n, x;
-{
+/* n <= d(n,x) <= (n*x) */
+int d(int n, int x) {
 	register int tmp = n;
     check_reseed();
 

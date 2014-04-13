@@ -2,6 +2,8 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include <string.h>
+
 #include "hack.h"
 #include "lev.h"
 #include "tcap.h" /* for TERMLIB and ASCIIGRAPH */
@@ -451,14 +453,7 @@ STATIC_OVL void restlevelstate(unsigned int stuckid, unsigned int steedid) {
 }
 
 /*ARGSUSED*/	/* fd used in MFLOPPY only */
-STATIC_OVL int
-restlevelfile(fd, ltmp)
-register int fd;
-xchar ltmp;
-#if defined(macintosh) && (defined(__SC__) || defined(__MRC__))
-# pragma unused(fd)
-#endif
-{
+STATIC_OVL int restlevelfile(int fd, xchar ltmp) {
 	register int nfd;
 	char whynot[BUFSZ];
 

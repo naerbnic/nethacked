@@ -2,6 +2,8 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include <string.h>
+
 #include "hack.h"
 
 /* KMH -- Copied from pray.c; this really belongs in a header file */
@@ -1364,7 +1366,7 @@ do_it:
 }
 
 static void do_class_genocide() {
-	int i, j, immunecnt, gonecnt, goodcnt, class, feel_dead = 0;
+	int i, j, immunecnt, gonecnt, goodcnt, class_id, feel_dead = 0;
 	char buf[BUFSZ];
 	boolean gameover = FALSE;	/* true iff killed self */
 
@@ -1374,7 +1376,7 @@ static void do_class_genocide() {
 			return;
 		}
 		do {
-		    getlin("What class of monsters do you wish to genocide?",
+		    getlin("What class_id of monsters do you wish to genocide?",
 			buf);
 		    (void)mungspaces(buf);
 		} while (buf[0]=='\033' || !buf[0]);
@@ -1385,31 +1387,31 @@ static void do_class_genocide() {
 		if (strlen(buf) == 1) {
 		    if (buf[0] == ILLOBJ_SYM)
 			buf[0] = def_monsyms[S_MIMIC];
-		    class = def_char_to_monclass(buf[0]);
+		    class_id = def_char_to_monclass(buf[0]);
 		} else {
 		    char buf2[BUFSZ];
 
-		    class = 0;
+		    class_id = 0;
 		    Strcpy(buf2, makesingular(buf));
 		    Strcpy(buf, buf2);
 		}
 		immunecnt = gonecnt = goodcnt = 0;
 		for (i = LOW_PM; i < NUMMONS; i++) {
-		    if (class == 0 &&
+		    if (class_id == 0 &&
 			    strstri(monexplain[(int)mons[i].mlet], buf) != 0)
-			class = mons[i].mlet;
-		    if (mons[i].mlet == class) {
+			class_id = mons[i].mlet;
+		    if (mons[i].mlet == class_id) {
 			if (!(mons[i].geno & G_GENO)) immunecnt++;
 			else if(mvitals[i].mvflags & G_GENOD) gonecnt++;
 			else goodcnt++;
 		    }
 		}
 		/*
-		 * TODO[?]: If user's input doesn't match any class
+		 * TODO[?]: If user's input doesn't match any class_id
 		 *	    description, check individual species names.
 		 */
-		if (!goodcnt && class != mons[urole.malenum].mlet &&
-				class != mons[urace.malenum].mlet) {
+		if (!goodcnt && class_id != mons[urole.malenum].mlet &&
+				class_id != mons[urace.malenum].mlet) {
 			if (gonecnt)
 	pline("All such monsters are already nonexistent.");
 			else if (immunecnt ||
@@ -1436,7 +1438,7 @@ static void do_class_genocide() {
 		}
 
 		for (i = LOW_PM; i < NUMMONS; i++) {
-		    if(mons[i].mlet == class) {
+		    if(mons[i].mlet == class_id) {
 			char nam[BUFSZ];
 
 			Strcpy(nam, makeplural(mons[i].mname));
@@ -1458,7 +1460,7 @@ static void do_class_genocide() {
 				u.mh = -1;
 				if (Unchanging) {
 				    if (!feel_dead++) You("die.");
-				    /* finish genociding this class of
+				    /* finish genociding this class_id of
 				       monsters before ultimately dying */
 				    gameover = TRUE;
 				} else
@@ -1466,7 +1468,7 @@ static void do_class_genocide() {
 			    }
 			    /* Self-genocide if it matches either your race
 			       or role.  Assumption:  male and female forms
-			       share same monster class. */
+			       share same monster class_id. */
 			    if (i == urole.malenum || i == urace.malenum) {
 				u.uhp = -1;
 				if (Upolyd) {
@@ -1517,14 +1519,11 @@ static void do_class_genocide() {
 #define REALLY 1
 #define PLAYER 2
 #define ONTHRONE 4
-void
-do_genocide(how)
-int how;
 /* 0 = no genocide; create monsters (cursed scroll) */
 /* 1 = normal genocide */
 /* 3 = forced genocide of player */
 /* 5 (4 | 1) = normal genocide from throne */
-{
+void do_genocide(int how) {
 	char buf[BUFSZ];
 	register int	i, killplayer = 0;
 	register int mndx;

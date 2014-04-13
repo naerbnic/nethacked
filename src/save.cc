@@ -81,10 +81,8 @@ int dosave() {
 
 #if defined(UNIX) || defined(VMS) || defined (__EMX__) || defined(WIN32)
 /*ARGSUSED*/
-void
-hangup(sig_unused)  /* called as signal() handler, so sent at least one arg */
-int sig_unused;
-{
+/* called as signal() handler, so sent at least one arg */
+void hangup(int sig_unused) {
 # ifdef NOSAVEONHANGUP
 	(void) signal(SIGINT, SIG_IGN);
 	clearlocks();
@@ -432,15 +430,10 @@ boolean savelev(int fd, xchar lev, int mode) {
 	return TRUE;
 }
 
-STATIC_OVL void
-savelev0(fd,lev,mode)
+STATIC_OVL void savelev0(int fd, xchar lev, int mode)
 #else
-void
-savelev(fd,lev,mode)
+void savelev(int fd, xchar lev, int mode)
 #endif
-int fd;
-xchar lev;
-int mode;
 {
 #ifdef TOS
 	short tlev;
