@@ -1,2 +1,3 @@
-baselib = Library(target = 'base', source = ['alloc.cc', 'decl.cc'], CPPPATH = [ '#include' ])
+Import(['env'])
+baselib = env.Library(target = 'base', source = ['alloc.cc', 'decl.cc'])
 Return('baselib')

@@ -1,4 +1,5 @@
-env = Environment()
+env = Environment(CPPPATH = ['#include'])
+
 Export(['env'])
 
 baselib = SConscript([

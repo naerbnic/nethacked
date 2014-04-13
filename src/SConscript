@@ -110,5 +110,5 @@ hack_src = [
 
 objects = []
 for src in hack_src:
-  o = Object(src, CPPPATH = ['#include'])
+  o = env.Object(src)
   objects.append(o)
