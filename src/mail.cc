@@ -40,16 +40,8 @@ STATIC_DCL void FDECL(newmail, (struct mail_info *));
 
 extern char *viz_rmin, *viz_rmax;	/* line-of-sight limits (vision.c) */
 
-#ifdef OVL0
-
-# if !defined(UNIX) && !defined(VMS) && !defined(LAN_MAIL)
-int mustgetmail = -1;
-# endif
-
-#endif /* OVL0 */
 #ifdef OVLB
 
-# ifdef UNIX
 #include <sys/stat.h>
 #include <pwd.h>
 /* DON'T trust all Unices to declare getpwuid() in <pwd.h> */
@@ -115,7 +107,6 @@ void getmailstatus() {
 #  endif
 	}
 }
-# endif /* UNIX */
 
 #endif /* OVLB */
 #ifdef OVL0
@@ -400,48 +391,6 @@ give_up:
 	pline("Hark!  \"%s.\"", info->display_txt);
 }
 
-# if !defined(UNIX) && !defined(VMS) && !defined(LAN_MAIL)
-
-void ckmailstatus() {
-	if (u.uswallow || !flags.biff) return;
-	if (mustgetmail < 0) {
-#if defined(AMIGA) || defined(MSDOS) || defined(TOS)
-	    mustgetmail=(moves<2000)?(100+rn2(2000)):(2000+rn2(3000));
-#endif
-	    return;
-	}
-	if (--mustgetmail <= 0) {
-		static struct mail_info
-			deliver = {MSG_MAIL,"I have some mail for you",0,0};
-		newmail(&deliver);
-		mustgetmail = -1;
-	}
-}
-
-/*ARGSUSED*/
-void readmail(struct obj *otmp) {
-    static char *junk[] = {
-    "Please disregard previous letter.",
-    "Welcome to NetHack.",
-#ifdef AMIGA
-    "Only Amiga makes it possible.",
-    "CATS have all the answers.",
-#endif
-    "Report bugs to <devteam@nethack.org>.",
-    "Invitation: Visit the NetHack web site at http://www.nethack.org!"
-    };
-
-    if (Blind) {
-	pline("Unfortunately you cannot see what it says.");
-    } else
-	pline("It reads:  \"%s\"", junk[rn2(SIZE(junk))]);
-
-}
-
-# endif /* !UNIX && !VMS && !LAN_MAIL */
-
-# ifdef UNIX
-
 void ckmailstatus() {
 	if(!mailbox || u.uswallow || !flags.biff
 #  ifdef MAILCKFREQ
@@ -498,8 +447,6 @@ void readmail(struct obj *otmp) {
 	   window where we do not see new mail */
 	getmailstatus();
 }
-
-# endif /* UNIX */
 
 # ifdef VMS
 

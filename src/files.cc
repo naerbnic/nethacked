@@ -34,13 +34,11 @@ const
 extern int errno;
 #endif
 
-#if defined(UNIX) && defined(QT_GRAPHICS)
+#if defined(QT_GRAPHICS)
 #include <dirent.h>
 #endif
 
-#if defined(UNIX) || defined(VMS)
 #include <signal.h>
-#endif
 
 #if defined(MSDOS) || defined(OS2) || defined(TOS) || defined(WIN32)
 # ifndef GNUDOS
@@ -76,19 +74,7 @@ char lock[PL_NSIZ+25];		/* long enough for username+-+name+.99 */
 # endif
 #endif
 
-#if defined(UNIX) || defined(__BEOS__)
 #define SAVESIZE	(PL_NSIZ + 13)	/* save/99999player.e */
-#else
-# ifdef VMS
-#define SAVESIZE	(PL_NSIZ + 22)	/* [.save]<uid>player.e;1 */
-# else
-#  if defined(WIN32)
-#define SAVESIZE	(PL_NSIZ + 40)	/* username-player.NetHack-saved-game */
-#  else
-#define SAVESIZE	FILENAME	/* from macconf.h or pcconf.h */
-#  endif
-# endif
-#endif
 
 char SAVEF[SAVESIZE];	/* holds relative path of save file from playground */
 #ifdef MICRO
@@ -489,9 +475,7 @@ void clearlocks() {
 #else
 	register int x;
 
-# if defined(UNIX) || defined(VMS)
 	(void) signal(SIGHUP, SIG_IGN);
-# endif
 	/* can't access maxledgerno() before dungeons are created -dlc */
 	for (x = (n_dgns ? maxledgerno() : 0); x >= 0; x--)
 		delete_levelfile(x);	/* not all levels need be present */
@@ -850,7 +834,7 @@ int restore_saved_game() {
 	return fd;
 }
 
-#if defined(UNIX) && defined(QT_GRAPHICS)
+#if defined(QT_GRAPHICS)
 /*ARGSUSED*/
 static char* plname_from_file(const char* filename) {
 #ifdef STORE_PLNAME_IN_FILE
@@ -874,7 +858,7 @@ static char* plname_from_file(const char* filename) {
 
     return result;
 #else
-# if defined(UNIX) && defined(QT_GRAPHICS)
+# if defined(QT_GRAPHICS)
     /* Name not stored in save file, so we have to extract it from
        the filename, which loses information
        (eg. "/", "_", and "." characters are lost. */
@@ -900,10 +884,10 @@ static char* plname_from_file(const char* filename) {
     }
 #endif
 }
-#endif /* defined(UNIX) && defined(QT_GRAPHICS) */
+#endif /* defined(QT_GRAPHICS) */
 
 char** get_saved_games() {
-#if defined(UNIX) && defined(QT_GRAPHICS)
+#if defined(QT_GRAPHICS)
     int myuid=getuid();
     struct dirent **namelist;
     int n = scandir("save", &namelist, 0, alphasort);;
@@ -1143,7 +1127,6 @@ STATIC_OVL char * make_lockname(const char *filename, char *lockname) {
 # pragma unused(filename,lockname)
 	return (char*)0;
 #else
-# if defined(UNIX) || defined(VMS) || defined(AMIGA) || defined(WIN32) || defined(MSDOS)
 #  ifdef NO_FILE_LINKS
 	Strcpy(lockname, LOCKDIR);
 	Strcat(lockname, "/");
@@ -1161,10 +1144,6 @@ STATIC_OVL char * make_lockname(const char *filename, char *lockname) {
 	Strcat(lockname, "_lock");
 #  endif
 	return lockname;
-# else
-	lockname[0] = '\0';
-	return (char*)0;
-# endif  /* UNIX || VMS || AMIGA || WIN32 || MSDOS */
 #endif
 }
 
@@ -1189,7 +1168,6 @@ boolean lock_file(const char *filename, int whichprefix, int retryct) {
 	lockname = fqname(lockname, LOCKPREFIX, 2);
 #endif
 
-#if defined(UNIX) || defined(VMS)
 # ifdef NO_FILE_LINKS
 	while ((lockfd = open(lockname, O_RDWR|O_CREAT|O_EXCL, 0666)) == -1) {
 # else
@@ -1242,7 +1220,6 @@ boolean lock_file(const char *filename, int whichprefix, int retryct) {
 	    }
 
 	}
-#endif  /* UNIX || VMS */
 
 #if defined(AMIGA) || defined(WIN32) || defined(MSDOS)
 # ifdef AMIGA
@@ -1297,14 +1274,11 @@ void unlock_file(char const* filename) {
 		lockname = fqname(lockname, LOCKPREFIX, 2);
 #endif
 
-#if defined(UNIX) || defined(VMS)
 		if (unlink(lockname) < 0)
 			HUP raw_printf("Can't unlink %s.", lockname);
 # ifdef NO_FILE_LINKS
 		(void) close(lockfd);
 # endif
-
-#endif  /* UNIX || VMS */
 
 #if defined(AMIGA) || defined(WIN32) || defined(MSDOS)
 		if (lockptr) Close(lockptr);
@@ -1322,20 +1296,7 @@ void unlock_file(char const* filename) {
 /* ----------  BEGIN CONFIG FILE HANDLING ----------- */
 
 const char *configfile =
-#ifdef UNIX
 			".nethackrc";
-#else
-# if defined(MAC) || defined(__BEOS__)
-			"NetHack Defaults";
-# else
-#  if defined(MSDOS) || defined(WIN32)
-			"defaults.nh";
-#  else
-			"NetHack.cnf";
-#  endif
-# endif
-#endif
-
 
 #ifdef MSDOS
 /* conflict with speed-dial under windows
@@ -1354,15 +1315,12 @@ const char *backward_compat_configfile = "nethack.cnf";
 
 STATIC_OVL FILE * fopen_config_file(const char *filename) {
 	FILE *fp;
-#if defined(UNIX) || defined(VMS)
 	char	tmp_config[BUFSZ];
 	char *envp;
-#endif
 
 	/* "filename" is an environment variable, so it should hang around */
 	/* if set, it is expected to be a full path name (if relevant) */
 	if (filename) {
-#ifdef UNIX
 		if (access(filename, 4) == -1) {
 			/* 4 is R_OK on newer systems */
 			/* nasty sneaky attempt to read file through
@@ -1375,18 +1333,15 @@ STATIC_OVL FILE * fopen_config_file(const char *filename) {
 			wait_synch();
 			/* fall through to standard names */
 		} else
-#endif
 		if ((fp = fopenp(filename, "r")) != (FILE *)0) {
 		    configfile = filename;
 		    return(fp);
-#if defined(UNIX) || defined(VMS)
 		} else {
 		    /* access() above probably caught most problems for UNIX */
 		    raw_printf("Couldn't open requested config file %s (%d).",
 					filename, errno);
 		    wait_synch();
 		    /* fall through to standard names */
-#endif
 		}
 	}
 
@@ -1905,16 +1860,13 @@ void read_config_file(const char *filename) {
 #ifdef WIZARD
 STATIC_OVL FILE * fopen_wizkit_file() {
 	FILE *fp;
-#if defined(VMS) || defined(UNIX)
 	char	tmp_wizkit[BUFSZ];
-#endif
 	char *envp;
 
 	envp = nh_getenv("WIZKIT");
 	if (envp && *envp) (void) strncpy(wizkit, envp, WIZKIT_MAX - 1);
 	if (!wizkit[0]) return (FILE *)0;
 
-#ifdef UNIX
 	if (access(wizkit, 4) == -1) {
 		/* 4 is R_OK on newer systems */
 		/* nasty sneaky attempt to read file through
@@ -1927,16 +1879,13 @@ STATIC_OVL FILE * fopen_wizkit_file() {
 		wait_synch();
 		/* fall through to standard names */
 	} else
-#endif
 	if ((fp = fopenp(wizkit, "r")) != (FILE *)0) {
 	    return(fp);
-#if defined(UNIX) || defined(VMS)
 	} else {
 	    /* access() above probably caught most problems for UNIX */
 	    raw_printf("Couldn't open requested config file %s (%d).",
 				wizkit, errno);
 	    wait_synch();
-#endif
 	}
 
 #if defined(MICRO) || defined(MAC) || defined(__BEOS__) || defined(WIN32)
@@ -2020,7 +1969,6 @@ void check_recordfile(const char *dir) {
 	const char *fq_record;
 	int fd;
 
-#if defined(UNIX) || defined(VMS)
 	fq_record = fqname(RECORD, SCOREPREFIX, 0);
 	fd = open(fq_record, O_RDWR, 0);
 	if (fd >= 0) {
@@ -2043,7 +1991,6 @@ void check_recordfile(const char *dir) {
 	    raw_printf("Warning: cannot write scoreboard file %s", fq_record);
 	    wait_synch();
 	}
-#endif  /* !UNIX && !VMS */
 #if defined(MICRO) || defined(WIN32)
 	char tmp[PATHLEN];
 

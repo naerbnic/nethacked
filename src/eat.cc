@@ -1354,7 +1354,6 @@ STATIC_OVL void fprefx(struct obj *otmp) {
 			  Hallucination ? "primo" : "yummy",
 			  singular(otmp, xname));
 		else
-#ifdef UNIX
 		if (otmp->otyp == APPLE || otmp->otyp == PEAR) {
 		    if (!Hallucination) pline("Core dumped.");
 		    else {
@@ -1367,7 +1366,6 @@ STATIC_OVL void fprefx(struct obj *otmp) {
 			else pline("Yo' mama -- core dumped.");
 		    }
 		} else
-#endif
 #ifdef MAC	/* KMH -- Why should Unix have all the fun? */
 		if (otmp->otyp == APPLE) {
 			pline("Delicious!  Must be a Macintosh!");

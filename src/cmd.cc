@@ -153,9 +153,7 @@ STATIC_PTR boolean NDECL(minimal_enlightenment);
 #ifdef OVLB
 STATIC_DCL void FDECL(enlght_line, (const char *,const char *,const char *));
 STATIC_DCL char *FDECL(enlght_combatinc, (const char *,int,int,char *));
-#ifdef UNIX
 static void NDECL(end_of_input);
-#endif
 #endif /* OVLB */
 
 static const char* readchar_queue="";
@@ -2673,7 +2671,6 @@ STATIC_OVL char * parse() {
 #endif /* OVL0 */
 #ifdef OVLB
 
-#ifdef UNIX
 static
 void end_of_input() {
 #ifndef NOSAVEONHANGUP
@@ -2684,7 +2681,6 @@ void end_of_input() {
 	clearlocks();
 	terminate(EXIT_SUCCESS);
 }
-#endif
 
 #endif /* OVLB */
 #ifdef OVL0
@@ -2702,7 +2698,6 @@ char readchar() {
 	    sym = Getchar();
 #endif
 
-#ifdef UNIX
 # ifdef NR_OF_EOFS
 	if (sym == EOF) {
 	    register int cnt = NR_OF_EOFS;
@@ -2719,7 +2714,6 @@ char readchar() {
 # endif /* NR_OF_EOFS */
 	if (sym == EOF)
 	    end_of_input();
-#endif /* UNIX */
 
 	if(sym == 0) {
 	    /* click event */

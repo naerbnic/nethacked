@@ -417,11 +417,7 @@ void setrandom() {
 		srandom((int) time((time_t *)0));
 #  endif
 # else
-#  ifdef UNIX	/* system srand48() */
 	srand48((long) time((time_t *)0));
-#  else		/* poor quality system routine */
-	srand((int) time((time_t *)0));
-#  endif
 # endif
 #endif
 }

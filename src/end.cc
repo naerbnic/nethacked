@@ -32,9 +32,7 @@ static struct val_list { struct valuable_data *list; int size; } valuables[] = {
 
 #ifndef NO_SIGNAL
 STATIC_PTR void FDECL(done_intr, (int));
-# if defined(UNIX) || defined(VMS) || defined (__EMX__)
 static void FDECL(done_hangup, (int));
-# endif
 #endif
 STATIC_DCL void FDECL(disclose,(int,BOOLEAN_P));
 STATIC_DCL void FDECL(get_valuables, (struct obj *));
@@ -196,7 +194,7 @@ int done2() {
 		}
 		return 0;
 	}
-#if defined(WIZARD) && (defined(UNIX) || defined(VMS) || defined(LATTICE))
+#if defined(WIZARD)
 	if(wizard) {
 	    int c;
 # ifdef VMS
@@ -227,13 +225,10 @@ int done2() {
 STATIC_PTR void done_intr(int sig_unused) {
 	done_stopprint++;
 	(void) signal(SIGINT, SIG_IGN);
-# if defined(UNIX) || defined(VMS)
 	(void) signal(SIGQUIT, SIG_IGN);
-# endif
 	return;
 }
 
-# if defined(UNIX) || defined(VMS) || defined(__EMX__)
 /* signal() handler */
 static void done_hangup(int sig) {
 	program_state.done_hup++;
@@ -241,7 +236,6 @@ static void done_hangup(int sig) {
 	done_intr(sig);
 	return;
 }
-# endif
 #endif /* NO_SIGNAL */
 
 void done_in_by(register struct monst *mtmp) {
@@ -369,7 +363,7 @@ panic VA_DECL(const char *, str)
 #ifdef WIN32
 	interject(INTERJECT_PANIC);
 #endif
-#if defined(WIZARD) && (defined(UNIX) || defined(VMS) || defined(LATTICE) || defined(WIN32))
+#if defined(WIZARD)
 	if (wizard)
 	    NH_abort();	/* generate core dump */
 #endif
@@ -750,10 +744,8 @@ die:
 	if (have_windows) wait_synch();	/* flush screen output */
 #ifndef NO_SIGNAL
 	(void) signal(SIGINT, (SIG_RET_TYPE) done_intr);
-# if defined(UNIX) || defined(VMS) || defined (__EMX__)
 	(void) signal(SIGQUIT, (SIG_RET_TYPE) done_intr);
 	(void) signal(SIGHUP, (SIG_RET_TYPE) done_hangup);
-# endif
 #endif /* NO_SIGNAL */
 
 	bones_ok = (how < GENOCIDED) && can_make_bones();
