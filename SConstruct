@@ -1,4 +1,4 @@
-env = Environment
+env = Environment()
 Export(['env'])
 
 baselib = SConscript([
@@ -13,6 +13,13 @@ Export(['entitylib'])
 
 SConscript([
     'src/SConscript',
+])
+
+lev_comp, dgn_comp, makedefs = SConscript([
     'util/SConscript',
 ])
 
+Export(['lev_comp', 'dgn_comp', 'makedefs'])
+SConscript([
+    'dat/SConscript',
+])
