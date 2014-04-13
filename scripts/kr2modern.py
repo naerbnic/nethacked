@@ -1,7 +1,7 @@
 import re
 import sys
 
-fn_line_re = re.compile(r'^(?P<name>[a-zA-Z_][a-zA-Z0-9_]*\s*)\((?P<args>.*)\)\s*$')
+fn_line_re = re.compile(r'^(?P<name>[a-zA-Z_][a-zA-Z0-9_]*\s*)\((?P<args>.*)\)\s*(?P<comment>.*)$')
 
 def main(args):
     for file_name in args[1:]:

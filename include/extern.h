@@ -568,7 +568,7 @@ E void VDECL(panic, (const char *,...)) PRINTF_F(1,2);
 E void FDECL(done, (int));
 E void FDECL(container_contents, (struct obj *,BOOLEAN_P,BOOLEAN_P));
 #ifdef DUMP_LOG
-E void FDECL(dump, (char *, char *));
+E void FDECL(dump, (char const*, char const*));
 E void FDECL(do_containerconts, (struct obj *,BOOLEAN_P,BOOLEAN_P,BOOLEAN_P,BOOLEAN_P));
 #endif
 E void FDECL(terminate, (int));

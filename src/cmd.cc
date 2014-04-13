@@ -1112,10 +1112,10 @@ void dump_enlightenment(int final) {
 	     "overtaxed",
 	     "overloaded"
 	};
-	char *youwere = "  You were ";
-	char *youhave = "  You have ";
-	char *youhad  = "  You had ";
-	char *youcould = "  You could ";
+	char const* youwere = "  You were ";
+	char const* youhave = "  You have ";
+	char const* youhad  = "  You had ";
+	char const* youcould = "  You could ";
 
 	dump("", "Final attributes");
 
@@ -1941,7 +1941,7 @@ void add_debug_extended_commands() {
 }
 
 
-static const char template[] = "%-18s %4ld  %6ld";
+static const char templ_str[] = "%-18s %4ld  %6ld";
 static const char count_str[] = "                   count  bytes";
 static const char separator[] = "------------------ -----  ------";
 
@@ -1968,7 +1968,7 @@ STATIC_OVL void obj_chain(winid win, const char *src, struct obj *chain, long *t
 	count_obj(chain, &count, &size, TRUE, FALSE);
 	*total_count += count;
 	*total_size += size;
-	Sprintf(buf, template, src, count, size);
+	Sprintf(buf, templ_str, src, count, size);
 	putstr(win, 0, buf);
 }
 
@@ -1981,7 +1981,7 @@ STATIC_OVL void mon_invent_chain(winid win, const char *src, struct monst *chain
 	    count_obj(mon->minvent, &count, &size, TRUE, FALSE);
 	*total_count += count;
 	*total_size += size;
-	Sprintf(buf, template, src, count, size);
+	Sprintf(buf, templ_str, src, count, size);
 	putstr(win, 0, buf);
 }
 
@@ -2002,7 +2002,7 @@ STATIC_OVL void contained(winid win, const char *src, long *total_count, long *t
 
 	*total_count += count; *total_size += size;
 
-	Sprintf(buf, template, src, count, size);
+	Sprintf(buf, templ_str, src, count, size);
 	putstr(win, 0, buf);
 }
 
@@ -2017,7 +2017,7 @@ STATIC_OVL void mon_chain(winid win, const char *src, struct monst *chain, long 
 	}
 	*total_count += count;
 	*total_size += size;
-	Sprintf(buf, template, src, count, size);
+	Sprintf(buf, templ_str, src, count, size);
 	putstr(win, 0, buf);
 }
 
@@ -2053,7 +2053,7 @@ static int wiz_show_stats() {
 				&total_obj_count, &total_obj_size);
 
 	putstr(win, 0, separator);
-	Sprintf(buf, template, "Total", total_obj_count, total_obj_size);
+	Sprintf(buf, templ_str, "Total", total_obj_count, total_obj_size);
 	putstr(win, 0, buf);
 
 	putstr(win, 0, "");
@@ -2068,7 +2068,7 @@ static int wiz_show_stats() {
 				&total_mon_count, &total_mon_size);
 
 	putstr(win, 0, separator);
-	Sprintf(buf, template, "Total", total_mon_count, total_mon_size);
+	Sprintf(buf, templ_str, "Total", total_mon_count, total_mon_size);
 	putstr(win, 0, buf);
 
 #if defined(__BORLANDC__) && !defined(_WIN32)
@@ -2316,10 +2316,8 @@ void rhack(register char *cmd) {
 	return;
 }
 
-int
-xytod(x, y)	/* convert an x,y pair into a direction code */
-schar x, y;
-{
+/* convert an x,y pair into a direction code */
+int xytod(schar x, schar y) {
 	register int dd;
 
 	for(dd = 0; dd < 8; dd++)
@@ -2368,11 +2366,11 @@ char sym;
  *
  * Returns non-zero if coordinates in cc are valid.
  */
-int get_adjacent_loc(prompt,emsg,x,y,cc)
-const char *prompt, *emsg;
-xchar x,y;
-coord *cc;
-{
+int get_adjacent_loc(
+    char const* prompt,
+    char const* emsg,
+    xchar x, xchar y,
+    coord *cc) {
 	xchar new_x, new_y;
 	if (!getdir(prompt)) {
 		pline(Never_mind);

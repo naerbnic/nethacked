@@ -140,9 +140,7 @@ dump_exit ()
     fclose (dump_fp);
 }
 
-void dump (pre, str)
-     char *pre, *str;
-{
+void dump (char const* pre, char const* str) {
   if (dump_fp)
     fprintf (dump_fp, "%s%s\n", pre, str);
 }
