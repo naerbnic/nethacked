@@ -2,6 +2,8 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include <string.h>
+
 #define NEED_VARARGS	/* comment line for pre-compiled headers */
 
 #include "hack.h"
@@ -145,10 +147,8 @@ void dump (char const* pre, char const* str) {
 #endif  /* DUMP_LOG */
 
 /*ARGSUSED*/
-void
-done1(sig_unused)   /* called as signal() handler, so sent at least one arg */
-int sig_unused;
-{
+/* called as signal() handler, so sent at least one arg */
+void done1(int sig_unused) {
 #ifndef NO_SIGNAL
 	(void) signal(SIGINT,SIG_IGN);
 #endif
@@ -223,10 +223,8 @@ int done2() {
 
 #ifndef NO_SIGNAL
 /*ARGSUSED*/
-STATIC_PTR void
-done_intr(sig_unused) /* called as signal() handler, so sent at least one arg */
-int sig_unused;
-{
+/* called as signal() handler, so sent at least one arg */
+STATIC_PTR void done_intr(int sig_unused) {
 	done_stopprint++;
 	(void) signal(SIGINT, SIG_IGN);
 # if defined(UNIX) || defined(VMS)
@@ -236,10 +234,8 @@ int sig_unused;
 }
 
 # if defined(UNIX) || defined(VMS) || defined(__EMX__)
-static void
-done_hangup(sig)	/* signal() handler */
-int sig;
-{
+/* signal() handler */
+static void done_hangup(int sig) {
 	program_state.done_hup++;
 	(void)signal(SIGHUP, SIG_IGN);
 	done_intr(sig);
@@ -1078,18 +1074,16 @@ die:
 }
 
 
-void
-container_contents(list, identified, all_containers)
-struct obj *list;
-boolean identified, all_containers;
+void container_contents(
+    struct obj* list, boolean identified, boolean all_containers)
 #ifdef DUMP_LOG
 {
 	do_containerconts(list, identified, all_containers, FALSE, TRUE);
 }
 
-void do_containerconts(list, identified, all_containers, want_dump, want_disp)
-struct obj *list;
-boolean identified, all_containers, want_dump, want_disp;
+void do_containerconts(
+    struct obj* list, boolean identified, boolean all_containers,
+    boolean want_dump, boolean want_disp)
 #endif
 /* The original container_contents function */
 {
@@ -1224,20 +1218,14 @@ void terminate(int status) {
 	nethack_exit(status);
 }
 
-void		/* showborn patch */
-list_vanquished(defquery, ask)
-char defquery;
-boolean ask;
+/* showborn patch */
+void list_vanquished(char defquery, boolean ask)
 #ifdef DUMP_LOG
 {
   do_vanquished(defquery, ask, FALSE);
 }
 
-void
-do_vanquished(defquery, ask, want_dump)
-int defquery;
-boolean ask;
-boolean want_dump;
+void do_vanquished(int defquery, boolean ask, boolean want_dump)
 #endif
 {
     register int i, lev;
@@ -1346,16 +1334,9 @@ int num_genocides() {
 }
 
 #ifdef DUMP_LOG
-STATIC_OVL void
-list_genocided(defquery, ask, want_dump)
-int defquery;
-boolean ask;
-boolean want_dump;
+STATIC_OVL void list_genocided(int defquery, boolean ask, boolean want_dump)
 #else
-STATIC_OVL void
-list_genocided(defquery, ask)
-char defquery;
-boolean ask;
+STATIC_OVL void list_genocided(char defquery, boolean ask)
 #endif
 {
     register int i;

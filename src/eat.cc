@@ -2,6 +2,8 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include <string.h>
+
 #include "hack.h"
 /* #define DEBUG */	/* uncomment to enable new eat code debugging */
 
@@ -212,10 +214,8 @@ STATIC_OVL const char * food_xname(struct obj *food, boolean the_pfx) {
  * Amended by 3.  06/12/89: if not hard, sometimes choke anyway, to keep risk.
  *		  11/10/89: if hard, rarely vomit anyway, for slim chance.
  */
-STATIC_OVL void
-choke(food)	/* To a full belly all food is bad. (It.) */
-	register struct obj *food;
-{
+/* To a full belly all food is bad. (It.) */
+STATIC_OVL void choke(struct obj* food) {
 	/* only happens if you were satiated */
 	if (u.uhs != SATIATED) {
 		if (!food || food->otyp != AMULET_OF_STRANGULATION)
@@ -1595,10 +1595,8 @@ STATIC_OVL const char * foodword(register struct obj *otmp) {
 	return foodwords[objects[otmp->otyp].oc_material];
 }
 
-STATIC_OVL void
-fpostfx(otmp)		/* called after consuming (non-corpse) food */
-register struct obj *otmp;
-{
+/* called after consuming (non-corpse) food */
+STATIC_OVL void fpostfx(struct obj* otmp) {
 	switch(otmp->otyp) {
 	    case SPRIG_OF_WOLFSBANE:
 		if (u.ulycn >= LOW_PM || is_were(youmonst.data))
@@ -2091,11 +2089,8 @@ void morehungry(register int num) {
 	newuhs(TRUE);
 }
 
-
-void
-lesshungry(num)	/* called after eating (and after drinking fruit juice) */
-register int num;
-{
+/* called after eating (and after drinking fruit juice) */
+void lesshungry(int num) {
 	/* See comments in newuhs() for discussion on force_save_hs */
 	boolean iseating = (occupation == eatfood) || force_save_hs;
 #ifdef DEBUG
@@ -2172,10 +2167,8 @@ void sync_hunger() {
 }
 #endif
 
-void
-newuhs(incr)		/* compute and comment on your (new?) hunger status */
-boolean incr;
-{
+/* compute and comment on your (new?) hunger status */
+void newuhs(boolean incr) {
 	unsigned newhs;
 	static unsigned save_hs;
 	static boolean saved_hs = FALSE;
