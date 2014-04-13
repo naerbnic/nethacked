@@ -13,24 +13,7 @@
 #include "config.h"
 #include "dlb.h"
 
-/* Macintosh-specific code */
-#if defined(__APPLE__) && defined(__MACH__)
-  /* MacOS X has Unix-style files and processes */
-# undef MAC
-#endif
-#ifdef MAC
-# if defined(__SC__) || defined(__MRC__)
-#  define MPWTOOL
-#include <CursorCtl.h>
-# else
-   /* put dungeon file in library location */
-#  define PREFIX ":lib:"
-# endif
-#endif
-
-#ifndef MPWTOOL
 # define SpinCursor(x)
-#endif
 
 #define MAX_ERRORS	25
 
@@ -59,15 +42,6 @@ int main(int argc, char **argv) {
 	FILE	*fin, *fout;
 	int	i, len;
 	boolean errors_encountered = FALSE;
-#if defined(MAC) && (defined(THINK_C) || defined(__MWERKS__))
-	char	*mark;
-	static char *mac_argv[] = {	"dgn_comp",	/* dummy argv[0] */
-				":dat:dungeon.pdf"
-				};
-
-	argc = SIZE(mac_argv);
-	argv = mac_argv;
-#endif
 
 	Strcpy(infile, "(stdin)");
 	fin = stdin;
@@ -94,13 +68,6 @@ int main(int argc, char **argv) {
 		}
 
 		/* build output file name */
-#if defined(MAC) && (defined(THINK_C) || defined(__MWERKS__))
-		/* extract basename from path to infile */
-		mark = strrchr(infile, ':');
-		strcpy(basename, mark ? mark+1 : infile);
-		mark = strchr(basename, '.');
-		if (mark) *mark = '\0';
-#else
 		/* Use the whole name - strip off the last 3 or 4 chars. */
 
 #ifdef VMS	/* avoid possible interaction with logical name */
@@ -108,7 +75,6 @@ int main(int argc, char **argv) {
 #endif
 		(void) strncpy(basename, infile, len);
 		basename[len] = '\0';
-#endif
 
 		outfile[0] = '\0';
 #ifdef PREFIX

@@ -65,32 +65,11 @@ static	const char	SCCS_Id[] = "@(#)makedefs.cc\t3.4\t2002/02/03";
 # define DATA_TEMPLATE		"NH:slib/%s"
 # define DATA_IN_TEMPLATE	"NH:dat/%s"
 #else /* not AMIGA */
-# if defined(MAC) && !defined(__MACH__)
-    /* MacOS 9 or earlier */
-#   define INCLUDE_TEMPLATE	":include:%s"
-#   define SOURCE_TEMPLATE	":src:%s"
-#   define DGN_TEMPLATE		":dat:%s"  /* where dungeon.pdf file goes */
-#  if __SC__ || __MRC__
-#   define DATA_TEMPLATE	":Dungeon:%s"
-#  else
-#   define DATA_TEMPLATE	":lib:%s"
-#  endif /* __SC__ || __MRC__ */
-#   define DATA_IN_TEMPLATE	":dat:%s"
-# else /* neither AMIGA nor MAC */
-#  ifdef OS2
-#   define INCLUDE_TEMPLATE	"..\\include\\%s"
-#   define SOURCE_TEMPLATE	"..\\src\\%s"
-#   define DGN_TEMPLATE		"..\\dat\\%s"  /* where dungeon.pdf file goes */
-#   define DATA_TEMPLATE	"..\\dat\\%s"
-#   define DATA_IN_TEMPLATE	"..\\dat\\%s"
-#  else /* not AMIGA, MAC, or OS2 */
 #   define INCLUDE_TEMPLATE	"../include/%s"
 #   define SOURCE_TEMPLATE	"../src/%s"
 #   define DGN_TEMPLATE		"../dat/%s"  /* where dungeon.pdf file goes */
 #   define DATA_TEMPLATE	"../dat/%s"
 #   define DATA_IN_TEMPLATE	"../dat/%s"
-#  endif /* else !OS2 */
-# endif /* else !MAC */
 #endif	/* else !AMIGA */
 
 static const char
@@ -688,9 +667,6 @@ static const char *build_opts[] = {
 		"screen clipping",
 #endif
 #ifdef NO_TERMS
-# ifdef MAC
-		"screen control via mactty",
-# endif
 # ifdef SCREEN_BIOS
 		"screen control via BIOS",
 # endif
@@ -787,9 +763,6 @@ static const char *window_opts[] = {
 #endif
 #ifdef GNOME_GRAPHICS
 		"Gnome",
-#endif
-#ifdef MAC
-		"Mac",
 #endif
 #ifdef AMIGA_INTUITION
 		"Amiga Intuition",
@@ -1133,17 +1106,6 @@ void do_oracles() {
 		if (!(ok = (fpos = ftell(ofp)) >= 0)) break;
 		if (!(ok = (fseek(ofp, fpos, SEEK_SET) >= 0))) break;
 		if (!(ok = (fscanf(ofp, "%5lx", &offset) == 1))) break;
-#ifdef MAC
-# ifdef __MWERKS__
-		/*
-		MetroWerks CodeWarrior Pro 1's (AKA CW12) version of MSL
-		(ANSI C Libraries) needs this rewind or else the fprintf
-		stops working.  This may also be true for CW11, but has
-		never been checked.
-		*/
-		rewind(ofp);
-# endif
-#endif
 		if (!(ok = (fseek(ofp, fpos, SEEK_SET) >= 0))) break;
 		if (!(ok = (fprintf(ofp, "%05lx\n", offset + txt_offset) >= 0)))
 		    break;
