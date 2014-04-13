@@ -26,6 +26,8 @@
  *			called here chasms.
  */
 
+#include <string.h>
+
 #include "hack.h"
 
 STATIC_DCL void FDECL(awaken_monsters,(int));

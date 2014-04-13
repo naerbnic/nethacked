@@ -10,6 +10,8 @@
  * player polymorphed into a light-emitting monster.
  */
 
+#include <string.h>
+
 #include "hack.h"
 
 #ifdef OVLB

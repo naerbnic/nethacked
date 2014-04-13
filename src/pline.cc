@@ -2,6 +2,8 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include <string.h>
+
 #define NEED_VARARGS /* Uses ... */	/* comment line for pre-compiled headers */
 #include "hack.h"
 #include "epri.h"
@@ -41,7 +43,7 @@ void msgpline_free() {
     pline_msg = NULL;
 }
 
-int msgpline_type(char *msg) {
+int msgpline_type(char const* msg) {
     struct _plinemsg *tmp = pline_msg;
     while (tmp) {
 	if (pmatch(tmp->pattern, msg)) return tmp->msgtype;

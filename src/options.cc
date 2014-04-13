@@ -2,6 +2,8 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include <string.h>
+
 #ifdef OPTION_LISTS_ONLY	/* (AMIGA) external program for opt lists */
 #include "config.h"
 #include "objclass.h"
@@ -2465,12 +2467,16 @@ static char fmtstr_doset_add_menu[] = "%s%-15s [%s]   ";
 static char fmtstr_doset_add_menu_tab[] = "%s\t[%s]";
 
 STATIC_OVL void
-doset_add_menu(win, option, indexoffset)
-    winid win;			/* window to add to */
-    const char *option;		/* option name */
-    int indexoffset;		/* value to add to index in compopt[], or zero
-				   if option cannot be changed */
-{
+doset_add_menu(
+    /* window to add to */
+    winid win, 
+
+    /* option name */
+    char const* option, 
+
+    /* value to add to index in compopt[], or zero
+       if option cannot be changed */
+    int indexoffset) {
     const char *value = "unknown";		/* current value */
     char buf[BUFSZ], buf2[BUFSZ];
     anything any;

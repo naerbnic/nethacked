@@ -6,6 +6,8 @@
  * Monster item usage routines.
  */
 
+#include <string.h>
+
 #include "hack.h"
 #include "edog.h"
 
@@ -1138,14 +1140,19 @@ int mbhitm(register struct monst *mtmp, register struct obj *otmp) {
  * zapping you, so we need a special function for it.  (Unless someone wants
  * to merge the two functions...)
  */
-STATIC_OVL void
-mbhit(mon,range,fhitm,fhito,obj)
-struct monst *mon;			/* monster shooting the wand */
-register int range;			/* direction and range */
-int FDECL((*fhitm),(MONST_P,OBJ_P));
-int FDECL((*fhito),(OBJ_P,OBJ_P));	/* fns called when mon/obj hit */
-struct obj *obj;			/* 2nd arg to fhitm/fhito */
-{
+STATIC_OVL void mbhit(
+    /* monster shooting the wand */
+    struct monst* mon,
+
+    /* direction and range */
+    int range,
+
+    /* fns called when mon/obj hit */
+    int (*fhitm)(MONST_P, OBJ_P),
+    int (*fhito)(OBJ_P, OBJ_P),
+
+    /* 2nd arg to fhitm/fhito */
+    struct obj* obj) {
 	register struct monst *mtmp;
 	register struct obj *otmp;
 	register uchar typ;

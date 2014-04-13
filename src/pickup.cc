@@ -6,6 +6,8 @@
  *	Contains code for picking objects up, and container use.
  */
 
+#include <string.h>
+
 #include "hack.h"
 
 STATIC_DCL void FDECL(simple_look, (struct obj *,BOOLEAN_P));
@@ -84,21 +86,20 @@ STATIC_OVL void simple_look(struct obj *otmp, boolean here) {
 }
 
 #ifndef GOLDOBJ
-int
-collect_obj_classes(ilets, otmp, here, incl_gold, filter, itemcount)
-char ilets[];
-register struct obj *otmp;
-boolean here, incl_gold;
-boolean FDECL((*filter),(OBJ_P));
-int *itemcount;
+int collect_obj_classes(
+    char ilets[],
+    struct obj* otmp, 
+    boolean here, 
+    boolean incl_gold, 
+    boolean (*filter)(OBJ_P),
+    int* itemcount)
 #else
-int
-collect_obj_classes(ilets, otmp, here, filter, itemcount)
-char ilets[];
-register struct obj *otmp;
-boolean here;
-boolean FDECL((*filter),(OBJ_P));
-int *itemcount;
+int collect_obj_classes(
+    char ilets[],
+    struct obj* otmp, 
+    boolean here, 
+    boolean (*filter)(OBJ_P),
+    int* itemcount)
 #endif
 {
 	register int iletct = 0;
@@ -134,25 +135,24 @@ int *itemcount;
  *	    (ie, treated as if it had just been "?a").
  */
 #ifndef GOLDOBJ
-STATIC_OVL boolean
-query_classes(oclasses, one_at_a_time, everything, action, objs,
-	      here, incl_gold, menu_on_demand)
-char oclasses[];
-boolean *one_at_a_time, *everything;
-const char *action;
-struct obj *objs;
-boolean here, incl_gold;
-int *menu_on_demand;
+STATIC_OVL boolean query_classes(
+    char oclasses[], 
+    boolean* one_at_a_time,
+    boolean* everything, 
+    char const* action, 
+    struct obj* objs,
+    boolean here, 
+    boolean incl_gold, 
+    int* menu_on_demand)
 #else
-STATIC_OVL boolean
-query_classes(oclasses, one_at_a_time, everything, action, objs,
-	      here, menu_on_demand)
-char oclasses[];
-boolean *one_at_a_time, *everything;
-const char *action;
-struct obj *objs;
-boolean here;
-int *menu_on_demand;
+STATIC_OVL boolean query_classes(
+    char oclasses[],
+    boolean* one_at_a_time,
+    boolean* everything,
+    char const* action,
+    struct obj* objs,
+    boolean here,
+    int* menu_on_demand)
 #endif
 {
 	char ilets[20], inbuf[BUFSZ];
@@ -642,14 +642,19 @@ STATIC_OVL int autopick(struct obj *olist, int follow, menu_item **pick_list) {
  *	SIGNAL_NOMENU	  - Return -1 rather than 0 if nothing passes "allow".
  */
 int
-query_objlist(qstr, olist, qflags, pick_list, how, allow)
-const char *qstr;		/* query string */
-struct obj *olist;		/* the list to pick from */
-int qflags;			/* options to control the query */
-menu_item **pick_list;		/* return list of items picked */
-int how;			/* type of query */
-boolean FDECL((*allow), (OBJ_P));/* allow function */
-{
+query_objlist(
+    /* query string */
+    char const* qstr,
+    /* the list to pick from */
+    struct obj* olist,
+    /* options to control the query */
+    int qflags,
+    /* return list of items picked */
+    menu_item** pick_list,
+    /* type of query */
+    int how,
+    /* allow function */
+    boolean (*allow)(OBJ_P)) {
 #ifdef SORTLOOT
 	int i, j;
 #endif

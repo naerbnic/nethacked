@@ -2,6 +2,8 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include <string.h>
+
 #include "hack.h"
 
 /* "an uncursed greased partly eaten guardian naga hatchling [corpse]" */
@@ -183,11 +185,7 @@ boolean obj_is_pname(register struct obj *obj) {
  * frequently used, it'd probably be better to pass a parameter to xname()
  * or doname() instead.
  */
-char *
-distant_name(obj, func)
-register struct obj *obj;
-char *FDECL((*func), (OBJ_P));
-{
+char * distant_name(struct obj* obj, char* (*func)(OBJ_P)) {
 	char *str;
 
 	long save_Blinded = Blinded;
@@ -215,17 +213,13 @@ char * fruitname(boolean juice) {
 #endif /* OVLB */
 #ifdef OVL1
 
-char *
-xname(obj)
-register struct obj *obj;
+char *xname(struct obj* obj)
 #ifdef SORTLOOT
 {
 	return xname2(obj, FALSE);
 }
-char *
-xname2(obj, ignore_oquan)
-register struct obj *obj;
-boolean ignore_oquan;
+
+char * xname2(struct obj* obj, boolean ignore_oquan)
 #endif
 {
 	register char *buf;
@@ -877,10 +871,7 @@ char * killer_xname(struct obj *obj) {
  * Used if only one of a collection of objects is named (e.g. in eat.c).
  */
 const char *
-singular(otmp, func)
-register struct obj *otmp;
-char *FDECL((*func), (OBJ_P));
-{
+singular(struct obj* otmp, char* (*func)(OBJ_P)) {
 	long savequan;
 	char *nam;
 
