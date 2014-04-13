@@ -2,6 +2,8 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include <string.h>
+
 #include "hack.h"
 #include "sp_lev.h"
 #include "lev.h"	/* save & restore info */
@@ -69,11 +71,8 @@ STATIC_OVL boolean is_solid(int x, int y) {
  *		W x W		This would extend a spine from x down.
  *		. W W
  */
-STATIC_OVL int
-extend_spine(locale, wall_there, dx, dy)
-    int locale[3][3];
-    int wall_there, dx, dy;
-{
+STATIC_OVL int extend_spine(
+    int locale[3][3], int wall_there, int dx, int dy) {
     int spine, nx, ny;
 
     nx = 1 + dx;
@@ -705,11 +704,9 @@ STATIC_OVL void move(register int *x, register int *y, register int dir) {
 	}
 }
 
-void
-mazexy(cc)	/* find random point in generated corridors,
+  /* find random point in generated corridors,
 		   so we don't create items in moats, bunkers, or walls */
-	coord	*cc;
-{
+void mazexy(coord* cc) {
 	int cpt=0;
 
 	do {
@@ -1081,9 +1078,7 @@ void restore_waterlevel(register int fd) {
 	was_waterlevel = TRUE;
 }
 
-const char *waterbody_name(x, y)
-xchar x,y;
-{
+const char *waterbody_name(xchar x, xchar y) {
 	register struct rm *lev;
 	schar ltyp;
 

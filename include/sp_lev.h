@@ -53,13 +53,13 @@ typedef struct {
 
 typedef struct {
 	xchar x, y, chance, type;
-} trap;
+} trap_info;
 
 typedef struct {
 	Str_or_Len name, appear_as;
 	short id;
 	aligntyp align;
-	xchar x, y, chance, class, appear;
+	xchar x, y, chance, class_id, appear;
 	schar peaceful, asleep;
 } monster;
 
@@ -67,7 +67,7 @@ typedef struct {
 	Str_or_Len name;
 	int   corpsenm;
 	short id, spe;
-	xchar x, y, chance, class, containment;
+	xchar x, y, chance, class_id, containment;
 	schar curse_state;
 } object;
 

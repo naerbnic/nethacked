@@ -721,11 +721,8 @@ boolean spell_would_be_useless(struct monst *mtmp, unsigned int adtyp, int spell
 /* convert 1..10 to 0..9; add 10 for second group (spell casting) */
 #define ad_to_typ(k) (10 + (int)k - 1)
 
-int
-buzzmu(mtmp, mattk)		/* monster uses spell (ranged) */
-	register struct monst *mtmp;
-	register struct attack  *mattk;
-{
+/* monster uses spell (ranged) */
+int buzzmu(struct monst* mtmp, struct attack* mattk) {
 	/* don't print constant stream of curse messages for 'normal'
 	   spellcasting monsters at range */
 	if (mattk->adtyp > AD_SPC2)

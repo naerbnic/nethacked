@@ -2,6 +2,8 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include <string.h>
+
 #include "hack.h"
 #include "epri.h"
 #include "emin.h"
@@ -1252,24 +1254,24 @@ void reset_rndmonst(int mndx) {
  *	in that class can be made.
  */
 
-struct permonst * mkclass(char class, int spc) {
+struct permonst * mkclass(char class_id, int spc) {
 	register int	first, last, num = 0;
 	int maxmlev, mask = (G_NOGEN | G_UNIQ) & ~spc;
 
 	maxmlev = level_difficulty() >> 1;
-	if(class < 1 || class >= MAXMCLASSES) {
-	    impossible("mkclass called with bad class!");
+	if(class_id < 1 || class_id >= MAXMCLASSES) {
+	    impossible("mkclass called with bad class_id!");
 	    return((struct permonst *) 0);
 	}
-/*	Assumption #1:	monsters of a given class are contiguous in the
+/*	Assumption #1:	monsters of a given class_id are contiguous in the
  *			mons[] array.
  */
 	for (first = LOW_PM; first < SPECIAL_PM; first++)
-	    if (mons[first].mlet == class) break;
+	    if (mons[first].mlet == class_id) break;
 	if (first == SPECIAL_PM) return (struct permonst *) 0;
 
 	for (last = first;
-		last < SPECIAL_PM && mons[last].mlet == class; last++)
+		last < SPECIAL_PM && mons[last].mlet == class_id; last++)
 	    if (!(mvitals[last].mvflags & G_GONE) && !(mons[last].geno & mask)
 					&& !is_placeholder(&mons[last])) {
 		/* consider it */
@@ -1280,7 +1282,7 @@ struct permonst * mkclass(char class, int spc) {
 
 	if(!num) return((struct permonst *) 0);
 
-/*	Assumption #2:	monsters of a given class are presented in ascending
+/*	Assumption #2:	monsters of a given class_id are presented in ascending
  *			order of strength.
  */
 	for(num = rnd(num); num > 0; first++)

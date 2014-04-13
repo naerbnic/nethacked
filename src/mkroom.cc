@@ -13,6 +13,8 @@
  *	rest_rooms() -- restore rooms from file fd
  */
 
+#include <string.h>
+
 #include "hack.h"
 
 #ifdef OVLB
@@ -40,11 +42,8 @@ STATIC_OVL boolean isbig(register struct mkroom *sroom) {
 	return((boolean)( area > 20 ));
 }
 
-void
-mkroom(roomtype)
 /* make and stock a room of a given type */
-int	roomtype;
-{
+void mkroom(int roomtype) {
     if (roomtype >= SHOPBASE)
 	mkshop();	/* someday, we should be able to specify shop type */
     else switch(roomtype) {
@@ -177,11 +176,8 @@ gottype:
 	stock_room(i, sroom);
 }
 
-STATIC_OVL struct mkroom *
-pick_room(strict)
-register boolean strict;
 /* pick an unused room, preferably with only one door */
-{
+STATIC_OVL struct mkroom *pick_room(boolean strict) {
 	register struct mkroom *sroom;
 	register int i = nroom;
 

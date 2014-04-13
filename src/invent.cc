@@ -2,6 +2,8 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include <string.h>
+
 #include "hack.h"
 
 #define NOINVSYM	'#'
@@ -650,11 +652,8 @@ struct obj * mkgoldobj(register long q) {
 #endif /* OVLB */
 #ifdef OVL1
 
-STATIC_OVL void
-compactify(buf)
-register char *buf;
 /* compact a string of inventory letters by dashing runs of letters */
-{
+STATIC_OVL void compactify(char* buf) {
 	register int i1 = 1, i2 = 1;
 	register char ilet, ilet1, ilet2;
 
@@ -1108,13 +1107,12 @@ static NEARDATA const char removeables[] =
 /* interactive version of getobj - used for Drop, Identify and */
 /* Takeoff (A). Return the number of times fn was called successfully */
 /* If combo is TRUE, we just use this to get a category list */
-int
-ggetobj(word, fn, mx, combo, resultflags)
-const char *word;
-int FDECL((*fn),(OBJ_P)), mx;
-boolean combo;		/* combination menu flag */
-unsigned *resultflags;
-{
+int ggetobj(
+    char const* word, 
+    int (*fn)(OBJ_P),
+    int mx, 
+    boolean combo, /* combination menu flag */
+    unsigned int* resultflags) {
 	int FDECL((*ckfn),(OBJ_P)) = (int FDECL((*),(OBJ_P))) 0;
 	boolean FDECL((*filter),(OBJ_P)) = (boolean FDECL((*),(OBJ_P))) 0;
 	boolean takeoff, ident, allflag, m_seen;
@@ -1303,12 +1301,14 @@ unsigned *resultflags;
  * objects to be treated. Return the number of objects treated.
  */
 int
-askchain(objchn, olets, allflag, fn, ckfn, mx, word)
-struct obj **objchn;
-register int allflag, mx;
-register const char *olets, *word;	/* olets is an Obj Class char array */
-register int FDECL((*fn),(OBJ_P)), FDECL((*ckfn),(OBJ_P));
-{
+askchain(
+    struct obj** objchn, 
+    char const* olets, /* olets is an Obj Class char array */
+    int allflag, 
+    int (*fn)(OBJ_P),
+    int (*ckfn)(OBJ_P),
+    int mx,
+    char const* word) {
 	struct obj *otmp, *otmp2, *otmpo;
 	register char sym, ilet;
 	register int cnt = 0, dud = 0, tmp;
@@ -1594,19 +1594,17 @@ STATIC_OVL struct obj * find_unpaid(struct obj *list, struct obj **last_found) {
  * any count returned from the menu selection is placed here.
  */
 #ifdef DUMP_LOG
-static char
-display_pickinv(lets, want_reply, out_cnt, want_dump, want_disp)
-register const char *lets;
-boolean want_reply;
-long* out_cnt;
-boolean want_dump;
-boolean want_disp;
+static char display_pickinv(
+    char const* lets, 
+    boolean want_reply, 
+    long* out_cnt, 
+    boolean want_dump, 
+    boolean want_disp)
 #else
-static char
-display_pickinv(lets, want_reply, out_cnt)
-register const char *lets;
-boolean want_reply;
-long* out_cnt;
+static char display_pickinv(
+    char const* lets, 
+    boolean want_reply, 
+    long* out_cnt)
 #endif
 {
 	struct obj *otmp;

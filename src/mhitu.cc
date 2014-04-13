@@ -2,6 +2,8 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include <string.h>
+
 #include "hack.h"
 #include "artifact.h"
 
@@ -2032,14 +2034,11 @@ STATIC_OVL void urustm(register struct monst *mon, register struct obj *obj) {
 #endif /* OVLB */
 #ifdef OVL1
 
-int
-could_seduce(magr,mdef,mattk)
-struct monst *magr, *mdef;
-struct attack *mattk;
 /* returns 0 if seduction impossible,
  *	   1 if fine,
  *	   2 if wrong gender for nymph */
-{
+int could_seduce(struct monst* magr, struct monst* mdef,
+    struct attack* mattk) {
 	register struct permonst *pagr;
 	boolean agrinvis, defperc;
 	xchar genagr, gendef;

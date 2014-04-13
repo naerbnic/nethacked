@@ -1714,7 +1714,7 @@ E int FDECL(dorecover, (int));
 E void FDECL(trickery, (char *));
 E void FDECL(getlev, (int,int,XCHAR_P,BOOLEAN_P));
 E void NDECL(minit);
-E boolean FDECL(lookup_id_mapping, (unsigned, unsigned *));
+E boolean FDECL(lookup_id_mapping, (unsigned long, unsigned long*));
 #ifdef ZEROCOMP
 E int FDECL(mread, (int,genericptr_t,unsigned int));
 #else

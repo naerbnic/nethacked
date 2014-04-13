@@ -2,6 +2,8 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include <string.h>
+
 #include "hack.h"
 
 STATIC_DCL int FDECL(drop_throw,(struct obj *,BOOLEAN_P,int,int));
@@ -127,15 +129,20 @@ STATIC_OVL int drop_throw(register struct obj *obj, boolean ohit, int x, int y) 
 
 /* an object launched by someone/thing other than player attacks a monster;
    return 1 if the object has stopped moving (hit or its range used up) */
-int
-ohitmon(mtmp, otmp, range, verbose)
-struct monst *mtmp;	/* accidental target */
-struct obj *otmp;	/* missile; might be destroyed by drop_throw */
-int range;		/* how much farther will object travel if it misses */
-			/* Use -1 to signify to keep going even after hit, */
-			/* unless its gone (used for rolling_boulder_traps) */
-boolean verbose;  /* give message(s) even when you can't see what happened */
-{
+int ohitmon(
+    /* accidental target */
+    struct monst* mtmp, 
+
+    /* missile; might be destroyed by drop_throw */
+    struct obj *otmp,
+
+    /* how much farther will object travel if it misses */
+    /* Use -1 to signify to keep going even after hit, */
+    /* unless its gone (used for rolling_boulder_traps) */
+    int range, 
+
+    /* give message(s) even when you can't see what happened */
+    boolean verbose) {
 	int damage, tmp;
 	boolean vis, ismimic;
 	int objgone = 1;
@@ -631,11 +638,8 @@ int spitmu(register struct monst *mtmp, register struct attack *mattk) {
 #endif /* OVLB */
 #ifdef OVL1
 
-int
-breamu(mtmp, mattk)			/* monster breathes at you (ranged) */
-	register struct monst *mtmp;
-	register struct attack  *mattk;
-{
+/* monster breathes at you (ranged) */
+int breamu(struct monst* mtmp, struct attack* mattk) {
 	/* if new breath types are added, change AD_ACID to max type */
 	int typ = (mattk->adtyp == AD_RBRE) ? rnd(AD_ACID) : mattk->adtyp ;
 

@@ -7,6 +7,8 @@
 #define MKROOM_H
 #endif
 
+#include <string.h>
+
 #include "hack.h"
 #include "mfndpos.h"
 #include "edog.h"
@@ -1160,11 +1162,9 @@ impossible("A monster looked at a very strange trap of type %d.", ttmp->ttyp);
    in the absence of Conflict.  There is no provision for targetting
    other monsters; just hand to hand fighting when they happen to be
    next to each other. */
-STATIC_OVL long
-mm_aggression(magr, mdef)
-struct monst *magr,	/* monster that is currently deciding where to move */
-	     *mdef;	/* another monster which is next to it */
-{
+STATIC_OVL long mm_aggression(
+    struct monst* magr, /* monster that is currently deciding where to move */
+    struct monst* mdef) { /* another monster which is next to it */
 	/* supposedly purple worms are attracted to shrieking because they
 	   like to eat shriekers, so attack the latter when feasible */
 	if (magr->data == &mons[PM_PURPLE_WORM] &&
@@ -1176,12 +1176,8 @@ struct monst *magr,	/* monster that is currently deciding where to move */
 	return 0L;
 }
 
-boolean
-monnear(mon, x, y)
-register struct monst *mon;
-register int x,y;
 /* Is the square close enough for the monster to move or attack into? */
-{
+boolean monnear(struct monst* mon, int x, int y) {
 	register int distance = dist2(mon->mx, mon->my, x, y);
 	if (distance==2 && mon->data==&mons[PM_GRID_BUG]) return 0;
 	return((boolean)(distance < 3));
@@ -1642,15 +1638,13 @@ void killed(register struct monst *mtmp) {
 }
 
 /* the player has killed the monster mtmp */
-void
-xkilled(mtmp, dest)
-	register struct monst *mtmp;
+void xkilled(
+    struct monst* mtmp, 
 /*
  * Dest=1, normal; dest=0, don't print message; dest=2, don't drop corpse
  * either; dest=3, message but no corpse
  */
-	int	dest;
-{
+    int dest) {
 	register int tmp, x = mtmp->mx, y = mtmp->my;
 	register struct permonst *mdat;
 	int mndx;
@@ -1829,10 +1823,8 @@ void mon_to_stone(register struct monst *mtmp) {
 	impossible("Can't polystone %s!", a_monnam(mtmp));
 }
 
-void
-mnexto(mtmp)	/* Make monster mtmp next to you (if possible) */
-	struct monst *mtmp;
-{
+/* Make monster mtmp next to you (if possible) */
+void mnexto(struct monst* mtmp) {
 	coord mm;
 
 #ifdef STEED
@@ -1901,11 +1893,7 @@ static const char *poiseff[] = {
 	" feel very sick", " break out in hives"
 };
 
-void
-poisontell(typ)
-
-	int	typ;
-{
+void poisontell(int typ) {
 	pline("You%s.", poiseff[typ]);
 }
 

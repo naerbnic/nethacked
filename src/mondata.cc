@@ -2,6 +2,8 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include <string.h>
+
 #include "hack.h"
 #include "eshk.h"
 #include "epri.h"
@@ -206,11 +208,8 @@ boolean ranged_attk(struct permonst *ptr) {
 	return FALSE;
 }
 
-boolean
-hates_silver(ptr)
-register struct permonst *ptr;
 /* returns TRUE if monster is especially affected by silver weapons */
-{
+boolean hates_silver(struct permonst* ptr) {
 	return((boolean)(is_were(ptr) || ptr->mlet==S_VAMPIRE || is_demon(ptr) ||
 		ptr == &mons[PM_SHADE] ||
 		(ptr->mlet==S_IMP && ptr != &mons[PM_TENGU])));
