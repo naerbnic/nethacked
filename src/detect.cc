@@ -7,6 +7,8 @@
  * command.
  */
 
+#include <string.h>
+
 #include "hack.h"
 #include "artifact.h"
 
@@ -20,7 +22,7 @@ STATIC_DCL void FDECL(show_map_spot, (int,int));
 STATIC_PTR void FDECL(findone,(int,int,genericptr_t));
 STATIC_PTR void FDECL(openone,(int,int,genericptr_t));
 
-/* Recursively search obj for an object in class oclass and return 1st found */
+/* Recursively search obj for an object in class_id oclass and return 1st found */
 struct obj * o_in(struct obj* obj, char oclass) {
     register struct obj* otmp;
     struct obj *temp;
@@ -93,7 +95,7 @@ STATIC_OVL boolean check_map_spot(int x, int y, register char oclass, unsigned m
 			return TRUE;
 		}
 	        if (oclass && objects[glyph_to_obj(glyph)].oc_class == oclass) {
-			/* the object shown here is of interest because its class matches */
+			/* the object shown here is of interest because its class_id matches */
 			for (otmp = level.objects[x][y]; otmp; otmp = otmp->nexthere)
 				if (o_in(otmp, oclass)) return FALSE;
 			/* didn't find it; perhaps a monster is carrying it */
@@ -370,7 +372,7 @@ int food_detect(register struct obj *sobj) {
  *	1 - nothing was detected
  *	0 - something was detected
  */
-int object_detect(struct obj *detector, int class) {
+int object_detect(struct obj *detector, int class_id) {
     register int x, y;
     char stuff[BUFSZ];
     int is_cursed = (detector && detector->cursed);
@@ -383,31 +385,31 @@ int object_detect(struct obj *detector, int class) {
     int uw = u.uinwater;
     int sym, boulder = 0;
 
-    if (class < 0 || class >= MAXOCLASSES) {
-	impossible("object_detect:  illegal class %d", class);
-	class = 0;
+    if (class_id < 0 || class_id >= MAXOCLASSES) {
+	impossible("object_detect:  illegal class_id %d", class_id);
+	class_id = 0;
     }
 
-    /* Special boulder symbol check - does the class symbol happen
+    /* Special boulder symbol check - does the class_id symbol happen
      * to match iflags.bouldersym which is a user-defined?
      * If so, that means we aren't sure what they really wanted to
      * detect. Rather than trump anything, show both possibilities.
      * We can exclude checking the buried obj chain for boulders below.
      */
-    sym = class ? def_oc_syms[class] : 0;
+    sym = class_id ? def_oc_syms[class_id] : 0;
     if (sym && iflags.bouldersym && sym == iflags.bouldersym)
     	boulder = ROCK_CLASS;
 
-    if (Hallucination || (Confusion && class == SCROLL_CLASS))
+    if (Hallucination || (Confusion && class_id == SCROLL_CLASS))
 	Strcpy(stuff, something);
     else
-    	Strcpy(stuff, class ? oclass_names[class] : "objects");
-    if (boulder && class != ROCK_CLASS) Strcat(stuff, " and/or large stones");
+    	Strcpy(stuff, class_id ? oclass_names[class_id] : "objects");
+    if (boulder && class_id != ROCK_CLASS) Strcat(stuff, " and/or large stones");
 
     if (do_dknown) for(obj = invent; obj; obj = obj->nobj) do_dknown_of(obj);
 
     for (obj = fobj; obj; obj = obj->nobj) {
-	if ((!class && !boulder) || o_in(obj, class) || o_in(obj, boulder)) {
+	if ((!class_id && !boulder) || o_in(obj, class_id) || o_in(obj, boulder)) {
 	    if (obj->ox == u.ux && obj->oy == u.uy) ctu++;
 	    else ct++;
 	}
@@ -415,7 +417,7 @@ int object_detect(struct obj *detector, int class) {
     }
 
     for (obj = level.buriedobjlist; obj; obj = obj->nobj) {
-	if (!class || o_in(obj, class)) {
+	if (!class_id || o_in(obj, class_id)) {
 	    if (obj->ox == u.ux && obj->oy == u.uy) ctu++;
 	    else ct++;
 	}
@@ -425,22 +427,22 @@ int object_detect(struct obj *detector, int class) {
     for (mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
 	if (DEADMONSTER(mtmp)) continue;
 	for (obj = mtmp->minvent; obj; obj = obj->nobj) {
-	    if ((!class && !boulder) || o_in(obj, class) || o_in(obj, boulder)) ct++;
+	    if ((!class_id && !boulder) || o_in(obj, class_id) || o_in(obj, boulder)) ct++;
 	    if (do_dknown) do_dknown_of(obj);
 	}
 	if ((is_cursed && mtmp->m_ap_type == M_AP_OBJECT &&
-	    (!class || class == objects[mtmp->mappearance].oc_class)) ||
+	    (!class_id || class_id == objects[mtmp->mappearance].oc_class)) ||
 #ifndef GOLDOBJ
-	    (mtmp->mgold && (!class || class == COIN_CLASS))) {
+	    (mtmp->mgold && (!class_id || class_id == COIN_CLASS))) {
 #else
-	    (findgold(mtmp->minvent) && (!class || class == COIN_CLASS))) {
+	    (findgold(mtmp->minvent) && (!class_id || class_id == COIN_CLASS))) {
 #endif
 	    ct++;
 	    break;
 	}
     }
 
-    if (!clear_stale_map(!class ? ALL_CLASSES : class, 0) && !ct) {
+    if (!clear_stale_map(!class_id ? ALL_CLASSES : class_id, 0) && !ct) {
 	if (!ctu) {
 	    if (detector)
 		strange_feeling(detector, "You feel a lack of something.");
@@ -458,8 +460,8 @@ int object_detect(struct obj *detector, int class) {
  *	Map all buried objects first.
  */
     for (obj = level.buriedobjlist; obj; obj = obj->nobj)
-	if (!class || (otmp = o_in(obj, class))) {
-	    if (class) {
+	if (!class_id || (otmp = o_in(obj, class_id))) {
+	    if (class_id) {
 		if (otmp != obj) {
 		    otmp->ox = obj->ox;
 		    otmp->oy = obj->oy;
@@ -471,7 +473,7 @@ int object_detect(struct obj *detector, int class) {
     /*
      * If we are mapping all objects, map only the top object of a pile or
      * the first object in a monster's inventory.  Otherwise, go looking
-     * for a matching object class and display the first one encountered
+     * for a matching object class_id and display the first one encountered
      * at each location.
      *
      * Objects on the floor override buried objects.
@@ -479,9 +481,9 @@ int object_detect(struct obj *detector, int class) {
     for (x = 1; x < COLNO; x++)
 	for (y = 0; y < ROWNO; y++)
 	    for (obj = level.objects[x][y]; obj; obj = obj->nexthere)
-		if ((!class && !boulder) ||
-		    (otmp = o_in(obj, class)) || (otmp = o_in(obj, boulder))) {
-		    if (class || boulder) {
+		if ((!class_id && !boulder) ||
+		    (otmp = o_in(obj, class_id)) || (otmp = o_in(obj, boulder))) {
+		    if (class_id || boulder) {
 			if (otmp != obj) {
 			    otmp->ox = obj->ox;
 			    otmp->oy = obj->oy;
@@ -496,9 +498,9 @@ int object_detect(struct obj *detector, int class) {
     for (mtmp = fmon ; mtmp ; mtmp = mtmp->nmon) {
 	if (DEADMONSTER(mtmp)) continue;
 	for (obj = mtmp->minvent; obj; obj = obj->nobj)
-	    if ((!class && !boulder) ||
-		 (otmp = o_in(obj, class)) || (otmp = o_in(obj, boulder))) {
-		if (!class && !boulder) otmp = obj;
+	    if ((!class_id && !boulder) ||
+		 (otmp = o_in(obj, class_id)) || (otmp = o_in(obj, boulder))) {
+		if (!class_id && !boulder) otmp = obj;
 		otmp->ox = mtmp->mx;		/* at monster location */
 		otmp->oy = mtmp->my;
 		map_object(otmp, 1);
@@ -506,7 +508,7 @@ int object_detect(struct obj *detector, int class) {
 	    }
 	/* Allow a mimic to override the detected objects it is carrying. */
 	if (is_cursed && mtmp->m_ap_type == M_AP_OBJECT &&
-		(!class || class == objects[mtmp->mappearance].oc_class)) {
+		(!class_id || class_id == objects[mtmp->mappearance].oc_class)) {
 	    struct obj temp;
 
 	    temp.otyp = mtmp->mappearance;	/* needed for obj_to_glyph() */
@@ -515,9 +517,9 @@ int object_detect(struct obj *detector, int class) {
 	    temp.corpsenm = PM_TENGU;		/* if mimicing a corpse */
 	    map_object(&temp, 1);
 #ifndef GOLDOBJ
-	} else if (mtmp->mgold && (!class || class == COIN_CLASS)) {
+	} else if (mtmp->mgold && (!class_id || class_id == COIN_CLASS)) {
 #else
-	} else if (findgold(mtmp->minvent) && (!class || class == COIN_CLASS)) {
+	} else if (findgold(mtmp->minvent) && (!class_id || class_id == COIN_CLASS)) {
 #endif
 	    struct obj gold;
 
@@ -637,11 +639,8 @@ STATIC_OVL void sense_trap(struct trap *trap, xchar x, xchar y, int src_cursed) 
 /* also be used in the crystal ball routine	*/
 /* returns 1 if nothing was detected		*/
 /* returns 0 if something was detected		*/
-int
-trap_detect(sobj)
-register struct obj *sobj;
 /* sobj is null if crystal ball, *scroll if gold detection scroll */
-{
+int trap_detect(struct obj *sobj) {
     register struct trap *ttmp;
     register struct obj *obj;
     register int door;
@@ -821,7 +820,7 @@ void use_crystal_ball(struct obj *obj) {
     if (obj->spe <= 0)
 	pline_The("vision is unclear.");
     else {
-	int class;
+	int class_id;
 	int ret = 0;
 
 	makeknown(CRYSTAL_BALL);
@@ -832,10 +831,10 @@ void use_crystal_ball(struct obj *obj) {
 	 */
 	if (ch == DEF_MIMIC_DEF) ch = DEF_MIMIC;
 
-	if ((class = def_char_to_objclass(ch)) != MAXOCLASSES)
-		ret = object_detect((struct obj *)0, class);
-	else if ((class = def_char_to_monclass(ch)) != MAXMCLASSES)
-		ret = monster_detect((struct obj *)0, class);
+	if ((class_id = def_char_to_objclass(ch)) != MAXOCLASSES)
+		ret = object_detect((struct obj *)0, class_id);
+	else if ((class_id = def_char_to_monclass(ch)) != MAXMCLASSES)
+		ret = monster_detect((struct obj *)0, class_id);
 	else if (iflags.bouldersym && (ch == iflags.bouldersym))
 		ret = object_detect((struct obj *)0, ROCK_CLASS);
 	else switch(ch) {
