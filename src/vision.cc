@@ -2,6 +2,8 @@
 /* Copyright (c) Dean Luick, with acknowledgements to Dave Cohrs, 1990.	*/
 /* NetHack may be freely redistributed.  See license for details.	*/
 
+#include <string.h>
+
 #include "hack.h"
 
 /* Circles ==================================================================*/

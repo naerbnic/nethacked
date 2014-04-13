@@ -9,6 +9,8 @@
  *
  */
 
+#include <string.h>
+
 #include "hack.h"
 #include "dlb.h"
 /* #define DEBUG */	/* uncomment to enable code debugging */
@@ -28,7 +30,7 @@ extern void FDECL(mkmap, (lev_init *));
 
 STATIC_DCL void FDECL(get_room_loc, (schar *, schar *, struct mkroom *));
 STATIC_DCL void FDECL(get_free_room_loc, (schar *, schar *, struct mkroom *));
-STATIC_DCL void FDECL(create_trap, (trap *, struct mkroom *));
+STATIC_DCL void FDECL(create_trap, (trap_info *, struct mkroom *));
 STATIC_DCL int FDECL(noncoalignment, (ALIGNTYP_P));
 STATIC_DCL void FDECL(create_monster, (monster *, struct mkroom *));
 STATIC_DCL void FDECL(create_object, (object *, struct mkroom *));
@@ -652,7 +654,7 @@ void create_secret_door(struct mkroom *croom, xchar walls) {
  * Create a trap in a room.
  */
 
-STATIC_OVL void create_trap(trap *t, struct mkroom *croom) {
+STATIC_OVL void create_trap(trap_info *t, struct mkroom *croom) {
     schar	x,y;
     coord	tm;
 
@@ -687,7 +689,7 @@ STATIC_OVL int noncoalignment(aligntyp alignment) {
 STATIC_OVL void create_monster(monster *m, struct mkroom *croom) {
     struct monst *mtmp;
     schar x, y;
-    char class;
+    char class_id;
     aligntyp amask;
     coord cc;
     struct permonst *pm;
@@ -695,15 +697,15 @@ STATIC_OVL void create_monster(monster *m, struct mkroom *croom) {
 
     if (rn2(100) < m->chance) {
 
-	if (m->class >= 0)
-	    class = (char) def_char_to_monclass((char)m->class);
-	else if (m->class > -11)
-	    class = (char) def_char_to_monclass(rmonst[- m->class - 1]);
+	if (m->class_id >= 0)
+	    class_id = (char) def_char_to_monclass((char)m->class_id);
+	else if (m->class_id > -11)
+	    class_id = (char) def_char_to_monclass(rmonst[- m->class_id - 1]);
 	else
-	    class = 0;
+	    class_id = 0;
 
-	if (class == MAXMCLASSES)
-	    panic("create_monster: unknown monster class '%c'", m->class);
+	if (class_id == MAXMCLASSES)
+	    panic("create_monster: unknown monster class_id '%c'", m->class_id);
 
 	amask = (m->align == AM_SPLEV_CO) ?
 			Align2amask(u.ualignbase[A_ORIGINAL]) :
@@ -712,7 +714,7 @@ STATIC_OVL void create_monster(monster *m, struct mkroom *croom) {
 		(m->align <= -11) ? induced_align(80) :
 		(m->align < 0 ? ralign[-m->align-1] : m->align);
 
-	if (!class)
+	if (!class_id)
 	    pm = (struct permonst *) 0;
 	else if (m->id != NON_PM) {
 	    pm = &mons[m->id];
@@ -722,9 +724,9 @@ STATIC_OVL void create_monster(monster *m, struct mkroom *croom) {
 	    else if (g_mvflags & G_GONE)	/* genocided or extinct */
 		pm = (struct permonst *) 0;	/* make random monster */
 	} else {
-	    pm = mkclass(class,G_NOGEN);
+	    pm = mkclass(class_id,G_NOGEN);
 	    /* if we can't get a specific monster type (pm == 0) then the
-	       class has been genocided, so settle for a random monster */
+	       class_id has been genocided, so settle for a random monster */
 	}
 	if (In_mines(&u.uz) && pm && your_race(pm) &&
 			(Race_if(PM_DWARF) || Race_if(PM_GNOME)) && rn2(3))
@@ -856,10 +858,10 @@ STATIC_OVL void create_object(object *o, struct mkroom *croom) {
 	else
 	    get_location(&x, &y, DRY);
 
-	if (o->class >= 0)
-	    c = o->class;
-	else if (o->class > -11)
-	    c = robjects[ -(o->class+1)];
+	if (o->class_id >= 0)
+	    c = o->class_id;
+	else if (o->class_id > -11)
+	    c = robjects[ -(o->class_id+1)];
 	else
 	    c = 0;
 
@@ -1813,9 +1815,9 @@ STATIC_OVL boolean load_rooms(dlb *fd) {
 		/* read the traps */
 		Fread((genericptr_t) &r->ntrap, 1, sizeof(r->ntrap), fd);
 		if ((n = r->ntrap) != 0)
-		    r->traps = NewTab(trap, n);
+		    r->traps = NewTab(trap_info, n);
 		while(n--) {
-			r->traps[(int)n] = New(trap);
+			r->traps[(int)n] = New(trap_info);
 			Fread((genericptr_t) r->traps[(int)n], 1, sizeof(trap), fd);
 		}
 
@@ -1946,7 +1948,7 @@ STATIC_OVL boolean load_maze(dlb *fd) {
     lev_region  tmplregion;
     region  tmpregion;
     door    tmpdoor;
-    trap    tmptrap;
+    trap_info    tmptrap;
     monster tmpmons;
     object  tmpobj;
     drawbridge tmpdb;

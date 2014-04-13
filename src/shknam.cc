@@ -4,6 +4,8 @@
 
 /* shknam.c -- initialize a shop */
 
+#include <string.h>
+
 #include "hack.h"
 #include "eshk.h"
 
@@ -240,11 +242,10 @@ void init_shop_selection() {
 }
 #endif /*0*/
 
-STATIC_OVL void
-mkshobj_at(shp, sx, sy)
 /* make an object of the appropriate type for a shop square */
-const struct shclass *shp;
-int sx, sy;
+STATIC_OVL void mkshobj_at(
+    struct shclass const* shp, 
+    int sx, int sy)
 {
 	struct monst *mtmp;
 	int atype;

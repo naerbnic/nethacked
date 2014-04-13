@@ -2,6 +2,8 @@
 /*	Copyright (c) M. Stephenson 1988			  */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include <string.h>
+
 #include "hack.h"
 
 static NEARDATA schar delay;		/* moves left for this spell */

@@ -196,7 +196,7 @@ typedef struct _room {
 	char ndoor;
 	room_door **doors;
 	char ntrap;
-	trap **traps;
+	trap_info **traps;
 	char nmonster;
 	monster **monsters;
 	char nobject;

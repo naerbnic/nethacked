@@ -2,6 +2,8 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include <string.h>
+
 #include "hack.h"
 #include "lev.h"	/* for checking save modes */
 
@@ -1703,18 +1705,18 @@ void restore_timers(int fd, int range, boolean ghostly, long adjust) {
 /* reset all timers that are marked for reseting */
 void relink_timers(boolean ghostly) {
     timer_element *curr;
-    unsigned nid;
+    unsigned long nid;
 
     for (curr = timer_base; curr; curr = curr->next) {
 	if (curr->needs_fixup) {
 	    if (curr->kind == TIMER_OBJECT) {
 		if (ghostly) {
-		    if (!lookup_id_mapping((unsigned)curr->arg, &nid))
+		    if (!lookup_id_mapping((unsigned long)curr->arg, &nid))
 			panic("relink_timers 1");
 		} else
-		    nid = (unsigned) curr->arg;
+		    nid = (unsigned long) curr->arg;
 		curr->arg = (genericptr_t) find_oid(nid);
-		if (!curr->arg) panic("cant find o_id %d", nid);
+		if (!curr->arg) panic("cant find o_id %ld", nid);
 		curr->needs_fixup = 0;
 	    } else if (curr->kind == TIMER_MONSTER) {
 		panic("relink_timers: no monster timer implemented");

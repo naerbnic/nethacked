@@ -2,6 +2,8 @@
 /*	Copyright (c) 1989 Janet Walz, Mike Threepoint */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include <string.h>
+
 #include "hack.h"
 #include "edog.h"
 #ifdef USER_SOUNDS
