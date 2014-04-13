@@ -58,9 +58,6 @@ int getpos(coord *cc, boolean force, const char *goal) {
 #endif
     curs(WIN_MAP, cx,cy);
     flush_screen(0);
-#ifdef MAC
-    lock_mouse_cursor(TRUE);
-#endif
     for (;;) {
 	c = nh_poskey(&tx, &ty, &sidx);
 	if (c == '\033') {
@@ -193,9 +190,6 @@ int getpos(coord *cc, boolean force, const char *goal) {
 	curs(WIN_MAP,cx,cy);
 	flush_screen(0);
     }
-#ifdef MAC
-    lock_mouse_cursor(FALSE);
-#endif
     if (msg_given) clear_nhwindow(WIN_MESSAGE);
     cc->x = cx;
     cc->y = cy;

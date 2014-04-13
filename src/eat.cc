@@ -1366,11 +1366,6 @@ STATIC_OVL void fprefx(struct obj *otmp) {
 			else pline("Yo' mama -- core dumped.");
 		    }
 		} else
-#ifdef MAC	/* KMH -- Why should Unix have all the fun? */
-		if (otmp->otyp == APPLE) {
-			pline("Delicious!  Must be a Macintosh!");
-		} else
-#endif
 		if (otmp->otyp == EGG && stale_egg(otmp)) {
 		    pline("Ugh.  Rotten egg.");	/* perhaps others like it */
 		    make_vomiting(Vomiting+d(10,4), TRUE);

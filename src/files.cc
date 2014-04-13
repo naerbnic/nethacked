@@ -13,7 +13,7 @@
 
 #include <ctype.h>
 
-#if !defined(MAC) && !defined(O_WRONLY) && !defined(AZTEC_C)
+#if !defined(O_WRONLY) && !defined(AZTEC_C)
 #include <fcntl.h>
 #endif
 
@@ -120,10 +120,6 @@ static int lockptr;
 #ifndef WIN_CE
 #define DeleteFile unlink
 #endif
-#endif
-
-#ifdef MAC
-# define unlink macunlink
 #endif
 
 #ifdef USER_SOUNDS
@@ -395,12 +391,8 @@ int create_levelfile(int lev, char errbuf[]) {
 		fd = open_levelfile_exclusively(fq_lock, lev,
 				O_WRONLY |O_CREAT | O_TRUNC | O_BINARY);
 	else
-# endif
 	fd = open(fq_lock, O_WRONLY |O_CREAT | O_TRUNC | O_BINARY, FCMASK);
 #else
-# ifdef MAC
-	fd = maccreat(fq_lock, LEVL_TYPE);
-# else
 	fd = creat(fq_lock, FCMASK);
 # endif
 #endif /* MICRO || WIN32 */
@@ -428,16 +420,12 @@ int open_levelfile(int lev, char errbuf[]) {
 	if (level_info[lev].where != ACTIVE)
 		swapin_file(lev);
 #endif
-#ifdef MAC
-	fd = macopen(fq_lock, O_RDONLY | O_BINARY, LEVL_TYPE);
-#else
 # ifdef HOLD_LOCKFILE_OPEN
 	if (lev == 0)
 		fd = open_levelfile_exclusively(fq_lock, lev, O_RDONLY | O_BINARY );
 	else
 # endif
 	fd = open(fq_lock, O_RDONLY | O_BINARY, 0);
-#endif
 
 	/* for failure, return an explanation that our caller can use;
 	   settle for `lock' instead of `fq_lock' because the latter
@@ -592,11 +580,7 @@ int create_bonesfile(d_level *lev, char **bonesid, char errbuf[]) {
 	 */
 	fd = open(file, O_WRONLY |O_CREAT | O_TRUNC | O_BINARY, FCMASK);
 #else
-# ifdef MAC
-	fd = maccreat(file, BONE_TYPE);
-# else
 	fd = creat(file, FCMASK);
-# endif
 #endif
 	if (fd < 0 && errbuf) /* failure explanation */
 	    Sprintf(errbuf,
@@ -663,11 +647,7 @@ int open_bonesfile(d_level *lev, char **bonesid) {
 	*bonesid = set_bonesfile_name(bones, lev);
 	fq_bones = fqname(bones, BONESPREFIX, 0);
 	uncompress(fq_bones);	/* no effect if nonexistent */
-#ifdef MAC
-	fd = macopen(fq_bones, O_RDONLY | O_BINARY, BONE_TYPE);
-#else
 	fd = open(fq_bones, O_RDONLY | O_BINARY, 0);
-#endif
 	return fd;
 }
 
@@ -749,11 +729,7 @@ void set_error_savefile() {
       }
 	Strcat(SAVEF, ".e;1");
 # else
-#  ifdef MAC
-	Strcat(SAVEF, "-e");
-#  else
 	Strcat(SAVEF, ".e");
-#  endif
 # endif
 }
 #endif
@@ -768,11 +744,7 @@ int create_savefile() {
 #if defined(MICRO) || defined(WIN32)
 	fd = open(fq_save, O_WRONLY | O_BINARY | O_CREAT | O_TRUNC, FCMASK);
 #else
-# ifdef MAC
-	fd = maccreat(fq_save, SAVE_TYPE);
-# else
 	fd = creat(fq_save, FCMASK);
-# endif
 # if defined(VMS) && !defined(SECURE)
 	/*
 	   Make sure the save file is owned by the current process.  That's
@@ -796,11 +768,7 @@ int open_savefile() {
 	int fd;
 
 	fq_save = fqname(SAVEF, SAVEPREFIX, 0);
-#ifdef MAC
-	fd = macopen(fq_save, O_RDONLY | O_BINARY, SAVE_TYPE);
-#else
 	fd = open(fq_save, O_RDONLY | O_BINARY, 0);
-#endif
 	return fd;
 }
 
@@ -1345,7 +1313,7 @@ STATIC_OVL FILE * fopen_config_file(const char *filename) {
 		}
 	}
 
-#if defined(MICRO) || defined(MAC) || defined(__BEOS__) || defined(WIN32)
+#if defined(MICRO) || defined(__BEOS__) || defined(WIN32)
 	if ((fp = fopenp(fqname(configfile, CONFIGPREFIX, 0), "r"))
 								!= (FILE *)0)
 		return(fp);
@@ -1888,7 +1856,7 @@ STATIC_OVL FILE * fopen_wizkit_file() {
 	    wait_synch();
 	}
 
-#if defined(MICRO) || defined(MAC) || defined(__BEOS__) || defined(WIN32)
+#if defined(MICRO) || defined(__BEOS__) || defined(WIN32)
 	if ((fp = fopenp(fqname(wizkit, CONFIGPREFIX, 0), "r"))
 								!= (FILE *)0)
 		return(fp);
@@ -2025,13 +1993,6 @@ void check_recordfile(const char *dir) {
 	} else		/* open succeeded */
 	    (void) close(fd);
 #else /* MICRO || WIN32*/
-
-# ifdef MAC
-	/* Create the "record" file, if necessary */
-	fq_record = fqname(RECORD, SCOREPREFIX, 0);
-	fd = macopen (fq_record, O_RDWR | O_CREAT, TEXT_TYPE);
-	if (fd != -1) macclose (fd);
-# endif /* MAC */
 
 #endif /* MICRO || WIN32*/
 }
