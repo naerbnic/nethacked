@@ -2,6 +2,8 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include <string.h>
+
 #include "hack.h"
 
 /* Disintegration rays have special treatment; corpses are never left.
@@ -1638,12 +1640,10 @@ smell:
 }
 
 /* returns nonzero if something was hit */
-int
-bhitpile(obj,fhito,tx,ty)
-    struct obj *obj;
-    int FDECL((*fhito), (OBJ_P,OBJ_P));
-    int tx, ty;
-{
+int bhitpile(
+    struct obj* obj,
+    int (*fhito)(OBJ_P, OBJ_P),
+    int tx, int ty) {
     int hitanything = 0;
     register struct obj *otmp, *next_obj;
 
@@ -2499,15 +2499,22 @@ void miss(register const char *str, register struct monst *mtmp) {
  *  necessary cases (throwing or kicking weapons).  The presence of a real
  *  one is revealed for a weapon, but if not a weapon is left up to fhitm().
  */
-struct monst *
-bhit(ddx,ddy,range,weapon,fhitm,fhito,obj,obj_destroyed)
-register int ddx,ddy,range;		/* direction and range */
-int weapon;				/* see values in hack.h */
-int FDECL((*fhitm), (MONST_P, OBJ_P)),	/* fns called when mon/obj hit */
-    FDECL((*fhito), (OBJ_P, OBJ_P));
-struct obj *obj;			/* object tossed/used */
-boolean *obj_destroyed;			/* has object been deallocated? Pointer to boolean, may be NULL */
-{
+struct monst * bhit(
+    /* direction and range */
+    int ddx, int ddy, int range,
+    
+    /* see values in hack.h */
+    int weapon,
+    
+    /* fns called when mon/obj hit */
+    int (*fhitm)(MONST_P, OBJ_P),
+    int (*fhito)(OBJ_P, OBJ_P),
+
+    /* object tossed/used */
+    struct obj* obj,
+    
+    /* has object been deallocated? Pointer to boolean, may be NULL */
+    boolean* obj_destroyed) {
 	struct monst *mtmp;
 	uchar typ;
 	boolean shopdoor = FALSE, point_blank = TRUE;

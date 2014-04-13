@@ -2,6 +2,8 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include <string.h>
+
 #include "hack.h"
 
 #ifdef OVL0
@@ -77,13 +79,14 @@ void new_were(register struct monst *mon) {
 	possibly_unwield(mon, FALSE);
 }
 
-int
-were_summon(ptr,yours,visible,genbuf)	/* were-creature (even you) summons a horde */
-register struct permonst *ptr;
-register boolean yours;
-int *visible;			/* number of visible helpers created */
-char *genbuf;
-{
+/* were-creature (even you) summons a horde */
+int were_summon(
+    struct permonst* ptr,
+    boolean yours,
+
+    /* number of visible helpers created */
+    int* visible,
+    char* genbuf) {
 	register int i, typ, pm = monsndx(ptr);
 	register struct monst *mtmp;
 	int total = 0;

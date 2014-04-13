@@ -1,6 +1,8 @@
 /*	SCCS Id: @(#)write.c	3.4	2001/11/29	*/
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include <string.h>
+
 #include "hack.h"
 
 STATIC_DCL int FDECL(cost,(struct obj *));

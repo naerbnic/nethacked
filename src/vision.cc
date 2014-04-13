@@ -2407,15 +2407,20 @@ lside2:					/* used if q?_path() is a macro */
  * array provided.
  */
 STATIC_OVL void
-view_from(srow, scol, loc_cs_rows, left_most, right_most, range, func, arg)
-    int  srow, scol;	/* starting row and column */
-    char **loc_cs_rows;	/* pointers to the rows of the could_see array */
-    char *left_most;	/* min mark on each row */
-    char *right_most;	/* max mark on each row */
-    int range;		/* 0 if unlimited */
-    void FDECL((*func), (int,int,genericptr_t));
-    genericptr_t arg;
-{
+view_from(
+    /* starting row and column */
+    int srow, int scol, 
+    /* pointers to the rows of the could_see array */
+    char** loc_cs_rows, 
+    /* min mark on each row */
+    char* left_most,
+    /* max mark on each row */
+    char* right_most,
+    /* 0 if unlimited */
+    int range, 
+
+    void (*func)(int, int, genericptr_t),
+    genericptr_t arg) {
     register int i;		/* loop counter */
     char         *rowp;		/* optimization for setting could_see */
     int		 nrow;		/* the next row */
@@ -2501,12 +2506,10 @@ view_from(srow, scol, loc_cs_rows, left_most, right_most, range, func, arg)
  * will call "func" when necessary.  If the hero is the center, use the
  * vision matrix and reduce extra work.
  */
-void
-do_clear_area(scol,srow,range,func,arg)
-    int scol, srow, range;
-    void FDECL((*func), (int,int,genericptr_t));
-    genericptr_t arg;
-{
+void do_clear_area(
+    int scol, int srow, int range,
+    void (*func)(int, int, genericptr_t),
+    genericptr_t arg) {
 	/* If not centered on hero, do the hard work of figuring the area */
 	if (scol != u.ux || srow != u.uy)
 	    view_from(srow, scol, (char **)0, (char *)0, (char *)0,
