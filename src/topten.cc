@@ -366,11 +366,7 @@ void topten(int how) {
 	    toptenwin = create_nhwindow(NHW_TEXT);
 	}
 
-#if defined(UNIX) || defined(VMS) || defined(__EMX__)
 #define HUP	if (!program_state.done_hup)
-#else
-#define HUP
-#endif
 
 #ifdef TOS
 	restore_colors();	/* make sure the screen is black on white */

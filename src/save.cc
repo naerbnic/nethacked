@@ -42,11 +42,7 @@ static long nulls[10];
 #define nulls nul
 #endif
 
-#if defined(UNIX) || defined(VMS) || defined(__EMX__) || defined(WIN32)
 #define HUP	if (!program_state.done_hup)
-#else
-#define HUP
-#endif
 
 #ifdef MENU_COLOR
 extern struct menucoloring *menu_colorings;
@@ -63,9 +59,7 @@ int dosave() {
 	} else {
 		clear_nhwindow(WIN_MESSAGE);
 		pline("Saving...");
-#if defined(UNIX) || defined(VMS) || defined(__EMX__)
 		program_state.done_hup = 0;
-#endif
 		if(dosave0()) {
 			program_state.something_worth_saving = 0;
 			u.uhp = -1;		/* universal game's over indicator */
@@ -79,7 +73,6 @@ int dosave() {
 }
 
 
-#if defined(UNIX) || defined(VMS) || defined (__EMX__) || defined(WIN32)
 /*ARGSUSED*/
 /* called as signal() handler, so sent at least one arg */
 void hangup(int sig_unused) {
@@ -106,7 +99,6 @@ void hangup(int sig_unused) {
 # endif
 	return;
 }
-#endif
 
 /* returns 1 if save successful */
 int dosave0() {
@@ -120,9 +112,7 @@ int dosave0() {
 		return 0;
 	fq_save = fqname(SAVEF, SAVEPREFIX, 1);	/* level files take 0 */
 
-#if defined(UNIX) || defined(VMS)
 	(void) signal(SIGHUP, SIG_IGN);
-#endif
 #ifndef NO_SIGNAL
 	(void) signal(SIGINT, SIG_IGN);
 #endif
@@ -618,11 +608,9 @@ void bflush(register int fd) {
 
     if (outbufp) {
 	if (write(fd, outbuf, outbufp) != outbufp) {
-#if defined(UNIX) || defined(VMS) || defined(__EMX__)
 	    if (program_state.done_hup)
 		terminate(EXIT_FAILURE);
 	    else
-#endif
 		bclose(fd);	/* panic (outbufp != 0) */
 	}
 	outbufp = 0;
@@ -638,11 +626,9 @@ void bwrite(int fd, genericptr_t loc, register unsigned num) {
 	if (count_only) return;
 #endif
 	if ((unsigned) write(fd, loc, num) != num) {
-#if defined(UNIX) || defined(VMS) || defined(__EMX__)
 	    if (program_state.done_hup)
 		terminate(EXIT_FAILURE);
 	    else
-#endif
 		panic("cannot write %u bytes to file #%d", num, fd);
 	}
     } else {
@@ -675,13 +661,11 @@ static FILE *bw_FILE = 0;
 static boolean buffering = FALSE;
 
 void bufon(int fd) {
-#ifdef UNIX
     if(bw_fd >= 0)
 	panic("double buffering unexpected");
     bw_fd = fd;
     if((bw_FILE = fdopen(fd, "w")) == 0)
 	panic("buffering of file %d failed", fd);
-#endif
     buffering = TRUE;
 }
 
@@ -691,12 +675,10 @@ void bufoff(int fd) {
 }
 
 void bflush(int fd) {
-#ifdef UNIX
     if(fd == bw_fd) {
 	if(fflush(bw_FILE) == EOF)
 	    panic("flush of savefile failed!");
     }
-#endif
     return;
 }
 
@@ -708,14 +690,12 @@ void bwrite(register int fd, register genericptr_t loc, register unsigned num) {
 	if (count_only) return;
 #endif
 
-#ifdef UNIX
 	if (buffering) {
 	    if(fd != bw_fd)
 		panic("unbuffered write to fd %d (!= %d)", fd, bw_fd);
 
 	    failed = (fwrite(loc, (int)num, 1, bw_FILE) != 1);
 	} else
-#endif /* UNIX */
 	{
 /* lint wants the 3rd arg of write to be an int; lint -p an unsigned */
 #if defined(BSD) || defined(ULTRIX)
@@ -726,24 +706,20 @@ void bwrite(register int fd, register genericptr_t loc, register unsigned num) {
 	}
 
 	if (failed) {
-#if defined(UNIX) || defined(VMS) || defined(__EMX__)
 	    if (program_state.done_hup)
 		terminate(EXIT_FAILURE);
 	    else
-#endif
 		panic("cannot write %u bytes to file #%d", num, fd);
 	}
 }
 
 void bclose(int fd) {
     bufoff(fd);
-#ifdef UNIX
     if (fd == bw_fd) {
 	(void) fclose(bw_FILE);
 	bw_fd = -1;
 	bw_FILE = 0;
     } else
-#endif
 	(void) close(fd);
     return;
 }

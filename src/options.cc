@@ -574,7 +574,7 @@ void initoptions() {
 	for (i = 0; i < NUM_DISCLOSURE_OPTIONS; i++)
 		flags.end_disclose[i] = DISCLOSE_PROMPT_DEFAULT_NO;
 	switch_graphics(ASCII_GRAPHICS);	/* set default characters */
-#if defined(UNIX) && defined(TTY_GRAPHICS)
+#if defined(TTY_GRAPHICS)
 	/*
 	 * Set defaults for some options depending on what we can
 	 * detect about the environment's capabilities.
@@ -589,8 +589,7 @@ void initoptions() {
 		iflags.use_color = TRUE;
 # endif
 	}
-#endif /* UNIX && TTY_GRAPHICS */
-#if defined(UNIX) || defined(VMS)
+#endif /* TTY_GRAPHICS */
 # ifdef TTY_GRAPHICS
 	/* detect whether a "vt" terminal can handle alternate charsets */
 	if ((opts = nh_getenv("TERM")) &&
@@ -599,7 +598,6 @@ void initoptions() {
 		switch_graphics(DEC_GRAPHICS);
 	}
 # endif
-#endif /* UNIX || VMS */
 
 #ifdef MAC_GRAPHICS_ENV
 	switch_graphics(MAC_GRAPHICS);

@@ -4,16 +4,11 @@
 #include "hack.h"
 
 /* "Rand()"s definition is determined by [OS]conf.h */
-#if defined(LINT) && defined(UNIX)	/* rand() is long... */
+#if defined(LINT)	/* rand() is long... */
 extern int NDECL(rand);
 #define RND(x)	(rand() % x)
 #else /* LINT */
-# if defined(UNIX) || defined(RANDOM)
 #define RND(x)	(int)(Rand() % (long)(x))
-# else
-/* Good luck: the bottom order bits are cyclic. */
-#define RND(x)	(int)((Rand()>>3) % (x))
-# endif
 #endif /* LINT */
 
 #ifdef OVL0

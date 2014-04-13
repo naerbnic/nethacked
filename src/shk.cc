@@ -3272,12 +3272,10 @@ void pay_for_damage(const char *dmgstr, boolean cant_mollify) {
 		    You_hear("an angry voice:");
 		    verbalize("Out of my way, scum!");
 		    wait_synch();
-#if defined(UNIX) || defined(VMS)
 # if defined(SYSV) || defined(ULTRIX) || defined(VMS)
 		    (void)
 # endif
 			sleep(1);
-#endif
 		}
 	    }
 	    (void) mnearto(shkp, x, y, TRUE);
