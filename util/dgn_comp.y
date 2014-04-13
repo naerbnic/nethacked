@@ -18,6 +18,8 @@
  * and AIX will still see the directive in its non-standard locale.
  */
 
+#include <string.h>
+
 #ifdef _AIX
  #pragma alloca		/* keep leading space! */
 #endif
@@ -470,8 +472,7 @@ init_level()
 	tmplevel[n_levs].chain = -1;
 }
 
-void
-init_branch()
+void init_branch()
 {
 	if(++n_brs > BRANCH_LIMIT) {
 
@@ -484,10 +485,7 @@ init_branch()
 	tmpbranch[n_brs].chain = -1;
 }
 
-int
-getchain(s)
-	char	*s;
-{
+int getchain(char* s) {
 	int i;
 
 	if(strlen(s)) {

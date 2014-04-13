@@ -5,6 +5,8 @@
 #ifndef SYSTEM_H
 #define SYSTEM_H
 
+#include <unistd.h>
+
 #if !defined(__cplusplus) && !defined(__GO32__)
 
 #define E extern

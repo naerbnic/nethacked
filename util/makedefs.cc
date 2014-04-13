@@ -1623,7 +1623,7 @@ void do_objs() {
 	char *c, *objnam;
 	int nspell = 0;
 	int prefix = 0;
-	char class = '\0';
+	char class_id = '\0';
 	boolean	sumerr = FALSE;
 
 	filename[0]='\0';
@@ -1644,14 +1644,14 @@ void do_objs() {
 		if (!(objnam = tmpdup(OBJ_NAME(objects[i])))) continue;
 
 		/* make sure probabilities add up to 1000 */
-		if(objects[i].oc_class != class) {
+		if(objects[i].oc_class != class_id) {
 			if (sum && sum != 1000) {
-			    Fprintf(stderr, "prob error for class %d (%d%%)",
-				    class, sum);
+			    Fprintf(stderr, "prob error for class_id %d (%d%%)",
+				    class_id, sum);
 			    (void) fflush(stderr);
 			    sumerr = TRUE;
 			}
-			class = objects[i].oc_class;
+			class_id = objects[i].oc_class;
 			sum = 0;
 		}
 
@@ -1659,7 +1659,7 @@ void do_objs() {
 		    if (*c >= 'a' && *c <= 'z') *c -= (char)('a' - 'A');
 		    else if (*c < 'A' || *c > 'Z') *c = '_';
 
-		switch (class) {
+		switch (class_id) {
 		    case WAND_CLASS:
 			Fprintf(ofp,"#define\tWAN_"); prefix = 1; break;
 		    case RING_CLASS:
@@ -1699,7 +1699,7 @@ void do_objs() {
 
 	/* check last set of probabilities */
 	if (sum && sum != 1000) {
-	    Fprintf(stderr, "prob error for class %d (%d%%)", class, sum);
+	    Fprintf(stderr, "prob error for class_id %d (%d%%)", class_id, sum);
 	    (void) fflush(stderr);
 	    sumerr = TRUE;
 	}

@@ -19,10 +19,10 @@ extern void NDECL(vms_abort);
 
 /*VARARGS1*/
 boolean panicking;
-void VDECL(panic, (char *,...));
+void VDECL(panic, (char const*,...));
 
 void
-panic VA_DECL(char *,str)
+panic VA_DECL(char const*,str)
 	VA_START(str);
 	VA_INIT(str, char *);
 	if(panicking++)

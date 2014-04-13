@@ -2,6 +2,8 @@
 /*	Copyright (c) 1989 by Jean-Christophe Collet */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include <string.h>
+
 /*
  * This file contains the main function for the parser
  * and some useful functions needed by yacc
@@ -50,7 +52,7 @@ extern void FDECL (init_yyout, (FILE *));
 int  FDECL (main, (int, char **));
 void FDECL (yyerror, (const char *));
 void FDECL (yywarning, (const char *));
-int  NDECL (yywrap);
+extern "C" int  NDECL (yywrap);
 int FDECL(get_floor_type, (CHAR_P));
 int FDECL(get_room_type, (char *));
 int FDECL(get_trap_type, (char *));
@@ -157,7 +159,7 @@ extern region *tmpreg[];
 extern lev_region *tmplreg[];
 extern door *tmpdoor[];
 extern room_door *tmprdoor[];
-extern trap *tmptrap[];
+extern trap_info *tmptrap[];
 extern monster *tmpmonst[];
 extern object *tmpobj[];
 extern drawbridge *tmpdb[];
@@ -258,7 +260,7 @@ void yywarning(const char *s) {
 /*
  * Stub needed for lex interface.
  */
-int yywrap() {
+extern "C" int yywrap() {
 	return 1;
 }
 
@@ -304,13 +306,13 @@ int get_trap_type(char *s) {
  * Find the index of a monster in the table, knowing its name.
  */
 int get_monster_id(char *s, char c) {
-	register int i, class;
+	register int i, class_id;
 
-	class = c ? def_char_to_monclass(c) : 0;
-	if (class == MAXMCLASSES) return ERR;
+	class_id = c ? def_char_to_monclass(c) : 0;
+	if (class_id == MAXMCLASSES) return ERR;
 
 	for (i = LOW_PM; i < NUMMONS; i++)
-	    if (!class || class == mons[i].mlet)
+	    if (!class_id || class_id == mons[i].mlet)
 		if (!strcmp(s, mons[i].mname)) return i;
 	return ERR;
 }
@@ -319,14 +321,14 @@ int get_monster_id(char *s, char c) {
  * Find the index of an object in the table, knowing its name.
  */
 int get_object_id(char *s, char c) {
-	int i, class;
+	int i, class_id;
 	const char *objname;
 
-	class = (c > 0) ? def_char_to_objclass(c) : 0;
-	if (class == MAXOCLASSES) return ERR;
+	class_id = (c > 0) ? def_char_to_objclass(c) : 0;
+	if (class_id == MAXOCLASSES) return ERR;
 
-	for (i = class ? bases[class] : 0; i < NUM_OBJECTS; i++) {
-	    if (class && objects[i].oc_class != class) break;
+	for (i = class_id ? bases[class_id] : 0; i < NUM_OBJECTS; i++) {
+	    if (class_id && objects[i].oc_class != class_id) break;
 	    objname = obj_descr[i].oc_name;
 	    if (objname && !strcmp(s, objname))
 		return i;
@@ -335,14 +337,14 @@ int get_object_id(char *s, char c) {
 }
 
 static void init_obj_classes() {
-	int i, class, prev_class;
+	int i, class_id, prev_class;
 
 	prev_class = -1;
 	for (i = 0; i < NUM_OBJECTS; i++) {
-	    class = objects[i].oc_class;
-	    if (class != prev_class) {
-		bases[class] = i;
-		prev_class = class;
+	    class_id = objects[i].oc_class;
+	    if (class_id != prev_class) {
+		bases[class_id] = i;
+		prev_class = class_id;
 	    }
 	}
 }
@@ -681,7 +683,7 @@ void store_part() {
 	/* the traps */
 
 	if ((tmppart[npart]->ntrap = ntrap) != 0) {
-		tmppart[npart]->traps = NewTab(trap, ntrap);
+		tmppart[npart]->traps = NewTab(trap_info, ntrap);
 		for(i=0;i<ntrap;i++)
 		    tmppart[npart]->traps[i] = tmptrap[i];
 	}
@@ -794,7 +796,7 @@ void store_room() {
 	/* the traps */
 
 	if ((tmproom[nrooms]->ntrap = ntrap) != 0) {
-		tmproom[nrooms]->traps = NewTab(trap, ntrap);
+		tmproom[nrooms]->traps = NewTab(trap_info, ntrap);
 		for(i=0;i<ntrap;i++)
 		    tmproom[nrooms]->traps[i] = tmptrap[i];
 	}

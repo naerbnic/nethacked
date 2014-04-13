@@ -578,7 +578,7 @@ char *yytext;
 #define DGN_COMP
 
 #include "config.h"
-#include "dgn_yacc.h"
+#include "dgn_yacc.hh"
 #include "dgn_file.h"
 
 /*
@@ -589,7 +589,7 @@ char *yytext;
 int FDECL(yyback, (int *,int));
 int NDECL(yylook);
 int NDECL(yyinput);
-int NDECL(yywrap);
+extern "C" int NDECL(yywrap);
 int NDECL(yylex);
 	/* Traditional lexes let yyunput() and yyoutput() default to int;
 	 * newer ones may declare them as void since they don't return
@@ -2103,9 +2103,7 @@ void yyfree (void * ptr )
 
 
 /* routine to switch to another input file; needed for flex */
-void init_yyin( input_f )
-FILE *input_f;
-{
+void init_yyin( FILE* input_f ) {
 #if defined(FLEX_SCANNER) || defined(FLEXHACK_SCANNER)
 	if (yyin)
 	    yyrestart(input_f);
@@ -2114,9 +2112,7 @@ FILE *input_f;
 	    yyin = input_f;
 }
 /* analogous routine (for completeness) */
-void init_yyout( output_f )
-FILE *output_f;
-{
+void init_yyout( FILE* output_f ) {
 	yyout = output_f;
 }
 

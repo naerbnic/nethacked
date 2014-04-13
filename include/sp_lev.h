@@ -152,7 +152,7 @@ typedef struct {
 	char ndoor;
 	door **doors;
 	char ntrap;
-	trap **traps;
+	trap_info **traps;
 	char nmonster;
 	monster **monsters;
 	char nobject;

@@ -6,7 +6,7 @@
 #define LEV_LEX_C
 
 #include "hack.h"
-#include "y.tab.h"
+#include "lev_yacc.hh"
 #include "sp_lev.h"
 
 /* Most of these don't exist in flex, yywrap is macro and
@@ -220,9 +220,7 @@ long *alloc(n)
 #endif
 
 /* routine to switch to another input file; needed for flex */
-void init_yyin( input_f )
-FILE *input_f;
-{
+void init_yyin(FILE* input_f) {
 #if defined(FLEX_SCANNER) || defined(FLEXHACK_SCANNER)
 	if (yyin)
 	    yyrestart(input_f);
@@ -230,10 +228,9 @@ FILE *input_f;
 #endif
 	    yyin = input_f;
 }
+
 /* analogous routine (for completeness) */
-void init_yyout( output_f )
-FILE *output_f;
-{
+void init_yyout(FILE* output_f) {
 	yyout = output_f;
 }
 

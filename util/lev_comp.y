@@ -8,6 +8,8 @@
  * It may handle special mazes & special room-levels
  */
 
+#include <string.h>
+
 /* In case we're using bison in AIX.  This definition must be
  * placed before any other C-language construct in the file
  * excluding comments and preprocessor directives (thanks IBM
@@ -64,7 +66,7 @@ static struct reg {
 	int x2, y2;
 }		current_region;
 
-static struct coord {
+static struct lev_coord {
 	int x;
 	int y;
 }		current_coord, current_align;
@@ -86,7 +88,7 @@ drawbridge *tmpdb[MAX_OF_TYPE];
 walk *tmpwalk[MAX_OF_TYPE];
 
 room_door *tmprdoor[MAX_OF_TYPE];
-trap *tmptrap[MAX_OF_TYPE];
+trap_info *tmptrap[MAX_OF_TYPE];
 monster *tmpmonst[MAX_OF_TYPE];
 object *tmpobj[MAX_OF_TYPE];
 altar *tmpaltar[MAX_OF_TYPE];
@@ -107,7 +109,7 @@ static splev special_lev;
 static lev_init init_lev;
 
 static char olist[MAX_REGISTERS], mlist[MAX_REGISTERS];
-static struct coord plist[MAX_REGISTERS];
+static struct lev_coord plist[MAX_REGISTERS];
 
 int n_olist = 0, n_mlist = 0, n_plist = 0;
 
@@ -817,7 +819,7 @@ monster_detail	: MONSTER_ID chance ':' monster_c ',' m_name ',' coordinate
 			tmpmonst[nmons] = New(monster);
 			tmpmonst[nmons]->x = current_coord.x;
 			tmpmonst[nmons]->y = current_coord.y;
-			tmpmonst[nmons]->class = $<i>4;
+			tmpmonst[nmons]->class_id = $<i>4;
 			tmpmonst[nmons]->peaceful = -1; /* no override */
 			tmpmonst[nmons]->asleep = -1;
 			tmpmonst[nmons]->align = - MAX_REGISTERS - 2;
@@ -890,7 +892,7 @@ object_detail	: OBJECT_ID object_desc
 object_desc	: chance ':' object_c ',' o_name
 		  {
 			tmpobj[nobj] = New(object);
-			tmpobj[nobj]->class = $<i>3;
+			tmpobj[nobj]->class_id = $<i>3;
 			tmpobj[nobj]->corpsenm = NON_PM;
 			tmpobj[nobj]->curse_state = -1;
 			tmpobj[nobj]->name.str = 0;
@@ -1015,7 +1017,7 @@ door_detail	: DOOR_ID ':' door_state ',' coordinate
 
 trap_detail	: TRAP_ID chance ':' trap_name ',' coordinate
 		  {
-			tmptrap[ntrap] = New(trap);
+			tmptrap[ntrap] = New(trap_info);
 			tmptrap[ntrap]->x = current_coord.x;
 			tmptrap[ntrap]->y = current_coord.y;
 			tmptrap[ntrap]->type = $<i>4;

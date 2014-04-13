@@ -8,6 +8,8 @@
  * and some useful functions needed by yacc
  */
 
+#include <string.h>
+
 #include "config.h"
 #include "dlb.h"
 
@@ -40,7 +42,7 @@ int fatal_error = 0;
 int  FDECL (main, (int,char **));
 void FDECL (yyerror, (const char *));
 void FDECL (yywarning, (const char *));
-int  NDECL (yywrap);
+extern "C" int  NDECL (yywrap);
 void FDECL (init_yyin, (FILE *));
 void FDECL (init_yyout, (FILE *));
 
@@ -154,9 +156,7 @@ int main(int argc, char **argv) {
  * MAX_ERRORS wouldn't be reasonable.
  */
 
-void yyerror(s)
-const char *s;
-{
+void yyerror(const char* s) {
 	(void) fprintf(stderr,"%s : line %d : %s\n",fname,line_number, s);
 	if (++fatal_error > MAX_ERRORS) {
 		(void) fprintf(stderr,"Too many errors, good bye!\n");
@@ -168,13 +168,11 @@ const char *s;
  * Just display a warning (that is : a non fatal error)
  */
 
-void yywarning(s)
-const char *s;
-{
+void yywarning(char const* s) {
 	(void) fprintf(stderr,"%s : line %d : WARNING : %s\n",fname,line_number,s);
 }
 
-int yywrap()
+extern "C" int yywrap()
 {
 	SpinCursor(3); /*	Don't know if this is a good place to put it ?
 						Is it called for our grammar ? Often enough ?
