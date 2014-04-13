@@ -36,8 +36,8 @@ extern const struct shclass shtypes[];	/* defined in shknam.c */
 
 #ifdef OVLB
 
-STATIC_OVL boolean isbig(register struct mkroom *sroom) {
-	register int area = (sroom->hx - sroom->lx + 1)
+STATIC_OVL boolean isbig(struct mkroom *sroom) {
+	int area = (sroom->hx - sroom->lx + 1)
 			   * (sroom->hy - sroom->ly + 1);
 	return((boolean)( area > 20 ));
 }
@@ -62,7 +62,7 @@ void mkroom(int roomtype) {
 }
 
 STATIC_OVL void mkshop() {
-	register struct mkroom *sroom;
+	struct mkroom *sroom;
 	int i = -1;
 #ifdef WIZARD
 	char *ep = (char *)0;	/* (init == lint suppression) */
@@ -147,7 +147,7 @@ gottype:
 	}
 
 	if(i < 0) {			/* shoptype not yet determined */
-	    register int j;
+	    int j;
 
 	    /* pick a shop type at random */
 	    for (j = rnd(100), i = 0; (j -= shtypes[i].prob) > 0; i++)
@@ -174,8 +174,8 @@ gottype:
 
 /* pick an unused room, preferably with only one door */
 STATIC_OVL struct mkroom *pick_room(boolean strict) {
-	register struct mkroom *sroom;
-	register int i = nroom;
+	struct mkroom *sroom;
+	int i = nroom;
 
 	for(sroom = &rooms[rn2(nroom)]; i--; sroom++) {
 		if(sroom == &rooms[nroom])
@@ -199,7 +199,7 @@ STATIC_OVL struct mkroom *pick_room(boolean strict) {
 }
 
 STATIC_OVL void mkzoo(int type) {
-	register struct mkroom *sroom;
+	struct mkroom *sroom;
 
 	if ((sroom = pick_room(FALSE)) != 0) {
 		sroom->rtype = type;
@@ -209,7 +209,7 @@ STATIC_OVL void mkzoo(int type) {
 
 void fill_zoo(struct mkroom *sroom) {
 	struct monst *mon;
-	register int sx,sy,i;
+	int sx,sy,i;
 	int sh, tx, ty, goldlim, type = sroom->rtype;
 	int rmno = (sroom - rooms) + ROOMOFFSET;
 	coord mm;
@@ -390,7 +390,7 @@ void mkundead(coord *mm, boolean revive_corpses, int mm_flags) {
 }
 
 STATIC_OVL struct permonst * morguemon() {
-	register int i = rn2(100), hd = rn2(level_difficulty());
+	int i = rn2(100), hd = rn2(level_difficulty());
 
 	if(hd > 10 && i < 10)
 		return((Inhell || In_endgame(&u.uz)) ? mkclass(S_DEMON,0) :
@@ -417,8 +417,8 @@ STATIC_OVL struct permonst * antholemon() {
 
 /* Michiel Huisjes & Fred de Wilde */
 STATIC_OVL void mkswamp() {
-	register struct mkroom *sroom;
-	register int sx,sy,i,eelct = 0;
+	struct mkroom *sroom;
+	int sx,sy,i,eelct = 0;
 
 	for(i=0; i<5; i++) {		/* turn up to 5 rooms swampy */
 		sroom = &rooms[rn2(nroom)];
@@ -461,9 +461,9 @@ STATIC_OVL coord * shrine_pos(int roomno) {
 }
 
 STATIC_OVL void mktemple() {
-	register struct mkroom *sroom;
+	struct mkroom *sroom;
 	coord *shrine_spot;
-	register struct rm *lev;
+	struct rm *lev;
 
 	if(!(sroom = pick_room(TRUE))) return;
 
@@ -482,9 +482,9 @@ STATIC_OVL void mktemple() {
 	level.flags.has_temple = 1;
 }
 
-boolean nexttodoor(register int sx, register int sy) {
-	register int dx, dy;
-	register struct rm *lev;
+boolean nexttodoor(int sx, int sy) {
+	int dx, dy;
+	struct rm *lev;
 	for(dx = -1; dx <= 1; dx++) for(dy = -1; dy <= 1; dy++) {
 		if(!isok(sx+dx, sy+dy)) continue;
 		if(IS_DOOR((lev = &levl[sx+dx][sy+dy])->typ) ||
@@ -494,7 +494,7 @@ boolean nexttodoor(register int sx, register int sy) {
 	return(FALSE);
 }
 
-boolean has_dnstairs(register struct mkroom *sroom) {
+boolean has_dnstairs(struct mkroom *sroom) {
 	if (sroom == dnstairs_room)
 		return TRUE;
 	if (sstairs.sx && !sstairs.up)
@@ -502,7 +502,7 @@ boolean has_dnstairs(register struct mkroom *sroom) {
 	return FALSE;
 }
 
-boolean has_upstairs(register struct mkroom *sroom) {
+boolean has_upstairs(struct mkroom *sroom) {
 	if (sroom == upstairs_room)
 		return TRUE;
 	if (sstairs.sx && sstairs.up)
@@ -513,11 +513,11 @@ boolean has_upstairs(register struct mkroom *sroom) {
 #endif /* OVLB */
 #ifdef OVL0
 
-int somex(register struct mkroom *croom) {
+int somex(struct mkroom *croom) {
 	return rn2(croom->hx-croom->lx+1) + croom->lx;
 }
 
-int somey(register struct mkroom *croom) {
+int somey(struct mkroom *croom) {
 	return rn2(croom->hy-croom->ly+1) + croom->ly;
 }
 
@@ -581,7 +581,7 @@ you_lose:	;
  */
 
 struct mkroom * search_special(schar type) {
-	register struct mkroom *croom;
+	struct mkroom *croom;
 
 	for(croom = &rooms[0]; croom->hx >= 0; croom++)
 	    if((type == ANY_TYPE && croom->rtype != OROOM) ||

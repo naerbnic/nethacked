@@ -156,7 +156,7 @@ boolean adjattrib(int ndx, int incr, int msgflg) {
 	return TRUE;
 }
 
-void gainstr(register struct obj *otmp, register int incr) {
+void gainstr(struct obj *otmp, int incr) {
 	int num = 1;
 
 	if(incr) num = incr;
@@ -185,15 +185,15 @@ void losestr(int num) {
 	(void) adjattrib(A_STR, -num, TRUE);
 }
 
-void change_luck(register schar n) {
+void change_luck(schar n) {
 	u.uluck += n;
 	if (u.uluck < 0 && u.uluck < LUCKMIN)	u.uluck = LUCKMIN;
 	if (u.uluck > 0 && u.uluck > LUCKMAX)	u.uluck = LUCKMAX;
 }
 
 int stone_luck(boolean parameter) {
-	register struct obj *otmp;
-	register long bonchance = 0;
+	struct obj *otmp;
+	long bonchance = 0;
 
 	for (otmp = invent; otmp; otmp = otmp->nobj)
 	    if (confers_luck(otmp)) {
@@ -423,8 +423,8 @@ void reset_attribute_clock() {
 }
 
 
-void init_attr(register int np) {
-	register int	i, x, tryct;
+void init_attr(int np) {
+	int	i, x, tryct;
 
 
 	for(i = 0; i < A_MAX; i++) {
@@ -471,7 +471,7 @@ void init_attr(register int np) {
 }
 
 void redist_attr() {
-	register int i, tmp;
+	int i, tmp;
 
 	for(i = 0; i < A_MAX; i++) {
 	    if (i==A_INT || i==A_WIS) continue;
@@ -495,7 +495,7 @@ void postadjabil(long *ability) {
 }
 
 void adjabil(int oldlevel, int newlevel) {
-	register const struct innate *abil, *rabil;
+	const struct innate *abil, *rabil;
 	long mask = FROMEXPER;
 
 
@@ -619,7 +619,7 @@ int newhp() {
 #ifdef OVL0
 
 schar acurr(int x) {
-	register int tmp = (u.abon.a[x] + u.atemp.a[x] + u.acurr.a[x]);
+	int tmp = (u.abon.a[x] + u.atemp.a[x] + u.acurr.a[x]);
 
 	if (x == A_STR) {
 		if (uarmg && uarmg->otyp == GAUNTLETS_OF_POWER) return(125);
@@ -648,7 +648,7 @@ schar acurr(int x) {
 /* condense clumsy ACURR(A_STR) value into value that fits into game formulas
  */
 schar acurrstr() {
-	register int str = ACURR(A_STR);
+	int str = ACURR(A_STR);
 
 	if (str <= 18) return((schar)str);
 	if (str <= 121) return((schar)(19 + str / 50)); /* map to 19-21 */
@@ -661,8 +661,8 @@ schar acurrstr() {
 /* avoid possible problems with alignment overflow, and provide a centralized
  * location for any future alignment limits
  */
-void adjalign(register int n) {
-	register int newalign = u.ualign.record + n;
+void adjalign(int n) {
+	int newalign = u.ualign.record + n;
 
 	if(n < 0) {
 		if(newalign < u.ualign.record)

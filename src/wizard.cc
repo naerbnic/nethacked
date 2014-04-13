@@ -93,16 +93,16 @@ void amulet() {
 #endif /* OVL0 */
 #ifdef OVLB
 
-int mon_has_amulet(register struct monst *mtmp) {
-	register struct obj *otmp;
+int mon_has_amulet(struct monst *mtmp) {
+	struct obj *otmp;
 
 	for(otmp = mtmp->minvent; otmp; otmp = otmp->nobj)
 		if(otmp->otyp == AMULET_OF_YENDOR) return(1);
 	return(0);
 }
 
-int mon_has_special(register struct monst *mtmp) {
-	register struct obj *otmp;
+int mon_has_special(struct monst *mtmp) {
+	struct obj *otmp;
 
 	for(otmp = mtmp->minvent; otmp; otmp = otmp->nobj)
 		if(otmp->otyp == AMULET_OF_YENDOR ||
@@ -124,7 +124,7 @@ int mon_has_special(register struct monst *mtmp) {
 
 #define M_Wants(mask)	(mtmp->data->mflags3 & (mask))
 
-STATIC_OVL short which_arti(register int mask) {
+STATIC_OVL short which_arti(int mask) {
 	switch(mask) {
 	    case M3_WANTSAMUL:	return(AMULET_OF_YENDOR);
 	    case M3_WANTSBELL:	return(BELL_OF_OPENING);
@@ -140,8 +140,8 @@ STATIC_OVL short which_arti(register int mask) {
  *	since bell, book, candle, and amulet are all objects, not really
  *	artifacts right now.	[MRS]
  */
-STATIC_OVL boolean mon_has_arti(register struct monst *mtmp, register short otyp) {
-	register struct obj *otmp;
+STATIC_OVL boolean mon_has_arti(struct monst *mtmp, short otyp) {
+	struct obj *otmp;
 
 	for(otmp = mtmp->minvent; otmp; otmp = otmp->nobj) {
 	    if(otyp) {
@@ -154,8 +154,8 @@ STATIC_OVL boolean mon_has_arti(register struct monst *mtmp, register short otyp
 
 }
 
-STATIC_OVL struct monst * other_mon_has_arti(register struct monst *mtmp, register short otyp) {
-	register struct monst *mtmp2;
+STATIC_OVL struct monst * other_mon_has_arti(struct monst *mtmp, short otyp) {
+	struct monst *mtmp2;
 
 	for(mtmp2 = fmon; mtmp2; mtmp2 = mtmp2->nmon)
 	    /* no need for !DEADMONSTER check here since they have no inventory */
@@ -165,8 +165,8 @@ STATIC_OVL struct monst * other_mon_has_arti(register struct monst *mtmp, regist
 	return((struct monst *)0);
 }
 
-STATIC_OVL struct obj * on_ground(register short otyp) {
-	register struct obj *otmp;
+STATIC_OVL struct obj * on_ground(short otyp) {
+	struct obj *otmp;
 
 	for (otmp = fobj; otmp; otmp = otmp->nobj)
 	    if (otyp) {
@@ -177,7 +177,7 @@ STATIC_OVL struct obj * on_ground(register short otyp) {
 	return((struct obj *)0);
 }
 
-STATIC_OVL boolean you_have(register int mask) {
+STATIC_OVL boolean you_have(int mask) {
 	switch(mask) {
 	    case M3_WANTSAMUL:	return(boolean)(u.uhave.amulet);
 	    case M3_WANTSBELL:	return(boolean)(u.uhave.bell);
@@ -189,10 +189,10 @@ STATIC_OVL boolean you_have(register int mask) {
 	return(0);
 }
 
-STATIC_OVL long target_on(register int mask, register struct monst *mtmp) {
-	register short	otyp;
-	register struct obj *otmp;
-	register struct monst *mtmp2;
+STATIC_OVL long target_on(int mask, struct monst *mtmp) {
+	short	otyp;
+	struct obj *otmp;
+	struct monst *mtmp2;
 
 	if(!M_Wants(mask))	return(STRAT_NONE);
 
@@ -208,7 +208,7 @@ STATIC_OVL long target_on(register int mask, register struct monst *mtmp) {
 	return(STRAT_NONE);
 }
 
-STATIC_OVL long strategy(register struct monst *mtmp) {
+STATIC_OVL long strategy(struct monst *mtmp) {
 	long strat, dstrat;
 
 	if (!is_covetous(mtmp->data) ||
@@ -264,7 +264,7 @@ STATIC_OVL long strategy(register struct monst *mtmp) {
 	return(dstrat);
 }
 
-int tactics(register struct monst *mtmp) {
+int tactics(struct monst *mtmp) {
 	long strat = strategy(mtmp);
 
 	mtmp->mstrategy = (mtmp->mstrategy & STRAT_WAITMASK) | strat;
@@ -340,7 +340,7 @@ int tactics(register struct monst *mtmp) {
 }
 
 void aggravate() {
-	register struct monst *mtmp;
+	struct monst *mtmp;
 
 	for(mtmp = fmon; mtmp; mtmp = mtmp->nmon)
 	    if (!DEADMONSTER(mtmp)) {
@@ -353,7 +353,7 @@ void aggravate() {
 }
 
 void clonewiz() {
-	register struct monst *mtmp2;
+	struct monst *mtmp2;
 
 	if ((mtmp2 = makemon(&mons[PM_WIZARD_OF_YENDOR],
 				u.ux, u.uy, NO_MM_FLAGS)) != 0) {
@@ -378,8 +378,8 @@ int pick_nasty() {
 /* create some nasty monsters, aligned or neutral with the caster */
 /* a null caster defaults to a chaotic caster (e.g. the wizard) */
 int nasty(struct monst *mcast) {
-    register struct monst	*mtmp;
-    register int	i, j, tmp;
+    struct monst	*mtmp;
+    int	i, j, tmp;
     int castalign = (mcast ? mcast->data->maligntyp : -1);
     coord bypos;
     int count=0;
@@ -548,7 +548,7 @@ const char * const random_malediction[] = {
 };
 
 /* Insult or intimidate the player */
-void cuss(register struct monst *mtmp) {
+void cuss(struct monst *mtmp) {
 	if (mtmp->iswiz) {
 	    if (!rn2(5))  /* typical bad guy action */
 		pline("%s laughs fiendishly.", Monnam(mtmp));

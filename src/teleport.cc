@@ -90,11 +90,11 @@ boolean goodpos(int x, int y, struct monst *mtmp, unsigned gpflags) {
  * If there is more than one valid positon in the ring, choose one randomly.
  * Return TRUE and the position chosen when successful, FALSE otherwise.
  */
-boolean enexto(coord *cc, register xchar xx, register xchar yy, struct permonst *mdat) {
+boolean enexto(coord *cc, xchar xx, xchar yy, struct permonst *mdat) {
 	return enexto_core(cc, xx, yy, mdat, 0);
 }
 
-boolean enexto_core(coord *cc, register xchar xx, register xchar yy, struct permonst *mdat, unsigned entflags) {
+boolean enexto_core(coord *cc, xchar xx, xchar yy, struct permonst *mdat, unsigned entflags) {
 #define MAX_GOOD 15
     coord good[MAX_GOOD], *good_ptr;
     int x, y, range, i;
@@ -197,7 +197,7 @@ STATIC_OVL boolean tele_jump_ok(int x1, int y1, int x2, int y2) {
 	return TRUE;
 }
 
-STATIC_OVL boolean teleok(register int x, register int y, boolean trapok) {
+STATIC_OVL boolean teleok(int x, int y, boolean trapok) {
 	if (!trapok && t_at(x, y)) return FALSE;
 	if (!goodpos(x, y, &youmonst, 0)) return FALSE;
 	if (!tele_jump_ok(u.ux, u.uy, x, y)) return FALSE;
@@ -205,7 +205,7 @@ STATIC_OVL boolean teleok(register int x, register int y, boolean trapok) {
 	return TRUE;
 }
 
-void teleds(register int nux, register int nuy, boolean allow_drag) {
+void teleds(int nux, int nuy, boolean allow_drag) {
 	boolean ball_active = (Punished && uball->where != OBJ_FREE),
 		ball_still_in_range = FALSE;
 
@@ -308,7 +308,7 @@ void teleds(register int nux, register int nuy, boolean allow_drag) {
 }
 
 boolean safe_teleds(boolean allow_drag) {
-	register int nux, nuy, tcnt = 0;
+	int nux, nuy, tcnt = 0;
 
 	do {
 		nux = rnd(COLNO-1);
@@ -323,7 +323,7 @@ boolean safe_teleds(boolean allow_drag) {
 }
 
 STATIC_OVL void vault_tele() {
-	register struct mkroom *croom = search_special(VAULT);
+	struct mkroom *croom = search_special(VAULT);
 	coord c;
 
 	if (croom && somexy(croom, &c) && teleok(c.x,c.y,FALSE)) {
@@ -333,8 +333,8 @@ STATIC_OVL void vault_tele() {
 	tele();
 }
 
-boolean teleport_pet(register struct monst *mtmp, boolean force_it) {
-	register struct obj *otmp;
+boolean teleport_pet(struct monst *mtmp, boolean force_it) {
+	struct obj *otmp;
 
 #ifdef STEED
 	if (mtmp == u.usteed)
@@ -439,7 +439,7 @@ int dotele() {
 	}
 	if (!trap) {
 	    boolean castit = FALSE;
-	    register int sp_no = 0, energy = 0;
+	    int sp_no = 0, energy = 0;
 
 	    if (!Teleportation || (u.ulevel < (Role_if(PM_WIZARD) ? 8 : 12)
 					&& !can_teleport(youmonst.data))) {
@@ -523,7 +523,7 @@ int dotele() {
 
 
 void level_tele() {
-	register int newlev;
+	int newlev;
 	d_level newlevel;
 	const char *escape_by_flying = 0;	/* when surviving dest of -N */
 	char buf[BUFSZ];
@@ -765,7 +765,7 @@ void level_tele() {
 	if (u.utotype && !flags.mon_moving) deferred_goto();
 }
 
-void domagicportal(register struct trap *ttmp) {
+void domagicportal(struct trap *ttmp) {
 	struct d_level target_level;
 
 	if (!next_to_u()) {
@@ -830,8 +830,8 @@ void level_tele_trap(struct trap *trap) {
 }
 
 /* check whether monster can arrive at location <x,y> via Tport (or fall) */
-STATIC_OVL boolean rloc_pos_ok(register int x, register int y, struct monst *mtmp) {
-	register int xx, yy;
+STATIC_OVL boolean rloc_pos_ok(int x, int y, struct monst *mtmp) {
+	int xx, yy;
 
 	if (!goodpos(x, y, mtmp, 0)) return FALSE;
 	/*
@@ -878,8 +878,8 @@ STATIC_OVL boolean rloc_pos_ok(register int x, register int y, struct monst *mtm
  * migrating_mon.  Worm tails are always placed randomly around the head of
  * the worm.
  */
-void rloc_to(struct monst *mtmp, register int x, register int y) {
-	register int oldx = mtmp->mx, oldy = mtmp->my;
+void rloc_to(struct monst *mtmp, int x, int y) {
+	int oldx = mtmp->mx, oldy = mtmp->my;
 	boolean resident_shk = mtmp->isshk && inhishop(mtmp);
 
 	if (x == mtmp->mx && y == mtmp->my)	/* that was easy */
@@ -920,7 +920,7 @@ void rloc_to(struct monst *mtmp, register int x, register int y) {
 /* place a monster at a random location, typically due to teleport */
 /* return TRUE if successful, FALSE if not */
 boolean rloc(struct monst *mtmp, boolean suppress_impossible) {
-	register int x, y, trycount;
+	int x, y, trycount;
 
 #ifdef STEED
 	if (mtmp == u.usteed) {
@@ -969,7 +969,7 @@ boolean rloc(struct monst *mtmp, boolean suppress_impossible) {
 }
 
 STATIC_OVL void mvault_tele(struct monst *mtmp) {
-	register struct mkroom *croom = search_special(VAULT);
+	struct mkroom *croom = search_special(VAULT);
 	coord c;
 
 	if (croom && somexy(croom, &c) &&
@@ -1080,8 +1080,8 @@ int mlevel_tele_trap(struct monst *mtmp, struct trap *trap, boolean force_it, in
 }
 
 
-void rloco(register struct obj *obj) {
-	register xchar tx, ty, otx, oty;
+void rloco(struct obj *obj) {
+	xchar tx, ty, otx, oty;
 	boolean restricted_fall;
 	int try_limit = 4000;
 

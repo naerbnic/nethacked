@@ -170,7 +170,7 @@ void outrumor(int truth, int mechanism) {
 }
 
 STATIC_OVL void init_oracles(dlb *fp) {
-	register int i;
+	int i;
 	char line[BUFSZ];
 	int cnt = 0;
 
@@ -260,7 +260,7 @@ void outoracle(boolean special, boolean delphi) {
 	}
 }
 
-int doconsult(register struct monst *oracl) {
+int doconsult(struct monst *oracl) {
 #ifdef GOLDOBJ
         long umoney = money_cnt(invent);
 #endif

@@ -203,7 +203,7 @@ STATIC_OVL int in_trouble() {
 
 /* select an item for TROUBLE_CURSED_ITEMS */
 STATIC_OVL struct obj * worst_cursed_item() {
-    register struct obj *otmp;
+    struct obj *otmp;
 
     /* if strained or worse, check for loadstone first */
     if (near_capacity() >= HVY_ENCUMBER) {
@@ -258,7 +258,7 @@ STATIC_OVL struct obj * worst_cursed_item() {
     return otmp;
 }
 
-STATIC_OVL void fix_worst_trouble(register int trouble) {
+STATIC_OVL void fix_worst_trouble(int trouble) {
 	int i;
 	struct obj *otmp = 0;
 	const char *what = (const char *)0;
@@ -538,7 +538,7 @@ STATIC_OVL void fry_by_god(aligntyp resp_god) {
 }
 
 STATIC_OVL void angrygods(aligntyp resp_god) {
-	register int	maxanger;
+	int	maxanger;
 
 	if(Inhell) resp_god = A_NONE;
 	u.ublessed = 0;
@@ -911,7 +911,7 @@ STATIC_OVL void pleased(aligntyp g_align) {
 	    flags.botl = 1;
 	    break;
 	case 4: {
-	    register struct obj *otmp;
+	    struct obj *otmp;
 	    int any = 0;
 
 	    if (Blind)
@@ -1007,8 +1007,8 @@ STATIC_OVL void pleased(aligntyp g_align) {
  * returns true if it found any water here.
  */
 STATIC_OVL boolean water_prayer(boolean bless_water) {
-    register struct obj* otmp;
-    register long changed = 0;
+    struct obj* otmp;
+    long changed = 0;
     boolean other = FALSE, bc_known = !(Blind || Hallucination);
 
     for(otmp = level.objects[u.ux][u.uy]; otmp; otmp = otmp->nexthere) {
@@ -1056,7 +1056,7 @@ STATIC_OVL void gods_upset(aligntyp g_align) {
 
 static NEARDATA const char sacrifice_types[] = { FOOD_CLASS, AMULET_CLASS, 0 };
 
-STATIC_OVL void consume_offering(register struct obj *otmp) {
+STATIC_OVL void consume_offering(struct obj *otmp) {
     if (Hallucination)
 	switch (rn2(3)) {
 	    case 0:
@@ -1079,7 +1079,7 @@ STATIC_OVL void consume_offering(register struct obj *otmp) {
 }
 
 int dosacrifice() {
-    register struct obj *otmp;
+    struct obj *otmp;
     int value = 0;
     int pm;
     aligntyp altaralign = a_align(u.ux,u.uy);
@@ -1107,7 +1107,7 @@ int dosacrifice() {
 #define MAXVALUE 24 /* Highest corpse value (besides Wiz) */
 
     if (otmp->otyp == CORPSE) {
-	register struct permonst *ptr = &mons[otmp->corpsenm];
+	struct permonst *ptr = &mons[otmp->corpsenm];
 	struct monst *mtmp;
 	extern const int monstr[];
 
@@ -1614,7 +1614,7 @@ int doturn() {
 	if (!Role_if(PM_PRIEST) && !Role_if(PM_KNIGHT)) {
 		/* Try to use turn undead spell. */
 		if (objects[SPE_TURN_UNDEAD].oc_name_known) {
-		    register int sp_no;
+		    int sp_no;
 		    for (sp_no = 0; sp_no < MAXSPELL &&
 			 spl_book[sp_no].sp_id != NO_SPELL &&
 			 spl_book[sp_no].sp_id != SPE_TURN_UNDEAD; sp_no++);
@@ -1766,7 +1766,7 @@ const char * align_gtitle(aligntyp alignment) {
     return result;
 }
 
-void altar_wrath(register int x, register int y) {
+void altar_wrath(int x, int y) {
     aligntyp altaralign = a_align(x,y);
 
     if(!strcmp(align_gname(altaralign), u_gname())) {
@@ -1782,7 +1782,7 @@ void altar_wrath(register int x, register int y) {
 
 /* assumes isok() at one space away, but not necessarily at two */
 STATIC_OVL boolean blocked_boulder(int dx, int dy) {
-    register struct obj *otmp;
+    struct obj *otmp;
     long count = 0L;
 
     for(otmp = level.objects[u.ux+dx][u.uy+dy]; otmp; otmp = otmp->nexthere) {

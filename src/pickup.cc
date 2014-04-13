@@ -102,8 +102,8 @@ int collect_obj_classes(
     int* itemcount)
 #endif
 {
-	register int iletct = 0;
-	register char c;
+	int iletct = 0;
+	char c;
 
 	*itemcount = 0;
 #ifndef GOLDOBJ
@@ -181,7 +181,7 @@ STATIC_OVL boolean query_classes(
 		}
 	} else  {	/* more than one choice available */
 		const char *where = 0;
-		register char sym, oc_of_sym, *p;
+		char sym, oc_of_sym, *p;
 		/* additional choices */
 		ilets[iletct++] = ' ';
 		ilets[iletct++] = 'a';
@@ -249,8 +249,8 @@ ask_again:
 
 /* look at the objects at our location, unless there are too many of them */
 STATIC_OVL void check_here(boolean picked_some) {
-	register struct obj *obj;
-	register int ct = 0;
+	struct obj *obj;
+	int ct = 0;
 
 	/* count the objects here */
 	for (obj = level.objects[u.ux][u.uy]; obj; obj = obj->nexthere) {
@@ -335,7 +335,7 @@ STATIC_OVL boolean allow_cat_no_uchain(struct obj *obj) {
 #endif
 
 /* query_objlist callback: return TRUE if valid class and worn */
-boolean is_worn_by_type(register struct obj *otmp) {
+boolean is_worn_by_type(struct obj *otmp) {
 	return((boolean)(!!(otmp->owornmask &
 			(W_ARMOR | W_RING | W_AMUL | W_TOOL | W_WEP | W_SWAPWEP | W_QUIVER)))
 	        && (index(valid_menu_classes, otmp->oclass) != (char *)0));
@@ -1464,8 +1464,8 @@ STATIC_OVL boolean mon_beside(int x, int y) {
 
 /* loot a container on the floor or loot saddle from mon. */
 int doloot() {
-    register struct obj *cobj, *nobj;
-    register int c = -1;
+    struct obj *cobj, *nobj;
+    int c = -1;
     int timepassed = 0;
     coord cc;
     boolean underfoot = TRUE;
@@ -1715,7 +1715,7 @@ static NEARDATA struct obj *current_container;
 #define Icebox (current_container->otyp == ICE_BOX)
 
 /* Returns: -1 to stop, 1 item was inserted, 0 item was not inserted. */
-STATIC_PTR int in_container(register struct obj *obj) {
+STATIC_PTR int in_container(struct obj *obj) {
 	boolean floor_container = !carried(current_container);
 	boolean was_unpaid = FALSE;
 	char buf[BUFSZ];
@@ -1867,8 +1867,8 @@ STATIC_PTR int ck_bag(struct obj *obj) {
 }
 
 /* Returns: -1 to stop, 1 item was removed, 0 item was not removed. */
-STATIC_PTR int out_container(register struct obj *obj) {
-	register struct obj *otmp;
+STATIC_PTR int out_container(struct obj *obj) {
+	struct obj *otmp;
 	boolean is_gold = (obj->oclass == COIN_CLASS);
 	int res, loadlev;
 	long count;
@@ -2001,7 +2001,7 @@ STATIC_OVL void observe_quantum_cat(struct obj *box) {
 
 #undef Icebox
 
-int use_container(register struct obj *obj, register int held) {
+int use_container(struct obj *obj, int held) {
 	struct obj *curr, *otmp;
 #ifndef GOLDOBJ
 	struct obj *u_gold = (struct obj *)0;

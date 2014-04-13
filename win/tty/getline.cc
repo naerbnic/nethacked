@@ -31,13 +31,13 @@ extern char erase_char, kill_char;	/* from appropriate tty.c file */
  * Reading can be interrupted by an escape ('\033') - now the
  * resulting string is "\033".
  */
-void tty_getlin(const char *query, register char *bufp) {
+void tty_getlin(const char *query, char *bufp) {
     hooked_tty_getlin(query, bufp, (getlin_hook_proc) 0);
 }
 
-STATIC_OVL void hooked_tty_getlin(const char *query, register char *bufp, getlin_hook_proc hook) {
-	register char *obufp = bufp;
-	register int c;
+STATIC_OVL void hooked_tty_getlin(const char *query, char *bufp, getlin_hook_proc hook) {
+	char *obufp = bufp;
+	int c;
 	struct WinDesc *cw = wins[WIN_MESSAGE];
 	boolean doprev = 0;
 
@@ -166,8 +166,8 @@ STATIC_OVL void hooked_tty_getlin(const char *query, register char *bufp, getlin
 	clear_nhwindow(WIN_MESSAGE);	/* clean up after ourselves */
 }
 
-void xwaitforspace(register const char *s) {
-    register int c, x = ttyDisplay ? (int) ttyDisplay->dismiss_more : '\n';
+void xwaitforspace(const char *s) {
+    int c, x = ttyDisplay ? (int) ttyDisplay->dismiss_more : '\n';
 
     morc = 0;
 

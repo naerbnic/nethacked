@@ -346,8 +346,8 @@ static NEARDATA const int pwep[] =
 static struct obj *propellor;
 
 /* select a ranged weapon for the monster */
-struct obj * select_rwep(register struct monst *mtmp) {
-	register struct obj *otmp;
+struct obj * select_rwep(struct monst *mtmp) {
+	struct obj *otmp;
 	int i;
 
 #ifdef KOPS
@@ -471,9 +471,9 @@ static const NEARDATA short hwep[] = {
 	};
 
 /* select a hand to hand weapon for the monster */
-struct obj * select_hwep(register struct monst *mtmp) {
-	register struct obj *otmp;
-	register int i;
+struct obj * select_hwep(struct monst *mtmp) {
+	struct obj *otmp;
+	int i;
 	boolean strong = strongmonst(mtmp->data);
 	boolean wearing_shield = (mtmp->misc_worn_check & W_ARMS) != 0;
 
@@ -560,7 +560,7 @@ void possibly_unwield(struct monst *mon, boolean polyspot) {
 /* Let a monster try to wield a weapon, based on mon->weapon_check.
  * Returns 1 if the monster took time to do it, 0 if it did not.
  */
-int mon_wield_item(register struct monst *mon) {
+int mon_wield_item(struct monst *mon) {
 	struct obj *obj;
 
 	/* This case actually should never happen */
@@ -1291,7 +1291,7 @@ void skill_init(const struct def_skill *class_skill) {
 	}
 }
 
-void setmnotwielded(register struct monst *mon, register struct obj *obj) {
+void setmnotwielded(struct monst *mon, struct obj *obj) {
     if (!obj) return;
     if (artifact_light(obj) && obj->lamplit) {
 	end_burn(obj, FALSE);

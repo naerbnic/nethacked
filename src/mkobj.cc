@@ -124,8 +124,8 @@ struct obj * mkobj(char oclass, boolean artif) {
 }
 
 STATIC_OVL void mkbox_cnts(struct obj *box) {
-	register int n;
-	register struct obj *otmp;
+	int n;
+	struct obj *otmp;
 
 	box->cobj = (struct obj *) 0;
 
@@ -154,7 +154,7 @@ STATIC_OVL void mkbox_cnts(struct obj *box) {
 		    (void) stop_timer(REVIVE_MON, (genericptr_t)otmp);
 		}
 	    } else {
-		register int tprob;
+		int tprob;
 		const struct icp *iprobs = boxiprobs;
 
 		for (tprob = rnd(100); (tprob -= iprobs->iprob) > 0; iprobs++)
@@ -186,8 +186,8 @@ STATIC_OVL void mkbox_cnts(struct obj *box) {
 
 /* select a random, common monster type */
 int rndmonnum() {
-	register struct permonst *ptr;
-	register int	i;
+	struct permonst *ptr;
+	int	i;
 
 	/* Plan A: get a level-appropriate common monster */
 	ptr = rndmonst();
@@ -302,8 +302,8 @@ void replace_object(struct obj *obj, struct obj *otmp) {
  * Note that check_unpaid_usage() should be used instead for partial
  * usage of an object.
  */
-void bill_dummy_object(register struct obj *otmp) {
-	register struct obj *dummy;
+void bill_dummy_object(struct obj *otmp) {
+	struct obj *dummy;
 
 	if (otmp->unpaid)
 	    subfrombill(otmp, shop_keeper(*u.ushops));
@@ -650,7 +650,7 @@ void start_corpse_timeout(struct obj *body) {
 	(void) start_timer(when, TIMER_OBJECT, action, (genericptr_t)body);
 }
 
-void bless(register struct obj *otmp) {
+void bless(struct obj *otmp) {
 #ifdef GOLDOBJ
 	if (otmp->oclass == COIN_CLASS) return;
 #endif
@@ -665,7 +665,7 @@ void bless(register struct obj *otmp) {
 	return;
 }
 
-void unbless(register struct obj *otmp) {
+void unbless(struct obj *otmp) {
 	otmp->blessed = 0;
 	if (carried(otmp) && confers_luck(otmp))
 	    set_moreluck();
@@ -673,7 +673,7 @@ void unbless(register struct obj *otmp) {
 	    otmp->owt = weight(otmp);
 }
 
-void curse(register struct obj *otmp) {
+void curse(struct obj *otmp) {
 #ifdef GOLDOBJ
 	if (otmp->oclass == COIN_CLASS) return;
 #endif
@@ -699,7 +699,7 @@ void curse(register struct obj *otmp) {
 	return;
 }
 
-void uncurse(register struct obj *otmp) {
+void uncurse(struct obj *otmp) {
 	otmp->cursed = 0;
 	if (carried(otmp) && confers_luck(otmp))
 	    set_moreluck();
@@ -713,7 +713,7 @@ void uncurse(register struct obj *otmp) {
 #endif /* OVLB */
 #ifdef OVL1
 
-void blessorcurse(register struct obj *otmp, register int chance) {
+void blessorcurse(struct obj *otmp, int chance) {
 	if(otmp->blessed || otmp->cursed) return;
 
 	if(!rn2(chance)) {
@@ -729,7 +729,7 @@ void blessorcurse(register struct obj *otmp, register int chance) {
 #endif /* OVL1 */
 #ifdef OVLB
 
-int bcsign(register struct obj *otmp) {
+int bcsign(struct obj *otmp) {
 	return(!!otmp->blessed - !!otmp->cursed);
 }
 
@@ -744,14 +744,14 @@ int bcsign(register struct obj *otmp) {
  *	   of the code messes with a contained object and doesn't update the
  *	   container's weight.
  */
-int weight(register struct obj *obj) {
+int weight(struct obj *obj) {
 	int wt = objects[obj->otyp].oc_weight;
 
 	if (obj->otyp == LARGE_BOX && obj->spe == 1) /* Schroedinger's Cat */
 		wt += mons[PM_HOUSECAT].cwt;
 	if (Is_container(obj) || obj->otyp == STATUE) {
 		struct obj *contents;
-		register int cwt = 0;
+		int cwt = 0;
 
 		if (obj->otyp == STATUE && obj->corpsenm >= LOW_PM)
 		    wt = (int)obj->quan *
@@ -808,7 +808,7 @@ struct obj * rnd_treefruit_at(int x, int y) {
 #ifdef OVLB
 
 struct obj * mkgold(long amount, int x, int y) {
-    register struct obj *gold = g_at(x,y);
+    struct obj *gold = g_at(x,y);
 
     if (amount <= 0L)
 	amount = (long)(1 + rnd(level_difficulty()+2) * rnd(30));
@@ -841,7 +841,7 @@ struct obj * mkgold(long amount, int x, int y) {
  * resurrection.
  */
 struct obj * mkcorpstat(int objtype, struct monst *mtmp, struct permonst *ptr, int x, int y, boolean init) {
-	register struct obj *otmp;
+	struct obj *otmp;
 
 	if (objtype != CORPSE && objtype != STATUE)
 	    impossible("making corpstat type %d", objtype);
@@ -949,8 +949,8 @@ struct monst * get_mtraits(struct obj *obj, boolean copyof) {
 #ifdef OVLB
 
 /* make an object named after someone listed in the scoreboard file */
-struct obj * mk_tt_object(int objtype, register int x, register int y) {
-	register struct obj *otmp, *otmp2;
+struct obj * mk_tt_object(int objtype, int x, int y) {
+	struct obj *otmp, *otmp2;
 	boolean initialize_it;
 
 	/* player statues never contain books */
@@ -973,7 +973,7 @@ struct obj * mk_named_object(int objtype, struct permonst *ptr, int x, int y, co
 	return(otmp);
 }
 
-boolean is_flammable(register struct obj *otmp) {
+boolean is_flammable(struct obj *otmp) {
 	int otyp = otmp->otyp;
 	int omat = objects[otyp].oc_material;
 
@@ -983,7 +983,7 @@ boolean is_flammable(register struct obj *otmp) {
 	return((boolean)((omat <= WOOD && omat != LIQUID) || omat == PLASTIC));
 }
 
-boolean is_rottable(register struct obj *otmp) {
+boolean is_rottable(struct obj *otmp) {
 	int otyp = otmp->otyp;
 
 	return((boolean)(objects[otyp].oc_material <= WOOD &&
@@ -999,8 +999,8 @@ boolean is_rottable(register struct obj *otmp) {
  */
 
 /* put the object at the given location */
-void place_object(register struct obj *otmp, int x, int y) {
-    register struct obj *otmp2 = level.objects[x][y];
+void place_object(struct obj *otmp, int x, int y) {
+    struct obj *otmp2 = level.objects[x][y];
 
     if (otmp->where != OBJ_FREE)
 	panic("place_object: obj not free");
@@ -1138,7 +1138,7 @@ STATIC_OVL void obj_timer_checks(struct obj *otmp, xchar x, xchar y, int force) 
 #undef ON_ICE
 #undef ROT_ICE_ADJUSTMENT
 
-void remove_object(register struct obj *otmp) {
+void remove_object(struct obj *otmp) {
     xchar x = otmp->ox;
     xchar y = otmp->oy;
 

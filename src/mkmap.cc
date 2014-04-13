@@ -27,7 +27,7 @@ int min_rx, max_rx, min_ry, max_ry; /* rectangle bounds for regions */
 static int n_loc_filled;
 
 STATIC_OVL void init_map(schar bg_typ) {
-	register int i,j;
+	int i,j;
 
 	for(i=1; i<COLNO; i++)
 	    for(j=0; j<ROWNO; j++)
@@ -35,7 +35,7 @@ STATIC_OVL void init_map(schar bg_typ) {
 }
 
 STATIC_OVL void init_fill(schar bg_typ, schar fg_typ) {
-	register int i,j;
+	int i,j;
 	long limit, count;
 
 	limit = (WIDTH * HEIGHT * 2) / 5;
@@ -62,7 +62,7 @@ static int dirs[16] = {
      1, -1 /**/,  1, 0 /**/,  1, 1};
 
 STATIC_OVL void pass_one(schar bg_typ, schar fg_typ) {
-	register int i,j;
+	int i,j;
 	short count, dr;
 
 	for(i=2; i<=WIDTH; i++)
@@ -93,7 +93,7 @@ STATIC_OVL void pass_one(schar bg_typ, schar fg_typ) {
 #define new_loc(i,j)	*(new_locations+ ((j)*(WIDTH+1)) + (i))
 
 STATIC_OVL void pass_two(schar bg_typ, schar fg_typ) {
-	register int i,j;
+	int i,j;
 	short count, dr;
 
 	for(i=2; i<=WIDTH; i++)
@@ -114,7 +114,7 @@ STATIC_OVL void pass_two(schar bg_typ, schar fg_typ) {
 }
 
 STATIC_OVL void pass_three(schar bg_typ, schar fg_typ) {
-	register int i,j;
+	int i,j;
 	short count, dr;
 
 	for(i=2; i<=WIDTH; i++)
@@ -140,8 +140,8 @@ STATIC_OVL void pass_three(schar bg_typ, schar fg_typ) {
  * if anyroom is TRUE, use IS_ROOM to check room membership instead of
  * exactly matching levl[sx][sy].typ and walls are included as well.
  */
-void flood_fill_rm(int sx, register int sy, register int rmno, boolean lit, boolean anyroom) {
-    register int i;
+void flood_fill_rm(int sx, int sy, int rmno, boolean lit, boolean anyroom) {
+    int i;
     int nx;
     schar fg_typ = levl[sx][sy].typ;
 
@@ -161,7 +161,7 @@ void flood_fill_rm(int sx, register int sy, register int rmno, boolean lit, bool
 	levl[i][sy].lit = lit;
 	if(anyroom) {
 	    /* add walls to room as well */
-	    register int ii,jj;
+	    int ii,jj;
 	    for(ii= (i == sx ? i-1 : i); ii <= i+1; ii++)
 		for(jj = sy-1; jj <= sy+1; jj++)
 		    if(isok(ii,jj) &&
@@ -239,9 +239,9 @@ STATIC_OVL void wallify_map() {
 }
 
 STATIC_OVL void join_map(schar bg_typ, schar fg_typ) {
-    register struct mkroom *croom, *croom2;
+    struct mkroom *croom, *croom2;
 
-    register int i, j;
+    int i, j;
     int sx, sy;
     coord sm, em;
 

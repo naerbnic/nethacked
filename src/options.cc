@@ -781,7 +781,7 @@ STATIC_OVL int change_inv_order(char *op) {
     return 1;
 }
 
-STATIC_OVL void graphics_opts(register char *opts, const char *optype, int maxlen, int offset) {
+STATIC_OVL void graphics_opts(char *opts, const char *optype, int maxlen, int offset) {
 	uchar translate[MAXPCHARS+1];
 	int length, i;
 
@@ -797,7 +797,7 @@ STATIC_OVL void graphics_opts(register char *opts, const char *optype, int maxle
 	assign_graphics(translate, length, maxlen, offset);
 }
 
-STATIC_OVL void warning_opts(register char *opts, const char *optype) {
+STATIC_OVL void warning_opts(char *opts, const char *optype) {
 	uchar translate[MAXPCHARS+1];
 	int length, i;
 
@@ -814,7 +814,7 @@ STATIC_OVL void warning_opts(register char *opts, const char *optype) {
 	assign_warnings(translate);
 }
 
-void assign_warnings(register uchar *graph_chars) {
+void assign_warnings(uchar *graph_chars) {
 	int i;
 	for (i = 0; i < WARNCOUNT; i++)
 	    if (graph_chars[i]) warnsyms[i] = graph_chars[i];
@@ -1032,8 +1032,8 @@ boolean add_menu_coloring(char *str) {
 }
 #endif /* MENU_COLOR */
 
-void parseoptions(register char *opts, boolean tinitial, boolean tfrom_file) {
-	register char *op;
+void parseoptions(char *opts, boolean tinitial, boolean tfrom_file) {
+	char *op;
 	unsigned num;
 	boolean negated;
 	int i;
@@ -1835,7 +1835,7 @@ goodfruit:
 		num = 0;
 		prefix_val = -1;
 		while (*op && num < sizeof flags.end_disclose - 1) {
-			register char c, *dop;
+			char c, *dop;
 			static char valid_settings[] = {
 				DISCLOSE_PROMPT_DEFAULT_YES,
 				DISCLOSE_PROMPT_DEFAULT_NO,
@@ -3384,7 +3384,7 @@ static const char *opt_epilog[] = {
 
 void option_help() {
     char buf[BUFSZ], buf2[BUFSZ];
-    register int i;
+    int i;
     winid datawin;
 
     datawin = create_nhwindow(NHW_TEXT);
@@ -3461,8 +3461,8 @@ void next_opt(winid datawin, const char *str) {
  * type to the chain and returns the new one.
  */
 int fruitadd(char *str) {
-	register int i;
-	register struct fruit *f;
+	int i;
+	struct fruit *f;
 	struct fruit *lastf = 0;
 	int highest_fruit_id = 0;
 	char buf[PL_FSIZ];

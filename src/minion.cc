@@ -8,8 +8,8 @@
 
 /* mon summons a monster */
 void msummon(struct monst *mon) {
-	register struct permonst *ptr;
-	register int dtype = NON_PM, cnt = 0;
+	struct permonst *ptr;
+	int dtype = NON_PM, cnt = 0;
 	aligntyp atyp;
 	struct monst *mtmp;
 
@@ -82,7 +82,7 @@ void msummon(struct monst *mon) {
 }
 
 void summon_minion(aligntyp alignment, boolean talk) {
-    register struct monst *mon;
+    struct monst *mon;
     int mnum;
 
     switch ((int)alignment) {
@@ -133,7 +133,7 @@ void summon_minion(aligntyp alignment, boolean talk) {
 #define Athome	(Inhell && !mtmp->cham)
 
 /* returns 1 if it won't attack. */
-int demon_talk(register struct monst *mtmp) {
+int demon_talk(struct monst *mtmp) {
 	long cash, demand, offer;
 
 	if (uwep && uwep->oartifact == ART_EXCALIBUR) {

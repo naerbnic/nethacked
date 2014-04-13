@@ -12,7 +12,7 @@ STATIC_PTR int NDECL(stealarm);
 STATIC_DCL const char *FDECL(equipname, (struct obj *));
 STATIC_DCL void FDECL(mdrop_obj, (struct monst *,struct obj *,BOOLEAN_P));
 
-STATIC_OVL const char * equipname(register struct obj *otmp) {
+STATIC_OVL const char * equipname(struct obj *otmp) {
 	return (
 #ifdef TOURIST
 		(otmp == uarmu) ? "shirt" :
@@ -34,9 +34,9 @@ long		/* actually returns something that fits in an int */ somegold() {
 #endif
 }
 
-void stealgold(register struct monst *mtmp) {
-	register struct obj *gold = g_at(u.ux, u.uy);
-	register long tmp;
+void stealgold(struct monst *mtmp) {
+	struct obj *gold = g_at(u.ux, u.uy);
+	long tmp;
 
 	if (gold && ( !u.ugold || gold->quan > u.ugold || !rn2(5))) {
 	    mtmp->mgold += gold->quan;
@@ -79,7 +79,7 @@ be seized without further searching.
 May search containers too.
 Deals in gold only, as leprechauns don't care for lesser coins.
 */
-struct obj * findgold(register struct obj *chain) {
+struct obj * findgold(struct obj *chain) {
         while (chain && chain->otyp != GOLD_PIECE) chain = chain->nobj;
         return chain;
 }
@@ -87,10 +87,10 @@ struct obj * findgold(register struct obj *chain) {
 /* 
 Steal gold coins only.  Leprechauns don't care for lesser coins.
 */
-void stealgold(register struct monst *mtmp) {
-	register struct obj *fgold = g_at(u.ux, u.uy);
-	register struct obj *ygold;
-	register long tmp;
+void stealgold(struct monst *mtmp) {
+	struct obj *fgold = g_at(u.ux, u.uy);
+	struct obj *ygold;
+	long tmp;
 
         /* skip lesser coins on the floor */        
         while (fgold && fgold->otyp != GOLD_PIECE) fgold = fgold->nexthere; 
@@ -128,8 +128,8 @@ unsigned int stealoid;		/* object to be stolen */
 unsigned int stealmid;		/* monster doing the stealing */
 
 STATIC_PTR int stealarm() {
-	register struct monst *mtmp;
-	register struct obj *otmp;
+	struct monst *mtmp;
+	struct obj *otmp;
 
 	for(otmp = invent; otmp; otmp = otmp->nobj) {
 	    if(otmp->o_id == stealoid) {
@@ -404,7 +404,7 @@ gotobj:
 #ifdef OVL1
 
 /* Returns 1 if otmp is free'd, 0 otherwise. */
-int mpickobj(register struct monst *mtmp, register struct obj *otmp) {
+int mpickobj(struct monst *mtmp, struct obj *otmp) {
     int freed_otmp;
 
 #ifndef GOLDOBJ
@@ -532,9 +532,9 @@ void mdrop_special_objs(struct monst *mon) {
 }
 
 /* release the objects the creature is carrying */
-void relobj(register struct monst *mtmp, register int show, boolean is_pet) {
-	register struct obj *otmp;
-	register int omx = mtmp->mx, omy = mtmp->my;
+void relobj(struct monst *mtmp, int show, boolean is_pet) {
+	struct obj *otmp;
+	int omx = mtmp->mx, omy = mtmp->my;
 	struct obj *keepobj = 0;
 	struct obj *wep = MON_WEP(mtmp);
 	boolean item1 = FALSE, item2 = FALSE;
@@ -572,7 +572,7 @@ void relobj(register struct monst *mtmp, register int show, boolean is_pet) {
 	}
 #ifndef GOLDOBJ
 	if (mtmp->mgold) {
-		register long g = mtmp->mgold;
+		long g = mtmp->mgold;
 		(void) mkgold(g, omx, omy);
 		if (is_pet && cansee(omx, omy) && flags.verbose)
 			pline("%s drops %ld gold piece%s.", Monnam(mtmp),

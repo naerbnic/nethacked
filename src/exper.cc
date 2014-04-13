@@ -33,7 +33,7 @@ STATIC_OVL int enermod(int en) {
 
 /* return # of exp points for mtmp after nk killed */
 int experience(struct monst* mtmp, int nk) {
-	register struct permonst *ptr = mtmp->data;
+	struct permonst *ptr = mtmp->data;
 	int	i, tmp, tmp2;
 
 	tmp = 1 + mtmp->m_lev * mtmp->m_lev;
@@ -85,7 +85,7 @@ int experience(struct monst* mtmp, int nk) {
 	return(tmp);
 }
 
-void more_experienced(register int exp, register int rexp) {
+void more_experienced(int exp, int rexp) {
 	u.uexp += exp;
 	u.urexp += 4*exp + rexp;
 	if(exp
@@ -99,7 +99,7 @@ void more_experienced(register int exp, register int rexp) {
 
 /* e.g., hit by drain life attack */
 void losexp(const char *drainer) {
-	register int num;
+	int num;
 
 #ifdef WIZARD
 	/* override life-drain resistance when handling an explicit
@@ -161,7 +161,7 @@ void newexplevel() {
 }
 
 void pluslvl(boolean incr) {
-	register int num;
+	int num;
 
 	if (!incr) You_feel("more experienced.");
 	num = newhp();

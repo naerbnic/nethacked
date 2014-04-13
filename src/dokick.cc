@@ -27,9 +27,9 @@ static NEARDATA struct obj *kickobj;
 
 static const char kick_passes_thru[] = "kick passes harmlessly through";
 
-STATIC_OVL void kickdmg(register struct monst *mon, register boolean clumsy) {
-	register int mdx, mdy;
-	register int dmg = ( ACURRSTR + ACURR(A_DEX) + ACURR(A_CON) )/ 15;
+STATIC_OVL void kickdmg(struct monst *mon, boolean clumsy) {
+	int mdx, mdy;
+	int dmg = ( ACURRSTR + ACURR(A_DEX) + ACURR(A_CON) )/ 15;
 	int kick_skill = P_NONE;
 	int blessed_foot_damage = 0;
 	boolean trapkilled = FALSE;
@@ -112,10 +112,10 @@ STATIC_OVL void kickdmg(register struct monst *mon, register boolean clumsy) {
 	    use_skill(kick_skill, 1);
 }
 
-STATIC_OVL void kick_monster(register xchar x, register xchar y) {
-	register boolean clumsy = FALSE;
-	register struct monst *mon = m_at(x, y);
-	register int i, j;
+STATIC_OVL void kick_monster(xchar x, xchar y) {
+	boolean clumsy = FALSE;
+	struct monst *mon = m_at(x, y);
+	int i, j;
 
 	bhitpos.x = x;
 	bhitpos.y = y;
@@ -227,7 +227,7 @@ doit:
  *  Return TRUE if caught (the gold taken care of), FALSE otherwise.
  *  The gold object is *not* attached to the fobj chain!
  */
-boolean ghitm(register struct monst *mtmp, register struct obj *gold) {
+boolean ghitm(struct monst *mtmp, struct obj *gold) {
 	boolean msg_given = FALSE;
 
 	if(!likes_gold(mtmp->data) && !mtmp->isshk && !mtmp->ispriest
@@ -386,7 +386,7 @@ void container_impact_dmg(struct obj *obj) {
 
 STATIC_OVL int kick_object(xchar x, xchar y) {
 	int range;
-	register struct monst *mon, *shkp;
+	struct monst *mon, *shkp;
 	struct trap *trap;
 	char bhitroom;
 	boolean costly, isgold, slide = FALSE;
@@ -603,7 +603,7 @@ STATIC_OVL char * kickstr(char *buf) {
 int dokick() {
 	int x, y;
 	int avrg_attrib;
-	register struct monst *mtmp;
+	struct monst *mtmp;
 	boolean no_kick = FALSE;
 	char buf[BUFSZ];
 
@@ -806,7 +806,7 @@ int dokick() {
 		    } else goto ouch;
 		}
 		if(IS_THRONE(maploc->typ)) {
-		    register int i;
+		    int i;
 		    if(Levitation) goto dumb;
 		    if((Luck < 0 || maploc->doormask) && !rn2(3)) {
 			maploc->typ = ROOM;
@@ -1124,8 +1124,8 @@ STATIC_OVL void drop_to(coord *cc, schar loc) {
 
 void impact_drop(struct obj *missile, xchar x, xchar y, xchar dlev) {
 	schar toloc;
-	register struct obj *obj, *obj2;
-	register struct monst *shkp;
+	struct obj *obj, *obj2;
+	struct monst *shkp;
 	long oct, dct, price, debit, robbed;
 	boolean angry, costly, isrock;
 	coord cc;
@@ -1355,8 +1355,8 @@ boolean ship_object(struct obj *otmp, xchar x, xchar y, boolean shop_floor_obj) 
 }
 
 void obj_delivery() {
-	register struct obj *otmp, *otmp2;
-	register int nx, ny;
+	struct obj *otmp, *otmp2;
+	int nx, ny;
 	long where;
 
 	for (otmp = migrating_objs; otmp; otmp = otmp2) {
@@ -1393,7 +1393,7 @@ void obj_delivery() {
 	}
 }
 
-STATIC_OVL void otransit_msg(register struct obj *otmp, register boolean nodrop, long num) {
+STATIC_OVL void otransit_msg(struct obj *otmp, boolean nodrop, long num) {
 	char obuf[BUFSZ];
 
 	Sprintf(obuf, "%s%s",

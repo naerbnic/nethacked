@@ -494,7 +494,7 @@ static const struct def_skill Skill_W[] = {
 };
 
 
-STATIC_OVL void knows_object(register int obj) {
+STATIC_OVL void knows_object(int obj) {
 	discover_object(obj,TRUE,FALSE);
 	objects[obj].oc_pre_discovered = 1;	/* not a "discovery" */
 }
@@ -502,15 +502,15 @@ STATIC_OVL void knows_object(register int obj) {
 /* Know ordinary (non-magical) objects of a certain class,
  * like all gems except the loadstone and luckstone.
  */
-STATIC_OVL void knows_class(register char sym) {
-	register int ct;
+STATIC_OVL void knows_class(char sym) {
+	int ct;
 	for (ct = 1; ct < NUM_OBJECTS; ct++)
 		if (objects[ct].oc_class == sym && !objects[ct].oc_magic)
 			knows_object(ct);
 }
 
 void u_init() {
-	register int i;
+	int i;
 
 	flags.female = flags.initgend;
 	flags.beginner = 1;
@@ -823,7 +823,7 @@ void u_init() {
  */
 	for(i = 0; i < A_MAX; i++)
 	    if(!rn2(20)) {
-		register int xd = rn2(7) - 2;	/* biased variation */
+		int xd = rn2(7) - 2;	/* biased variation */
 		(void) adjattrib(i, xd, TRUE);
 		if (ABASE(i) < AMAX(i)) AMAX(i) = ABASE(i);
 	    }
@@ -870,7 +870,7 @@ STATIC_OVL boolean restricted_spell_discipline(int otyp) {
     return TRUE;
 }
 
-STATIC_OVL void ini_inv(register struct trobj *trop) {
+STATIC_OVL void ini_inv(struct trobj *trop) {
 	struct obj *obj;
 	int otyp, i;
 

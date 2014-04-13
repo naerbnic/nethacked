@@ -64,8 +64,8 @@ int rank_to_xlev(int rank) {
 #endif
 
 const char * rank_of(int lev, short monnum, boolean female) {
-	register struct Role *role;
-	register int i;
+	struct Role *role;
+	int i;
 
 
 	/* Find the role */
@@ -93,7 +93,7 @@ STATIC_OVL const char * rank() {
 }
 
 int title_to_mon(const char *str, int *rank_indx, int *title_length) {
-	register int i, j;
+	int i, j;
 
 
 	/* Loop through each of the roles */
@@ -120,7 +120,7 @@ int title_to_mon(const char *str, int *rank_indx, int *title_length) {
 #ifdef OVLB
 
 void max_rank_sz() {
-	register int i, r, maxr = 0;
+	int i, r, maxr = 0;
 	for (i = 0; i < 9; i++) {
 	    if (urole.rank[i].m && (r = strlen(urole.rank[i].m)) > maxr) maxr = r;
 	    if (urole.rank[i].f && (r = strlen(urole.rank[i].f)) > maxr) maxr = r;
@@ -161,8 +161,8 @@ bot1()
 #ifndef DUMP_LOG
 	char newbot1[MAXCO];
 #endif
-	register char *nb;
-	register int i,j;
+	char *nb;
+	int i,j;
 
 	Strcpy(newbot1, plname);
 	if('a' <= newbot1[0] && newbot1[0] <= 'z') newbot1[0] += 'A'-'a';
@@ -239,7 +239,7 @@ int describe_level(char *buf) {
 }
 
 void bot2str(char* newbot2) {
-	register char *nb;
+	char *nb;
 	int hp, hpmax;
 #ifdef HPMON
 	int hpcolor, hpattr;

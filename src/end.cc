@@ -238,7 +238,7 @@ static void done_hangup(int sig) {
 }
 #endif /* NO_SIGNAL */
 
-void done_in_by(register struct monst *mtmp) {
+void done_in_by(struct monst *mtmp) {
 	char buf[BUFSZ];
 	boolean distorted = (boolean)(Hallucination && canspotmon(mtmp));
 
@@ -522,8 +522,8 @@ STATIC_OVL void savelife(int how) {
  * intact.
  */
 STATIC_OVL void get_valuables(struct obj *list) {
-    register struct obj *obj;
-    register int i;
+    struct obj *obj;
+    int i;
 
     /* find amulets and gems, ignoring all artifacts */
     for (obj = list; obj; obj = obj->nobj)
@@ -552,7 +552,7 @@ STATIC_OVL void get_valuables(struct obj *list) {
  *  as easily use qsort, but we don't care about efficiency here.
  */
 STATIC_OVL void sort_valuables(struct valuable_data list[], int size) {
-    register int i, j;
+    int i, j;
     struct valuable_data ltmp;
 
     /* move greater quantities to the front of the list */
@@ -907,10 +907,10 @@ die:
 #endif
 
 	if (how == ESCAPED || how == ASCENDED) {
-	    register struct monst *mtmp;
-	    register struct obj *otmp;
-	    register struct val_list *val;
-	    register int i;
+	    struct monst *mtmp;
+	    struct obj *otmp;
+	    struct val_list *val;
+	    int i;
 
 	    for (val = valuables; val->list; val++)
 		for (i = 0; i < val->size; i++) {
@@ -1079,7 +1079,7 @@ void do_containerconts(
 #endif
 /* The original container_contents function */
 {
-	register struct obj *box, *obj;
+	struct obj *box, *obj;
 #ifdef SORTLOOT
 	struct obj **oarray;
 	int i,j,n;
@@ -1217,7 +1217,7 @@ void list_vanquished(char defquery, boolean ask)
 void do_vanquished(int defquery, boolean ask, boolean want_dump)
 #endif
 {
-    register int i, lev;
+    int i, lev;
     int ntypes = 0, max_lev = 0, nkilled;
     long total_killed = 0L;
     char c;
@@ -1328,7 +1328,7 @@ STATIC_OVL void list_genocided(int defquery, boolean ask, boolean want_dump)
 STATIC_OVL void list_genocided(char defquery, boolean ask)
 #endif
 {
-    register int i;
+    int i;
     int ngenocided=0;
 #ifdef SHOW_EXTINCT
     int nextincted=0;

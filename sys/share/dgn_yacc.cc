@@ -565,9 +565,9 @@ void output_dgn() {
 #define YYACCEPT goto yyaccept
 #define YYERROR goto yyerrlab
 int yyparse() {
-    register int yym, yyn, yystate;
+    int yym, yyn, yystate;
 #if YYDEBUG
-    register char *yys;
+    char *yys;
     extern char *getenv();
 
     if ((yys = getenv("YYDEBUG")) != 0)

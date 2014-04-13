@@ -121,7 +121,7 @@ STATIC_PTR
 /* try to force a locked chest */
 int forcelock() {
 
-	register struct obj *otmp;
+	struct obj *otmp;
 
 	if((xlock.box->ox != u.ux) || (xlock.box->oy != u.uy))
 		return((xlock.usedtime = 0));		/* you or it moved */
@@ -211,7 +211,7 @@ void reset_pick() {
 #ifdef OVLB
 
 /* pick a lock with a given object */
-int pick_lock(register struct obj *pick) {
+int pick_lock(struct obj *pick) {
 	int picktyp, c, ch;
 	coord cc;
 	struct rm	*door;
@@ -449,8 +449,8 @@ int pick_lock(register struct obj *pick) {
 
 /* try to force a chest with your weapon */
 int doforce() {
-	register struct obj *otmp;
-	register int c, picktyp;
+	struct obj *otmp;
+	int c, picktyp;
 	char qbuf[QBUFSZ];
 
 	if(!uwep ||	/* proper type test */
@@ -512,7 +512,7 @@ int doforce() {
 /* try to open a door */
 int doopen() {
 	coord cc;
-	register struct rm *door;
+	struct rm *door;
 	struct monst *mtmp;
 
 	if (nohands(youmonst.data)) {
@@ -593,8 +593,8 @@ int doopen() {
 }
 
 STATIC_OVL
-boolean obstructed(register int x, register int y) {
-	register struct monst *mtmp = m_at(x, y);
+boolean obstructed(int x, int y) {
+	struct monst *mtmp = m_at(x, y);
 
 	if(mtmp && mtmp->m_ap_type != M_AP_FURNITURE) {
 		if (mtmp->m_ap_type == M_AP_OBJECT) goto objhere;
@@ -613,8 +613,8 @@ objhere:	pline("%s's in the way.", Something);
 
 /* try to close a door */
 int doclose() {
-	register int x, y;
-	register struct rm *door;
+	int x, y;
+	struct rm *door;
 	struct monst *mtmp;
 
 	if (nohands(youmonst.data)) {
@@ -706,8 +706,8 @@ int doclose() {
 }
 
 /* returns true if something happened */
-boolean			/* box obj was hit with spell effect otmp */ boxlock(register struct obj *obj, register struct obj *otmp) {
-	register boolean res = 0;
+boolean			/* box obj was hit with spell effect otmp */ boxlock(struct obj *obj, struct obj *otmp) {
+	boolean res = 0;
 
 	switch(otmp->otyp) {
 	case WAN_LOCKING:
@@ -741,7 +741,7 @@ boolean			/* box obj was hit with spell effect otmp */ boxlock(register struct o
 
 /* returns true if something happened */
 boolean			/* Door/secret door was hit with spell effect otmp */ doorlock(struct obj *otmp, int x, int y) {
-	register struct rm *door = &levl[x][y];
+	struct rm *door = &levl[x][y];
 	boolean res = TRUE;
 	int loudness = 0;
 	const char *msg = (const char *)0;

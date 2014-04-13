@@ -51,10 +51,10 @@ static int lastinvnr = 51;	/* 0 ... 51 (never saved&restored) */
 static char venom_inv[] = { VENOM_CLASS, 0 };	/* (constant) */
 #endif
 
-void assigninvlet(register struct obj *otmp) {
+void assigninvlet(struct obj *otmp) {
 	boolean inuse[52];
-	register int i;
-	register struct obj *obj;
+	int i;
+	struct obj *obj;
 
 #ifdef GOLDOBJ
         /* There is only one of these in inventory... */        
@@ -154,7 +154,7 @@ struct obj * merge_choice(struct obj *objlist, struct obj *obj) {
 
 /* merge obj with otmp and delete obj if types agree */
 int merged(struct obj **potmp, struct obj **pobj) {
-	register struct obj *otmp = *potmp, *obj = *pobj;
+	struct obj *otmp = *potmp, *obj = *pobj;
 
 	if(mergable(otmp, obj)) {
 		/* Approximate age: we do it this way because if we were to
@@ -450,7 +450,7 @@ void useupall(struct obj *obj) {
 	obfree(obj, (struct obj *)0);	/* deletes contents also */
 }
 
-void useup(register struct obj *obj) {
+void useup(struct obj *obj) {
 	/*  Note:  This works correctly for containers because they */
 	/*	   (containers) don't merge.			    */
 	if (obj->quan > 1L) {
@@ -520,7 +520,7 @@ void freeinv_core(struct obj *obj) {
 }
 
 /* remove an object from the hero's inventory */
-void freeinv(register struct obj *obj) {
+void freeinv(struct obj *obj) {
 	extract_nobj(obj, &invent);
 	freeinv_core(obj);
 	update_inventory();
@@ -544,7 +544,7 @@ void delallobj(int x, int y) {
 #ifdef OVL2
 
 /* destroy object in fobj chain (if unpaid, it remains on the bill) */
-void delobj(register struct obj *obj) {
+void delobj(struct obj *obj) {
 	boolean update_map;
 
 	if (obj->otyp == AMULET_OF_YENDOR ||
@@ -567,8 +567,8 @@ void delobj(register struct obj *obj) {
 #endif /* OVL2 */
 #ifdef OVL0
 
-struct obj * sobj_at(register int n, register int x, register int y) {
-	register struct obj *otmp;
+struct obj * sobj_at(int n, int x, int y) {
+	struct obj *otmp;
 
 	for(otmp = level.objects[x][y]; otmp; otmp = otmp->nexthere)
 		if(otmp->otyp == n)
@@ -579,8 +579,8 @@ struct obj * sobj_at(register int n, register int x, register int y) {
 #endif /* OVL0 */
 #ifdef OVLB
 
-struct obj * carrying(register int type) {
-	register struct obj *otmp;
+struct obj * carrying(int type) {
+	struct obj *otmp;
 
 	for(otmp = invent; otmp; otmp = otmp->nobj)
 		if(otmp->otyp == type)
@@ -594,7 +594,7 @@ const char * currency(long amount) {
 }
 
 boolean have_lizard() {
-	register struct obj *otmp;
+	struct obj *otmp;
 
 	for(otmp = invent; otmp; otmp = otmp->nobj)
 		if(otmp->otyp == CORPSE && otmp->corpsenm == PM_LIZARD)
@@ -602,7 +602,7 @@ boolean have_lizard() {
 	return(FALSE);
 }
 
-struct obj * o_on(unsigned int id, register struct obj *objchn) {
+struct obj * o_on(unsigned int id, struct obj *objchn) {
 	struct obj *temp;
 
 	while(objchn) {
@@ -614,8 +614,8 @@ struct obj * o_on(unsigned int id, register struct obj *objchn) {
 	return((struct obj *) 0);
 }
 
-boolean obj_here(register struct obj *obj, int x, int y) {
-	register struct obj *otmp;
+boolean obj_here(struct obj *obj, int x, int y) {
+	struct obj *otmp;
 
 	for(otmp = level.objects[x][y]; otmp; otmp = otmp->nexthere)
 		if(obj == otmp) return(TRUE);
@@ -625,8 +625,8 @@ boolean obj_here(register struct obj *obj, int x, int y) {
 #endif /* OVLB */
 #ifdef OVL2
 
-struct obj * g_at(register int x, register int y) {
-	register struct obj *obj = level.objects[x][y];
+struct obj * g_at(int x, int y) {
+	struct obj *obj = level.objects[x][y];
 	while(obj) {
 	    if (obj->oclass == COIN_CLASS) return obj;
 	    obj = obj->nexthere;
@@ -638,8 +638,8 @@ struct obj * g_at(register int x, register int y) {
 #ifdef OVLB
 #ifndef GOLDOBJ
 /* Make a gold object from the hero's gold. */
-struct obj * mkgoldobj(register long q) {
-	register struct obj *otmp;
+struct obj * mkgoldobj(long q) {
+	struct obj *otmp;
 
 	otmp = mksobj(GOLD_PIECE, FALSE, FALSE);
 	u.ugold -= q;
@@ -654,8 +654,8 @@ struct obj * mkgoldobj(register long q) {
 
 /* compact a string of inventory letters by dashing runs of letters */
 STATIC_OVL void compactify(char* buf) {
-	register int i1 = 1, i2 = 1;
-	register char ilet, ilet1, ilet2;
+	int i1 = 1, i2 = 1;
+	char ilet, ilet1, ilet2;
 
 	ilet2 = buf[0];
 	ilet1 = buf[1];
@@ -699,13 +699,13 @@ STATIC_OVL boolean putting_on(const char *action) {
 !!!! may be able to remove "usegold"
 #endif
  */
-struct obj * getobj(register const char *let, register const char *word) {
-	register struct obj *otmp;
-	register char ilet;
+struct obj * getobj(const char *let, const char *word) {
+	struct obj *otmp;
+	char ilet;
 	char buf[BUFSZ], qbuf[QBUFSZ];
 	char lets[BUFSZ], altlets[BUFSZ], *ap;
-	register int foo = 0;
-	register char *bp = buf;
+	int foo = 0;
+	char *bp = buf;
 	xchar allowcnt = 0;	/* 0, 1 or 2 */
 #ifndef GOLDOBJ
 	boolean allowgold = FALSE;	/* can't use gold because they don't have any */
@@ -772,7 +772,7 @@ struct obj * getobj(register const char *let, register const char *word) {
 #endif
 		|| (useboulder && otmp->otyp == BOULDER)
 		) {
-		register int otyp = otmp->otyp;
+		int otyp = otmp->otyp;
 		bp[foo++] = otmp->invlet;
 
 		/* ugly check: remove inappropriate things */
@@ -1076,12 +1076,12 @@ void silly_thing(const char *word, struct obj *otmp) {
 #endif /* OVL1 */
 #ifdef OVLB
 
-STATIC_PTR int ckvalidcat(register struct obj *otmp) {
+STATIC_PTR int ckvalidcat(struct obj *otmp) {
 	/* use allow_category() from pickup.c */
 	return((int)allow_category(otmp));
 }
 
-STATIC_PTR int ckunpaid(register struct obj *otmp) {
+STATIC_PTR int ckunpaid(struct obj *otmp) {
 	return((int)(otmp->unpaid));
 }
 
@@ -1093,7 +1093,7 @@ boolean wearing_armor() {
 		));
 }
 
-boolean is_worn(register struct obj *otmp) {
+boolean is_worn(struct obj *otmp) {
     return((boolean)(!!(otmp->owornmask & (W_ARMOR | W_RING | W_AMUL | W_TOOL |
 #ifdef STEED
 			W_SADDLE |
@@ -1310,8 +1310,8 @@ askchain(
     int mx,
     char const* word) {
 	struct obj *otmp, *otmp2, *otmpo;
-	register char sym, ilet;
-	register int cnt = 0, dud = 0, tmp;
+	char sym, ilet;
+	int cnt = 0, dud = 0, tmp;
 	boolean takeoff, nodot, ident, ininv;
 	char qbuf[QBUFSZ];
 
@@ -1483,7 +1483,7 @@ void identify_pack(int id_limit) {
 #ifdef OVL2
 
 /* should of course only be called for things in invent */
-STATIC_OVL char obj_to_let(register struct obj *obj) {
+STATIC_OVL char obj_to_let(struct obj *obj) {
 #ifndef GOLDOBJ
 	if (obj->oclass == COIN_CLASS)
 		return GOLD_SYM;
@@ -1499,7 +1499,7 @@ STATIC_OVL char obj_to_let(register struct obj *obj) {
  * Print the indicated quantity of the given object.  If quan == 0L then use
  * the current quantity.
  */
-void prinv(const char *prefix, register struct obj *obj, long quan) {
+void prinv(const char *prefix, struct obj *obj, long quan) {
 	if (!prefix) prefix = "";
 	pline("%s%s%s",
 	      prefix, *prefix ? " " : "",
@@ -1837,7 +1837,7 @@ nextclass:
  * Returns the letter identifier of a selected item, or 0 if nothing
  * was selected.
  */
-char display_inventory(register const char *lets, boolean want_reply) {
+char display_inventory(const char *lets, boolean want_reply) {
 	return display_pickinv(lets, want_reply, (long *)0
 #ifdef DUMP_LOG
 			       , FALSE , TRUE
@@ -1847,7 +1847,7 @@ char display_inventory(register const char *lets, boolean want_reply) {
 
 #ifdef DUMP_LOG
 /* See display_inventory. This is the same thing WITH dumpfile creation */
-char dump_inventory(register const char *lets, boolean want_reply, boolean want_disp) {
+char dump_inventory(const char *lets, boolean want_reply, boolean want_disp) {
   return display_pickinv(lets, want_reply, (long *)0, TRUE, want_disp);
 }
 #endif
@@ -1907,7 +1907,7 @@ int count_buc(struct obj *list, int type) {
 STATIC_OVL void dounpaid() {
     winid win;
     struct obj *otmp, *marker;
-    register char ilet;
+    char ilet;
     char *invlet = flags.inv_order;
     int classcount, count, num_so_far;
     int save_unpaid = 0;	/* lint init */
@@ -2324,7 +2324,7 @@ void stackobj(struct obj *obj) {
 }
 
 /* returns TRUE if obj  & otmp can be merged */
-STATIC_OVL boolean mergable(register struct obj *otmp, register struct obj *obj) {
+STATIC_OVL boolean mergable(struct obj *otmp, struct obj *obj) {
 	if (obj->otyp != otmp->otyp) return FALSE;
 #ifdef GOLDOBJ
 	/* coins of the same kind will always merge */
@@ -2439,7 +2439,7 @@ int doprarm() {
 #else
 		char lets[7];
 #endif
-		register int ct = 0;
+		int ct = 0;
 
 #ifdef TOURIST
 		if(uarmu) lets[ct++] = obj_to_let(uarmu);
@@ -2461,7 +2461,7 @@ int doprring() {
 		You("are not wearing any rings.");
 	else {
 		char lets[3];
-		register int ct = 0;
+		int ct = 0;
 
 		if(uleft) lets[ct++] = obj_to_let(uleft);
 		if(uright) lets[ct++] = obj_to_let(uright);
@@ -2523,8 +2523,8 @@ int doprinuse() {
 /*
  * uses up an object that's on the floor, charging for it as necessary
  */
-void useupf(register struct obj *obj, long numused) {
-	register struct obj *otmp;
+void useupf(struct obj *obj, long numused) {
+	struct obj *otmp;
 	boolean at_u = (obj->ox == u.ux && obj->oy == u.uy);
 
 	/* burn_floor_paper() keeps an object pointer that it tries to
@@ -2606,8 +2606,8 @@ void free_invbuf() {
 #ifdef OVLB
 
 void reassign() {
-	register int i;
-	register struct obj *obj;
+	int i;
+	struct obj *obj;
 
 	for(obj = invent, i = 0; obj; obj = obj->nobj, i++)
 		obj->invlet = (i < 26) ? ('a'+i) : ('A'+i-26);
@@ -2620,8 +2620,8 @@ void reassign() {
 /* inventory organizer by Del Lamb */
 int doorganize() {
 	struct obj *obj, *otmp;
-	register int ix, cur;
-	register char let;
+	int ix, cur;
+	char let;
 	char alphabet[52+1], buf[52+1];
 	char qbuf[QBUFSZ];
 	char allowall[2];
@@ -2741,7 +2741,7 @@ STATIC_OVL boolean worn_wield_only(struct obj *obj) {
  *	MINV_NOLET	- nothing selectable
  *	MINV_ALL	- display all inventory
  */
-struct obj * display_minventory(register struct monst *mon, int dflags, char *title) {
+struct obj * display_minventory(struct monst *mon, int dflags, char *title) {
 	struct obj *ret;
 #ifndef GOLDOBJ
 	struct obj m_gold;
@@ -2822,7 +2822,7 @@ struct obj * display_minventory(register struct monst *mon, int dflags, char *ti
  * Display the contents of a container in inventory style.
  * Currently, this is only used for statues, via wand of probing.
  */
-struct obj * display_cinventory(register struct obj *obj) {
+struct obj * display_cinventory(struct obj *obj) {
 	struct obj *ret;
 	char tmp[QBUFSZ];
 	int n;

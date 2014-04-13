@@ -56,7 +56,7 @@ int dodrop() {
  * in a pool, it either fills the pool up or sinks away.  In either case,
  * it's gone for good...  If the destination is not a pool, returns FALSE.
  */
-boolean boulder_hits_pool(struct obj *otmp, register int rx, register int ry, boolean pushing) {
+boolean boulder_hits_pool(struct obj *otmp, int rx, int ry, boolean pushing) {
 	if (!otmp || otmp->otyp != BOULDER)
 	    impossible("Not a boulder?");
 	else if (!Is_waterlevel(&u.uz) && (is_pool(rx,ry) || is_lava(rx,ry))) {
@@ -219,7 +219,7 @@ boolean flooreffects(struct obj *obj, int x, int y, const char *verb) {
 #ifdef OVLB
 
 /* obj is an object dropped on an altar */
-void doaltarobj(register struct obj *obj) {
+void doaltarobj(struct obj *obj) {
 	if (Blind)
 		return;
 
@@ -240,7 +240,7 @@ void doaltarobj(register struct obj *obj) {
 
 #ifdef SINKS
 STATIC_OVL
-void trycall(register struct obj *obj) {
+void trycall(struct obj *obj) {
 	if(!objects[obj->otyp].oc_name_known &&
 	   !objects[obj->otyp].oc_uname)
 	   docall(obj);
@@ -248,9 +248,9 @@ void trycall(register struct obj *obj) {
 
 STATIC_OVL
 /* obj is a ring being dropped over a kitchen sink */
-void dosinkring(register struct obj *obj) {
-	register struct obj *otmp,*otmp2;
-	register boolean ideed = TRUE;
+void dosinkring(struct obj *obj) {
+	struct obj *otmp,*otmp2;
+	boolean ideed = TRUE;
 
 	You("drop %s down the drain.", doname(obj));
 	obj->in_use = TRUE;	/* block free identification via interrupt */
@@ -391,7 +391,7 @@ giveback:
 #ifdef OVL0
 
 /* some common tests when trying to drop or throw items */
-boolean canletgo(register struct obj *obj, register const char *word) {
+boolean canletgo(struct obj *obj, const char *word) {
 	if(obj->owornmask & (W_ARMOR | W_RING | W_AMUL | W_TOOL)){
 		if (*word)
 			Norep("You cannot %s %s you are wearing.",word,
@@ -432,7 +432,7 @@ boolean canletgo(register struct obj *obj, register const char *word) {
 }
 
 STATIC_PTR
-int drop(register struct obj *obj) {
+int drop(struct obj *obj) {
 	if(!obj) return(0);
 	if(!canletgo(obj,"drop"))
 		return(0);
@@ -490,7 +490,7 @@ int drop(register struct obj *obj) {
 
 /* Called in several places - may produce output */
 /* eg ship_object() and dropy() -> sellobj() both produce output */
-void dropx(register struct obj *obj) {
+void dropx(struct obj *obj) {
 #ifndef GOLDOBJ
 	if (obj->oclass != COIN_CLASS || obj == invent) freeinv(obj);
 #else
@@ -506,7 +506,7 @@ void dropx(register struct obj *obj) {
 	dropy(obj);
 }
 
-void dropy(register struct obj *obj) {
+void dropy(struct obj *obj) {
 	if (obj == uwep) setuwep((struct obj *)0);
 	if (obj == uquiver) setuqwep((struct obj *)0);
 	if (obj == uswapwep) setuswapwep((struct obj *)0);
@@ -843,7 +843,7 @@ d_level save_dlevel = {0, 0};
 
 /* check that we can write out the current level */
 STATIC_OVL int currentlevel_rewrite() {
-	register int fd;
+	int fd;
 	char whynot[BUFSZ];
 
 	/* since level change might be a bit slow, flush any buffered screen
@@ -894,7 +894,7 @@ void save_currentstate() {
 #endif
 
 /*
-static boolean badspot(register xchar x, register xchar y) {
+static boolean badspot(xchar x, xchar y) {
 	return((levl[x][y].typ != ROOM && levl[x][y].typ != AIR &&
 			 levl[x][y].typ != CORR) || MON_AT(x, y));
 }
@@ -1066,7 +1066,7 @@ void goto_level(d_level *newlevel, boolean at_stairs, boolean falling, boolean p
 
 	if (portal && !In_endgame(&u.uz)) {
 	    /* find the portal on the is_new level */
-	    register struct trap *ttrap;
+	    struct trap *ttrap;
 
 	    for (ttrap = ftrap; ttrap; ttrap = ttrap->ntrap)
 		if (ttrap->ttyp == MAGIC_PORTAL) break;
@@ -1081,7 +1081,7 @@ void goto_level(d_level *newlevel, boolean at_stairs, boolean falling, boolean p
 		} else {
 		    if (newdungeon) {
 			if (Is_stronghold(&u.uz)) {
-			    register xchar x, y;
+			    xchar x, y;
 
 			    do {
 				x = (COLNO - 2 - rnd(5));
@@ -1561,7 +1561,7 @@ int dowipe() {
 	return(1);
 }
 
-void set_wounded_legs(register long side, register int timex) {
+void set_wounded_legs(long side, int timex) {
 	/* KMH -- STEED
 	 * If you are riding, your steed gets the wounded legs instead.
 	 * You still call this function, but don't lose hp.

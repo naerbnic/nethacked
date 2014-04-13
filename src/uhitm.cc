@@ -91,7 +91,7 @@ void hurtmarmor(struct monst *mdef, int attk) {
 }
 
 /* FALSE means it's OK to attack */
-boolean attack_checks(register struct monst *mtmp, struct obj *wep) {
+boolean attack_checks(struct monst *mtmp, struct obj *wep) {
 	char qbuf[QBUFSZ];
 #ifdef PARANOID
 	char buf[BUFSZ];
@@ -235,7 +235,7 @@ void check_caitiff(struct monst *mtmp) {
 	}
 }
 
-schar find_roll_to_hit(register struct monst *mtmp) {
+schar find_roll_to_hit(struct monst *mtmp) {
 	schar tmp;
 	int tmp2;
 
@@ -295,9 +295,9 @@ schar find_roll_to_hit(register struct monst *mtmp) {
 
 /* try to attack; return FALSE if monster evaded */
 /* u.dx and u.dy must be set */
-boolean attack(register struct monst *mtmp) {
+boolean attack(struct monst *mtmp) {
 	schar tmp;
-	register struct permonst *mdat = mtmp->data;
+	struct permonst *mdat = mtmp->data;
 
 	/* This section of code provides protection against accidentally
 	 * hitting peaceful (like '@') and tame (like 'd') monsters.
@@ -412,8 +412,8 @@ atk_done:
 }
 
 /* returns TRUE if monster still lives */
-STATIC_OVL boolean known_hitum(register struct monst *mon, register int *mhit, struct attack *uattk) {
-	register boolean malive = TRUE;
+STATIC_OVL boolean known_hitum(struct monst *mon, int *mhit, struct attack *uattk) {
+	boolean malive = TRUE;
 
 	if (override_confirmation) {
 	    /* this may need to be generalized if weapons other than
@@ -1240,9 +1240,9 @@ STATIC_OVL void steal_it(struct monst *mdef, struct attack *mattk) {
 	}
 }
 
-int damageum(register struct monst *mdef, register struct attack *mattk) {
-	register struct permonst *pd = mdef->data;
-	register int	tmp = d((int)mattk->damn, (int)mattk->damd);
+int damageum(struct monst *mdef, struct attack *mattk) {
+	struct permonst *pd = mdef->data;
+	int	tmp = d((int)mattk->damn, (int)mattk->damd);
 	int armpro;
 	boolean negated;
 
@@ -1618,8 +1618,8 @@ int damageum(register struct monst *mdef, register struct attack *mattk) {
 	return(1);
 }
 
-STATIC_OVL int explum(register struct monst *mdef, register struct attack *mattk) {
-	register int tmp = d((int)mattk->damn, (int)mattk->damd);
+STATIC_OVL int explum(struct monst *mdef, struct attack *mattk) {
+	int tmp = d((int)mattk->damn, (int)mattk->damd);
 
 	You("explode!");
 	switch(mattk->adtyp) {
@@ -1688,9 +1688,9 @@ STATIC_OVL void end_engulf() {
 	}
 }
 
-STATIC_OVL int gulpum(register struct monst *mdef, register struct attack *mattk) {
-	register int tmp;
-	register int dam = d((int)mattk->damn, (int)mattk->damd);
+STATIC_OVL int gulpum(struct monst *mdef, struct attack *mattk) {
+	int tmp;
+	int dam = d((int)mattk->damn, (int)mattk->damd);
 	struct obj *otmp;
 	/* Not totally the same as for real monsters.  Specifically, these
 	 * don't take multiple moves.  (It's just too hard, for too little
@@ -1865,7 +1865,7 @@ STATIC_OVL int gulpum(register struct monst *mdef, register struct attack *mattk
 	return(0);
 }
 
-void missum(register struct monst *mdef, register struct attack *mattk) {
+void missum(struct monst *mdef, struct attack *mattk) {
 	if (could_seduce(&youmonst, mdef, mattk))
 		You("pretend to be friendly to %s.", mon_nam(mdef));
 	else if(canspotmon(mdef) && flags.verbose)
@@ -1877,7 +1877,7 @@ void missum(register struct monst *mdef, register struct attack *mattk) {
 }
 
 /* attack monster as a monster. */
-STATIC_OVL boolean hmonas(register struct monst *mon, register int tmp) {
+STATIC_OVL boolean hmonas(struct monst *mon, int tmp) {
 	struct attack *mattk, alt_attk;
 	int	i, sum[NATTK], hittmp = 0;
 	int	nsum = 0;
@@ -2074,9 +2074,9 @@ use_weapon:
 
 /*	Special (passive) attacks on you by monsters done here.		*/
 
-int passive(register struct monst *mon, register boolean mhit, register int malive, uchar aatyp) {
-	register struct permonst *ptr = mon->data;
-	register int i, tmp;
+int passive(struct monst *mon, boolean mhit, int malive, uchar aatyp) {
+	struct permonst *ptr = mon->data;
+	int i, tmp;
 
 	for(i = 0; ; i++) {
 	    if(i >= NATTK) return(malive | mhit);	/* no passive attacks */
@@ -2277,9 +2277,9 @@ int passive(register struct monst *mon, register boolean mhit, register int mali
  * Special (passive) attacks on an attacking object by monsters done here.
  * Assumes the attack was successful.
  */
-void passive_obj(register struct monst *mon, register struct obj *obj, struct attack *mattk) {
-	register struct permonst *ptr = mon->data;
-	register int i;
+void passive_obj(struct monst *mon, struct obj *obj, struct attack *mattk) {
+	struct permonst *ptr = mon->data;
+	int i;
 
 	/* if caller hasn't specified an object, use uwep, uswapwep or uarmg */
 	if (!obj) {

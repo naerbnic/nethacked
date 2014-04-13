@@ -29,7 +29,7 @@ STATIC_DCL void FDECL(miniwalk,(int,int));
 
 STATIC_OVL
 void roguejoin(int x1, int y1, int x2, int y2, int horiz) {
-	register int x,y,middle;
+	int x,y,middle;
 #ifndef MAX
 #define MAX(a,b) (((a) > (b)) ? (a) : (b))
 #endif
@@ -57,7 +57,7 @@ void roguejoin(int x1, int y1, int x2, int y2, int horiz) {
 
 STATIC_OVL
 void roguecorr(int x, int y, int dir) {
-	register int fromx, fromy, tox, toy;
+	int fromx, fromy, tox, toy;
 
 	if (dir==DOWN) {
 		r[x][y].doortable &= ~DOWN;
@@ -139,7 +139,7 @@ void roguecorr(int x, int y, int dir) {
 /* Modified walkfrom() from mkmaze.c */
 STATIC_OVL
 void miniwalk(int x, int y) {
-	register int q, dir;
+	int q, dir;
 	int dirs[4];
 
 	while(1) {
@@ -186,7 +186,7 @@ void miniwalk(int x, int y) {
 
 void
 makeroguerooms() {
-	register int x,y;
+	int x,y;
 	/* Rogue levels are structured 3 by 3, with each section containing
 	 * a room or an intersection.  The minimum width is 2 each way.
 	 * One difference between these and "real" Rogue levels: real Rogue
@@ -273,7 +273,7 @@ void corr(int x, int y) {
 }
 
 void makerogueghost() {
-	register struct monst *ghost;
+	struct monst *ghost;
 	struct obj *ghostobj;
 	struct mkroom *croom;
 	int x,y;

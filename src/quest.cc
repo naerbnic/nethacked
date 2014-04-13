@@ -242,7 +242,7 @@ STATIC_OVL void chat_with_leader() {
 	}
 }
 
-void leader_speaks(register struct monst *mtmp) {
+void leader_speaks(struct monst *mtmp) {
 	/* maybe you attacked leader? */
 	if(!mtmp->mpeaceful) {
 		Qstat(pissed_off) = TRUE;
@@ -286,7 +286,7 @@ STATIC_OVL void chat_with_guardian() {
 	    qt_pager(rn1(5, QT_GUARDTALK));
 }
 
-STATIC_OVL void prisoner_speaks (register struct monst *mtmp) {
+STATIC_OVL void prisoner_speaks (struct monst *mtmp) {
 	if (mtmp->data == &mons[PM_PRISONER] &&
 			(mtmp->mstrategy & STRAT_WAITMASK)) {
 	    /* Awaken the prisoner */
@@ -305,7 +305,7 @@ STATIC_OVL void prisoner_speaks (register struct monst *mtmp) {
 	return;
 }
 
-void quest_chat(register struct monst *mtmp) {
+void quest_chat(struct monst *mtmp) {
     if (mtmp->m_id == Qstat(leader_m_id)) {
 	chat_with_leader();
 	return;
@@ -318,7 +318,7 @@ void quest_chat(register struct monst *mtmp) {
 	}
 }
 
-void quest_talk(register struct monst *mtmp) {
+void quest_talk(struct monst *mtmp) {
     if (mtmp->m_id == Qstat(leader_m_id)) {
 	leader_speaks(mtmp);
 	return;

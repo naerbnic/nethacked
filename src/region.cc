@@ -175,7 +175,7 @@ void add_mon_to_reg(NhRegion *reg, struct monst *mon) {
  * Remove a monster from the region list (it left or died...)
  */
 void remove_mon_from_reg(NhRegion *reg, struct monst *mon) {
-    register int i;
+    int i;
 
     for (i = 0; i < reg->n_monst; i++)
 	if (reg->monsters[i] == mon->m_id) {
@@ -287,7 +287,7 @@ void add_region(NhRegion *reg) {
  * Remove a region from the list & free it.
  */
 void remove_region(NhRegion *reg) {
-    register int i, x, y;
+    int i, x, y;
 
     for (i = 0; i < n_regions; i++)
 	if (regions[i] == reg)
@@ -313,7 +313,7 @@ void remove_region(NhRegion *reg) {
  * when changing level, for instance).
  */
 void clear_regions() {
-    register int i;
+    int i;
 
     for (i = 0; i < n_regions; i++)
 	free_region(regions[i]);
@@ -330,7 +330,7 @@ void clear_regions() {
  * callbacks when needed.
  */
 void run_regions() {
-    register int i, j, k;
+    int i, j, k;
     int f_indx;
 
     /* End of life ? */
@@ -465,7 +465,7 @@ boolean m_in_out_region(struct monst *mon, xchar x, xchar y) {
  * Checks player's regions after a teleport for instance.
  */
 void update_player_regions() {
-    register int i;
+    int i;
 
     for (i = 0; i < n_regions; i++)
 	if (!regions[i]->attach_2_u && inside_region(regions[i], u.ux, u.uy))
@@ -478,7 +478,7 @@ void update_player_regions() {
  * Ditto for a specified monster.
  */
 void update_monster_region(struct monst *mon) {
-    register int i;
+    int i;
 
     for (i = 0; i < n_regions; i++) {
 	if (inside_region(regions[i], mon->mx, mon->my)) {
@@ -500,7 +500,7 @@ void update_monster_region(struct monst *mon) {
  * need a new structure (internally that is).
  */
 void replace_mon_regions(struct monst *monold, struct monst *monnew) {
-    register int i;
+    int i;
 
     for (i = 0; i < n_regions; i++)
 	if (mon_in_region(regions[i], monold)) {
@@ -513,7 +513,7 @@ void replace_mon_regions(struct monst *monold, struct monst *monnew) {
  * Remove monster from all regions it was in (ie monster just died)
  */
 void remove_mon_from_regions(struct monst *mon) {
-    register int i;
+    int i;
 
     for (i = 0; i < n_regions; i++)
 	if (mon_in_region(regions[i], mon))
@@ -527,7 +527,7 @@ void remove_mon_from_regions(struct monst *mon) {
  * Returns NULL if not, otherwise returns region.
  */
 NhRegion * visible_region_at(xchar x, xchar y) {
-    register int i;
+    int i;
 
     for (i = 0; i < n_regions; i++)
 	if (inside_region(regions[i], x, y) && regions[i]->visible &&

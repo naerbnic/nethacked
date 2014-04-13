@@ -85,7 +85,7 @@ long	    wgrowtime[MAX_NUM_WORMS] = DUMMY;
  *  Implementation is left to the interested hacker.
  */
 int get_wormno() {
-    register int new_wormno = 1;
+    int new_wormno = 1;
 
     while (new_wormno < MAX_NUM_WORMS) {
 	if (!wheads[new_wormno])
@@ -108,8 +108,8 @@ int get_wormno() {
  *  not be called.
  */
 void initworm(struct monst *worm, int wseg_count) {
-    register struct wseg *seg, *new_tail = create_worm_tail(wseg_count);
-    register int wnum = worm->wormno;
+    struct wseg *seg, *new_tail = create_worm_tail(wseg_count);
+    int wnum = worm->wormno;
 
 /*  if (!wnum) return;  bullet proofing */
 
@@ -134,8 +134,8 @@ void initworm(struct monst *worm, int wseg_count) {
  *  The display may or may not need to be updated as we free the segments.
  */
 STATIC_OVL
-void toss_wsegs(register struct wseg *curr, register boolean display_update) {
-    register struct wseg *seg;
+void toss_wsegs(struct wseg *curr, boolean display_update) {
+    struct wseg *seg;
 
     while (curr) {
 	seg = curr->nseg;
@@ -182,8 +182,8 @@ void shrink_worm(int wnum) {
  *  Move the worm.  Maybe grow.
  */
 void worm_move(struct monst *worm) {
-    register struct wseg *seg, *new_seg;	/* new segment */
-    register int	 wnum = worm->wormno;	/* worm number */
+    struct wseg *seg, *new_seg;	/* new segment */
+    int	 wnum = worm->wormno;	/* worm number */
 
 
 /*  if (!wnum) return;  bullet proofing */
@@ -226,7 +226,7 @@ void worm_move(struct monst *worm) {
  *
  *  The worm don't move so it should shrink.
  */
-void worm_nomove(register struct monst *worm) {
+void worm_nomove(struct monst *worm) {
     shrink_worm((int) worm->wormno);	/* shrink */
 
     if (worm->mhp > 3)
@@ -242,8 +242,8 @@ void worm_nomove(register struct monst *worm) {
  *
  *  Kill a worm tail.
  */
-void wormgone(register struct monst *worm) {
-    register int wnum = worm->wormno;
+void wormgone(struct monst *worm) {
+    int wnum = worm->wormno;
 
 /*  if (!wnum) return;  bullet proofing */
 
@@ -264,9 +264,9 @@ void wormgone(register struct monst *worm) {
  *
  *  If the hero is near any part of the worm, the worm will try to attack.
  */
-void wormhitu(register struct monst *worm) {
-    register int wnum = worm->wormno;
-    register struct wseg *seg;
+void wormhitu(struct monst *worm) {
+    int wnum = worm->wormno;
+    struct wseg *seg;
 
 /*  if (!wnum) return;  bullet proofing */
 
@@ -302,8 +302,8 @@ void cutoff(struct monst *worm, struct wseg *tail) {
  *  that both halves will survive.
  */
 void cutworm(struct monst *worm, xchar x, xchar y, struct obj *weap) {
-    register struct wseg  *curr, *new_tail;
-    register struct monst *new_worm;
+    struct wseg  *curr, *new_tail;
+    struct monst *new_worm;
     int wnum = worm->wormno;
     int cut_chance, new_wnum;
 
@@ -529,8 +529,8 @@ void place_wsegs(struct monst *worm) {
  *  It does not get rid of (dealloc) the worm tail structures, and it does
  *  not remove the mon from the fmon chain.
  */
-void remove_worm(register struct monst *worm) {
-    register struct wseg *curr = wtails[worm->wormno];
+void remove_worm(struct monst *worm) {
+    struct wseg *curr = wtails[worm->wormno];
 
 /*  if (!mtmp->wormno) return;  bullet proofing */
 
@@ -554,7 +554,7 @@ void place_worm_tail_randomly(struct monst *worm, xchar x, xchar y) {
     int wnum = worm->wormno;
     struct wseg *curr = wtails[wnum];
     struct wseg *new_tail;
-    register xchar ox = x, oy = y;
+    xchar ox = x, oy = y;
 
 /*  if (!wnum) return;  bullet proofing */
 
@@ -603,7 +603,7 @@ void place_worm_tail_randomly(struct monst *worm, xchar x, xchar y) {
  * enexto() with a search radius.
  */
 STATIC_OVL
-void random_dir(register xchar x, register xchar y, register xchar *nx, register xchar *ny) {
+void random_dir(xchar x, xchar y, xchar *nx, xchar *ny) {
     *nx = x;
     *ny = y;
 
@@ -635,8 +635,8 @@ void random_dir(register xchar x, register xchar y, register xchar *nx, register
  */
 
 int count_wsegs(struct monst *mtmp) {
-    register int i=0;
-    register struct wseg *curr = (wtails[mtmp->wormno])->nseg;
+    int i=0;
+    struct wseg *curr = (wtails[mtmp->wormno])->nseg;
 
 /*  if (!mtmp->wormno) return 0;  bullet proofing */
 
@@ -654,8 +654,8 @@ int count_wsegs(struct monst *mtmp) {
  */
 STATIC_OVL
 struct wseg * create_worm_tail(int num_segs) {
-    register int i=0;
-    register struct wseg *new_tail, *curr;
+    int i=0;
+    struct wseg *new_tail, *curr;
 
     if (!num_segs) return (struct wseg *)0;
 

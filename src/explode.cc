@@ -397,8 +397,8 @@ struct scatter_chain {
 
 /* returns number of scattered objects */
 long scatter(int sx, int sy, int blastforce, unsigned int scflags, struct obj *obj) {
-	register struct obj *otmp;
-	register int tmp;
+	struct obj *otmp;
+	int tmp;
 	int farthest = 0;
 	uchar typ;
 	long qtmp;

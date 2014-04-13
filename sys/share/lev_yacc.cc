@@ -862,10 +862,10 @@ char *yyrule[] = {
 "alignment : RANDOM_TYPE",
 "altar_type : ALTAR_TYPE",
 "altar_type : RANDOM_TYPE",
-"p_register : P_REGISTER '[' INTEGER ']'",
-"o_register : O_REGISTER '[' INTEGER ']'",
-"m_register : M_REGISTER '[' INTEGER ']'",
-"a_register : A_REGISTER '[' INTEGER ']'",
+"p_: P_REGISTER '[' INTEGER ']'",
+"o_: O_REGISTER '[' INTEGER ']'",
+"m_: M_REGISTER '[' INTEGER ']'",
+"a_: A_REGISTER '[' INTEGER ']'",
 "place : coord",
 "monster : CHAR",
 "object : CHAR",
@@ -909,9 +909,9 @@ YYSTYPE yyvs[YYSTACKSIZE];
 #define YYACCEPT goto yyaccept
 #define YYERROR goto yyerrlab
 int yyparse() {
-    register int yym, yyn, yystate;
+    int yym, yyn, yystate;
 #if YYDEBUG
-    register char *yys;
+    char *yys;
     extern char *getenv();
 
     if ((yys = getenv("YYDEBUG")) != 0)
@@ -1492,7 +1492,7 @@ case 91:
 			if (tmppart[npart]->nloc) {
 			    yyerror("Location registers already initialized!");
 			} else {
-			    register int i;
+			    int i;
 			    tmppart[npart]->rloc_x = (char *) alloc(n_plist);
 			    tmppart[npart]->rloc_y = (char *) alloc(n_plist);
 			    for(i=0;i<n_plist;i++) {
@@ -2110,7 +2110,7 @@ case 174:
 			   current_region.y2 < (int)max_y_map) {
 			    /* check for walls in the room */
 			    char ebuf[60];
-			    register int x, y, nrock = 0;
+			    int x, y, nrock = 0;
 
 			    for(y=current_region.y1; y<=current_region.y2; y++)
 				for(x=current_region.x1;

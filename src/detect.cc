@@ -24,7 +24,7 @@ STATIC_PTR void FDECL(openone,(int,int,genericptr_t));
 
 /* Recursively search obj for an object in class_id oclass and return 1st found */
 struct obj * o_in(struct obj* obj, char oclass) {
-    register struct obj* otmp;
+    struct obj* otmp;
     struct obj *temp;
 
     if (obj->oclass == oclass) return obj;
@@ -40,7 +40,7 @@ struct obj * o_in(struct obj* obj, char oclass) {
 
 /* Recursively search obj for an object made of specified material and return 1st found */
 struct obj * o_material(struct obj* obj, unsigned material) {
-    register struct obj* otmp;
+    struct obj* otmp;
     struct obj *temp;
 
     if (objects[obj->otyp].oc_material == material) return obj;
@@ -65,10 +65,10 @@ STATIC_OVL void do_dknown_of(struct obj *obj) {
 }
 
 /* Check whether the location has an outdated object displayed on it. */
-STATIC_OVL boolean check_map_spot(int x, int y, register char oclass, unsigned material) {
-	register int glyph;
-	register struct obj *otmp;
-	register struct monst *mtmp;
+STATIC_OVL boolean check_map_spot(int x, int y, char oclass, unsigned material) {
+	int glyph;
+	struct obj *otmp;
+	struct monst *mtmp;
 
 	glyph = glyph_at(x,y);
 	if (glyph_is_object(glyph)) {
@@ -126,9 +126,9 @@ STATIC_OVL boolean check_map_spot(int x, int y, register char oclass, unsigned m
    reappear after the detection has completed.  Return true if noticeable
    change occurs.
  */
-STATIC_OVL boolean clear_stale_map(register char oclass, unsigned material) {
-	register int zx, zy;
-	register boolean change_made = FALSE;
+STATIC_OVL boolean clear_stale_map(char oclass, unsigned material) {
+	int zx, zy;
+	boolean change_made = FALSE;
 
 	for (zx = 1; zx < COLNO; zx++)
 	    for (zy = 0; zy < ROWNO; zy++)
@@ -141,9 +141,9 @@ STATIC_OVL boolean clear_stale_map(register char oclass, unsigned material) {
 }
 
 /* look for gold, on the floor or in monsters' possession */
-int gold_detect(register struct obj *sobj) {
-    register struct obj *obj;
-    register struct monst *mtmp;
+int gold_detect(struct obj *sobj) {
+    struct obj *obj;
+    struct monst *mtmp;
     int uw = u.uinwater;
     struct obj *temp;
     boolean stale;
@@ -269,10 +269,10 @@ outgoldmap:
 
 /* returns 1 if nothing was detected		*/
 /* returns 0 if something was detected		*/
-int food_detect(register struct obj *sobj) {
-    register struct obj *obj;
-    register struct monst *mtmp;
-    register int ct = 0, ctu = 0;
+int food_detect(struct obj *sobj) {
+    struct obj *obj;
+    struct monst *mtmp;
+    int ct = 0, ctu = 0;
     boolean confused = (Confusion || (sobj && sobj->cursed)), stale;
     char oclass = confused ? POTION_CLASS : FOOD_CLASS;
     const char *what = confused ? something : "food";
@@ -373,15 +373,15 @@ int food_detect(register struct obj *sobj) {
  *	0 - something was detected
  */
 int object_detect(struct obj *detector, int class_id) {
-    register int x, y;
+    int x, y;
     char stuff[BUFSZ];
     int is_cursed = (detector && detector->cursed);
     int do_dknown = (detector && (detector->oclass == POTION_CLASS ||
 				    detector->oclass == SPBOOK_CLASS) &&
 			detector->blessed);
     int ct = 0, ctu = 0;
-    register struct obj *obj, *otmp = (struct obj *)0;
-    register struct monst *mtmp;
+    struct obj *obj, *otmp = (struct obj *)0;
+    struct monst *mtmp;
     int uw = u.uinwater;
     int sym, boulder = 0;
 
@@ -551,8 +551,8 @@ int object_detect(struct obj *detector, int class_id) {
  * Returns 1 if nothing was detected.
  * Returns 0 if something was detected.
  */
-int monster_detect(register struct obj *otmp, int mclass) {
-    register struct monst *mtmp;
+int monster_detect(struct obj *otmp, int mclass) {
+    struct monst *mtmp;
     int mcnt = 0;
 
 
@@ -641,9 +641,9 @@ STATIC_OVL void sense_trap(struct trap *trap, xchar x, xchar y, int src_cursed) 
 /* returns 0 if something was detected		*/
 /* sobj is null if crystal ball, *scroll if gold detection scroll */
 int trap_detect(struct obj *sobj) {
-    register struct trap *ttmp;
-    register struct obj *obj;
-    register int door;
+    struct trap *ttmp;
+    struct obj *obj;
+    int door;
     int uw = u.uinwater;
     boolean found = FALSE;
     coord cc;
@@ -705,8 +705,8 @@ outtrapmap:
 }
 
 const char * level_distance(d_level *where) {
-    register schar ll = depth(&u.uz) - depth(where);
-    register boolean indun = (u.uz.dnum == where->dnum);
+    schar ll = depth(&u.uz) - depth(where);
+    boolean indun = (u.uz.dnum == where->dnum);
 
     if (ll < 0) {
 	if (ll < (-8 - rn2(3)))
@@ -861,8 +861,8 @@ void use_crystal_ball(struct obj *obj) {
     return;
 }
 
-STATIC_OVL void show_map_spot(register int x, register int y) {
-    register struct rm *lev;
+STATIC_OVL void show_map_spot(int x, int y) {
+    struct rm *lev;
 
     if (Confusion && rn2(7)) return;
     lev = &levl[x][y];
@@ -890,7 +890,7 @@ STATIC_OVL void show_map_spot(register int x, register int y) {
 }
 
 void do_mapping() {
-    register int zx, zy;
+    int zx, zy;
     int uw = u.uinwater;
 
     u.uinwater = 0;
@@ -907,7 +907,7 @@ void do_mapping() {
 }
 
 void do_vicinity_map() {
-    register int zx, zy;
+    int zx, zy;
     int lo_y = (u.uy-5 < 0 ? 0 : u.uy-5),
 	hi_y = (u.uy+6 > ROWNO ? ROWNO : u.uy+6),
 	lo_x = (u.ux-9 < 1 ? 1 : u.ux-9),	/* avoid column 0 */
@@ -943,8 +943,8 @@ void cvt_sdoor_to_door(struct rm *lev) {
 
 
 STATIC_PTR void findone(int zx, int zy, genericptr_t num) {
-	register struct trap *ttmp;
-	register struct monst *mtmp;
+	struct trap *ttmp;
+	struct monst *mtmp;
 
 	if(levl[zx][zy].typ == SDOOR) {
 		cvt_sdoor_to_door(&levl[zx][zy]);	/* .typ = DOOR */
@@ -985,8 +985,8 @@ STATIC_PTR void findone(int zx, int zy, genericptr_t num) {
 }
 
 STATIC_PTR void openone(int zx, int zy, genericptr_t num) {
-	register struct trap *ttmp;
-	register struct obj *otmp;
+	struct trap *ttmp;
+	struct obj *otmp;
 
 	if(OBJ_AT(zx, zy)) {
 		for(otmp = level.objects[zx][zy];
@@ -1086,7 +1086,7 @@ void find_trap(struct trap *trap) {
     }
 }
 
-int dosearch0(register int aflag) {
+int dosearch0(int aflag) {
 #ifdef GCC_BUG
 /* some versions of gcc seriously muck up nested loops. if you get strange
    crashes while searching in a version compiled with gcc, try putting
@@ -1095,10 +1095,10 @@ int dosearch0(register int aflag) {
  */
 	volatile xchar x, y;
 #else
-	register xchar x, y;
+	xchar x, y;
 #endif
-	register struct trap *trap;
-	register struct monst *mtmp;
+	struct trap *trap;
+	struct monst *mtmp;
 
 	if(u.uswallow) {
 		if (!aflag)
@@ -1197,9 +1197,9 @@ int dosearch() {
 
 /* Pre-map the sokoban levels */
 void sokoban_detect() {
-	register int x, y;
-	register struct trap *ttmp;
-	register struct obj *obj;
+	int x, y;
+	struct trap *ttmp;
+	struct obj *obj;
 
 	/* Map the background and boulders */
 	for (x = 1; x < COLNO; x++)

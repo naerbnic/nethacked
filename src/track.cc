@@ -31,9 +31,9 @@ void settrack() {
 #endif /* OVL1 */
 #ifdef OVL0
 
-coord * gettrack(register int x, register int y) {
-    register int cnt, ndist;
-    register coord *tc;
+coord * gettrack(int x, int y) {
+    int cnt, ndist;
+    coord *tc;
     cnt = utcnt;
     for(tc = &utrack[utpnt]; cnt--; ){
 	if(tc == utrack) tc = &utrack[UTSZ-1];

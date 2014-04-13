@@ -20,7 +20,7 @@ extern void VDECL(panic, (const char *,...)) PRINTF_F(1,2);
 
 long* alloc(unsigned int lth)
 {
-	register genericptr_t ptr;
+	genericptr_t ptr;
 
 	ptr = malloc(lth);
 	return((long *) ptr);

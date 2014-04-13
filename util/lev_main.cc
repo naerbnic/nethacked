@@ -282,7 +282,7 @@ int get_floor_type(char c) {
  * Find the type of a room in the table, knowing its name.
  */
 int get_room_type(char *s) {
-	register int i;
+	int i;
 
 	for(i=0; room_types[i].name; i++)
 	    if (!strcmp(s, room_types[i].name))
@@ -294,7 +294,7 @@ int get_room_type(char *s) {
  * Find the type of a trap in the table, knowing its name.
  */
 int get_trap_type(char *s) {
-	register int i;
+	int i;
 
 	for (i=0; trap_types[i].name; i++)
 	    if(!strcmp(s,trap_types[i].name))
@@ -306,7 +306,7 @@ int get_trap_type(char *s) {
  * Find the index of a monster in the table, knowing its name.
  */
 int get_monster_id(char *s, char c) {
-	register int i, class_id;
+	int i, class_id;
 
 	class_id = c ? def_char_to_monclass(c) : 0;
 	if (class_id == MAXMCLASSES) return ERR;
@@ -404,8 +404,8 @@ char what_map_char(char c) {
  * Just analyze it here.
  */
 void scan_map(char *map) {
-	register int i, len;
-	register char *s1, *s2;
+	int i, len;
+	char *s1, *s2;
 	int max_len = 0;
 	int max_hig = 0;
 	char msg[256];
@@ -578,7 +578,7 @@ void check_coord(int x, int y, const char *str) {
  * Here we want to store the maze part we just got.
  */
 void store_part() {
-	register unsigned i;
+	unsigned i;
 
 	/* Ok, We got the whole part, now we store it. */
 
@@ -736,7 +736,7 @@ void store_part() {
  * Here we want to store the room part we just got.
  */
 void store_room() {
-	register unsigned i;
+	unsigned i;
 
 	/* Ok, We got the whole room, now we store it. */
 

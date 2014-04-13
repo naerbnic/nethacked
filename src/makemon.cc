@@ -41,7 +41,7 @@ extern const int monstr[];
 #define tooweak(monindx, lev)	(monstr[monindx] < lev)
 
 #ifdef OVLB
-boolean is_home_elemental(register struct permonst *ptr) {
+boolean is_home_elemental(struct permonst *ptr) {
 	if (ptr->mlet == S_ELEMENTAL)
 	    switch (monsndx(ptr)) {
 		case PM_AIR_ELEMENTAL: return Is_airlevel(&u.uz);
@@ -55,7 +55,7 @@ boolean is_home_elemental(register struct permonst *ptr) {
 /*
  * Return true if the given monster cannot exist on this elemental level.
  */
-STATIC_OVL boolean wrong_elem_type(register struct permonst *ptr) {
+STATIC_OVL boolean wrong_elem_type(struct permonst *ptr) {
     if (ptr->mlet == S_ELEMENTAL) {
 	return((boolean)(!is_home_elemental(ptr)));
     } else if (Is_earthlevel(&u.uz)) {
@@ -74,9 +74,9 @@ STATIC_OVL boolean wrong_elem_type(register struct permonst *ptr) {
 }
 
 /* make a group just like mtmp */
-STATIC_OVL void m_initgrp(register struct monst *mtmp, register int x, register int y, register int n) {
+STATIC_OVL void m_initgrp(struct monst *mtmp, int x, int y, int n) {
 	coord mm;
-	register int cnt = rnd(n);
+	int cnt = rnd(n);
 	struct monst *mon;
 #if defined(__GNUC__) && (defined(HPUX) || defined(DGUX))
 	/* There is an unresolved problem with several people finding that
@@ -137,7 +137,7 @@ STATIC_OVL void m_initgrp(register struct monst *mtmp, register int x, register 
 
 STATIC_OVL
 void m_initthrow(struct monst *mtmp, int otyp, int oquan) {
-	register struct obj *otmp;
+	struct obj *otmp;
 
 	otmp = mksobj(otyp, TRUE, FALSE);
 	otmp->quan = (long) rn1(oquan, 3);
@@ -149,9 +149,9 @@ void m_initthrow(struct monst *mtmp, int otyp, int oquan) {
 #endif /* OVLB */
 #ifdef OVL2
 
-STATIC_OVL void m_initweap(register struct monst *mtmp) {
-	register struct permonst *ptr = mtmp->data;
-	register int mm = monsndx(ptr);
+STATIC_OVL void m_initweap(struct monst *mtmp) {
+	struct permonst *ptr = mtmp->data;
+	int mm = monsndx(ptr);
 	struct obj *otmp;
 
 #ifdef REINCARNATION
@@ -466,10 +466,10 @@ void mkmonmoney(struct monst *mtmp, long amount) {
 }
 #endif
 
-STATIC_OVL void m_initinv(register struct monst *mtmp) {
-	register int cnt;
-	register struct obj *otmp;
-	register struct permonst *ptr = mtmp->data;
+STATIC_OVL void m_initinv(struct monst *mtmp) {
+	int cnt;
+	struct obj *otmp;
+	struct permonst *ptr = mtmp->data;
 #ifdef REINCARNATION
 	if (Is_rogue_level(&u.uz)) return;
 #endif
@@ -481,7 +481,7 @@ STATIC_OVL void m_initinv(register struct monst *mtmp) {
 
 	    case S_HUMAN:
 		if(is_mercenary(ptr)) {
-		    register int mac;
+		    int mac;
 
 		    switch(monsndx(ptr)) {
 			case PM_GUARD: mac = -1; break;
@@ -790,8 +790,8 @@ boolean propagate(int mndx, boolean tally, boolean ghostly) {
  *
  *	In case we make a monster group, only return the one at [x,y].
  */
-struct monst * makemon(register struct permonst *ptr, register int x, register int y, register int mmflags) {
-	register struct monst *mtmp;
+struct monst * makemon(struct permonst *ptr, int x, int y, int mmflags) {
+	struct monst *mtmp;
 	int mndx, mcham, ct, mitem, xlth;
 	boolean anymon = (!ptr);
 	boolean byyou = (x == u.ux && y == u.uy);
@@ -1117,10 +1117,10 @@ STATIC_OVL boolean uncommon(int mndx) {
  *	comparing the dungeon alignment and monster alignment.
  *	return an integer in the range of 0-5.
  */
-STATIC_OVL int align_shift(register struct permonst *ptr) {
+STATIC_OVL int align_shift(struct permonst *ptr) {
     static NEARDATA long oldmoves = 0L;	/* != 1, starting value of moves */
     static NEARDATA s_level *lev;
-    register int alshift;
+    int alshift;
 
     if(oldmoves != moves) {
 	lev = Is_special(&u.uz);
@@ -1147,8 +1147,8 @@ static NEARDATA struct {
 
 /* select a random monster type */
 struct permonst * rndmonst() {
-	register struct permonst *ptr;
-	register int mndx, ct;
+	struct permonst *ptr;
+	int mndx, ct;
 
 	if (u.uz.dnum == quest_dnum && rn2(7) && (ptr = qt_montype()) != 0)
 	    return ptr;
@@ -1255,7 +1255,7 @@ void reset_rndmonst(int mndx) {
  */
 
 struct permonst * mkclass(char class_id, int spc) {
-	register int	first, last, num = 0;
+	int	first, last, num = 0;
 	int maxmlev, mask = (G_NOGEN | G_UNIQ) & ~spc;
 
 	maxmlev = level_difficulty() >> 1;
@@ -1302,7 +1302,7 @@ struct permonst * mkclass(char class_id, int spc) {
 }
 
 /* adjust strength of monsters based on u.uz and u.ulevel */
-int adj_lev(register struct permonst *ptr) {
+int adj_lev(struct permonst *ptr) {
 	int	tmp, tmp2;
 
 	if (ptr == &mons[PM_WIZARD_OF_YENDOR]) {
@@ -1420,8 +1420,8 @@ struct permonst * grow_up(struct monst *mtmp, struct monst *victim) {
 #endif /* OVLB */
 #ifdef OVL1
 
-int mongets(register struct monst *mtmp, register int otyp) {
-	register struct obj *otmp;
+int mongets(struct monst *mtmp, int otyp) {
+	struct obj *otmp;
 	int spe;
 
 	if (!otyp) return 0;
@@ -1492,7 +1492,7 @@ int golemhp(int type) {
  *	Alignment vs. yours determines monster's attitude to you.
  *	( some "animal" types are co-aligned, but also hungry )
  */
-boolean peace_minded(register struct permonst *ptr) {
+boolean peace_minded(struct permonst *ptr) {
 	aligntyp mal = ptr->maligntyp, ual = u.ualign.type;
 
 	if (always_peaceful(ptr)) return TRUE;
@@ -1589,7 +1589,7 @@ static NEARDATA char syms[] = {
 };
 
 /* KAA, modified by ERS */
-void set_mimic_sym(register struct monst *mtmp) {
+void set_mimic_sym(struct monst *mtmp) {
 	int typ, roomno, rt;
 	unsigned appear, ap_type;
 	int s_sym;

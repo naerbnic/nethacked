@@ -103,7 +103,7 @@ lev_init init_lev;
  */
 
 STATIC_OVL void set_wall_property(xchar x1, xchar y1, xchar x2, xchar y2, int prop) {
-	register xchar x, y;
+	xchar x, y;
 
 	for(y = y1; y <= y2; y++)
 	    for(x = x1; x <= x2; x++)
@@ -150,7 +150,7 @@ STATIC_OVL int rndtrap() {
  *
  *	if x or y is -11, we generate a random coordinate.
  *	if x or y is between -1 and -10, we read one from the corresponding
- *	register (x0, x1, ... x9).
+ *	(x0, x1, ... x9).
  *	if x or y is nonnegative, we convert it from relative to the local map
  *	to global coordinates.
  *	The "humidity" flag is used to insure that engravings aren't
@@ -177,7 +177,7 @@ STATIC_OVL void get_location(schar *x, schar *y, int humidity) {
 		if (is_ok_location(*x,*y,humidity)) break;
 	    } while (++cpt < 100);
 	    if (cpt >= 100) {
-		register int xx, yy;
+		int xx, yy;
 		/* last try */
 		for (xx = 0; xx < xsize; xx++)
 		    for (yy = 0; yy < ysize; yy++) {
@@ -196,8 +196,8 @@ found_it:;
 	}
 }
 
-STATIC_OVL boolean is_ok_location(register schar x, register schar y, register int humidity) {
-	register int typ;
+STATIC_OVL boolean is_ok_location(schar x, schar y, int humidity) {
+	int typ;
 
 	if (Is_waterlevel(&u.uz)) return TRUE;	/* accept any spot */
 
@@ -219,8 +219,8 @@ STATIC_OVL boolean is_ok_location(register schar x, register schar y, register i
  */
 
 STATIC_OVL void sp_lev_shuffle(char list1[], char list2[], int n) {
-	register int i, j;
-	register char k;
+	int i, j;
+	char k;
 
 	for (i = n - 1; i > 0; i--) {
 		if ((j = rn2(i + 1)) == i) continue;
@@ -266,7 +266,7 @@ STATIC_OVL void get_room_loc(schar *x, schar *y, struct mkroom *croom) {
 
 STATIC_OVL void get_free_room_loc(schar *x, schar *y, struct mkroom *croom) {
 	schar try_x, try_y;
-	register int trycnt = 0;
+	int trycnt = 0;
 
 	do {
 	    try_x = *x,  try_y = *y;
@@ -279,8 +279,8 @@ STATIC_OVL void get_free_room_loc(schar *x, schar *y, struct mkroom *croom) {
 }
 
 boolean check_room(xchar *lowx, xchar *ddx, xchar *lowy, xchar *ddy, boolean vault) {
-	register int x,y,hix = *lowx + *ddx, hiy = *lowy + *ddy;
-	register struct rm *lev;
+	int x,y,hix = *lowx + *ddx, hiy = *lowy + *ddy;
+	struct rm *lev;
 	int xlim, ylim, ymax;
 
 	xlim = XLIM + (vault ? 1 : 0);
@@ -566,7 +566,7 @@ STATIC_OVL void create_door(room_door *dd, struct mkroom *broom) {
 	}
 
 	do {
-		register int dwall, dpos;
+		int dwall, dpos;
 
 		dwall = dd->wall;
 		if (dwall == -1)	/* The wall is RANDOM */
@@ -1189,9 +1189,9 @@ STATIC_OVL boolean search_door(struct mkroom *croom, xchar *x, xchar *y, xchar w
  */
 
 boolean dig_corridor(coord *org, coord *dest, boolean nxcor, schar ftyp, schar btyp) {
-	register int dx=0, dy=0, dix, diy, cct;
-	register struct rm *crm;
-	register int tx, ty, xx, yy;
+	int dx=0, dy=0, dix, diy, cct;
+	struct rm *crm;
+	int tx, ty, xx, yy;
 
 	xx = org->x;  yy = org->y;
 	tx = dest->x; ty = dest->y;
@@ -1244,7 +1244,7 @@ boolean dig_corridor(coord *org, coord *dest, boolean nxcor, schar ftyp, schar b
 
 	    /* do we have to change direction ? */
 	    if(dy && dix > diy) {
-		register int ddx = (xx > tx) ? -1 : 1;
+		int ddx = (xx > tx) ? -1 : 1;
 
 		crm = &levl[xx+ddx][yy];
 		if(crm->typ == btyp || crm->typ == ftyp || crm->typ == SCORR) {
@@ -1253,7 +1253,7 @@ boolean dig_corridor(coord *org, coord *dest, boolean nxcor, schar ftyp, schar b
 		    continue;
 		}
 	    } else if(dx && diy > dix) {
-		register int ddy = (yy > ty) ? -1 : 1;
+		int ddy = (yy > ty) ? -1 : 1;
 
 		crm = &levl[xx][yy+ddy];
 		if(crm->typ == btyp || crm->typ == ftyp || crm->typ == SCORR) {
@@ -1574,10 +1574,10 @@ STATIC_OVL void build_room(room *r, room *pr) {
  * set lighting in a region that will not become a room.
  */
 STATIC_OVL void light_region(region *tmpregion) {
-    register boolean litstate = tmpregion->rlit ? 1 : 0;
-    register int hiy = tmpregion->y2;
-    register int x, y;
-    register struct rm *lev;
+    boolean litstate = tmpregion->rlit ? 1 : 0;
+    int hiy = tmpregion->y2;
+    int x, y;
+    struct rm *lev;
     int lowy = tmpregion->y1;
     int lowx = tmpregion->x1, hix = tmpregion->x2;
 
@@ -1911,7 +1911,7 @@ STATIC_OVL boolean load_rooms(dlb *fd) {
  */
 
 STATIC_OVL void maze1xy(coord *m, int humidity) {
-	register int x, y, tryct = 2000;
+	int x, y, tryct = 2000;
 	/* tryct:  normally it won't take more than ten or so tries due
 	   to the circumstances under which we'll be called, but the
 	   `humidity' screening might drastically change the chances */
@@ -2148,7 +2148,7 @@ STATIC_OVL boolean load_maze(dlb *fd) {
 	Fread((genericptr_t) &n, 1, sizeof(n), fd);
 						/* Number of subrooms */
 	while(n--) {
-		register struct mkroom *troom;
+		struct mkroom *troom;
 
 		Fread((genericptr_t)&tmpregion, 1, sizeof(tmpregion), fd);
 

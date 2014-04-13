@@ -28,7 +28,7 @@ STATIC_DCL void NDECL(unsetup_waterlevel);
 
 
 STATIC_OVL boolean iswall(int x, int y) {
-    register int type;
+    int type;
 
     if (!isok(x,y)) return FALSE;
     type = levl[x][y].typ;
@@ -37,7 +37,7 @@ STATIC_OVL boolean iswall(int x, int y) {
 }
 
 STATIC_OVL boolean iswall_or_stone(int x, int y) {
-    register int type;
+    int type;
 
     /* out of bounds = stone */
     if (!isok(x,y)) return TRUE;
@@ -109,7 +109,7 @@ STATIC_OVL int extend_spine(
  */
 void wallification(int x1, int y1, int x2, int y2) {
 	uchar type;
-	register int x,y;
+	int x,y;
 	struct rm *lev;
 	int bits;
 	int locale[3][3];	/* rock or wall status surrounding positions */
@@ -181,7 +181,7 @@ void wallification(int x1, int y1, int x2, int y2) {
 	    }
 }
 
-STATIC_OVL boolean okay(int x, int y, register int dir) {
+STATIC_OVL boolean okay(int x, int y, int dir) {
 	move(&x,&y,dir);
 	move(&x,&y,dir);
 	if(x<3 || y<3 || x>x_maze_max || y>y_maze_max || levl[x][y].typ != 0)
@@ -295,9 +295,9 @@ static boolean was_waterlevel; /* ugh... this shouldn't be needed */
 
 /* this is special stuff that the level compiler cannot (yet) handle */
 STATIC_OVL void fixup_special() {
-    register lev_region *r = lregions;
+    lev_region *r = lregions;
     struct d_level lev;
-    register int x, y;
+    int x, y;
     struct mkroom *croom;
     boolean added_branch = FALSE;
 
@@ -428,7 +428,7 @@ STATIC_OVL void fixup_special() {
 
 	create_secret_door(croom, W_ANY);
     } else if(on_level(&u.uz, &orcus_level)) {
-	   register struct monst *mtmp, *mtmp2;
+	   struct monst *mtmp, *mtmp2;
 
 	   /* it's a ghost town, get rid of shopkeepers */
 	    for(mtmp = fmon; mtmp; mtmp = mtmp2) {
@@ -454,7 +454,7 @@ STATIC_OVL void fixup_special() {
     num_lregions = 0;
 }
 
-void makemaz(register const char *s) {
+void makemaz(const char *s) {
 	int x,y;
 	char protofile[20];
 	s_level	*sp = Is_special(&u.uz);
@@ -663,7 +663,7 @@ void walkfrom(int x, int y) {
 #else
 
 void walkfrom(int x, int y) {
-	register int q,a,dir;
+	int q,a,dir;
 	int dirs[4];
 
 	if(!IS_DOOR(levl[x][y].typ)) {
@@ -694,7 +694,7 @@ void walkfrom(int x, int y) {
 }
 #endif /* MICRO */
 
-STATIC_OVL void move(register int *x, register int *y, register int dir) {
+STATIC_OVL void move(int *x, int *y, int dir) {
 	switch(dir){
 		case 0: --(*y); break;
 		case 1: (*x)++; break;
@@ -721,7 +721,7 @@ void mazexy(coord* cc) {
 #endif
 		);
 	if (cpt >= 100) {
-		register int x, y;
+		int x, y;
 		/* last try */
 		for (x = 0; x < (x_maze_max>>1) - 1; x++)
 		    for (y = 0; y < (y_maze_max>>1) - 1; y++) {
@@ -753,9 +753,9 @@ bound_digging()
  * that provides a window of abuse for WALLIFIED_MAZE special levels
  */
 {
-	register int x,y;
-	register unsigned typ;
-	register struct rm *lev;
+	int x,y;
+	unsigned typ;
+	struct rm *lev;
 	boolean found, nonwall;
 	int xmin,xmax,ymin,ymax;
 
@@ -827,10 +827,10 @@ bound_digging()
 	    }
 }
 
-void mkportal(register xchar x, register xchar y, register xchar todnum, register xchar todlevel) {
+void mkportal(xchar x, xchar y, xchar todnum, xchar todlevel) {
 	/* a portal "trap" must be matched by a */
 	/* portal in the destination dungeon/dlevel */
-	register struct trap *ttmp = maketrap(x, y, MAGIC_PORTAL);
+	struct trap *ttmp = maketrap(x, y, MAGIC_PORTAL);
 
 	if (!ttmp) {
 		impossible("portal on top of portal??");
@@ -876,8 +876,8 @@ STATIC_DCL void FDECL(mv_bubble, (struct bubble *,int,int,BOOLEAN_P));
 
 void movebubbles() {
 	static boolean up;
-	register struct bubble *b;
-	register int x, y, i, j;
+	struct bubble *b;
+	int x, y, i, j;
 	struct trap *btrap;
 	static const struct rm water_pos =
 		{ cmap_to_glyph(S_water), WATER, 0, 0, 0, 0, 0, 0, 0 };
@@ -983,7 +983,7 @@ void movebubbles() {
 
 	up = !up;
 	for (b = up ? bbubbles : ebubbles; b; b = up ? b->next : b->prev) {
-		register int rx = rn2(3), ry = rn2(3);
+		int rx = rn2(3), ry = rn2(3);
 
 		mv_bubble(b,b->dx + 1 - (!b->dx ? rx : (rx ? 1 : 0)),
 			    b->dy + 1 - (!b->dy ? ry : (ry ? 1 : 0)),
@@ -997,8 +997,8 @@ void movebubbles() {
 
 /* when moving in water, possibly (1 in 3) alter the intended destination */
 void water_friction() {
-	register int x, y, dx, dy;
-	register boolean eff = FALSE;
+	int x, y, dx, dy;
+	boolean eff = FALSE;
 
 	if (Swimming && rn2(4))
 		return;		/* natural swimmers have advantage */
@@ -1028,7 +1028,7 @@ void water_friction() {
 }
 
 void save_waterlevel(int fd, int mode) {
-	register struct bubble *b;
+	struct bubble *b;
 
 	if (!Is_waterlevel(&u.uz)) return;
 
@@ -1047,9 +1047,9 @@ void save_waterlevel(int fd, int mode) {
 	    unsetup_waterlevel();
 }
 
-void restore_waterlevel(register int fd) {
-	register struct bubble *b = (struct bubble *)0, *btmp;
-	register int i;
+void restore_waterlevel(int fd) {
+	struct bubble *b = (struct bubble *)0, *btmp;
+	int i;
 	int n;
 
 	if (!Is_waterlevel(&u.uz)) return;
@@ -1079,7 +1079,7 @@ void restore_waterlevel(register int fd) {
 }
 
 const char *waterbody_name(xchar x, xchar y) {
-	register struct rm *lev;
+	struct rm *lev;
 	schar ltyp;
 
 	if (!isok(x,y))
@@ -1112,9 +1112,9 @@ STATIC_OVL void set_wportal() {
 }
 
 STATIC_OVL void setup_waterlevel() {
-	register int x, y;
-	register int xskip, yskip;
-	register int water_glyph = cmap_to_glyph(S_water);
+	int x, y;
+	int xskip, yskip;
+	int water_glyph = cmap_to_glyph(S_water);
 
 	/* ouch, hardcoded... */
 
@@ -1139,7 +1139,7 @@ STATIC_OVL void setup_waterlevel() {
 }
 
 STATIC_OVL void unsetup_waterlevel() {
-	register struct bubble *b, *bb;
+	struct bubble *b, *bb;
 
 	/* free bubbles */
 
@@ -1150,7 +1150,7 @@ STATIC_OVL void unsetup_waterlevel() {
 	bbubbles = ebubbles = (struct bubble *)0;
 }
 
-STATIC_OVL void mk_bubble(register int x, register int y, register int n) {
+STATIC_OVL void mk_bubble(int x, int y, int n) {
 	/*
 	 * These bit masks make visually pleasing bubbles on a normal aspect
 	 * 25x80 terminal, which naturally results in them being mathematically
@@ -1168,7 +1168,7 @@ STATIC_OVL void mk_bubble(register int x, register int y, register int n) {
 		bm8[] = {8,4,0x7e,0xff,0xff,0x7e},
 		*bmask[] = {bm2,bm3,bm4,bm5,bm6,bm7,bm8};
 
-	register struct bubble *b;
+	struct bubble *b;
 
 	if (x >= bxmax || y >= bymax) return;
 	if (n >= SIZE(bmask)) {
@@ -1204,8 +1204,8 @@ STATIC_OVL void mk_bubble(register int x, register int y, register int n) {
  * in the immediate neighborhood of one, he/she may get sucked inside.
  * This property also makes leaving a bubble slightly difficult.
  */
-STATIC_OVL void mv_bubble(register struct bubble *b, register int dx, register int dy, register boolean ini) {
-	register int x, y, i, j, colli = 0;
+STATIC_OVL void mv_bubble(struct bubble *b, int dx, int dy, boolean ini) {
+	int x, y, i, j, colli = 0;
 	struct container *cons, *ctemp;
 
 	/* move bubble */

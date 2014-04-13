@@ -103,7 +103,7 @@ void hangup(int sig_unused) {
 /* returns 1 if save successful */
 int dosave0() {
 	const char *fq_save;
-	register int fd, ofd;
+	int fd, ofd;
 	xchar ltmp;
 	d_level uz_save;
 	char whynot[BUFSZ];
@@ -258,7 +258,7 @@ int dosave0() {
 	return(1);
 }
 
-STATIC_OVL void savegamestate(register int fd, register int mode) {
+STATIC_OVL void savegamestate(int fd, int mode) {
 	int uid;
 #if defined(RECORD_REALTIME) || defined(REALTIME_ON_BOTL)
         time_t realtime;
@@ -597,7 +597,7 @@ void bufoff(int fd) {
 }
 
 /* flush run and buffer */
-void bflush(register int fd) {
+void bflush(int fd) {
     bwritefd = fd;
     if (outrunlength >= 0) {	/* flush run */
 	flushoutrun(outrunlength);
@@ -617,8 +617,8 @@ void bflush(register int fd) {
     }
 }
 
-void bwrite(int fd, genericptr_t loc, register unsigned num) {
-    register unsigned char *bp = (unsigned char *)loc;
+void bwrite(int fd, genericptr_t loc, unsigned num) {
+    unsigned char *bp = (unsigned char *)loc;
 
     if (!compressing) {
 #ifdef MFLOPPY
@@ -682,7 +682,7 @@ void bflush(int fd) {
     return;
 }
 
-void bwrite(register int fd, register genericptr_t loc, register unsigned num) {
+void bwrite(int fd, genericptr_t loc, unsigned num) {
 	boolean failed;
 
 #ifdef MFLOPPY
@@ -725,7 +725,7 @@ void bclose(int fd) {
 }
 #endif /* ZEROCOMP */
 
-STATIC_OVL void savelevchn(register int fd, register int mode) {
+STATIC_OVL void savelevchn(int fd, int mode) {
 	s_level	*tmplev, *tmplev2;
 	int cnt = 0;
 
@@ -744,8 +744,8 @@ STATIC_OVL void savelevchn(register int fd, register int mode) {
 	    sp_levchn = 0;
 }
 
-STATIC_OVL void savedamage(register int fd, register int mode) {
-	register struct damage *damageptr, *tmp_dam;
+STATIC_OVL void savedamage(int fd, int mode) {
+	struct damage *damageptr, *tmp_dam;
 	unsigned int xl = 0;
 
 	damageptr = level.damagelist;
@@ -766,8 +766,8 @@ STATIC_OVL void savedamage(register int fd, register int mode) {
 	    level.damagelist = 0;
 }
 
-STATIC_OVL void saveobjchn(register int fd, register struct obj *otmp, register int mode) {
-	register struct obj *otmp2;
+STATIC_OVL void saveobjchn(int fd, struct obj *otmp, int mode) {
+	struct obj *otmp2;
 	unsigned int xl;
 	int minusone = -1;
 
@@ -794,8 +794,8 @@ STATIC_OVL void saveobjchn(register int fd, register struct obj *otmp, register 
 	    bwrite(fd, (genericptr_t) &minusone, sizeof(int));
 }
 
-STATIC_OVL void savemonchn(register int fd, register struct monst *mtmp, register int mode) {
-	register struct monst *mtmp2;
+STATIC_OVL void savemonchn(int fd, struct monst *mtmp, int mode) {
+	struct monst *mtmp2;
 	unsigned int xl;
 	int minusone = -1;
 	struct permonst *monbegin = &mons[0];
@@ -820,8 +820,8 @@ STATIC_OVL void savemonchn(register int fd, register struct monst *mtmp, registe
 	    bwrite(fd, (genericptr_t) &minusone, sizeof(int));
 }
 
-STATIC_OVL void savetrapchn(register int fd, register struct trap *trap, register int mode) {
-	register struct trap *trap2;
+STATIC_OVL void savetrapchn(int fd, struct trap *trap, int mode) {
+	struct trap *trap2;
 
 	while (trap) {
 	    trap2 = trap->ntrap;
@@ -840,8 +840,8 @@ STATIC_OVL void savetrapchn(register int fd, register struct trap *trap, registe
  * we only want to save the fruits which exist on the bones level; the bones
  * level routine marks nonexistent fruits by making the fid negative.
  */
-void savefruitchn(register int fd, register int mode) {
-	register struct fruit *f2, *f1;
+void savefruitchn(int fd, int mode) {
+	struct fruit *f2, *f1;
 
 	f1 = ffruit;
 	while (f1) {

@@ -183,7 +183,7 @@ STATIC_OVL int throw_obj(struct obj *obj, int shotlimit) {
 
 
 int dothrow() {
-	register struct obj *obj;
+	struct obj *obj;
 	int shotlimit;
 
 	/*
@@ -325,7 +325,7 @@ int dofire() {
 /*
  * Object hits floor at hero's feet.  Called from drop() and throwit().
  */
-void hitfloor(register struct obj *obj) {
+void hitfloor(struct obj *obj) {
 	if (IS_SOFT(levl[u.ux][u.uy].typ) || u.uinwater) {
 		dropy(obj);
 		return;
@@ -648,7 +648,7 @@ void mhurtle(struct monst *mon, int dx, int dy, int range) {
 	return;
 }
 
-STATIC_OVL void check_shop_obj(register struct obj *obj, register xchar x, register xchar y, register boolean broken) {
+STATIC_OVL void check_shop_obj(struct obj *obj, xchar x, xchar y, boolean broken) {
 	struct monst *shkp = shop_keeper(*u.ushops);
 
 	if(!shkp) return;
@@ -814,9 +814,9 @@ STATIC_OVL void sho_obj_return_to_u(struct obj *obj) {
     }
 }
 
-void throwit(register struct obj *obj, long wep_mask, boolean twoweap) {
-	register struct monst *mon;
-	register int range, urange;
+void throwit(struct obj *obj, long wep_mask, boolean twoweap) {
+	struct monst *mon;
+	int range, urange;
 	boolean impaired = (Confusion || Stunned || Blind ||
 			   Hallucination || Fumbling);
 
@@ -1121,9 +1121,9 @@ STATIC_OVL void tmiss(struct obj *obj, struct monst *mon) {
  * Return 1 if obj has disappeared or otherwise been taken care of,
  * 0 if caller must take care of it.
  */
-int thitmonst(register struct monst *mon, register struct obj *obj) {
-	register int	tmp; /* Base chance to hit */
-	register int	disttmp; /* distance modifier */
+int thitmonst(struct monst *mon, struct obj *obj) {
+	int	tmp; /* Base chance to hit */
+	int	disttmp; /* distance modifier */
 	int otyp = obj->otyp;
 	boolean guaranteed_hit = (u.uswallow && mon == u.ustuck);
 
@@ -1354,7 +1354,7 @@ int thitmonst(register struct monst *mon, register struct obj *obj) {
 	return 0;
 }
 
-STATIC_OVL int gem_accept(register struct monst *mon, register struct obj *obj) {
+STATIC_OVL int gem_accept(struct monst *mon, struct obj *obj) {
 	char buf[BUFSZ];
 	boolean is_buddy = sgn(mon->data->maligntyp) == sgn(u.ualign.type);
 	boolean is_gem = objects[obj->otyp].oc_material == GEMSTONE;
@@ -1610,7 +1610,7 @@ STATIC_OVL int throw_gold(struct obj *obj) {
 #ifndef GOLDOBJ
 	long zorks = obj->quan;
 #endif
-	register struct monst *mon;
+	struct monst *mon;
 
 	if(!u.dx && !u.dy && !u.dz) {
 #ifndef GOLDOBJ

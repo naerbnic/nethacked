@@ -226,8 +226,8 @@ struct monst * christen_monst(struct monst *mtmp, const char *name) {
 int do_mname() {
 	char buf[BUFSZ];
 	coord cc;
-	register int cx,cy;
-	register struct monst *mtmp;
+	int cx,cy;
+	struct monst *mtmp;
 	char qbuf[QBUFSZ];
 
 	if (Hallucination) {
@@ -292,7 +292,7 @@ int do_mname() {
  * when obj is in the inventory.
  */
 STATIC_OVL
-void do_oname(register struct obj *obj) {
+void do_oname(struct obj *obj) {
 	char buf[BUFSZ], qbuf[QBUFSZ];
 	const char *aname;
 	short objtyp;
@@ -313,7 +313,7 @@ void do_oname(register struct obj *obj) {
 		return;
 	} else if (restrict_name(obj, buf) || exist_artifact(obj->otyp, buf)) {
 		int n = rn2((int)strlen(buf));
-		register char c1, c2;
+		char c1, c2;
 
 		c1 = lowc(buf[n]);
 		do c2 = 'a' + rn2('z'-'a'); while (c1 == c2);
@@ -431,7 +431,7 @@ static NEARDATA const char callable[] = {
 	GEM_CLASS, SPBOOK_CLASS, ARMOR_CLASS, TOOL_CLASS, 0 };
 
 int ddocall() {
-	register struct obj *obj;
+	struct obj *obj;
 #ifdef REDO
 	char	ch;
 #endif
@@ -474,10 +474,10 @@ int ddocall() {
 	return 0;
 }
 
-void docall(register struct obj *obj) {
+void docall(struct obj *obj) {
 	char buf[BUFSZ], qbuf[QBUFSZ];
 	struct obj otemp;
-	register char **str1;
+	char **str1;
 
 	if (!obj->dknown) return; /* probably blind */
 	otemp = *obj;
@@ -734,7 +734,7 @@ char* x_monnam(
 #endif /* OVL0 */
 #ifdef OVLB
 
-char * l_monnam(register struct monst *mtmp) {
+char * l_monnam(struct monst *mtmp) {
 	return(x_monnam(mtmp, ARTICLE_NONE, (char *)0, 
 		mtmp->mnamelth ? SUPPRESS_SADDLE : 0, TRUE));
 }
@@ -742,7 +742,7 @@ char * l_monnam(register struct monst *mtmp) {
 #endif /* OVLB */
 #ifdef OVL0
 
-char * mon_nam(register struct monst *mtmp) {
+char * mon_nam(struct monst *mtmp) {
 	return(x_monnam(mtmp, ARTICLE_THE, (char *)0,
 		mtmp->mnamelth ? SUPPRESS_SADDLE : 0, FALSE));
 }
@@ -751,21 +751,21 @@ char * mon_nam(register struct monst *mtmp) {
  * can always see the monster--used for probing and for monsters aggravating
  * the player with a cursed potion of invisibility
  */
-char * noit_mon_nam(register struct monst *mtmp) {
+char * noit_mon_nam(struct monst *mtmp) {
 	return(x_monnam(mtmp, ARTICLE_THE, (char *)0,
 		mtmp->mnamelth ? (SUPPRESS_SADDLE|SUPPRESS_IT) :
 		    SUPPRESS_IT, FALSE));
 }
 
-char * Monnam(register struct monst *mtmp) {
-	register char *bp = mon_nam(mtmp);
+char * Monnam(struct monst *mtmp) {
+	char *bp = mon_nam(mtmp);
 
 	*bp = highc(*bp);
 	return(bp);
 }
 
-char * noit_Monnam(register struct monst *mtmp) {
-	register char *bp = noit_mon_nam(mtmp);
+char * noit_Monnam(struct monst *mtmp) {
+	char *bp = noit_mon_nam(mtmp);
 
 	*bp = highc(*bp);
 	return(bp);
@@ -794,21 +794,21 @@ char * y_monnam(struct monst *mtmp) {
 #endif /* OVL0 */
 #ifdef OVLB
 
-char * Adjmonnam(register struct monst *mtmp, register const char *adj) {
-	register char *bp = x_monnam(mtmp, ARTICLE_THE, adj,
+char * Adjmonnam(struct monst *mtmp, const char *adj) {
+	char *bp = x_monnam(mtmp, ARTICLE_THE, adj,
 		mtmp->mnamelth ? SUPPRESS_SADDLE : 0, FALSE);
 
 	*bp = highc(*bp);
 	return(bp);
 }
 
-char * a_monnam(register struct monst *mtmp) {
+char * a_monnam(struct monst *mtmp) {
 	return x_monnam(mtmp, ARTICLE_A, (char *)0,
 		mtmp->mnamelth ? SUPPRESS_SADDLE : 0, FALSE);
 }
 
-char * Amonnam(register struct monst *mtmp) {
-	register char *bp = a_monnam(mtmp);
+char * Amonnam(struct monst *mtmp) {
+	char *bp = a_monnam(mtmp);
 
 	*bp = highc(*bp);
 	return(bp);

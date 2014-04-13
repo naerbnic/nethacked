@@ -45,10 +45,10 @@ const struct worn {
 
 
 /* Updated to use the extrinsic and blocked fields. */
-void setworn(register struct obj *obj, long mask) {
-	register const struct worn *wp;
-	register struct obj *oobj;
-	register int p;
+void setworn(struct obj *obj, long mask) {
+	const struct worn *wp;
+	struct obj *oobj;
+	int p;
 
 	if ((mask & (W_ARM|I_SPECIAL)) == (W_ARM|I_SPECIAL)) {
 	    /* restoring saved game; no properties are conferred via skin */
@@ -103,9 +103,9 @@ void setworn(register struct obj *obj, long mask) {
 
 /* called e.g. when obj is destroyed */
 /* Updated to use the extrinsic and blocked fields. */
-void setnotworn(register struct obj *obj) {
-	register const struct worn *wp;
-	register int p;
+void setnotworn(struct obj *obj) {
+	const struct worn *wp;
+	int p;
 
 	if (!obj) return;
 	if (obj == uwep || obj == uswapwep) u.twoweap = 0;
@@ -306,8 +306,8 @@ void update_mon_intrinsics(struct monst *mon, struct obj *obj, boolean on, boole
 	newsym(mon->mx, mon->my);
 }
 
-int find_mac(register struct monst *mon) {
-	register struct obj *obj;
+int find_mac(struct monst *mon) {
+	struct obj *obj;
 	int base = mon->data->ac;
 	long mwflags = mon->misc_worn_check;
 
@@ -334,7 +334,7 @@ int find_mac(register struct monst *mon) {
  * players to influence what gets worn.  Putting on a shirt underneath
  * already worn body armor is too obviously buggy...
  */
-void m_dowear(register struct monst *mon, boolean creation) {
+void m_dowear(struct monst *mon, boolean creation) {
 #define RACE_EXCEPTION TRUE
 	/* Note the restrictions here are the same as in dowear in do_wear.c
 	 * except for the additional restriction on intelligence.  (Players
@@ -482,7 +482,7 @@ outer_break:
 #undef RACE_EXCEPTION
 
 struct obj * which_armor(struct monst *mon, long flag) {
-	register struct obj *obj;
+	struct obj *obj;
 
 	for(obj = mon->minvent; obj; obj = obj->nobj)
 		if (obj->owornmask & flag) return obj;
@@ -547,7 +547,7 @@ void bypass_obj(struct obj *obj) {
 }
 
 void mon_break_armor(struct monst *mon, boolean polyspot) {
-	register struct obj *otmp;
+	struct obj *otmp;
 	struct permonst *mdat = mon->data;
 	boolean vis = cansee(mon->mx, mon->my);
 	boolean handless_or_tiny = (nohands(mdat) || verysmall(mdat));

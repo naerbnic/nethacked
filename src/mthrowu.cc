@@ -89,7 +89,7 @@ int thitu(int tlev, int dam, struct obj *obj, const char *name) {
  * Returns 0 if object still exists (not destroyed).
  */
 
-STATIC_OVL int drop_throw(register struct obj *obj, boolean ohit, int x, int y) {
+STATIC_OVL int drop_throw(struct obj *obj, boolean ohit, int x, int y) {
 	int retvalu = 1;
 	int create;
 	struct monst *mtmp;
@@ -238,8 +238,8 @@ int ohitmon(
 	return 0;
 }
 
-void m_throw(register struct monst *mon, register int x, register int y, register int dx, register int dy, register int range, register struct obj *obj) {
-	register struct monst *mtmp;
+void m_throw(struct monst *mon, int x, int y, int dx, int dy, int range, struct obj *obj) {
+	struct monst *mtmp;
 	struct obj *singleobj;
 	char sym = obj->oclass;
 	int hitu, blindinc = 0;
@@ -600,8 +600,8 @@ void thrwmu(struct monst *mtmp) {
 #ifdef OVLB
 
 /* monster spits substance at you */
-int spitmu(register struct monst *mtmp, register struct attack *mattk) {
-	register struct obj *otmp;
+int spitmu(struct monst *mtmp, struct attack *mattk) {
+	struct obj *otmp;
 
 	if(mtmp->mcan) {
 
@@ -677,7 +677,7 @@ int breamu(struct monst* mtmp, struct attack* mattk) {
 	return(1);
 }
 
-boolean linedup(register xchar ax, register xchar ay, register xchar bx, register xchar by) {
+boolean linedup(xchar ax, xchar ay, xchar bx, xchar by) {
 	tbx = ax - bx;	/* These two values are set for use */
 	tby = ay - by;	/* after successful return.	    */
 
@@ -694,7 +694,7 @@ boolean linedup(register xchar ax, register xchar ay, register xchar bx, registe
 }
 
 /* is mtmp in position to use ranged attack? */
-boolean lined_up(register struct monst *mtmp) {
+boolean lined_up(struct monst *mtmp) {
 	return(linedup(mtmp->mux,mtmp->muy,mtmp->mx,mtmp->my));
 }
 
@@ -704,7 +704,7 @@ boolean lined_up(register struct monst *mtmp) {
 /* Check if a monster is carrying a particular item.
  */
 struct obj * m_carrying(struct monst *mtmp, int type) {
-	register struct obj *otmp;
+	struct obj *otmp;
 
 	for(otmp = mtmp->minvent; otmp; otmp = otmp->nobj)
 		if(otmp->otyp == type)

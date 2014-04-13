@@ -148,7 +148,7 @@ STATIC_OVL int choose_clerical_spell(int spellnum) {
  * 1: successful spell
  * 0: unsuccessful spell
  */
-int castmu(register struct monst *mtmp, register struct attack *mattk, boolean thinks_it_foundyou, boolean foundyou) {
+int castmu(struct monst *mtmp, struct attack *mattk, boolean thinks_it_foundyou, boolean foundyou) {
 	int	dmg, ml = mtmp->m_lev;
 	int ret;
 	int spellnum = 0;

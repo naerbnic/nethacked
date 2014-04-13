@@ -24,7 +24,7 @@ STATIC_DCL void FDECL(move_update, (BOOLEAN_P));
 #ifdef OVL2
 
 boolean revive_nasty(int x, int y, const char *msg) {
-    register struct obj *otmp, *otmp2;
+    struct obj *otmp, *otmp2;
     struct monst *mtmp;
     coord cc;
     boolean revived = FALSE;
@@ -56,10 +56,10 @@ boolean revive_nasty(int x, int y, const char *msg) {
 }
 
 STATIC_OVL int moverock() {
-    register xchar rx, ry, sx, sy;
-    register struct obj *otmp;
-    register struct trap *ttmp;
-    register struct monst *mtmp;
+    xchar rx, ry, sx, sy;
+    struct obj *otmp;
+    struct trap *ttmp;
+    struct monst *mtmp;
 
     sx = u.ux + u.dx,  sy = u.uy + u.dy;	/* boulder starting position */
     while ((otmp = sobj_at(BOULDER, sx, sy)) != 0) {
@@ -425,7 +425,7 @@ STATIC_OVL int still_chewing(xchar x, xchar y) {
 #endif /* OVL2 */
 #ifdef OVLB
 
-void movobj(register struct obj *obj, register xchar ox, register xchar oy) {
+void movobj(struct obj *obj, xchar ox, xchar oy) {
 	/* optimize by leaving on the fobj chain? */
 	remove_object(obj);
 	newsym(obj->ox, obj->oy);
@@ -437,7 +437,7 @@ void movobj(register struct obj *obj, register xchar ox, register xchar oy) {
 static NEARDATA const char fell_on_sink[] = "fell onto a sink";
 
 STATIC_OVL void dosinkfall() {
-	register struct obj *obj;
+	struct obj *obj;
 
 	if (is_floater(youmonst.data) || (HLevitation & FROMOUTSIDE)) {
 	    You("wobble unsteadily for a moment.");
@@ -493,7 +493,7 @@ boolean may_dig(xchar x, xchar y)
 			(levl[x][y].wall_info & W_NONDIGGABLE)));
 }
 
-boolean may_passwall(register xchar x, register xchar y) {
+boolean may_passwall(xchar x, xchar y) {
    return (boolean)(!(IS_STWALL(levl[x][y].typ) &&
 			(levl[x][y].wall_info & W_NONPASSWALL)));
 }
@@ -501,7 +501,7 @@ boolean may_passwall(register xchar x, register xchar y) {
 #endif /* OVLB */
 #ifdef OVL1
 
-boolean bad_rock(struct permonst *mdat, register xchar x, register xchar y) {
+boolean bad_rock(struct permonst *mdat, xchar x, xchar y) {
 	return((boolean) ((In_sokoban(&u.uz) && sobj_at(BOULDER,x,y)) ||
 	       (IS_ROCK(levl[x][y].typ)
 		    && (!tunnels(mdat) || needspick(mdat) || !may_dig(x,y))
@@ -521,8 +521,8 @@ boolean invocation_pos(xchar x, xchar y) {
 boolean test_move(int ux, int uy, int dx, int dy, int mode) {
     int x = ux+dx;
     int y = uy+dy;
-    register struct rm *tmpr = &levl[x][y];
-    register struct rm *ust;
+    struct rm *tmpr = &levl[x][y];
+    struct rm *ust;
 
     /*
      *  Check for physical obstacles.  First, the place we are going.
@@ -828,9 +828,9 @@ found:
 }
 
 void domove() {
-	register struct monst *mtmp;
-	register struct rm *tmpr;
-	register xchar x,y;
+	struct monst *mtmp;
+	struct rm *tmpr;
+	xchar x,y;
 	struct trap *trap;
 	int wtcap;
 	boolean on_ice;
@@ -905,7 +905,7 @@ void domove() {
 		x = u.ux + u.dx;
 		y = u.uy + u.dy;
 		if(Stunned || (Confusion && !rn2(5))) {
-			register int tries = 0;
+			int tries = 0;
 
 			do {
 				if(tries++ > 50) {
@@ -1419,7 +1419,7 @@ void invocation_message() {
 #ifdef OVL2
 
 void spoteffects(boolean pick) {
-	register struct monst *mtmp;
+	struct monst *mtmp;
 
 	if(u.uinwater) {
 		int was_underwater;
@@ -1527,7 +1527,7 @@ stillinwater:;
 }
 
 STATIC_OVL boolean monstinroom(struct permonst *mdat, int roomno) {
-	register struct monst *mtmp;
+	struct monst *mtmp;
 
 	for(mtmp = fmon; mtmp; mtmp = mtmp->nmon)
 		if(!DEADMONSTER(mtmp) && mtmp->data == mdat &&
@@ -1536,11 +1536,11 @@ STATIC_OVL boolean monstinroom(struct permonst *mdat, int roomno) {
 	return(FALSE);
 }
 
-char * in_rooms(register xchar x, register xchar y, register int typewanted) {
+char * in_rooms(xchar x, xchar y, int typewanted) {
 	static char buf[5];
 	char rno, *ptr = &buf[4];
 	int typefound, min_x, min_y, max_x, max_y_offset, step;
-	register struct rm *lev;
+	struct rm *lev;
 
 #define goodtype(rno) (!typewanted || \
 	     ((typefound = rooms[rno - ROOMOFFSET].rtype) == typewanted) || \
@@ -1601,9 +1601,9 @@ char * in_rooms(register xchar x, register xchar y, register int typewanted) {
 }
 
 /* is (x,y) in a town? */
-boolean in_town(register int x, register int y) {
+boolean in_town(int x, int y) {
 	s_level *slev = Is_special(&u.uz);
-	register struct mkroom *sroom;
+	struct mkroom *sroom;
 	boolean has_subrooms = FALSE;
 
 	if (!slev || !slev->flags.town) return FALSE;
@@ -1622,7 +1622,7 @@ boolean in_town(register int x, register int y) {
 	return !has_subrooms;
 }
 
-STATIC_OVL void move_update(register boolean newlev) {
+STATIC_OVL void move_update(boolean newlev) {
 	char *ptr1, *ptr2, *ptr3, *ptr4;
 
 	Strcpy(u.urooms0, u.urooms);
@@ -1661,8 +1661,8 @@ STATIC_OVL void move_update(register boolean newlev) {
 	*ptr2 = '\0';
 }
 
-void check_special_room(register boolean newlev) {
-	register struct monst *mtmp;
+void check_special_room(boolean newlev) {
+	struct monst *mtmp;
 	char *ptr;
 
 	move_update(newlev);
@@ -1678,7 +1678,7 @@ void check_special_room(register boolean newlev) {
 	    u_entered_shop(u.ushops_entered);
 
 	for (ptr = &u.uentered[0]; *ptr; ptr++) {
-	    register int roomno = *ptr - ROOMOFFSET, rt = rooms[roomno].rtype;
+	    int roomno = *ptr - ROOMOFFSET, rt = rooms[roomno].rtype;
 
 	    /* Did we just enter some other special room? */
 	    /* vault.c insists that a vault remain a VAULT,
@@ -1856,10 +1856,10 @@ int dopickup() {
 /* turn around a corner if that is the only way we can proceed */
 /* do not turn left or right twice */
 void lookaround() {
-    register int x, y, i, x0 = 0, y0 = 0, m0 = 1, i0 = 9;
-    register int corrct = 0, noturn = 0;
-    register struct monst *mtmp;
-    register struct trap *trap;
+    int x, y, i, x0 = 0, y0 = 0, m0 = 1, i0 = 9;
+    int corrct = 0, noturn = 0;
+    struct monst *mtmp;
+    struct trap *trap;
 
     /* Grid bugs stop if trying to move diagonal, even if blind.  Maybe */
     /* they polymorphed while in the middle of a long move. */
@@ -1979,8 +1979,8 @@ stop:
 /* something like lookaround, but we are not running */
 /* react only to monsters that might hit us */
 int monster_nearby() {
-	register int x,y;
-	register struct monst *mtmp;
+	int x,y;
+	struct monst *mtmp;
 
 	/* Also see the similar check in dochugw() in monmove.c */
 	for(x = u.ux-1; x <= u.ux+1; x++)
@@ -2001,7 +2001,7 @@ int monster_nearby() {
 	return(0);
 }
 
-void nomul(register int nval, const char *txt) {
+void nomul(int nval, const char *txt) {
 	if(multi < nval) return;	/* This is a bug fix by ab@unido */
 	u.uinvulnerable = FALSE;	/* Kludge to avoid ctrl-C bug -dlc */
 	u.usleep = 0;
@@ -2058,7 +2058,7 @@ STATIC_OVL void maybe_wail() {
     }
 }
 
-void losehp(register int n, register const char *knam, boolean k_format) {
+void losehp(int n, const char *knam, boolean k_format) {
 	if (Upolyd) {
 		u.mh -= n;
 		if (u.mhmax < u.mh) u.mhmax = u.mh;
@@ -2085,7 +2085,7 @@ void losehp(register int n, register const char *knam, boolean k_format) {
 }
 
 int weight_cap() {
-	register long carrcap;
+	long carrcap;
 
 	carrcap = 25*(ACURRSTR + ACURR(A_CON)) + 50;
 	if (Upolyd) {
@@ -2121,8 +2121,8 @@ static int wc;	/* current weight_cap(); valid after call to inv_weight() */
 /* returns how far beyond the normal capacity the player is currently. */
 /* inv_weight() is negative if the player is below normal capacity. */
 int inv_weight() {
-	register struct obj *otmp = invent;
-	register int wt = 0;
+	struct obj *otmp = invent;
+	int wt = 0;
 
 #ifndef GOLDOBJ
 	/* when putting stuff into containers, gold is inserted at the head
@@ -2185,8 +2185,8 @@ boolean check_capacity(const char *str) {
 #ifdef OVLB
 
 int inv_cnt() {
-	register struct obj *otmp = invent;
-	register int ct = 0;
+	struct obj *otmp = invent;
+	int ct = 0;
 
 	while(otmp){
 		ct++;

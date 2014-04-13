@@ -52,7 +52,7 @@ int rn2(int x) {
 /* 0 <= rnl(x) < x; sometimes subtracting Luck */
 /* good luck approaches 0, bad luck approaches (x-1) */
 int rnl(int x) {
-	register int i;
+	int i;
     check_reseed();
 #ifdef DEBUG
 	if (x <= 0) {
@@ -94,7 +94,7 @@ int rnd(int x) {
 
 /* n <= d(n,x) <= (n*x) */
 int d(int n, int x) {
-	register int tmp = n;
+	int tmp = n;
     check_reseed();
 
 #ifdef DEBUG
@@ -110,8 +110,8 @@ int d(int n, int x) {
 #endif /* OVL1 */
 #ifdef OVLB
 
-int rne(register int x) {
-	register int tmp, utmp;
+int rne(int x) {
+	int tmp, utmp;
 
 	utmp = (u.ulevel < 15) ? 5 : u.ulevel/3;
 	tmp = 1;
@@ -133,8 +133,8 @@ int rnz(int i) {
 	int x = i;
 	int tmp = 1000;
 #else
-	register long x = i;
-	register long tmp = 1000;
+	long x = i;
+	long tmp = 1000;
 #endif
 	tmp += rn2(1000);
 	tmp *= rne(4);

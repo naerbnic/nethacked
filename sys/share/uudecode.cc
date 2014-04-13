@@ -229,7 +229,7 @@ void outdec(char *p, FILE *f, int n) {
 #define	NULL	0
 #endif
 
-char * index(register char *sp, register char c) {
+char * index(char *sp, char c) {
 	do {
 		if (*sp == c)
 			return(sp);

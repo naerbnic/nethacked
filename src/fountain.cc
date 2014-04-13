@@ -18,7 +18,7 @@ void floating_above(const char *what) {
 
 /* Fountain of snakes! */
 STATIC_OVL void dowatersnakes() {
-    register int num = rn1(5,2);
+    int num = rn1(5,2);
     struct monst *mtmp;
 
     if (!(mvitals[PM_WATER_MOCCASIN].mvflags & G_GONE)) {
@@ -38,7 +38,7 @@ STATIC_OVL void dowatersnakes() {
 STATIC_OVL
 /* Water demon */
 void dowaterdemon() {
-    register struct monst *mtmp;
+    struct monst *mtmp;
 
     if(!(mvitals[PM_WATER_DEMON].mvflags & G_GONE)) {
 	if((mtmp = makemon(&mons[PM_WATER_DEMON],u.ux,u.uy, NO_MM_FLAGS))) {
@@ -62,7 +62,7 @@ void dowaterdemon() {
 
 /* Water Nymph */
 STATIC_OVL void dowaternymph() {
-	register struct monst *mtmp;
+	struct monst *mtmp;
 
 	if(!(mvitals[PM_WATER_NYMPH].mvflags & G_GONE) &&
 	   (mtmp = makemon(&mons[PM_WATER_NYMPH],u.ux,u.uy, NO_MM_FLAGS))) {
@@ -94,8 +94,8 @@ void dogushforth(int drinking) {
 }
 
 STATIC_PTR void gush(int x, int y, genericptr_t poolcnt) {
-	register struct monst *mtmp;
-	register struct trap *ttmp;
+	struct monst *mtmp;
+	struct trap *ttmp;
 
 	if (((x+y)%2) || (x == u.ux && y == u.uy) ||
 	    (rn2(1 + distmin(u.ux, u.uy, x, y)))  ||
@@ -176,8 +176,8 @@ void dryup(xchar x, xchar y, boolean isyou) {
 
 void drinkfountain() {
 	/* What happens when you drink from a fountain? */
-	register boolean mgkftn = (levl[u.ux][u.uy].blessedftn == 1);
-	register int fate = rnd(30);
+	boolean mgkftn = (levl[u.ux][u.uy].blessedftn == 1);
+	int fate = rnd(30);
 
 	if (Levitation) {
 		floating_above("fountain");
@@ -258,7 +258,7 @@ void drinkfountain() {
 			break;
 
 		case 24: /* Curse an item */ {
-			register struct obj *obj;
+			struct obj *obj;
 
 			pline("This water's no good!");
 			morehungry(rn1(20, 11));
@@ -305,7 +305,7 @@ void drinkfountain() {
 			break;
 
 		case 29: /* Scare */ {
-			register struct monst *mtmp;
+			struct monst *mtmp;
 
 			pline("This water gives you bad breath!");
 			for(mtmp = fmon; mtmp; mtmp = mtmp->nmon)
@@ -328,7 +328,7 @@ void drinkfountain() {
 	dryup(u.ux, u.uy, TRUE);
 }
 
-void dipfountain(register struct obj *obj) {
+void dipfountain(struct obj *obj) {
 	if (Levitation) {
 		floating_above("fountain");
 		return;

@@ -60,8 +60,8 @@ void FDECL( amii_speaker, ( struct obj *, char *, int ) );
  */
 
 STATIC_OVL void awaken_monsters(int distance) {
-	register struct monst *mtmp = fmon;
-	register int distm;
+	struct monst *mtmp = fmon;
+	int distm;
 
 	while(mtmp) {
 	    if (!DEADMONSTER(mtmp)) {
@@ -85,7 +85,7 @@ STATIC_OVL void awaken_monsters(int distance) {
  */
 
 STATIC_OVL void put_monsters_to_sleep(int distance) {
-	register struct monst *mtmp = fmon;
+	struct monst *mtmp = fmon;
 
 	while(mtmp) {
 		if (!DEADMONSTER(mtmp) && distu(mtmp->mx, mtmp->my) < distance &&
@@ -102,7 +102,7 @@ STATIC_OVL void put_monsters_to_sleep(int distance) {
  */
 
 STATIC_OVL void charm_snakes(int distance) {
-	register struct monst *mtmp = fmon;
+	struct monst *mtmp = fmon;
 	int could_see_mon, was_peaceful;
 
 	while (mtmp) {
@@ -133,7 +133,7 @@ STATIC_OVL void charm_snakes(int distance) {
  */
 
 STATIC_OVL void calm_nymphs(int distance) {
-	register struct monst *mtmp = fmon;
+	struct monst *mtmp = fmon;
 
 	while (mtmp) {
 	    if (!DEADMONSTER(mtmp) && mtmp->data->mlet == S_NYMPH && mtmp->mcanmove &&
@@ -153,7 +153,7 @@ STATIC_OVL void calm_nymphs(int distance) {
 /* Awake only soldiers of the level. */
 
 void awaken_soldiers() {
-	register struct monst *mtmp = fmon;
+	struct monst *mtmp = fmon;
 
 	while(mtmp) {
 	    if (!DEADMONSTER(mtmp) &&
@@ -198,7 +198,7 @@ STATIC_OVL void charm_monsters(int distance) {
  */
 
 STATIC_OVL void do_earthquake(int force) {
-	register int x,y;
+	int x,y;
 	struct monst *mtmp;
 	struct obj *otmp;
 	struct trap *chasm;

@@ -59,7 +59,7 @@ int explcolors[] = {
 
 /*ARGSUSED*/
 void mapglyph(int glyph, int *ochar, int *ocolor, unsigned *ospecial, int x, int y) {
-	register int offset;
+	int offset;
 #if defined(TEXTCOLOR) || defined(ROGUE_COLOR)
 	int color = NO_COLOR;
 #endif

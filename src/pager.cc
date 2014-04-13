@@ -50,7 +50,7 @@ STATIC_OVL int append_str(char *buf, const char *new_str) {
  * If not hallucinating and the glyph is a monster, also monster data.
  */
 STATIC_OVL struct permonst * lookat(int x, int y, char *buf, char *monbuf) {
-    register struct monst *mtmp = (struct monst *) 0;
+    struct monst *mtmp = (struct monst *) 0;
     struct permonst *pm = (struct permonst *) 0;
     int glyph;
 
@@ -739,7 +739,7 @@ int doquickwhatis() {
 }
 
 int doidtrap() {
-	register struct trap *trap;
+	struct trap *trap;
 	int x, y, tt;
 
 	if (!getdir("^")) return 0;
@@ -771,7 +771,7 @@ int doidtrap() {
 char * dowhatdoes_core(char q, char *cbuf) {
 	dlb *fp;
 	char bufr[BUFSZ];
-	register char *buf = &bufr[6], *ep, ctrl, meta;
+	char *buf = &bufr[6], *ep, ctrl, meta;
 
 	fp = dlb_fopen(CMDHELPFILE, "r");
 	if (!fp) {

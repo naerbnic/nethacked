@@ -461,7 +461,7 @@ void clearlocks() {
 	if (ramdisk)
 		eraseall(permbones, alllevels);
 #else
-	register int x;
+	int x;
 
 	(void) signal(SIGHUP, SIG_IGN);
 	/* can't access maxledgerno() before dungeons are created -dlc */
@@ -1141,7 +1141,7 @@ boolean lock_file(const char *filename, int whichprefix, int retryct) {
 # else
 	while (link(filename, lockname) == -1) {
 # endif
-	    register int errnosv = errno;
+	    int errnosv = errno;
 
 	    switch (errnosv) {	/* George Barbanis */
 	    case EEXIST:

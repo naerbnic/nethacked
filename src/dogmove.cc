@@ -22,8 +22,8 @@ STATIC_DCL boolean FDECL(can_reach_location,(struct monst *,XCHAR_P,XCHAR_P,
     XCHAR_P,XCHAR_P));
 STATIC_DCL boolean FDECL(could_reach_item,(struct monst *, XCHAR_P,XCHAR_P));
 
-STATIC_OVL struct obj * DROPPABLES(register struct monst *mon) {
-	register struct obj *obj;
+STATIC_OVL struct obj * DROPPABLES(struct monst *mon) {
+	struct obj *obj;
 	struct obj *wep = MON_WEP(mon);
 	boolean item1 = FALSE, item2 = FALSE;
 
@@ -111,8 +111,8 @@ int dog_nutrition(struct monst *mtmp, struct obj *obj) {
 }
 
 /* returns 2 if pet dies, otherwise 1 */
-int dog_eat(register struct monst *mtmp, register struct obj * obj, int x, int y, boolean devour) {
-	register struct edog *edog = EDOG(mtmp);
+int dog_eat(struct monst *mtmp, struct obj * obj, int x, int y, boolean devour) {
+	struct edog *edog = EDOG(mtmp);
 	boolean poly = FALSE, grow = FALSE, heal = FALSE;
 	int nutrit;
 
@@ -195,7 +195,7 @@ int dog_eat(register struct monst *mtmp, register struct obj * obj, int x, int y
 #ifdef OVL0
 
 /* hunger effects -- returns TRUE on starvation */
-STATIC_OVL boolean dog_hunger(register struct monst *mtmp, register struct edog *edog) {
+STATIC_OVL boolean dog_hunger(struct monst *mtmp, struct edog *edog) {
 	if (monstermoves > edog->hungrytime + 500) {
 	    if (!carnivorous(mtmp->data) && !herbivorous(mtmp->data)) {
 		edog->hungrytime = monstermoves + 500;
@@ -239,8 +239,8 @@ STATIC_OVL boolean dog_hunger(register struct monst *mtmp, register struct edog 
 /* do something with object (drop, pick up, eat) at current position
  * returns 1 if object eaten (since that counts as dog's move), 2 if died
  */
-STATIC_OVL int dog_invent(register struct monst *mtmp, register struct edog *edog, int udist) {
-	register int omx, omy;
+STATIC_OVL int dog_invent(struct monst *mtmp, struct edog *edog, int udist) {
+	int omx, omy;
 	struct obj *obj;
 
 	if (mtmp->msleeping || !mtmp->mcanmove) return(0);
@@ -304,10 +304,10 @@ STATIC_OVL int dog_invent(register struct monst *mtmp, register struct edog *edo
 /* set dog's goal -- gtyp, gx, gy
  * returns -1/0/1 (dog's desire to approach player) or -2 (abort move)
  */
-STATIC_OVL int dog_goal(register struct monst *mtmp, struct edog *edog, int after, int udist, int whappr) {
-	register int omx, omy;
+STATIC_OVL int dog_goal(struct monst *mtmp, struct edog *edog, int after, int udist, int whappr) {
+	int omx, omy;
 	boolean in_masters_sight, dog_has_minvent;
-	register struct obj *obj;
+	struct obj *obj;
 	xchar otyp;
 	int appr;
 
@@ -331,7 +331,7 @@ STATIC_OVL int dog_goal(register struct monst *mtmp, struct edog *edog, int afte
 #define DDIST(x,y) (dist2(x,y,omx,omy))
 #define SQSRCHRADIUS 5
 	    int min_x, max_x, min_y, max_y;
-	    register int nx, ny;
+	    int nx, ny;
 
 	    gtyp = UNDEF;	/* no goal as yet */
 	    gx = gy = 0;	/* suppress 'used before set' message */
@@ -410,7 +410,7 @@ STATIC_OVL int dog_goal(register struct monst *mtmp, struct edog *edog, int afte
 
 #define FARAWAY (COLNO + 2)		/* position outside screen */
 	if (gx == u.ux && gy == u.uy && !in_masters_sight) {
-	    register coord *cp;
+	    coord *cp;
 
 	    cp = gettrack(omx,omy);
 	    if (cp) {
@@ -447,16 +447,16 @@ STATIC_OVL int dog_goal(register struct monst *mtmp, struct edog *edog, int afte
 }
 
 /* return 0 (no move), 1 (move) or 2 (dead) */
-int dog_move(register struct monst *mtmp, register int after) {
+int dog_move(struct monst *mtmp, int after) {
 	int omx, omy;		/* original mtmp position */
 	int appr, whappr, udist;
 	int i, j, k;
-	register struct edog *edog = EDOG(mtmp);
+	struct edog *edog = EDOG(mtmp);
 	struct obj *obj = (struct obj *) 0;
 	xchar otyp;
 	boolean has_edog, cursemsg[9], do_eat = FALSE;
 	xchar nix, niy;		/* position mtmp is (considering) moving to */
-	register int nx, ny;	/* temporary coordinates */
+	int nx, ny;	/* temporary coordinates */
 	xchar cnt, uncursedcnt, chcnt;
 	int chi = -1, nidist, ndist;
 	coord poss[9];
@@ -579,7 +579,7 @@ int dog_move(register struct monst *mtmp, register int after) {
 
 		if ((info[i] & ALLOW_M) && MON_AT(nx, ny)) {
 		    int mstatus;
-		    register struct monst *mtmp2 = m_at(nx,ny);
+		    struct monst *mtmp2 = m_at(nx,ny);
 
 		    if ((int)mtmp2->m_lev >= (int)mtmp->m_lev+2 ||
 			(mtmp2->data == &mons[PM_FLOATING_EYE] && rn2(10) &&

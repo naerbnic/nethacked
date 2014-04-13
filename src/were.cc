@@ -8,7 +8,7 @@
 
 #ifdef OVL0
 
-void were_change(register struct monst *mon) {
+void were_change(struct monst *mon) {
 	if (!is_were(mon->data))
 	    return;
 
@@ -51,8 +51,8 @@ STATIC_OVL int counter_were(int pm) {
 	}
 }
 
-void new_were(register struct monst *mon) {
-	register int pm;
+void new_were(struct monst *mon) {
+	int pm;
 
 	pm = counter_were(monsndx(mon->data));
 	if(!pm) {
@@ -87,8 +87,8 @@ int were_summon(
     /* number of visible helpers created */
     int* visible,
     char* genbuf) {
-	register int i, typ, pm = monsndx(ptr);
-	register struct monst *mtmp;
+	int i, typ, pm = monsndx(ptr);
+	struct monst *mtmp;
 	int total = 0;
 
 	*visible = 0;
