@@ -16,9 +16,8 @@ void floating_above(const char *what) {
     You("are floating high above the %s.", what);
 }
 
-STATIC_OVL void
-dowatersnakes() /* Fountain of snakes! */
-{
+/* Fountain of snakes! */
+STATIC_OVL void dowatersnakes() {
     register int num = rn1(5,2);
     struct monst *mtmp;
 
@@ -37,9 +36,8 @@ dowatersnakes() /* Fountain of snakes! */
 }
 
 STATIC_OVL
-void
-dowaterdemon() /* Water demon */
-{
+/* Water demon */
+void dowaterdemon() {
     register struct monst *mtmp;
 
     if(!(mvitals[PM_WATER_DEMON].mvflags & G_GONE)) {
@@ -62,9 +60,8 @@ dowaterdemon() /* Water demon */
 	pline_The("fountain bubbles furiously for a moment, then calms.");
 }
 
-STATIC_OVL void
-dowaternymph() /* Water Nymph */
-{
+/* Water Nymph */
+STATIC_OVL void dowaternymph() {
 	register struct monst *mtmp;
 
 	if(!(mvitals[PM_WATER_NYMPH].mvflags & G_GONE) &&
@@ -126,9 +123,8 @@ STATIC_PTR void gush(int x, int y, genericptr_t poolcnt) {
 		newsym(x,y);
 }
 
-STATIC_OVL void
-dofindgem() /* Find a gem in the sparkling waters. */
-{
+/* Find a gem in the sparkling waters. */
+STATIC_OVL void dofindgem() {
 	if (!Blind) You("spot a gem in the sparkling waters!");
 	else You_feel("a gem here!");
 	(void) mksobj_at(rnd_class(DILITHIUM_CRYSTAL, LUCKSTONE-1),

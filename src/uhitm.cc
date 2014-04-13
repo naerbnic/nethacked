@@ -409,12 +409,8 @@ atk_done:
 	return(TRUE);
 }
 
-STATIC_OVL boolean
-known_hitum(mon, mhit, uattk)	/* returns TRUE if monster still lives */
-register struct monst *mon;
-register int *mhit;
-struct attack *uattk;
-{
+/* returns TRUE if monster still lives */
+STATIC_OVL boolean known_hitum(register struct monst *mon, register int *mhit, struct attack *uattk) {
 	register boolean malive = TRUE;
 
 	if (override_confirmation) {
@@ -469,12 +465,8 @@ struct attack *uattk;
 	return(malive);
 }
 
-STATIC_OVL boolean
-hitum(mon, tmp, uattk)		/* returns TRUE if monster still lives */
-struct monst *mon;
-int tmp;
-struct attack *uattk;
-{
+/* returns TRUE if monster still lives */
+STATIC_OVL boolean hitum(struct monst *mon, int tmp, struct attack *uattk) {
 	boolean malive;
 	int mhit = (tmp > (dieroll = rnd(20)) || u.uswallow);
 
@@ -484,12 +476,8 @@ struct attack *uattk;
 	return(malive);
 }
 
-boolean			/* general "damage monster" routine */
-hmon(mon, obj, thrown)		/* return TRUE if mon still alive */
-struct monst *mon;
-struct obj *obj;
-int thrown;
-{
+/* return TRUE if mon still alive */
+boolean			/* general "damage monster" routine */ hmon(struct monst *mon, struct obj *obj, int thrown) {
 	boolean result, anger_guards;
 
 	anger_guards = (mon->mpeaceful &&
@@ -1886,11 +1874,8 @@ void missum(register struct monst *mdef, register struct attack *mattk) {
 		wakeup(mdef);
 }
 
-STATIC_OVL boolean
-hmonas(mon, tmp)		/* attack monster as a monster. */
-register struct monst *mon;
-register int tmp;
-{
+/* attack monster as a monster. */
+STATIC_OVL boolean hmonas(register struct monst *mon, register int tmp) {
 	struct attack *mattk, alt_attk;
 	int	i, sum[NATTK], hittmp = 0;
 	int	nsum = 0;

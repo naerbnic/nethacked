@@ -909,9 +909,8 @@ const char * rndmonnam() {
 }
 
 #ifdef REINCARNATION
-const char *
-roguename() /* Name of a Rogue player */
-{
+/* Name of a Rogue player */
+const char * roguename() {
 	char *i, *opts;
 
 	if ((opts = nh_getenv("ROGUEOPTS")) != 0) {

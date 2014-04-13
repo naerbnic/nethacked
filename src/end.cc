@@ -133,9 +133,7 @@ void dump_init () {
   }
 }
 
-void
-dump_exit ()
-{
+void dump_exit () {
   if (dump_fp)
     fclose (dump_fp);
 }

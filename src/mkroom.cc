@@ -423,9 +423,8 @@ STATIC_OVL struct permonst * antholemon() {
 			(struct permonst *)0 : &mons[mtyp]);
 }
 
-STATIC_OVL void
-mkswamp()	/* Michiel Huisjes & Fred de Wilde */
-{
+/* Michiel Huisjes & Fred de Wilde */
+STATIC_OVL void mkswamp() {
 	register struct mkroom *sroom;
 	register int sx,sy,i,eelct = 0;
 
@@ -630,9 +629,8 @@ static struct {
     {PM_SOLDIER, 80}, {PM_SERGEANT, 15}, {PM_LIEUTENANT, 4}, {PM_CAPTAIN, 1}
 };
 
-STATIC_OVL struct permonst *
-squadmon()		/* return soldier types. */
-{
+/* return soldier types. */
+STATIC_OVL struct permonst * squadmon() {
 	int sel_prob, i, cpro, mndx;
 
 	sel_prob = rnd(80+level_difficulty());

@@ -1457,9 +1457,8 @@ STATIC_OVL boolean mon_beside(int x, int y) {
 	return FALSE;
 }
 
-int
-doloot()	/* loot a container on the floor or loot saddle from mon. */
-{
+/* loot a container on the floor or loot saddle from mon. */
+int doloot() {
     register struct obj *cobj, *nobj;
     register int c = -1;
     int timepassed = 0;

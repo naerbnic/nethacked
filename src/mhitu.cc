@@ -78,12 +78,8 @@ STATIC_OVL void hitmsg(register struct monst *mtmp, register struct attack *matt
 	    }
 }
 
-STATIC_OVL void
-missmu(mtmp, nearmiss, mattk)		/* monster missed you */
-register struct monst *mtmp;
-register boolean nearmiss;
-register struct attack *mattk;
-{
+/* monster missed you */
+STATIC_OVL void missmu(register struct monst *mtmp, register boolean nearmiss, register struct attack *mattk) {
 	if (!canspotmon(mtmp))
 	    map_invisible(mtmp->mx, mtmp->my);
 
@@ -98,11 +94,8 @@ register struct attack *mattk;
 	stop_occupation();
 }
 
-STATIC_OVL void
-mswings(mtmp, otemp)		/* monster swings obj */
-register struct monst *mtmp;
-register struct obj *otemp;
-{
+/* monster swings obj */
+STATIC_OVL void mswings(register struct monst *mtmp, register struct obj *otemp) {
 	if (!flags.verbose || Blind || !mon_visible(mtmp))
 		return;
 	pline("%s %s %s %s.", Monnam(mtmp),
@@ -137,11 +130,8 @@ void u_slow_down() {
 #endif /* OVL1 */
 #ifdef OVLB
 
-STATIC_OVL void
-wildmiss(mtmp, mattk)		/* monster attacked your displaced image */
-	register struct monst *mtmp;
-	register struct attack *mattk;
-{
+/* monster attacked your displaced image */
+STATIC_OVL void wildmiss(register struct monst *mtmp, register struct attack *mattk) {
 	int compat;
 
 	/* no map_invisible() -- no way to tell where _this_ is coming from */
@@ -1579,11 +1569,8 @@ dopois:
 #endif /* OVL1 */
 #ifdef OVLB
 
-STATIC_OVL int
-gulpmu(mtmp, mattk)	/* monster swallows you, or damage if u.uswallow */
-	register struct monst *mtmp;
-	register struct attack  *mattk;
-{
+/* monster swallows you, or damage if u.uswallow */
+STATIC_OVL int gulpmu(register struct monst *mtmp, register struct attack *mattk) {
 	struct trap *t = t_at(u.ux, u.uy);
 	int	tmp = d((int)mattk->damn, (int)mattk->damd);
 	int	tim_tmp;
@@ -1768,12 +1755,8 @@ gulpmu(mtmp, mattk)	/* monster swallows you, or damage if u.uswallow */
 	return(1);
 }
 
-STATIC_OVL int
-explmu(mtmp, mattk, ufound)	/* monster explodes in your face */
-register struct monst *mtmp;
-register struct attack  *mattk;
-boolean ufound;
-{
+/* monster explodes in your face */
+STATIC_OVL int explmu(register struct monst *mtmp, register struct attack *mattk, boolean ufound) {
     if (mtmp->mcan) return(0);
 
     if (!ufound)
@@ -1852,11 +1835,8 @@ common:
     return(2);	/* it dies */
 }
 
-int
-gazemu(mtmp, mattk)	/* monster gazes at you */
-	register struct monst *mtmp;
-	register struct attack  *mattk;
-{
+/* monster gazes at you */
+int gazemu(register struct monst *mtmp, register struct attack *mattk) {
 	switch(mattk->adtyp) {
 	    case AD_STON:
 		if (mtmp->mcan || !mtmp->mcansee) {
@@ -2000,11 +1980,8 @@ gazemu(mtmp, mattk)	/* monster gazes at you */
 #endif /* OVLB */
 #ifdef OVL1
 
-void
-mdamageu(mtmp, n)	/* mtmp hits you for n points damage */
-register struct monst *mtmp;
-register int n;
-{
+/* mtmp hits you for n points damage */
+void mdamageu(register struct monst *mtmp, register int n) {
 	flags.botl = 1;
 	if (Upolyd) {
 		u.mh -= n;

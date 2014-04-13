@@ -269,9 +269,8 @@ register int change = 0;
 	start_screen();
 }
 
-void
-intron()		/* enable kbd interupts if enabled when game started */
-{
+/* enable kbd interupts if enabled when game started */
+void intron() {
 #ifdef TTY_GRAPHICS
 	/* Ugly hack to keep from changing tty modes for non-tty games -dlc */
 	if (!strcmp(windowprocs.name, "tty") &&
@@ -282,9 +281,8 @@ intron()		/* enable kbd interupts if enabled when game started */
 #endif
 }
 
-void
-introff()		/* disable kbd interrupts if required*/
-{
+/* disable kbd interrupts if required*/
+void introff() {
 #ifdef TTY_GRAPHICS
 	/* Ugly hack to keep from changing tty modes for non-tty games -dlc */
 	if (!strcmp(windowprocs.name, "tty") &&

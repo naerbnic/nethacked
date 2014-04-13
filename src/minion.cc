@@ -6,10 +6,8 @@
 #include "emin.h"
 #include "epri.h"
 
-void
-msummon(mon)		/* mon summons a monster */
-struct monst *mon;
-{
+/* mon summons a monster */
+void msummon(struct monst *mon) {
 	register struct permonst *ptr;
 	register int dtype = NON_PM, cnt = 0;
 	aligntyp atyp;
@@ -134,10 +132,8 @@ void summon_minion(aligntyp alignment, boolean talk) {
 
 #define Athome	(Inhell && !mtmp->cham)
 
-int
-demon_talk(mtmp)		/* returns 1 if it won't attack. */
-register struct monst *mtmp;
-{
+/* returns 1 if it won't attack. */
+int demon_talk(register struct monst *mtmp) {
 	long cash, demand, offer;
 
 	if (uwep && uwep->oartifact == ART_EXCALIBUR) {

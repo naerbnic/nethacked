@@ -47,10 +47,8 @@ boolean poly_when_stoned(struct permonst *ptr) {
 	    /* allow G_EXTINCT */
 }
 
-boolean
-resists_drli(mon)	/* returns TRUE if monster is drain-life resistant */
-struct monst *mon;
-{
+/* returns TRUE if monster is drain-life resistant */
+boolean resists_drli(struct monst *mon) {
 	struct permonst *ptr = mon->data;
 	struct obj *wep = ((mon == &youmonst) ? uwep : MON_WEP(mon));
 
@@ -59,10 +57,8 @@ struct monst *mon;
 			 (wep && wep->oartifact && defends(AD_DRLI, wep)));
 }
 
-boolean
-resists_magm(mon)	/* TRUE if monster is magic-missile resistant */
-struct monst *mon;
-{
+/* TRUE if monster is magic-missile resistant */
+boolean resists_magm(struct monst *mon) {
 	struct permonst *ptr = mon->data;
 	struct obj *o;
 
@@ -190,10 +186,8 @@ boolean can_blnd(struct monst *magr, struct monst *mdef, uchar aatyp, struct obj
 #endif /* OVLB */
 #ifdef OVL0
 
-boolean
-ranged_attk(ptr)	/* returns TRUE if monster can attack at range */
-struct permonst *ptr;
-{
+/* returns TRUE if monster can attack at range */
+boolean ranged_attk(struct permonst *ptr) {
 	register int i, atyp;
 	long atk_mask = (1L << AT_BREA) | (1L << AT_SPIT) | (1L << AT_GAZE);
 
@@ -232,10 +226,8 @@ boolean passes_bars(struct permonst *mptr) {
 #endif /* OVL0 */
 #ifdef OVL1
 
-boolean
-can_track(ptr)		/* returns TRUE if monster can track well */
-	register struct permonst *ptr;
-{
+/* returns TRUE if monster can track well */
+boolean can_track(register struct permonst *ptr) {
 	if (uwep && uwep->oartifact == ART_EXCALIBUR)
 		return TRUE;
 	else
@@ -245,18 +237,14 @@ can_track(ptr)		/* returns TRUE if monster can track well */
 #endif /* OVL1 */
 #ifdef OVLB
 
-boolean
-sliparm(ptr)	/* creature will slide out of armor */
-	register struct permonst *ptr;
-{
+/* creature will slide out of armor */
+boolean sliparm(register struct permonst *ptr) {
 	return((boolean)(is_whirly(ptr) || ptr->msize <= MZ_SMALL ||
 			 noncorporeal(ptr)));
 }
 
-boolean
-breakarm(ptr)	/* creature will break out of armor */
-	register struct permonst *ptr;
-{
+/* creature will break out of armor */
+boolean breakarm(register struct permonst *ptr) {
 	return ((bigmonst(ptr) || (ptr->msize > MZ_SMALL && !humanoid(ptr)) ||
 		/* special cases of humanoids that cannot wear body armor */
 		ptr == &mons[PM_MARILITH] || ptr == &mons[PM_WINGED_GARGOYLE])
@@ -265,10 +253,8 @@ breakarm(ptr)	/* creature will break out of armor */
 #endif /* OVLB */
 #ifdef OVL1
 
-boolean
-sticks(ptr)	/* creature sticks other creatures it hits */
-	register struct permonst *ptr;
-{
+/* creature sticks other creatures it hits */
+boolean sticks(register struct permonst *ptr) {
 	return((boolean)(dmgtype(ptr,AD_STCK) || dmgtype(ptr,AD_WRAP) ||
 		attacktype(ptr,AT_HUGS)));
 }
@@ -334,10 +320,8 @@ int max_passive_dmg(register struct monst *mdef, register struct monst *magr) {
 #endif /* OVL1 */
 #ifdef OVL0
 
-int
-monsndx(ptr)		/* return an index into the mons array */
-	struct	permonst	*ptr;
-{
+/* return an index into the mons array */
+int monsndx(struct permonst *ptr) {
 	register int	i;
 
 	i = (int)(ptr - &mons[0]);

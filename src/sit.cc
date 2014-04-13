@@ -304,9 +304,8 @@ int dosit() {
 	return(1);
 }
 
-void
-rndcurse()			/* curse a few inventory items at random! */
-{
+/* curse a few inventory items at random! */
+void rndcurse() {
 	int	nobj = 0;
 	int	cnt, onum;
 	struct	obj	*otmp;
@@ -378,9 +377,8 @@ rndcurse()			/* curse a few inventory items at random! */
 #endif	/*STEED*/
 }
 
-void
-attrcurse()			/* remove a random INTRINSIC ability */
-{
+/* remove a random INTRINSIC ability */
+void attrcurse() {
 	switch(rnd(11)) {
 	case 1 : if (HFire_resistance & INTRINSIC) {
 			HFire_resistance &= ~INTRINSIC;

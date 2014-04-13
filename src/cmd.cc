@@ -273,9 +273,8 @@ void savech(char ch) {
 #endif /* OVL1 */
 #ifdef OVLB
 
-STATIC_PTR int
-doextcmd()	/* here after # - now read a full-word command */
-{
+/* here after # - now read a full-word command */
+STATIC_PTR int doextcmd() {
 	int idx, retval;
 
 	/* keep repeating until we don't run help or quit */
@@ -289,9 +288,8 @@ doextcmd()	/* here after # - now read a full-word command */
 	return retval;
 }
 
-int
-doextlist()	/* here after #? - now list all full-word commands */
-{
+/* here after #? - now list all full-word commands */
+int doextlist() {
 	register const struct ext_func_tab *efp;
 	char	 buf[BUFSZ];
 	winid datawin;
@@ -318,9 +316,8 @@ doextlist()	/* here after #? - now list all full-word commands */
  * This is currently used only by the tty port and is
  * controlled via runtime option 'extmenu'
  */
-int
-extcmd_via_menu()	/* here after # - now show pick-list of possible commands */
-{
+/* here after # - now show pick-list of possible commands */
+int extcmd_via_menu() {
     const struct ext_func_tab *efp;
     menu_item *pick_list = (menu_item *)0;
     winid win;
@@ -499,9 +496,8 @@ STATIC_PTR int enter_explore_mode() {
 #ifdef WIZARD
 
 /* ^W command - wish for something */
-STATIC_PTR int
-wiz_wish()	/* Unlimited wishes for debug mode by Paul Polderman */
-{
+/* Unlimited wishes for debug mode by Paul Polderman */
+STATIC_PTR int wiz_wish() {
 	if (wizard) {
 	    boolean save_verbose = flags.verbose;
 
@@ -2326,20 +2322,15 @@ int xytod(schar x, schar y) {
 	return -1;
 }
 
-void
-dtoxy(cc,dd)	/* convert a direction code into an x,y pair */
-coord *cc;
-register int dd;
-{
+/* convert a direction code into an x,y pair */
+void dtoxy(coord *cc, register int dd) {
 	cc->x = xdir[dd];
 	cc->y = ydir[dd];
 	return;
 }
 
-int
-movecmd(sym)	/* also sets u.dz, but returns false for <> */
-char sym;
-{
+/* also sets u.dz, but returns false for <> */
+int movecmd(char sym) {
 	register const char *dp;
 	register const char *sdp;
 	if(iflags.num_pad) sdp = ndir; else sdp = sdir;	/* DICE workaround */

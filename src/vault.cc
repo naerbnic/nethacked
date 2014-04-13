@@ -60,10 +60,8 @@ STATIC_OVL void restfakecorr(register struct monst *grd) {
 	if(clear_fcorr(grd, FALSE)) mongone(grd);
 }
 
-boolean
-grddead(grd)				/* called in mon.c */
-register struct monst *grd;
-{
+/* called in mon.c */
+boolean grddead(register struct monst *grd) {
 	register boolean dispose = clear_fcorr(grd, TRUE);
 
 	if(!dispose) {
@@ -780,9 +778,8 @@ long hidden_gold() {
 	return(value);
 }
 
-boolean
-gd_sound()  /* prevent "You hear footsteps.." when inappropriate */
-{
+/* prevent "You hear footsteps.." when inappropriate */
+boolean gd_sound() {
 	register struct monst *grd = findgd();
 
 	if (vault_occupied(u.urooms)) return(FALSE);

@@ -719,10 +719,8 @@ int meatmetal(register struct monst *mtmp) {
 	return 0;
 }
 
-int
-meatobj(mtmp)		/* for gelatinous cubes */
-	register struct monst *mtmp;
-{
+/* for gelatinous cubes */
+int meatobj(register struct monst *mtmp) {
 	register struct obj *otmp, *otmp2;
 	struct permonst *ptr;
 	int poly, grow, heal, count = 0, ecount = 0;

@@ -2779,12 +2779,8 @@ struct monst * boomhit(int dx, int dy) {
 	return (struct monst *)0;
 }
 
-STATIC_OVL int
-zhitm(mon, type, nd, ootmp)			/* returns damage to mon */
-register struct monst *mon;
-register int type, nd;
-struct obj **ootmp;	/* to return worn armor for caller to disintegrate */
-{
+/* returns damage to mon */
+STATIC_OVL int zhitm(register struct monst *mon, register int type, register int nd, struct obj **ootmp) {
 	register int tmp = 0;
 	register int abstype = abs(type) % 10;
 	boolean sho_shieldeff = FALSE;
@@ -3617,10 +3613,8 @@ int zap_over_floor(xchar x, xchar y, int type, boolean *shopdamage) {
 #endif /*OVL0*/
 #ifdef OVL3
 
-void
-fracture_rock(obj)	/* fractured by pick-axe or wand of striking */
-register struct obj *obj;		   /* no texts here! */
-{
+/* fractured by pick-axe or wand of striking */
+void fracture_rock(register struct obj *obj) {
 	/* A little Sokoban guilt... */
 	if (obj->otyp == BOULDER && In_sokoban(&u.uz) && !flags.mon_moving)
 	    change_luck(-1);

@@ -2867,9 +2867,8 @@ void drain_en(register int n) {
 	flags.botl = 1;
 }
 
-int
-dountrap()	/* disarm a trap */
-{
+/* disarm a trap */
+int dountrap() {
 	if (near_capacity() >= HVY_ENCUMBER) {
 	    pline("You're too strained to do that.");
 	    return 0;
@@ -3053,10 +3052,8 @@ STATIC_OVL void reward_untrap(struct trap *ttmp, struct monst *mtmp) {
 	}
 }
 
-STATIC_OVL int
-disarm_holdingtrap(ttmp) /* Helge Hafting */
-struct trap *ttmp;
-{
+/* Helge Hafting */
+STATIC_OVL int disarm_holdingtrap(struct trap *ttmp) {
 	struct monst *mtmp;
 	int fails = try_disarm(ttmp, FALSE);
 
@@ -3085,10 +3082,8 @@ struct trap *ttmp;
 	return 1;
 }
 
-STATIC_OVL int
-disarm_landmine(ttmp) /* Helge Hafting */
-struct trap *ttmp;
-{
+/* Helge Hafting */
+STATIC_OVL int disarm_landmine(struct trap *ttmp) {
 	int fails = try_disarm(ttmp, FALSE);
 
 	if (fails < 2) return fails;

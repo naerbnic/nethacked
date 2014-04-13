@@ -190,10 +190,8 @@ STATIC_OVL boolean okay(int x, int y, register int dir) {
 	return(TRUE);
 }
 
-STATIC_OVL void
-maze0xy(cc)	/* find random starting point for maze generation */
-	coord	*cc;
-{
+/* find random starting point for maze generation */
+STATIC_OVL void maze0xy(coord *cc) {
 	cc->x = 3 + 2*rn2((x_maze_max>>1) - 1);
 	cc->y = 3 + 2*rn2((y_maze_max>>1) - 1);
 	return;

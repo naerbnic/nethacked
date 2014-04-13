@@ -182,10 +182,8 @@ gotlock:
 	}
 }
 
-void
-regularize(s)	/* normalize file name - we don't like .'s, /'s, spaces */
-register char *s;
-{
+/* normalize file name - we don't like .'s, /'s, spaces */
+void regularize(register char *s) {
 	register char *lp;
 
 	while((lp=index(s, '.')) || (lp=index(s, '/')) || (lp=index(s,' ')))

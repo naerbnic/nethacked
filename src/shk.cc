@@ -161,17 +161,13 @@ STATIC_OVL struct monst * next_shkp(register struct monst *shkp, register boolea
 	return(shkp);
 }
 
-char *
-shkname(mtmp)				/* called in do_name.c */
-register struct monst *mtmp;
-{
+/* called in do_name.c */
+char * shkname(register struct monst *mtmp) {
 	return(ESHK(mtmp)->shknam);
 }
 
-void
-shkgone(mtmp)				/* called in mon.c */
-struct monst *mtmp;
-{
+/* called in mon.c */
+void shkgone(struct monst *mtmp) {
 	struct eshk *eshk = ESHK(mtmp);
 	struct mkroom *sroom = &rooms[eshk->shoproom - ROOMOFFSET];
 	struct obj *otmp;
@@ -957,10 +953,8 @@ STATIC_VAR const char not_enough_money[];
 
 #ifdef OVL3
 
-STATIC_OVL long
-cheapest_item(shkp)   /* delivers the cheapest item on the list */
-register struct monst *shkp;
-{
+/* delivers the cheapest item on the list */
+STATIC_OVL long cheapest_item(register struct monst *shkp) {
 	register int ct = ESHK(shkp)->billct;
 	register struct bill_x *bp = ESHK(shkp)->bill_p;
 	register long gmin = (bp->price * bp->bquan);

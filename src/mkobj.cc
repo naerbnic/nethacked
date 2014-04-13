@@ -182,9 +182,8 @@ STATIC_OVL void mkbox_cnts(struct obj *box) {
 	}
 }
 
-int
-rndmonnum()	/* select a random, common monster type */
-{
+/* select a random, common monster type */
+int rndmonnum() {
 	register struct permonst *ptr;
 	register int	i;
 

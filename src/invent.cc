@@ -1482,10 +1482,8 @@ void identify_pack(int id_limit) {
 #endif /* OVLB */
 #ifdef OVL2
 
-STATIC_OVL char
-obj_to_let(obj)	/* should of course only be called for things in invent */
-register struct obj *obj;
-{
+/* should of course only be called for things in invent */
+STATIC_OVL char obj_to_let(register struct obj *obj) {
 #ifndef GOLDOBJ
 	if (obj->oclass == COIN_CLASS)
 		return GOLD_SYM;
@@ -2327,10 +2325,8 @@ void stackobj(struct obj *obj) {
 	return;
 }
 
-STATIC_OVL boolean
-mergable(otmp, obj)	/* returns TRUE if obj  & otmp can be merged */
-	register struct obj *otmp, *obj;
-{
+/* returns TRUE if obj  & otmp can be merged */
+STATIC_OVL boolean mergable(register struct obj *otmp, register struct obj *obj) {
 	if (obj->otyp != otmp->otyp) return FALSE;
 #ifdef GOLDOBJ
 	/* coins of the same kind will always merge */
@@ -2623,9 +2619,8 @@ void reassign() {
 #endif /* OVLB */
 #ifdef OVL1
 
-int
-doorganize()	/* inventory organizer by Del Lamb */
-{
+/* inventory organizer by Del Lamb */
+int doorganize() {
 	struct obj *obj, *otmp;
 	register int ix, cur;
 	register char let;

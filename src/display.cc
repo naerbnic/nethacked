@@ -1339,10 +1339,8 @@ int glyph;
 #ifdef TTY_GRAPHICS
 extern const char * FDECL(compress_str, (const char *));
 #else
-const char*
-compress_str(str) /* copied from win/tty/wintty.c */
-const char *str;
-{
+/* copied from win/tty/wintty.c */
+const char* compress_str(const char *str) {
 	static char cbuf[BUFSZ];
 	/* compress in case line too long */
 	if((int)strlen(str) >= 80) {

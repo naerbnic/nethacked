@@ -101,10 +101,8 @@ void more_experienced(register int exp, register int rexp) {
 		flags.beginner = 0;
 }
 
-void
-losexp(drainer)		/* e.g., hit by drain life attack */
-const char *drainer;	/* cause of death, if drain should be fatal */
-{
+/* e.g., hit by drain life attack */
+void losexp(const char *drainer) {
 	register int num;
 
 #ifdef WIZARD

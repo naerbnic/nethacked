@@ -172,9 +172,8 @@ static NEARDATA struct {
 static char *eatmbuf = 0;	/* set by cpostfx() */
 
 STATIC_PTR
-int
-eatmdone()		/* called after mimicing is over */
-{
+/* called after mimicing is over */
+int eatmdone() {
 	/* release `eatmbuf' */
 	if (eatmbuf) {
 	    if (nomovemsg == eatmbuf) nomovemsg = 0;
@@ -281,9 +280,8 @@ STATIC_OVL void recalc_wt() {
 #endif
 }
 
-void
-reset_eat()		/* called when eating interrupted by an event */
-{
+/* called when eating interrupted by an event */
+void reset_eat() {
     /* we only set a flag here - the actual reset process is done after
      * the round is spent eating.
      */
@@ -372,9 +370,8 @@ STATIC_OVL void do_reset_eat() {
 }
 
 STATIC_PTR
-int
-eatfood()		/* called each move during eating process */
-{
+/* called each move during eating process */
+int eatfood() {
 	if(!victual.piece ||
 	 (!carried(victual.piece) && !obj_here(victual.piece, u.ux, u.uy))) {
 		/* maybe it was stolen? */
@@ -738,10 +735,8 @@ STATIC_OVL void givit(int type, register struct permonst *ptr) {
 	}
 }
 
-STATIC_OVL void
-cpostfx(pm)		/* called after completely consuming a corpse */
-register int pm;
-{
+/* called after completely consuming a corpse */
+STATIC_OVL void cpostfx(register int pm) {
 	register int tmp = 0;
 	boolean catch_lycanthropy = FALSE;
 
@@ -965,9 +960,8 @@ void costly_tin(const char* verb) {
 }
 
 STATIC_PTR
-int
-opentin()		/* called during each move whilst opening a tin */
-{
+/* called during each move whilst opening a tin */
+int opentin() {
 	register int r;
 	const char *what;
 	int which;
@@ -1082,10 +1076,8 @@ use_me:
 	return(0);
 }
 
-STATIC_OVL void
-start_tin(otmp)		/* called when starting to open a tin */
-	register struct obj *otmp;
-{
+/* called when starting to open a tin */
+STATIC_OVL void start_tin(register struct obj *otmp) {
 	register int tmp;
 
 	if (metallivorous(youmonst.data)) {
@@ -1141,9 +1133,8 @@ no_opener:
 	return;
 }
 
-int
-Hear_again()		/* called when waking up after fainting */
-{
+/* called when waking up after fainting */
+int Hear_again() {
 	flags.soundok = 1;
 	return 0;
 }
@@ -1182,10 +1173,8 @@ STATIC_OVL int rottenfood(struct obj *obj) {
 	return(0);
 }
 
-STATIC_OVL int
-eatcorpse(otmp)		/* called when a corpse is selected as food */
-	register struct obj *otmp;
-{
+/* called when a corpse is selected as food */
+STATIC_OVL int eatcorpse(register struct obj *otmp) {
 	int tp = 0, mnum = otmp->corpsenm;
 	long rotted = 0L;
 	boolean uniq = !!(mons[mnum].geno & G_UNIQ);
@@ -1284,10 +1273,8 @@ eatcorpse(otmp)		/* called when a corpse is selected as food */
 	return(retcode);
 }
 
-STATIC_OVL void
-start_eating(otmp)		/* called as you start to eat */
-	register struct obj *otmp;
-{
+/* called as you start to eat */
+STATIC_OVL void start_eating(register struct obj *otmp) {
 #ifdef DEBUG
 	debugpline("start_eating: %lx (victual = %lx)", otmp, victual.piece);
 	debugpline("reqtime = %d", victual.reqtime);
@@ -1536,9 +1523,8 @@ STATIC_OVL void eataccessory(struct obj *otmp) {
 	}
 }
 
-STATIC_OVL void
-eatspecial() /* called after eating non-food */
-{
+/* called after eating non-food */
+STATIC_OVL void eatspecial() {
 	register struct obj *otmp = victual.piece;
 
 	/* lesshungry wants an occupation to handle choke messages correctly */
@@ -2099,10 +2085,8 @@ gethungry()	/* as time goes by - called by moveloop() and domove() */
 #endif /* OVL0 */
 #ifdef OVLB
 
-void
-morehungry(num)	/* called after vomiting and after performing feats of magic */
-register int num;
-{
+/* called after vomiting and after performing feats of magic */
+void morehungry(register int num) {
 	u.uhunger -= num;
 	newuhs(TRUE);
 }
@@ -2170,9 +2154,8 @@ boolean is_fainted() {
 	return((boolean)(u.uhs == FAINTED));
 }
 
-void
-reset_faint()	/* call when a faint must be prematurely terminated */
-{
+/* call when a faint must be prematurely terminated */
+void reset_faint() {
 	if(is_fainted()) nomul(0, 0);
 }
 
@@ -2324,11 +2307,8 @@ boolean incr;
 /* Returns an object representing food.  Object may be either on floor or
  * in inventory.
  */
-struct obj *
-floorfood(verb,corpsecheck)	/* get food from floor or pack */
-	const char *verb;
-	int corpsecheck; /* 0, no check, 1, corpses, 2, tinnable corpses */
-{
+/* get food from floor or pack */
+struct obj * floorfood(const char *verb, int corpsecheck) {
 	register struct obj *otmp;
 	char qbuf[QBUFSZ];
 	char c;
@@ -2412,9 +2392,8 @@ floorfood(verb,corpsecheck)	/* get food from floor or pack */
 
 /* Side effects of vomiting */
 /* added nomul (MRS) - it makes sense, you're too busy being sick! */
-void
-vomit()		/* A good idea from David Neves */
-{
+/* A good idea from David Neves */
+void vomit() {
 	make_sick(0L, (char *) 0, TRUE, SICK_VOMITABLE);
 	nomul(-2, "vomiting");
 }

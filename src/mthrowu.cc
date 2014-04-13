@@ -592,11 +592,8 @@ void thrwmu(struct monst *mtmp) {
 #endif /* OVL1 */
 #ifdef OVLB
 
-int
-spitmu(mtmp, mattk)		/* monster spits substance at you */
-register struct monst *mtmp;
-register struct attack *mattk;
-{
+/* monster spits substance at you */
+int spitmu(register struct monst *mtmp, register struct attack *mattk) {
 	register struct obj *otmp;
 
 	if(mtmp->mcan) {
@@ -692,10 +689,8 @@ boolean linedup(register xchar ax, register xchar ay, register xchar bx, registe
 	return FALSE;
 }
 
-boolean
-lined_up(mtmp)		/* is mtmp in position to use ranged attack? */
-	register struct monst *mtmp;
-{
+/* is mtmp in position to use ranged attack? */
+boolean lined_up(register struct monst *mtmp) {
 	return(linedup(mtmp->mux,mtmp->muy,mtmp->mx,mtmp->my));
 }
 

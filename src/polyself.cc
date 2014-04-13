@@ -314,10 +314,8 @@ void polyself(boolean forcecontrol) {
 }
 
 /* (try to) make a mntmp monster out of the player */
-int
-polymon(mntmp)	/* returns 1 if polymorph successful */
-int	mntmp;
-{
+/* returns 1 if polymorph successful */
+int polymon(int mntmp) {
 	boolean sticky = sticks(youmonst.data) && u.ustuck && !u.uswallow,
 		was_blind = !!Blind, dochange = FALSE;
 	boolean could_pass_walls = Passes_walls;

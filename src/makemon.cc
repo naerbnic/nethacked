@@ -71,11 +71,8 @@ STATIC_OVL boolean wrong_elem_type(register struct permonst *ptr) {
     return FALSE;
 }
 
-STATIC_OVL void
-m_initgrp(mtmp, x, y, n)	/* make a group just like mtmp */
-register struct monst *mtmp;
-register int x, y, n;
-{
+/* make a group just like mtmp */
+STATIC_OVL void m_initgrp(register struct monst *mtmp, register int x, register int y, register int n) {
 	coord mm;
 	register int cnt = rnd(n);
 	struct monst *mon;
@@ -1302,10 +1299,8 @@ struct permonst * mkclass(char class, int spc) {
 	return(&mons[first]);
 }
 
-int
-adj_lev(ptr)	/* adjust strength of monsters based on u.uz and u.ulevel */
-register struct permonst *ptr;
-{
+/* adjust strength of monsters based on u.uz and u.ulevel */
+int adj_lev(register struct permonst *ptr) {
 	int	tmp, tmp2;
 
 	if (ptr == &mons[PM_WIZARD_OF_YENDOR]) {
@@ -1333,10 +1328,8 @@ register struct permonst *ptr;
 #endif /* OVL1 */
 #ifdef OVLB
 
-struct permonst *
-grow_up(mtmp, victim)	/* `mtmp' might "grow up" into a bigger version */
-struct monst *mtmp, *victim;
-{
+/* `mtmp' might "grow up" into a bigger version */
+struct permonst * grow_up(struct monst *mtmp, struct monst *victim) {
 	int oldtype, newtype, max_increase, cur_increase,
 	    lev_limit, hp_threshold;
 	struct permonst *ptr = mtmp->data;
@@ -1593,10 +1586,8 @@ static NEARDATA char syms[] = {
 	S_MIMIC_DEF, S_MIMIC_DEF, S_MIMIC_DEF,
 };
 
-void
-set_mimic_sym(mtmp)		/* KAA, modified by ERS */
-register struct monst *mtmp;
-{
+/* KAA, modified by ERS */
+void set_mimic_sym(register struct monst *mtmp) {
 	int typ, roomno, rt;
 	unsigned appear, ap_type;
 	int s_sym;

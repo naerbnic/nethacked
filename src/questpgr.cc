@@ -34,9 +34,8 @@ static char	nambuf[sizeof cvt_buf];
 #ifdef DEBUG
 static void NDECL(dump_qtlist);
 
-static void
-dump_qtlist()	/* dump the character msg list to check appearance */
-{
+/* dump the character msg list to check appearance */
+static void dump_qtlist() {
 	struct	qtmsg	*msg;
 	long	size;
 
@@ -145,9 +144,8 @@ short quest_info(int typ) {
 	return 0;
 }
 
-const char *
-ldrname()	/* return your role leader's name */
-{
+/* return your role leader's name */
+const char * ldrname() {
 	int i = urole.ldrnum;
 
 	Sprintf(nambuf, "%s%s",
@@ -156,9 +154,8 @@ ldrname()	/* return your role leader's name */
 	return nambuf;
 }
 
-STATIC_OVL const char *
-intermed()	/* return your intermediate target string */
-{
+/* return your intermediate target string */
+STATIC_OVL const char * intermed() {
 	return (urole.intermed);
 }
 
@@ -166,9 +163,8 @@ boolean is_quest_artifact(struct obj *otmp) {
 	return((boolean)(otmp->oartifact == urole.questarti));
 }
 
-STATIC_OVL const char *
-neminame()	/* return your role nemesis' name */
-{
+/* return your role nemesis' name */
+STATIC_OVL const char * neminame() {
 	int i = urole.neminum;
 
 	Sprintf(nambuf, "%s%s",
@@ -177,17 +173,15 @@ neminame()	/* return your role nemesis' name */
 	return nambuf;
 }
 
-STATIC_OVL const char *
-guardname()	/* return your role leader's guard monster name */
-{
+/* return your role leader's guard monster name */
+STATIC_OVL const char * guardname() {
 	int i = urole.guardnum;
 
 	return(mons[i].mname);
 }
 
-STATIC_OVL const char *
-homebase()	/* return your role leader's location */
-{
+/* return your role leader's location */
+STATIC_OVL const char * homebase() {
 	return(urole.homebase);
 }
 

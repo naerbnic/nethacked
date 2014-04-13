@@ -343,10 +343,8 @@ static NEARDATA const int pwep[] =
 
 static struct obj *propellor;
 
-struct obj *
-select_rwep(mtmp)	/* select a ranged weapon for the monster */
-register struct monst *mtmp;
-{
+/* select a ranged weapon for the monster */
+struct obj * select_rwep(register struct monst *mtmp) {
 	register struct obj *otmp;
 	int i;
 
@@ -470,10 +468,8 @@ static const NEARDATA short hwep[] = {
 	  ATHAME, SCALPEL, KNIFE, WORM_TOOTH
 	};
 
-struct obj *
-select_hwep(mtmp)	/* select a hand to hand weapon for the monster */
-register struct monst *mtmp;
-{
+/* select a hand to hand weapon for the monster */
+struct obj * select_hwep(register struct monst *mtmp) {
 	register struct obj *otmp;
 	register int i;
 	boolean strong = strongmonst(mtmp->data);
@@ -667,9 +663,8 @@ int mon_wield_item(register struct monst *mon) {
 	return 0;
 }
 
-int
-abon()		/* attack bonus for strength & dexterity */
-{
+/* attack bonus for strength & dexterity */
+int abon() {
 	int sbon;
 	int str = ACURR(A_STR), dex = ACURR(A_DEX);
 
@@ -694,9 +689,8 @@ abon()		/* attack bonus for strength & dexterity */
 #endif /* OVL0 */
 #ifdef OVL1
 
-int
-dbon()		/* damage bonus for strength */
-{
+/* damage bonus for strength */
+int dbon() {
 	int str = ACURR(A_STR);
 
 	if (Upolyd) return(0);

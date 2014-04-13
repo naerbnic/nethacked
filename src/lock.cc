@@ -64,9 +64,8 @@ STATIC_OVL const char * lock_action() {
 }
 
 STATIC_PTR
-int
-picklock()	/* try to open/close a lock */
-{
+/* try to open/close a lock */
+int picklock() {
 
 	if (xlock.box) {
 	    if((xlock.box->ox != u.ux) || (xlock.box->oy != u.uy)) {
@@ -119,9 +118,8 @@ picklock()	/* try to open/close a lock */
 }
 
 STATIC_PTR
-int
-forcelock()	/* try to force a locked chest */
-{
+/* try to force a locked chest */
+int forcelock() {
 
 	register struct obj *otmp;
 
@@ -212,10 +210,8 @@ void reset_pick() {
 #endif /* OVL0 */
 #ifdef OVLB
 
-int
-pick_lock(pick) /* pick a lock with a given object */
-	register struct	obj	*pick;
-{
+/* pick a lock with a given object */
+int pick_lock(register struct obj *pick) {
 	int picktyp, c, ch;
 	coord cc;
 	struct rm	*door;
@@ -451,9 +447,8 @@ pick_lock(pick) /* pick a lock with a given object */
 	return(1);
 }
 
-int
-doforce()		/* try to force a chest with your weapon */
-{
+/* try to force a chest with your weapon */
+int doforce() {
 	register struct obj *otmp;
 	register int c, picktyp;
 	char qbuf[QBUFSZ];
@@ -514,9 +509,8 @@ doforce()		/* try to force a chest with your weapon */
 	return(1);
 }
 
-int
-doopen()		/* try to open a door */
-{
+/* try to open a door */
+int doopen() {
 	coord cc;
 	register struct rm *door;
 	struct monst *mtmp;
@@ -617,9 +611,8 @@ objhere:	pline("%s's in the way.", Something);
 	return(FALSE);
 }
 
-int
-doclose()		/* try to close a door */
-{
+/* try to close a door */
+int doclose() {
 	register int x, y;
 	register struct rm *door;
 	struct monst *mtmp;
@@ -712,10 +705,8 @@ doclose()		/* try to close a door */
 	return(1);
 }
 
-boolean			/* box obj was hit with spell effect otmp */
-boxlock(obj, otmp)	/* returns true if something happened */
-register struct obj *obj, *otmp;	/* obj *is* a box */
-{
+/* returns true if something happened */
+boolean			/* box obj was hit with spell effect otmp */ boxlock(register struct obj *obj, register struct obj *otmp) {
 	register boolean res = 0;
 
 	switch(otmp->otyp) {
@@ -748,11 +739,8 @@ register struct obj *obj, *otmp;	/* obj *is* a box */
 	return res;
 }
 
-boolean			/* Door/secret door was hit with spell effect otmp */
-doorlock(otmp,x,y)	/* returns true if something happened */
-struct obj *otmp;
-int x, y;
-{
+/* returns true if something happened */
+boolean			/* Door/secret door was hit with spell effect otmp */ doorlock(struct obj *otmp, int x, int y) {
 	register struct rm *door = &levl[x][y];
 	boolean res = TRUE;
 	int loudness = 0;

@@ -1611,11 +1611,8 @@ void do_questtxt() {
 
 static	char	temp[32];
 
-static char *
-limit(name,pref)	/* limit a name to 30 characters length */
-char	*name;
-int	pref;
-{
+/* limit a name to 30 characters length */
+static char * limit(char *name, int pref) {
 	(void) strncpy(temp, name, pref ? 26 : 30);
 	temp[pref ? 26 : 30] = 0;
 	return temp;

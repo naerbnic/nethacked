@@ -325,11 +325,8 @@ STATIC_OVL void nameshk(struct monst *shk, const char * const *nlp) {
 	ESHK(shk)->shknam[PL_NSIZ-1] = 0;
 }
 
-STATIC_OVL int
-shkinit(shp, sroom)	/* create a new shopkeeper in the given room */
-const struct shclass	*shp;
-struct mkroom	*sroom;
-{
+/* create a new shopkeeper in the given room */
+STATIC_OVL int shkinit(const struct shclass *shp, struct mkroom *sroom) {
 	register int sh, sx, sy;
 	struct monst *shk;
 

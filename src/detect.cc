@@ -1034,9 +1034,8 @@ STATIC_PTR void openone(int zx, int zy, genericptr_t num) {
 	}
 }
 
-int
-findit()	/* returns number of things found */
-{
+/* returns number of things found */
+int findit() {
 	int num = 0;
 
 	if(u.uswallow) return(0);
@@ -1044,9 +1043,8 @@ findit()	/* returns number of things found */
 	return(num);
 }
 
-int
-openit()	/* returns number of things found and opened */
-{
+/* returns number of things found and opened */
+int openit() {
 	int num = 0;
 
 	if(u.uswallow) {

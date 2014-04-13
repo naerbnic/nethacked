@@ -225,9 +225,8 @@ int find_skates() {
     return -1;	/* not 0, or caller would try again each move */
 }
 
-void
-oinit()			/* level dependent initialization */
-{
+/* level dependent initialization */
+void oinit() {
 	setgemprobs(&u.uz);
 }
 
@@ -332,9 +331,8 @@ static short uniq_objs[] = {
 	BELL_OF_OPENING,
 };
 
-int
-dodiscovered()				/* free after Robert Viduya */
-{
+/* free after Robert Viduya */
+int dodiscovered() {
     register int i, dis;
     int	ct = 0;
     char *s, oclass, prev_class, classes[MAXOCLASSES];

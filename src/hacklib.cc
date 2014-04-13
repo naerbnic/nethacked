@@ -51,42 +51,32 @@ NetHack, except that rounddiv may call panic().
 #endif
 
 #ifdef OVLB
-boolean
-digit(c)		/* is 'c' a digit? */
-    char c;
-{
+/* is 'c' a digit? */
+boolean digit(char c) {
     return((boolean)('0' <= c && c <= '9'));
 }
 
-boolean
-letter(c)		/* is 'c' a letter?  note: '@' classed as letter */
-    char c;
-{
+/* is 'c' a letter?  note: '@' classed as letter */
+boolean letter(char c) {
     return((boolean)(('@' <= c && c <= 'Z') || ('a' <= c && c <= 'z')));
 }
 #endif /* OVLB */
 
 #ifdef OVL1
-char
-highc(c)			/* force 'c' into uppercase */
-    char c;
-{
+/* force 'c' into uppercase */
+char highc(char c) {
     return((char)(('a' <= c && c <= 'z') ? (c & ~040) : c));
 }
 
-char
-lowc(c)			/* force 'c' into lowercase */
-    char c;
-{
+/* force 'c' into lowercase */
+char lowc(char c) {
     return((char)(('A' <= c && c <= 'Z') ? (c | 040) : c));
 }
 #endif /* OVL1 */
 
 #ifdef OVLB
-char *
-lcase(s)		/* convert a string into all lowercase */
-    char *s;
-{
+/* convert a string into all lowercase */
+char * lcase(char *s) {
     register char *p;
 
     for (p = s; *p; p++)
@@ -94,10 +84,8 @@ lcase(s)		/* convert a string into all lowercase */
     return s;
 }
 
-char *
-upstart(s)		/* convert first character of a string to uppercase */
-    char *s;
-{
+/* convert first character of a string to uppercase */
+char * upstart(char *s) {
     if (s) *s = highc(*s);
     return s;
 }
@@ -141,10 +129,8 @@ strkitten(s, c)		/* append a character to a string (in place) */
     return s;
 }
 
-char *
-s_suffix(s)		/* return a name converted to possessive */
-    const char *s;
-{
+/* return a name converted to possessive */
+char * s_suffix(const char *s) {
     Static char buf[BUFSZ];
 
     Strcpy(buf, s);
@@ -177,10 +163,8 @@ char *buf;
 #endif /* OVL0 */
 
 #ifdef OVL2
-boolean
-onlyspace(s)		/* is a string entirely whitespace? */
-    const char *s;
-{
+/* is a string entirely whitespace? */
+boolean onlyspace(const char *s) {
     for (; *s; s++)
 	if (*s != ' ' && *s != '\t') return FALSE;
     return TRUE;
@@ -188,10 +172,8 @@ onlyspace(s)		/* is a string entirely whitespace? */
 #endif /* OVL2 */
 
 #ifdef OVLB
-char *
-tabexpand(sbuf)		/* expand tabs into proper number of spaces */
-    char *sbuf;
-{
+/* expand tabs into proper number of spaces */
+char * tabexpand(char *sbuf) {
     char buf[BUFSZ];
     register char *bp, *s = sbuf;
     register int idx;
@@ -210,10 +192,8 @@ tabexpand(sbuf)		/* expand tabs into proper number of spaces */
     return strcpy(sbuf, buf);
 }
 
-char *
-visctrl(c)		/* make a displayable string from a character */
-    char c;
-{
+/* make a displayable string from a character */
+char * visctrl(char c) {
     Static char ccc[3];
 
     c &= 0177;
@@ -234,10 +214,8 @@ visctrl(c)		/* make a displayable string from a character */
 #endif /* OVLB */
 
 #ifdef OVL2
-const char *
-ordin(n)		/* return the ordinal suffix of a number */
-    int n;			/* note: should be non-negative */
-{
+/* return the ordinal suffix of a number */
+const char * ordin(int n) {
     register int dd = n % 10;
 
     return (dd == 0 || dd > 3 || (n % 100) / 10 == 1) ? "th" :
@@ -246,30 +224,23 @@ ordin(n)		/* return the ordinal suffix of a number */
 #endif /* OVL2 */
 
 #ifdef OVL1
-char *
-sitoa(n)		/* make a signed digit string from a number */
-    int n;
-{
+/* make a signed digit string from a number */
+char * sitoa(int n) {
     Static char buf[13];
 
     Sprintf(buf, (n < 0) ? "%d" : "+%d", n);
     return buf;
 }
 
-int
-sgn(n)			/* return the sign of a number: -1, 0, or 1 */
-    int n;
-{
+/* return the sign of a number: -1, 0, or 1 */
+int sgn(int n) {
     return (n < 0) ? -1 : (n != 0);
 }
 #endif /* OVL1 */
 
 #ifdef OVLB
-int
-rounddiv(x, y)		/* calculate x/y, rounding as appropriate */
-    long x;
-    int  y;
-{
+/* calculate x/y, rounding as appropriate */
+int rounddiv(long x, int y) {
     int r, m;
     int divsgn = 1;
 
@@ -290,10 +261,8 @@ rounddiv(x, y)		/* calculate x/y, rounding as appropriate */
 #endif /* OVLB */
 
 #ifdef OVL0
-int
-distmin(x0, y0, x1, y1) /* distance between two points, in moves */
-    int x0, y0, x1, y1;
-{
+/* distance between two points, in moves */
+int distmin(int x0, int y0, int x1, int y1) {
     register int dx = x0 - x1, dy = y0 - y1;
     if (dx < 0) dx = -dx;
     if (dy < 0) dy = -dy;
@@ -303,10 +272,8 @@ distmin(x0, y0, x1, y1) /* distance between two points, in moves */
     return (dx < dy) ? dy : dx;
 }
 
-int
-dist2(x0, y0, x1, y1)	/* square of euclidean distance between pair of pts */
-    int x0, y0, x1, y1;
-{
+/* square of euclidean distance between pair of pts */
+int dist2(int x0, int y0, int x1, int y1) {
     register int dx = x0 - x1, dy = y0 - y1;
     return dx * dx + dy * dy;
 }
@@ -325,10 +292,8 @@ online2(x0, y0, x1, y1) /* are two points lined up (on a straight line)? */
 #endif /* OVL0 */
 #ifdef OVLB
 
-boolean
-pmatch(patrn, strng)	/* match a string against a pattern */
-    const char *patrn, *strng;
-{
+/* match a string against a pattern */
+boolean pmatch(const char *patrn, const char *strng) {
     char s, p;
   /*
    :  Simple pattern matcher:  '*' matches 0 or more characters, '?' matches
@@ -350,11 +315,8 @@ pmatch_top:
 
 #ifdef OVL2
 #ifndef STRNCMPI
-int
-strncmpi(s1, s2, n)	/* case insensitive counted string comparison */
-    register const char *s1, *s2;
-    register int n; /*(should probably be size_t, which is usually unsigned)*/
-{					/*{ aka strncasecmp }*/
+/* case insensitive counted string comparison */
+int strncmpi(register const char *s1, register const char *s2, register int n) {
     register char t1, t2;
 
     while (n--) {
@@ -372,11 +334,8 @@ strncmpi(s1, s2, n)	/* case insensitive counted string comparison */
 #ifdef OVLB
 #ifndef STRSTRI
 
-char *
-strstri(str, sub)	/* case insensitive substring search */
-    const char *str;
-    const char *sub;
-{
+/* case insensitive substring search */
+char * strstri(const char *str, const char *sub) {
     register const char *s1, *s2;
     register int i, k;
 # define TABSIZ 0x20	/* 0x40 would be case-sensitive */
@@ -554,9 +513,8 @@ long yyyymmdd(time_t date) {
  * 177 ~= 8 reported phases * 22
  * + 11/22 for rounding
  */
-int
-phase_of_the_moon()		/* 0-7, with 0: new, 4: full */
-{
+/* 0-7, with 0: new, 4: full */
+int phase_of_the_moon() {
 	register struct tm *lt = getlt();
 	register int epact, diy, goldn;
 

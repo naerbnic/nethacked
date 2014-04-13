@@ -1703,18 +1703,15 @@ const char * a_gname() {
     return(a_gname_at(u.ux, u.uy));
 }
 
-const char *
-a_gname_at(x,y)     /* returns the name of an altar's deity */
-xchar x, y;
-{
+/* returns the name of an altar's deity */
+const char * a_gname_at(xchar x, xchar y) {
     if(!IS_ALTAR(levl[x][y].typ)) return((char *)0);
 
     return align_gname(a_align(x,y));
 }
 
-const char *
-u_gname()  /* returns the name of the player's deity */
-{
+/* returns the name of the player's deity */
+const char * u_gname() {
     return align_gname(u.ualign.type);
 }
 

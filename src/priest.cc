@@ -546,10 +546,8 @@ boolean in_your_sanctuary(struct monst *mon, xchar x, xchar y) {
 			 priest->mpeaceful);
 }
 
-void
-ghod_hitsu(priest)	/* when attacking "priest" in his temple */
-struct monst *priest;
-{
+/* when attacking "priest" in his temple */
+void ghod_hitsu(struct monst *priest) {
 	int x, y, ax, ay, roomno = (int)temple_occupied(u.urooms);
 	struct mkroom *troom;
 

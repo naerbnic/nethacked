@@ -90,10 +90,8 @@ void missmm(register struct monst *magr, register struct monst *mdef, struct att
  *  then we report that the monster did nothing so it will continue to
  *  digest the hero.
  */
-int
-fightm(mtmp)		/* have monsters fight each other */
-	register struct monst *mtmp;
-{
+/* have monsters fight each other */
+int fightm(register struct monst *mtmp) {
 	register struct monst *mon, *nmon;
 	int result, has_u_swallowed;
 #ifdef LINT
@@ -1132,10 +1130,8 @@ STATIC_OVL int mdamagem(register struct monst *magr, register struct monst *mdef
 
 #ifdef OVL0
 
-int
-noattacks(ptr)			/* returns 1 if monster doesn't attack */
-	struct	permonst *ptr;
-{
+/* returns 1 if monster doesn't attack */
+int noattacks(struct permonst *ptr) {
 	int i;
 
 	for(i = 0; i < NATTK; i++)

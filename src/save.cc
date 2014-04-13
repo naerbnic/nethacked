@@ -613,10 +613,8 @@ void bufoff(int fd) {
     return;
 }
 
-void
-bflush(fd)  /* flush run and buffer */
-register int fd;
-{
+/* flush run and buffer */
+void bflush(register int fd) {
     bwritefd = fd;
     if (outrunlength >= 0) {	/* flush run */
 	flushoutrun(outrunlength);
@@ -1068,9 +1066,8 @@ STATIC_OVL void copyfile(char *from, char *to) {
 # endif /* TOS */
 }
 
-void
-co_false()	    /* see comment in bones.c */
-{
+/* see comment in bones.c */
+void co_false() {
     count_only = FALSE;
     return;
 }

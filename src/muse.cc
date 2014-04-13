@@ -2001,10 +2001,7 @@ boolean mon_reflects(struct monst *mon, const char *str) {
 	return FALSE;
 }
 
-boolean
-ureflects (fmt, str)
-const char *fmt, *str;
-{
+boolean ureflects (const char *fmt, const char *str) {
 	/* Check from outermost to innermost objects */
 	if (EReflecting & W_ARMS) {
 	    if (fmt && str) {

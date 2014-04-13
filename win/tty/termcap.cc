@@ -730,9 +730,8 @@ void tty_delay_output() {
 #endif /* OVL1 */
 #ifdef OVLB
 
-void
-cl_eos()			/* free after Robert Viduya */
-{				/* must only be called with curx = 1 */
+/* free after Robert Viduya */
+void cl_eos() {
 
 	if(nh_CD)
 		xputs(nh_CD);
@@ -928,11 +927,7 @@ static void kill_hilite() {
 
 #  ifndef TOS
 /* find the foreground and background colors set by nh_HI or nh_HE */
-static void
-analyze_seq (str, fg, bg)
-char *str;
-int *fg, *bg;
-{
+static void analyze_seq (char *str, int *fg, int *bg) {
 	register int c, code;
 	int len;
 

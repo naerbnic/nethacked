@@ -927,10 +927,8 @@ void set_wear() {
 }
 
 /* check whether the target object is currently being put on (or taken off) */
-boolean
-donning(otmp)		/* also checks for doffing */
-register struct obj *otmp;
-{
+/* also checks for doffing */
+boolean donning(register struct obj *otmp) {
  /* long what = (occupation == take_off) ? taking_off : 0L; */
     long what = taking_off;	/* if nonzero, occupation is implied */
     boolean result = FALSE;

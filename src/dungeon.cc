@@ -569,9 +569,8 @@ struct level_map {
 	{ "",		(d_level *)0 }
 };
 
-void
-init_dungeons()		/* initialize the "dungeon" structs */
-{
+/* initialize the "dungeon" structs */
+void init_dungeons() {
 	dlb	*dgn_file;
 	register int i, cl = 0, cb = 0;
 	register s_level *x;
@@ -830,24 +829,18 @@ init_dungeons()		/* initialize the "dungeon" structs */
 #endif
 }
 
-xchar
-dunlev(lev)	/* return the level number for lev in *this* dungeon */
-d_level	*lev;
-{
+/* return the level number for lev in *this* dungeon */
+xchar dunlev(d_level *lev) {
 	return(lev->dlevel);
 }
 
-xchar
-dunlevs_in_dungeon(lev)	/* return the lowest level number for *this* dungeon*/
-d_level	*lev;
-{
+/* return the lowest level number for *this* dungeon*/
+xchar dunlevs_in_dungeon(d_level *lev) {
 	return(dungeons[lev->dnum].num_dunlevs);
 }
 
-xchar
-deepest_lev_reached(noquest) /* return the lowest level explored in the game*/
-boolean noquest;
-{
+/* return the lowest level explored in the game*/
+xchar deepest_lev_reached(boolean noquest) {
 	/* this function is used for three purposes: to provide a factor
 	 * of difficulty in monster generation; to provide a factor of
 	 * difficulty in experience calculations (botl.c and end.c); and
@@ -927,10 +920,8 @@ schar depth(d_level *lev) {
 	return((schar)( dungeons[lev->dnum].depth_start + lev->dlevel - 1));
 }
 
-boolean
-on_level(lev1, lev2)	/* are "lev1" and "lev2" actually the same? */
-d_level	*lev1, *lev2;
-{
+/* are "lev1" and "lev2" actually the same? */
+boolean on_level(d_level *lev1, d_level *lev2) {
 	return((boolean)((lev1->dnum == lev2->dnum) && (lev1->dlevel == lev2->dlevel)));
 }
 
@@ -1150,20 +1141,16 @@ void get_level(d_level *newlevel, int levnum) {
 #endif /* OVL1 */
 #ifdef OVL0
 
-boolean
-In_quest(lev)	/* are you in the quest dungeon? */
-d_level *lev;
-{
+/* are you in the quest dungeon? */
+boolean In_quest(d_level *lev) {
 	return((boolean)(lev->dnum == quest_dnum));
 }
 
 #endif /* OVL0 */
 #ifdef OVL1
 
-boolean
-In_mines(lev)	/* are you in the mines dungeon? */
-d_level	*lev;
-{
+/* are you in the mines dungeon? */
+boolean In_mines(d_level *lev) {
 	return((boolean)(lev->dnum == mines_dnum));
 }
 
@@ -1205,27 +1192,20 @@ boolean at_dgn_entrance(const char *s) {
     return((boolean)(on_level(&u.uz, &br->end1) ? TRUE : FALSE));
 }
 
-boolean
-In_V_tower(lev)	/* is `lev' part of Vlad's tower? */
-d_level	*lev;
-{
+/* is `lev' part of Vlad's tower? */
+boolean In_V_tower(d_level *lev) {
 	return((boolean)(lev->dnum == tower_dnum));
 }
 
-boolean
-On_W_tower_level(lev)	/* is `lev' a level containing the Wizard's tower? */
-d_level	*lev;
-{
+/* is `lev' a level containing the Wizard's tower? */
+boolean On_W_tower_level(d_level *lev) {
 	return (boolean)(Is_wiz1_level(lev) ||
 			 Is_wiz2_level(lev) ||
 			 Is_wiz3_level(lev));
 }
 
-boolean
-In_W_tower(x, y, lev)	/* is <x,y> of `lev' inside the Wizard's tower? */
-int	x, y;
-d_level	*lev;
-{
+/* is <x,y> of `lev' inside the Wizard's tower? */
+boolean In_W_tower(int x, int y, d_level *lev) {
 	if (!On_W_tower_level(lev)) return FALSE;
 	/*
 	 * Both of the exclusion regions for arriving via level teleport
@@ -1243,38 +1223,30 @@ d_level	*lev;
 #endif /* OVL1 */
 #ifdef OVL0
 
-boolean
-In_hell(lev)	/* are you in one of the Hell levels? */
-d_level	*lev;
-{
+/* are you in one of the Hell levels? */
+boolean In_hell(d_level *lev) {
 	return((boolean)(dungeons[lev->dnum].flags.hellish));
 }
 
 #endif /* OVL0 */
 #ifdef OVL1
 
-void
-find_hell(lev)	/* sets *lev to be the gateway to Gehennom... */
-d_level *lev;
-{
+/* sets *lev to be the gateway to Gehennom... */
+void find_hell(d_level *lev) {
 	lev->dnum = valley_level.dnum;
 	lev->dlevel = 1;
 }
 
-void
-goto_hell(at_stairs, falling)	/* go directly to hell... */
-boolean	at_stairs, falling;
-{
+/* go directly to hell... */
+void goto_hell(boolean at_stairs, boolean falling) {
 	d_level lev;
 
 	find_hell(&lev);
 	goto_level(&lev, at_stairs, falling, FALSE);
 }
 
-void
-assign_level(dest, src)		/* equivalent to dest = source */
-d_level	*dest, *src;
-{
+/* equivalent to dest = source */
+void assign_level(d_level *dest, d_level *src) {
 	dest->dnum = src->dnum;
 	dest->dlevel = src->dlevel;
 }

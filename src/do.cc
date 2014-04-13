@@ -216,10 +216,8 @@ boolean flooreffects(struct obj *obj, int x, int y, const char *verb) {
 #endif /* OVL0 */
 #ifdef OVLB
 
-void
-doaltarobj(obj)  /* obj is an object dropped on an altar */
-	register struct obj *obj;
-{
+/* obj is an object dropped on an altar */
+void doaltarobj(register struct obj *obj) {
 	if (Blind)
 		return;
 
@@ -247,10 +245,8 @@ void trycall(register struct obj *obj) {
 }
 
 STATIC_OVL
-void
-dosinkring(obj)  /* obj is a ring being dropped over a kitchen sink */
-register struct obj *obj;
-{
+/* obj is a ring being dropped over a kitchen sink */
+void dosinkring(register struct obj *obj) {
 	register struct obj *otmp,*otmp2;
 	register boolean ideed = TRUE;
 

@@ -286,10 +286,7 @@ STATIC_OVL void chat_with_guardian() {
 	    qt_pager(rn1(5, QT_GUARDTALK));
 }
 
-STATIC_OVL void
-prisoner_speaks (mtmp)
-	register struct monst *mtmp;
-{
+STATIC_OVL void prisoner_speaks (register struct monst *mtmp) {
 	if (mtmp->data == &mons[PM_PRISONER] &&
 			(mtmp->mstrategy & STRAT_WAITMASK)) {
 	    /* Awaken the prisoner */
