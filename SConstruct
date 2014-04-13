@@ -1,4 +1,7 @@
-env = Environment(CPPPATH = ['#include'])
+env = Environment(
+    CPPPATH = ['#include'],
+    CXXFLAGS = ['-std=c++11']
+)
 
 Export(['env'])
 
