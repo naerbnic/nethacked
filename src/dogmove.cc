@@ -13,16 +13,16 @@ extern boolean notonhead;
 
 #ifdef OVL0
 
-STATIC_DCL boolean FDECL(dog_hunger,(struct monst *,struct edog *));
-STATIC_DCL int FDECL(dog_invent,(struct monst *,struct edog *,int));
-STATIC_DCL int FDECL(dog_goal,(struct monst *,struct edog *,int,int,int));
+STATIC_DCL boolean FDECL(dog_hunger,(struct Monster *,struct edog *));
+STATIC_DCL int FDECL(dog_invent,(struct Monster *,struct edog *,int));
+STATIC_DCL int FDECL(dog_goal,(struct Monster *,struct edog *,int,int,int));
 
-STATIC_DCL struct Object *FDECL(DROPPABLES, (struct monst *));
-STATIC_DCL boolean FDECL(can_reach_location,(struct monst *,XCHAR_P,XCHAR_P,
+STATIC_DCL struct Object *FDECL(DROPPABLES, (struct Monster *));
+STATIC_DCL boolean FDECL(can_reach_location,(struct Monster *,XCHAR_P,XCHAR_P,
     XCHAR_P,XCHAR_P));
-STATIC_DCL boolean FDECL(could_reach_item,(struct monst *, XCHAR_P,XCHAR_P));
+STATIC_DCL boolean FDECL(could_reach_item,(struct Monster *, XCHAR_P,XCHAR_P));
 
-STATIC_OVL struct Object * DROPPABLES(struct monst *mon) {
+STATIC_OVL struct Object * DROPPABLES(struct Monster *mon) {
 	struct Object *obj;
 	struct Object *wep = MON_WEP(mon);
 	boolean item1 = FALSE, item2 = FALSE;
@@ -65,7 +65,7 @@ STATIC_OVL boolean cursed_object_at(int x, int y) {
 	return FALSE;
 }
 
-int dog_nutrition(struct monst *mtmp, struct Object *obj) {
+int dog_nutrition(struct Monster *mtmp, struct Object *obj) {
 	int nutrit;
 
 	/*
@@ -111,7 +111,7 @@ int dog_nutrition(struct monst *mtmp, struct Object *obj) {
 }
 
 /* returns 2 if pet dies, otherwise 1 */
-int dog_eat(struct monst *mtmp, struct Object * obj, int x, int y, boolean devour) {
+int dog_eat(struct Monster *mtmp, struct Object * obj, int x, int y, boolean devour) {
 	struct edog *edog = EDOG(mtmp);
 	boolean poly = FALSE, grow = FALSE, heal = FALSE;
 	int nutrit;
@@ -185,7 +185,7 @@ int dog_eat(struct monst *mtmp, struct Object * obj, int x, int y, boolean devou
 	}
 	/* limit "instant" growth to prevent potential abuse */
 	if (grow && (int) mtmp->m_lev < (int)mtmp->data->mlevel + 15) {
-	    if (!grow_up(mtmp, (struct monst *)0)) return 2;
+	    if (!grow_up(mtmp, (struct Monster *)0)) return 2;
 	}
 	if (heal) mtmp->mhp = mtmp->mhpmax;
 	return 1;
@@ -195,7 +195,7 @@ int dog_eat(struct monst *mtmp, struct Object * obj, int x, int y, boolean devou
 #ifdef OVL0
 
 /* hunger effects -- returns TRUE on starvation */
-STATIC_OVL boolean dog_hunger(struct monst *mtmp, struct edog *edog) {
+STATIC_OVL boolean dog_hunger(struct Monster *mtmp, struct edog *edog) {
 	if (monstermoves > edog->hungrytime + 500) {
 	    if (!carnivorous(mtmp->data) && !herbivorous(mtmp->data)) {
 		edog->hungrytime = monstermoves + 500;
@@ -239,7 +239,7 @@ STATIC_OVL boolean dog_hunger(struct monst *mtmp, struct edog *edog) {
 /* do something with object (drop, pick up, eat) at current position
  * returns 1 if object eaten (since that counts as dog's move), 2 if died
  */
-STATIC_OVL int dog_invent(struct monst *mtmp, struct edog *edog, int udist) {
+STATIC_OVL int dog_invent(struct Monster *mtmp, struct edog *edog, int udist) {
 	int omx, omy;
 	struct Object *obj;
 
@@ -304,7 +304,7 @@ STATIC_OVL int dog_invent(struct monst *mtmp, struct edog *edog, int udist) {
 /* set dog's goal -- gtyp, gx, gy
  * returns -1/0/1 (dog's desire to approach player) or -2 (abort move)
  */
-STATIC_OVL int dog_goal(struct monst *mtmp, struct edog *edog, int after, int udist, int whappr) {
+STATIC_OVL int dog_goal(struct Monster *mtmp, struct edog *edog, int after, int udist, int whappr) {
 	int omx, omy;
 	boolean in_masters_sight, dog_has_minvent;
 	struct Object *obj;
@@ -447,7 +447,7 @@ STATIC_OVL int dog_goal(struct monst *mtmp, struct edog *edog, int after, int ud
 }
 
 /* return 0 (no move), 1 (move) or 2 (dead) */
-int dog_move(struct monst *mtmp, int after) {
+int dog_move(struct Monster *mtmp, int after) {
 	int omx, omy;		/* original mtmp position */
 	int appr, whappr, udist;
 	int i, j, k;
@@ -579,7 +579,7 @@ int dog_move(struct monst *mtmp, int after) {
 
 		if ((info[i] & ALLOW_M) && MON_AT(nx, ny)) {
 		    int mstatus;
-		    struct monst *mtmp2 = m_at(nx,ny);
+		    struct Monster *mtmp2 = m_at(nx,ny);
 
 		    if ((int)mtmp2->m_lev >= (int)mtmp->m_lev+2 ||
 			(mtmp2->data == &mons[PM_FLOATING_EYE] && rn2(10) &&
@@ -760,7 +760,7 @@ dognext:
 }
 
 /* check if a monster could pick up objects from a location */
-STATIC_OVL boolean could_reach_item(struct monst *mon, xchar nx, xchar ny) {
+STATIC_OVL boolean could_reach_item(struct Monster *mon, xchar nx, xchar ny) {
     if ((!is_pool(nx,ny) || is_swimmer(mon->data)) &&
 	(!is_lava(nx,ny) || likes_lava(mon->data)) &&
 	(!sobj_at(BOULDER,nx,ny) || throws_rocks(mon->data)))
@@ -775,7 +775,7 @@ STATIC_OVL boolean could_reach_item(struct monst *mon, xchar nx, xchar ny) {
  * Since the maximum food distance is 5, this should never be more than 5 calls
  * deep.
  */
-STATIC_OVL boolean can_reach_location(struct monst *mon, xchar mx, xchar my, xchar fx, xchar fy) {
+STATIC_OVL boolean can_reach_location(struct Monster *mon, xchar mx, xchar my, xchar fx, xchar fy) {
     int i, j;
     int dist;
 

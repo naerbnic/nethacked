@@ -4,7 +4,7 @@
 
 #ifndef OBJECTS_PASS_2_
 /* first pass */
-struct monst { struct monst *dummy; };	/* lint: struct obj's union */
+struct Monster { struct Monster *dummy; };	/* lint: struct obj's union */
 #include "config.h"
 #include "obj.h"
 #include "objclass.h"

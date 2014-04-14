@@ -27,7 +27,7 @@ STATIC_DCL void FDECL(costly_cancel, (struct Object *));
 STATIC_DCL void FDECL(polyuse, (struct Object*, int, int));
 STATIC_DCL void FDECL(create_polymon, (struct Object *, int));
 STATIC_DCL boolean FDECL(zap_updown, (struct Object *));
-STATIC_DCL int FDECL(zhitm, (struct monst *,int,int,struct Object **));
+STATIC_DCL int FDECL(zhitm, (struct Monster *,int,int,struct Object **));
 STATIC_DCL void FDECL(zhitu, (int,int,const char *,XCHAR_P,XCHAR_P));
 STATIC_DCL void FDECL(revive_egg, (struct Object *));
 #ifdef STEED
@@ -101,7 +101,7 @@ const char * const flash_types[] = {	/* also used in buzzmu(mcastu.c) */
 
 /* Routines for IMMEDIATE wands and spells. */
 /* bhitm: monster mtmp was hit by the effect of wand or spell otmp */
-int bhitm(struct monst *mtmp, struct Object *otmp) {
+int bhitm(struct Monster *mtmp, struct Object *otmp) {
 	boolean wake = TRUE;	/* Most 'zaps' should wake monster */
 	boolean reveal_invis = FALSE;
 	boolean dbldam = Role_if(PM_KNIGHT) && u.uhave.questart;
@@ -358,7 +358,7 @@ int bhitm(struct monst *mtmp, struct Object *otmp) {
 	return 0;
 }
 
-void probe_monster(struct monst *mtmp) {
+void probe_monster(struct Monster *mtmp) {
 	struct Object *otmp;
 
 	mstatusline(mtmp);
@@ -424,7 +424,7 @@ boolean get_obj_location(struct Object *obj, xchar *xp, xchar *yp, int locflags)
 	return FALSE;
 }
 
-boolean get_mon_location(struct monst *mon, xchar *xp, xchar *yp, int locflags) {
+boolean get_mon_location(struct Monster *mon, xchar *xp, xchar *yp, int locflags) {
 	if (mon == &youmonst) {
 	    *xp = u.ux;
 	    *yp = u.uy;
@@ -440,9 +440,9 @@ boolean get_mon_location(struct monst *mon, xchar *xp, xchar *yp, int locflags) 
 }
 
 /* used by revive() and animate_statue() */
-struct monst * montraits(struct Object *obj, coord *cc) {
-	struct monst *mtmp = (struct monst *)0;
-	struct monst *mtmp2 = (struct monst *)0;
+struct Monster * montraits(struct Object *obj, coord *cc) {
+	struct Monster *mtmp = (struct Monster *)0;
+	struct Monster *mtmp2 = (struct Monster *)0;
 
 	if (obj->oxlth && (obj->oattached == OATTACHED_MONST))
 		mtmp2 = get_mtraits(obj, TRUE);
@@ -450,7 +450,7 @@ struct monst * montraits(struct Object *obj, coord *cc) {
 		/* save_mtraits() validated mtmp2->mnum */
 		mtmp2->data = &mons[mtmp2->mnum];
 		if (mtmp2->mhpmax <= 0 && !is_rider(mtmp2->data))
-			return (struct monst *)0;
+			return (struct Monster *)0;
 		mtmp = makemon(mtmp2->data,
 				cc->x, cc->y, NO_MINVENT|MM_NOWAIT|MM_NOCOUNTBIRTH);
 		if (!mtmp) return mtmp;
@@ -516,7 +516,7 @@ struct monst * montraits(struct Object *obj, coord *cc) {
  * container_nesting is updated with the nesting depth of the containers
  * if applicable.
  */
-struct monst * get_container_location(struct Object *obj, int *loc, int *container_nesting) {
+struct Monster * get_container_location(struct Object *obj, int *loc, int *container_nesting) {
 	if (!obj || !loc)
 		return 0;
 
@@ -529,15 +529,15 @@ struct monst * get_container_location(struct Object *obj, int *loc, int *contain
 	    *loc = obj->where;	/* outermost container's location */
 	    if (obj->where == OBJ_MINVENT) return obj->ocarry;
 	}
-	return (struct monst *)0;
+	return (struct Monster *)0;
 }
 
 /*
  * Attempt to revive the given corpse, return the revived monster if
  * successful.  Note: this does NOT use up the corpse if it fails.
  */
-struct monst * revive(struct Object *obj) {
-	struct monst *mtmp = (struct monst *)0;
+struct Monster * revive(struct Object *obj) {
+	struct Monster *mtmp = (struct Monster *)0;
 	struct Object *container = (struct Object *)0;
 	int container_nesting = 0;
 	schar savetame = 0;
@@ -549,7 +549,7 @@ struct monst * revive(struct Object *obj) {
 
 		if (obj->where == OBJ_CONTAINED) {
 			/* deal with corpses in [possibly nested] containers */
-			struct monst *carrier;
+			struct Monster *carrier;
 			int holder = 0;
 
 			container = obj->ocontainer;
@@ -566,16 +566,16 @@ struct monst * revive(struct Object *obj) {
 				break;
 			    case OBJ_FLOOR:
 				if (!get_obj_location(obj, &x, &y, CONTAINED_TOO))
-					return (struct monst *) 0;
+					return (struct Monster *) 0;
 				in_container = TRUE;
 				break;
 			    default:
-			    	return (struct monst *)0;
+			    	return (struct Monster *)0;
 			}
 		} else {
 			/* only for invent, minvent, or floor */
 			if (!get_obj_location(obj, &x, &y, 0))
-			    return (struct monst *) 0;
+			    return (struct Monster *) 0;
 		}
 		if (in_container) {
 			/* Rules for revival from containers:
@@ -587,7 +587,7 @@ struct monst * revive(struct Object *obj) {
 			if (!x || !y || container->olocked || container_nesting > 2 ||
 			    container->otyp == STATUE ||
 			    (container->otyp == BAG_OF_HOLDING && rn2(40)))
-				return (struct monst *)0;
+				return (struct Monster *)0;
 		}
 
 		if (MON_AT(x,y)) {
@@ -618,7 +618,7 @@ struct monst * revive(struct Object *obj) {
 		    if (mtmp) {
 			if (obj->oxlth && (obj->oattached == OATTACHED_M_ID)) {
 			    unsigned m_id;
-			    struct monst *ghost;
+			    struct Monster *ghost;
 			    (void) memcpy((genericptr_t)&m_id,
 				    (genericptr_t)obj->oextra, sizeof(m_id));
 			    ghost = find_mid(m_id, FM_FMON);
@@ -655,7 +655,7 @@ struct monst * revive(struct Object *obj) {
 			if (recorporealization) {
 				/* If mtmp is revivification of former tame ghost*/
 				if (savetame) {
-				    struct monst *mtmp2 = tamedog(mtmp, (struct Object *)0);
+				    struct Monster *mtmp2 = tamedog(mtmp, (struct Object *)0);
 				    if (mtmp2) {
 					mtmp2->mtame = savetame;
 					mtmp = mtmp2;
@@ -703,9 +703,9 @@ STATIC_OVL void revive_egg(struct Object *obj) {
 }
 
 /* try to revive all corpses and eggs carried by `mon' */
-int unturn_dead(struct monst *mon) {
+int unturn_dead(struct Monster *mon) {
 	struct Object *otmp, *otmp2;
-	struct monst *mtmp2;
+	struct Monster *mtmp2;
 	char owner[BUFSZ], corpse[BUFSZ];
 	boolean youseeit;
 	int once = 0, res = 0;
@@ -742,7 +742,7 @@ static const char charged_objs[] = { WAND_CLASS, WEAPON_CLASS, ARMOR_CLASS, 0 };
 
 STATIC_OVL void costly_cancel(struct Object *obj) {
 	char objroom;
-	struct monst *shkp = (struct monst *)0;
+	struct Monster *shkp = (struct Monster *)0;
 
 	if (obj->no_charge) return;
 
@@ -1012,7 +1012,7 @@ STATIC_OVL void polyuse(struct Object *objhdr, int mat, int minwt) {
  */
 STATIC_OVL void create_polymon(struct Object *obj, int okind) {
 	struct permonst *mdat = (struct permonst *)0;
-	struct monst *mtmp;
+	struct Monster *mtmp;
 	const char *material;
 	int pm_index;
 
@@ -1350,7 +1350,7 @@ no_unwear:
 	if ((!carried(otmp) || obj->unpaid) &&
 		get_obj_location(otmp, &ox, &oy, BURIED_TOO|CONTAINED_TOO) &&
 		costly_spot(ox, oy)) {
-	    struct monst *shkp =
+	    struct Monster *shkp =
 		shop_keeper(*in_rooms(ox, oy, SHOPBASE));
 
 	    if ((!obj->no_charge ||
@@ -1583,7 +1583,7 @@ makecorpse:			if (mons[obj->corpsenm].geno &
 			break;
 		    case TOOL_CLASS:	/* figurine */
 		    {
-			struct monst *mon;
+			struct Monster *mon;
 			xchar oox, ooy;
 
 			if (obj->otyp != FIGURINE) {
@@ -2135,7 +2135,7 @@ STATIC_OVL boolean zap_steed(struct Object *obj) {
  * effect is too strong.  currently non-hero monsters do not zap
  * themselves with cancellation.
  */
-boolean cancel_monst(struct monst *mdef, struct Object *obj, boolean youattack, boolean allow_cancel_kill, boolean self_cancel) {
+boolean cancel_monst(struct Monster *mdef, struct Object *obj, boolean youattack, boolean allow_cancel_kill, boolean self_cancel) {
 	boolean	youdefend = (mdef == &youmonst);
 	static const char writing_vanishes[] =
 				"Some writing vanishes from %s head!";
@@ -2463,7 +2463,7 @@ const char * exclam(int force) {
 	return (const char *)((force < 0) ? "?" : (force <= 4) ? "." : "!");
 }
 
-void hit(const char *str, struct monst *mtmp, const char *force) {
+void hit(const char *str, struct Monster *mtmp, const char *force) {
 	if((!cansee(bhitpos.x,bhitpos.y) && !canspotmon(mtmp) &&
 	     !(u.uswallow && mtmp == u.ustuck))
 	   || !flags.verbose)
@@ -2472,7 +2472,7 @@ void hit(const char *str, struct monst *mtmp, const char *force) {
 		   mon_nam(mtmp), force);
 }
 
-void miss(const char *str, struct monst *mtmp) {
+void miss(const char *str, struct Monster *mtmp) {
 	pline("%s %s %s.", The(str), vtense(str, "miss"),
 	      ((cansee(bhitpos.x,bhitpos.y) || canspotmon(mtmp))
 	       && flags.verbose) ?
@@ -2499,7 +2499,7 @@ void miss(const char *str, struct monst *mtmp) {
  *  necessary cases (throwing or kicking weapons).  The presence of a real
  *  one is revealed for a weapon, but if not a weapon is left up to fhitm().
  */
-struct monst * bhit(
+struct Monster * bhit(
     /* direction and range */
     int ddx, int ddy, int range,
     
@@ -2515,7 +2515,7 @@ struct monst * bhit(
     
     /* has object been deallocated? Pointer to boolean, may be NULL */
     boolean* obj_destroyed) {
-	struct monst *mtmp;
+	struct Monster *mtmp;
 	uchar typ;
 	boolean shopdoor = FALSE, point_blank = TRUE;
 	if (obj_destroyed) { *obj_destroyed = FALSE; }
@@ -2645,7 +2645,7 @@ struct monst * bhit(
 			    ship_object(obj, bhitpos.x, bhitpos.y,
 					costly_spot(bhitpos.x, bhitpos.y)))) {
 			tmp_at(DISP_END, 0);
-			return (struct monst *)0;
+			return (struct Monster *)0;
 		}
 	    }
 	    if(weapon == ZAPPED_WAND && (IS_DOOR(typ) || typ == SDOOR)) {
@@ -2729,13 +2729,13 @@ struct monst * bhit(
 	if(shopdoor)
 	    pay_for_damage("destroy", FALSE);
 
-	return (struct monst *)0;
+	return (struct Monster *)0;
 }
 
-struct monst * boomhit(int dx, int dy) {
+struct Monster * boomhit(int dx, int dy) {
 	int i, ct;
 	int boom = S_boomleft;	/* showsym[] index  */
-	struct monst *mtmp;
+	struct Monster *mtmp;
 
 	bhitpos.x = u.ux;
 	bhitpos.y = u.uy;
@@ -2783,11 +2783,11 @@ struct monst * boomhit(int dx, int dy) {
 #endif
 	}
 	tmp_at(DISP_END, 0);	/* do not leave last symbol */
-	return (struct monst *)0;
+	return (struct Monster *)0;
 }
 
 /* returns damage to mon */
-STATIC_OVL int zhitm(struct monst *mon, int type, int nd, struct Object **ootmp) {
+STATIC_OVL int zhitm(struct Monster *mon, int type, int nd, struct Object **ootmp) {
 	int tmp = 0;
 	int abstype = abs(type) % 10;
 	boolean sho_shieldeff = FALSE;
@@ -3147,7 +3147,7 @@ void buzz(int type, int nd, xchar sx, xchar sy, int dx, int dy) {
     int range, abstype = abs(type) % 10;
     struct rm *lev;
     xchar lsx, lsy;
-    struct monst *mon;
+    struct Monster *mon;
     coord save_bhitpos;
     boolean shopdamage = FALSE;
     const char *fltxt;
@@ -3429,7 +3429,7 @@ void melt_ice(xchar x, xchar y) {
  * amount by which range is reduced (the latter is just ignored by fireballs)
  */
 int zap_over_floor(xchar x, xchar y, int type, boolean *shopdamage) {
-	struct monst *mon;
+	struct Monster *mon;
 	int abstype = abs(type) % 10;
 	struct rm *lev = &levl[x][y];
 	int rangemod = 0;
@@ -3798,7 +3798,7 @@ void destroy_item(int osym, int dmgtyp) {
 	return;
 }
 
-int destroy_mitem(struct monst *mtmp, int osym, int dmgtyp) {
+int destroy_mitem(struct Monster *mtmp, int osym, int dmgtyp) {
 	struct Object *obj, *obj2;
 	int skip, tmp = 0;
 	long i, cnt, quan;
@@ -3895,7 +3895,7 @@ int destroy_mitem(struct monst *mtmp, int osym, int dmgtyp) {
 #endif /*OVL3*/
 #ifdef OVL2
 
-int resist(struct monst *mtmp, char oclass, int damage, int tell) {
+int resist(struct Monster *mtmp, char oclass, int damage, int tell) {
 	int resisted;
 	int alev, dlev;
 

@@ -9,8 +9,8 @@
 STATIC_DCL boolean FDECL(tele_jump_ok, (int,int,int,int));
 STATIC_DCL boolean FDECL(teleok, (int,int,BOOLEAN_P));
 STATIC_DCL void NDECL(vault_tele);
-STATIC_DCL boolean FDECL(rloc_pos_ok, (int,int,struct monst *));
-STATIC_DCL void FDECL(mvault_tele, (struct monst *));
+STATIC_DCL boolean FDECL(rloc_pos_ok, (int,int,struct Monster *));
+STATIC_DCL void FDECL(mvault_tele, (struct Monster *));
 
 /*
  * Is (x,y) a good position of mtmp?  If mtmp is NULL, then is (x,y) good
@@ -19,7 +19,7 @@ STATIC_DCL void FDECL(mvault_tele, (struct monst *));
  * This function will only look at mtmp->mdat, so makemon, mplayer, etc can
  * call it to generate new monster positions with fake monster structures.
  */
-boolean goodpos(int x, int y, struct monst *mtmp, unsigned gpflags) {
+boolean goodpos(int x, int y, struct Monster *mtmp, unsigned gpflags) {
 	struct permonst *mdat = NULL;
 	boolean ignorewater = ((gpflags & MM_IGNOREWATER) != 0);
 
@@ -39,7 +39,7 @@ boolean goodpos(int x, int y, struct monst *mtmp, unsigned gpflags) {
 		return FALSE;
 
 	if (mtmp) {
-	    struct monst *mtmp2 = m_at(x,y);
+	    struct Monster *mtmp2 = m_at(x,y);
 
 	    /* Be careful with long worms.  A monster may be placed back in
 	     * its own location.  Normally, if m_at() returns the same monster
@@ -99,7 +99,7 @@ boolean enexto_core(coord *cc, xchar xx, xchar yy, struct permonst *mdat, unsign
     coord good[MAX_GOOD], *good_ptr;
     int x, y, range, i;
     int xmin, xmax, ymin, ymax;
-    struct monst fakemon;	/* dummy monster */
+    struct Monster fakemon;	/* dummy monster */
 
     if (!mdat) {
 #ifdef DEBUG
@@ -333,7 +333,7 @@ STATIC_OVL void vault_tele() {
 	tele();
 }
 
-boolean teleport_pet(struct monst *mtmp, boolean force_it) {
+boolean teleport_pet(struct Monster *mtmp, boolean force_it) {
 	struct Object *otmp;
 
 #ifdef STEED
@@ -830,7 +830,7 @@ void level_tele_trap(struct trap *trap) {
 }
 
 /* check whether monster can arrive at location <x,y> via Tport (or fall) */
-STATIC_OVL boolean rloc_pos_ok(int x, int y, struct monst *mtmp) {
+STATIC_OVL boolean rloc_pos_ok(int x, int y, struct Monster *mtmp) {
 	int xx, yy;
 
 	if (!goodpos(x, y, mtmp, 0)) return FALSE;
@@ -878,7 +878,7 @@ STATIC_OVL boolean rloc_pos_ok(int x, int y, struct monst *mtmp) {
  * migrating_mon.  Worm tails are always placed randomly around the head of
  * the worm.
  */
-void rloc_to(struct monst *mtmp, int x, int y) {
+void rloc_to(struct Monster *mtmp, int x, int y) {
 	int oldx = mtmp->mx, oldy = mtmp->my;
 	boolean resident_shk = mtmp->isshk && inhishop(mtmp);
 
@@ -919,7 +919,7 @@ void rloc_to(struct monst *mtmp, int x, int y) {
 
 /* place a monster at a random location, typically due to teleport */
 /* return TRUE if successful, FALSE if not */
-boolean rloc(struct monst *mtmp, boolean suppress_impossible) {
+boolean rloc(struct Monster *mtmp, boolean suppress_impossible) {
 	int x, y, trycount;
 
 #ifdef STEED
@@ -968,7 +968,7 @@ boolean rloc(struct monst *mtmp, boolean suppress_impossible) {
 	return TRUE;
 }
 
-STATIC_OVL void mvault_tele(struct monst *mtmp) {
+STATIC_OVL void mvault_tele(struct Monster *mtmp) {
 	struct mkroom *croom = search_special(VAULT);
 	coord c;
 
@@ -980,7 +980,7 @@ STATIC_OVL void mvault_tele(struct monst *mtmp) {
 	(void) rloc(mtmp, FALSE);
 }
 
-boolean tele_restrict(struct monst *mon) {
+boolean tele_restrict(struct Monster *mon) {
 	if (level.flags.noteleport) {
 		if (canseemon(mon))
 		    pline("A mysterious force prevents %s from teleporting!",
@@ -990,7 +990,7 @@ boolean tele_restrict(struct monst *mon) {
 	return FALSE;
 }
 
-void mtele_trap(struct monst *mtmp, struct trap *trap, int in_sight) {
+void mtele_trap(struct Monster *mtmp, struct trap *trap, int in_sight) {
 	char *monname;
 
 	if (tele_restrict(mtmp)) return;
@@ -1016,7 +1016,7 @@ void mtele_trap(struct monst *mtmp, struct trap *trap, int in_sight) {
 }
 
 /* return 0 if still on level, 3 if not */
-int mlevel_tele_trap(struct monst *mtmp, struct trap *trap, boolean force_it, int in_sight) {
+int mlevel_tele_trap(struct Monster *mtmp, struct trap *trap, boolean force_it, int in_sight) {
 	int tt = trap->ttyp;
 	struct permonst *mptr = mtmp->data;
 
@@ -1097,7 +1097,7 @@ void rloco(struct Object *obj) {
 	    tx = rn1(COLNO-3,2);
 	    ty = rn2(ROWNO);
 	    if (!--try_limit) break;
-	} while (!goodpos(tx, ty, (struct monst *)0, 0) ||
+	} while (!goodpos(tx, ty, (struct Monster *)0, 0) ||
 		/* bug: this lacks provision for handling the Wizard's tower */
 		 (restricted_fall &&
 		  (!within_bounded_area(tx, ty, dndest.lx, dndest.ly,
@@ -1181,7 +1181,7 @@ int random_teleport_level() {
 
 /* you teleport a monster (via wand, spell, or poly'd q.mechanic attack);
    return false iff the attempt fails */
-boolean u_teleport_mon(struct monst *mtmp, boolean give_feedback) {
+boolean u_teleport_mon(struct Monster *mtmp, boolean give_feedback) {
 	coord cc;
 
 	if (mtmp->ispriest && *in_rooms(mtmp->mx, mtmp->my, TEMPLE)) {

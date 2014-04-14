@@ -1363,7 +1363,7 @@ void role_init() {
 	return;
 }
 
-const char * Hello(struct monst *mtmp) {
+const char * Hello(struct Monster *mtmp) {
 	switch (Role_switch) {
 	case PM_KNIGHT:
 	    return ("Salutations"); /* Olde English */

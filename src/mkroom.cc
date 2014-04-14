@@ -208,7 +208,7 @@ STATIC_OVL void mkzoo(int type) {
 }
 
 void fill_zoo(struct mkroom *sroom) {
-	struct monst *mon;
+	struct Monster *mon;
 	int sx,sy,i;
 	int sh, tx, ty, goldlim, type = sroom->rtype;
 	int rmno = (sroom - rooms) + ROOMOFFSET;
@@ -694,7 +694,7 @@ void rest_rooms(int fd) {
   mread(fd, (genericptr_t) &nroom, sizeof(nroom));
   for(i = 0; i<nroom; i++) {
     rest_room(fd, &rooms[i]);
-    rooms[i].resident = (struct monst *)0;
+    rooms[i].resident = (struct Monster *)0;
   }
   rooms[nroom].hx = -1;		/* restore ending flags */
   subrooms.clear();

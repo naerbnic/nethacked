@@ -270,8 +270,8 @@ E NEARDATA struct you u;
 #include "pm.h"
 #endif
 
-E NEARDATA struct monst youmonst;	/* init'd and defined in decl.c */
-E NEARDATA struct monst *mydogs, *migrating_mons;
+E NEARDATA struct Monster youmonst;	/* init'd and defined in decl.c */
+E NEARDATA struct Monster *mydogs, *migrating_mons;
 
 E NEARDATA struct mvitals {
 	uchar	born;

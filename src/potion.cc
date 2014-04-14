@@ -261,7 +261,7 @@ boolean make_hallucinated(long xtime, boolean talk, long mask) {
 }
 
 STATIC_OVL void ghost_from_bottle() {
-	struct monst *mtmp = makemon(&mons[PM_GHOST], u.ux, u.uy, NO_MM_FLAGS);
+	struct Monster *mtmp = makemon(&mons[PM_GHOST], u.ux, u.uy, NO_MM_FLAGS);
 
 	if (!mtmp) {
 		pline("This bottle turns out to be empty.");
@@ -895,7 +895,7 @@ const char * bottlename() {
 	return bottlenames[rn2(SIZE(bottlenames))];
 }
 
-void potionhit(struct monst *mon, struct Object *obj, boolean your_fault) {
+void potionhit(struct Monster *mon, struct Object *obj, boolean your_fault) {
 	const char *botlnam = bottlename();
 	boolean isyou = (mon == &youmonst);
 	int distance;
@@ -1047,7 +1047,7 @@ void potionhit(struct monst *mon, struct Object *obj, boolean your_fault) {
 		    }
 		} else if(mon->data == &mons[PM_GREMLIN]) {
 		    angermon = FALSE;
-		    (void)split_mon(mon, (struct monst *)0);
+		    (void)split_mon(mon, (struct Monster *)0);
 		} else if(mon->data == &mons[PM_IRON_GOLEM]) {
 		    if (canseemon(mon))
 			pline("%s rusts.", Monnam(mon));
@@ -1099,7 +1099,7 @@ void potionhit(struct monst *mon, struct Object *obj, boolean your_fault) {
 		   !objects[obj->otyp].oc_uname && cansee(mon->mx,mon->my))
 		docall(obj);
 	if(*u.ushops && obj->unpaid) {
-	        struct monst *shkp =
+	        struct Monster *shkp =
 			shop_keeper(*in_rooms(u.ux, u.uy, SHOPBASE));
 
 		if(!shkp)
@@ -1217,7 +1217,7 @@ void potionbreathe(struct Object *obj) {
 		break;
 	case POT_WATER:
 		if(u.umonnum == PM_GREMLIN) {
-		    (void)split_mon(&youmonst, (struct monst *)0);
+		    (void)split_mon(&youmonst, (struct Monster *)0);
 		} else if (u.ulycn >= LOW_PM) {
 		    /* vapor from [un]holy water will trigger
 		       transformation but won't cure lycanthropy */
@@ -1868,7 +1868,7 @@ poof:
 
 
 void djinni_from_bottle(struct Object *obj) {
-	struct monst *mtmp;
+	struct Monster *mtmp;
 	int chance;
 
 	if(!(mtmp = makemon(&mons[PM_DJINNI], u.ux, u.uy, NO_MM_FLAGS))){
@@ -1912,14 +1912,14 @@ void djinni_from_bottle(struct Object *obj) {
 
 /* clone a gremlin or mold (2nd arg non-null implies heat as the trigger);
    hit points are cut in half (odd HP stays with original) */
-struct monst *
+struct Monster *
 split_mon(
     /* monster being split */
-    struct monst* mon,
+    struct Monster* mon,
 
     /* optional attacker whose heat triggered it */
-    struct monst* mtmp) {
-	struct monst *mtmp2;
+    struct Monster* mtmp) {
+	struct Monster *mtmp2;
 	char reason[BUFSZ];
 
 	reason[0] = '\0';

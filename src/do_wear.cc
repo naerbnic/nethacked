@@ -1598,7 +1598,7 @@ void glibr() {
 	}
 }
 
-struct Object * some_armor(struct monst *victim) {
+struct Object * some_armor(struct Monster *victim) {
 	struct Object *otmph, *otmp;
 
 	otmph = (victim == &youmonst) ? uarmc : which_armor(victim, W_ARMC);
@@ -1621,7 +1621,7 @@ struct Object * some_armor(struct monst *victim) {
 }
 
 /* erode some arbitrary armor worn by the victim */
-void erode_armor(struct monst *victim, boolean acid_dmg) {
+void erode_armor(struct Monster *victim, boolean acid_dmg) {
 	struct Object *otmph = some_armor(victim);
 
 	if (otmph && (otmph != uarmf)) {

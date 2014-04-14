@@ -17,7 +17,7 @@
 #ifdef OVLB
 STATIC_DCL void FDECL(get_wall_for_db, (int *, int *));
 STATIC_DCL struct entity *FDECL(e_at, (int, int));
-STATIC_DCL void FDECL(m_to_e, (struct monst *, int, int, struct entity *));
+STATIC_DCL void FDECL(m_to_e, (struct Monster *, int, int, struct entity *));
 STATIC_DCL void FDECL(u_to_e, (struct entity *));
 STATIC_DCL void FDECL(set_entity, (int, int, struct entity *));
 STATIC_DCL const char *FDECL(e_nam, (struct entity *));
@@ -202,7 +202,7 @@ boolean create_drawbridge(int x, int y, int dir, boolean flag) {
 }
 
 struct entity {
-	struct monst *emon;	  /* youmonst for the player */
+	struct Monster *emon;	  /* youmonst for the player */
 	struct permonst *edata;   /* must be non-zero for record to be valid */
 	int ex, ey;
 };
@@ -228,7 +228,7 @@ struct entity * e_at(int x, int y) {
 	       (struct entity *)0 : &(occupants[entitycnt]));
 }
 
-STATIC_OVL void m_to_e(struct monst *mtmp, int x, int y, struct entity *etmp) {
+STATIC_OVL void m_to_e(struct Monster *mtmp, int x, int y, struct entity *etmp) {
 	etmp->emon = mtmp;
 	if (mtmp) {
 		etmp->ex = x;

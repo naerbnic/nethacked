@@ -81,7 +81,7 @@ typedef xchar	boolean;		/* 0 or 1 */
 #define ALIGNTYP_P aligntyp
 
 #define OBJ_P struct Object*
-#define MONST_P struct monst*
+#define MONST_P Monster*
 
 #define SIZE(x) (int)(sizeof(x) / sizeof(x[0]))
 

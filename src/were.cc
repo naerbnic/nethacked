@@ -8,7 +8,7 @@
 
 #ifdef OVL0
 
-void were_change(struct monst *mon) {
+void were_change(struct Monster *mon) {
 	if (!is_were(mon->data))
 	    return;
 
@@ -51,7 +51,7 @@ STATIC_OVL int counter_were(int pm) {
 	}
 }
 
-void new_were(struct monst *mon) {
+void new_were(struct Monster *mon) {
 	int pm;
 
 	pm = counter_were(monsndx(mon->data));
@@ -88,7 +88,7 @@ int were_summon(
     int* visible,
     char* genbuf) {
 	int i, typ, pm = monsndx(ptr);
-	struct monst *mtmp;
+	struct Monster *mtmp;
 	int total = 0;
 
 	*visible = 0;

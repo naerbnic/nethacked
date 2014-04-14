@@ -1470,7 +1470,7 @@ int doloot() {
     coord cc;
     boolean underfoot = TRUE;
     const char *dont_find_anything = "don't find anything";
-    struct monst *mtmp;
+    struct Monster *mtmp;
     char qbuf[BUFSZ];
     int prev_inquiry = 0;
     boolean prev_loot = FALSE;
@@ -1557,7 +1557,7 @@ gotit:
 		    (void) add_to_container(coffers, goldob);
 		    coffers->owt = weight(coffers);
 		} else {
-		    struct monst *mon = makemon(courtmon(),
+		    struct Monster *mon = makemon(courtmon(),
 					    u.ux, u.uy, NO_MM_FLAGS);
 		    if (mon) {
 #ifndef GOLDOBJ
@@ -1635,7 +1635,7 @@ gotit:
 
 /* loot_mon() returns amount of time passed.
  */
-int loot_mon(struct monst *mtmp, int *passed_info, boolean *prev_loot) {
+int loot_mon(struct Monster *mtmp, int *passed_info, boolean *prev_loot) {
     int c = -1;
     int timepassed = 0;
 #ifdef STEED
@@ -1944,7 +1944,7 @@ STATIC_PTR int out_container(struct Object *obj) {
 
 /* an object inside a cursed bag of holding is being destroyed */
 STATIC_OVL long mbag_item_gone(int held, struct Object *item) {
-    struct monst *shkp;
+    struct Monster *shkp;
     long loss = 0L;
 
     if (item->dknown)
@@ -1964,7 +1964,7 @@ STATIC_OVL long mbag_item_gone(int held, struct Object *item) {
 STATIC_OVL void observe_quantum_cat(struct Object *box) {
     static NEARDATA const char sc[] = "Schroedinger's Cat";
     struct Object *deadcat;
-    struct monst *livecat;
+    struct Monster *livecat;
     xchar ox, oy;
 
     box->spe = 0;		/* box->owt will be updated below */

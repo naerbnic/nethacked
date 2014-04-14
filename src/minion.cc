@@ -7,11 +7,11 @@
 #include "epri.h"
 
 /* mon summons a monster */
-void msummon(struct monst *mon) {
+void msummon(struct Monster *mon) {
 	struct permonst *ptr;
 	int dtype = NON_PM, cnt = 0;
 	aligntyp atyp;
-	struct monst *mtmp;
+	struct Monster *mtmp;
 
 	if (mon) {
 	    ptr = mon->data;
@@ -82,7 +82,7 @@ void msummon(struct monst *mon) {
 }
 
 void summon_minion(aligntyp alignment, boolean talk) {
-    struct monst *mon;
+    struct Monster *mon;
     int mnum;
 
     switch ((int)alignment) {
@@ -133,7 +133,7 @@ void summon_minion(aligntyp alignment, boolean talk) {
 #define Athome	(Inhell && !mtmp->cham)
 
 /* returns 1 if it won't attack. */
-int demon_talk(struct monst *mtmp) {
+int demon_talk(struct Monster *mtmp) {
 	long cash, demand, offer;
 
 	if (uwep && uwep->oartifact == ART_EXCALIBUR) {
@@ -195,7 +195,7 @@ int demon_talk(struct monst *mtmp) {
 	return(1);
 }
 
-long bribe(struct monst *mtmp) {
+long bribe(struct Monster *mtmp) {
 	char buf[BUFSZ];
 	long offer;
 #ifdef GOLDOBJ

@@ -11,8 +11,8 @@
 
 STATIC_DCL int FDECL(throw_obj, (struct Object *,int));
 STATIC_DCL void NDECL(autoquiver);
-STATIC_DCL int FDECL(gem_accept, (struct monst *, struct Object *));
-STATIC_DCL void FDECL(tmiss, (struct Object *, struct monst *));
+STATIC_DCL int FDECL(gem_accept, (struct Monster *, struct Object *));
+STATIC_DCL void FDECL(tmiss, (struct Object *, struct Monster *));
 STATIC_DCL int FDECL(throw_gold, (struct Object *));
 STATIC_DCL void FDECL(check_shop_obj, (struct Object *,XCHAR_P,XCHAR_P,BOOLEAN_P));
 STATIC_DCL void FDECL(breakobj, (struct Object *,XCHAR_P,XCHAR_P,BOOLEAN_P,BOOLEAN_P));
@@ -433,7 +433,7 @@ boolean walk_path(
 boolean hurtle_step(genericptr_t arg, int x, int y) {
     int ox, oy, *range = (int *)arg;
     struct Object *obj;
-    struct monst *mon;
+    struct Monster *mon;
     boolean may_pass = TRUE;
     struct trap *ttmp;
     
@@ -546,7 +546,7 @@ boolean hurtle_step(genericptr_t arg, int x, int y) {
 }
 
 STATIC_OVL boolean mhurtle_step(genericptr_t arg, int x, int y) {
-	struct monst *mon = (struct monst *)arg;
+	struct Monster *mon = (struct Monster *)arg;
 
 	/* TODO: Treat walls, doors, iron bars, pools, lava, etc. specially
 	 * rather than just stopping before.
@@ -621,7 +621,7 @@ void hurtle(int dx, int dy, int range, boolean verbose) {
 
 /* Move a monster through the air for a few squares.
  */
-void mhurtle(struct monst *mon, int dx, int dy, int range) {
+void mhurtle(struct Monster *mon, int dx, int dy, int range) {
     coord mc, cc;
 
 	/* At the very least, debilitate the monster */
@@ -649,7 +649,7 @@ void mhurtle(struct monst *mon, int dx, int dy, int range) {
 }
 
 STATIC_OVL void check_shop_obj(struct Object *obj, xchar x, xchar y, boolean broken) {
-	struct monst *shkp = shop_keeper(*u.ushops);
+	struct Monster *shkp = shop_keeper(*u.ushops);
 
 	if(!shkp) return;
 
@@ -745,7 +745,7 @@ STATIC_OVL boolean toss_up(struct Object *obj, boolean hitsroof) {
 
 	if (obj->oartifact)
 	    /* need a fake die roll here; rn1(18,2) avoids 1 and 20 */
-	    artimsg = artifact_hit((struct monst *)0, &youmonst,
+	    artimsg = artifact_hit((struct Monster *)0, &youmonst,
 				   obj, &dmg, rn1(18,2));
 
 	if (!dmg) {	/* probably wasn't a weapon; base damage on weight */
@@ -815,7 +815,7 @@ STATIC_OVL void sho_obj_return_to_u(struct Object *obj) {
 }
 
 void throwit(struct Object *obj, long wep_mask, boolean twoweap) {
-	struct monst *mon;
+	struct Monster *mon;
 	int range, urange;
 	boolean impaired = (Confusion || Stunned || Blind ||
 			   Hallucination || Fumbling);
@@ -1001,7 +1001,7 @@ void throwit(struct Object *obj, long wep_mask, boolean twoweap) {
 					"%s back toward you, hitting your %s!",
 				  Tobjnam(obj, Blind ? "hit" : "fly"),
 				  body_part(ARM));
-			    (void) artifact_hit((struct monst *)0,
+			    (void) artifact_hit((struct Monster *)0,
 						&youmonst, obj, &dmg, 0);
 			    losehp(dmg, xname(obj),
 				obj_is_pname(obj) ? KILLED_BY : KILLED_BY_AN);
@@ -1061,7 +1061,7 @@ void throwit(struct Object *obj, long wep_mask, boolean twoweap) {
 }
 
 /* an object may hit a monster; various factors adjust the chance of hitting */
-int omon_adj(struct monst *mon, struct Object *obj, boolean mon_notices) {
+int omon_adj(struct Monster *mon, struct Object *obj, boolean mon_notices) {
 	int tmp = 0;
 
 	/* size of target affects the chance of hitting */
@@ -1097,7 +1097,7 @@ int omon_adj(struct monst *mon, struct Object *obj, boolean mon_notices) {
 }
 
 /* thrown object misses target monster */
-STATIC_OVL void tmiss(struct Object *obj, struct monst *mon) {
+STATIC_OVL void tmiss(struct Object *obj, struct Monster *mon) {
     const char *missile = mshot_xname(obj);
 
     /* If the target can't be seen or doesn't look like a valid target,
@@ -1121,7 +1121,7 @@ STATIC_OVL void tmiss(struct Object *obj, struct monst *mon) {
  * Return 1 if obj has disappeared or otherwise been taken care of,
  * 0 if caller must take care of it.
  */
-int thitmonst(struct monst *mon, struct Object *obj) {
+int thitmonst(struct Monster *mon, struct Object *obj) {
 	int	tmp; /* Base chance to hit */
 	int	disttmp; /* distance modifier */
 	int otyp = obj->otyp;
@@ -1354,7 +1354,7 @@ int thitmonst(struct monst *mon, struct Object *obj) {
 	return 0;
 }
 
-STATIC_OVL int gem_accept(struct monst *mon, struct Object *obj) {
+STATIC_OVL int gem_accept(struct Monster *mon, struct Object *obj) {
 	char buf[BUFSZ];
 	boolean is_buddy = sgn(mon->data->maligntyp) == sgn(u.ualign.type);
 	boolean is_gem = objects[obj->otyp].oc_material == GEMSTONE;
@@ -1521,7 +1521,7 @@ STATIC_OVL void breakobj(struct Object *obj, xchar x, xchar y, boolean hero_caus
 	    } else if (!obj->no_charge && costly_spot(x, y)) {
 		/* it is assumed that the obj is a floor-object */
 		char *o_shop = in_rooms(x, y, SHOPBASE);
-		struct monst *shkp = shop_keeper(*o_shop);
+		struct Monster *shkp = shop_keeper(*o_shop);
 
 		if (shkp) {		/* (implies *o_shop != '\0') */
 		    static NEARDATA long lastmovetime = 0L;
@@ -1610,7 +1610,7 @@ STATIC_OVL int throw_gold(struct Object *obj) {
 #ifndef GOLDOBJ
 	long zorks = obj->quan;
 #endif
-	struct monst *mon;
+	struct Monster *mon;
 
 	if(!u.dx && !u.dy && !u.dz) {
 #ifndef GOLDOBJ

@@ -68,7 +68,7 @@ STATIC_OVL void do_dknown_of(struct Object *obj) {
 STATIC_OVL boolean check_map_spot(int x, int y, char oclass, unsigned material) {
 	int glyph;
 	struct Object *otmp;
-	struct monst *mtmp;
+	struct Monster *mtmp;
 
 	glyph = glyph_at(x,y);
 	if (glyph_is_object(glyph)) {
@@ -143,7 +143,7 @@ STATIC_OVL boolean clear_stale_map(char oclass, unsigned material) {
 /* look for gold, on the floor or in monsters' possession */
 int gold_detect(struct Object *sobj) {
     struct Object *obj;
-    struct monst *mtmp;
+    struct Monster *mtmp;
     int uw = u.uinwater;
     struct Object *temp;
     boolean stale;
@@ -271,7 +271,7 @@ outgoldmap:
 /* returns 0 if something was detected		*/
 int food_detect(struct Object *sobj) {
     struct Object *obj;
-    struct monst *mtmp;
+    struct Monster *mtmp;
     int ct = 0, ctu = 0;
     boolean confused = (Confusion || (sobj && sobj->cursed)), stale;
     char oclass = confused ? POTION_CLASS : FOOD_CLASS;
@@ -381,7 +381,7 @@ int object_detect(struct Object *detector, int class_id) {
 			detector->blessed);
     int ct = 0, ctu = 0;
     struct Object *obj, *otmp = (struct Object *)0;
-    struct monst *mtmp;
+    struct Monster *mtmp;
     int uw = u.uinwater;
     int sym, boulder = 0;
 
@@ -552,7 +552,7 @@ int object_detect(struct Object *detector, int class_id) {
  * Returns 0 if something was detected.
  */
 int monster_detect(struct Object *otmp, int mclass) {
-    struct monst *mtmp;
+    struct Monster *mtmp;
     int mcnt = 0;
 
 
@@ -944,7 +944,7 @@ void cvt_sdoor_to_door(struct rm *lev) {
 
 STATIC_PTR void findone(int zx, int zy, genericptr_t num) {
 	struct trap *ttmp;
-	struct monst *mtmp;
+	struct Monster *mtmp;
 
 	if(levl[zx][zy].typ == SDOOR) {
 		cvt_sdoor_to_door(&levl[zx][zy]);	/* .typ = DOOR */
@@ -1098,7 +1098,7 @@ int dosearch0(int aflag) {
 	xchar x, y;
 #endif
 	struct trap *trap;
-	struct monst *mtmp;
+	struct Monster *mtmp;
 
 	if(u.uswallow) {
 		if (!aflag)

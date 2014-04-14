@@ -37,8 +37,8 @@
 #include "align.h"
 #endif
 
-struct monst {
-	struct monst *nmon;
+struct Monster {
+	struct Monster *nmon;
 	struct permonst *data;
 	unsigned long m_id;
 	short mnum;		/* permanent monster index number */
@@ -164,7 +164,7 @@ struct monst {
  * exception being the guardian angels which are tame on creation).
  */
 
-#define newmonst(xl) (struct monst *)alloc((unsigned)(xl) + sizeof(struct monst))
+#define newmonst(xl) (Monster *)alloc((unsigned)(xl) + sizeof(Monster))
 #define dealloc_monst(mon) free((genericptr_t)(mon))
 
 /* these are in mspeed */

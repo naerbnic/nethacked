@@ -11,7 +11,7 @@ STATIC_DCL void FDECL(mkbox_cnts,(struct Object *));
 STATIC_DCL void FDECL(obj_timer_checks,(struct Object *, XCHAR_P, XCHAR_P, int));
 #ifdef OVL1
 STATIC_DCL void FDECL(container_weight, (struct Object *));
-STATIC_DCL struct Object *FDECL(save_mtraits, (struct Object *, struct monst *));
+STATIC_DCL struct Object *FDECL(save_mtraits, (struct Object *, struct Monster *));
 #ifdef WIZARD
 STATIC_DCL const char *FDECL(where_name, (int));
 STATIC_DCL void FDECL(check_contained, (struct Object *,const char *));
@@ -840,7 +840,7 @@ struct Object * mkgold(long amount, int x, int y) {
  * yet still allow restoration of the original monster upon
  * resurrection.
  */
-struct Object * mkcorpstat(int objtype, struct monst *mtmp, struct permonst *ptr, int x, int y, boolean init) {
+struct Object * mkcorpstat(int objtype, struct Monster *mtmp, struct permonst *ptr, int x, int y, boolean init) {
 	struct Object *otmp;
 
 	if (objtype != CORPSE && objtype != STATUE)
@@ -900,20 +900,20 @@ struct Object * obj_attach_mid(struct Object *obj, unsigned mid) {
     return otmp;
 }
 
-static struct Object * save_mtraits(struct Object *obj, struct monst *mtmp) {
+static struct Object * save_mtraits(struct Object *obj, struct Monster *mtmp) {
 	struct Object *otmp;
 	int lth, namelth;
 
-	lth = sizeof(struct monst) + mtmp->mxlth + mtmp->mnamelth;
+	lth = sizeof(struct Monster) + mtmp->mxlth + mtmp->mnamelth;
 	namelth = obj->onamelth ? strlen(ONAME(obj)) + 1 : 0;
 	otmp = realloc_obj(obj, lth, (genericptr_t) mtmp, namelth, ONAME(obj));
 	if (otmp && otmp->oxlth) {
-		struct monst *mtmp2 = (struct monst *)otmp->oextra;
+		struct Monster *mtmp2 = (struct Monster *)otmp->oextra;
 		if (mtmp->data) mtmp2->mnum = monsndx(mtmp->data);
 		/* invalidate pointers */
 		/* m_id is needed to know if this is a revived quest leader */
 		/* but m_id must be cleared when loading bones */
-		mtmp2->nmon     = (struct monst *)0;
+		mtmp2->nmon     = (struct Monster *)0;
 		mtmp2->data     = (struct permonst *)0;
 		mtmp2->minvent  = (struct Object *)0;
 		otmp->oattached = OATTACHED_MONST;	/* mark it */
@@ -924,17 +924,17 @@ static struct Object * save_mtraits(struct Object *obj, struct monst *mtmp) {
 /* returns a pointer to a new monst structure based on
  * the one contained within the obj.
  */
-struct monst * get_mtraits(struct Object *obj, boolean copyof) {
-	struct monst *mtmp = (struct monst *)0;
-	struct monst *mnew = (struct monst *)0;
+struct Monster * get_mtraits(struct Object *obj, boolean copyof) {
+	struct Monster *mtmp = (struct Monster *)0;
+	struct Monster *mnew = (struct Monster *)0;
 
 	if (obj->oxlth && obj->oattached == OATTACHED_MONST)
-		mtmp = (struct monst *)obj->oextra;
+		mtmp = (struct Monster *)obj->oextra;
 	if (mtmp) {
 	    if (copyof) {
 		int lth = mtmp->mxlth + mtmp->mnamelth;
 		mnew = newmonst(lth);
-		lth += sizeof(struct monst);
+		lth += sizeof(struct Monster);
 		(void) memcpy((genericptr_t)mnew,
 				(genericptr_t)mtmp, lth);
 	    } else {
@@ -966,7 +966,7 @@ struct Object * mk_tt_object(int objtype, int x, int y) {
 struct Object * mk_named_object(int objtype, struct permonst *ptr, int x, int y, const char *nm) {
 	struct Object *otmp;
 
-	otmp = mkcorpstat(objtype, (struct monst *)0, ptr,
+	otmp = mkcorpstat(objtype, (struct Monster *)0, ptr,
 				x, y, (boolean)(objtype != STATUE));
 	if (nm)
 		otmp = oname(otmp, nm);
@@ -1151,7 +1151,7 @@ void remove_object(struct Object *otmp) {
 }
 
 /* throw away all of a monster's inventory */
-void discard_minvent(struct monst *mtmp) {
+void discard_minvent(struct Monster *mtmp) {
     struct Object *otmp;
 
     while ((otmp = mtmp->minvent) != 0) {
@@ -1256,7 +1256,7 @@ void extract_nexthere(struct Object *obj, struct Object **head_ptr) {
  * in the inventory, then the passed obj is deleted and 1 is returned.
  * Otherwise 0 is returned.
  */
-int add_to_minv(struct monst *mon, struct Object *obj) {
+int add_to_minv(struct Monster *mon, struct Object *obj) {
     struct Object *otmp;
 
     if (obj->where != OBJ_FREE)
@@ -1359,7 +1359,7 @@ void dealloc_obj(struct Object *obj) {
 void obj_sanity_check() {
     int x, y;
     struct Object *obj;
-    struct monst *mon;
+    struct Monster *mon;
     const char *mesg;
     char obj_address[20], mon_address[20];  /* room for formatted pointers */
 

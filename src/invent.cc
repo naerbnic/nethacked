@@ -123,7 +123,7 @@ STATIC_OVL void reorder_invent() {
    one of them; used in pickup.c when all 52 inventory slots are in use,
    to figure out whether another object could still be picked up */
 struct Object * merge_choice(struct Object *objlist, struct Object *obj) {
-	struct monst *shkp;
+	struct Monster *shkp;
 	int save_nocharge;
 
 	if (obj->otyp == SCR_SCARE_MONSTER)	/* punt on these */
@@ -2182,7 +2182,7 @@ int look_here(int obj_cnt, boolean picked_some) {
 	boolean skip_objects = (obj_cnt >= 5), felt_cockatrice = FALSE;
 
 	if (u.uswallow && u.ustuck) {
-	    struct monst *mtmp = u.ustuck;
+	    struct Monster *mtmp = u.ustuck;
 	    Sprintf(fbuf, "Contents of %s %s",
 		s_suffix(mon_nam(mtmp)), mbodypart(mtmp, STOMACH));
 	    /* Skip "Contents of " by using fbuf index 12 */
@@ -2741,7 +2741,7 @@ STATIC_OVL boolean worn_wield_only(struct Object *obj) {
  *	MINV_NOLET	- nothing selectable
  *	MINV_ALL	- display all inventory
  */
-struct Object * display_minventory(struct monst *mon, int dflags, char *title) {
+struct Object * display_minventory(struct Monster *mon, int dflags, char *title) {
 	struct Object *ret;
 #ifndef GOLDOBJ
 	struct Object m_gold;

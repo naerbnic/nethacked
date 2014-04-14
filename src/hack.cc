@@ -25,7 +25,7 @@ STATIC_DCL void FDECL(move_update, (BOOLEAN_P));
 
 boolean revive_nasty(int x, int y, const char *msg) {
     struct Object *otmp, *otmp2;
-    struct monst *mtmp;
+    struct Monster *mtmp;
     coord cc;
     boolean revived = FALSE;
 
@@ -59,7 +59,7 @@ STATIC_OVL int moverock() {
     xchar rx, ry, sx, sy;
     struct Object *otmp;
     struct trap *ttmp;
-    struct monst *mtmp;
+    struct Monster *mtmp;
 
     sx = u.ux + u.dx,  sy = u.uy + u.dy;	/* boulder starting position */
     while ((otmp = sobj_at(BOULDER, sx, sy)) != 0) {
@@ -333,7 +333,7 @@ STATIC_OVL int still_chewing(xchar x, xchar y) {
 	    (boulder || IS_TREE(lev->typ)) ? "on a" : "a hole in the",
 	    boulder ? "boulder" :
 	    IS_TREE(lev->typ) ? "tree" : IS_ROCK(lev->typ) ? "rock" : "door");
-	watch_dig((struct monst *)0, x, y, FALSE);
+	watch_dig((struct Monster *)0, x, y, FALSE);
 	return 1;
     } else if ((digging.effort += (30 + u.udaminc)) <= 100)  {
 	if (flags.verbose)
@@ -343,7 +343,7 @@ STATIC_OVL int still_chewing(xchar x, xchar y) {
 		IS_TREE(lev->typ) ? "tree" :
 		IS_ROCK(lev->typ) ? "rock" : "door");
 	digging.chew = TRUE;
-	watch_dig((struct monst *)0, x, y, FALSE);
+	watch_dig((struct Monster *)0, x, y, FALSE);
 	return 1;
     }
 
@@ -828,7 +828,7 @@ found:
 }
 
 void domove() {
-	struct monst *mtmp;
+	struct Monster *mtmp;
 	struct rm *tmpr;
 	xchar x,y;
 	struct trap *trap;
@@ -1419,7 +1419,7 @@ void invocation_message() {
 #ifdef OVL2
 
 void spoteffects(boolean pick) {
-	struct monst *mtmp;
+	struct Monster *mtmp;
 
 	if(u.uinwater) {
 		int was_underwater;
@@ -1527,7 +1527,7 @@ stillinwater:;
 }
 
 STATIC_OVL boolean monstinroom(struct permonst *mdat, int roomno) {
-	struct monst *mtmp;
+	struct Monster *mtmp;
 
 	for(mtmp = fmon; mtmp; mtmp = mtmp->nmon)
 		if(!DEADMONSTER(mtmp) && mtmp->data == mdat &&
@@ -1662,7 +1662,7 @@ STATIC_OVL void move_update(boolean newlev) {
 }
 
 void check_special_room(boolean newlev) {
-	struct monst *mtmp;
+	struct Monster *mtmp;
 	char *ptr;
 
 	move_update(newlev);
@@ -1727,7 +1727,7 @@ void check_special_room(boolean newlev) {
 		case DELPHI:
 		    if(monstinroom(&mons[PM_ORACLE], roomno))
 			verbalize("%s, %s, welcome to Delphi!",
-					Hello((struct monst *) 0), plname);
+					Hello((struct Monster *) 0), plname);
 		    break;
 		case TEMPLE:
 		    intemple(roomno + ROOMOFFSET);
@@ -1858,7 +1858,7 @@ int dopickup() {
 void lookaround() {
     int x, y, i, x0 = 0, y0 = 0, m0 = 1, i0 = 9;
     int corrct = 0, noturn = 0;
-    struct monst *mtmp;
+    struct Monster *mtmp;
     struct trap *trap;
 
     /* Grid bugs stop if trying to move diagonal, even if blind.  Maybe */
@@ -1980,7 +1980,7 @@ stop:
 /* react only to monsters that might hit us */
 int monster_nearby() {
 	int x,y;
-	struct monst *mtmp;
+	struct Monster *mtmp;
 
 	/* Also see the similar check in dochugw() in monmove.c */
 	for(x = u.ux-1; x <= u.ux+1; x++)

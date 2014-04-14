@@ -238,7 +238,7 @@ static void done_hangup(int sig) {
 }
 #endif /* NO_SIGNAL */
 
-void done_in_by(struct monst *mtmp) {
+void done_in_by(struct Monster *mtmp) {
 	char buf[BUFSZ];
 	boolean distorted = (boolean)(Hallucination && canspotmon(mtmp));
 
@@ -907,7 +907,7 @@ die:
 #endif
 
 	if (how == ESCAPED || how == ASCENDED) {
-	    struct monst *mtmp;
+	    struct Monster *mtmp;
 	    struct Object *otmp;
 	    struct val_list *val;
 	    int i;

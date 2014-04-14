@@ -1108,7 +1108,7 @@ int dosacrifice() {
 
     if (otmp->otyp == CORPSE) {
 	struct permonst *ptr = &mons[otmp->corpsenm];
-	struct monst *mtmp;
+	struct Monster *mtmp;
 	extern const int monstr[];
 
 	/* KMH, conduct */
@@ -1140,7 +1140,7 @@ int dosacrifice() {
 		    levl[u.ux][u.uy].altarmask = AM_CHAOTIC;
 		angry_priest();
 	    } else {
-		struct monst *dmon;
+		struct Monster *dmon;
 		const char *demonless_msg;
 
 		/* Human sacrifice on a chaotic or unaligned altar */
@@ -1181,7 +1181,7 @@ int dosacrifice() {
 	    else useupf(otmp, 1L);
 	    return(1);
 	} else if (otmp->oxlth && otmp->oattached == OATTACHED_MONST
-		    && ((mtmp = get_mtraits(otmp, FALSE)) != (struct monst *)0)
+		    && ((mtmp = get_mtraits(otmp, FALSE)) != (struct Monster *)0)
 		    && mtmp->mtame) {
 	    /* mtmp is a temporary pointer to a tame monster's attributes,
 	     * not a real monster */
@@ -1343,7 +1343,7 @@ verbalize("In return for thy service, I grant thee the gift of Immortality!");
 		You("sense a conflict between %s and %s.",
 		    u_gname(), a_gname());
 		if (rn2(8 + u.ulevel) > 5) {
-		    struct monst *pri;
+		    struct Monster *pri;
 		    You_feel("the power of %s increase.", u_gname());
 		    exercise(A_WIS, TRUE);
 		    change_luck(1);
@@ -1608,7 +1608,7 @@ prayer_done()		/* M. Stephenson (1.0.3b) */
 
 int doturn() {
 
-	struct monst *mtmp, *mtmp2;
+	struct Monster *mtmp, *mtmp2;
 	int once, range, xlev;
 
 	if (!Role_if(PM_PRIEST) && !Role_if(PM_KNIGHT)) {

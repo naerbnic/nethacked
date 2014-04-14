@@ -194,7 +194,7 @@ STATIC_OVL boolean confused_book(struct Object *spellbook) {
 
 /* special effects for The Book of the Dead */
 STATIC_OVL void deadbook(struct Object *book2) {
-    struct monst *mtmp, *mtmp2;
+    struct Monster *mtmp, *mtmp2;
     coord mm;
 
     You("turn the pages of the Book of the Dead...");

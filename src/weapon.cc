@@ -124,7 +124,7 @@ static NEARDATA const char kebabable[] = {
  *	hitval returns an integer representing the "to hit" bonuses
  *	of "otmp" against the monster.
  */
-int hitval(struct Object *otmp, struct monst *mon) {
+int hitval(struct Object *otmp, struct Monster *mon) {
 	int	tmp = 0;
 	struct permonst *ptr = mon->data;
 	boolean Is_weapon = (otmp->oclass == WEAPON_CLASS || is_weptool(otmp));
@@ -191,7 +191,7 @@ int hitval(struct Object *otmp, struct monst *mon) {
  *	dmgval returns an integer representing the damage bonuses
  *	of "otmp" against the monster.
  */
-int dmgval(struct Object *otmp, struct monst *mon) {
+int dmgval(struct Object *otmp, struct Monster *mon) {
 	int tmp = 0, otyp = otmp->otyp;
 	struct permonst *ptr = mon->data;
 	boolean Is_weapon = (otmp->oclass == WEAPON_CLASS || is_weptool(otmp));
@@ -312,10 +312,10 @@ int dmgval(struct Object *otmp, struct monst *mon) {
 #endif /* OVLB */
 #ifdef OVL0
 
-STATIC_DCL struct Object *FDECL(oselect, (struct monst *,int));
+STATIC_DCL struct Object *FDECL(oselect, (struct Monster *,int));
 #define Oselect(x)	if ((otmp = oselect(mtmp, x)) != 0) return(otmp);
 
-STATIC_OVL struct Object * oselect(struct monst *mtmp, int x) {
+STATIC_OVL struct Object * oselect(struct Monster *mtmp, int x) {
 	struct Object *otmp;
 
 	for (otmp = mtmp->minvent; otmp; otmp = otmp->nobj) {
@@ -346,7 +346,7 @@ static NEARDATA const int pwep[] =
 static struct Object *propellor;
 
 /* select a ranged weapon for the monster */
-struct Object * select_rwep(struct monst *mtmp) {
+struct Object * select_rwep(struct Monster *mtmp) {
 	struct Object *otmp;
 	int i;
 
@@ -471,7 +471,7 @@ static const NEARDATA short hwep[] = {
 	};
 
 /* select a hand to hand weapon for the monster */
-struct Object * select_hwep(struct monst *mtmp) {
+struct Object * select_hwep(struct Monster *mtmp) {
 	struct Object *otmp;
 	int i;
 	boolean strong = strongmonst(mtmp->data);
@@ -509,7 +509,7 @@ struct Object * select_hwep(struct monst *mtmp) {
 /* Called after polymorphing a monster, robbing it, etc....  Monsters
  * otherwise never unwield stuff on their own.  Might print message.
  */
-void possibly_unwield(struct monst *mon, boolean polyspot) {
+void possibly_unwield(struct Monster *mon, boolean polyspot) {
 	struct Object *obj, *mw_tmp;
 
 	if (!(mw_tmp = MON_WEP(mon)))
@@ -560,7 +560,7 @@ void possibly_unwield(struct monst *mon, boolean polyspot) {
 /* Let a monster try to wield a weapon, based on mon->weapon_check.
  * Returns 1 if the monster took time to do it, 0 if it did not.
  */
-int mon_wield_item(struct monst *mon) {
+int mon_wield_item(struct Monster *mon) {
 	struct Object *obj;
 
 	/* This case actually should never happen */
@@ -1291,7 +1291,7 @@ void skill_init(const struct def_skill *class_skill) {
 	}
 }
 
-void setmnotwielded(struct monst *mon, struct Object *obj) {
+void setmnotwielded(struct Monster *mon, struct Object *obj) {
     if (!obj) return;
     if (artifact_light(obj) && obj->lamplit) {
 	end_burn(obj, FALSE);

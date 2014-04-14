@@ -23,9 +23,9 @@ extern boolean notonhead;	/* for long worms */
 #define get_artifact(o) \
 		(((o)&&(o)->oartifact) ? &artilist[(int) (o)->oartifact] : 0)
 
-STATIC_DCL int FDECL(spec_applies, (const struct artifact *,struct monst *));
+STATIC_DCL int FDECL(spec_applies, (const struct artifact *,struct Monster *));
 STATIC_DCL int FDECL(arti_invoke, (struct Object*));
-STATIC_DCL boolean FDECL(Mb_hit, (struct monst *magr,struct monst *mdef,
+STATIC_DCL boolean FDECL(Mb_hit, (struct Monster *magr,struct Monster *mdef,
 				  struct Object *,int *,int,BOOLEAN_P,char *));
 
 /* The amount added to the victim's total hit points to insure that the
@@ -432,7 +432,7 @@ void set_artifact_intrinsic(struct Object *otmp, boolean on, long wp_mask) {
  * Ignores such things as gauntlets, assuming the artifact is not
  * fooled by such trappings.
  */
-int touch_artifact(struct Object *obj, struct monst *mon) {
+int touch_artifact(struct Object *obj, struct Monster *mon) {
     const struct artifact *oart = get_artifact(obj);
     boolean badclass, badalign, self_willed, yours;
 
@@ -494,7 +494,7 @@ int touch_artifact(struct Object *obj, struct monst *mon) {
 #ifdef OVL1
 
 /* decide whether an artifact's special attacks apply against mtmp */
-STATIC_OVL int spec_applies(const struct artifact *weap, struct monst *mtmp) {
+STATIC_OVL int spec_applies(const struct artifact *weap, struct Monster *mtmp) {
 	struct permonst *ptr;
 	boolean yours;
 
@@ -555,7 +555,7 @@ long spec_m2(struct Object *otmp) {
 }
 
 /* special attack bonus */
-int spec_abon(struct Object *otmp, struct monst *mon) {
+int spec_abon(struct Object *otmp, struct Monster *mon) {
 	const struct artifact *weap = get_artifact(otmp);
 
 	/* no need for an extra check for `NO_ATTK' because this will
@@ -567,7 +567,7 @@ int spec_abon(struct Object *otmp, struct monst *mon) {
 }
 
 /* special damage bonus */
-int spec_dbon(struct Object *otmp, struct monst *mon, int tmp) {
+int spec_dbon(struct Object *otmp, struct Monster *mon, int tmp) {
 	const struct artifact *weap = get_artifact(otmp);
 
 	if (!weap || (weap->attk.adtyp == AD_PHYS && /* check for `NO_ATTK' */
@@ -664,7 +664,7 @@ static const char * const mb_verb[2][4] = {
 #define MB_INDEX_CANCEL		3
 
 /* called when someone is being hit by Magicbane */
-STATIC_OVL boolean Mb_hit(struct monst *magr, struct monst *mdef, struct Object *mb, int *dmgptr, int dieroll, boolean vis, char *hittee) {
+STATIC_OVL boolean Mb_hit(struct Monster *magr, struct Monster *mdef, struct Object *mb, int *dmgptr, int dieroll, boolean vis, char *hittee) {
     struct permonst *old_uasmon;
     const char *verb;
     boolean youattack = (magr == &youmonst),
@@ -762,7 +762,7 @@ STATIC_OVL boolean Mb_hit(struct monst *magr, struct monst *mdef, struct Object 
 		nomul(-3, "being scared stiff");
 		nomovemsg = "";
 		if (magr && magr == u.ustuck && sticks(youmonst.data)) {
-		    u.ustuck = (struct monst *)0;
+		    u.ustuck = (struct Monster *)0;
 		    You("release %s!", mon_nam(magr));
 		}
 	    }
@@ -835,7 +835,7 @@ STATIC_OVL boolean Mb_hit(struct monst *magr, struct monst *mdef, struct Object 
  * extension: change the killer so that when an orc kills you with
  * Stormbringer it's "killed by Stormbringer" instead of "killed by an orc".
  */
-boolean artifact_hit(struct monst *magr, struct monst *mdef, struct Object *otmp, int *dmgptr, int dieroll) {
+boolean artifact_hit(struct Monster *magr, struct Monster *mdef, struct Object *otmp, int *dmgptr, int dieroll) {
 	boolean youattack = (magr == &youmonst);
 	boolean youdefend = (mdef == &youmonst);
 	boolean vis = (!youattack && magr && cansee(magr->mx, magr->my))

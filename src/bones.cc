@@ -15,7 +15,7 @@ extern long bytes_counted;
 STATIC_DCL boolean FDECL(no_bones_level, (d_level *));
 STATIC_DCL void FDECL(goodfruit, (int));
 STATIC_DCL void FDECL(resetobjs,(struct Object *,BOOLEAN_P));
-STATIC_DCL void FDECL(drop_upon_death, (struct monst *, struct Object *));
+STATIC_DCL void FDECL(drop_upon_death, (struct Monster *, struct Object *));
 
 STATIC_OVL boolean no_bones_level(d_level *lev) {
 	extern d_level save_dlevel;		/* in do.c */
@@ -110,7 +110,7 @@ STATIC_OVL void resetobjs(struct Object *ochain, boolean restore) {
 	}
 }
 
-STATIC_OVL void drop_upon_death(struct monst *mtmp, struct Object *cont) {
+STATIC_OVL void drop_upon_death(struct Monster *mtmp, struct Object *cont) {
 	struct Object *otmp;
 
 	uswapwep = 0; /* ensure curse() won't cause swapwep to drop twice */
@@ -178,7 +178,7 @@ boolean can_make_bones() {
 void savebones(struct Object *corpse) {
 	int fd, x, y;
 	struct trap *ttmp;
-	struct monst *mtmp;
+	struct Monster *mtmp;
 	struct permonst *mptr;
 	struct fruit *f;
 	char c, *bonesid;
@@ -236,12 +236,12 @@ void savebones(struct Object *corpse) {
 		otmp = mk_named_object(STATUE, &mons[u.umonnum],
 				       u.ux, u.uy, plname);
 
-		drop_upon_death((struct monst *)0, otmp);
+		drop_upon_death((struct Monster *)0, otmp);
 		if (!otmp) return;	/* couldn't make statue */
-		mtmp = (struct monst *)0;
+		mtmp = (struct Monster *)0;
 	} else if (u.ugrave_arise < LOW_PM) {
 		/* drop everything */
-		drop_upon_death((struct monst *)0, (struct Object *)0);
+		drop_upon_death((struct Monster *)0, (struct Object *)0);
 		/* trick makemon() into allowing monster creation
 		 * on your location
 		 */
@@ -258,7 +258,7 @@ void savebones(struct Object *corpse) {
 		mtmp = makemon(&mons[u.ugrave_arise], u.ux, u.uy, NO_MM_FLAGS);
 		in_mklev = FALSE;
 		if (!mtmp) {
-			drop_upon_death((struct monst *)0, (struct Object *)0);
+			drop_upon_death((struct Monster *)0, (struct Object *)0);
 			return;
 		}
 		mtmp = christen_monst(mtmp, plname);
@@ -402,7 +402,7 @@ int getbones() {
 #endif
 			trickery(errbuf);
 		} else {
-			struct monst *mtmp;
+			struct Monster *mtmp;
 
 			getlev(fd, 0, 0, TRUE);
 

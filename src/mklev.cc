@@ -356,7 +356,7 @@ STATIC_OVL void dosdoor(xchar x, xchar y, struct mkroom *aroom, int type) {
 		levl[x][y].doormask = (shdoor ? D_ISOPEN : D_NODOOR);
 #endif
 	    if(levl[x][y].doormask & D_TRAPPED) {
-		struct monst *mtmp;
+		struct Monster *mtmp;
 
 		if (level_difficulty() >= 9 && !rn2(5) &&
 		   !((mvitals[PM_SMALL_MIMIC].mvflags & G_GONE) &&
@@ -495,7 +495,7 @@ STATIC_OVL void clear_level_structures() {
 		*lev++ = zerorm;
 #ifdef MICROPORT_BUG
 		level.objects[x][y] = (struct Object *)0;
-		level.monsters[x][y] = (struct monst *)0;
+		level.monsters[x][y] = (struct Monster *)0;
 #endif
 	    }
 	}
@@ -505,7 +505,7 @@ STATIC_OVL void clear_level_structures() {
 #endif
 	level.objlist = (struct Object *)0;
 	level.buriedobjlist = (struct Object *)0;
-	level.monlist = (struct monst *)0;
+	level.monlist = (struct Monster *)0;
 	level.damagelist = (struct damage *)0;
 
 	level.flags.nfountains = 0;
@@ -545,7 +545,7 @@ STATIC_OVL void makelevel() {
 	struct mkroom *croom, *troom;
 	int tryct;
 	int x, y;
-	struct monst *tmonst;	/* always put a web with a spider */
+	struct Monster *tmonst;	/* always put a web with a spider */
 	branch *branchp;
 	int room_threshold;
 
@@ -728,7 +728,7 @@ skip0:
 
 		/* put statues inside */
 		if(!rn2(20))
-		    (void) mkcorpstat(STATUE, (struct monst *)0,
+		    (void) mkcorpstat(STATUE, (struct Monster *)0,
 				      (struct permonst *)0,
 				      somex(croom), somey(croom), TRUE);
 		/* put box/chest inside;

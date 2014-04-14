@@ -12,7 +12,7 @@
 #include <ctype.h>
 #endif
 
-STATIC_VAR NEARDATA struct monst zeromonst;
+STATIC_VAR NEARDATA struct Monster zeromonst;
 
 /* this assumes that a human quest leader or nemesis is an archetype
    of the corresponding role; that isn't so for some roles (tourist
@@ -26,11 +26,11 @@ STATIC_DCL boolean FDECL(uncommon, (int));
 STATIC_DCL int FDECL(align_shift, (struct permonst *));
 #endif /* OVL0 */
 STATIC_DCL boolean FDECL(wrong_elem_type, (struct permonst *));
-STATIC_DCL void FDECL(m_initgrp,(struct monst *,int,int,int));
-STATIC_DCL void FDECL(m_initthrow,(struct monst *,int,int));
-STATIC_DCL void FDECL(m_initweap,(struct monst *));
+STATIC_DCL void FDECL(m_initgrp,(struct Monster *,int,int,int));
+STATIC_DCL void FDECL(m_initthrow,(struct Monster *,int,int));
+STATIC_DCL void FDECL(m_initweap,(struct Monster *));
 #ifdef OVL1
-STATIC_DCL void FDECL(m_initinv,(struct monst *));
+STATIC_DCL void FDECL(m_initinv,(struct Monster *));
 #endif /* OVL1 */
 
 extern const int monstr[];
@@ -74,10 +74,10 @@ STATIC_OVL boolean wrong_elem_type(struct permonst *ptr) {
 }
 
 /* make a group just like mtmp */
-STATIC_OVL void m_initgrp(struct monst *mtmp, int x, int y, int n) {
+STATIC_OVL void m_initgrp(struct Monster *mtmp, int x, int y, int n) {
 	coord mm;
 	int cnt = rnd(n);
-	struct monst *mon;
+	struct Monster *mon;
 #if defined(__GNUC__) && (defined(HPUX) || defined(DGUX))
 	/* There is an unresolved problem with several people finding that
 	 * the game hangs eating CPU; if interrupted and restored, the level
@@ -136,7 +136,7 @@ STATIC_OVL void m_initgrp(struct monst *mtmp, int x, int y, int n) {
 }
 
 STATIC_OVL
-void m_initthrow(struct monst *mtmp, int otyp, int oquan) {
+void m_initthrow(struct Monster *mtmp, int otyp, int oquan) {
 	struct Object *otmp;
 
 	otmp = mksobj(otyp, TRUE, FALSE);
@@ -149,7 +149,7 @@ void m_initthrow(struct monst *mtmp, int otyp, int oquan) {
 #endif /* OVLB */
 #ifdef OVL2
 
-STATIC_OVL void m_initweap(struct monst *mtmp) {
+STATIC_OVL void m_initweap(struct Monster *mtmp) {
 	struct permonst *ptr = mtmp->data;
 	int mm = monsndx(ptr);
 	struct Object *otmp;
@@ -459,14 +459,14 @@ STATIC_OVL void m_initweap(struct monst *mtmp) {
  *   Makes up money for monster's inventory.
  *   This will change with silver & copper coins
  */
-void mkmonmoney(struct monst *mtmp, long amount) {
+void mkmonmoney(struct Monster *mtmp, long amount) {
     struct Object *gold = mksobj(GOLD_PIECE, FALSE, FALSE);
     gold->quan = amount;
     add_to_minv(mtmp, gold);
 }
 #endif
 
-STATIC_OVL void m_initinv(struct monst *mtmp) {
+STATIC_OVL void m_initinv(struct Monster *mtmp) {
 	int cnt;
 	struct Object *otmp;
 	struct permonst *ptr = mtmp->data;
@@ -646,27 +646,27 @@ STATIC_OVL void m_initinv(struct monst *mtmp) {
 }
 
 /* Note: for long worms, always call cutworm (cutworm calls clone_mon) */
-struct monst * clone_mon(struct monst *mon, xchar x, xchar y) {
+struct Monster * clone_mon(struct Monster *mon, xchar x, xchar y) {
 	coord mm;
-	struct monst *m2;
+	struct Monster *m2;
 
 	/* may be too weak or have been extinguished for population control */
 	if (mon->mhp <= 1 || (mvitals[monsndx(mon->data)].mvflags & G_EXTINCT))
-	    return (struct monst *)0;
+	    return (struct Monster *)0;
 
 	if (x == 0) {
 	    mm.x = mon->mx;
 	    mm.y = mon->my;
 	    if (!enexto(&mm, mm.x, mm.y, mon->data) || MON_AT(mm.x, mm.y))
-		return (struct monst *)0;
+		return (struct Monster *)0;
 	} else if (!isok(x, y)) {
-	    return (struct monst *)0;	/* paranoia */
+	    return (struct Monster *)0;	/* paranoia */
 	} else {
 	    mm.x = x;
 	    mm.y = y;
 	    if (MON_AT(mm.x, mm.y)) {
 		if (!enexto(&mm, mm.x, mm.y, mon->data) || MON_AT(mm.x, mm.y))
-		    return (struct monst *)0;
+		    return (struct Monster *)0;
 	    }
 	}
 	m2 = newmonst(0);
@@ -721,7 +721,7 @@ struct monst * clone_mon(struct monst *mon, xchar x, xchar y) {
 
 	newsym(m2->mx,m2->my);	/* display the new monster */
 	if (m2->mtame) {
-	    struct monst *m3;
+	    struct Monster *m3;
 
 	    if (mon->isminion) {
 		m3 = newmonst(sizeof(struct epri) + mon->mnamelth);
@@ -790,8 +790,8 @@ boolean propagate(int mndx, boolean tally, boolean ghostly) {
  *
  *	In case we make a monster group, only return the one at [x,y].
  */
-struct monst * makemon(struct permonst *ptr, int x, int y, int mmflags) {
-	struct monst *mtmp;
+struct Monster * makemon(struct permonst *ptr, int x, int y, int mmflags) {
+	struct Monster *mtmp;
 	int mndx, mcham, ct, mitem, xlth;
 	boolean anymon = (!ptr);
 	boolean byyou = (x == u.ux && y == u.uy);
@@ -802,13 +802,13 @@ struct monst * makemon(struct permonst *ptr, int x, int y, int mmflags) {
 	/* if caller wants random location, do it here */
 	if(x == 0 && y == 0) {
 		int tryct = 0;	/* careful with bigrooms */
-		struct monst fakemon;
+		struct Monster fakemon;
 
 		fakemon.data = ptr;	/* set up for goodpos */
 		do {
 			x = rn1(COLNO-3,2);
 			y = rn2(ROWNO);
-		} while(!goodpos(x, y, ptr ? &fakemon : (struct monst *)0, gpflags) ||
+		} while(!goodpos(x, y, ptr ? &fakemon : (struct Monster *)0, gpflags) ||
 			(!in_mklev && tryct++ < 50 && cansee(x, y)));
 	} else if (byyou && !in_mklev) {
 		coord bypos;
@@ -817,7 +817,7 @@ struct monst * makemon(struct permonst *ptr, int x, int y, int mmflags) {
 			x = bypos.x;
 			y = bypos.y;
 		} else
-			return((struct monst *)0);
+			return((struct Monster *)0);
 	}
 
 	/* Does monster already exist at the position? */
@@ -828,16 +828,16 @@ struct monst * makemon(struct permonst *ptr, int x, int y, int mmflags) {
 				x = bypos.x;
 				y = bypos.y;
 			} else
-				return((struct monst *) 0);
+				return((struct Monster *) 0);
 		} else 
-			return((struct monst *) 0);
+			return((struct Monster *) 0);
 	}
 
 	if(ptr){
 		mndx = monsndx(ptr);
 		/* if you are to make a specific monster and it has
 		   already been genocided, return */
-		if (mvitals[mndx].mvflags & G_GENOD) return((struct monst *) 0);
+		if (mvitals[mndx].mvflags & G_GENOD) return((struct Monster *) 0);
 #if defined(WIZARD) && defined(DEBUG)
 		if (wizard && (mvitals[mndx].mvflags & G_EXTINCT))
 		    pline("Explicitly creating extinct monster %s.",
@@ -850,13 +850,13 @@ struct monst * makemon(struct permonst *ptr, int x, int y, int mmflags) {
 		 * for instance.)
 		 */
 		int tryct = 0;	/* maybe there are no good choices */
-		struct monst fakemon;
+		struct Monster fakemon;
 		do {
 			if(!(ptr = rndmonst())) {
 #ifdef DEBUG
 			    pline("Warning: no monster.");
 #endif
-			    return((struct monst *) 0);	/* no more monsters! */
+			    return((struct Monster *) 0);	/* no more monsters! */
 			}
 			fakemon.data = ptr;	/* set up for goodpos */
 		} while(!goodpos(x, y, &fakemon, gpflags) && tryct++ < 50);
@@ -1072,7 +1072,7 @@ int mbirth_limit(int mndx) {
 boolean create_critters(int cnt, struct permonst *mptr) {
 	coord c;
 	int x, y;
-	struct monst *mon;
+	struct Monster *mon;
 	boolean known = FALSE;
 #ifdef WIZARD
 	boolean ask = wizard;
@@ -1331,7 +1331,7 @@ int adj_lev(struct permonst *ptr) {
 #ifdef OVLB
 
 /* `mtmp' might "grow up" into a bigger version */
-struct permonst * grow_up(struct monst *mtmp, struct monst *victim) {
+struct permonst * grow_up(struct Monster *mtmp, struct Monster *victim) {
 	int oldtype, newtype, max_increase, cur_increase,
 	    lev_limit, hp_threshold;
 	struct permonst *ptr = mtmp->data;
@@ -1420,7 +1420,7 @@ struct permonst * grow_up(struct monst *mtmp, struct monst *victim) {
 #endif /* OVLB */
 #ifdef OVL1
 
-int mongets(struct monst *mtmp, int otyp) {
+int mongets(struct Monster *mtmp, int otyp) {
 	struct Object *otmp;
 	int spe;
 
@@ -1532,7 +1532,7 @@ boolean peace_minded(struct permonst *ptr) {
  *	peaceful monsters
  *   it's never bad to kill a hostile monster, although it may not be good
  */
-void set_malign(struct monst *mtmp) {
+void set_malign(struct Monster *mtmp) {
 	schar mal = mtmp->data->maligntyp;
 	boolean coaligned;
 
@@ -1589,7 +1589,7 @@ static NEARDATA char syms[] = {
 };
 
 /* KAA, modified by ERS */
-void set_mimic_sym(struct monst *mtmp) {
+void set_mimic_sym(struct Monster *mtmp) {
 	int typ, roomno, rt;
 	unsigned appear, ap_type;
 	int s_sym;

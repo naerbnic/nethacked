@@ -127,7 +127,7 @@ boolean boulder_hits_pool(struct Object *otmp, int rx, int ry, boolean pushing) 
  */
 boolean flooreffects(struct Object *obj, int x, int y, const char *verb) {
 	struct trap *t;
-	struct monst *mtmp;
+	struct Monster *mtmp;
 
 	if (obj->where != OBJ_FREE)
 	    panic("flooreffects: obj not free");
@@ -541,7 +541,7 @@ void dropy(struct Object *obj) {
 			/* Don't leave a cockatrice corpse in a statue */
 			if (!u.uswallow) delobj(obj);
 		    } else if (could_grow) {
-			(void) grow_up(u.ustuck, (struct monst *)0);
+			(void) grow_up(u.ustuck, (struct Monster *)0);
 			delobj(obj);	/* corpse is digested */
 		    } else if (could_heal) {
 			u.ustuck->mhp = u.ustuck->mhpmax;
@@ -909,7 +909,7 @@ void goto_level(d_level *newlevel, boolean at_stairs, boolean falling, boolean p
 		was_in_W_tower = In_W_tower(u.ux, u.uy, &u.uz),
 		familiar = FALSE;
 	boolean is_new = FALSE;	/* made a is_new level? */
-	struct monst *mtmp;
+	struct Monster *mtmp;
 	char whynot[BUFSZ];
 
 	if (dunlev(newlevel) > dunlevs_in_dungeon(newlevel))
@@ -1310,7 +1310,7 @@ void goto_level(d_level *newlevel, boolean at_stairs, boolean falling, boolean p
 }
 
 STATIC_OVL void final_level() {
-	struct monst *mtmp;
+	struct Monster *mtmp;
 	struct Object *otmp;
 	coord mm;
 	int i;
@@ -1427,7 +1427,7 @@ void deferred_goto() {
  * corpse is gone.
  */
 boolean revive_corpse(struct Object *corpse) {
-    struct monst *mtmp, *mcarry;
+    struct Monster *mtmp, *mcarry;
     boolean is_uwep, chewed;
     xchar where;
     char *cname, cname_buf[BUFSZ];
@@ -1441,7 +1441,7 @@ boolean revive_corpse(struct Object *corpse) {
     mcarry = (where == OBJ_MINVENT) ? corpse->ocarry : 0;
 
     if (where == OBJ_CONTAINED) {
-    	struct monst *mtmp2 = (struct monst *)0;
+    	struct Monster *mtmp2 = (struct Monster *)0;
 	container = corpse->ocontainer;
     	mtmp2 = get_container_location(container, &container_where, (int *)0);
 	/* container_where is the outermost container's location even if nested */

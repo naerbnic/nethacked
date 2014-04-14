@@ -19,7 +19,7 @@ void floating_above(const char *what) {
 /* Fountain of snakes! */
 STATIC_OVL void dowatersnakes() {
     int num = rn1(5,2);
-    struct monst *mtmp;
+    struct Monster *mtmp;
 
     if (!(mvitals[PM_WATER_MOCCASIN].mvflags & G_GONE)) {
 	if (!Blind)
@@ -38,7 +38,7 @@ STATIC_OVL void dowatersnakes() {
 STATIC_OVL
 /* Water demon */
 void dowaterdemon() {
-    struct monst *mtmp;
+    struct Monster *mtmp;
 
     if(!(mvitals[PM_WATER_DEMON].mvflags & G_GONE)) {
 	if((mtmp = makemon(&mons[PM_WATER_DEMON],u.ux,u.uy, NO_MM_FLAGS))) {
@@ -62,7 +62,7 @@ void dowaterdemon() {
 
 /* Water Nymph */
 STATIC_OVL void dowaternymph() {
-	struct monst *mtmp;
+	struct Monster *mtmp;
 
 	if(!(mvitals[PM_WATER_NYMPH].mvflags & G_GONE) &&
 	   (mtmp = makemon(&mons[PM_WATER_NYMPH],u.ux,u.uy, NO_MM_FLAGS))) {
@@ -94,7 +94,7 @@ void dogushforth(int drinking) {
 }
 
 STATIC_PTR void gush(int x, int y, genericptr_t poolcnt) {
-	struct monst *mtmp;
+	struct Monster *mtmp;
 	struct trap *ttmp;
 
 	if (((x+y)%2) || (x == u.ux && y == u.uy) ||
@@ -136,7 +136,7 @@ void dryup(xchar x, xchar y, boolean isyou) {
 	if (IS_FOUNTAIN(levl[x][y].typ) &&
 	    (!rn2(3) || FOUNTAIN_IS_WARNED(x,y))) {
 		if(isyou && in_town(x, y) && !FOUNTAIN_IS_WARNED(x,y)) {
-			struct monst *mtmp;
+			struct Monster *mtmp;
 			SET_FOUNTAIN_WARNED(x,y);
 			/* Warn about future fountain use. */
 			for(mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
@@ -305,7 +305,7 @@ void drinkfountain() {
 			break;
 
 		case 29: /* Scare */ {
-			struct monst *mtmp;
+			struct Monster *mtmp;
 
 			pline("This water gives you bad breath!");
 			for(mtmp = fmon; mtmp; mtmp = mtmp->nmon)
@@ -483,7 +483,7 @@ void breaksink(int x, int y) {
 
 void drinksink() {
 	struct Object *otmp;
-	struct monst *mtmp;
+	struct Monster *mtmp;
 
 	if (Levitation) {
 		floating_above("sink");

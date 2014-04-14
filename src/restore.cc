@@ -24,7 +24,7 @@ STATIC_DCL void NDECL(find_lev_obj);
 STATIC_DCL void FDECL(restlevchn, (int));
 STATIC_DCL void FDECL(restdamage, (int,BOOLEAN_P));
 STATIC_DCL struct Object *FDECL(restobjchn, (int,BOOLEAN_P,BOOLEAN_P));
-STATIC_DCL struct monst *FDECL(restmonchn, (int,BOOLEAN_P));
+STATIC_DCL struct Monster *FDECL(restmonchn, (int,BOOLEAN_P));
 STATIC_DCL struct fruit *FDECL(loadfruitchn, (int));
 STATIC_DCL void FDECL(freefruitchn, (struct fruit *));
 STATIC_DCL void FDECL(ghostfruit, (struct Object *));
@@ -164,7 +164,7 @@ STATIC_OVL void restdamage(int fd, boolean ghostly) {
 		 * the second pass.
 		 */
 		for (shp = damaged_shops; *shp; shp++) {
-		    struct monst *shkp = shop_keeper(*shp);
+		    struct Monster *shkp = shop_keeper(*shp);
 
 		    if (shkp && inhishop(shkp) &&
 			    repair_damage(shkp, tmp_dam, TRUE))
@@ -226,9 +226,9 @@ STATIC_OVL struct Object * restobjchn(int fd, boolean ghostly, boolean frozen) {
 	return(first);
 }
 
-STATIC_OVL struct monst * restmonchn(int fd, boolean ghostly) {
-	struct monst *mtmp, *mtmp2 = 0;
-	struct monst *first = (struct monst *)0;
+STATIC_OVL struct Monster * restmonchn(int fd, boolean ghostly) {
+	struct Monster *mtmp, *mtmp2 = 0;
+	struct Monster *first = (struct Monster *)0;
 	int xl;
 	struct permonst *monbegin;
 	boolean moved;
@@ -243,7 +243,7 @@ STATIC_OVL struct monst * restmonchn(int fd, boolean ghostly) {
 		mtmp = newmonst(xl);
 		if(!first) first = mtmp;
 		else mtmp2->nmon = mtmp;
-		mread(fd, (genericptr_t) mtmp, (unsigned) xl + sizeof(struct monst));
+		mread(fd, (genericptr_t) mtmp, (unsigned) xl + sizeof(struct Monster));
 		if (ghostly) {
 			unsigned nid = flags.ident++;
 			add_id_mapping(mtmp->m_id, nid);
@@ -433,7 +433,7 @@ boolean restgamestate(int fd, unsigned int *stuckid, unsigned int *steedid) {
  * don't dereference a wild u.ustuck when saving the game state, for instance)
  */
 STATIC_OVL void restlevelstate(unsigned int stuckid, unsigned int steedid) {
-	struct monst *mtmp;
+	struct Monster *mtmp;
 
 	if (stuckid) {
 		for (mtmp = fmon; mtmp; mtmp = mtmp->nmon)
@@ -540,9 +540,9 @@ int dorecover(int fd) {
 	 * afterwards, and in the meantime at least u.usteed may mislead
 	 * place_monster() on other levels
 	 */
-	u.ustuck = (struct monst *)0;
+	u.ustuck = (struct Monster *)0;
 #ifdef STEED
-	u.usteed = (struct monst *)0;
+	u.usteed = (struct Monster *)0;
 #endif
 
 #ifdef MICRO
@@ -667,7 +667,7 @@ void trickery(char *reason) {
 
 void getlev(int fd, int pid, xchar lev, boolean ghostly) {
 	struct trap *trap;
-	struct monst *mtmp;
+	struct Monster *mtmp;
 	branch *br;
 	int hpid;
 	xchar dlvl;
@@ -762,7 +762,7 @@ void getlev(int fd, int pid, xchar lev, boolean ghostly) {
 
 	/* regenerate animals while on another level */
 	if (u.uz.dlevel) {
-	    struct monst *mtmp2;
+	    struct Monster *mtmp2;
 
 	    for (mtmp = fmon; mtmp; mtmp = mtmp2) {
 		mtmp2 = mtmp->nmon;
@@ -801,7 +801,7 @@ void getlev(int fd, int pid, xchar lev, boolean ghostly) {
 	/* reset level.monsters for new level */
 	for (x = 0; x < COLNO; x++)
 	    for (y = 0; y < ROWNO; y++)
-		level.monsters[x][y] = (struct monst *) 0;
+		level.monsters[x][y] = (struct Monster *) 0;
 	for (mtmp = level.monlist; mtmp; mtmp = mtmp->nmon) {
 	    if (mtmp->isshk)
 		set_residency(mtmp, FALSE);
@@ -934,7 +934,7 @@ STATIC_OVL void reset_oattached_mids(boolean ghostly) {
     unsigned oldid, nid;
     for (otmp = fobj; otmp; otmp = otmp->nobj) {
 	if (ghostly && otmp->oattached == OATTACHED_MONST && otmp->oxlth) {
-	    struct monst *mtmp = (struct monst *)otmp->oextra;
+	    struct Monster *mtmp = (struct Monster *)otmp->oextra;
 
 	    mtmp->m_id = 0;
 	    mtmp->mpeaceful = mtmp->mtame = 0;	/* pet's owner died! */

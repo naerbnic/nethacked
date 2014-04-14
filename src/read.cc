@@ -33,7 +33,7 @@ static void FDECL(p_glow2,(struct Object *,const char *));
 static void FDECL(randomize,(int *, int));
 static void FDECL(forget_single_object, (int));
 static void FDECL(forget, (int));
-static void FDECL(maybe_tame, (struct monst *,struct Object *));
+static void FDECL(maybe_tame, (struct Monster *,struct Object *));
 
 STATIC_PTR void FDECL(set_lit, (int,int,genericptr_t));
 
@@ -587,7 +587,7 @@ static void forget(int howmuch) {
 }
 
 /* monster is hit by scroll of taming's effect */
-static void maybe_tame(struct monst *mtmp, struct Object *sobj) {
+static void maybe_tame(struct Monster *mtmp, struct Object *sobj) {
 	if (sobj->cursed) {
 	    setmangry(mtmp);
 	} else {
@@ -809,7 +809,7 @@ int seffects(struct Object *sobj) {
 	case SCR_SCARE_MONSTER:
 	case SPE_CAUSE_FEAR:
 	    {	int ct = 0;
-		struct monst *mtmp;
+		struct Monster *mtmp;
 
 		for(mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
 		    if (DEADMONSTER(mtmp)) continue;
@@ -942,7 +942,7 @@ int seffects(struct Object *sobj) {
 		    maybe_tame(u.ustuck, sobj);
 		} else {
 		    int i, j, bd = confused ? 5 : 1;
-		    struct monst *mtmp;
+		    struct Monster *mtmp;
 
 		    for (i = -bd; i <= bd; i++) for(j = -bd; j <= bd; j++) {
 			if (!isok(u.ux + i, u.uy + j)) continue;
@@ -1129,7 +1129,7 @@ int seffects(struct Object *sobj) {
 	    	    			!IS_AIR(levl[x][y].typ) &&
 					(x != u.ux || y != u.uy)) {
 			    struct Object *otmp2;
-			    struct monst *mtmp;
+			    struct Monster *mtmp;
 
 	    	    	    /* Make the object(s) */
 	    	    	    otmp2 = mksobj(confused ? ROCK : BOULDER,
@@ -1420,7 +1420,7 @@ static void do_class_genocide() {
 			else
 #ifdef WIZARD	/* to aid in topology testing; remove pesky monsters */
 			  if (wizard && buf[0] == '*') {
-			    struct monst *mtmp, *mtmp2;
+			    struct Monster *mtmp, *mtmp2;
 
 			    gonecnt = 0;
 			    for (mtmp = fmon; mtmp; mtmp = mtmp2) {
@@ -1734,7 +1734,7 @@ boolean create_particular() {
 	char buf[BUFSZ], *bufp, monclass = MAXMCLASSES;
 	int which, tries, i;
 	struct permonst *whichpm;
-	struct monst *mtmp;
+	struct Monster *mtmp;
 	boolean madeany = FALSE;
 	boolean maketame, makepeaceful, makehostile;
 

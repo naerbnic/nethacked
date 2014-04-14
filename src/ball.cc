@@ -559,7 +559,7 @@ drag:
 		You_feel("a tug from the iron ball.");
 		if (t) t->tseen = 1;
 	    } else {
-		struct monst *victim;
+		struct Monster *victim;
 
 		You("are jerked back by the iron ball!");
 		if ((victim = m_at(uchain->ox, uchain->oy)) != 0) {

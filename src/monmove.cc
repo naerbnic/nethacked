@@ -13,15 +13,15 @@ extern boolean notonhead;
 
 #ifdef OVL0
 
-STATIC_DCL int FDECL(disturb,(struct monst *));
-STATIC_DCL void FDECL(distfleeck,(struct monst *,int *,int *,int *));
-STATIC_DCL int FDECL(m_arrival, (struct monst *));
-STATIC_DCL void FDECL(watch_on_duty,(struct monst *));
+STATIC_DCL int FDECL(disturb,(struct Monster *));
+STATIC_DCL void FDECL(distfleeck,(struct Monster *,int *,int *,int *));
+STATIC_DCL int FDECL(m_arrival, (struct Monster *));
+STATIC_DCL void FDECL(watch_on_duty,(struct Monster *));
 
 #endif /* OVL0 */
 #ifdef OVLB
 
-boolean /* TRUE : mtmp died */ mb_trapped(struct monst *mtmp) {
+boolean /* TRUE : mtmp died */ mb_trapped(struct Monster *mtmp) {
 	if (flags.verbose) {
 	    if (cansee(mtmp->mx, mtmp->my))
 		pline("KABOOM!!  You see a door explode.");
@@ -44,7 +44,7 @@ boolean /* TRUE : mtmp died */ mb_trapped(struct monst *mtmp) {
 #endif /* OVLB */
 #ifdef OVL0
 
-STATIC_OVL void watch_on_duty(struct monst *mtmp) {
+STATIC_OVL void watch_on_duty(struct Monster *mtmp) {
 	int	x, y;
 
 	if(mtmp->mpeaceful && in_town(u.ux+u.dx, u.uy+u.dy) &&
@@ -75,7 +75,7 @@ STATIC_OVL void watch_on_duty(struct monst *mtmp) {
 #endif /* OVL0 */
 #ifdef OVL1
 
-int dochugw(struct monst *mtmp) {
+int dochugw(struct Monster *mtmp) {
 	int x = mtmp->mx, y = mtmp->my;
 	boolean already_saw_mon = !occupation ? 0 : canspotmon(mtmp);
 	int rd = dochug(mtmp);
@@ -119,7 +119,7 @@ int dochugw(struct monst *mtmp) {
 #endif /* OVL1 */
 #ifdef OVL2
 
-boolean onscary(int x, int y, struct monst *mtmp) {
+boolean onscary(int x, int y, struct Monster *mtmp) {
 	if (mtmp->isshk || mtmp->isgd || mtmp->iswiz || !mtmp->mcansee ||
 	    mtmp->mpeaceful || mtmp->data->mlet == S_HUMAN ||
 	    is_lminion(mtmp) || mtmp->data == &mons[PM_ANGEL] ||
@@ -138,7 +138,7 @@ boolean onscary(int x, int y, struct monst *mtmp) {
 #ifdef OVL0
 
 /* regenerate lost hit points */
-void mon_regen(struct monst *mon, boolean digest_meal) {
+void mon_regen(struct Monster *mon, boolean digest_meal) {
 	if (mon->mhp < mon->mhpmax &&
 	    (moves % 20 == 0 || regenerates(mon->data))) mon->mhp++;
 	if (mon->mspec_used) mon->mspec_used--;
@@ -151,7 +151,7 @@ void mon_regen(struct monst *mon, boolean digest_meal) {
  * Possibly awaken the given monster.  Return a 1 if the monster has been
  * jolted awake.
  */
-STATIC_OVL int disturb(struct monst *mtmp) {
+STATIC_OVL int disturb(struct Monster *mtmp) {
 	/*
 	 * + Ettins are hard to surprise.
 	 * + Nymphs, jabberwocks, and leprechauns do not easily wake up.
@@ -187,7 +187,7 @@ STATIC_OVL int disturb(struct monst *mtmp) {
 /* monster begins fleeing for the specified time, 0 means untimed flee
  * if first, only adds fleetime if monster isn't already fleeing
  * if fleemsg, prints a message about new flight, otherwise, caller should */
-void monflee(struct monst *mtmp, int fleetime, boolean first, boolean fleemsg) {
+void monflee(struct Monster *mtmp, int fleetime, boolean first, boolean fleemsg) {
 	if (u.ustuck == mtmp) {
 	    if (u.uswallow)
 		expels(mtmp, mtmp->data, TRUE);
@@ -213,7 +213,7 @@ void monflee(struct monst *mtmp, int fleetime, boolean first, boolean fleemsg) {
 	}
 }
 
-STATIC_OVL void distfleeck(struct monst *mtmp, int *inrange, int *nearby, int *scared) {
+STATIC_OVL void distfleeck(struct Monster *mtmp, int *inrange, int *nearby, int *scared) {
 	int seescaryx, seescaryy;
 
 	*inrange = (dist2(mtmp->mx, mtmp->my, mtmp->mux, mtmp->muy) <=
@@ -249,7 +249,7 @@ STATIC_OVL void distfleeck(struct monst *mtmp, int *inrange, int *nearby, int *s
 
 /* perform a special one-time action for a monster; returns -1 if nothing
    special happened, 0 if monster uses up its turn, 1 if monster is killed */
-STATIC_OVL int m_arrival(struct monst *mon) {
+STATIC_OVL int m_arrival(struct Monster *mon) {
 	mon->mstrategy &= ~STRAT_ARRIVE;	/* always reset */
 
 	return -1;
@@ -259,7 +259,7 @@ STATIC_OVL int m_arrival(struct monst *mon) {
 /* The whole dochugw/m_move/distfleeck/mfndpos section is serious spaghetti
  * code. --KAA
  */
-int dochug(struct monst *mtmp) {
+int dochug(struct Monster *mtmp) {
 	struct permonst *mdat;
 	int tmp=0;
 	int inrange, nearby, scared;
@@ -369,7 +369,7 @@ int dochug(struct monst *mtmp) {
 		watch_on_duty(mtmp);
 
 	else if (is_mind_flayer(mdat) && !rn2(20)) {
-		struct monst *m2, *nmon = (struct monst *)0;
+		struct Monster *m2, *nmon = (struct Monster *)0;
 
 		if (canseemon(mtmp))
 			pline("%s concentrates.", Monnam(mtmp));
@@ -539,7 +539,7 @@ static NEARDATA const char indigestion[] = { BALL_CLASS, ROCK_CLASS, 0 };
 static NEARDATA const char boulder_class[] = { ROCK_CLASS, 0 };
 static NEARDATA const char gem_class[] = { GEM_CLASS, 0 };
 
-boolean itsstuck(struct monst *mtmp) {
+boolean itsstuck(struct Monster *mtmp) {
 	if (sticks(youmonst.data) && mtmp==u.ustuck && !u.uswallow) {
 		pline("%s cannot escape from you!", Monnam(mtmp));
 		return(TRUE);
@@ -553,7 +553,7 @@ boolean itsstuck(struct monst *mtmp) {
  * 2: monster died.
  * 3: did not move, and can't do anything else either.
  */
-int m_move(struct monst *mtmp, int after) {
+int m_move(struct Monster *mtmp, int after) {
 	int appr;
 	xchar gx,gy,nix,niy,chcnt;
 	int chi;	/* could be schar except for stupid Sun-2 compiler */
@@ -563,7 +563,7 @@ int m_move(struct monst *mtmp, int after) {
 	boolean uses_items=0, setlikes=0;
 	boolean avoid=FALSE;
 	struct permonst *ptr;
-	struct monst *mtoo;
+	struct Monster *mtoo;
 	schar mmoved = 0;	/* not strictly nec.: chi >= 0 will do */
 	long info[9];
 	long flag;
@@ -624,7 +624,7 @@ int m_move(struct monst *mtmp, int after) {
 	if(is_covetous(ptr)) {
 	    xchar tx = STRAT_GOALX(mtmp->mstrategy),
 		  ty = STRAT_GOALY(mtmp->mstrategy);
-	    struct monst *intruder = m_at(tx, ty);
+	    struct Monster *intruder = m_at(tx, ty);
 	    /*
 	     * if there's a monster on the object or in possesion of it,
 	     * attack it.
@@ -960,7 +960,7 @@ not_special:
 	     */
 	    if((info[chi] & ALLOW_M) ||
 		   (nix == mtmp->mux && niy == mtmp->muy)) {
-		struct monst *mtmp2;
+		struct Monster *mtmp2;
 		int mstatus;
 		mtmp2 = m_at(nix,niy);
 
@@ -1189,7 +1189,7 @@ boolean accessible(int x, int y) {
 #ifdef OVL0
 
 /* decide where the monster thinks you are standing */
-void set_apparxy(struct monst *mtmp) {
+void set_apparxy(struct Monster *mtmp) {
 	boolean notseen, gotu;
 	int disp, mx = mtmp->mux, my = mtmp->muy;
 #ifdef GOLDOBJ
@@ -1258,7 +1258,7 @@ found_you:
 	mtmp->muy = my;
 }
 
-boolean can_ooze(struct monst *mtmp) {
+boolean can_ooze(struct Monster *mtmp) {
 	struct Object *chain, *obj;
 
 	if (!amorphous(mtmp->data)) return FALSE;

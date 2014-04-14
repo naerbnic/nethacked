@@ -472,16 +472,16 @@ typedef struct
     struct rm		locations[COLNO][ROWNO];
 #ifndef MICROPORT_BUG
     struct Object		*objects[COLNO][ROWNO];
-    struct monst	*monsters[COLNO][ROWNO];
+    struct Monster	*monsters[COLNO][ROWNO];
 #else
     struct Object		*objects[1][ROWNO];
     char		*yuk1[COLNO-1][ROWNO];
-    struct monst	*monsters[1][ROWNO];
+    struct Monster	*monsters[1][ROWNO];
     char		*yuk2[COLNO-1][ROWNO];
 #endif
     struct Object		*objlist;
     struct Object		*buriedobjlist;
-    struct monst	*monlist;
+    struct Monster	*monlist;
     struct damage	*damagelist;
     struct levelflags	flags;
 }
@@ -508,19 +508,17 @@ extern dlevel_t level;	/* structure describing the current level */
 /*
  * Macros for encapsulation of level.monsters references.
  */
-#define MON_AT(x,y)	(level.monsters[x][y] != (struct monst *)0 && \
+#define MON_AT(x,y)	(level.monsters[x][y] != nullptr && \
 			 !(level.monsters[x][y])->mburied)
-#define MON_BURIED_AT(x,y)	(level.monsters[x][y] != (struct monst *)0 && \
+#define MON_BURIED_AT(x,y)	(level.monsters[x][y] != nullptr && \
 				(level.monsters[x][y])->mburied)
 #ifndef STEED
 #define place_monster(m,x,y)	((m)->mx=(x),(m)->my=(y),\
 				 level.monsters[(m)->mx][(m)->my]=(m))
 #endif
 #define place_worm_seg(m,x,y)	level.monsters[x][y] = m
-#define remove_monster(x,y)	level.monsters[x][y] = (struct monst *)0
-#define m_at(x,y)		(MON_AT(x,y) ? level.monsters[x][y] : \
-						(struct monst *)0)
-#define m_buried_at(x,y)	(MON_BURIED_AT(x,y) ? level.monsters[x][y] : \
-						       (struct monst *)0)
+#define remove_monster(x,y)	level.monsters[x][y] = nullptr
+#define m_at(x,y)		(MON_AT(x,y) ? level.monsters[x][y] : nullptr)
+#define m_buried_at(x,y)	(MON_BURIED_AT(x,y) ? level.monsters[x][y] : nullptr)
 
 #endif /* RM_H */

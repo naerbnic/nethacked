@@ -107,7 +107,7 @@ int get_wormno() {
  *  If the worm has no tail (ie get_wormno() fails) then this function need
  *  not be called.
  */
-void initworm(struct monst *worm, int wseg_count) {
+void initworm(struct Monster *worm, int wseg_count) {
     struct wseg *seg, *new_tail = create_worm_tail(wseg_count);
     int wnum = worm->wormno;
 
@@ -181,7 +181,7 @@ void shrink_worm(int wnum) {
  *
  *  Move the worm.  Maybe grow.
  */
-void worm_move(struct monst *worm) {
+void worm_move(struct Monster *worm) {
     struct wseg *seg, *new_seg;	/* new segment */
     int	 wnum = worm->wormno;	/* worm number */
 
@@ -226,7 +226,7 @@ void worm_move(struct monst *worm) {
  *
  *  The worm don't move so it should shrink.
  */
-void worm_nomove(struct monst *worm) {
+void worm_nomove(struct Monster *worm) {
     shrink_worm((int) worm->wormno);	/* shrink */
 
     if (worm->mhp > 3)
@@ -242,7 +242,7 @@ void worm_nomove(struct monst *worm) {
  *
  *  Kill a worm tail.
  */
-void wormgone(struct monst *worm) {
+void wormgone(struct Monster *worm) {
     int wnum = worm->wormno;
 
 /*  if (!wnum) return;  bullet proofing */
@@ -264,7 +264,7 @@ void wormgone(struct monst *worm) {
  *
  *  If the hero is near any part of the worm, the worm will try to attack.
  */
-void wormhitu(struct monst *worm) {
+void wormhitu(struct Monster *worm) {
     int wnum = worm->wormno;
     struct wseg *seg;
 
@@ -284,7 +284,7 @@ void wormhitu(struct monst *worm) {
  *
  *  Remove the tail of a worm and adjust the hp of the worm.
  */
-void cutoff(struct monst *worm, struct wseg *tail) {
+void cutoff(struct Monster *worm, struct wseg *tail) {
 	if (flags.mon_moving)
 	    pline("Part of the tail of %s is cut off.", mon_nam(worm));
 	else
@@ -301,9 +301,9 @@ void cutoff(struct monst *worm, struct wseg *tail) {
  *  there is a chance that the worm will be cut in half, and a chance
  *  that both halves will survive.
  */
-void cutworm(struct monst *worm, xchar x, xchar y, struct Object *weap) {
+void cutworm(struct Monster *worm, xchar x, xchar y, struct Object *weap) {
     struct wseg  *curr, *new_tail;
-    struct monst *new_worm;
+    struct Monster *new_worm;
     int wnum = worm->wormno;
     int cut_chance, new_wnum;
 
@@ -399,7 +399,7 @@ void cutworm(struct monst *worm, xchar x, xchar y, struct Object *weap) {
  *  from see_monster() in display.c or when a monster goes minvis.  It
  *  is located here for modularity.
  */
-void see_wsegs(struct monst *worm) {
+void see_wsegs(struct Monster *worm) {
     struct wseg *curr = wtails[worm->wormno];
 
 /*  if (!mtmp->wormno) return;  bullet proofing */
@@ -415,7 +415,7 @@ void see_wsegs(struct monst *worm) {
  *
  *  Display all of the segments of the given worm for detection.
  */
-void detect_wsegs(struct monst *worm, boolean use_detection_glyph) {
+void detect_wsegs(struct Monster *worm, boolean use_detection_glyph) {
     int num;
     struct wseg *curr = wtails[worm->wormno];
 
@@ -510,7 +510,7 @@ void rest_worm(int fd) {
  *
  *  Place the segments of the given worm.  Called from restore.c
  */
-void place_wsegs(struct monst *worm) {
+void place_wsegs(struct Monster *worm) {
     struct wseg *curr = wtails[worm->wormno];
 
 /*  if (!mtmp->wormno) return;  bullet proofing */
@@ -529,7 +529,7 @@ void place_wsegs(struct monst *worm) {
  *  It does not get rid of (dealloc) the worm tail structures, and it does
  *  not remove the mon from the fmon chain.
  */
-void remove_worm(struct monst *worm) {
+void remove_worm(struct Monster *worm) {
     struct wseg *curr = wtails[worm->wormno];
 
 /*  if (!mtmp->wormno) return;  bullet proofing */
@@ -550,7 +550,7 @@ void remove_worm(struct monst *worm) {
  *  x, and y are most likely the worm->mx, and worm->my, but don't *need* to
  *  be, if somehow the head is disjoint from the tail.
  */
-void place_worm_tail_randomly(struct monst *worm, xchar x, xchar y) {
+void place_worm_tail_randomly(struct Monster *worm, xchar x, xchar y) {
     int wnum = worm->wormno;
     struct wseg *curr = wtails[wnum];
     struct wseg *new_tail;
@@ -634,7 +634,7 @@ void random_dir(xchar x, xchar y, xchar *nx, xchar *ny) {
  *  the number of visible segments that a worm has.
  */
 
-int count_wsegs(struct monst *mtmp) {
+int count_wsegs(struct Monster *mtmp) {
     int i=0;
     struct wseg *curr = (wtails[mtmp->wormno])->nseg;
 
@@ -682,7 +682,7 @@ struct wseg * create_worm_tail(int num_segs) {
  *  invisibility and telepathy (which should only show the head anyway).
  *  Mostly used in the canseemon() macro.
  */
-boolean worm_known(struct monst *worm) {
+boolean worm_known(struct Monster *worm) {
     struct wseg *curr = wtails[worm->wormno];
 
     while (curr) {

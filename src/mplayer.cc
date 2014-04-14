@@ -7,8 +7,8 @@
 #include "hack.h"
 
 STATIC_DCL const char *NDECL(dev_name);
-STATIC_DCL void FDECL(get_mplname, (struct monst *, char *));
-STATIC_DCL void FDECL(mk_mplayer_armor, (struct monst *, SHORT_P));
+STATIC_DCL void FDECL(get_mplname, (struct Monster *, char *));
+STATIC_DCL void FDECL(mk_mplayer_armor, (struct Monster *, SHORT_P));
 
 /* These are the names of those who
  * contributed to the development of NetHack 3.2/3.3/3.4.
@@ -42,7 +42,7 @@ static const char *developers[] = {
 /* return a randomly chosen developer name */
 STATIC_OVL const char * dev_name() {
 	int i, m = 0, n = SIZE(developers);
-	struct monst *mtmp;
+	struct Monster *mtmp;
 	boolean match;
 
 	do {
@@ -63,7 +63,7 @@ STATIC_OVL const char * dev_name() {
 	return(developers[i]);
 }
 
-STATIC_OVL void get_mplname(struct monst *mtmp, char *nam) {
+STATIC_OVL void get_mplname(struct Monster *mtmp, char *nam) {
 	boolean fmlkind = is_female(mtmp->data);
 	const char *devnam;
 
@@ -84,7 +84,7 @@ STATIC_OVL void get_mplname(struct monst *mtmp, char *nam) {
 			    (boolean)mtmp->female));
 }
 
-STATIC_OVL void mk_mplayer_armor(struct monst *mon, short typ) {
+STATIC_OVL void mk_mplayer_armor(struct Monster *mon, short typ) {
 	struct Object *obj;
 
 	if (typ == STRANGE_OBJECT) return;
@@ -100,12 +100,12 @@ STATIC_OVL void mk_mplayer_armor(struct monst *mon, short typ) {
 	(void) mpickobj(mon, obj);
 }
 
-struct monst * mk_mplayer(struct permonst *ptr, xchar x, xchar y, boolean special) {
-	struct monst *mtmp;
+struct Monster * mk_mplayer(struct permonst *ptr, xchar x, xchar y, boolean special) {
+	struct Monster *mtmp;
 	char nam[PL_NSIZ];
 
 	if(!is_mplayer(ptr))
-		return((struct monst *)0);
+		return((struct Monster *)0);
 
 	if(MON_AT(x, y))
 		(void) rloc(m_at(x, y), FALSE); /* insurance */
@@ -275,7 +275,7 @@ struct monst * mk_mplayer(struct permonst *ptr, xchar x, xchar y, boolean specia
  */
 void create_mplayers(int num, boolean special) {
 	int pm, x, y;
-	struct monst fakemon;
+	struct Monster fakemon;
 
 	while(num) {
 		int tryct = 0;
@@ -298,7 +298,7 @@ void create_mplayers(int num, boolean special) {
 	}
 }
 
-void mplayer_talk(struct monst *mtmp) {
+void mplayer_talk(struct Monster *mtmp) {
 	static const char *same_class_msg[3] = {
 		"I can't win, and neither will you!",
 		"You don't deserve to win!",

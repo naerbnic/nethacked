@@ -91,7 +91,7 @@ void del_light_source(int type, genericptr_t id) {
     switch (type) {
     case LS_OBJECT:	tmp_id = (genericptr_t)(((struct Object *)id)->o_id);
 			break;
-    case LS_MONSTER:	tmp_id = (genericptr_t)(((struct monst *)id)->m_id);
+    case LS_MONSTER:	tmp_id = (genericptr_t)(((struct Monster *)id)->m_id);
 			break;
     default:		tmp_id = 0;
 			break;
@@ -134,7 +134,7 @@ void do_light_sources(char **cs_rows) {
 	    if (get_obj_location((struct Object *) ls->id, &ls->x, &ls->y, 0))
 		ls->flags |= LSF_SHOW;
 	} else if (ls->type == LS_MONSTER) {
-	    if (get_mon_location((struct monst *) ls->id, &ls->x, &ls->y, 0))
+	    if (get_mon_location((struct Monster *) ls->id, &ls->x, &ls->y, 0))
 		ls->flags |= LSF_SHOW;
 	}
 
@@ -193,8 +193,8 @@ void do_light_sources(char **cs_rows) {
 /* (mon->mx == 0) implies migrating */
 #define mon_is_local(mon)	((mon)->mx > 0)
 
-struct monst * find_mid(unsigned nid, unsigned fmflags) {
-	struct monst *mtmp;
+struct Monster * find_mid(unsigned nid, unsigned fmflags) {
+	struct Monster *mtmp;
 
 	if (!nid)
 	    return &youmonst;
@@ -207,7 +207,7 @@ struct monst * find_mid(unsigned nid, unsigned fmflags) {
 	if (fmflags & FM_MYDOGS)
 		for (mtmp = mydogs; mtmp; mtmp = mtmp->nmon)
 	    	    if (mtmp->m_id == nid) return mtmp;
-	return (struct monst *) 0;
+	return (struct Monster *) 0;
 }
 
 /* Save all light sources of the given range. */
@@ -235,7 +235,7 @@ void save_light_sources(int fd, int mode, int range) {
 		is_global = !obj_is_local((struct Object *)curr->id);
 		break;
 	    case LS_MONSTER:
-		is_global = !mon_is_local((struct monst *)curr->id);
+		is_global = !mon_is_local((struct Monster *)curr->id);
 		break;
 	    default:
 		is_global = 0;
@@ -324,7 +324,7 @@ STATIC_OVL int maybe_write_ls(int fd, int range, boolean write_it) {
 	    is_global = !obj_is_local((struct Object *)ls->id);
 	    break;
 	case LS_MONSTER:
-	    is_global = !mon_is_local((struct monst *)ls->id);
+	    is_global = !mon_is_local((struct Monster *)ls->id);
 	    break;
 	default:
 	    is_global = 0;
@@ -346,7 +346,7 @@ STATIC_OVL int maybe_write_ls(int fd, int range, boolean write_it) {
 STATIC_OVL void write_ls(int fd, light_source *ls) {
     genericptr_t arg_save;
     struct Object *otmp;
-    struct monst *mtmp;
+    struct Monster *mtmp;
 
     if (ls->type == LS_OBJECT || ls->type == LS_MONSTER) {
 	if (ls->flags & LSF_NEEDS_FIXUP)
@@ -362,7 +362,7 @@ STATIC_OVL void write_ls(int fd, light_source *ls) {
 		    panic("write_ls: can't find obj #%u!", (unsigned)ls->id);
 #endif
 	    } else { /* ls->type == LS_MONSTER */
-		mtmp = (struct monst *)ls->id;
+		mtmp = (struct Monster *)ls->id;
 		ls->id = (genericptr_t)mtmp->m_id;
 #ifdef DEBUG
 		if (find_mid((unsigned)ls->id, FM_EVERYWHERE) != mtmp)
@@ -544,8 +544,8 @@ int wiz_light_sources() {
 		ls->x, ls->y, ls->range, ls->flags,
 		(ls->type == LS_OBJECT ? "obj" :
 		 ls->type == LS_MONSTER ?
-		    (mon_is_local((struct monst *)ls->id) ? "mon" :
-		     ((struct monst *)ls->id == &youmonst) ? "you" :
+		    (mon_is_local((struct Monster *)ls->id) ? "mon" :
+		     ((struct Monster *)ls->id == &youmonst) ? "you" :
 		     "<m>") :		/* migrating monster */
 		 "???"),
 		fmt_ptr(ls->id, arg_address));

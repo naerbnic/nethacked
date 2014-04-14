@@ -24,7 +24,7 @@ void rider_cant_reach() {
 /*** Putting the saddle on ***/
 
 /* Can this monster wear a saddle? */
-boolean can_saddle(struct monst *mtmp) {
+boolean can_saddle(struct Monster *mtmp) {
 	struct permonst *ptr = mtmp->data;
 
 	return (index(steeds, ptr->mlet) && (ptr->msize >= MZ_MEDIUM) &&
@@ -35,7 +35,7 @@ boolean can_saddle(struct monst *mtmp) {
 
 
 int use_saddle(struct Object *otmp) {
-	struct monst *mtmp;
+	struct Monster *mtmp;
 	struct permonst *ptr;
 	int chance;
 	const char *s;
@@ -151,7 +151,7 @@ int use_saddle(struct Object *otmp) {
 /*** Riding the monster ***/
 
 /* Can we ride this monster?  Caller should also check can_saddle() */
-boolean can_ride(struct monst *mtmp) {
+boolean can_ride(struct Monster *mtmp) {
 	return (mtmp->mtame && humanoid(youmonst.data) &&
 			!verysmall(youmonst.data) && !bigmonst(youmonst.data) &&
 			(!Underwater || is_swimmer(mtmp->data)));
@@ -176,7 +176,7 @@ int doride() {
 
 
 /* Start riding, with the given monster */
-boolean mount_steed(struct monst *mtmp, boolean force) {
+boolean mount_steed(struct Monster *mtmp, boolean force) {
 	struct Object *otmp;
 	char buf[BUFSZ];
 	struct permonst *ptr;
@@ -435,7 +435,7 @@ STATIC_OVL boolean landing_spot(coord *spot, int reason, int forceit) {
 
 /* Stop riding the current steed */
 void dismount_steed(int reason) {
-	struct monst *mtmp;
+	struct Monster *mtmp;
 	struct Object *otmp;
 	coord cc;
 	const char *verb = "fall";
@@ -593,7 +593,7 @@ void dismount_steed(int reason) {
 	return;
 }
 
-void place_monster(struct monst *mon, int x, int y) {
+void place_monster(struct Monster *mon, int x, int y) {
     if (mon == u.usteed ||
 	    /* special case is for convoluted vault guard handling */
 	    (DEADMONSTER(mon) && !(mon->isgd && x == 0 && y == 0))) {

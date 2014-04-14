@@ -50,7 +50,7 @@ STATIC_OVL int append_str(char *buf, const char *new_str) {
  * If not hallucinating and the glyph is a monster, also monster data.
  */
 STATIC_OVL struct permonst * lookat(int x, int y, char *buf, char *monbuf) {
-    struct monst *mtmp = (struct monst *) 0;
+    struct Monster *mtmp = (struct Monster *) 0;
     struct permonst *pm = (struct permonst *) 0;
     int glyph;
 
@@ -115,7 +115,7 @@ STATIC_OVL struct permonst * lookat(int x, int y, char *buf, char *monbuf) {
 	bhitpos.x = x;
 	bhitpos.y = y;
 	mtmp = m_at(x,y);
-	if (mtmp != (struct monst *) 0) {
+	if (mtmp != (struct Monster *) 0) {
 	    char *name, monnambuf[BUFSZ];
 	    boolean accurate = !Hallucination;
 

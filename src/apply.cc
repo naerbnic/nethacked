@@ -52,7 +52,7 @@ static const char no_elbow_room[] = "don't have enough elbow-room to maneuver.";
 
 #ifdef TOURIST
 STATIC_OVL int use_camera(struct Object *obj) {
-	struct monst *mtmp;
+	struct Monster *mtmp;
 
 	if(Underwater) {
 		pline("Using your camera underwater would void the warranty.");
@@ -196,7 +196,7 @@ static const char hollow_str[] = "a hollow sound.  This must be a secret %s!";
 STATIC_OVL int use_stethoscope(struct Object *obj) {
 	static long last_used_move = -1;
 	static short last_used_movement = 0;
-	struct monst *mtmp;
+	struct Monster *mtmp;
 	struct rm *lev;
 	int rx, ry, res;
 	boolean interference = (u.uswallow && is_whirly(u.ustuck->data) &&
@@ -305,7 +305,7 @@ STATIC_OVL void use_whistle(struct Object *obj) {
 }
 
 STATIC_OVL void use_magic_whistle(struct Object *obj) {
-	struct monst *mtmp, *nextmon;
+	struct Monster *mtmp, *nextmon;
 
 	if(obj->cursed && !rn2(2)) {
 		You("produce a high-pitched humming noise.");
@@ -346,7 +346,7 @@ int number_leashed() {
 
 /* otmp is about to be destroyed or stolen */
 void o_unleash(struct Object *otmp) {
-	struct monst *mtmp;
+	struct Monster *mtmp;
 
 	for(mtmp = fmon; mtmp; mtmp = mtmp->nmon)
 		if(mtmp->m_id == (unsigned)otmp->leashmon)
@@ -355,7 +355,7 @@ void o_unleash(struct Object *otmp) {
 }
 
 /* mtmp is about to die, or become untame */
-void m_unleash(struct monst *mtmp, boolean feedback) {
+void m_unleash(struct Monster *mtmp, boolean feedback) {
 	struct Object *otmp;
 
 	if (feedback) {
@@ -374,7 +374,7 @@ void m_unleash(struct monst *mtmp, boolean feedback) {
 /* player is about to die (for bones) */
 void unleash_all() {
 	struct Object *otmp;
-	struct monst *mtmp;
+	struct Monster *mtmp;
 
 	for(otmp = invent; otmp; otmp = otmp->nobj)
 		if(otmp->otyp == LEASH) otmp->leashmon = 0;
@@ -387,7 +387,7 @@ void unleash_all() {
 /* ARGSUSED */
 STATIC_OVL void use_leash(struct Object *obj) {
 	coord cc;
-	struct monst *mtmp;
+	struct Monster *mtmp;
 	int spotmon;
 
 	if(!obj->leashmon && number_leashed() >= MAXLEASHED) {
@@ -457,7 +457,7 @@ STATIC_OVL void use_leash(struct Object *obj) {
 	return;
 }
 
-struct Object *get_mleash(struct monst *mtmp)
+struct Object *get_mleash(struct Monster *mtmp)
 {
 	struct Object *otmp;
 
@@ -474,7 +474,7 @@ struct Object *get_mleash(struct monst *mtmp)
 #ifdef OVL1
 
 boolean next_to_u() {
-	struct monst *mtmp;
+	struct Monster *mtmp;
 	struct Object *otmp;
 
 	for(mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
@@ -506,7 +506,7 @@ boolean next_to_u() {
 
 void check_leash(xchar x, xchar y) {
 	struct Object *otmp;
-	struct monst *mtmp;
+	struct Monster *mtmp;
 
 	for (otmp = invent; otmp; otmp = otmp->nobj) {
 	    if (otmp->otyp != LEASH || otmp->leashmon == 0) continue;
@@ -567,7 +567,7 @@ void check_leash(xchar x, xchar y) {
 static const char look_str[] = "look %s.";
 
 STATIC_OVL int use_mirror(struct Object *obj) {
-	struct monst *mtmp;
+	struct Monster *mtmp;
 	char mlet;
 	boolean vis;
 
@@ -702,7 +702,7 @@ STATIC_OVL int use_mirror(struct Object *obj) {
 
 STATIC_OVL void use_bell(struct Object **optr) {
 	struct Object *obj = *optr;
-	struct monst *mtmp;
+	struct Monster *mtmp;
 	boolean wakem = FALSE, learno = FALSE,
 		ordinary = (obj->otyp != BELL_OF_OPENING || !obj->spe),
 		invoking = (obj->otyp == BELL_OF_OPENING &&
@@ -1513,7 +1513,7 @@ void use_unicorn_horn(struct Object *obj) {
  */
 void fig_transform(genericptr_t arg, long timeout) {
 	struct Object *figurine = (struct Object *)arg;
-	struct monst *mtmp;
+	struct Monster *mtmp;
 	coord cc;
 	boolean cansee_spot, silent, okay_spot;
 	boolean redraw = FALSE;
@@ -1564,7 +1564,7 @@ void fig_transform(genericptr_t arg, long timeout) {
 
 		case OBJ_MINVENT:
 		    if (cansee_spot && !silent) {
-			struct monst *mon;
+			struct Monster *mon;
 			mon = figurine->ocarry;
 			/* figurine carring monster might be invisible */
 			if (canseemon(figurine->ocarry)) {
@@ -2004,7 +2004,7 @@ int set_trap() {
 
 STATIC_OVL int use_whip(struct Object *obj) {
     char buf[BUFSZ];
-    struct monst *mtmp;
+    struct Monster *mtmp;
     struct Object *otmp;
     int rx, ry, proficient, res = 0;
     const char *msg_slipsfree = "The bullwhip slips free.";
@@ -2259,7 +2259,7 @@ static const char
 STATIC_OVL int use_pole (struct Object *obj) {
 	int res = 0, typ, max_range = 4, min_range = 4;
 	coord cc;
-	struct monst *mtmp;
+	struct Monster *mtmp;
 
 
 	/* Are you allowed to use the pole? */
@@ -2292,7 +2292,7 @@ STATIC_OVL int use_pole (struct Object *obj) {
 	    pline("Too close!");
 	    return (res);
 	} else if (!cansee(cc.x, cc.y) &&
-		   ((mtmp = m_at(cc.x, cc.y)) == (struct monst *)0 ||
+		   ((mtmp = m_at(cc.x, cc.y)) == (struct Monster *)0 ||
 		    !canseemon(mtmp))) {
 	    You(cant_see_spot);
 	    return (res);
@@ -2302,7 +2302,7 @@ STATIC_OVL int use_pole (struct Object *obj) {
 	}
 
 	/* Attack the monster there */
-	if ((mtmp = m_at(cc.x, cc.y)) != (struct monst *)0) {
+	if ((mtmp = m_at(cc.x, cc.y)) != (struct Monster *)0) {
 	    int oldhp = mtmp->mhp;
 
 	    bhitpos = cc;
@@ -2335,7 +2335,7 @@ STATIC_OVL int use_cream_pie(struct Object *obj) {
 		pline("You immerse your %s in %s%s.", body_part(FACE),
 			several ? "one of " : "",
 			several ? makeplural(the(xname(obj))) : the(xname(obj)));
-	if(can_blnd((struct monst*)0, &youmonst, AT_WEAP, obj)) {
+	if(can_blnd((struct Monster*)0, &youmonst, AT_WEAP, obj)) {
 		int blindinc = rnd(25);
 		u.ucreamed += blindinc;
 		make_blinded(Blinded + (long)blindinc, FALSE);
@@ -2359,7 +2359,7 @@ STATIC_OVL int use_cream_pie(struct Object *obj) {
 STATIC_OVL int use_grapple(struct Object *obj) {
 	int res = 0, typ, max_range = 4, tohit;
 	coord cc;
-	struct monst *mtmp;
+	struct Monster *mtmp;
 	struct Object *otmp;
 
 	/* Are you allowed to use the hook? */
@@ -2442,7 +2442,7 @@ STATIC_OVL int use_grapple(struct Object *obj) {
 	    }
 	    break;
 	case 2:	/* Monster */
-	    if ((mtmp = m_at(cc.x, cc.y)) == (struct monst *)0) break;
+	    if ((mtmp = m_at(cc.x, cc.y)) == (struct Monster *)0) break;
 	    if (verysmall(mtmp->data) && !rn2(4) &&
 			enexto(&cc, u.ux, u.uy, (struct permonst *)0)) {
 		You("pull in %s!", mon_nam(mtmp));
@@ -2477,13 +2477,13 @@ STATIC_OVL int use_grapple(struct Object *obj) {
 }
 
 
-#define BY_OBJECT	((struct monst *)0)
+#define BY_OBJECT	((struct Monster *)nullptr)
 
 /* return 1 if the wand is broken, hence some time elapsed */
 STATIC_OVL int do_break_wand(struct Object *obj) {
     static const char nothing_else_happens[] = "But nothing else happens...";
     int i, x, y;
-    struct monst *mon;
+    struct Monster *mon;
     int dmg, damage;
     boolean affects_objects;
     boolean shop_damage = FALSE;
@@ -2580,7 +2580,7 @@ STATIC_OVL int do_break_wand(struct Object *obj) {
 		if (IS_WALL(levl[x][y].typ) || IS_DOOR(levl[x][y].typ)) {
 		    /* normally, pits and holes don't anger guards, but they
 		     * do if it's a wall or door that's being dug */
-		    watch_dig((struct monst *)0, x, y, TRUE);
+		    watch_dig((struct Monster *)0, x, y, TRUE);
 		    if (*in_rooms(x,y,SHOPBASE)) shop_damage = TRUE;
 		}		    
 		digactualhole(x, y, BY_OBJECT,

@@ -15,14 +15,14 @@ STATIC_DCL int FDECL(untrap_prob, (struct trap *ttmp));
 STATIC_DCL void FDECL(cnv_trap_obj, (int, int, struct trap *));
 STATIC_DCL void FDECL(move_into_trap, (struct trap *));
 STATIC_DCL int FDECL(try_disarm, (struct trap *,BOOLEAN_P));
-STATIC_DCL void FDECL(reward_untrap, (struct trap *, struct monst *));
+STATIC_DCL void FDECL(reward_untrap, (struct trap *, struct Monster *));
 STATIC_DCL int FDECL(disarm_holdingtrap, (struct trap *));
 STATIC_DCL int FDECL(disarm_landmine, (struct trap *));
 STATIC_DCL int FDECL(disarm_squeaky_board, (struct trap *));
 STATIC_DCL int FDECL(disarm_shooting_trap, (struct trap *, int));
-STATIC_DCL int FDECL(try_lift, (struct monst *, struct trap *, int, BOOLEAN_P));
-STATIC_DCL int FDECL(help_monster_out, (struct monst *, struct trap *));
-STATIC_DCL boolean FDECL(thitm, (int,struct monst *,struct Object *,int,BOOLEAN_P));
+STATIC_DCL int FDECL(try_lift, (struct Monster *, struct trap *, int, BOOLEAN_P));
+STATIC_DCL int FDECL(help_monster_out, (struct Monster *, struct trap *));
+STATIC_DCL boolean FDECL(thitm, (int,struct Monster *,struct Object *,int,BOOLEAN_P));
 STATIC_DCL int FDECL(mkroll_launch,
 			(struct trap *,XCHAR_P,XCHAR_P,SHORT_P,long));
 STATIC_DCL boolean FDECL(isclearpath,(coord *, int, SCHAR_P, SCHAR_P));
@@ -53,7 +53,7 @@ STATIC_VAR const char * const blindgas[6] =
 #ifdef OVLB
 
 /* called when you're hit by fire (dofiretrap,buzz,zapyourself,explode) */
-boolean			/* returns TRUE if hit on torso */ burnarmor(struct monst *victim) {
+boolean			/* returns TRUE if hit on torso */ burnarmor(struct Monster *victim) {
     struct Object *item;
     char buf[BUFSZ];
     int mat_idx;
@@ -111,7 +111,7 @@ boolean			/* returns TRUE if hit on torso */ burnarmor(struct monst *victim) {
  * if the item could not be rusted; otherwise a message is printed and TRUE is
  * returned only for rustable items.
  */
-boolean rust_dmg(struct Object *otmp, const char *ostr, int type, boolean print, struct monst *victim) {
+boolean rust_dmg(struct Object *otmp, const char *ostr, int type, boolean print, struct Monster *victim) {
 	static NEARDATA const char * const action[] = { "smoulder", "rust", "rot", "corrode" };
 	static NEARDATA const char * const msg[] =  { "burnt", "rusted", "rotten", "corroded" };
 	boolean vulnerable = FALSE;
@@ -192,7 +192,7 @@ boolean rust_dmg(struct Object *otmp, const char *ostr, int type, boolean print,
 	return(TRUE);
 }
 
-void grease_protect(struct Object *otmp, const char *ostr, struct monst *victim) {
+void grease_protect(struct Object *otmp, const char *ostr, struct Monster *victim) {
 	static const char txt[] = "protected by the layer of grease!";
 	boolean vismon = victim && (victim != &youmonst) && canseemon(victim);
 
@@ -241,10 +241,10 @@ struct trap * maketrap(int x, int y, int typ) {
 	ttmp->ttyp = typ;
 	switch(typ) {
 	    case STATUE_TRAP:	    /* create a "living" statue */
-	      { struct monst *mtmp;
+	      { struct Monster *mtmp;
 		struct Object *otmp, *statue;
 
-		statue = mkcorpstat(STATUE, (struct monst *)0,
+		statue = mkcorpstat(STATUE, (struct Monster *)0,
 					&mons[rndmonnum()], x, y, FALSE);
 		mtmp = makemon(&mons[statue->corpsenm], 0, 0, NO_MM_FLAGS);
 		if (!mtmp) break; /* should never happen */
@@ -379,9 +379,9 @@ void fall_through(boolean td) {
  * Perhaps x, y is not needed if we can use get_obj_location() to find
  * the statue's location... ???
  */
-struct monst * animate_statue(struct Object *statue, xchar x, xchar y, int cause, int *fail_reason) {
+struct Monster * animate_statue(struct Object *statue, xchar x, xchar y, int cause, int *fail_reason) {
 	struct permonst *mptr;
-	struct monst *mon = 0;
+	struct Monster *mon = 0;
 	struct Object *item;
 	coord cc;
 	boolean historic = (Role_if(PM_ARCHEOLOGIST) && !flags.mon_moving && (statue->spe & STATUE_HISTORIC));
@@ -408,7 +408,7 @@ struct monst * animate_statue(struct Object *statue, xchar x, xchar y, int cause
 	     */
 	    if ((mptr->geno & G_UNIQ) && cause != ANIMATE_SPELL) {
 	        if (fail_reason) *fail_reason = AS_MON_IS_UNIQUE;
-	        return (struct monst *)0;
+	        return (struct Monster *)0;
 	    }
 	    if (cause == ANIMATE_SPELL &&
 		((mptr->geno & G_UNIQ) || mptr->msound == MS_GUARDIAN)) {
@@ -434,7 +434,7 @@ struct monst * animate_statue(struct Object *statue, xchar x, xchar y, int cause
 
 	if (!mon) {
 	    if (fail_reason) *fail_reason = AS_NO_MON;
-	    return (struct monst *)0;
+	    return (struct Monster *)0;
 	}
 
 	/* in case statue is wielded and hero zaps stone-to-flesh at self */
@@ -494,8 +494,8 @@ struct monst * animate_statue(struct Object *statue, xchar x, xchar y, int cause
  * statue trap by searching next to it or by trying to break it with a wand
  * or pick-axe.
  */
-struct monst * activate_statue_trap(struct trap *trap, xchar x, xchar y, boolean shatter) {
-	struct monst *mtmp = (struct monst *)0;
+struct Monster * activate_statue_trap(struct trap *trap, xchar x, xchar y, boolean shatter) {
+	struct Monster *mtmp = (struct Monster *)0;
 	struct Object *otmp = sobj_at(STATUE, x, y);
 	int fail_reason;
 
@@ -525,7 +525,7 @@ STATIC_OVL boolean keep_saddle_with_steedcorpse(unsigned steed_mid, struct Objec
 	while(objchn) {
 		if(objchn->otyp == CORPSE &&
 		   objchn->oattached == OATTACHED_MONST && objchn->oxlth) {
-			struct monst *mtmp = (struct monst *)objchn->oextra;
+			struct Monster *mtmp = (struct Monster *)objchn->oextra;
 			if (mtmp->m_id == steed_mid) {
 				/* move saddle */
 				xchar x,y;
@@ -766,7 +766,7 @@ void dotrap(struct trap *trap, unsigned trflags) {
 		    break;
 		} else if (u.umonnum == PM_GREMLIN && rn2(3)) {
 		    pline("%s you!", A_gush_of_water_hits);
-		    (void)split_mon(&youmonst, (struct monst *)0);
+		    (void)split_mon(&youmonst, (struct Monster *)0);
 		    break;
 		}
 
@@ -1150,7 +1150,7 @@ glovecheck:		(void) rust_dmg(uarmg, "gauntlets", 1, TRUE, &youmonst);
 
 #ifdef STEED
 STATIC_OVL int steedintrap(struct trap *trap, struct Object *otmp) {
-	struct monst *mtmp = u.usteed;
+	struct Monster *mtmp = u.usteed;
 	struct permonst *mptr;
 	int tt;
 	boolean in_sight;
@@ -1263,7 +1263,7 @@ void blow_up_landmine(struct trap *trap) {
  *        2 if an object was launched, but used up.
  */
 int launch_obj(short otyp, int x1, int y1, int x2, int y2, int style) {
-	struct monst *mtmp;
+	struct Monster *mtmp;
 	struct Object *otmp, *otmp2;
 	int dx,dy;
 	struct Object *singleobj;
@@ -1578,7 +1578,7 @@ STATIC_OVL boolean isclearpath(coord *cc, int distance, schar dx, schar dy) {
 #endif /* OVL3 */
 #ifdef OVL1
 
-int mintrap(struct monst *mtmp) {
+int mintrap(struct Monster *mtmp) {
 	struct trap *trap = t_at(mtmp->mx, mtmp->my);
 	boolean trapkilled = FALSE;
 	struct permonst *mptr = mtmp->data;
@@ -1815,7 +1815,7 @@ glovecheck:		    target = which_armor(mtmp, W_ARMG);
 				if (mtmp->mhp <= 0)
 					trapkilled = TRUE;
 			} else if (mptr == &mons[PM_GREMLIN] && rn2(3)) {
-				(void)split_mon(mtmp, (struct monst *)0);
+				(void)split_mon(mtmp, (struct Monster *)0);
 			}
 			break;
 		    }
@@ -2104,7 +2104,7 @@ void instapetrify(const char *str) {
 	done(STONING);
 }
 
-void minstapetrify(struct monst *mon, boolean byplayer) {
+void minstapetrify(struct Monster *mon, boolean byplayer) {
 	if (resists_ston(mon)) return;
 	if (poly_when_stoned(mon->data)) {
 		mon_to_stone(mon);
@@ -2143,7 +2143,7 @@ void selftouch(const char *arg) {
 	}
 }
 
-void mselftouch(struct monst *mon, const char *arg, boolean byplayer) {
+void mselftouch(struct Monster *mon, const char *arg, boolean byplayer) {
 	struct Object *mwep = MON_WEP(mon);
 
 	if (mwep && mwep->otyp == CORPSE && touch_petrifies(&mons[mwep->corpsenm])) {
@@ -2455,7 +2455,7 @@ STATIC_OVL void domagictrap() {
 	     case 19:
 		    /* tame nearby monsters */
 		   {   int i,j;
-		       struct monst *mtmp;
+		       struct Monster *mtmp;
 
 		       (void) adjattrib(A_CHA,1,FALSE);
 		       for(i = -1; i <= 1; i++) for(j = -1; j <= 1; j++) {
@@ -2743,7 +2743,7 @@ boolean drown() {
 	water_damage(invent, FALSE, FALSE);
 
 	if (u.umonnum == PM_GREMLIN && rn2(3))
-	    (void)split_mon(&youmonst, (struct monst *)0);
+	    (void)split_mon(&youmonst, (struct Monster *)0);
 	else if (u.umonnum == PM_IRON_GOLEM) {
 	    You("rust!");
 	    i = d(2,6);
@@ -2954,7 +2954,7 @@ STATIC_OVL void move_into_trap(struct trap *ttmp) {
  * 2: succeeds
  */
 STATIC_OVL int try_disarm(struct trap *ttmp, boolean force_failure) {
-	struct monst *mtmp = m_at(ttmp->tx,ttmp->ty);
+	struct Monster *mtmp = m_at(ttmp->tx,ttmp->ty);
 	int ttype = ttmp->ttyp;
 	boolean under_u = (!u.dx && !u.dy);
 	boolean holdingtrap = (ttype == BEAR_TRAP || ttype == WEB);
@@ -3035,7 +3035,7 @@ STATIC_OVL int try_disarm(struct trap *ttmp, boolean force_failure) {
 	return 2;
 }
 
-STATIC_OVL void reward_untrap(struct trap *ttmp, struct monst *mtmp) {
+STATIC_OVL void reward_untrap(struct trap *ttmp, struct Monster *mtmp) {
 	if (!ttmp->madeby_u) {
 	    if (rnl(10) < 8 && !mtmp->mpeaceful &&
 		    !mtmp->msleeping && !mtmp->mfrozen &&
@@ -3056,7 +3056,7 @@ STATIC_OVL void reward_untrap(struct trap *ttmp, struct monst *mtmp) {
 
 /* Helge Hafting */
 STATIC_OVL int disarm_holdingtrap(struct trap *ttmp) {
-	struct monst *mtmp;
+	struct Monster *mtmp;
 	int fails = try_disarm(ttmp, FALSE);
 
 	if (fails < 2) return fails;
@@ -3140,7 +3140,7 @@ STATIC_OVL int disarm_shooting_trap(struct trap *ttmp, int otyp) {
 
 /* Is the weight too heavy?
  * Formula as in near_capacity() & check_capacity() */
-STATIC_OVL int try_lift(struct monst *mtmp, struct trap *ttmp, int wt, boolean stuff) {
+STATIC_OVL int try_lift(struct Monster *mtmp, struct trap *ttmp, int wt, boolean stuff) {
 	int wc = weight_cap();
 
 	if (((wt * 2) / wc) >= HVY_ENCUMBER) {
@@ -3159,7 +3159,7 @@ STATIC_OVL int try_lift(struct monst *mtmp, struct trap *ttmp, int wt, boolean s
 }
 
 /* Help trapped monster (out of a (spiked) pit) */
-STATIC_OVL int help_monster_out(struct monst *mtmp, struct trap *ttmp) {
+STATIC_OVL int help_monster_out(struct Monster *mtmp, struct trap *ttmp) {
 	int wt;
 	struct Object *otmp;
 	boolean uprob;
@@ -3251,7 +3251,7 @@ int untrap(boolean force) {
 	int x,y;
 	int ch;
 	struct trap *ttmp;
-	struct monst *mtmp;
+	struct Monster *mtmp;
 	boolean trap_skipped = FALSE;
 	boolean box_here = FALSE;
 	boolean deal_with_floor_trap = FALSE;
@@ -3486,7 +3486,7 @@ boolean chest_trap(struct Object *obj, int bodypart, boolean disarm) {
 		case 23:
 		case 22:
 		case 21: {
-			  struct monst *shkp = 0;
+			  struct Monster *shkp = 0;
 			  long loss = 0L;
 			  boolean costly, insider;
 			  xchar ox = obj->ox, oy = obj->oy;
@@ -3494,7 +3494,7 @@ boolean chest_trap(struct Object *obj, int bodypart, boolean disarm) {
 			  /* the obj location need not be that of player */
 			  costly = (costly_spot(ox, oy) &&
 				   (shkp = shop_keeper(*in_rooms(ox, oy,
-				    SHOPBASE))) != (struct monst *)0);
+				    SHOPBASE))) != (struct Monster *)0);
 			  insider = (*u.ushops && inside_shop(u.ux, u.uy) &&
 				    *in_rooms(ox, oy, SHOPBASE) == *u.ushops);
 
@@ -3662,7 +3662,7 @@ boolean delfloortrap(struct trap *ttmp) {
 		     (ttmp->ttyp == WEB) ||
 		     (ttmp->ttyp == MAGIC_TRAP) ||
 		     (ttmp->ttyp == ANTI_MAGIC))) {
-	    struct monst *mtmp;
+	    struct Monster *mtmp;
 
 	    if (ttmp->tx == u.ux && ttmp->ty == u.uy) {
 		u.utrap = 0;
@@ -3691,7 +3691,7 @@ void b_trapped(const char *item, int bodypart) {
 
 /* Monster is hit by trap. */
 /* Note: doesn't work if both obj and d_override are null */
-STATIC_OVL boolean thitm(int tlev, struct monst *mon, struct Object *obj, int d_override, boolean nocorpse) {
+STATIC_OVL boolean thitm(int tlev, struct Monster *mon, struct Object *obj, int d_override, boolean nocorpse) {
 	int strike;
 	boolean trapkilled = FALSE;
 

@@ -79,7 +79,7 @@ void moveloop() {
 		if (!monscanmove && youmonst.movement < NORMAL_SPEED) {
 		    /* both you and the monsters are out of steam this round */
 		    /* set up for a new turn */
-		    struct monst *mtmp;
+		    struct Monster *mtmp;
 		    mcalcdistress();	/* adjust monsters' trap, blind, etc */
 
 		    /* reallocate movement rations to monsters */
@@ -566,7 +566,7 @@ void welcome(boolean new_game) {
 
     pline(new_game ? "%s %s, welcome to NetHack!  You are a%s %s %s."
 		   : "%s %s, the%s %s %s, welcome back to NetHack!",
-	  Hello((struct monst *) 0), plname, buf, urace.adj,
+	  Hello((struct Monster *) 0), plname, buf, urace.adj,
 	  (currentgend && urole.name.f) ? urole.name.f : urole.name.m);
 }
 

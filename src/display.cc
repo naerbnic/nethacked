@@ -121,9 +121,9 @@
 #include "hack.h"
 #include "region.h"
 
-STATIC_DCL void FDECL(display_monster,(XCHAR_P,XCHAR_P,struct monst *,int,XCHAR_P));
+STATIC_DCL void FDECL(display_monster,(XCHAR_P,XCHAR_P,struct Monster *,int,XCHAR_P));
 STATIC_DCL int FDECL(swallow_to_glyph, (int, int));
-STATIC_DCL void FDECL(display_warning,(struct monst *));
+STATIC_DCL void FDECL(display_warning,(struct Monster *));
 
 STATIC_DCL int FDECL(check_pos, (int, int, int));
 #ifdef WA_VERBOSE
@@ -333,7 +333,7 @@ void map_location(int x, int y, int show) {
 STATIC_OVL void
 display_monster(
     xchar x, xchar y, 	/* display position */
-    struct monst* mon, /* monster to display */
+    struct Monster* mon, /* monster to display */
     int sightflags,   /* 1 if the monster is physically seen */
     				/* 2 if detected using Detect_monsters */
     xchar worm_tail) {	/* mon is actually a worm tail */
@@ -426,7 +426,7 @@ display_monster(
  *
  * Do not call for worm tails.
  */
-STATIC_OVL void display_warning(struct monst *mon) {
+STATIC_OVL void display_warning(struct Monster *mon) {
     int x = mon->mx, y = mon->my;
     int wl = (int) (mon->m_lev / 4);
     int glyph;
@@ -459,7 +459,7 @@ STATIC_OVL void display_warning(struct monst *mon) {
 void feel_location(xchar x, xchar y) {
     struct rm *lev = &(levl[x][y]);
     struct Object *boulder;
-    struct monst *mon;
+    struct Monster *mon;
 
     /* If the hero's memory of an invisible monster is accurate, we want to keep
      * him from detecting the same monster over and over again on each turn.
@@ -594,7 +594,7 @@ void feel_location(xchar x, xchar y) {
  * Possibly put a new glyph at the given location.
  */
 void newsym(int x, int y) {
-    struct monst *mon;
+    struct Monster *mon;
     struct rm *lev = &(levl[x][y]);
     int see_it;
     xchar worm_tail;
@@ -1012,7 +1012,7 @@ void under_ground(int mode) {
  *	  sit.c]
  */
 void see_monsters() {
-    struct monst *mon;
+    struct Monster *mon;
 
     for (mon = fmon; mon; mon = mon->nmon) {
 	if (DEADMONSTER(mon)) continue;
@@ -1032,7 +1032,7 @@ void see_monsters() {
  * changes.
  */
 void set_mimic_blocking() {
-    struct monst *mon;
+    struct Monster *mon;
 
     for (mon = fmon; mon; mon = mon->nmon) {
 	if (DEADMONSTER(mon)) continue;

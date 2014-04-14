@@ -316,7 +316,7 @@ const char * align_str(aligntyp alignment) {
     return "unknown";
 }
 
-void mstatusline(struct monst *mtmp) {
+void mstatusline(struct Monster *mtmp) {
 	aligntyp alignment;
 	char info[BUFSZ], monnambuf[BUFSZ];
 

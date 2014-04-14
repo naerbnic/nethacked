@@ -21,17 +21,17 @@ boolean m_using = FALSE;
  * don't know not to read scrolls, etc....
  */
 
-STATIC_DCL struct permonst *FDECL(muse_newcham_mon, (struct monst *));
-STATIC_DCL int FDECL(precheck, (struct monst *,struct Object *));
-STATIC_DCL void FDECL(mzapmsg, (struct monst *,struct Object *,BOOLEAN_P));
-STATIC_DCL void FDECL(mreadmsg, (struct monst *,struct Object *));
-STATIC_DCL void FDECL(mquaffmsg, (struct monst *,struct Object *));
-STATIC_PTR int FDECL(mbhitm, (struct monst *,struct Object *));
+STATIC_DCL struct permonst *FDECL(muse_newcham_mon, (struct Monster *));
+STATIC_DCL int FDECL(precheck, (struct Monster *,struct Object *));
+STATIC_DCL void FDECL(mzapmsg, (struct Monster *,struct Object *,BOOLEAN_P));
+STATIC_DCL void FDECL(mreadmsg, (struct Monster *,struct Object *));
+STATIC_DCL void FDECL(mquaffmsg, (struct Monster *,struct Object *));
+STATIC_PTR int FDECL(mbhitm, (struct Monster *,struct Object *));
 STATIC_DCL void FDECL(mbhit,
-	(struct monst *,int,int FDECL((*),(MONST_P,OBJ_P)),
+	(struct Monster *,int,int FDECL((*),(MONST_P,OBJ_P)),
 	int FDECL((*),(OBJ_P,OBJ_P)),struct Object *));
-STATIC_DCL void FDECL(you_aggravate, (struct monst *));
-STATIC_DCL void FDECL(mon_consume_unstone, (struct monst *,struct Object *,
+STATIC_DCL void FDECL(you_aggravate, (struct Monster *));
+STATIC_DCL void FDECL(mon_consume_unstone, (struct Monster *,struct Object *,
 	BOOLEAN_P,BOOLEAN_P));
 
 static struct musable {
@@ -55,7 +55,7 @@ static boolean zap_oseen;
  * the item.  Returns 0 if nothing happened, 2 if the monster can't do anything
  * (i.e. it teleported) and 1 if it's dead.
  */
-STATIC_OVL int precheck(struct monst *mon, struct Object *obj) {
+STATIC_OVL int precheck(struct Monster *mon, struct Object *obj) {
 	boolean vis;
 
 	if (!obj) return 0;
@@ -65,7 +65,7 @@ STATIC_OVL int precheck(struct monst *mon, struct Object *obj) {
 	    coord cc;
 	    static const char *empty = "The potion turns out to be empty.";
 	    const char *potion_descr;
-	    struct monst *mtmp;
+	    struct Monster *mtmp;
 #define POTION_OCCUPANT_CHANCE(n) (13 + 2*(n))	/* also in potion.c */
 
 	    potion_descr = OBJ_DESCR(objects[obj->otyp]);
@@ -141,7 +141,7 @@ STATIC_OVL int precheck(struct monst *mon, struct Object *obj) {
 	return 0;
 }
 
-STATIC_OVL void mzapmsg(struct monst *mtmp, struct Object *otmp, boolean self) {
+STATIC_OVL void mzapmsg(struct Monster *mtmp, struct Object *otmp, boolean self) {
 	if (!canseemon(mtmp)) {
 		if (flags.soundok)
 			You_hear("a %s zap.",
@@ -156,7 +156,7 @@ STATIC_OVL void mzapmsg(struct monst *mtmp, struct Object *otmp, boolean self) {
 	}
 }
 
-STATIC_OVL void mreadmsg(struct monst *mtmp, struct Object *otmp) {
+STATIC_OVL void mreadmsg(struct Monster *mtmp, struct Object *otmp) {
 	boolean vismon = canseemon(mtmp);
 	char onambuf[BUFSZ];
 	short saverole;
@@ -191,7 +191,7 @@ STATIC_OVL void mreadmsg(struct monst *mtmp, struct Object *otmp) {
 		  vismon ? mon_nam(mtmp) : mhe(mtmp));
 }
 
-STATIC_OVL void mquaffmsg(struct monst *mtmp, struct Object *otmp) {
+STATIC_OVL void mquaffmsg(struct Monster *mtmp, struct Object *otmp) {
 	if (canseemon(mtmp)) {
 		otmp->dknown = 1;
 		pline("%s drinks %s!", Monnam(mtmp), singular(otmp, doname));
@@ -234,7 +234,7 @@ STATIC_OVL void mquaffmsg(struct monst *mtmp, struct Object *otmp) {
 /* Select a defensive item/action for a monster.  Returns TRUE iff one is
  * found.
  */
-boolean find_defensive(struct monst *mtmp) {
+boolean find_defensive(struct Monster *mtmp) {
 	struct Object *obj = 0;
 	struct trap *t;
 	int x=mtmp->mx, y=mtmp->my;
@@ -379,7 +379,7 @@ boolean find_defensive(struct monst *mtmp) {
 
 	if (is_mercenary(mtmp->data) && (obj = m_carrying(mtmp, BUGLE))) {
 		int xx, yy;
-		struct monst *mon;
+		struct Monster *mon;
 
 		/* Distance is arbitrary.  What we really want to do is
 		 * have the soldier play the bugle when it sees or
@@ -504,7 +504,7 @@ botm:	return((boolean)(!!m.has_defense));
  * after find_defensive().  Return values are 0: did something, 1: died,
  * 2: did something and can't attack again (i.e. teleported).
  */
-int use_defensive(struct monst *mtmp) {
+int use_defensive(struct Monster *mtmp) {
 	int i, fleetim, how = 0;
 	struct Object *otmp = m.defensive;
 	boolean vis, vismon, oseen;
@@ -661,7 +661,7 @@ mon_tele:
 		    /* pm: 0 => random, eel => aquatic, croc => amphibious */
 		struct permonst *pm = !is_pool(mtmp->mx, mtmp->my) ? 0 :
 			     &mons[u.uinwater ? PM_GIANT_EEL : PM_CROCODILE];
-		struct monst *mon;
+		struct Monster *mon;
 
 		if (!enexto(&cc, mtmp->mx, mtmp->my, pm)) return 0;
 		mzapmsg(mtmp, otmp, FALSE);
@@ -675,7 +675,7 @@ mon_tele:
 	    {	coord cc;
 		struct permonst *pm = 0, *fish = 0;
 		int cnt = 1;
-		struct monst *mon;
+		struct Monster *mon;
 		boolean known = FALSE;
 
 		if (!rn2(73)) cnt += rnd(4);
@@ -876,7 +876,7 @@ mon_tele:
 #undef m_flee
 }
 
-int rnd_defensive_item(struct monst *mtmp) {
+int rnd_defensive_item(struct Monster *mtmp) {
 	struct permonst *pm = mtmp->data;
 	int difficulty = monstr[(monsndx(pm))];
 	int trycnt = 0;
@@ -937,7 +937,7 @@ int rnd_defensive_item(struct monst *mtmp) {
 /* Select an offensive item/action for a monster.  Returns TRUE iff one is
  * found.
  */
-boolean find_offensive(struct monst *mtmp) {
+boolean find_offensive(struct Monster *mtmp) {
 	struct Object *obj;
 	boolean ranged_stuff = lined_up(mtmp);
 	boolean reflection_skip = (Reflecting && rn2(2));
@@ -1067,7 +1067,7 @@ boolean find_offensive(struct monst *mtmp) {
 }
 
 STATIC_PTR
-int mbhitm(struct monst *mtmp, struct Object *otmp) {
+int mbhitm(struct Monster *mtmp, struct Object *otmp) {
 	int tmp;
 
 	boolean reveal_invis = FALSE;
@@ -1142,7 +1142,7 @@ int mbhitm(struct monst *mtmp, struct Object *otmp) {
  */
 STATIC_OVL void mbhit(
     /* monster shooting the wand */
-    struct monst* mon,
+    struct Monster* mon,
 
     /* direction and range */
     int range,
@@ -1153,7 +1153,7 @@ STATIC_OVL void mbhit(
 
     /* 2nd arg to fhitm/fhito */
     struct Object* obj) {
-	struct monst *mtmp;
+	struct Monster *mtmp;
 	struct Object *otmp;
 	uchar typ;
 	int ddx, ddy;
@@ -1236,7 +1236,7 @@ STATIC_OVL void mbhit(
 /* Perform an offensive action for a monster.  Must be called immediately
  * after find_offensive().  Return values are same as use_defensive().
  */
-int use_offensive(struct monst *mtmp) {
+int use_offensive(struct Monster *mtmp) {
 	int i;
 	struct Object *otmp = m.offensive;
 	boolean oseen;
@@ -1320,7 +1320,7 @@ int use_offensive(struct monst *mtmp) {
 	    	    			    !otmp->blessed : !otmp->cursed) &&
 					(x != u.ux || y != u.uy)) {
 			    struct Object *otmp2;
-			    struct monst *mtmp2;
+			    struct Monster *mtmp2;
 
 	    	    	    /* Make the object(s) */
 	    	    	    otmp2 = mksobj(confused ? ROCK : BOULDER,
@@ -1424,7 +1424,7 @@ int use_offensive(struct monst *mtmp) {
 			if (vis)
 			    pline("Oh, what a pretty fire!");
 		} else {
-			struct monst *mtmp2;
+			struct Monster *mtmp2;
 			int num;
 
 			if (vis)
@@ -1485,7 +1485,7 @@ int use_offensive(struct monst *mtmp) {
 	return 0;
 }
 
-int rnd_offensive_item(struct monst *mtmp) {
+int rnd_offensive_item(struct Monster *mtmp) {
 	struct permonst *pm = mtmp->data;
 	int difficulty = monstr[(monsndx(pm))];
 
@@ -1530,7 +1530,7 @@ int rnd_offensive_item(struct monst *mtmp) {
 #define MUSE_BULLWHIP 8
 #define MUSE_POT_POLYMORPH 9
 
-boolean find_misc(struct monst *mtmp) {
+boolean find_misc(struct Monster *mtmp) {
 	struct Object *obj;
 	struct permonst *mdat = mtmp->data;
 	int x = mtmp->mx, y = mtmp->my;
@@ -1640,7 +1640,7 @@ boolean find_misc(struct monst *mtmp) {
 
 /* type of monster to polymorph into; defaults to one suitable for the
    current level rather than the totally arbitrary choice of newcham() */
-static struct permonst * muse_newcham_mon(struct monst *mon) {
+static struct permonst * muse_newcham_mon(struct Monster *mon) {
 	struct Object *m_armr;
 
 	if ((m_armr = which_armor(mon, W_ARM)) != 0) {
@@ -1652,7 +1652,7 @@ static struct permonst * muse_newcham_mon(struct monst *mon) {
 	return rndmonst();
 }
 
-int use_misc(struct monst *mtmp) {
+int use_misc(struct Monster *mtmp) {
 	int i;
 	struct Object *otmp = m.misc;
 	boolean vis, vismon, oseen;
@@ -1700,7 +1700,7 @@ skipmsg:
 		if (vismon) pline("%s seems more experienced.", Monnam(mtmp));
 		if (oseen) makeknown(POT_GAIN_LEVEL);
 		m_useup(mtmp, otmp);
-		if (!grow_up(mtmp,(struct monst *)0)) return 1;
+		if (!grow_up(mtmp,(struct Monster *)0)) return 1;
 			/* grew into genocided monster */
 		return 2;
 	case MUSE_WAN_MAKE_INVISIBLE:
@@ -1839,7 +1839,7 @@ skipmsg:
 	return 0;
 }
 
-STATIC_OVL void you_aggravate(struct monst *mtmp) {
+STATIC_OVL void you_aggravate(struct Monster *mtmp) {
 	pline("For some reason, %s presence is known to you.",
 		s_suffix(noit_mon_nam(mtmp)));
 	cls();
@@ -1861,7 +1861,7 @@ STATIC_OVL void you_aggravate(struct monst *mtmp) {
 	    map_invisible(mtmp->mx, mtmp->my);
 }
 
-int rnd_misc_item(struct monst *mtmp) {
+int rnd_misc_item(struct Monster *mtmp) {
 	struct permonst *pm = mtmp->data;
 	int difficulty = monstr[(monsndx(pm))];
 
@@ -1894,7 +1894,7 @@ int rnd_misc_item(struct monst *mtmp) {
 	return 0;
 }
 
-boolean searches_for_item(struct monst *mon, struct Object *obj) {
+boolean searches_for_item(struct Monster *mon, struct Object *obj) {
 	int typ = obj->otyp;
 
 	if (is_animal(mon->data) ||
@@ -1972,7 +1972,7 @@ boolean searches_for_item(struct monst *mon, struct Object *obj) {
 	return FALSE;
 }
 
-boolean mon_reflects(struct monst *mon, const char *str) {
+boolean mon_reflects(struct Monster *mon, const char *str) {
 	struct Object *orefl = which_armor(mon, W_ARMS);
 
 	if (orefl && orefl->otyp == SHIELD_OF_REFLECTION) {
@@ -2041,7 +2041,7 @@ boolean ureflects (const char *fmt, const char *str) {
 
 
 /* TRUE if the monster ate something */
-boolean munstone(struct monst *mon, boolean by_you) {
+boolean munstone(struct Monster *mon, boolean by_you) {
 	struct Object *obj;
 
 	if (resists_ston(mon)) return FALSE;
@@ -2058,7 +2058,7 @@ boolean munstone(struct monst *mon, boolean by_you) {
 	return FALSE;
 }
 
-STATIC_OVL void mon_consume_unstone(struct monst *mon, struct Object *obj, boolean by_you, boolean stoning) {
+STATIC_OVL void mon_consume_unstone(struct Monster *mon, struct Object *obj, boolean by_you, boolean stoning) {
     int nutrit = (obj->otyp == CORPSE) ? dog_nutrition(mon, obj) : 0;
     /* also sets meating */
 

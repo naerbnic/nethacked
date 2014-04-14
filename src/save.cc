@@ -28,7 +28,7 @@ STATIC_DCL void FDECL(bputc, (int));
 STATIC_DCL void FDECL(savelevchn, (int,int));
 STATIC_DCL void FDECL(savedamage, (int,int));
 STATIC_DCL void FDECL(saveobjchn, (int,struct Object *,int));
-STATIC_DCL void FDECL(savemonchn, (int,struct monst *,int));
+STATIC_DCL void FDECL(savemonchn, (int,struct Monster *,int));
 STATIC_DCL void FDECL(savetrapchn, (int,struct trap *,int));
 STATIC_DCL void FDECL(savegamestate, (int,int));
 #ifdef MFLOPPY
@@ -212,9 +212,9 @@ int dosave0() {
 	/* these pointers are no longer valid, and at least u.usteed
 	 * may mislead place_monster() on other levels
 	 */
-	u.ustuck = (struct monst *)0;
+	u.ustuck = (struct Monster *)0;
 #ifdef STEED
-	u.usteed = (struct monst *)0;
+	u.usteed = (struct Monster *)0;
 #endif
 
 	for(ltmp = (xchar)1; ltmp <= maxledgerno(); ltmp++) {
@@ -794,8 +794,8 @@ STATIC_OVL void saveobjchn(int fd, struct Object *otmp, int mode) {
 	    bwrite(fd, (genericptr_t) &minusone, sizeof(int));
 }
 
-STATIC_OVL void savemonchn(int fd, struct monst *mtmp, int mode) {
-	struct monst *mtmp2;
+STATIC_OVL void savemonchn(int fd, struct Monster *mtmp, int mode) {
+	struct Monster *mtmp2;
 	unsigned int xl;
 	int minusone = -1;
 	struct permonst *monbegin = &mons[0];
@@ -808,7 +808,7 @@ STATIC_OVL void savemonchn(int fd, struct monst *mtmp, int mode) {
 	    if (perform_bwrite(mode)) {
 		xl = mtmp->mxlth + mtmp->mnamelth;
 		bwrite(fd, (genericptr_t) &xl, sizeof(int));
-		bwrite(fd, (genericptr_t) mtmp, xl + sizeof(struct monst));
+		bwrite(fd, (genericptr_t) mtmp, xl + sizeof(struct Monster));
 	    }
 	    if (mtmp->minvent)
 		saveobjchn(fd,mtmp->minvent,mode);

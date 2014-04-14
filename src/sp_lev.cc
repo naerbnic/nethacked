@@ -687,7 +687,7 @@ STATIC_OVL int noncoalignment(aligntyp alignment) {
 }
 
 STATIC_OVL void create_monster(monster *m, struct mkroom *croom) {
-    struct monst *mtmp;
+    struct Monster *mtmp;
     schar x, y;
     char class_id;
     aligntyp amask;
@@ -942,7 +942,7 @@ STATIC_OVL void create_object(object *o, struct mkroom *croom) {
 	 */
 	if (o->id == STATUE && Is_medusa_level(&u.uz) &&
 		    o->corpsenm == NON_PM) {
-	    struct monst *was;
+	    struct Monster *was;
 	    struct Object *obj;
 	    int wastyp;
 

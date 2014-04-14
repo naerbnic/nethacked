@@ -15,7 +15,7 @@ extern const struct shclass shtypes[];
 #else
 
 STATIC_DCL void FDECL(mkshobj_at, (const struct shclass *,int,int));
-STATIC_DCL void FDECL(nameshk, (struct monst *,const char * const *));
+STATIC_DCL void FDECL(nameshk, (struct Monster *,const char * const *));
 STATIC_DCL int  FDECL(shkinit, (const struct shclass *,struct mkroom *));
 
 static const char * const shkliquors[] = {
@@ -243,7 +243,7 @@ STATIC_OVL void mkshobj_at(
     struct shclass const* shp, 
     int sx, int sy)
 {
-	struct monst *mtmp;
+	struct Monster *mtmp;
 	int atype;
 	struct permonst *ptr;
 
@@ -265,10 +265,10 @@ STATIC_OVL void mkshobj_at(
 }
 
 /* extract a shopkeeper name for the given shop type */
-STATIC_OVL void nameshk(struct monst *shk, const char * const *nlp) {
+STATIC_OVL void nameshk(struct Monster *shk, const char * const *nlp) {
 	int i, trycnt, names_avail;
 	const char *shname = 0;
-	struct monst *mtmp;
+	struct Monster *mtmp;
 	int name_wanted;
 	s_level *sptr;
 
@@ -325,7 +325,7 @@ STATIC_OVL void nameshk(struct monst *shk, const char * const *nlp) {
 /* create a new shopkeeper in the given room */
 STATIC_OVL int shkinit(const struct shclass *shp, struct mkroom *sroom) {
 	int sh, sx, sy;
-	struct monst *shk;
+	struct Monster *shk;
 
 	/* place the shopkeeper in the given room */
 	sh = sroom->fdoor;
@@ -477,7 +477,7 @@ void stock_room(int shp_indx, struct mkroom *sroom) {
 #ifdef OVL0
 
 /* does shkp's shop stock this item type? */
-boolean saleable(struct monst *shkp, struct Object *obj) {
+boolean saleable(struct Monster *shkp, struct Object *obj) {
     int i, shp_indx = ESHK(shkp)->shoptype - SHOPBASE;
     const struct shclass *shp = &shtypes[shp_indx];
 

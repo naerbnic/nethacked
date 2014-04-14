@@ -138,7 +138,7 @@ struct mkroom *upstairs_room, *dnstairs_room, *sstairs_room;
 
 dlevel_t level;		/* level map */
 struct trap *ftrap = (struct trap *)0;
-NEARDATA struct monst youmonst = DUMMY;
+NEARDATA struct Monster youmonst = DUMMY;
 NEARDATA struct flag flags = DUMMY;
 NEARDATA struct instance_flags iflags = DUMMY;
 NEARDATA struct you u = DUMMY;
@@ -202,9 +202,9 @@ NEARDATA char catname[PL_PSIZ] = DUMMY;
 NEARDATA char horsename[PL_PSIZ] = DUMMY;
 char preferred_pet;	/* '\0', 'c', 'd', 'n' (none) */
 /* monsters that went down/up together with @ */
-NEARDATA struct monst *mydogs = (struct monst *)0;
+NEARDATA struct Monster *mydogs = (struct Monster *)0;
 /* monsters that are moving to another dungeon level */
-NEARDATA struct monst *migrating_mons = (struct monst *)0;
+NEARDATA struct Monster *migrating_mons = (struct Monster *)0;
 
 NEARDATA struct mvitals mvitals[NUMMONS];
 

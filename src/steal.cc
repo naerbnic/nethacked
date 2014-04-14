@@ -10,7 +10,7 @@ STATIC_PTR int NDECL(stealarm);
 
 #ifdef OVLB
 STATIC_DCL const char *FDECL(equipname, (struct Object *));
-STATIC_DCL void FDECL(mdrop_obj, (struct monst *,struct Object *,BOOLEAN_P));
+STATIC_DCL void FDECL(mdrop_obj, (struct Monster *,struct Object *,BOOLEAN_P));
 
 STATIC_OVL const char * equipname(struct Object *otmp) {
 	return (
@@ -34,7 +34,7 @@ long		/* actually returns something that fits in an int */ somegold() {
 #endif
 }
 
-void stealgold(struct monst *mtmp) {
+void stealgold(struct Monster *mtmp) {
 	struct Object *gold = g_at(u.ux, u.uy);
 	long tmp;
 
@@ -87,7 +87,7 @@ struct Object * findgold(struct Object *chain) {
 /* 
 Steal gold coins only.  Leprechauns don't care for lesser coins.
 */
-void stealgold(struct monst *mtmp) {
+void stealgold(struct Monster *mtmp) {
 	struct Object *fgold = g_at(u.ux, u.uy);
 	struct Object *ygold;
 	long tmp;
@@ -128,7 +128,7 @@ unsigned int stealoid;		/* object to be stolen */
 unsigned int stealmid;		/* monster doing the stealing */
 
 STATIC_PTR int stealarm() {
-	struct monst *mtmp;
+	struct Monster *mtmp;
 	struct Object *otmp;
 
 	for(otmp = invent; otmp; otmp = otmp->nobj) {
@@ -208,7 +208,7 @@ void remove_worn_item(struct Object *obj, boolean unchain_ball) {
  * Returns -1 if the monster died in the attempt
  * Avoid stealing the object stealoid
  */
-int steal(struct monst *mtmp, char *objnambuf) {
+int steal(struct Monster *mtmp, char *objnambuf) {
 	struct Object *otmp;
 	int tmp, could_petrify, named = 0, armordelay;
 	boolean monkey_business; /* true iff an animal is doing the thievery */
@@ -404,7 +404,7 @@ gotobj:
 #ifdef OVL1
 
 /* Returns 1 if otmp is free'd, 0 otherwise. */
-int mpickobj(struct monst *mtmp, struct Object *otmp) {
+int mpickobj(struct Monster *mtmp, struct Object *otmp) {
     int freed_otmp;
 
 #ifndef GOLDOBJ
@@ -442,7 +442,7 @@ int mpickobj(struct monst *mtmp, struct Object *otmp) {
 #endif /* OVL1 */
 #ifdef OVLB
 
-void stealamulet(struct monst *mtmp) {
+void stealamulet(struct Monster *mtmp) {
     struct Object *otmp = (struct Object *)0;
     int real=0, fake=0;
 
@@ -487,7 +487,7 @@ void stealamulet(struct monst *mtmp) {
 #ifdef OVL0
 
 /* drop one object taken from a (possibly dead) monster's inventory */
-STATIC_OVL void mdrop_obj(struct monst *mon, struct Object *obj, boolean verbosely) {
+STATIC_OVL void mdrop_obj(struct Monster *mon, struct Object *obj, boolean verbosely) {
     int omx = mon->mx, omy = mon->my;
 
     if (obj->owornmask) {
@@ -517,7 +517,7 @@ STATIC_OVL void mdrop_obj(struct monst *mon, struct Object *obj, boolean verbose
 /* some monsters bypass the normal rules for moving between levels or
    even leaving the game entirely; when that happens, prevent them from
    taking the Amulet or invocation tools with them */
-void mdrop_special_objs(struct monst *mon) {
+void mdrop_special_objs(struct Monster *mon) {
     struct Object *obj, *otmp;
 
     for (obj = mon->minvent; obj; obj = otmp) {
@@ -532,7 +532,7 @@ void mdrop_special_objs(struct monst *mon) {
 }
 
 /* release the objects the creature is carrying */
-void relobj(struct monst *mtmp, int show, boolean is_pet) {
+void relobj(struct Monster *mtmp, int show, boolean is_pet) {
 	struct Object *otmp;
 	int omx = mtmp->mx, omy = mtmp->my;
 	struct Object *keepobj = 0;

@@ -30,7 +30,7 @@ void explode(int x, int y, int type, int dam, char olet, int expltype) {
 	int uhurt = 0; /* 0=unhurt, 1=items damaged, 2=you and items damaged */
 	const char *str;
 	int idamres, idamnonres;
-	struct monst *mtmp;
+	struct Monster *mtmp;
 	uchar adtyp;
 	int explmask[3][3];
 		/* 0=normal explosion, 1=do shieldeff, 2=do nothing */
@@ -404,7 +404,7 @@ long scatter(int sx, int sy, int blastforce, unsigned int scflags, struct Object
 	long qtmp;
 	boolean used_up;
 	boolean individual_object = obj ? TRUE : FALSE;
-	struct monst *mtmp;
+	struct Monster *mtmp;
 	struct scatter_chain *stmp, *stmp2 = 0;
 	struct scatter_chain *schain = (struct scatter_chain *)0;
 	long total = 0L;

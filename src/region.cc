@@ -25,9 +25,9 @@ boolean FDECL(inside_rect, (NhRect *,int,int));
 boolean FDECL(inside_region, (NhRegion *,int,int));
 NhRegion *FDECL(create_region, (NhRect *,int));
 void FDECL(add_rect_to_reg, (NhRegion *,NhRect *));
-void FDECL(add_mon_to_reg, (NhRegion *,struct monst *));
-void FDECL(remove_mon_from_reg, (NhRegion *,struct monst *));
-boolean FDECL(mon_in_region, (NhRegion *,struct monst *));
+void FDECL(add_mon_to_reg, (NhRegion *,struct Monster *));
+void FDECL(remove_mon_from_reg, (NhRegion *,struct Monster *));
+boolean FDECL(mon_in_region, (NhRegion *,struct Monster *));
 
 #if 0
 NhRegion *FDECL(clone_region, (NhRegion *));
@@ -37,8 +37,8 @@ void FDECL(add_region, (NhRegion *));
 void FDECL(remove_region, (NhRegion *));
 
 #if 0
-void FDECL(replace_mon_regions, (struct monst *,struct monst *));
-void FDECL(remove_mon_from_regions, (struct monst *));
+void FDECL(replace_mon_regions, (struct Monster *,struct Monster *));
+void FDECL(remove_mon_from_regions, (struct Monster *));
 NhRegion *FDECL(create_msg_region, (XCHAR_P,XCHAR_P,XCHAR_P,XCHAR_P,
 				    const char *,const char *));
 boolean FDECL(enter_force_field, (genericptr,genericptr));
@@ -153,7 +153,7 @@ void add_rect_to_reg(NhRegion *reg, NhRect *rect) {
 /*
  * Add a monster to the region
  */
-void add_mon_to_reg(NhRegion *reg, struct monst *mon) {
+void add_mon_to_reg(NhRegion *reg, struct Monster *mon) {
     int i;
     unsigned long* tmp_m;
 
@@ -174,7 +174,7 @@ void add_mon_to_reg(NhRegion *reg, struct monst *mon) {
 /*
  * Remove a monster from the region list (it left or died...)
  */
-void remove_mon_from_reg(NhRegion *reg, struct monst *mon) {
+void remove_mon_from_reg(NhRegion *reg, struct Monster *mon) {
     int i;
 
     for (i = 0; i < reg->n_monst; i++)
@@ -190,7 +190,7 @@ void remove_mon_from_reg(NhRegion *reg, struct monst *mon) {
  * It's probably quicker to check with the region internal list
  * than to check for coordinates.
  */
-boolean mon_in_region(NhRegion *reg, struct monst *mon) {
+boolean mon_in_region(NhRegion *reg, struct Monster *mon) {
     int i;
 
     for (i = 0; i < reg->n_monst; i++)
@@ -355,7 +355,7 @@ void run_regions() {
 	/* Check if any monster is inside region */
 	if (f_indx != NO_CALLBACK) {
 	    for (j = 0; j < regions[i]->n_monst; j++) {
-		struct monst *mtmp = find_mid(regions[i]->monsters[j], FM_FMON);
+		struct Monster *mtmp = find_mid(regions[i]->monsters[j], FM_FMON);
 
 		if (!mtmp || mtmp->mhp <= 0 ||
 				(*callbacks[f_indx])(regions[i], mtmp)) {
@@ -420,7 +420,7 @@ boolean in_out_region(xchar x, xchar y) {
 /*
  * check wether a monster enters/leaves one or more region.
 */
-boolean m_in_out_region(struct monst *mon, xchar x, xchar y) {
+boolean m_in_out_region(struct Monster *mon, xchar x, xchar y) {
     int i, f_indx;
 
     /* First check if we can do the move */
@@ -477,7 +477,7 @@ void update_player_regions() {
 /*
  * Ditto for a specified monster.
  */
-void update_monster_region(struct monst *mon) {
+void update_monster_region(struct Monster *mon) {
     int i;
 
     for (i = 0; i < n_regions; i++) {
@@ -499,7 +499,7 @@ void update_monster_region(struct monst *mon) {
  * This happens, for instance, when a monster grows and
  * need a new structure (internally that is).
  */
-void replace_mon_regions(struct monst *monold, struct monst *monnew) {
+void replace_mon_regions(struct Monster *monold, struct Monster *monnew) {
     int i;
 
     for (i = 0; i < n_regions; i++)
@@ -512,7 +512,7 @@ void replace_mon_regions(struct monst *monold, struct monst *monnew) {
 /*
  * Remove monster from all regions it was in (ie monster just died)
  */
-void remove_mon_from_regions(struct monst *mon) {
+void remove_mon_from_regions(struct Monster *mon) {
     int i;
 
     for (i = 0; i < n_regions; i++)
@@ -722,7 +722,7 @@ NhRegion * create_msg_region(xchar x, xchar y, xchar w, xchar h, const char *msg
  *--------------------------------------------------------------*/
 
 boolean enter_force_field(genericptr_t p1, genericptr_t p2) {
-    struct monst *mtmp;
+    struct Monster *mtmp;
 
     if (p2 == NULL) {		/* That means the player */
 	if (!Blind)
@@ -732,7 +732,7 @@ boolean enter_force_field(genericptr_t p1, genericptr_t p2) {
 	else
 	    pline("Ouch!");
     } else {
-	mtmp = (struct monst *) p2;
+	mtmp = (struct Monster *) p2;
 	if (canseemon(mtmp))
 	    pline("%s bumps into %s!", Monnam(mtmp), something);
     }
@@ -798,7 +798,7 @@ boolean expire_gas_cloud(genericptr_t p1, genericptr_t p2) {
 
 boolean inside_gas_cloud(genericptr_t p1, genericptr_t p2) {
     NhRegion *reg;
-    struct monst *mtmp;
+    struct Monster *mtmp;
     long dam;
 
     reg = (NhRegion *) p1;
@@ -818,7 +818,7 @@ boolean inside_gas_cloud(genericptr_t p1, genericptr_t p2) {
 	    return FALSE;
 	}
     } else {			/* A monster is inside the cloud */
-	mtmp = (struct monst *) p2;
+	mtmp = (struct Monster *) p2;
 
 	/* Non living and non breathing monsters are not concerned */
 	if (!nonliving(mtmp->data) && !breathless(mtmp->data)) {

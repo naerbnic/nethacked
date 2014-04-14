@@ -156,7 +156,7 @@ int forcelock() {
 	xlock.box->olocked = 0;
 	xlock.box->obroken = 1;
 	if(!xlock.picktyp && !rn2(3)) {
-	    struct monst *shkp;
+	    struct Monster *shkp;
 	    boolean costly;
 	    long loss = 0L;
 
@@ -359,7 +359,7 @@ int pick_lock(struct Object *pick) {
 		return(0);		/* decided against all boxes */
 	    }
 	} else {			/* pick the lock in a door */
-	    struct monst *mtmp;
+	    struct Monster *mtmp;
 
 	    if (u.utrap && u.utraptype == TT_PIT) {
 		You_cant("reach over the edge of the pit.");
@@ -513,7 +513,7 @@ int doforce() {
 int doopen() {
 	coord cc;
 	struct rm *door;
-	struct monst *mtmp;
+	struct Monster *mtmp;
 
 	if (nohands(youmonst.data)) {
 	    You_cant("open anything -- you have no hands!");
@@ -594,7 +594,7 @@ int doopen() {
 
 STATIC_OVL
 boolean obstructed(int x, int y) {
-	struct monst *mtmp = m_at(x, y);
+	struct Monster *mtmp = m_at(x, y);
 
 	if(mtmp && mtmp->m_ap_type != M_AP_FURNITURE) {
 		if (mtmp->m_ap_type == M_AP_OBJECT) goto objhere;
@@ -615,7 +615,7 @@ objhere:	pline("%s's in the way.", Something);
 int doclose() {
 	int x, y;
 	struct rm *door;
-	struct monst *mtmp;
+	struct Monster *mtmp;
 
 	if (nohands(youmonst.data)) {
 	    You_cant("close anything -- you have no hands!");

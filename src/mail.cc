@@ -35,7 +35,7 @@
 
 STATIC_DCL boolean FDECL(md_start,(coord *));
 STATIC_DCL boolean FDECL(md_stop,(coord *, coord *));
-STATIC_DCL boolean FDECL(md_rush,(struct monst *,int,int));
+STATIC_DCL boolean FDECL(md_rush,(struct Monster *,int,int));
 STATIC_DCL void FDECL(newmail, (struct mail_info *));
 
 extern char *viz_rmin, *viz_rmax;	/* line-of-sight limits (vision.c) */
@@ -253,8 +253,8 @@ static NEARDATA const char *mail_text[] = {
  * FALSE if the md gets stuck in a position where there is a monster.  Return
  * TRUE otherwise.
  */
-STATIC_OVL boolean md_rush(struct monst *md, int tx, int ty) {
-    struct monst *mon;			/* displaced monster */
+STATIC_OVL boolean md_rush(struct Monster *md, int tx, int ty) {
+    struct Monster *mon;			/* displaced monster */
     int dx, dy;		/* direction counters */
     int fx = md->mx, fy = md->my;	/* current location */
     int nfx = fx, nfy = fy,		/* new location */
@@ -346,7 +346,7 @@ STATIC_OVL boolean md_rush(struct monst *md, int tx, int ty) {
 /* Deliver a scroll of mail. */
 /*ARGSUSED*/
 STATIC_OVL void newmail(struct mail_info *info) {
-    struct monst *md;
+    struct Monster *md;
     coord start, stop;
     boolean message_seen = FALSE;
 

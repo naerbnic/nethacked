@@ -392,7 +392,7 @@ void kill_egg(struct Object *egg) {
 /* timer callback routine: hatch the given egg */
 void hatch_egg(genericptr_t arg, long timeout) {
 	struct Object *egg;
-	struct monst *mon, *mon2;
+	struct Monster *mon, *mon2;
 	coord cc;
 	xchar x, y;
 	boolean yours, silent, knows_egg = FALSE;
@@ -403,7 +403,7 @@ void hatch_egg(genericptr_t arg, long timeout) {
 	/* sterilized while waiting */
 	if (egg->corpsenm == NON_PM) return;
 
-	mon = mon2 = (struct monst *)0;
+	mon = mon2 = (struct Monster *)0;
 	mnum = big_to_little(egg->corpsenm);
 	/* The identity of one's father is learned, not innate */
 	yours = (egg->spe || (!flags.female && carried(egg) && !rn2(2)));
@@ -1233,7 +1233,7 @@ STATIC_DCL void FDECL(insert_timer, (timer_element *));
 STATIC_DCL timer_element *FDECL(remove_timer, (timer_element **, SHORT_P,
 								genericptr_t));
 STATIC_DCL void FDECL(write_timer, (int, timer_element *));
-STATIC_DCL boolean FDECL(mon_is_local, (struct monst *));
+STATIC_DCL boolean FDECL(mon_is_local, (struct Monster *));
 STATIC_DCL boolean FDECL(timer_is_local, (timer_element *));
 STATIC_DCL int FDECL(maybe_write_timer, (int, int, BOOLEAN_P));
 
@@ -1537,7 +1537,7 @@ STATIC_OVL void write_timer(int fd, timer_element *timer) {
 	    else {
 		/* replace monster pointer with id */
 		arg_save = timer->arg;
-		timer->arg = (genericptr_t)((struct monst *)timer->arg)->m_id;
+		timer->arg = (genericptr_t)((struct Monster *)timer->arg)->m_id;
 		timer->needs_fixup = 1;
 		bwrite(fd, (genericptr_t)timer, sizeof(timer_element));
 		timer->arg = arg_save;
@@ -1574,8 +1574,8 @@ boolean obj_is_local(struct Object *obj) {
  * Return TRUE if the given monster will stay on the level when the
  * level is saved.
  */
-STATIC_OVL boolean mon_is_local(struct monst *mon) {
-    struct monst *curr;
+STATIC_OVL boolean mon_is_local(struct Monster *mon) {
+    struct Monster *curr;
 
     for (curr = migrating_mons; curr; curr = curr->nmon)
 	if (curr == mon) return FALSE;
@@ -1595,7 +1595,7 @@ STATIC_OVL boolean timer_is_local(timer_element *timer) {
 	case TIMER_LEVEL:	return TRUE;
 	case TIMER_GLOBAL:	return FALSE;
 	case TIMER_OBJECT:	return obj_is_local((struct Object *)timer->arg);
-	case TIMER_MONSTER:	return mon_is_local((struct monst *)timer->arg);
+	case TIMER_MONSTER:	return mon_is_local((struct Monster *)timer->arg);
     }
     panic("timer_is_local");
     return FALSE;

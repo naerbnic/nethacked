@@ -12,7 +12,7 @@
 
 #ifdef OVLB
 
-void set_mon_data(struct monst *mon, struct permonst *ptr, int flag) {
+void set_mon_data(struct Monster *mon, struct permonst *ptr, int flag) {
     mon->data = ptr;
     if (flag == -1) return;		/* "don't care" */
 
@@ -50,7 +50,7 @@ boolean poly_when_stoned(struct permonst *ptr) {
 }
 
 /* returns TRUE if monster is drain-life resistant */
-boolean resists_drli(struct monst *mon) {
+boolean resists_drli(struct Monster *mon) {
 	struct permonst *ptr = mon->data;
 	struct Object *wep = ((mon == &youmonst) ? uwep : MON_WEP(mon));
 
@@ -60,7 +60,7 @@ boolean resists_drli(struct monst *mon) {
 }
 
 /* TRUE if monster is magic-missile resistant */
-boolean resists_magm(struct monst *mon) {
+boolean resists_magm(struct Monster *mon) {
 	struct permonst *ptr = mon->data;
 	struct Object *o;
 
@@ -82,7 +82,7 @@ boolean resists_magm(struct monst *mon) {
 }
 
 /* TRUE iff monster is resistant to light-induced blindness */
-boolean resists_blnd(struct monst *mon) {
+boolean resists_blnd(struct Monster *mon) {
 	struct permonst *ptr = mon->data;
 	boolean is_you = (mon == &youmonst);
 	struct Object *o;
@@ -110,7 +110,7 @@ boolean resists_blnd(struct monst *mon) {
 
 /* TRUE iff monster can be blinded by the given attack */
 /* Note: may return TRUE when mdef is blind (e.g. new cream-pie attack) */
-boolean can_blnd(struct monst *magr, struct monst *mdef, uchar aatyp, struct Object *obj) {
+boolean can_blnd(struct Monster *magr, struct Monster *mdef, uchar aatyp, struct Object *obj) {
 	boolean is_you = (mdef == &youmonst);
 	boolean check_visor = FALSE;
 	struct Object *o;
@@ -293,7 +293,7 @@ boolean dmgtype(struct permonst *ptr, int dtyp) {
 
 /* returns the maximum damage a defender can do to the attacker via
  * a passive defense */
-int max_passive_dmg(struct monst *mdef, struct monst *magr) {
+int max_passive_dmg(struct Monster *mdef, struct Monster *magr) {
     int	i, dmg = 0;
     uchar adtyp;
 
@@ -451,14 +451,14 @@ int name_to_mon(const char *in_str) {
 #ifdef OVL2
 
 /* returns 3 values (0=male, 1=female, 2=none) */
-int gender(struct monst *mtmp) {
+int gender(struct Monster *mtmp) {
 	if (is_neuter(mtmp->data)) return 2;
 	return mtmp->female;
 }
 
 /* Like gender(), but lower animals and such are still "it". */
 /* This is the one we want to use when printing messages. */
-int pronoun_gender(struct monst *mtmp) {
+int pronoun_gender(struct Monster *mtmp) {
 	if (is_neuter(mtmp->data) || !canspotmon(mtmp)) return 2;
 	return (humanoid(mtmp->data) || (mtmp->data->geno & G_UNIQ) ||
 		type_is_pname(mtmp->data)) ? (int)mtmp->female : 2;
@@ -468,7 +468,7 @@ int pronoun_gender(struct monst *mtmp) {
 #ifdef OVLB
 
 /* used for nearby monsters when you go to another level */
-boolean levl_follower(struct monst *mtmp) {
+boolean levl_follower(struct Monster *mtmp) {
 	/* monsters with the Amulet--even pets--won't follow across levels */
 	if (mon_has_amulet(mtmp)) return FALSE;
 
@@ -579,7 +579,7 @@ int big_to_little(int montype) {
  * Returns correct pointer for non-polymorphed and polymorphed
  * player.  It does not return a pointer to player role character.
  */
-const struct permonst * raceptr(struct monst *mtmp) {
+const struct permonst * raceptr(struct Monster *mtmp) {
     if (mtmp == &youmonst && !Upolyd) return(&mons[urace.malenum]);
     else return(mtmp->data);
 }

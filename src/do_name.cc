@@ -196,9 +196,9 @@ int getpos(coord *cc, boolean force, const char *goal) {
     return result;
 }
 
-struct monst * christen_monst(struct monst *mtmp, const char *name) {
+struct Monster * christen_monst(struct Monster *mtmp, const char *name) {
 	int lth;
-	struct monst *mtmp2;
+	struct Monster *mtmp2;
 	char buf[PL_PSIZ];
 
 	/* dogname & catname are PL_PSIZ arrays; object names have same limit */
@@ -227,7 +227,7 @@ int do_mname() {
 	char buf[BUFSZ];
 	coord cc;
 	int cx,cy;
-	struct monst *mtmp;
+	struct Monster *mtmp;
 	char qbuf[QBUFSZ];
 
 	if (Hallucination) {
@@ -550,7 +550,7 @@ const char * rndghostname() {
  * options works, since those are special cases.
  */
 char* x_monnam(
-    struct monst* mtmp, 
+    struct Monster* mtmp, 
     int article,
 /* ARTICLE_NONE, ARTICLE_THE, ARTICLE_A: obvious
  * ARTICLE_YOUR: "your" on pets, "the" on everything else
@@ -734,7 +734,7 @@ char* x_monnam(
 #endif /* OVL0 */
 #ifdef OVLB
 
-char * l_monnam(struct monst *mtmp) {
+char * l_monnam(struct Monster *mtmp) {
 	return(x_monnam(mtmp, ARTICLE_NONE, (char *)0, 
 		mtmp->mnamelth ? SUPPRESS_SADDLE : 0, TRUE));
 }
@@ -742,7 +742,7 @@ char * l_monnam(struct monst *mtmp) {
 #endif /* OVLB */
 #ifdef OVL0
 
-char * mon_nam(struct monst *mtmp) {
+char * mon_nam(struct Monster *mtmp) {
 	return(x_monnam(mtmp, ARTICLE_THE, (char *)0,
 		mtmp->mnamelth ? SUPPRESS_SADDLE : 0, FALSE));
 }
@@ -751,20 +751,20 @@ char * mon_nam(struct monst *mtmp) {
  * can always see the monster--used for probing and for monsters aggravating
  * the player with a cursed potion of invisibility
  */
-char * noit_mon_nam(struct monst *mtmp) {
+char * noit_mon_nam(struct Monster *mtmp) {
 	return(x_monnam(mtmp, ARTICLE_THE, (char *)0,
 		mtmp->mnamelth ? (SUPPRESS_SADDLE|SUPPRESS_IT) :
 		    SUPPRESS_IT, FALSE));
 }
 
-char * Monnam(struct monst *mtmp) {
+char * Monnam(struct Monster *mtmp) {
 	char *bp = mon_nam(mtmp);
 
 	*bp = highc(*bp);
 	return(bp);
 }
 
-char * noit_Monnam(struct monst *mtmp) {
+char * noit_Monnam(struct Monster *mtmp) {
 	char *bp = noit_mon_nam(mtmp);
 
 	*bp = highc(*bp);
@@ -772,12 +772,12 @@ char * noit_Monnam(struct monst *mtmp) {
 }
 
 /* monster's own name */
-char * m_monnam(struct monst *mtmp) {
+char * m_monnam(struct Monster *mtmp) {
 	return x_monnam(mtmp, ARTICLE_NONE, (char *)0, EXACT_NAME, FALSE);
 }
 
 /* pet name: "your little dog" */
-char * y_monnam(struct monst *mtmp) {
+char * y_monnam(struct Monster *mtmp) {
 	int prefix, suppression_flag;
 
 	prefix = mtmp->mtame ? ARTICLE_YOUR : ARTICLE_THE;
@@ -794,7 +794,7 @@ char * y_monnam(struct monst *mtmp) {
 #endif /* OVL0 */
 #ifdef OVLB
 
-char * Adjmonnam(struct monst *mtmp, const char *adj) {
+char * Adjmonnam(struct Monster *mtmp, const char *adj) {
 	char *bp = x_monnam(mtmp, ARTICLE_THE, adj,
 		mtmp->mnamelth ? SUPPRESS_SADDLE : 0, FALSE);
 
@@ -802,12 +802,12 @@ char * Adjmonnam(struct monst *mtmp, const char *adj) {
 	return(bp);
 }
 
-char * a_monnam(struct monst *mtmp) {
+char * a_monnam(struct Monster *mtmp) {
 	return x_monnam(mtmp, ARTICLE_A, (char *)0,
 		mtmp->mnamelth ? SUPPRESS_SADDLE : 0, FALSE);
 }
 
-char * Amonnam(struct monst *mtmp) {
+char * Amonnam(struct Monster *mtmp) {
 	char *bp = a_monnam(mtmp);
 
 	*bp = highc(*bp);
@@ -816,7 +816,7 @@ char * Amonnam(struct monst *mtmp) {
 
 /* used for monster ID by the '/', ';', and 'C' commands to block remote
    identification of the endgame altars via their attending priests */
-char * distant_monnam(struct monst *mon, int article, char *outbuf) {
+char * distant_monnam(struct Monster *mon, int article, char *outbuf) {
     /* high priest(ess)'s identity is concealed on the Astral Plane,
        unless you're adjacent (overridden for hallucination which does
        its own obfuscation) */
@@ -964,7 +964,7 @@ static const char * const coynames[] = {
 	"Nemesis Riduclii","Canis latrans"
 };
 	
-char * coyotename(struct monst *mtmp, char *buf) {
+char * coyotename(struct Monster *mtmp, char *buf) {
     if (mtmp && buf) {
 	Sprintf(buf, "%s - %s",
 	    x_monnam(mtmp, ARTICLE_NONE, (char *)0, 0, TRUE),
