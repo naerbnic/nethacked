@@ -1340,7 +1340,7 @@ void rot_organic(genericptr_t arg, long timeout) {
 	    (void)bury_an_obj(obj->cobj);
 	}
 	obj_extract_self(obj);
-	obfree(obj, (struct Object *) 0);
+	obfree(obj, nullptr);
 }
 
 /*

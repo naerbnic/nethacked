@@ -35,7 +35,7 @@ struct Object * o_in(struct Object* obj, char oclass) {
 	    else if (Has_contents(otmp) && (temp = o_in(otmp, oclass)))
 		return temp;
     }
-    return (struct Object *) 0;
+    return nullptr;
 }
 
 /* Recursively search obj for an object made of specified material and return 1st found */
@@ -51,7 +51,7 @@ struct Object * o_material(struct Object* obj, unsigned material) {
 	    else if (Has_contents(otmp) && (temp = o_material(otmp, material)))
 		return temp;
     }
-    return (struct Object *) 0;
+    return nullptr;
 }
 
 STATIC_OVL void do_dknown_of(struct Object *obj) {
