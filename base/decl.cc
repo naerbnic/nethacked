@@ -133,7 +133,7 @@ NEARDATA coord bhitpos = DUMMY;
 NEARDATA coord doors[DOORMAX] = {DUMMY};
 
 NEARDATA struct mkroom rooms[(MAXNROFROOMS+1)*2] = {DUMMY};
-NEARDATA struct mkroom* subrooms = &rooms[MAXNROFROOMS+1];
+NEARDATA std::vector<struct mkroom> subrooms;
 struct mkroom *upstairs_room, *dnstairs_room, *sstairs_room;
 
 dlevel_t level;		/* level map */

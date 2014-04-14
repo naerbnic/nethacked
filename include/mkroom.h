@@ -36,7 +36,7 @@ struct shclass {
 };
 
 extern NEARDATA struct mkroom rooms[(MAXNROFROOMS+1)*2];
-extern NEARDATA struct mkroom* subrooms;
+extern NEARDATA std::vector<struct mkroom> subrooms;
 /* the normal rooms on the current level are described in rooms[0..n] for
  * some n<MAXNROFROOMS
  * the vault, if any, is described by rooms[n+1]

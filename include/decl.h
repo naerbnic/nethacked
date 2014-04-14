@@ -32,7 +32,6 @@ E char multi_txt[BUFSZ];
 E NEARDATA int warnlevel;
 #endif
 E NEARDATA int nroom;
-E NEARDATA int nsubroom;
 E NEARDATA int occtime;
 
 #define WARNCOUNT 6			/* number of different warning levels */

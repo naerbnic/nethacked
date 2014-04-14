@@ -676,9 +676,10 @@ STATIC_OVL void rest_room(int fd, struct mkroom *r) {
 
   mread(fd, (genericptr_t) r, sizeof(struct mkroom));
   for (auto& subroom : r->subrooms) {
-    subroom = &subrooms[nsubroom];
-    rest_room(fd, &subrooms[nsubroom]);
-    subrooms[nsubroom++].resident = (struct monst *)0;
+    struct mkroom new_room;
+    rest_room(fd, &new_room);
+    new_room.resident = nullptr;
+    subrooms.push_back(new_room);
   }
 }
 
@@ -688,16 +689,15 @@ STATIC_OVL void rest_room(int fd, struct mkroom *r) {
  */
 
 void rest_rooms(int fd) {
-	short i;
+  short i;
 
-	mread(fd, (genericptr_t) &nroom, sizeof(nroom));
-	nsubroom = 0;
-	for(i = 0; i<nroom; i++) {
-	    rest_room(fd, &rooms[i]);
-	    rooms[i].resident = (struct monst *)0;
-	}
-	rooms[nroom].hx = -1;		/* restore ending flags */
-	subrooms[nsubroom].hx = -1;
+  mread(fd, (genericptr_t) &nroom, sizeof(nroom));
+  for(i = 0; i<nroom; i++) {
+    rest_room(fd, &rooms[i]);
+    rooms[i].resident = (struct monst *)0;
+  }
+  rooms[nroom].hx = -1;		/* restore ending flags */
+  subrooms.clear();
 }
 #endif /* OVLB */
 

@@ -1496,78 +1496,78 @@ STATIC_OVL void free_rooms(room **ro, int n) {
 }
 
 STATIC_OVL void build_room(room *r, room *pr) {
-	boolean okroom;
-	struct mkroom	*aroom;
-	short i;
-	xchar rtype = (!r->chance || rn2(100) < r->chance) ? r->rtype : OROOM;
+  boolean okroom;
+  struct mkroom	*aroom;
+  short i;
+  xchar rtype = (!r->chance || rn2(100) < r->chance) ? r->rtype : OROOM;
 
-	if(pr) {
-		aroom = &subrooms[nsubroom];
-		okroom = create_subroom(pr->mkr, r->x, r->y, r->w, r->h,
-					rtype, r->rlit);
-	} else {
-		aroom = &rooms[nroom];
-		okroom = create_room(r->x, r->y, r->w, r->h, r->xalign,
-				     r->yalign, rtype, r->rlit);
-		r->mkr = aroom;
-	}
+  if(pr) {
+    okroom = create_subroom(pr->mkr, r->x, r->y, r->w, r->h,
+        rtype, r->rlit);
+    aroom = &subrooms.back();
+  } else {
+    aroom = &rooms[nroom];
+    okroom = create_room(r->x, r->y, r->w, r->h, r->xalign,
+        r->yalign, rtype, r->rlit);
+    r->mkr = aroom;
+  }
 
-	if (okroom) {
-		/* Create subrooms if necessary... */
-		for(i=0; i < r->nsubroom; i++)
-		    build_room(r->subrooms[i], r);
-		/* And now we can fill the room! */
+  if (okroom) {
+    /* Create subrooms if necessary... */
+    for(i=0; i < r->nsubroom; i++)
+      build_room(r->subrooms[i], r);
+    /* And now we can fill the room! */
 
-		/* Priority to the stairs */
+    /* Priority to the stairs */
 
-		for(i=0; i <r->nstair; i++)
-		    create_stairs(r->stairs[i], aroom);
+    for(i=0; i <r->nstair; i++)
+      create_stairs(r->stairs[i], aroom);
 
-		/* Then to the various elements (sinks, etc..) */
-		for(i = 0; i<r->nsink; i++)
-		    create_feature(r->sinks[i]->x, r->sinks[i]->y, aroom, SINK);
-		for(i = 0; i<r->npool; i++)
-		    create_feature(r->pools[i]->x, r->pools[i]->y, aroom, POOL);
-		for(i = 0; i<r->nfountain; i++)
-		    create_feature(r->fountains[i]->x, r->fountains[i]->y,
-				   aroom, FOUNTAIN);
-		for(i = 0; i<r->naltar; i++)
-		    create_altar(r->altars[i], aroom);
-		for(i = 0; i<r->ndoor; i++)
-		    create_door(r->doors[i], aroom);
+    /* Then to the various elements (sinks, etc..) */
+    for(i = 0; i<r->nsink; i++)
+      create_feature(r->sinks[i]->x, r->sinks[i]->y, aroom, SINK);
+    for(i = 0; i<r->npool; i++)
+      create_feature(r->pools[i]->x, r->pools[i]->y, aroom, POOL);
+    for(i = 0; i<r->nfountain; i++)
+      create_feature(r->fountains[i]->x, r->fountains[i]->y,
+          aroom, FOUNTAIN);
+    for(i = 0; i<r->naltar; i++)
+      create_altar(r->altars[i], aroom);
+    for(i = 0; i<r->ndoor; i++)
+      create_door(r->doors[i], aroom);
 
-		/* The traps */
-		for(i = 0; i<r->ntrap; i++)
-		    create_trap(r->traps[i], aroom);
+    /* The traps */
+    for(i = 0; i<r->ntrap; i++)
+      create_trap(r->traps[i], aroom);
 
-		/* The monsters */
-		for(i = 0; i<r->nmonster; i++)
-		    create_monster(r->monsters[i], aroom);
+    /* The monsters */
+    for(i = 0; i<r->nmonster; i++)
+      create_monster(r->monsters[i], aroom);
 
-		/* The objects */
-		for(i = 0; i<r->nobject; i++)
-		    create_object(r->objects[i], aroom);
+    /* The objects */
+    for(i = 0; i<r->nobject; i++)
+      create_object(r->objects[i], aroom);
 
-		/* The gold piles */
-		for(i = 0; i<r->ngold; i++)
-		    create_gold(r->golds[i], aroom);
+    /* The gold piles */
+    for(i = 0; i<r->ngold; i++)
+      create_gold(r->golds[i], aroom);
 
-		/* The engravings */
-		for (i = 0; i < r->nengraving; i++)
-		    create_engraving(r->engravings[i], aroom);
+    /* The engravings */
+    for (i = 0; i < r->nengraving; i++)
+      create_engraving(r->engravings[i], aroom);
 
 #ifdef SPECIALIZATION
-		topologize(aroom,FALSE);		/* set roomno */
+    topologize(aroom,FALSE);		/* set roomno */
 #else
-		topologize(aroom);			/* set roomno */
+    topologize(aroom);			/* set roomno */
 #endif
-		/* MRS - 07/04/91 - This is temporary but should result
-		 * in proper filling of shops, etc.
-		 * DLC - this can fail if corridors are added to this room
-		 * at a later point.  Currently no good way to fix this.
-		 */
-		if(aroom->rtype != OROOM && r->filled) fill_room(aroom, FALSE);
-	}
+    /* MRS - 07/04/91 - This is temporary but should result
+     * in proper filling of shops, etc.
+     * DLC - this can fail if corridors are added to this room
+     * at a later point.  Currently no good way to fix this.
+     */
+    if(aroom->rtype != OROOM && r->filled) fill_room(aroom, FALSE);
+  }
 }
 
 /*

@@ -188,15 +188,11 @@ void add_room(int lowx, int lowy, int hix, int hiy, boolean lit, schar rtype, bo
 }
 
 void add_subroom(struct mkroom *proom, int lowx, int lowy, int hix, int hiy, boolean lit, schar rtype, boolean special) {
-	struct mkroom *croom;
-
-	croom = &subrooms[nsubroom];
-	do_room_or_subroom(croom, lowx, lowy, hix, hiy, lit,
-					    rtype, special, (boolean) FALSE);
-	proom->subrooms.push_back(croom);
-	croom++;
-	croom->hx = -1;
-	nsubroom++;
+	struct mkroom croom;
+	do_room_or_subroom(&croom, lowx, lowy, hix, hiy, lit,
+            rtype, special, (boolean) FALSE);
+        subrooms.push_back(croom);
+        proom->subrooms.push_back(&subrooms.back());
 }
 
 STATIC_OVL void makerooms() {
@@ -534,8 +530,7 @@ STATIC_OVL void clear_level_structures() {
 
 	nroom = 0;
 	rooms[0].hx = -1;
-	nsubroom = 0;
-	subrooms[0].hx = -1;
+	subrooms.clear();
 	doorindex = 0;
 	init_rect();
 	init_vault();
