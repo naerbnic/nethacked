@@ -424,7 +424,7 @@ void hatch_egg(genericptr_t arg, long timeout) {
 		       while it's in your inventory */
 		    if ((yours && !silent) ||
 			(carried(egg) && mon->data->mlet == S_DRAGON)) {
-			if ((mon2 = tamedog(mon, (struct Object *)0)) != 0) {
+			if ((mon2 = tamedog(mon, nullptr)) != 0) {
 			    mon = mon2;
 			    if (carried(egg) && mon->data->mlet != S_DRAGON)
 				mon->mtame = 20;
@@ -551,7 +551,7 @@ void hatch_egg(genericptr_t arg, long timeout) {
 	    } else {
 		/* free egg here because we use it above */
 		obj_extract_self(egg);
-		obfree(egg, (struct Object *)0);
+		obfree(egg, nullptr);
 	    }
 	    if (redraw) newsym(x, y);
 	}
@@ -723,7 +723,7 @@ void burn_object(genericptr_t arg, long timeout) {
 		} else if (Is_candle(obj) || obj->otyp == POT_OIL) {
 		    /* get rid of candles and burning oil potions */
 		    obj_extract_self(obj);
-		    obfree(obj, (struct Object *)0);
+		    obfree(obj, nullptr);
 		    obj = (struct Object *) 0;
 		}
 
@@ -763,7 +763,7 @@ void burn_object(genericptr_t arg, long timeout) {
 		    }
 		    end_burn(obj, FALSE);	/* turn off light source */
 		    obj_extract_self(obj);
-		    obfree(obj, (struct Object *)0);
+		    obfree(obj, nullptr);
 		    obj = (struct Object *) 0;
 		    break;
 
@@ -939,7 +939,7 @@ void burn_object(genericptr_t arg, long timeout) {
 			    obj->spe = 0;
 			} else {
 			    obj_extract_self(obj);
-			    obfree(obj, (struct Object *)0);
+			    obfree(obj, nullptr);
 			    obj = (struct Object *) 0;
 			}
 			break;

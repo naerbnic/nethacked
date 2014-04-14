@@ -29,7 +29,7 @@ int move_special(struct Monster *mtmp, boolean in_his_shop, schar appr, boolean 
 	coord poss[9];
 	long info[9];
 	long allowflags;
-	struct Object *ib = (struct Object *)0;
+	struct Object *ib = nullptr;
 
 	if(omx == gx && omy == gy)
 		return(0);

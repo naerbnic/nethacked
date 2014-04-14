@@ -538,7 +538,7 @@ struct Monster * get_container_location(struct Object *obj, int *loc, int *conta
  */
 struct Monster * revive(struct Object *obj) {
 	struct Monster *mtmp = (struct Monster *)0;
-	struct Object *container = (struct Object *)0;
+	struct Object *container = nullptr;
 	int container_nesting = 0;
 	schar savetame = 0;
 	boolean recorporealization = FALSE;
@@ -603,7 +603,7 @@ struct Monster * revive(struct Object *obj) {
 				       NO_MINVENT|MM_NOWAIT);
 			if (mtmp) {
 				mtmp->mhp = mtmp->mhpmax = 100;
-				mon_adjust_speed(mtmp, 2, (struct Object *)0); /* MFAST */
+				mon_adjust_speed(mtmp, 2, nullptr); /* MFAST */
 			}
 		} else {
 		    if (obj->oxlth && (obj->oattached == OATTACHED_MONST)) {
@@ -655,7 +655,7 @@ struct Monster * revive(struct Object *obj) {
 			if (recorporealization) {
 				/* If mtmp is revivification of former tame ghost*/
 				if (savetame) {
-				    struct Monster *mtmp2 = tamedog(mtmp, (struct Object *)0);
+				    struct Monster *mtmp2 = tamedog(mtmp, nullptr);
 				    if (mtmp2) {
 					mtmp2->mtame = savetame;
 					mtmp = mtmp2;
@@ -1150,7 +1150,7 @@ struct Object * poly_obj(struct Object *obj, int id) {
 	    int try_limit = 3;
 	    /* Try up to 3 times to make the magic-or-not status of
 	       the new item be the same as it was for the old one. */
-	    otmp = (struct Object *)0;
+	    otmp = nullptr;
 	    do {
 		if (otmp) delobj(otmp);
 		otmp = mkobj(obj->oclass, FALSE);
@@ -2765,7 +2765,7 @@ struct Monster * boomhit(int dx, int dy) {
 		if(bhitpos.x == u.ux && bhitpos.y == u.uy) { /* ct == 9 */
 			if(Fumbling || rn2(20) >= ACURR(A_DEX)) {
 				/* we hit ourselves */
-				(void) thitu(10, rnd(10), (struct Object *)0,
+				(void) thitu(10, rnd(10), nullptr,
 					"boomerang");
 				break;
 			} else {	/* we catch it */
@@ -2793,7 +2793,7 @@ STATIC_OVL int zhitm(struct Monster *mon, int type, int nd, struct Object **ootm
 	boolean sho_shieldeff = FALSE;
 	boolean spellcaster = is_hero_spell(type); /* maybe get a bonus! */
 
-	*ootmp = (struct Object *)0;
+	*ootmp = nullptr;
 	switch(abstype) {
 	case ZT_MAGIC_MISSILE:
 		if (resists_magm(mon)) {
@@ -3271,7 +3271,7 @@ void buzz(int type, int nd, xchar sx, xchar sy, int dx, int dy) {
 			    otmp2 = otmp->nobj;
 			    if (!oresist_disintegration(otmp)) {
 				obj_extract_self(otmp);
-				obfree(otmp, (struct Object *)0);
+				obfree(otmp, nullptr);
 			    }
 			}
 
@@ -3954,7 +3954,7 @@ retry:
 	    pline("Nothing fitting that description exists in the game.");
 	    if (++tries < 5) goto retry;
 	    pline(thats_enough_tries);
-	    otmp = readobjnam((char *)0, (struct Object *)0, TRUE);
+	    otmp = readobjnam((char *)0, nullptr, TRUE);
 	    if (!otmp) return;	/* for safety; should never happen */
 	} else if (otmp == &nothing) {
 	    /* explicitly wished for "nothing", presumeably attempting

@@ -13,7 +13,7 @@ struct Object;
 union vptrs {
 	    Object *v_nexthere;	/* floor location lists */
 	    Object *v_ocontainer;	/* point back to container */
-	    Monster *v_ocarry;	/* point back to carrying monst */
+	    struct Monster *v_ocarry;	/* point back to carrying monst */
 };
 
 struct Object {

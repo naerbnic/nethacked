@@ -1886,7 +1886,7 @@ void read_wizkit() {
 		else *ep = '\0';		/* remove newline */
 
 		if (buf[0]) {
-			otmp = readobjnam(buf, (struct Object *)0, FALSE);
+			otmp = readobjnam(buf, nullptr, FALSE);
 			if (otmp) {
 			    if (otmp != &zeroobj)
 				otmp = addinv(otmp);

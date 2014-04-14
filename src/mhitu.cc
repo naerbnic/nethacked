@@ -2122,9 +2122,9 @@ int doseduce(struct Monster *mon) {
 			Blind ? "She" : Monnam(mon), xname(ring));
 		makeknown(RIN_ADORNMENT);
 		if (ring==uleft || ring==uright) Ring_gone(ring);
-		if (ring==uwep) setuwep((struct Object *)0);
-		if (ring==uswapwep) setuswapwep((struct Object *)0);
-		if (ring==uquiver) setuqwep((struct Object *)0);
+		if (ring==uwep) setuwep(nullptr);
+		if (ring==uswapwep) setuswapwep(nullptr);
+		if (ring==uquiver) setuqwep(nullptr);
 		freeinv(ring);
 		(void) mpickobj(mon,ring);
 	    } else {

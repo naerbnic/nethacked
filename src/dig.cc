@@ -556,7 +556,7 @@ void digactualhole(int x, int y, struct Monster *madeby, int ttyp) {
 		 */
 		if (u.ustuck || wont_fall) {
 		    if (newobjs)
-			impact_drop((struct Object *)0, x, y, 0);
+			impact_drop(nullptr, x, y, 0);
 		    if (oldobjs != newobjs)
 			(void) pickup(1);
 		    if (shopdoor && madeby_u) pay_for_damage("ruin", FALSE);
@@ -582,7 +582,7 @@ void digactualhole(int x, int y, struct Monster *madeby, int ttyp) {
 	    } else {
 		if (shopdoor && madeby_u) pay_for_damage("ruin", FALSE);
 		if (newobjs)
-		    impact_drop((struct Object *)0, x, y, 0);
+		    impact_drop(nullptr, x, y, 0);
 		if (mtmp) {
 		     /*[don't we need special sokoban handling here?]*/
 		    if (is_flyer(mtmp->data) || is_floater(mtmp->data) ||
@@ -1263,7 +1263,7 @@ struct Object * bury_an_obj(struct Object *otmp) {
 	under_ice = is_ice(otmp->ox, otmp->oy);
 	if (otmp->otyp == ROCK && !under_ice) {
 		/* merges into burying material */
-		obfree(otmp, (struct Object *)0);
+		obfree(otmp, nullptr);
 		return(otmp2);
 	}
 	/*
@@ -1285,7 +1285,7 @@ void bury_objs(int x, int y) {
 	struct Object *otmp, *otmp2;
 
 #ifdef DEBUG
-	if(level.objects[x][y] != (struct Object *)0)
+	if(level.objects[x][y] != nullptr)
 		pline("bury_objs: at %d, %d", x, y);
 #endif
 	for (otmp = level.objects[x][y]; otmp; otmp = otmp2)

@@ -187,7 +187,7 @@ STATIC_OVL void chat_with_leader() {
  */
 	if(Qstat(got_thanks)) {
 /*	Rule 1:	You've gone back with/without the amulet.	*/
-	    if(u.uhave.amulet)	finish_quest((struct Object *)0);
+	    if(u.uhave.amulet)	finish_quest(nullptr);
 
 /*	Rule 2:	You've gone back before going for the amulet.	*/
 	    else		qt_pager(QT_POSTHANKS);

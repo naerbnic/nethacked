@@ -427,7 +427,7 @@ boolean wield_tool(struct Object *obj, const char *verb) {
 	    verb, (obj->oclass == WEAPON_CLASS) ? "weapon" : "tool");
 	return FALSE;
     }
-    if (uquiver == obj) setuqwep((struct Object *)0);
+    if (uquiver == obj) setuqwep(nullptr);
     if (uswapwep == obj) {
 	(void) doswapweapon();
 	/* doswapweapon might fail */
@@ -530,7 +530,7 @@ void uwepgone() {
 		    end_burn(uwep, FALSE);
 		    if (!Blind) pline("%s glowing.", Tobjnam(uwep, "stop"));
 		}
-		setworn((struct Object *)0, W_WEP);
+		setworn(nullptr, W_WEP);
 		unweapon = TRUE;
 		update_inventory();
 	}
@@ -538,14 +538,14 @@ void uwepgone() {
 
 void uswapwepgone() {
 	if (uswapwep) {
-		setworn((struct Object *)0, W_SWAPWEP);
+		setworn(nullptr, W_SWAPWEP);
 		update_inventory();
 	}
 }
 
 void uqwepgone() {
 	if (uquiver) {
-		setworn((struct Object *)0, W_QUIVER);
+		setworn(nullptr, W_QUIVER);
 		update_inventory();
 	}
 }

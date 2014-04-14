@@ -339,7 +339,7 @@ STATIC_OVL struct Object * touchfood(struct Object *otmp) {
  * in do_reset_eat().
  */
 void food_disappears(struct Object *obj) {
-	if (obj == victual.piece) victual.piece = (struct Object *)0;
+	if (obj == victual.piece) victual.piece = nullptr;
 	if (obj->timed) obj_stop_timers(obj);
 }
 
@@ -469,7 +469,7 @@ STATIC_OVL void cprefx(int pm) {
 		    /* cannot appear in tins, victual.piece will always */
 		    /* be what we want, which is not generally true. */
 		    if (revive_corpse(victual.piece))
-			victual.piece = (struct Object *)0;
+			victual.piece = nullptr;
 		    return;
 		}
 	    case PM_GREEN_SLIME:
@@ -876,7 +876,7 @@ STATIC_OVL void cpostfx(int pm) {
 			pline ("Oh wow!  Great stuff!");
 			make_hallucinated(HHallucination + 200,FALSE,0L);
 		}
-		if(is_giant(ptr)) gainstr((struct Object *)0, 0);
+		if(is_giant(ptr)) gainstr(nullptr, 0);
 
 		/* Check the monster for all of the intrinsics.  If this
 		 * monster can give more than one, pick one to try to give
@@ -1014,7 +1014,7 @@ int opentin() {
 		goto use_me;
 	    }
 	    /* in case stop_occupation() was called on previous meal */
-	    victual.piece = (struct Object *)0;
+	    victual.piece = nullptr;
 	    victual.fullwarn = victual.eating = victual.doreset = FALSE;
 
 	    You("consume %s %s.", tintxts[r].txt,
@@ -1524,7 +1524,7 @@ STATIC_OVL void eatspecial() {
 	set_occupation(eatfood, "eating non-food", 0);
 	lesshungry(victual.nmod);
 	occupation = 0;
-	victual.piece = (struct Object *)0;
+	victual.piece = nullptr;
 	victual.eating = 0;
 	if (otmp->oclass == COIN_CLASS) {
 #ifdef GOLDOBJ
@@ -1931,7 +1931,7 @@ doeat()		/* generic "eat" command funtion (see cmd.c) */
 	    int tmp = eatcorpse(otmp);
 	    if (tmp == 2) {
 		/* used up */
-		victual.piece = (struct Object *)0;
+		victual.piece = nullptr;
 		return(1);
 	    } else if (tmp)
 		dont_start = TRUE;
@@ -2096,7 +2096,7 @@ void lesshungry(int num) {
 		    choke(victual.piece);
 		    reset_eat();
 		} else
-		    choke(occupation == opentin ? tin.tin : (struct Object *)0);
+		    choke(occupation == opentin ? tin.tin : nullptr);
 		/* no reset_eat() */
 	    }
 	} else {
@@ -2326,7 +2326,7 @@ struct Object * floorfood(const char *verb, int corpsecheck) {
 		    deltrap(ttmp);
 		    return mksobj(BEARTRAP, TRUE, FALSE);
 		} else if (c == 'q') {
-		    return (struct Object *)0;
+		    return nullptr;
 		}
 	    }
 
@@ -2340,7 +2340,7 @@ struct Object * floorfood(const char *verb, int corpsecheck) {
 		if ((c = yn_function(qbuf, ynqchars, 'n')) == 'y') {
 		    return gold;
 		} else if (c == 'q') {
-		    return (struct Object *)0;
+		    return nullptr;
 		}
 	    }
 	}
@@ -2371,7 +2371,7 @@ struct Object * floorfood(const char *verb, int corpsecheck) {
 	if (corpsecheck && otmp)
 	    if (otmp->otyp != CORPSE || (corpsecheck == 2 && !tinnable(otmp))) {
 		You_cant("%s that!", verb);
-		return (struct Object *)0;
+		return nullptr;
 	    }
 	return otmp;
 }

@@ -830,7 +830,7 @@ static int dochat() {
 	return(0);
     }
 
-    if (!Blind && (otmp = shop_object(u.ux, u.uy)) != (struct Object *)0) {
+    if (!Blind && (otmp = shop_object(u.ux, u.uy)) != nullptr) {
 	/* standing on something in a shop and chatting causes the shopkeeper
 	   to describe the price(s).  This can inhibit other chatting inside
 	   a shop, but that shouldn't matter much.  shop_object() returns an

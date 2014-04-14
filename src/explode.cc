@@ -416,7 +416,7 @@ long scatter(int sx, int sy, int blastforce, unsigned int scflags, struct Object
 		qtmp = (long)rnd((int)qtmp);
 		otmp = splitobj(otmp, qtmp);
 	    } else {
-		obj = (struct Object *)0; /* all used */
+		obj = nullptr; /* all used */
 	    }
 	    obj_extract_self(otmp);
 	    used_up = FALSE;
@@ -494,7 +494,7 @@ long scatter(int sx, int sy, int blastforce, unsigned int scflags, struct Object
 				if (scflags & MAY_HITMON) {
 				    stmp->range--;
 				    if (ohitmon(mtmp, stmp->obj, 1, FALSE)) {
-					stmp->obj = (struct Object *)0;
+					stmp->obj = nullptr;
 					stmp->stopped = TRUE;
 				    }
 				}

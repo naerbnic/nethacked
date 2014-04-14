@@ -737,7 +737,7 @@ struct Monster * clone_mon(struct Monster *mon, xchar x, xchar y) {
 		 * must be made non-tame to get initialized properly.
 		 */
 		m2->mtame = 0;
-		if ((m3 = tamedog(m2, (struct Object *)0)) != 0) {
+		if ((m3 = tamedog(m2, nullptr)) != 0) {
 		    m2 = m3;
 		    *(EDOG(m2)) = *(EDOG(mon));
 		}
@@ -957,7 +957,7 @@ struct Monster * makemon(struct permonst *ptr, int x, int y, int mmflags) {
 			break;
 		case S_BAT:
 			if (Inhell && is_bat(ptr))
-			    mon_adjust_speed(mtmp, 2, (struct Object *)0);
+			    mon_adjust_speed(mtmp, 2, nullptr);
 			break;
 	}
 	if ((ct = emits_light(mtmp->data)) > 0)
@@ -1047,7 +1047,7 @@ struct Monster * makemon(struct permonst *ptr, int x, int y, int mmflags) {
 	} else {
 	    /* no initial inventory is allowed */
 	    if (mtmp->minvent) discard_minvent(mtmp);
-	    mtmp->minvent = (struct Object *)0;    /* caller expects this */
+	    mtmp->minvent = nullptr;    /* caller expects this */
 	}
 	if ((ptr->mflags3 & M3_WAITMASK) && !(mmflags & MM_NOWAIT)) {
 		if (ptr->mflags3 & M3_WAITFORU)

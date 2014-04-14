@@ -584,7 +584,7 @@ struct Object * mksobj(int otyp, boolean init, boolean artif) {
 	default:
 		impossible("impossible mkobj %d, sym '%c'.", otmp->otyp,
 						objects[otmp->otyp].oc_class);
-		return (struct Object *)0;
+		return nullptr;
 	}
 
 	/* Some things must get done (timers) even if init = 0 */
@@ -885,7 +885,7 @@ struct Object * obj_attach_mid(struct Object *obj, unsigned mid) {
     struct Object *otmp;
     int lth, namelth;
 
-    if (!mid || !obj) return (struct Object *)0;
+    if (!mid || !obj) return nullptr;
     lth = sizeof(mid);
     namelth = obj->onamelth ? strlen(ONAME(obj)) + 1 : 0;
     if (namelth) 
@@ -915,7 +915,7 @@ static struct Object * save_mtraits(struct Object *obj, struct Monster *mtmp) {
 		/* but m_id must be cleared when loading bones */
 		mtmp2->nmon     = (struct Monster *)0;
 		mtmp2->data     = (struct permonst *)0;
-		mtmp2->minvent  = (struct Object *)0;
+		mtmp2->minvent  = nullptr;
 		otmp->oattached = OATTACHED_MONST;	/* mark it */
 	}
 	return otmp;
@@ -1156,7 +1156,7 @@ void discard_minvent(struct Monster *mtmp) {
 
     while ((otmp = mtmp->minvent) != 0) {
 	obj_extract_self(otmp);
-	obfree(otmp, (struct Object *)0);	/* dealloc_obj() isn't sufficient */
+	obfree(otmp, nullptr);	/* dealloc_obj() isn't sufficient */
     }
 }
 

@@ -696,7 +696,7 @@ int seffects(struct Object *sobj) {
 					otmp->otyp <= YELLOW_DRAGON_SCALES) {
 			/* dragon scales get turned into dragon scale mail */
 			Your("%s merges and hardens!", xname(otmp));
-			setworn((struct Object *)0, W_ARM);
+			setworn(nullptr, W_ARM);
 			/* assumes same order */
 			otmp->otyp = GRAY_DRAGON_SCALE_MAIL +
 						otmp->otyp - GRAY_DRAGON_SCALES;
@@ -1698,10 +1698,10 @@ void unpunish() {
 
 	obj_extract_self(uchain);
 	newsym(uchain->ox,uchain->oy);
-	setworn((struct Object *)0, W_CHAIN);
+	setworn(nullptr, W_CHAIN);
 	dealloc_obj(savechain);
 	uball->spe = 0;
-	setworn((struct Object *)0, W_BALL);
+	setworn(nullptr, W_BALL);
 }
 
 /* some creatures have special data structures that only make sense in their

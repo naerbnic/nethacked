@@ -693,7 +693,7 @@ void delete_contents(struct Object *obj) {
 
 	while ((curr = obj->cobj) != 0) {
 	    obj_extract_self(curr);
-	    obfree(curr, (struct Object *)0);
+	    obfree(curr, nullptr);
 	}
 }
 
@@ -1689,7 +1689,7 @@ struct Object * find_oid(unsigned id) {
 		if ((obj = o_on(id, mon->minvent)) != 0) return obj;
 
 	/* not found at all */
-	return (struct Object *)0;
+	return nullptr;
 }
 #endif /*OVLB*/
 #ifdef OVL3
@@ -2027,7 +2027,7 @@ void addtobill(struct Object *obj, boolean ininv, boolean dummy, boolean silent)
 	}
 
 	if(container) {
-	    if(obj->cobj == (struct Object *)0) {
+	    if(obj->cobj == nullptr) {
 		if(obj->no_charge) {
 		    obj->no_charge = 0;
 		    return;
@@ -2596,12 +2596,12 @@ int doinvbill(int mode) {
 	    /* additional shop debt which has no itemization available */
 	    if (totused) putstr(datawin, 0, "");
 	    totused += eshkp->debit;
-	    buf_p = xprname((struct Object *)0,
+	    buf_p = xprname(nullptr,
 			    "usage charges and/or other fees",
 			    GOLD_SYM, FALSE, eshkp->debit, 0L);
 	    putstr(datawin, 0, buf_p);
 	}
-	buf_p = xprname((struct Object *)0, "Total:", '*', FALSE, totused, 0L);
+	buf_p = xprname(nullptr, "Total:", '*', FALSE, totused, 0L);
 	putstr(datawin, 0, "");
 	putstr(datawin, 0, buf_p);
 	display_nhwindow(datawin, FALSE);
@@ -2897,7 +2897,7 @@ int repair_damage(struct Monster *shkp, struct damage *tmp_dam, boolean catchup)
 		/* Don't mess w/ boulders -- just merge into wall */
 		if ((otmp->otyp == BOULDER) || (otmp->otyp == ROCK)) {
 		    obj_extract_self(otmp);
-		    obfree(otmp, (struct Object *)0);
+		    obfree(otmp, nullptr);
 		} else {
 		    while (!(litter[i = rn2(9)] & INSHOP));
 			remove_object(otmp);
@@ -3348,7 +3348,7 @@ struct Object * shop_object(xchar x, xchar y) {
     struct Monster *shkp;
 
     if(!(shkp = shop_keeper(*in_rooms(x, y, SHOPBASE))) || !inhishop(shkp))
-	return(struct Object *)0;
+	return nullptr;
 
     for (otmp = level.objects[x][y]; otmp; otmp = otmp->nexthere)
 	if (otmp->oclass != COIN_CLASS)
@@ -3356,7 +3356,7 @@ struct Object * shop_object(xchar x, xchar y) {
     /* note: otmp might have ->no_charge set, but that's ok */
     return (otmp && costly_spot(x, y) && NOTANGRY(shkp)
 	    && shkp->mcanmove && !shkp->msleeping)
-		? otmp : (struct Object *)0;
+		? otmp : nullptr;
 }
 
 /* give price quotes for all objects linked to this one (ie, on this spot) */

@@ -161,7 +161,7 @@ STATIC_VAR short cham_to_pm[] = {
 STATIC_OVL struct Object * make_corpse(struct Monster *mtmp) {
 	struct permonst *mdat = mtmp->data;
 	int num;
-	struct Object *obj = (struct Object *)0;
+	struct Object *obj = nullptr;
 	int x = mtmp->mx, y = mtmp->my;
 	int mndx = monsndx(mdat);
 
@@ -277,7 +277,7 @@ STATIC_OVL struct Object * make_corpse(struct Monster *mtmp) {
 	    default_1:
 	    default:
 		if (mvitals[mndx].mvflags & G_NOCORPSE)
-		    return (struct Object *)0;
+		    return nullptr;
 		else	/* preserve the unique traits of some creatures */
 		    obj = mkcorpstat(CORPSE, KEEPTRAITS(mtmp) ? mtmp : 0,
 				     mdat, x, y, TRUE);
@@ -1294,7 +1294,7 @@ struct Object * mlifesaver(struct Monster *mon) {
 	    if (otmp && otmp->otyp == AMULET_OF_LIFE_SAVING)
 		return otmp;
 	}
-	return (struct Object *)0;
+	return nullptr;
 }
 
 STATIC_OVL void lifesaved_monster(struct Monster *mtmp) {
@@ -2547,7 +2547,7 @@ void golemeffects(struct Monster *mon, int damtype, int dam) {
     }
     if (slow) {
 	if (mon->mspeed != MSLOW)
-	    mon_adjust_speed(mon, -1, (struct Object *)0);
+	    mon_adjust_speed(mon, -1, nullptr);
     }
     if (heal) {
 	if (mon->mhp < mon->mhpmax) {

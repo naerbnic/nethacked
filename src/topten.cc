@@ -1126,7 +1126,7 @@ struct Object * tt_oname(struct Object *otmp) {
 	rfile = fopen_datafile(RECORD, "r", SCOREPREFIX);
 	if (!rfile) {
 		impossible("Cannot open record file!");
-		return (struct Object *)0;
+		return nullptr;
 	}
 
 	tt = &tt_buf;

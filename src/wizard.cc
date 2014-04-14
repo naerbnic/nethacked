@@ -174,7 +174,7 @@ STATIC_OVL struct Object * on_ground(short otyp) {
 		    return(otmp);
 	    } else if (is_quest_artifact(otmp))
 		return(otmp);
-	return((struct Object *)0);
+	return(nullptr);
 }
 
 STATIC_OVL boolean you_have(int mask) {

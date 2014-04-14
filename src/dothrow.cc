@@ -1278,7 +1278,7 @@ int thitmonst(struct Monster *mon, struct Object *obj) {
 		    if (broken) {
 			if (*u.ushops)
 			    check_shop_obj(obj, bhitpos.x,bhitpos.y, TRUE);
-			obfree(obj, (struct Object *)0);
+			obfree(obj, nullptr);
 			return 1;
 		    }
 		}

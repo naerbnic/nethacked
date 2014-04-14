@@ -288,7 +288,7 @@ void drinkfountain() {
 
 		case 26: /* See Monsters */
 
-			(void) monster_detect((struct Object *)0, 0);
+			(void) monster_detect(nullptr, 0);
 			exercise(A_WIS, TRUE);
 			break;
 
@@ -513,7 +513,7 @@ void drinksink() {
 		case 4: do {
 				otmp = mkobj(POTION_CLASS,FALSE);
 				if (otmp->otyp == POT_WATER) {
-					obfree(otmp, (struct Object *)0);
+					obfree(otmp, nullptr);
 					otmp = (struct Object *) 0;
 				}
 			} while(!otmp);
@@ -525,7 +525,7 @@ void drinksink() {
 			otmp->quan++; /* Avoid panic upon useup() */
 			otmp->fromsink = 1; /* kludge for docall() */
 			(void) dopotion(otmp);
-			obfree(otmp, (struct Object *)0);
+			obfree(otmp, nullptr);
 			break;
 		case 5: if (!(levl[u.ux][u.uy].looted & S_LRING)) {
 			    You("find a ring in the sink!");

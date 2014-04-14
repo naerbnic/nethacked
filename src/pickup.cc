@@ -1316,7 +1316,7 @@ int pickup_object(struct Object *obj, long count, boolean telekinesis) {
 	    }
 	}
 
-	if ((res = lift_object(obj, (struct Object *)0, &count, telekinesis)) <= 0)
+	if ((res = lift_object(obj, nullptr, &count, telekinesis)) <= 0)
 	    return res;
 
 #ifdef GOLDOBJ
@@ -1830,7 +1830,7 @@ STATIC_PTR int in_container(struct Object *obj) {
 		      doname(obj));
 		/* did not actually insert obj yet */
 		if (was_unpaid) addtobill(obj, FALSE, FALSE, TRUE);
-		obfree(obj, (struct Object *)0);
+		obfree(obj, nullptr);
 		delete_contents(current_container);
 		if (!floor_container)
 			useup(current_container);
@@ -2004,7 +2004,7 @@ STATIC_OVL void observe_quantum_cat(struct Object *box) {
 int use_container(struct Object *obj, int held) {
 	struct Object *curr, *otmp;
 #ifndef GOLDOBJ
-	struct Object *u_gold = (struct Object *)0;
+	struct Object *u_gold = nullptr;
 #endif
 	boolean one_by_one, allflag, quantum_cat = FALSE,
 		loot_out = FALSE, loot_in = FALSE;

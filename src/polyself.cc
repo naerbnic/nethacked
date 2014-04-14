@@ -260,7 +260,7 @@ void polyself(boolean forcecontrol) {
 				/* allow G_EXTINCT */
 				You("merge with your scaly armor.");
 				uskin = uarm;
-				uarm = (struct Object *)0;
+				uarm = nullptr;
 				/* save/restore hack */
 				uskin->owornmask |= I_SPECIAL;
 			}
@@ -602,7 +602,7 @@ STATIC_OVL void break_armor() {
 		if (is_whirly(youmonst.data))
 			You("seep right through your shirt!");
 		else You("become much too small for your shirt!");
-		setworn((struct Object *)0, otmp->owornmask & W_ARMU);
+		setworn(nullptr, otmp->owornmask & W_ARMU);
 		dropx(otmp);
 	}
 #endif
@@ -1079,7 +1079,7 @@ void skinback(boolean silently) {
 	if (uskin) {
 		if (!silently) Your("skin returns to its original form.");
 		uarm = uskin;
-		uskin = (struct Object *)0;
+		uskin = nullptr;
 		/* undo save/restore hack */
 		uarm->owornmask &= ~I_SPECIAL;
 	}

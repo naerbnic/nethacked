@@ -2080,7 +2080,7 @@ struct Object * readobjnam(char *bp, struct Object *no_wish, boolean from_user) 
 		;	/* avoid false hit on "* glass" */
 	} else if (!BSTRCMPI(bp, p-6, " glass") || !strcmpi(bp, "glass")) {
 		char *g = bp;
-		if (strstri(g, "broken")) return (struct Object *)0;
+		if (strstri(g, "broken")) return nullptr;
 		if (!strncmpi(g, "worthless ", 10)) g += 10;
 		if (!strncmpi(g, "piece of ", 9)) g += 9;
 		if (!strncmpi(g, "colored ", 8)) g += 8;
@@ -2124,7 +2124,7 @@ srch:
 		if (dn && (zn = OBJ_DESCR(objects[i])) != 0 &&
 			    wishymatch(dn, zn, FALSE)) {
 			/* don't match extra descriptions (w/o real name) */
-			if (!OBJ_NAME(objects[i])) return (struct Object *)0;
+			if (!OBJ_NAME(objects[i])) return nullptr;
 			typ = i;
 			goto typfnd;
 		}
@@ -2318,7 +2318,7 @@ srch:
 		}
 	}
 #endif
-	if(!oclass) return((struct Object *)0);
+	if(!oclass) return(nullptr);
 any:
 	if(!oclass) oclass = wrpsym[rn2((int)sizeof(wrpsym))];
 typfnd:
@@ -2353,7 +2353,7 @@ typfnd:
 	    && !wizard
 #endif
 	    )
-	    return((struct Object *)0);
+	    return(nullptr);
 
 	/* convert magic lamps to regular lamps before lighting them or setting
 	   the charges */

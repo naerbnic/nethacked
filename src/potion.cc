@@ -156,7 +156,7 @@ void make_blinded(long xtime, boolean talk) {
 	    /* clearing temporary blindness without toggling blindness */
 	    if (talk) {
 		if (!haseyes(youmonst.data)) {
-		    strange_feeling((struct Object *)0, (char *)0);
+		    strange_feeling(nullptr, (char *)0);
 		} else if (Blindfolded) {
 		    Strcpy(buf, body_part(EYE));
 		    eyecnt = eyecount(youmonst.data);
@@ -182,7 +182,7 @@ void make_blinded(long xtime, boolean talk) {
 	    /* setting temporary blindness without toggling blindness */
 	    if (talk) {
 		if (!haseyes(youmonst.data)) {
-		    strange_feeling((struct Object *)0, (char *)0);
+		    strange_feeling(nullptr, (char *)0);
 		} else if (Blindfolded) {
 		    Strcpy(buf, body_part(EYE));
 		    eyecnt = eyecount(youmonst.data);
@@ -226,7 +226,7 @@ boolean make_hallucinated(long xtime, boolean talk, long mask) {
 	    /* clearing temporary hallucination without toggling vision */
 	    if (!changed && !HHallucination && old && talk) {
 		if (!haseyes(youmonst.data)) {
-		    strange_feeling((struct Object *)0, (char *)0);
+		    strange_feeling(nullptr, (char *)0);
 		} else if (Blind) {
 		    char buf[BUFSZ];
 		    int eyecnt = eyecount(youmonst.data);
@@ -1110,7 +1110,7 @@ void potionhit(struct Monster *mon, struct Object *obj, boolean your_fault) {
 		    subfrombill(obj, shkp);
 		}
 	}
-	obfree(obj, (struct Object *)0);
+	obfree(obj, nullptr);
 }
 
 /* vapors are inhaled or get in your eyes */
@@ -1630,7 +1630,7 @@ int dodip() {
 				  struct Object *otmp;
 				  otmp = mkobj(POTION_CLASS,FALSE);
 				  obj->otyp = otmp->otyp;
-				  obfree(otmp, (struct Object *)0);
+				  obfree(otmp, nullptr);
 				}
 				break;
 			default:
@@ -1718,7 +1718,7 @@ int dodip() {
 			    yname(obj));
 		    if (obj->oeroded == MAX_ERODE) {
 			obj_extract_self(obj);
-			obfree(obj, (struct Object *)0);
+			obfree(obj, nullptr);
 			obj = (struct Object *) 0;
 		    } else {
 			/* we know it's carried */
@@ -1895,7 +1895,7 @@ void djinni_from_bottle(struct Object *obj) {
 		mongone(mtmp);
 		break;
 	case 1 : verbalize("Thank you for freeing me!");
-		(void) tamedog(mtmp, (struct Object *)0);
+		(void) tamedog(mtmp, nullptr);
 		break;
 	case 2 : verbalize("You freed me!");
 		mtmp->mpeaceful = TRUE;

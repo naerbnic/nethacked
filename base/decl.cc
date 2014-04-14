@@ -143,22 +143,22 @@ NEARDATA struct flag flags = DUMMY;
 NEARDATA struct instance_flags iflags = DUMMY;
 NEARDATA struct you u = DUMMY;
 
-NEARDATA struct Object *invent = (struct Object *)0,
-	*uwep = (struct Object *)0, *uarm = (struct Object *)0,
-	*uswapwep = (struct Object *)0,
-	*uquiver = (struct Object *)0, /* quiver */
+NEARDATA struct Object *invent = nullptr,
+	*uwep = nullptr, *uarm = nullptr,
+	*uswapwep = nullptr,
+	*uquiver = nullptr, /* quiver */
 #ifdef TOURIST
-	*uarmu = (struct Object *)0, /* under-wear, so to speak */
+	*uarmu = nullptr, /* under-wear, so to speak */
 #endif
-	*uskin = (struct Object *)0, /* dragon armor, if a dragon */
-	*uarmc = (struct Object *)0, *uarmh = (struct Object *)0,
-	*uarms = (struct Object *)0, *uarmg = (struct Object *)0,
-	*uarmf = (struct Object *)0, *uamul = (struct Object *)0,
-	*uright = (struct Object *)0,
-	*uleft = (struct Object *)0,
-	*ublindf = (struct Object *)0,
-	*uchain = (struct Object *)0,
-	*uball = (struct Object *)0;
+	*uskin = nullptr, /* dragon armor, if a dragon */
+	*uarmc = nullptr, *uarmh = nullptr,
+	*uarms = nullptr, *uarmg = nullptr,
+	*uarmf = nullptr, *uamul = nullptr,
+	*uright = nullptr,
+	*uleft = nullptr,
+	*ublindf = nullptr,
+	*uchain = nullptr,
+	*uball = nullptr;
 
 #ifdef TEXTCOLOR
 /*
@@ -189,9 +189,9 @@ NEARDATA long moves = 1L, monstermoves = 1L;
 NEARDATA long wailmsg = 0L;
 
 /* objects that are moving to another dungeon level */
-NEARDATA struct Object *migrating_objs = (struct Object *)0;
+NEARDATA struct Object *migrating_objs = nullptr;
 /* objects not yet paid for */
-NEARDATA struct Object *billobjs = (struct Object *)0;
+NEARDATA struct Object *billobjs = nullptr;
 
 /* used to zero all elements of a struct obj */
 NEARDATA struct Object zeroobj = DUMMY;

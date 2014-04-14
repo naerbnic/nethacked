@@ -180,7 +180,7 @@ void remove_worn_item(struct Object *obj, boolean unchain_ball) {
 	    else if (obj == uarmu) (void) Shirt_off();
 #endif
 	    /* catchall -- should never happen */
-	    else setworn((struct Object *)0, obj->owornmask & W_ARMOR);
+	    else setworn(nullptr, obj->owornmask & W_ARMOR);
 	} else if (obj->owornmask & W_AMUL) {
 	    Amulet_off();
 	} else if (obj->owornmask & W_RING) {
@@ -410,7 +410,7 @@ int mpickobj(struct Monster *mtmp, struct Object *otmp) {
 #ifndef GOLDOBJ
     if (otmp->oclass == COIN_CLASS) {
 	mtmp->mgold += otmp->quan;
-	obfree(otmp, (struct Object *)0);
+	obfree(otmp, nullptr);
 	freed_otmp = 1;
     } else {
 #endif
@@ -443,7 +443,7 @@ int mpickobj(struct Monster *mtmp, struct Object *otmp) {
 #ifdef OVLB
 
 void stealamulet(struct Monster *mtmp) {
-    struct Object *otmp = (struct Object *)0;
+    struct Object *otmp = nullptr;
     int real=0, fake=0;
 
     /* select the artifact to steal */
@@ -566,7 +566,7 @@ void relobj(struct Monster *mtmp, int show, boolean is_pet) {
 	}
 
 	/* put kept objects back */
-	while ((otmp = keepobj) != (struct Object *)0) {
+	while ((otmp = keepobj) != nullptr) {
 	    keepobj = otmp->nobj;
 	    (void) add_to_minv(mtmp, otmp);
 	}

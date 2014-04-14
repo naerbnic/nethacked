@@ -127,7 +127,7 @@ struct Object * merge_choice(struct Object *objlist, struct Object *obj) {
 	int save_nocharge;
 
 	if (obj->otyp == SCR_SCARE_MONSTER)	/* punt on these */
-	    return (struct Object *)0;
+	    return nullptr;
 	/* if this is an item on the shop floor, the attributes it will
 	   have when carried are different from what they are now; prevent
 	   that from eliciting an incorrect result from mergable() */
@@ -142,7 +142,7 @@ struct Object * merge_choice(struct Object *objlist, struct Object *obj) {
 	       another unpaid object, but we can't check that here (depends
 	       too much upon shk's bill) and if it doesn't merge it would
 	       end up in the '#' overflow inventory slot, so reject it now. */
-	    else if (inhishop(shkp)) return (struct Object *)0;
+	    else if (inhishop(shkp)) return nullptr;
 	}
 	while (objlist) {
 	    if (mergable(objlist, obj)) break;
@@ -447,7 +447,7 @@ struct Object * hold_another_object(struct Object *obj, const char *drop_fmt, co
 void useupall(struct Object *obj) {
 	setnotworn(obj);
 	freeinv(obj);
-	obfree(obj, (struct Object *)0);	/* deletes contents also */
+	obfree(obj, nullptr);	/* deletes contents also */
 }
 
 void useup(struct Object *obj) {
@@ -573,7 +573,7 @@ struct Object * sobj_at(int n, int x, int y) {
 	for(otmp = level.objects[x][y]; otmp; otmp = otmp->nexthere)
 		if(otmp->otyp == n)
 		    return(otmp);
-	return((struct Object *)0);
+	return(nullptr);
 }
 
 #endif /* OVL0 */
@@ -631,7 +631,7 @@ struct Object * g_at(int x, int y) {
 	    if (obj->oclass == COIN_CLASS) return obj;
 	    obj = obj->nexthere;
 	}
-	return((struct Object *)0);
+	return(nullptr);
 }
 
 #endif /* OVL2 */
@@ -885,7 +885,7 @@ struct Object * getobj(const char *let, const char *word) {
 #endif
 		You("don't have anything %sto %s.",
 			foox ? "else " : "", word);
-		return((struct Object *)0);
+		return(nullptr);
 	}
 	for(;;) {
 		cnt = 0;
@@ -918,7 +918,7 @@ struct Object * getobj(const char *let, const char *word) {
 		if(index(quitchars,ilet)) {
 		    if(flags.verbose)
 			pline(Never_mind);
-		    return((struct Object *)0);
+		    return(nullptr);
 		}
 		if(ilet == '-') {
 			return(allownone ? &zeroobj : (struct Object *) 0);
@@ -931,14 +931,14 @@ struct Object * getobj(const char *let, const char *word) {
 			    } else {
 				You("cannot %s gold.", word);
 			    }
-			    return(struct Object *)0;
+			    return nullptr;
 #ifndef GOLDOBJ
 			} else if (!allowgold) {
 				You("are not carrying any gold.");
-				return(struct Object *)0;
+				return nullptr;
 #endif
 			} 
-			if(cnt == 0 && prezero) return((struct Object *)0);
+			if(cnt == 0 && prezero) return(nullptr);
 			/* Historic note: early Nethack had a bug which was
 			 * first reported for Larn, where trying to drop 2^32-n
 			 * gold pieces was allowed, and did interesting things
@@ -947,7 +947,7 @@ struct Object * getobj(const char *let, const char *word) {
 			 */
 			if(cnt < 0) {
 	pline_The("LRS would be very interested to know you have that much.");
-				return(struct Object *)0;
+				return nullptr;
 			}
 
 #ifndef GOLDOBJ
@@ -977,7 +977,7 @@ struct Object * getobj(const char *let, const char *word) {
 		    if(ilet == '\033') {
 			if(flags.verbose)
 			    pline(Never_mind);
-			return((struct Object *)0);
+			return(nullptr);
 		    }
 		    /* they typed a letter (not a space) at the prompt */
 		}
@@ -989,7 +989,7 @@ struct Object * getobj(const char *let, const char *word) {
 		    if (ilet != def_oc_syms[COIN_CLASS])
 #endif
 			allowcnt = 1;
-		    if(cnt == 0 && prezero) return((struct Object *)0);
+		    if(cnt == 0 && prezero) return(nullptr);
 		    if(cnt > 1) {
 			You("can only throw one item at a time.");
 			continue;
@@ -1025,10 +1025,10 @@ struct Object * getobj(const char *let, const char *word) {
 #endif
 	   ) {
 		silly_thing(word, otmp);
-		return((struct Object *)0);
+		return(nullptr);
 	}
 	if(allowcnt == 2) {	/* cnt given */
-	    if(cnt == 0) return (struct Object *)0;
+	    if(cnt == 0) return nullptr;
 	    if(cnt != otmp->quan) {
 		/* don't split a stack of cursed loadstones */
 		if (otmp->otyp == LOADSTONE && otmp->cursed)
@@ -1984,7 +1984,7 @@ STATIC_OVL void dounpaid() {
     }
 
     putstr(win, 0, "");
-    putstr(win, 0, xprname((struct Object *)0, "Total:", '*', FALSE, totcost, 0L));
+    putstr(win, 0, xprname(nullptr, "Total:", '*', FALSE, totcost, 0L));
     display_nhwindow(win, FALSE);
     destroy_nhwindow(win);
 }

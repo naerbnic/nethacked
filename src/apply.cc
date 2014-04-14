@@ -467,7 +467,7 @@ struct Object *get_mleash(struct Monster *mtmp)
 			return(otmp);
 		otmp = otmp->nobj;
 	}
-	return((struct Object *)0);
+	return(nullptr);
 }
 
 #endif /* OVLB */
@@ -741,7 +741,7 @@ STATIC_OVL void use_bell(struct Object **optr) {
 			default:
 				break;
 			case 1:
-				mon_adjust_speed(mtmp, 2, (struct Object *)0);
+				mon_adjust_speed(mtmp, 2, nullptr);
 				break;
 			case 2: /* no explanation; it just happens... */
 				nomovemsg = "";
@@ -1592,7 +1592,7 @@ void fig_transform(genericptr_t arg, long timeout) {
 	}
 	/* free figurine now */
 	obj_extract_self(figurine);
-	obfree(figurine, (struct Object *)0);
+	obfree(figurine, nullptr);
 	if (redraw) newsym(cc.x, cc.y);
 }
 

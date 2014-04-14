@@ -494,7 +494,7 @@ STATIC_OVL void clear_level_structures() {
 	    for(y=0; y<ROWNO; y++) {
 		*lev++ = zerorm;
 #ifdef MICROPORT_BUG
-		level.objects[x][y] = (struct Object *)0;
+		level.objects[x][y] = nullptr;
 		level.monsters[x][y] = (struct Monster *)0;
 #endif
 	    }
@@ -503,8 +503,8 @@ STATIC_OVL void clear_level_structures() {
 	(void) memset((genericptr_t)level.objects, 0, sizeof(level.objects));
 	(void) memset((genericptr_t)level.monsters, 0, sizeof(level.monsters));
 #endif
-	level.objlist = (struct Object *)0;
-	level.buriedobjlist = (struct Object *)0;
+	level.objlist = nullptr;
+	level.buriedobjlist = nullptr;
 	level.monlist = (struct Monster *)0;
 	level.damagelist = (struct damage *)0;
 
@@ -1383,7 +1383,7 @@ STATIC_OVL void mkinvpos(xchar x, xchar y, int dist) {
 	    make_rocks = FALSE;		/* don't bother with more rocks */
 	} else {
 	    obj_extract_self(otmp);
-	    obfree(otmp, (struct Object *)0);
+	    obfree(otmp, nullptr);
 	}
     }
     unblock_point(x,y);	/* make sure vision knows this location is open */

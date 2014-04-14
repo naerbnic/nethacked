@@ -617,7 +617,7 @@ void done(int how) {
 	char kilbuf[BUFSZ], pbuf[BUFSZ];
 	winid endwin = WIN_ERR;
 	boolean bones_ok, have_windows = iflags.window_inited;
-	struct Object *corpse = (struct Object *)0;
+	struct Object *corpse = nullptr;
 	long umoney;
 	int i;
 
@@ -853,7 +853,7 @@ die:
 		savebones(corpse);
 	    /* corpse may be invalid pointer now so
 		ensure that it isn't used again */
-	    corpse = (struct Object *)0;
+	    corpse = nullptr;
 	}
 
 	/* update gold for the rip output, which can't use hidden_gold()
@@ -982,7 +982,7 @@ die:
 			Sprintf(pbuf, "%8ld %s (worth %ld %s),",
 				count, xname(otmp),
 				count * (long)objects[typ].oc_cost, currency(2L));
-			obfree(otmp, (struct Object *)0);
+			obfree(otmp, nullptr);
 		    } else {
 			Sprintf(pbuf,
 				"%8ld worthless piece%s of colored glass,",

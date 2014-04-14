@@ -68,12 +68,12 @@ static NEARDATA long omoves;
 
 /* Recalculate level.objects[x][y], since this info was not saved. */
 STATIC_OVL void find_lev_obj() {
-	struct Object *fobjtmp = (struct Object *)0;
+	struct Object *fobjtmp = nullptr;
 	struct Object *otmp;
 	int x,y;
 
 	for(x=0; x<COLNO; x++) for(y=0; y<ROWNO; y++)
-		level.objects[x][y] = (struct Object *)0;
+		level.objects[x][y] = nullptr;
 
 	/*
 	 * Reverse the entire fobj chain, which is necessary so that we can
@@ -182,7 +182,7 @@ STATIC_OVL void restdamage(int fd, boolean ghostly) {
 
 STATIC_OVL struct Object * restobjchn(int fd, boolean ghostly, boolean frozen) {
 	struct Object *otmp, *otmp2 = 0;
-	struct Object *first = (struct Object *)0;
+	struct Object *first = nullptr;
 	int xl;
 
 	while(1) {

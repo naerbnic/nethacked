@@ -326,7 +326,7 @@ STATIC_OVL struct Object * oselect(struct Monster *mtmp, int x) {
 		    (!otmp->oartifact || touch_artifact(otmp,mtmp)))
 		return otmp;
 	}
-	return (struct Object *)0;
+	return nullptr;
 }
 
 static NEARDATA const int rwep[] =
@@ -450,7 +450,7 @@ struct Object * select_rwep(struct Monster *mtmp) {
 	  }
 
 	/* failure */
-	return (struct Object *)0;
+	return nullptr;
 }
 
 /* Weapons in order of preference */
@@ -503,7 +503,7 @@ struct Object * select_hwep(struct Monster *mtmp) {
 	}
 
 	/* failure */
-	return (struct Object *)0;
+	return nullptr;
 }
 
 /* Called after polymorphing a monster, robbing it, etc....  Monsters

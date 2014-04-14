@@ -445,7 +445,7 @@ STATIC_PTR int domonability() {
 		    dryup(u.ux, u.uy, TRUE);
 	    } else There("is no fountain here.");
 	} else if (is_unicorn(youmonst.data)) {
-	    use_unicorn_horn((struct Object *)0);
+	    use_unicorn_horn(nullptr);
 	    return 1;
 	} else if (youmonst.data->msound == MS_SHRIEK) {
 	    You("shriek.");

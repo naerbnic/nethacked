@@ -359,7 +359,7 @@ struct Object * realloc_obj(struct Object *obj, int oextra_size, genericptr_t oe
 		boolean save_twoweap = u.twoweap;
 		/* unwearing the old instance will clear dual-wield mode
 		   if this object is either of the two weapons */
-		setworn((struct Object *)0, obj->owornmask);
+		setworn(nullptr, obj->owornmask);
 		setworn(otmp, otmp->owornmask);
 		u.twoweap = save_twoweap;
 	}

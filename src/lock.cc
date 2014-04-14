@@ -476,7 +476,7 @@ int doforce() {
 	}
 
 	/* A lock is made only for the honest man, the thief will break it. */
-	xlock.box = (struct Object *)0;
+	xlock.box = nullptr;
 	for(otmp = level.objects[u.ux][u.uy]; otmp; otmp = otmp->nexthere)
 	    if(Is_box(otmp)) {
 		if (otmp->obroken || !otmp->olocked) {

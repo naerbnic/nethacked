@@ -380,7 +380,7 @@ int object_detect(struct Object *detector, int class_id) {
 				    detector->oclass == SPBOOK_CLASS) &&
 			detector->blessed);
     int ct = 0, ctu = 0;
-    struct Object *obj, *otmp = (struct Object *)0;
+    struct Object *obj, *otmp = nullptr;
     struct Monster *mtmp;
     int uw = u.uinwater;
     int sym, boulder = 0;
@@ -832,14 +832,14 @@ void use_crystal_ball(struct Object *obj) {
 	if (ch == DEF_MIMIC_DEF) ch = DEF_MIMIC;
 
 	if ((class_id = def_char_to_objclass(ch)) != MAXOCLASSES)
-		ret = object_detect((struct Object *)0, class_id);
+		ret = object_detect(nullptr, class_id);
 	else if ((class_id = def_char_to_monclass(ch)) != MAXMCLASSES)
-		ret = monster_detect((struct Object *)0, class_id);
+		ret = monster_detect(nullptr, class_id);
 	else if (iflags.bouldersym && (ch == iflags.bouldersym))
-		ret = object_detect((struct Object *)0, ROCK_CLASS);
+		ret = object_detect(nullptr, ROCK_CLASS);
 	else switch(ch) {
 		case '^':
-		    ret = trap_detect((struct Object *)0);
+		    ret = trap_detect(nullptr);
 		    break;
 		default:
 		    {

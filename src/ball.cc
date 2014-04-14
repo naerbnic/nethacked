@@ -17,11 +17,11 @@ void ballfall() {
 	if (carried(uball)) {
 		pline("Startled, you drop the iron ball.");
 		if (uwep == uball)
-			setuwep((struct Object *)0);
+			setuwep(nullptr);
 		if (uswapwep == uball)
-			setuswapwep((struct Object *)0);
+			setuswapwep(nullptr);
 		if (uquiver == uball)
-			setuqwep((struct Object *)0);;
+			setuqwep(nullptr);;
 		if (uwep != uball)
 			freeinv(uball);
 	}

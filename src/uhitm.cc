@@ -62,10 +62,10 @@ void hurtmarmor(struct Monster *mdef, int attk) {
 		    (void)rust_dmg(target, xname(target), hurt, TRUE, mdef);
 		    break;
 		}
-		if ((target = which_armor(mdef, W_ARM)) != (struct Object *)0) {
+		if ((target = which_armor(mdef, W_ARM)) != nullptr) {
 		    (void)rust_dmg(target, xname(target), hurt, TRUE, mdef);
 #ifdef TOURIST
-		} else if ((target = which_armor(mdef, W_ARMU)) != (struct Object *)0) {
+		} else if ((target = which_armor(mdef, W_ARMU)) != nullptr) {
 		    (void)rust_dmg(target, xname(target), hurt, TRUE, mdef);
 #endif
 		}
@@ -664,7 +664,7 @@ STATIC_OVL boolean hmon_hitmon(struct Monster *mon, struct Object *obj, int thro
 		if (obj->quan > 1L)
 		    obj = splitobj(obj, 1L);
 		else
-		    setuwep((struct Object *)0);
+		    setuwep(nullptr);
 		freeinv(obj);
 		potionhit(mon, obj, TRUE);
 		if (mon->mhp <= 0) return FALSE;	/* killed */
@@ -829,7 +829,7 @@ STATIC_OVL boolean hmon_hitmon(struct Monster *mon, struct Object *obj, int thro
 			    pline(obj->otyp==CREAM_PIE ? "Splat!" : "Splash!");
 			    setmangry(mon);
 			}
-			if (thrown) obfree(obj, (struct Object *)0);
+			if (thrown) obfree(obj, nullptr);
 			else useup(obj);
 			hittxt = TRUE;
 			get_dmg_bonus = FALSE;
@@ -844,7 +844,7 @@ STATIC_OVL boolean hmon_hitmon(struct Monster *mon, struct Object *obj, int thro
 				Your("venom burns %s!", mon_nam(mon));
 				tmp = dmgval(obj, mon);
 			}
-			if (thrown) obfree(obj, (struct Object *)0);
+			if (thrown) obfree(obj, nullptr);
 			else useup(obj);
 			hittxt = TRUE;
 			get_dmg_bonus = FALSE;
@@ -1149,7 +1149,7 @@ STATIC_OVL void demonpet() {
 	i = !rn2(6) ? ndemon(u.ualign.type) : NON_PM;
 	pm = i != NON_PM ? &mons[i] : youmonst.data;
 	if ((dtmp = makemon(pm, u.ux, u.uy, NO_MM_FLAGS)) != 0)
-	    (void)tamedog(dtmp, (struct Object *)0);
+	    (void)tamedog(dtmp, nullptr);
 	exercise(A_WIS, TRUE);
 }
 
@@ -1172,7 +1172,7 @@ STATIC_OVL void steal_it(struct Monster *mdef, struct attack *mattk) {
 	if (!mdef->minvent) return;		/* nothing to take */
 
 	/* look for worn body armor */
-	stealoid = (struct Object *)0;
+	stealoid = nullptr;
 	if (could_seduce(&youmonst, mdef, mattk)) {
 	    /* find armor, and move it to end of inventory in the process */
 	    minvent_ptr = &mdef->minvent;
@@ -1181,7 +1181,7 @@ STATIC_OVL void steal_it(struct Monster *mdef, struct attack *mattk) {
 		    if (stealoid) panic("steal_it: multiple worn suits");
 		    *minvent_ptr = otmp->nobj;	/* take armor out of minvent */
 		    stealoid = otmp;
-		    stealoid->nobj = (struct Object *)0;
+		    stealoid->nobj = nullptr;
 		} else {
 		    minvent_ptr = &otmp->nobj;
 		}
@@ -1587,7 +1587,7 @@ int damageum(struct Monster *mdef, struct attack *mattk) {
 		if (!negated && mdef->mspeed != MSLOW) {
 		    unsigned int oldspeed = mdef->mspeed;
 
-		    mon_adjust_speed(mdef, -1, (struct Object *)0);
+		    mon_adjust_speed(mdef, -1, nullptr);
 		    if (mdef->mspeed != oldspeed && canseemon(mdef))
 			pline("%s slows down.", Monnam(mdef));
 		}
@@ -1801,7 +1801,7 @@ STATIC_OVL int gulpum(struct Monster *mdef, struct attack *mattk) {
 			}
 			break;
 		    case AD_BLND:
-			if (can_blnd(&youmonst, mdef, mattk->aatyp, (struct Object *)0)) {
+			if (can_blnd(&youmonst, mdef, mattk->aatyp, nullptr)) {
 			    if (mdef->mcansee)
 				pline("%s can't see in there!", Monnam(mdef));
 			    mdef->mcansee = 0;
@@ -2169,7 +2169,7 @@ int passive(struct Monster *mon, boolean mhit, int malive, uchar aatyp) {
 	    break;
 	  case AD_ENCH:	/* KMH -- remove enchantment (disenchanter) */
 	    if (mhit) {
-		struct Object *obj = (struct Object *)0;
+		struct Object *obj = nullptr;
 
 		if (aatyp == AT_KICK) {
 		    obj = uarmf;

@@ -115,7 +115,7 @@ boolean boulder_hits_pool(struct Object *otmp, int rx, int ry, boolean pushing) 
 
 	    /* boulder is now gone */
 	    if (pushing) delobj(otmp);
-	    else obfree(otmp, (struct Object *)0);
+	    else obfree(otmp, nullptr);
 	    return TRUE;
 	}
 	return FALSE;
@@ -133,7 +133,7 @@ boolean flooreffects(struct Object *obj, int x, int y, const char *verb) {
 	    panic("flooreffects: obj not free");
 
 	/* make sure things like water_damage() have no pointers to follow */
-	obj->nobj = obj->nexthere = (struct Object *)0;
+	obj->nobj = obj->nexthere = nullptr;
 
 	if (obj->otyp == BOULDER && boulder_hits_pool(obj, x, y, FALSE))
 		return TRUE;
@@ -176,7 +176,7 @@ boolean flooreffects(struct Object *obj, int x, int y, const char *verb) {
 			}
 		}
 		deltrap(t);
-		obfree(obj, (struct Object *)0);
+		obfree(obj, nullptr);
 		bury_objs(x, y);
 		newsym(x,y);
 		return TRUE;
@@ -441,13 +441,13 @@ int drop(struct Object *obj) {
 			weldmsg(obj);
 			return(0);
 		}
-		setuwep((struct Object *)0);
+		setuwep(nullptr);
 	}
 	if(obj == uquiver) {
-		setuqwep((struct Object *)0);
+		setuqwep(nullptr);
 	}
 	if (obj == uswapwep) {
-		setuswapwep((struct Object *)0);
+		setuswapwep(nullptr);
 	}
 
 	if (u.uswallow) {
@@ -507,9 +507,9 @@ void dropx(struct Object *obj) {
 }
 
 void dropy(struct Object *obj) {
-	if (obj == uwep) setuwep((struct Object *)0);
-	if (obj == uquiver) setuqwep((struct Object *)0);
-	if (obj == uswapwep) setuswapwep((struct Object *)0);
+	if (obj == uwep) setuwep(nullptr);
+	if (obj == uquiver) setuqwep(nullptr);
+	if (obj == uswapwep) setuswapwep(nullptr);
 
 	if (!u.uswallow && flooreffects(obj,u.ux,u.uy,"drop")) return;
 	/* uswallow check done by GAN 01/29/87 */
@@ -976,7 +976,7 @@ void goto_level(d_level *newlevel, boolean at_stairs, boolean falling, boolean p
 	if (fd < 0) return;
 
 	if (falling) /* assuming this is only trap door or hole */
-	    impact_drop((struct Object *)0, u.ux, u.uy, newlevel->dlevel);
+	    impact_drop(nullptr, u.ux, u.uy, newlevel->dlevel);
 
 	check_special_room(TRUE);		/* probably was a trap door */
 	if (Punished) unplacebc();
@@ -1115,11 +1115,11 @@ void goto_level(d_level *newlevel, boolean at_stairs, boolean falling, boolean p
 			drag_down();
 			if (carried(uball)) {
 			    if (uwep == uball)
-				setuwep((struct Object *)0);
+				setuwep(nullptr);
 			    if (uswapwep == uball)
-				setuswapwep((struct Object *)0);
+				setuswapwep(nullptr);
 			    if (uquiver == uball)
-				setuqwep((struct Object *)0);
+				setuqwep(nullptr);
 			    freeinv(uball);
 			}
 		    }
@@ -1431,7 +1431,7 @@ boolean revive_corpse(struct Object *corpse) {
     boolean is_uwep, chewed;
     xchar where;
     char *cname, cname_buf[BUFSZ];
-    struct Object *container = (struct Object *)0;
+    struct Object *container = nullptr;
     int container_where = 0;
     
     where = corpse->where;

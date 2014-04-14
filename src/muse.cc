@@ -248,7 +248,7 @@ boolean find_defensive(struct Monster *mtmp) {
 		return FALSE;
 	if (u.uswallow && stuck) return FALSE;
 
-	m.defensive = (struct Object *)0;
+	m.defensive = nullptr;
 	m.has_defense = 0;
 
 	/* since unicorn horns don't get used up, the monster would look
@@ -943,7 +943,7 @@ boolean find_offensive(struct Monster *mtmp) {
 	boolean reflection_skip = (Reflecting && rn2(2));
 	struct Object *helmet = which_armor(mtmp, W_ARMH);
 
-	m.offensive = (struct Object *)0;
+	m.offensive = nullptr;
 	m.has_offense = 0;
 	if (mtmp->mpeaceful || is_animal(mtmp->data) ||
 				mindless(mtmp->data) || nohands(mtmp->data))
@@ -1539,7 +1539,7 @@ boolean find_misc(struct Monster *mtmp) {
 	boolean immobile = (mdat->mmove == 0);
 	boolean stuck = (mtmp == u.ustuck);
 
-	m.misc = (struct Object *)0;
+	m.misc = nullptr;
 	m.has_misc = 0;
 	if (is_animal(mdat) || mindless(mdat))
 		return 0;
@@ -2064,7 +2064,7 @@ STATIC_OVL void mon_consume_unstone(struct Monster *mon, struct Object *obj, boo
 
     /* give a "<mon> is slowing down" message and also remove
        intrinsic speed (comparable to similar effect on the hero) */
-    mon_adjust_speed(mon, -3, (struct Object *)0);
+    mon_adjust_speed(mon, -3, nullptr);
 
     if (canseemon(mon)) {
 	long save_quan = obj->quan;

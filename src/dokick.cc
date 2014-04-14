@@ -119,7 +119,7 @@ STATIC_OVL void kick_monster(xchar x, xchar y) {
 
 	bhitpos.x = x;
 	bhitpos.y = y;
-	if (attack_checks(mon, (struct Object *)0)) return;
+	if (attack_checks(mon, nullptr)) return;
 	setmangry(mon);
 
 	/* Kick attacks by kicking monsters are normal attacks, not special.
@@ -754,7 +754,7 @@ int dokick() {
 		return 1;
 	}
 
-	kickobj = (struct Object *)0;
+	kickobj = nullptr;
 	if (OBJ_AT(x, y) &&
 	    (!Levitation || Is_airlevel(&u.uz) || Is_waterlevel(&u.uz)
 	     || sobj_at(BOULDER,x,y))) {
@@ -1303,9 +1303,9 @@ boolean ship_object(struct Object *otmp, xchar x, xchar y, boolean shop_floor_ob
 		otmp->no_charge = 0;
 	}
 
-	if (otmp == uwep) setuwep((struct Object *)0);
-	if (otmp == uquiver) setuqwep((struct Object *)0);
-	if (otmp == uswapwep) setuswapwep((struct Object *)0);
+	if (otmp == uwep) setuwep(nullptr);
+	if (otmp == uquiver) setuqwep(nullptr);
+	if (otmp == uswapwep) setuswapwep(nullptr);
 
 	/* some things break rather than ship */
 	if (breaktest(otmp)) {

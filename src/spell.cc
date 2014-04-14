@@ -283,7 +283,7 @@ raise_dead:
 			if (mtmp->mtame < 20)
 			    mtmp->mtame++;
 		    } else
-			(void) tamedog(mtmp, (struct Object *)0);
+			(void) tamedog(mtmp, nullptr);
 		else monflee(mtmp, 0, FALSE, TRUE);
 	    }
 	}
@@ -482,7 +482,7 @@ int study_book(struct Object *spellbook) {
 /* a spellbook has been destroyed or the character has changed levels;
    the stored address for the current book is no longer valid */
 void book_disappears(struct Object *obj) {
-	if (obj == book) book = (struct Object *)0;
+	if (obj == book) book = nullptr;
 }
 
 /* renaming an object usually results in it having a different address;
@@ -890,7 +890,7 @@ int spelleffects(int spell, boolean atme) {
 		healup(0, 0, TRUE, FALSE);
 		break;
 	case SPE_CREATE_FAMILIAR:
-		(void) make_familiar((struct Object *)0, u.ux, u.uy, FALSE);
+		(void) make_familiar(nullptr, u.ux, u.uy, FALSE);
 		break;
 	case SPE_CLAIRVOYANCE:
 		if (!BClairvoyant)
@@ -909,14 +909,14 @@ int spelleffects(int spell, boolean atme) {
 		break;
 	default:
 		impossible("Unknown spell %d attempted.", spell);
-		obfree(pseudo, (struct Object *)0);
+		obfree(pseudo, nullptr);
 		return(0);
 	}
 
 	/* gain skill for successful cast */
 	use_skill(skill, spellev(spell));
 
-	obfree(pseudo, (struct Object *)0);	/* now, get rid of it */
+	obfree(pseudo, nullptr);	/* now, get rid of it */
 	return(1);
 }
 

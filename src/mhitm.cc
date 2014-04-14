@@ -235,7 +235,7 @@ int mattackm(struct Monster *magr, struct Monster *mdef) {
     for (i = 0; i < NATTK; i++) {
 	res[i] = MM_MISS;
 	mattk = getmattk(pa, i, res, &alt_attk);
-	otmp = (struct Object *)0;
+	otmp = nullptr;
 	attk = 1;
 	switch (mattk->aatyp) {
 	    case AT_WEAP:		/* "hand to hand" attacks */
@@ -855,7 +855,7 @@ STATIC_OVL int mdamagem(struct Monster *magr, struct Monster *mdef, struct attac
 		if (!cancelled && mdef->mspeed != MSLOW) {
 		    unsigned int oldspeed = mdef->mspeed;
 
-		    mon_adjust_speed(mdef, -1, (struct Object *)0);
+		    mon_adjust_speed(mdef, -1, nullptr);
 		    mdef->mstrategy &= ~STRAT_WAITFORU;
 		    if (mdef->mspeed != oldspeed && vis)
 			pline("%s slows down.", Monnam(mdef));
