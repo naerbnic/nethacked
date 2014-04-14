@@ -9,7 +9,7 @@
 #ifdef OVLB
 #include "artilist.h"
 #else
-STATIC_DCL struct artifact artilist[];
+STATIC_DCL struct Artifact artilist[];
 #endif
 /*
  * Note:  both artilist[] and artiexist[] have a dummy element #0,
@@ -23,7 +23,7 @@ extern boolean notonhead;	/* for long worms */
 #define get_artifact(o) \
 		(((o)&&(o)->oartifact) ? &artilist[(int) (o)->oartifact] : 0)
 
-STATIC_DCL int FDECL(spec_applies, (const struct artifact *,struct Monster *));
+STATIC_DCL int FDECL(spec_applies, (const struct Artifact *,struct Monster *));
 STATIC_DCL int FDECL(arti_invoke, (struct Object*));
 STATIC_DCL boolean FDECL(Mb_hit, (struct Monster *magr,struct Monster *mdef,
 				  struct Object *,int *,int,BOOLEAN_P,char *));
@@ -55,7 +55,7 @@ STATIC_DCL boolean FDECL(attacks, (int,struct Object *));
 
 /* handle some special cases; must be called after u_init() */
 STATIC_OVL void hack_artifacts() {
-	struct artifact *art;
+	struct Artifact *art;
 	int alignmnt = aligns[flags.initalign].value;
 
 	/* Fix up the alignments of "gift" artifacts */
@@ -109,7 +109,7 @@ const char * artiname(int artinum) {
    for the 1st, ``obj = mk_artifact(nullptr, some_alignment);''.
  */
 struct Object * mk_artifact(struct Object *otmp, aligntyp alignment) {
-	const struct artifact *a;
+	const struct Artifact *a;
 	int n, m;
 	boolean by_align = (alignment != A_NONE);
 	short o_typ = (by_align || !otmp) ? 0 : otmp->otyp;
@@ -154,7 +154,7 @@ make_artif: if (by_align) otmp = mksobj((int)a->otyp, TRUE, FALSE);
  * is non-NULL.
  */
 const char* artifact_name(const char *name, short *otyp) {
-    const struct artifact *a;
+    const struct Artifact *a;
     const char *aname;
 
     if(!strncmpi(name, "the ", 4)) name += 4;
@@ -172,7 +172,7 @@ const char* artifact_name(const char *name, short *otyp) {
 }
 
 boolean exist_artifact(int otyp, const char *name) {
-	const struct artifact *a;
+	const struct Artifact *a;
 	boolean *arex;
 
 	if (otyp && *name)
@@ -183,7 +183,7 @@ boolean exist_artifact(int otyp, const char *name) {
 }
 
 void artifact_exists(struct Object *otmp, const char *name, boolean mod) {
-	const struct artifact *a;
+	const struct Artifact *a;
 
 	if (otmp && *name)
 	    for (a = artilist+1; a->otyp; a++)
@@ -212,7 +212,7 @@ int nartifact_exist() {
 #ifdef OVL0
 
 boolean spec_ability(struct Object *otmp, unsigned long abil) {
-	const struct artifact *arti = get_artifact(otmp);
+	const struct Artifact *arti = get_artifact(otmp);
 
 	return((boolean)(arti && (arti->spfx & abil)));
 }
@@ -227,7 +227,7 @@ boolean confers_luck(struct Object *obj) {
 
 /* used to check whether a monster is getting reflection from an artifact */
 boolean arti_reflects(struct Object *obj) {
-    const struct artifact *arti = get_artifact(obj);
+    const struct Artifact *arti = get_artifact(obj);
 
     if (arti) {      
 	/* while being worn */
@@ -244,7 +244,7 @@ boolean arti_reflects(struct Object *obj) {
 
 /* returns 1 if name is restricted for otmp->otyp */
 boolean restrict_name(struct Object *otmp, const char *name) {
-	const struct artifact *a;
+	const struct Artifact *a;
 	const char *aname;
 
 	if (!*name) return FALSE;
@@ -267,7 +267,7 @@ boolean restrict_name(struct Object *otmp, const char *name) {
 }
 
 STATIC_OVL boolean attacks(int adtyp, struct Object *otmp) {
-	const struct artifact *weap;
+	const struct Artifact *weap;
 
 	if ((weap = get_artifact(otmp)) != 0)
 		return((boolean)(weap->attk.adtyp == adtyp));
@@ -275,7 +275,7 @@ STATIC_OVL boolean attacks(int adtyp, struct Object *otmp) {
 }
 
 boolean defends(int adtyp, struct Object *otmp) {
-	const struct artifact *weap;
+	const struct Artifact *weap;
 
 	if ((weap = get_artifact(otmp)) != 0)
 		return((boolean)(weap->defn.adtyp == adtyp));
@@ -284,7 +284,7 @@ boolean defends(int adtyp, struct Object *otmp) {
 
 /* used for monsters */
 boolean protects(int adtyp, struct Object *otmp) {
-	const struct artifact *weap;
+	const struct Artifact *weap;
 
 	if ((weap = get_artifact(otmp)) != 0)
 		return (boolean)(weap->cary.adtyp == adtyp);
@@ -297,7 +297,7 @@ boolean protects(int adtyp, struct Object *otmp) {
  */
 void set_artifact_intrinsic(struct Object *otmp, boolean on, long wp_mask) {
 	long *mask = 0;
-	const struct artifact *oart = get_artifact(otmp);
+	const struct Artifact *oart = get_artifact(otmp);
 	uchar dtyp;
 	long spfx;
 
@@ -325,7 +325,7 @@ void set_artifact_intrinsic(struct Object *otmp, boolean on, long wp_mask) {
 	    struct Object* obj;
 	    for(obj = invent; obj; obj = obj->nobj)
 		if(obj != otmp && obj->oartifact) {
-		    const struct artifact *art = get_artifact(obj);
+		    const struct Artifact *art = get_artifact(obj);
 		    if(art->cary.adtyp == dtyp) {
 			mask = (long *) 0;
 			break;
@@ -344,7 +344,7 @@ void set_artifact_intrinsic(struct Object *otmp, boolean on, long wp_mask) {
 	    struct Object* obj;
 	    for(obj = invent; obj; obj = obj->nobj)
 		if(obj != otmp && obj->oartifact) {
-		    const struct artifact *art = get_artifact(obj);
+		    const struct Artifact *art = get_artifact(obj);
 		    spfx &= ~art->cspfx;
 		}
 	}
@@ -433,7 +433,7 @@ void set_artifact_intrinsic(struct Object *otmp, boolean on, long wp_mask) {
  * fooled by such trappings.
  */
 int touch_artifact(struct Object *obj, struct Monster *mon) {
-    const struct artifact *oart = get_artifact(obj);
+    const struct Artifact *oart = get_artifact(obj);
     boolean badclass, badalign, self_willed, yours;
 
     if(!oart) return 1;
@@ -461,7 +461,7 @@ int touch_artifact(struct Object *obj, struct Monster *mon) {
     /* weapons which attack specific categories of monsters are
        bad for them even if their alignments happen to match */
     if (!badalign && (oart->spfx & SPFX_DBONUS) != 0) {
-	struct artifact tmp;
+	struct Artifact tmp;
 
 	tmp = *oart;
 	tmp.spfx &= SPFX_DBONUS;
@@ -494,7 +494,7 @@ int touch_artifact(struct Object *obj, struct Monster *mon) {
 #ifdef OVL1
 
 /* decide whether an artifact's special attacks apply against mtmp */
-STATIC_OVL int spec_applies(const struct artifact *weap, struct Monster *mtmp) {
+STATIC_OVL int spec_applies(const struct Artifact *weap, struct Monster *mtmp) {
 	struct permonst *ptr;
 	boolean yours;
 
@@ -548,7 +548,7 @@ STATIC_OVL int spec_applies(const struct artifact *weap, struct Monster *mtmp) {
 
 /* return the M2 flags of monster that an artifact's special attacks apply against */
 long spec_m2(struct Object *otmp) {
-	const struct artifact *artifact = get_artifact(otmp);
+	const struct Artifact *artifact = get_artifact(otmp);
 	if (artifact)
 		return artifact->mtype;
 	return 0L;
@@ -556,7 +556,7 @@ long spec_m2(struct Object *otmp) {
 
 /* special attack bonus */
 int spec_abon(struct Object *otmp, struct Monster *mon) {
-	const struct artifact *weap = get_artifact(otmp);
+	const struct Artifact *weap = get_artifact(otmp);
 
 	/* no need for an extra check for `NO_ATTK' because this will
 	   always return 0 for any artifact which has that attribute */
@@ -568,7 +568,7 @@ int spec_abon(struct Object *otmp, struct Monster *mon) {
 
 /* special damage bonus */
 int spec_dbon(struct Object *otmp, struct Monster *mon, int tmp) {
-	const struct artifact *weap = get_artifact(otmp);
+	const struct Artifact *weap = get_artifact(otmp);
 
 	if (!weap || (weap->attk.adtyp == AD_PHYS && /* check for `NO_ATTK' */
 			weap->attk.damn == 0 && weap->attk.damd == 0))
@@ -1077,7 +1077,7 @@ int doinvoke() {
 }
 
 STATIC_OVL int arti_invoke(struct Object *obj) {
-    const struct artifact *oart = get_artifact(obj);
+    const struct Artifact *oart = get_artifact(obj);
 
     if(!oart || !oart->inv_prop) {
 	if(obj->otyp == CRYSTAL_BALL)
@@ -1321,7 +1321,7 @@ boolean artifact_light(struct Object *obj) {
 
 /* KMH -- Talking artifacts are finally implemented */
 void arti_speak(struct Object *obj) {
-	const struct artifact *oart = get_artifact(obj);
+	const struct Artifact *oart = get_artifact(obj);
 	const char *line;
 	char buf[BUFSZ];
 
@@ -1339,7 +1339,7 @@ void arti_speak(struct Object *obj) {
 }
 
 boolean artifact_has_invprop(struct Object *otmp, uchar inv_prop) {
-	const struct artifact *arti = get_artifact(otmp);
+	const struct Artifact *arti = get_artifact(otmp);
 
 	return((boolean)(arti && (arti->inv_prop == inv_prop)));
 }

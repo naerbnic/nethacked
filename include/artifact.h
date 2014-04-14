@@ -36,7 +36,7 @@
 #define SPFX_REFLECT 0x4000000L /* Reflection */
 
 
-struct artifact {
+struct Artifact {
 	short	    otyp;
 	const char  *name;
 	unsigned long spfx;	/* special effect from wielding/wearing */

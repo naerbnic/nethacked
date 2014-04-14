@@ -189,39 +189,6 @@ struct instance_flags {
 #ifdef MENU_COLOR
 	boolean use_menu_color;	/* use color in menus; only if wc_color */
 #endif
-#ifdef MFLOPPY
-	boolean  checkspace;	/* check disk space before writing files */
-				/* (in iflags to allow restore after moving
-				 * to >2GB partition) */
-#endif
-#ifdef MICRO
-	boolean  BIOS;		/* use IBM or ST BIOS calls when appropriate */
-#endif
-#if defined(MICRO) || defined(WIN32)
-	boolean  rawio;		/* whether can use rawio (IOCTL call) */
-#endif
-#ifdef MAC_GRAPHICS_ENV
-	boolean  MACgraphics;	/* use Macintosh extended character set, as
-				   as defined in the special font HackFont */
-	unsigned  use_stone;		/* use the stone ppats */
-#endif
-#if defined(WIN32)
-	boolean hassound;	/* has a sound card */
-	boolean usesound;	/* use the sound card */
-	boolean usepcspeaker;	/* use the pc speaker */
-	boolean tile_view;
-	boolean over_view;
-	boolean traditional_view;
-#endif
-#ifdef MSDOS
-	boolean hasvga;		/* has a vga adapter */
-	boolean usevga;		/* use the vga adapter */
-	boolean grmode;		/* currently in graphics mode */
-#endif
-#ifdef LAN_FEATURES
-	boolean lan_mail;	/* mail is initialized */
-	boolean lan_mail_fetched; /* mail is awaiting display */
-#endif
 #ifdef SHOW_BORN
 	boolean show_born;	/* show numbers of created monsters */
 #endif
