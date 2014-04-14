@@ -8,10 +8,12 @@
 /* #define obj obj_nh */ /* uncomment for SCO UNIX, which has a conflicting
 			  * typedef for "obj" in <sys/types.h> */
 
+struct Object;
+
 union vptrs {
-	    struct Object *v_nexthere;	/* floor location lists */
-	    struct Object *v_ocontainer;	/* point back to container */
-	    struct Monster *v_ocarry;	/* point back to carrying monst */
+	    Object *v_nexthere;	/* floor location lists */
+	    Object *v_ocontainer;	/* point back to container */
+	    Monster *v_ocarry;	/* point back to carrying monst */
 };
 
 struct Object {
