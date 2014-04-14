@@ -52,38 +52,7 @@
 # define NEED_VARARGS
 #endif
 
-
-/*
- * Amiga setup.
- */
-#ifdef AZTEC_C	/* Manx auto-defines this */
-# error "Don't support!"
-# ifdef MCH_AMIGA	/* Manx auto-defines this for AMIGA */
-#  ifndef AMIGA
-#define AMIGA		/* define for Commodore-Amiga */
-#  endif		/* (SAS/C auto-defines AMIGA) */
-#define AZTEC_50	/* define for version 5.0 of manx */
-# endif
-#endif
-#ifdef __SASC_60
-# error "Don't support!"
-# define NEARDATA __near /* put some data close */
-#else
-# ifdef _DCC
-# error "Don't support!"
-# define NEARDATA __near /* put some data close */
-# else
 # define NEARDATA
-# endif
-#endif
-#ifdef AMIGA
-# error "Don't support!"
-# define NEED_VARARGS
-# undef UNIX
-# define DLB
-# define HACKDIR "NetHack:"
-# define NO_MACRO_CPATH
-#endif
 
 /*
  * Atari auto-detection

@@ -7,7 +7,7 @@
 #include "hack.h"
 #include "artifact.h"
 
-STATIC_VAR NEARDATA struct Object *otmp;
+STATIC_VAR struct Object *otmp;
 
 STATIC_DCL void FDECL(urustm, (struct Monster *, struct Object *));
 # ifdef OVL1

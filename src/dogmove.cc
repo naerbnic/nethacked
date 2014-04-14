@@ -46,7 +46,7 @@ STATIC_OVL struct Object * DROPPABLES(struct Monster *mon) {
 	return nullptr;
 }
 
-static NEARDATA const char nofetch[] = { BALL_CLASS, CHAIN_CLASS, ROCK_CLASS, 0 };
+static const char nofetch[] = { BALL_CLASS, CHAIN_CLASS, ROCK_CLASS, 0 };
 
 #endif /* OVL0 */
 

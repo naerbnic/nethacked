@@ -28,7 +28,7 @@ STATIC_DCL void FDECL(kops_gone, (BOOLEAN_P));
 extern const struct shclass shtypes[];	/* defined in shknam.c */
 extern struct Object *thrownobj;		/* defined in dothrow.c */
 
-STATIC_VAR NEARDATA long int followmsg;	/* last time of follow message */
+STATIC_VAR long int followmsg;	/* last time of follow message */
 
 STATIC_DCL void FDECL(setpaid, (struct Monster *));
 STATIC_DCL long FDECL(addupbill, (struct Monster *));

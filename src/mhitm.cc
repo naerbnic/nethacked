@@ -12,9 +12,9 @@ extern boolean notonhead;
 
 #ifdef OVLB
 
-static NEARDATA boolean vis, far_noise;
-static NEARDATA long noisetime;
-static NEARDATA struct Object *otmp;
+static boolean vis, far_noise;
+static long noisetime;
+static struct Object *otmp;
 
 static const char brief_feeling[] =
 	"have a %s feeling for a moment, then it passes.";

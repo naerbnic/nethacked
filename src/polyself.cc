@@ -1089,7 +1089,7 @@ void skinback(boolean silently) {
 #ifdef OVL1
 
 const char * mbodypart(struct Monster *mon, int part) {
-	static NEARDATA const char
+	static const char
 	*humanoid_parts[] = { "arm", "eye", "face", "finger",
 		"fingertip", "foot", "hand", "handed", "head", "leg",
 		"light headed", "neck", "spine", "toe", "hair",

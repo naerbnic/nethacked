@@ -262,7 +262,7 @@ STATIC_OVL void fix_worst_trouble(int trouble) {
 	int i;
 	struct Object *otmp = 0;
 	const char *what = (const char *)0;
-	static NEARDATA const char leftglow[] = "left ring softly glows",
+	static const char leftglow[] = "left ring softly glows",
 				   rightglow[] = "right ring softly glows";
 
 	switch (trouble) {
@@ -1054,7 +1054,7 @@ STATIC_OVL void gods_upset(aligntyp g_align) {
 	angrygods(g_align);
 }
 
-static NEARDATA const char sacrifice_types[] = { FOOD_CLASS, AMULET_CLASS, 0 };
+static const char sacrifice_types[] = { FOOD_CLASS, AMULET_CLASS, 0 };
 
 STATIC_OVL void consume_offering(struct Object *otmp) {
     if (Hallucination)

@@ -1711,7 +1711,7 @@ STATIC_OVL boolean mbag_explodes(struct Object *obj, int depthin) {
 
 /* A variable set in use_container(), to be used by the callback routines   */
 /* in_container(), and out_container() from askchain() and use_container(). */
-static NEARDATA struct Object *current_container;
+static struct Object *current_container;
 #define Icebox (current_container->otyp == ICE_BOX)
 
 /* Returns: -1 to stop, 1 item was inserted, 0 item was not inserted. */
@@ -1962,7 +1962,7 @@ STATIC_OVL long mbag_item_gone(int held, struct Object *item) {
 }
 
 STATIC_OVL void observe_quantum_cat(struct Object *box) {
-    static NEARDATA const char sc[] = "Schroedinger's Cat";
+    static const char sc[] = "Schroedinger's Cat";
     struct Object *deadcat;
     struct Monster *livecat;
     xchar ox, oy;

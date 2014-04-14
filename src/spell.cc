@@ -6,8 +6,8 @@
 
 #include "hack.h"
 
-static NEARDATA schar delay;		/* moves left for this spell */
-static NEARDATA struct Object *book;	/* last/current book being xscribed */
+static schar delay;		/* moves left for this spell */
+static struct Object *book;	/* last/current book being xscribed */
 
 /* spellmenu arguments; 0 thru n-1 used as spl_book[] index when swapping */
 #define SPELLMENU_CAST (-2)

@@ -240,7 +240,7 @@ STATIC_OVL boolean md_stop(coord *stopp, coord *startp) {
 }
 
 /* Let the mail daemon have a larger vocabulary. */
-static NEARDATA const char *mail_text[] = {
+static const char *mail_text[] = {
     "Gangway!",
     "Look out!",
     "Pardon me!"

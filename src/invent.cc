@@ -1101,7 +1101,7 @@ boolean is_worn(struct Object *otmp) {
 			W_WEP | W_SWAPWEP | W_QUIVER))));
 }
 
-static NEARDATA const char removeables[] =
+static const char removeables[] =
 	{ ARMOR_CLASS, WEAPON_CLASS, RING_CLASS, AMULET_CLASS, TOOL_CLASS, 0 };
 
 /* interactive version of getobj - used for Drop, Identify and */
@@ -2552,24 +2552,24 @@ void useupf(struct Object *obj, long numused) {
  * Conversion from a class to a string for printing.
  * This must match the object class order.
  */
-STATIC_VAR NEARDATA const char *names[] = { 0,
+STATIC_VAR const char *names[] = { 0,
 	"Illegal objects", "Weapons", "Armor", "Rings", "Amulets",
 	"Tools", "Comestibles", "Potions", "Scrolls", "Spellbooks",
 	"Wands", "Coins", "Gems", "Boulders/Statues", "Iron balls",
 	"Chains", "Venoms"
 };
 
-static NEARDATA const char oth_symbols[] = {
+static const char oth_symbols[] = {
 	CONTAINED_SYM,
 	'\0'
 };
 
-static NEARDATA const char *oth_names[] = {
+static const char *oth_names[] = {
 	"Bagged/Boxed items"
 };
 
-static NEARDATA char *invbuf = (char *)0;
-static NEARDATA unsigned invbufsiz = 0;
+static char *invbuf = (char *)0;
+static unsigned invbufsiz = 0;
 
 char * let_to_name(char let, boolean unpaid) {
 	const char *class_name;

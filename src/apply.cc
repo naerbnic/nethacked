@@ -1097,7 +1097,7 @@ STATIC_OVL void light_cocktail(struct Object *obj) {
 	    begin_burn(obj, FALSE);
 }
 
-static NEARDATA const char cuddly[] = { TOOL_CLASS, GEM_CLASS, 0 };
+static const char cuddly[] = { TOOL_CLASS, GEM_CLASS, 0 };
 
 int dorub() {
 	struct Object *obj = getobj(cuddly, "rub");
@@ -1658,8 +1658,8 @@ STATIC_OVL void use_figurine(struct Object **optr) {
 	*optr = 0;
 }
 
-static NEARDATA const char lubricables[] = { ALL_CLASSES, ALLOW_NONE, 0 };
-static NEARDATA const char need_to_remove_outer_armor[] =
+static const char lubricables[] = { ALL_CLASSES, ALLOW_NONE, 0 };
+static const char need_to_remove_outer_armor[] =
 			"need to remove your %s to grease your %s.";
 
 STATIC_OVL void use_grease(struct Object *obj) {
