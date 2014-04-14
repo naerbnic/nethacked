@@ -1227,18 +1227,18 @@ void do_storms() {
 
 #ifdef WIZARD
 STATIC_DCL const char *FDECL(kind_name, (SHORT_P));
-STATIC_DCL void FDECL(print_queue, (winid, timer_element *));
+STATIC_DCL void FDECL(print_queue, (winid, TimerElement *));
 #endif
-STATIC_DCL void FDECL(insert_timer, (timer_element *));
-STATIC_DCL timer_element *FDECL(remove_timer, (timer_element **, SHORT_P,
+STATIC_DCL void FDECL(insert_timer, (TimerElement *));
+STATIC_DCL TimerElement *FDECL(remove_timer, (TimerElement **, SHORT_P,
 								genericptr_t));
-STATIC_DCL void FDECL(write_timer, (int, timer_element *));
+STATIC_DCL void FDECL(write_timer, (int, TimerElement *));
 STATIC_DCL boolean FDECL(mon_is_local, (struct Monster *));
-STATIC_DCL boolean FDECL(timer_is_local, (timer_element *));
+STATIC_DCL boolean FDECL(timer_is_local, (TimerElement *));
 STATIC_DCL int FDECL(maybe_write_timer, (int, int, BOOLEAN_P));
 
 /* ordered timer list */
-static timer_element *timer_base;		/* "active" */
+static TimerElement *timer_base;		/* "active" */
 static unsigned long timer_id = 1;
 
 /* If defined, then include names when printing out the timer queue */
@@ -1278,8 +1278,8 @@ STATIC_OVL const char * kind_name(short kind) {
     return "unknown";
 }
 
-STATIC_OVL void print_queue(winid win, timer_element *base) {
-    timer_element *curr;
+STATIC_OVL void print_queue(winid win, TimerElement *base) {
+    TimerElement *curr;
     char buf[BUFSZ], arg_address[20];
 
     if (!base) {
@@ -1324,7 +1324,7 @@ int wiz_timeout_queue() {
 }
 
 void timer_sanity_check() {
-    timer_element *curr;
+    TimerElement *curr;
     char obj_address[20];
 
     /* this should be much more complete */
@@ -1346,7 +1346,7 @@ void timer_sanity_check() {
  * Do this until their time is less than or equal to the move count.
  */
 void run_timers() {
-    timer_element *curr;
+    TimerElement *curr;
 
     /*
      * Always use the first element.  Elements may be added or deleted at
@@ -1368,12 +1368,12 @@ void run_timers() {
  * Start a timer.  Return TRUE if successful.
  */
 boolean start_timer(long when, short kind, short func_index, genericptr_t arg) {
-    timer_element *gnu;
+    TimerElement *gnu;
 
     if (func_index < 0 || func_index >= NUM_TIME_FUNCS)
 	panic("start_timer");
 
-    gnu = (timer_element *) alloc(sizeof(timer_element));
+    gnu = (TimerElement *) alloc(sizeof(TimerElement));
     gnu->next = 0;
     gnu->tid = timer_id++;
     gnu->timeout = monstermoves + when;
@@ -1396,7 +1396,7 @@ boolean start_timer(long when, short kind, short func_index, genericptr_t arg) {
  * it would have gone off, 0 if not found.
  */
 long stop_timer(short func_index, genericptr_t arg) {
-    timer_element *doomed;
+    TimerElement *doomed;
     long timeout;
 
     doomed = remove_timer(&timer_base, func_index, arg);
@@ -1419,7 +1419,7 @@ long stop_timer(short func_index, genericptr_t arg) {
  */
 void obj_move_timers(struct Object *src, struct Object *dest) {
     int count;
-    timer_element *curr;
+    TimerElement *curr;
 
     for (count = 0, curr = timer_base; curr; curr = curr->next)
 	if (curr->kind == TIMER_OBJECT && curr->arg == (genericptr_t)src) {
@@ -1437,7 +1437,7 @@ void obj_move_timers(struct Object *src, struct Object *dest) {
  * Find all object timers and duplicate them for the new object "dest".
  */
 void obj_split_timers(struct Object *src, struct Object *dest) {
-    timer_element *curr, *next_timer=0;
+    TimerElement *curr, *next_timer=0;
 
     for (curr = timer_base; curr; curr = next_timer) {
 	next_timer = curr->next;	/* things may be inserted */
@@ -1454,7 +1454,7 @@ void obj_split_timers(struct Object *src, struct Object *dest) {
  * all object pointers are unique.
  */
 void obj_stop_timers(struct Object *obj) {
-    timer_element *curr, *prev, *next_timer=0;
+    TimerElement *curr, *prev, *next_timer=0;
 
     for (prev = 0, curr = timer_base; curr; curr = next_timer) {
 	next_timer = curr->next;
@@ -1476,8 +1476,8 @@ void obj_stop_timers(struct Object *obj) {
 
 
 /* Insert timer into the global queue */
-STATIC_OVL void insert_timer(timer_element *gnu) {
-    timer_element *curr, *prev;
+STATIC_OVL void insert_timer(TimerElement *gnu) {
+    TimerElement *curr, *prev;
 
     for (prev = 0, curr = timer_base; curr; prev = curr, curr = curr->next)
 	if (curr->timeout >= gnu->timeout) break;
@@ -1490,8 +1490,8 @@ STATIC_OVL void insert_timer(timer_element *gnu) {
 }
 
 
-STATIC_OVL timer_element * remove_timer(timer_element **base, short func_index, genericptr_t arg) {
-    timer_element *prev, *curr;
+STATIC_OVL TimerElement * remove_timer(TimerElement **base, short func_index, genericptr_t arg) {
+    TimerElement *prev, *curr;
 
     for (prev = 0, curr = *base; curr; prev = curr, curr = curr->next)
 	if (curr->func_index == func_index && curr->arg == arg) break;
@@ -1507,25 +1507,25 @@ STATIC_OVL timer_element * remove_timer(timer_element **base, short func_index, 
 }
 
 
-STATIC_OVL void write_timer(int fd, timer_element *timer) {
+STATIC_OVL void write_timer(int fd, TimerElement *timer) {
     genericptr_t arg_save;
 
     switch (timer->kind) {
 	case TIMER_GLOBAL:
 	case TIMER_LEVEL:
 	    /* assume no pointers in arg */
-	    bwrite(fd, (genericptr_t) timer, sizeof(timer_element));
+	    bwrite(fd, (genericptr_t) timer, sizeof(TimerElement));
 	    break;
 
 	case TIMER_OBJECT:
 	    if (timer->needs_fixup)
-		bwrite(fd, (genericptr_t)timer, sizeof(timer_element));
+		bwrite(fd, (genericptr_t)timer, sizeof(TimerElement));
 	    else {
 		/* replace object pointer with id */
 		arg_save = timer->arg;
 		timer->arg = (genericptr_t)((struct Object *)timer->arg)->o_id;
 		timer->needs_fixup = 1;
-		bwrite(fd, (genericptr_t)timer, sizeof(timer_element));
+		bwrite(fd, (genericptr_t)timer, sizeof(TimerElement));
 		timer->arg = arg_save;
 		timer->needs_fixup = 0;
 	    }
@@ -1533,13 +1533,13 @@ STATIC_OVL void write_timer(int fd, timer_element *timer) {
 
 	case TIMER_MONSTER:
 	    if (timer->needs_fixup)
-		bwrite(fd, (genericptr_t)timer, sizeof(timer_element));
+		bwrite(fd, (genericptr_t)timer, sizeof(TimerElement));
 	    else {
 		/* replace monster pointer with id */
 		arg_save = timer->arg;
 		timer->arg = (genericptr_t)((struct Monster *)timer->arg)->m_id;
 		timer->needs_fixup = 1;
-		bwrite(fd, (genericptr_t)timer, sizeof(timer_element));
+		bwrite(fd, (genericptr_t)timer, sizeof(TimerElement));
 		timer->arg = arg_save;
 		timer->needs_fixup = 0;
 	    }
@@ -1590,7 +1590,7 @@ STATIC_OVL boolean mon_is_local(struct Monster *mon) {
  * Return TRUE if the timer is attached to something that will stay on the
  * level when the level is saved.
  */
-STATIC_OVL boolean timer_is_local(timer_element *timer) {
+STATIC_OVL boolean timer_is_local(TimerElement *timer) {
     switch (timer->kind) {
 	case TIMER_LEVEL:	return TRUE;
 	case TIMER_GLOBAL:	return FALSE;
@@ -1608,7 +1608,7 @@ STATIC_OVL boolean timer_is_local(timer_element *timer) {
  */
 STATIC_OVL int maybe_write_timer(int fd, int range, boolean write_it) {
     int count = 0;
-    timer_element *curr;
+    TimerElement *curr;
 
     for (curr = timer_base; curr; curr = curr->next) {
 	if (range == RANGE_GLOBAL) {
@@ -1648,7 +1648,7 @@ STATIC_OVL int maybe_write_timer(int fd, int range, boolean write_it) {
  *		+ timeouts that stay with the level (obj & monst)
  */
 void save_timers(int fd, int mode, int range) {
-    timer_element *curr, *prev, *next_timer=0;
+    TimerElement *curr, *prev, *next_timer=0;
     int count;
 
     if (perform_bwrite(mode)) {
@@ -1685,7 +1685,7 @@ void save_timers(int fd, int mode, int range) {
  */
 void restore_timers(int fd, int range, boolean ghostly, long adjust) {
     int count;
-    timer_element *curr;
+    TimerElement *curr;
 
     if (range == RANGE_GLOBAL)
 	mread(fd, (genericptr_t) &timer_id, sizeof timer_id);
@@ -1693,8 +1693,8 @@ void restore_timers(int fd, int range, boolean ghostly, long adjust) {
     /* restore elements */
     mread(fd, (genericptr_t) &count, sizeof count);
     while (count-- > 0) {
-	curr = (timer_element *) alloc(sizeof(timer_element));
-	mread(fd, (genericptr_t) curr, sizeof(timer_element));
+	curr = (TimerElement *) alloc(sizeof(TimerElement));
+	mread(fd, (genericptr_t) curr, sizeof(TimerElement));
 	if (ghostly)
 	    curr->timeout += adjust;
 	insert_timer(curr);
@@ -1704,7 +1704,7 @@ void restore_timers(int fd, int range, boolean ghostly, long adjust) {
 
 /* reset all timers that are marked for reseting */
 void relink_timers(boolean ghostly) {
-    timer_element *curr;
+    TimerElement *curr;
     unsigned long nid;
 
     for (curr = timer_base; curr; curr = curr->next) {
