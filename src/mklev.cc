@@ -106,7 +106,14 @@ void sort_rooms() {
 #endif
 }
 
-STATIC_OVL void do_room_or_subroom(struct mkroom *croom, int lowx, int lowy, int hix, int hiy, boolean lit, schar rtype, boolean special, boolean is_room) {
+STATIC_OVL void do_room_or_subroom(
+    struct mkroom *croom, 
+    int lowx, int lowy, 
+    int hix, int hiy, 
+    boolean lit, 
+    schar rtype, 
+    boolean special, 
+    boolean is_room) {
 	int x, y;
 	struct rm *lev;
 
@@ -140,8 +147,7 @@ STATIC_OVL void do_room_or_subroom(struct mkroom *croom, int lowx, int lowy, int
 	croom->fdoor = doorindex;
 	croom->irregular = FALSE;
 
-	croom->nsubrooms = 0;
-	croom->sbrooms[0] = (struct mkroom *) 0;
+	croom->subrooms.clear();
 	if (!special) {
 	    for(x = lowx-1; x <= hix+1; x++)
 		for(y = lowy-1; y <= hiy+1; y += (hiy-lowy+2)) {
@@ -187,7 +193,7 @@ void add_subroom(struct mkroom *proom, int lowx, int lowy, int hix, int hiy, boo
 	croom = &subrooms[nsubroom];
 	do_room_or_subroom(croom, lowx, lowy, hix, hiy, lit,
 					    rtype, special, (boolean) FALSE);
-	proom->sbrooms[proom->nsubrooms++] = croom;
+	proom->subrooms.push_back(croom);
 	croom++;
 	croom->hx = -1;
 	nsubroom++;
@@ -893,8 +899,7 @@ topologize(struct mkroom* croom)
 #ifdef SPECIALIZATION
 	schar rtype = croom->rtype;
 #endif
-	int subindex, nsubrooms = croom->nsubrooms;
-
+        
 	/* skip the room if already done; i.e. a shop handled out of order */
 	/* also skip if this is non-rectangular (it _must_ be done already) */
 	if ((int) levl[lowx][lowy].roomno == roomno || croom->irregular)
@@ -936,12 +941,13 @@ topologize(struct mkroom* croom)
 		}
 	}
 	/* subrooms */
-	for (subindex = 0; subindex < nsubrooms; subindex++)
+        for (auto subroom : croom->subrooms) {
 #ifdef SPECIALIZATION
-		topologize(croom->sbrooms[subindex], (rtype != OROOM));
+		topologize(subroom, (rtype != OROOM));
 #else
-		topologize(croom->sbrooms[subindex]);
+		topologize(subroom);
 #endif
+        }
 }
 
 /* Find an unused room for a branch location. */

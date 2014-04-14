@@ -5,6 +5,8 @@
 #ifndef MKROOM_H
 #define MKROOM_H
 
+#include <vector>
+
 /* mkroom.h - types and structures for room and shop initialization */
 
 struct mkroom {
@@ -13,9 +15,8 @@ struct mkroom {
 	schar rlit;		/* is the room lit ? */
 	schar doorct;		/* door count */
 	schar fdoor;		/* index for the first door of the room */
-	schar nsubrooms;	/* number of subrooms */
 	boolean irregular;	/* true if room is non-rectangular */
-	struct mkroom *sbrooms[MAX_SUBROOMS];  /* Subrooms pointers */
+        std::vector<struct mkroom *> subrooms;  /* Subrooms pointers */
 	struct monst *resident; /* priest/shopkeeper/guard for this room */
 };
 

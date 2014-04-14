@@ -549,7 +549,7 @@ boolean somexy(struct mkroom *croom, coord *c) {
 	    return FALSE;
 	}
 
-	if (!croom->nsubrooms) {
+	if (croom->subrooms.empty()) {
 		c->x = somex(croom);
 		c->y = somey(croom);
 		return TRUE;
@@ -562,9 +562,10 @@ boolean somexy(struct mkroom *croom, coord *c) {
 		c->y = somey(croom);
 		if (IS_WALL(levl[c->x][c->y].typ))
 		    continue;
-		for(i=0 ; i<croom->nsubrooms;i++)
-		    if(inside_room(croom->sbrooms[i], c->x, c->y))
+		for(auto subroom : croom->subrooms) {
+		    if(inside_room(subroom, c->x, c->y))
 			goto you_lose;
+                }
 		break;
 you_lose:	;
 	}
@@ -647,15 +648,14 @@ gotone:
  */
 
 STATIC_OVL void save_room(int fd, struct mkroom *r) {
-	short i;
 	/*
 	 * Well, I really should write only useful information instead
 	 * of writing the whole structure. That is I should not write
 	 * the subrooms pointers, but who cares ?
 	 */
 	bwrite(fd, (genericptr_t) r, sizeof(struct mkroom));
-	for(i=0; i<r->nsubrooms; i++)
-	    save_room(fd, r->sbrooms[i]);
+	for(auto subroom : r->subrooms)
+	    save_room(fd, subroom);
 }
 
 /*
@@ -672,14 +672,14 @@ void save_rooms(int fd) {
 }
 
 STATIC_OVL void rest_room(int fd, struct mkroom *r) {
-	short i;
+  short i;
 
-	mread(fd, (genericptr_t) r, sizeof(struct mkroom));
-	for(i=0; i<r->nsubrooms; i++) {
-		r->sbrooms[i] = &subrooms[nsubroom];
-		rest_room(fd, &subrooms[nsubroom]);
-		subrooms[nsubroom++].resident = (struct monst *)0;
-	}
+  mread(fd, (genericptr_t) r, sizeof(struct mkroom));
+  for (auto& subroom : r->subrooms) {
+    subroom = &subrooms[nsubroom];
+    rest_room(fd, &subrooms[nsubroom]);
+    subrooms[nsubroom++].resident = (struct monst *)0;
+  }
 }
 
 /*

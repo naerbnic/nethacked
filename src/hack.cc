@@ -1613,7 +1613,7 @@ boolean in_town(int x, int y) {
 	 * town.  If there are no subrooms, the whole level is in town.
 	 */
 	for (sroom = &rooms[0]; sroom->hx > 0; sroom++) {
-	    if (sroom->nsubrooms > 0) {
+	    if (!sroom->subrooms.empty()) {
 		has_subrooms = TRUE;
 		if (inside_room(sroom, x, y)) return TRUE;
 	    }
