@@ -311,7 +311,7 @@ static char * lib_dlb_fgets(char *buf, int len, dlb *dp) {
     }
     *bp = '\0';
 
-#if defined(MSDOS) || defined(WIN32)
+#if defined(WIN32)
     if ((bp = index(buf, '\r')) != 0) {
 	*bp++ = '\n';
 	*bp = '\0';

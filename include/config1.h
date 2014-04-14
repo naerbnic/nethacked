@@ -13,35 +13,27 @@
  * DJGPP       auto-defines MSDOS.
  */
 
-/* #define MSDOS */	/* use if not defined by compiler or cases below */
-
-#ifdef __MSDOS__	/* for Borland C */
-# ifndef MSDOS
-# define MSDOS
-# endif
-#endif
-
 #ifdef __TURBOC__
+# error "Don't support!"
 # define __MSC		/* increase Borland C compatibility in libraries */
-#endif
-
-#ifdef MSDOS
-# undef UNIX
 #endif
 
 /*
  * Mac Stuff.
  */
 #ifdef macintosh	/*	Auto-defined symbol for MPW compilers (sc and mrc) */
+# error "Don't support!"
 # define MAC
 #endif
 
 #ifdef THINK_C		/* Think C auto-defined symbol */
+# error "Don't support!"
 # define MAC
 # define NEED_VARARGS
 #endif
 
 #ifdef __MWERKS__	/* defined by Metrowerks' Codewarrior compiler */
+# error "Don't support!"
 # ifndef __BEOS__	/* BeOS */
 #  define MAC
 # endif
@@ -50,11 +42,13 @@
 #endif
 
 #if defined(MAC) || defined(__BEOS__)
+# error "Don't support!"
 # define DLB
 # undef UNIX
 #endif
 
 #ifdef __BEOS__
+# error "Don't support!"
 # define NEED_VARARGS
 #endif
 
@@ -63,6 +57,7 @@
  * Amiga setup.
  */
 #ifdef AZTEC_C	/* Manx auto-defines this */
+# error "Don't support!"
 # ifdef MCH_AMIGA	/* Manx auto-defines this for AMIGA */
 #  ifndef AMIGA
 #define AMIGA		/* define for Commodore-Amiga */
@@ -71,15 +66,18 @@
 # endif
 #endif
 #ifdef __SASC_60
+# error "Don't support!"
 # define NEARDATA __near /* put some data close */
 #else
 # ifdef _DCC
+# error "Don't support!"
 # define NEARDATA __near /* put some data close */
 # else
 # define NEARDATA
 # endif
 #endif
 #ifdef AMIGA
+# error "Don't support!"
 # define NEED_VARARGS
 # undef UNIX
 # define DLB
@@ -92,12 +90,14 @@
  */
 
 #ifdef atarist
+# error "Don't support!"
 # undef UNIX
 # ifndef TOS
 # define TOS
 # endif
 #else
 # ifdef __MINT__
+# error "Don't support!"
 #  undef UNIX
 #  ifndef TOS
 #  define TOS
@@ -109,6 +109,7 @@
  * Windows NT Autodetection
  */
 #ifdef _WIN32_WCE
+# error "Don't support!"
 #define WIN_CE
 # ifndef WIN32
 # define WIN32
@@ -116,8 +117,8 @@
 #endif
 
 #ifdef WIN32
+# error "Don't support!"
 # undef UNIX
-# undef MSDOS
 # define NHSTDC
 # define USE_STDARG
 # define NEED_VARARGS
@@ -131,49 +132,10 @@
 
 
 #if defined(__linux__) && defined(__GNUC__) && !defined(_GNU_SOURCE)
+# error "Don't support!"
 /* ensure _GNU_SOURCE is defined before including any system headers */
 # define _GNU_SOURCE
 #endif
-
-#ifdef VMS	/* really old compilers need special handling, detected here */
-# undef UNIX
-# ifdef __DECC
-#  ifndef __DECC_VER	/* buggy early versions want widened prototypes */
-#   define NOTSTDC	/* except when typedefs are involved		*/
-#   define USE_VARARGS
-#  else
-#   define NHSTDC
-#   define USE_STDARG
-#   define POSIX_TYPES
-#   define _DECC_V4_SOURCE	/* avoid some incompatible V5.x changes */
-#  endif
-#  undef __HIDE_FORBIDDEN_NAMES /* need non-ANSI library support functions */
-# else
-#  ifdef VAXC	/* must use CC/DEFINE=ANCIENT_VAXC for vaxc v2.2 or older */
-#   ifdef ANCIENT_VAXC	/* vaxc v2.2 and earlier [lots of warnings to come] */
-#    define KR1ED	/* simulate defined() */
-#    define USE_VARARGS
-#   else		/* vaxc v2.3,2.4,or 3.x, or decc in vaxc mode */
-#     if defined(USE_PROTOTYPES) /* this breaks 2.2 (*forces* use of ANCIENT)*/
-#      define __STDC__ 0 /* vaxc is not yet ANSI compliant, but close enough */
-#      define signed	/* well, almost close enough */
-#include <stddef.h>
-#      define UNWIDENED_PROTOTYPES
-#     endif
-#     define USE_STDARG
-#   endif
-#  endif /*VAXC*/
-# endif /*__DECC*/
-# ifdef VERYOLD_VMS	/* v4.5 or earlier; no longer available for testing */
-#  define USE_OLDARGS	/* <varargs.h> is there, vprintf & vsprintf aren't */
-#  ifdef USE_VARARGS
-#   undef USE_VARARGS
-#  endif
-#  ifdef USE_STDARG
-#   undef USE_STDARG
-#  endif
-# endif
-#endif /*VMS*/
 
 #ifdef vax
 /* just in case someone thinks a DECstation is a vax. It's not, it's a mips */

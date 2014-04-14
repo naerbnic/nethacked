@@ -76,7 +76,7 @@ int main(int argc, char *argv[]) {
 	if (argc == 1 || (argc == 2 && !strcmp(argv[1], "-"))) {
 	    Fprintf(stderr,
 		"Usage: %s [ -d directory ] base1 [ base2 ... ]\n", argv[0]);
-#if defined(WIN32) || defined(MSDOS)
+#if defined(WIN32)
 	    if (dir) {
 	    	Fprintf(stderr, "\t(Unless you override it with -d, recover will look \n");
 	    	Fprintf(stderr, "\t in the %s directory on your system)\n", dir);
@@ -155,7 +155,7 @@ int open_levelfile(int lev) {
 	int fd;
 
 	set_levelfile_name(lev);
-#if defined(MICRO) || defined(WIN32) || defined(MSDOS)
+#if defined(MICRO) || defined(WIN32)
 	fd = open(lock, O_RDONLY | O_BINARY);
 #else
 	fd = open(lock, O_RDONLY, 0);
@@ -166,7 +166,7 @@ int open_levelfile(int lev) {
 int create_savefile() {
 	int fd;
 
-#if defined(MICRO) || defined(WIN32) || defined(MSDOS)
+#if defined(MICRO) || defined(WIN32)
 	fd = open(savename, O_WRONLY | O_BINARY | O_CREAT | O_TRUNC, FCMASK);
 #else
 	fd = creat(savename, FCMASK);

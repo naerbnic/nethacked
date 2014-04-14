@@ -40,7 +40,7 @@ extern int errno;
 
 #include <signal.h>
 
-#if defined(MSDOS) || defined(OS2) || defined(TOS) || defined(WIN32)
+#if defined(OS2) || defined(TOS) || defined(WIN32)
 # ifndef GNUDOS
 #include <sys\stat.h>
 # else
@@ -111,11 +111,8 @@ static int lockptr;
 extern void FDECL(amii_set_text_font, ( char *, int ));
 #endif
 
-#if defined(WIN32) || defined(MSDOS)
+#if defined(WIN32)
 static int lockptr;
-# ifdef MSDOS
-#define Delay(a) msleep(a)
-# endif
 #define Close close
 #ifndef WIN_CE
 #define DeleteFile unlink
@@ -1189,7 +1186,7 @@ boolean lock_file(const char *filename, int whichprefix, int retryct) {
 
 	}
 
-#if defined(AMIGA) || defined(WIN32) || defined(MSDOS)
+#if defined(AMIGA) || defined(WIN32)
 # ifdef AMIGA
 #define OPENFAILURE(fd) (!fd)
     lockptr = 0;
@@ -1219,7 +1216,7 @@ boolean lock_file(const char *filename, int whichprefix, int retryct) {
 	nesting--;
 	return FALSE;
     }
-#endif /* AMIGA || WIN32 || MSDOS */
+#endif /* AMIGA || WIN32 */
 	return TRUE;
 }
 
@@ -1248,11 +1245,11 @@ void unlock_file(char const* filename) {
 		(void) close(lockfd);
 # endif
 
-#if defined(AMIGA) || defined(WIN32) || defined(MSDOS)
+#if defined(AMIGA) || defined(WIN32)
 		if (lockptr) Close(lockptr);
 		DeleteFile(lockname);
 		lockptr = 0;
-#endif /* AMIGA || WIN32 || MSDOS */
+#endif /* AMIGA || WIN32*/
 	}
 
 	nesting--;
@@ -1265,17 +1262,6 @@ void unlock_file(char const* filename) {
 
 const char *configfile =
 			".nethackrc";
-
-#ifdef MSDOS
-/* conflict with speed-dial under windows
- * for XXX.cnf file so support of NetHack.cnf
- * is for backward compatibility only.
- * Preferred name (and first tried) is now defaults.nh but
- * the game will try the old name if there
- * is no defaults.nh.
- */
-const char *backward_compat_configfile = "nethack.cnf"; 
-#endif
 
 #ifndef MFLOPPY
 #define fopenp fopen
@@ -1317,11 +1303,6 @@ STATIC_OVL FILE * fopen_config_file(const char *filename) {
 	if ((fp = fopenp(fqname(configfile, CONFIGPREFIX, 0), "r"))
 								!= (FILE *)0)
 		return(fp);
-# ifdef MSDOS
-	else if ((fp = fopenp(fqname(backward_compat_configfile,
-					CONFIGPREFIX, 0), "r")) != (FILE *)0)
-		return(fp);
-# endif
 #else
 	/* constructed full path names don't need fqname() */
 # ifdef VMS

@@ -35,9 +35,6 @@ extern char mapped_menu_cmds[]; /* from options.c */
 /* Interface definition, for windows.c */
 struct window_procs tty_procs = {
     "tty",
-#ifdef MSDOS
-    WC_TILED_MAP|WC_ASCII_MAP|
-#endif
 #if defined(WIN32CON)
     WC_MOUSE_SUPPORT|
 #endif
@@ -122,19 +119,10 @@ extern struct menucoloring *menu_colorings;
 #endif
 
 #ifdef CLIPPING
-# if defined(USE_TILES) && defined(MSDOS)
-boolean clipping = FALSE;	/* clipping on? */
-int clipx = 0, clipxmax = 0;
-# else
 static boolean clipping = FALSE;	/* clipping on? */
 static int clipx = 0, clipxmax = 0;
-# endif
 static int clipy = 0, clipymax = 0;
 #endif /* CLIPPING */
-
-#if defined(USE_TILES) && defined(MSDOS)
-extern void FDECL(adjust_cursor_flags, (struct WinDesc *));
-#endif
 
 #if defined(ASCIIGRAPH) && !defined(NO_TERMS)
 boolean GFlag = FALSE;
@@ -673,7 +661,7 @@ void tty_askname() {
 				ttyDisplay->curx--;
 #endif
 #if defined(MICRO) || defined(WIN32CON)
-# if defined(WIN32CON) || defined(MSDOS)
+# if defined(WIN32CON)
 				backsp();       /* \b is visible on NT */
 				(void) putchar(' ');
 				backsp();
@@ -688,17 +676,10 @@ void tty_askname() {
 			}
 			continue;
 		}
-#if defined(UNIX) || defined(VMS)
 		if(c != '-' && c != '@')
 		if(c < 'A' || (c > 'Z' && c < 'a') || c > 'z') c = '_';
-#endif
 		if (ct < (int)(sizeof plname) - 1) {
 #if defined(MICRO)
-# if defined(MSDOS)
-			if (iflags.grmode) {
-				(void) putchar(c);
-			} else
-# endif
 			msmsg("%c", c);
 #else
 			(void) putchar(c);
@@ -803,11 +784,6 @@ winid tty_create_nhwindow(int type) {
     case NHW_STATUS:
 	/* status window, 2 lines long, full width, bottom of screen */
 	newwin->offx = 0;
-#if defined(USE_TILES) && defined(MSDOS)
-	if (iflags.grmode) {
-		newwin->offy = ttyDisplay->rows-2;
-	} else
-#endif
 	newwin->offy = min((int)ttyDisplay->rows-2, ROWNO+1);
 	newwin->rows = newwin->maxrow = 2;
 	newwin->cols = newwin->maxcol = min(ttyDisplay->cols, COLNO);
@@ -1581,9 +1557,6 @@ int x, y;	/* not xchar: perhaps xchar is unsigned and
 	panic(winpanicstr,  window);
     ttyDisplay->lastwin = window;
 
-#if defined(USE_TILES) && defined(MSDOS)
-    adjust_cursor_flags(cw);
-#endif
     cw->curx = --x;	/* column 0 is never used */
     cw->cury = y;
 #ifdef DEBUG
@@ -1886,9 +1859,6 @@ void tty_display_file(const char *fname, boolean complain) {
 	    }
 	    while (dlb_fgets(buf, BUFSZ, f)) {
 		if ((cr = index(buf, '\n')) != 0) *cr = 0;
-#ifdef MSDOS
-		if ((cr = index(buf, '\r')) != 0) *cr = 0;
-#endif
 		if (index(buf, '\t') != 0) (void) tabexpand(buf);
 		empty = FALSE;
 		tty_putstr(datawin, 0, buf);
@@ -2177,11 +2147,6 @@ void docorner(int xmin, int ymax) {
 #ifdef CLIPPING
 	if (y<(int) cw->offy || y+clipy > ROWNO)
 		continue; /* only refresh board */
-#if defined(USE_TILES) && defined(MSDOS)
-	if (iflags.tile_view)
-		row_refresh((xmin/2)+clipx-((int)cw->offx/2),COLNO-1,y+clipy-(int)cw->offy);
-	else
-#endif
 	row_refresh(xmin+clipx-(int)cw->offx,COLNO-1,y+clipy-(int)cw->offy);
 #else
 	if (y<cw->offy || y > ROWNO) continue; /* only refresh board  */
@@ -2331,11 +2296,6 @@ void tty_print_glyph(winid window, xchar x, xchar y, int glyph) {
 	reverse_on = TRUE;
     }
 
-#if defined(USE_TILES) && defined(MSDOS)
-    if (iflags.grmode && iflags.tile_view)
-      xputg(glyph,ch,special);
-    else
-#endif
 	g_putch(ch);		/* print the character */
 
     if (reverse_on) {
@@ -2450,9 +2410,6 @@ void win_tty_init() {
 
 #ifdef POSITIONBAR
 void tty_update_positionbar(char *posbar) {
-# ifdef MSDOS
-	video_update_positionbar(posbar);
-# endif
 }
 #endif
 
