@@ -324,7 +324,7 @@ void fill_zoo(struct mkroom *sroom) {
 			break;
 		    case COCKNEST:
 			if(!rn2(3)) {
-			    struct obj *sobj = mk_tt_object(STATUE, sx, sy);
+			    struct Object *sobj = mk_tt_object(STATUE, sx, sy);
 
 			    if (sobj) {
 				for (i = rn2(5); i; i--)
@@ -343,7 +343,7 @@ void fill_zoo(struct mkroom *sroom) {
 	switch (type) {
 	      case COURT:
 		{
-		  struct obj *chest;
+		  struct Object *chest;
 		  levl[tx][ty].typ = THRONE;
 		  (void) somexy(sroom, &mm);
 		  (void) mkgold((long) rn1(50 * level_difficulty(),10), mm.x, mm.y);
@@ -375,7 +375,7 @@ void fill_zoo(struct mkroom *sroom) {
 void mkundead(coord *mm, boolean revive_corpses, int mm_flags) {
 	int cnt = (level_difficulty() + 1)/10 + rnd(5);
 	struct permonst *mdat;
-	struct obj *otmp;
+	struct Object *otmp;
 	coord cc;
 
 	while (cnt--) {

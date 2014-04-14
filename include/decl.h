@@ -228,7 +228,7 @@ E NEARDATA boolean in_mklev;
 E NEARDATA boolean stoned;
 E NEARDATA boolean unweapon;
 E NEARDATA boolean mrg_to_wielded;
-E NEARDATA struct obj *current_wand;
+E NEARDATA struct Object *current_wand;
 
 E NEARDATA boolean in_steed_dismounting;
 
@@ -248,7 +248,7 @@ E const char def_monsyms[MAXMCLASSES];	/* default class symbols */
 E uchar monsyms[MAXMCLASSES];		/* current class symbols */
 
 #include "obj.h"
-E NEARDATA struct obj *invent,
+E NEARDATA struct Object *invent,
 	*uarm, *uarmc, *uarmh, *uarms, *uarmg, *uarmf,
 #ifdef TOURIST
 	*uarmu,				/* under-wear, so to speak */
@@ -256,11 +256,11 @@ E NEARDATA struct obj *invent,
 	*uskin, *uamul, *uleft, *uright, *ublindf,
 	*uwep, *uswapwep, *uquiver;
 
-E NEARDATA struct obj *uchain;		/* defined only when punished */
-E NEARDATA struct obj *uball;
-E NEARDATA struct obj *migrating_objs;
-E NEARDATA struct obj *billobjs;
-E NEARDATA struct obj zeroobj;		/* init'd and defined in decl.c */
+E NEARDATA struct Object *uchain;		/* defined only when punished */
+E NEARDATA struct Object *uball;
+E NEARDATA struct Object *migrating_objs;
+E NEARDATA struct Object *billobjs;
+E NEARDATA struct Object zeroobj;		/* init'd and defined in decl.c */
 
 #include "you.h"
 E NEARDATA struct you u;

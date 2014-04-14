@@ -29,7 +29,7 @@ int move_special(struct monst *mtmp, boolean in_his_shop, schar appr, boolean uo
 	coord poss[9];
 	long info[9];
 	long allowflags;
-	struct obj *ib = (struct obj *)0;
+	struct Object *ib = (struct Object *)0;
 
 	if(omx == gx && omy == gy)
 		return(0);
@@ -170,7 +170,7 @@ int pri_move(struct monst *priest) {
 /* exclusively for mktemple() */
 void priestini(d_level *lvl, struct mkroom *sroom, int sx, int sy, boolean sanctum) {
 	struct monst *priest;
-	struct obj *otmp;
+	struct Object *otmp;
 	int cnt;
 
 	if(MON_AT(sx+1, sy))

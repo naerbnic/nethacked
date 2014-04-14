@@ -8,7 +8,7 @@
 #include "epri.h"
 
 STATIC_PTR int NDECL(prayer_done);
-STATIC_DCL struct obj *NDECL(worst_cursed_item);
+STATIC_DCL struct Object *NDECL(worst_cursed_item);
 STATIC_DCL int NDECL(in_trouble);
 STATIC_DCL void FDECL(fix_worst_trouble,(int));
 STATIC_DCL void FDECL(angrygods,(ALIGNTYP_P));
@@ -22,7 +22,7 @@ STATIC_DCL void FDECL(god_zaps_you,(ALIGNTYP_P));
 STATIC_DCL void FDECL(fry_by_god,(ALIGNTYP_P));
 STATIC_DCL void FDECL(gods_angry,(ALIGNTYP_P));
 STATIC_DCL void FDECL(gods_upset,(ALIGNTYP_P));
-STATIC_DCL void FDECL(consume_offering,(struct obj *));
+STATIC_DCL void FDECL(consume_offering,(struct Object *));
 STATIC_DCL boolean FDECL(water_prayer,(BOOLEAN_P));
 STATIC_DCL boolean FDECL(blocked_boulder,(int,int));
 
@@ -119,7 +119,7 @@ but that's really hard.
 #define a_align(x,y)	((aligntyp)Amask2align(levl[x][y].altarmask & AM_MASK))
 
 STATIC_OVL int in_trouble() {
-	struct obj *otmp;
+	struct Object *otmp;
 	int i, j, count=0;
 
 /* Borrowed from eat.c */
@@ -202,8 +202,8 @@ STATIC_OVL int in_trouble() {
 }
 
 /* select an item for TROUBLE_CURSED_ITEMS */
-STATIC_OVL struct obj * worst_cursed_item() {
-    struct obj *otmp;
+STATIC_OVL struct Object * worst_cursed_item() {
+    struct Object *otmp;
 
     /* if strained or worse, check for loadstone first */
     if (near_capacity() >= HVY_ENCUMBER) {
@@ -260,7 +260,7 @@ STATIC_OVL struct obj * worst_cursed_item() {
 
 STATIC_OVL void fix_worst_trouble(int trouble) {
 	int i;
-	struct obj *otmp = 0;
+	struct Object *otmp = 0;
 	const char *what = (const char *)0;
 	static NEARDATA const char leftglow[] = "left ring softly glows",
 				   rightglow[] = "right ring softly glows";
@@ -572,7 +572,7 @@ STATIC_OVL void angrygods(aligntyp resp_god) {
 			break;
 	    case 6:	if (!Punished) {
 			    gods_angry(resp_god);
-			    punish((struct obj *)0);
+			    punish((struct Object *)0);
 			    break;
 			} /* else fall thru */
 	    case 4:
@@ -618,7 +618,7 @@ static void at_your_feet(const char *str) {
 
 #ifdef ELBERETH
 STATIC_OVL void gcrownu() {
-    struct obj *obj;
+    struct Object *obj;
     boolean already_exists, in_hand;
     short class_gift;
     int sp_no;
@@ -911,7 +911,7 @@ STATIC_OVL void pleased(aligntyp g_align) {
 	    flags.botl = 1;
 	    break;
 	case 4: {
-	    struct obj *otmp;
+	    struct Object *otmp;
 	    int any = 0;
 
 	    if (Blind)
@@ -965,7 +965,7 @@ STATIC_OVL void pleased(aligntyp g_align) {
 	    } /* else FALLTHRU */
 #endif	/*ELBERETH*/
 	case 6:	{
-	    struct obj *otmp;
+	    struct Object *otmp;
 	    int sp_no, trycnt = u.ulevel + 1;
 
 	    at_your_feet("An object");
@@ -1007,7 +1007,7 @@ STATIC_OVL void pleased(aligntyp g_align) {
  * returns true if it found any water here.
  */
 STATIC_OVL boolean water_prayer(boolean bless_water) {
-    struct obj* otmp;
+    struct Object* otmp;
     long changed = 0;
     boolean other = FALSE, bc_known = !(Blind || Hallucination);
 
@@ -1056,7 +1056,7 @@ STATIC_OVL void gods_upset(aligntyp g_align) {
 
 static NEARDATA const char sacrifice_types[] = { FOOD_CLASS, AMULET_CLASS, 0 };
 
-STATIC_OVL void consume_offering(struct obj *otmp) {
+STATIC_OVL void consume_offering(struct Object *otmp) {
     if (Hallucination)
 	switch (rn2(3)) {
 	    case 0:
@@ -1079,7 +1079,7 @@ STATIC_OVL void consume_offering(struct obj *otmp) {
 }
 
 int dosacrifice() {
-    struct obj *otmp;
+    struct Object *otmp;
     int value = 0;
     int pm;
     aligntyp altaralign = a_align(u.ux,u.uy);
@@ -1433,7 +1433,7 @@ verbalize("In return for thy service, I grant thee the gift of Immortality!");
 	    /* The chance goes down as the number of artifacts goes up */
 	    if (u.ulevel > 2 && u.uluck >= 0 &&
 		!rn2(10 + (2 * u.ugifts * nartifacts))) {
-		otmp = mk_artifact((struct obj *)0, a_align(u.ux,u.uy));
+		otmp = mk_artifact((struct Object *)0, a_align(u.ux,u.uy));
 		if (otmp) {
 		    if (otmp->spe < 0) otmp->spe = 0;
 		    if (otmp->cursed) uncurse(otmp);
@@ -1782,7 +1782,7 @@ void altar_wrath(int x, int y) {
 
 /* assumes isok() at one space away, but not necessarily at two */
 STATIC_OVL boolean blocked_boulder(int dx, int dy) {
-    struct obj *otmp;
+    struct Object *otmp;
     long count = 0L;
 
     for(otmp = level.objects[u.ux+dx][u.uy+dy]; otmp; otmp = otmp->nexthere) {

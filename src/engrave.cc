@@ -413,7 +413,7 @@ int doengrave() {
 	int maxelen;		/* Max allowable length of engraving text */
 	struct engr *oep = engr_at(u.ux,u.uy);
 				/* The current engraving */
-	struct obj *otmp;	/* Object selected with which to engrave */
+	struct Object *otmp;	/* Object selected with which to engrave */
 	char *writer;
 
 	multi = 0;		/* moves consumed */

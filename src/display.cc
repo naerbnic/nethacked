@@ -147,14 +147,14 @@ STATIC_DCL int FDECL(wall_angle, (struct rm *));
  * It does NOT take into account that the location is out of sight, or,
  * say, one can see blessed, etc.
  */
-struct obj * vobj_at(xchar x, xchar y) {
-    struct obj *obj = level.objects[x][y];
+struct Object * vobj_at(xchar x, xchar y) {
+    struct Object *Object = level.objects[x][y];
 
-    while (obj) {
-	if (!obj->oinvis || See_invisible) return obj;
-	obj = obj->nexthere;
+    while (Object) {
+	if (!Object->oinvis || See_invisible) return Object;
+	Object = Object->nexthere;
     }
-    return ((struct obj *) 0);
+    return ((struct Object *) 0);
 }
 #endif	/* else vobj_at() is defined in display.h */
 
@@ -234,7 +234,7 @@ void map_trap(struct trap *trap, int show) {
  * Map the given object.  This routine assumes that the hero can physically
  * see the location of the object.  Update the screen if directed.
  */
-void map_object(struct obj *obj, int show) {
+void map_object(struct Object *obj, int show) {
     int x = obj->ox, y = obj->oy;
     int glyph = obj_to_glyph(obj);
 
@@ -300,7 +300,7 @@ void unmap_object(int x, int y) {
  */
 #define _map_location(x,y,show)						\
 {									\
-    struct obj   *obj;						\
+    Object   *obj;						\
     struct trap  *trap;					\
 									\
     if ((obj = vobj_at(x,y)) && !covers_objects(x,y))			\
@@ -373,7 +373,7 @@ display_monster(
 	    }
 
 	    case M_AP_OBJECT: {
-		struct obj obj;	/* Make a fake object to send	*/
+		struct Object obj;	/* Make a fake object to send	*/
 				/* to map_object().		*/
 		obj.ox = x;
 		obj.oy = y;
@@ -458,7 +458,7 @@ STATIC_OVL void display_warning(struct monst *mon) {
  */
 void feel_location(xchar x, xchar y) {
     struct rm *lev = &(levl[x][y]);
-    struct obj *boulder;
+    struct Object *boulder;
     struct monst *mon;
 
     /* If the hero's memory of an invisible monster is accurate, we want to keep
@@ -1053,7 +1053,7 @@ void set_mimic_blocking() {
  *	+ hallucinating.
  */
 void see_objects() {
-    struct obj *obj;
+    struct Object *obj;
     for(obj = fobj; obj; obj = obj->nobj)
 	if (vobj_at(obj->ox,obj->oy) == obj) newsym(obj->ox, obj->oy);
 }

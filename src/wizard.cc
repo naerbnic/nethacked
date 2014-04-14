@@ -18,7 +18,7 @@ extern const int monstr[];
 STATIC_DCL short FDECL(which_arti, (int));
 STATIC_DCL boolean FDECL(mon_has_arti, (struct monst *,SHORT_P));
 STATIC_DCL struct monst *FDECL(other_mon_has_arti, (struct monst *,SHORT_P));
-STATIC_DCL struct obj *FDECL(on_ground, (SHORT_P));
+STATIC_DCL struct Object *FDECL(on_ground, (SHORT_P));
 STATIC_DCL boolean FDECL(you_have, (int));
 STATIC_DCL long FDECL(target_on, (int,struct monst *));
 STATIC_DCL long FDECL(strategy, (struct monst *));
@@ -52,7 +52,7 @@ static NEARDATA const unsigned wizapp[] = {
 void amulet() {
 	struct monst *mtmp;
 	struct trap *ttmp;
-	struct obj *amu;
+	struct Object *amu;
 
 #if 0		/* caller takes care of this check */
 	if (!u.uhave.amulet)
@@ -94,7 +94,7 @@ void amulet() {
 #ifdef OVLB
 
 int mon_has_amulet(struct monst *mtmp) {
-	struct obj *otmp;
+	struct Object *otmp;
 
 	for(otmp = mtmp->minvent; otmp; otmp = otmp->nobj)
 		if(otmp->otyp == AMULET_OF_YENDOR) return(1);
@@ -102,7 +102,7 @@ int mon_has_amulet(struct monst *mtmp) {
 }
 
 int mon_has_special(struct monst *mtmp) {
-	struct obj *otmp;
+	struct Object *otmp;
 
 	for(otmp = mtmp->minvent; otmp; otmp = otmp->nobj)
 		if(otmp->otyp == AMULET_OF_YENDOR ||
@@ -141,7 +141,7 @@ STATIC_OVL short which_arti(int mask) {
  *	artifacts right now.	[MRS]
  */
 STATIC_OVL boolean mon_has_arti(struct monst *mtmp, short otyp) {
-	struct obj *otmp;
+	struct Object *otmp;
 
 	for(otmp = mtmp->minvent; otmp; otmp = otmp->nobj) {
 	    if(otyp) {
@@ -165,8 +165,8 @@ STATIC_OVL struct monst * other_mon_has_arti(struct monst *mtmp, short otyp) {
 	return((struct monst *)0);
 }
 
-STATIC_OVL struct obj * on_ground(short otyp) {
-	struct obj *otmp;
+STATIC_OVL struct Object * on_ground(short otyp) {
+	struct Object *otmp;
 
 	for (otmp = fobj; otmp; otmp = otmp->nobj)
 	    if (otyp) {
@@ -174,7 +174,7 @@ STATIC_OVL struct obj * on_ground(short otyp) {
 		    return(otmp);
 	    } else if (is_quest_artifact(otmp))
 		return(otmp);
-	return((struct obj *)0);
+	return((struct Object *)0);
 }
 
 STATIC_OVL boolean you_have(int mask) {
@@ -191,7 +191,7 @@ STATIC_OVL boolean you_have(int mask) {
 
 STATIC_OVL long target_on(int mask, struct monst *mtmp) {
 	short	otyp;
-	struct obj *otmp;
+	struct Object *otmp;
 	struct monst *mtmp2;
 
 	if(!M_Wants(mask))	return(STRAT_NONE);
@@ -299,7 +299,7 @@ int tactics(struct monst *mtmp) {
 		xchar tx = STRAT_GOALX(strat),
 		      ty = STRAT_GOALY(strat);
 		int   targ = strat & STRAT_GOAL;
-		struct obj *otmp;
+		struct Object *otmp;
 
 		if(!targ) { /* simply wants you to close */
 		    return(0);

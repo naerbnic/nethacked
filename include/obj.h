@@ -9,19 +9,19 @@
 			  * typedef for "obj" in <sys/types.h> */
 
 union vptrs {
-	    struct obj *v_nexthere;	/* floor location lists */
-	    struct obj *v_ocontainer;	/* point back to container */
+	    struct Object *v_nexthere;	/* floor location lists */
+	    struct Object *v_ocontainer;	/* point back to container */
 	    struct monst *v_ocarry;	/* point back to carrying monst */
 };
 
-struct obj {
-	struct obj *nobj;
+struct Object {
+	struct Object *nobj;
 	union vptrs v;
 #define nexthere	v.v_nexthere
 #define ocontainer	v.v_ocontainer
 #define ocarry		v.v_ocarry
 
-	struct obj *cobj;	/* contents list for containers */
+	struct Object *cobj;	/* contents list for containers */
 	unsigned long o_id;
 	xchar ox,oy;
 	short otyp;		/* object class number */
@@ -114,7 +114,7 @@ struct obj {
 				   is flexible; amount for tmp gold objects */
 };
 
-#define newobj(xl)	(struct obj *)alloc((unsigned)(xl) + sizeof(struct obj))
+#define newobj(xl)	(Object *)alloc((unsigned)(xl) + sizeof(Object))
 #define ONAME(otmp)	(((char *)(otmp)->oextra) + (otmp)->oxlth)
 
 /* Weapons and weapon-tools */
@@ -221,7 +221,7 @@ struct obj {
 #define carried(o)	((o)->where == OBJ_INVENT)
 #define mcarried(o)	((o)->where == OBJ_MINVENT)
 #define Has_contents(o) (/* (Is_container(o) || (o)->otyp == STATUE) && */ \
-			 (o)->cobj != (struct obj *)0)
+			 (o)->cobj != nullptr)
 #define Is_container(o) ((o)->otyp >= LARGE_BOX && (o)->otyp <= BAG_OF_TRICKS)
 #define Is_box(otmp)	(otmp->otyp == LARGE_BOX || otmp->otyp == CHEST)
 #define Is_mbag(otmp)	(otmp->otyp == BAG_OF_HOLDING || \

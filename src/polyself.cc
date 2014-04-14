@@ -260,7 +260,7 @@ void polyself(boolean forcecontrol) {
 				/* allow G_EXTINCT */
 				You("merge with your scaly armor.");
 				uskin = uarm;
-				uarm = (struct obj *)0;
+				uarm = (struct Object *)0;
 				/* save/restore hack */
 				uskin->owornmask |= I_SPECIAL;
 			}
@@ -556,7 +556,7 @@ int polymon(int mntmp) {
 }
 
 STATIC_OVL void break_armor() {
-    struct obj *otmp;
+    struct Object *otmp;
 
     if (breakarm(youmonst.data)) {
 	if ((otmp = uarm) != 0) {
@@ -602,7 +602,7 @@ STATIC_OVL void break_armor() {
 		if (is_whirly(youmonst.data))
 			You("seep right through your shirt!");
 		else You("become much too small for your shirt!");
-		setworn((struct obj *)0, otmp->owornmask & W_ARMU);
+		setworn((struct Object *)0, otmp->owornmask & W_ARMU);
 		dropx(otmp);
 	}
 #endif
@@ -660,8 +660,8 @@ STATIC_OVL void break_armor() {
 }
 
 STATIC_OVL void drop_weapon(int alone) {
-    struct obj *otmp;
-    struct obj *otmp2;
+    struct Object *otmp;
+    struct Object *otmp2;
 
     if ((otmp = uwep) != 0) {
 	/* !alone check below is currently superfluous but in the
@@ -669,7 +669,7 @@ STATIC_OVL void drop_weapon(int alone) {
 	 * wear gloves but can wield weapons
 	 */
 	if (!alone || cantwield(youmonst.data)) {
-	    struct obj *wep = uwep;
+	    struct Object *wep = uwep;
 
 	    if (alone) You("find you must drop your weapon%s!",
 			   	u.twoweap ? "s" : "");
@@ -743,7 +743,7 @@ int dobreathe() {
 }
 
 int dospit() {
-	struct obj *otmp;
+	struct Object *otmp;
 
 	if (!getdir((char *)0)) return(0);
 	otmp = mksobj(u.umonnum==PM_COBRA ? BLINDING_VENOM : ACID_VENOM,
@@ -1079,7 +1079,7 @@ void skinback(boolean silently) {
 	if (uskin) {
 		if (!silently) Your("skin returns to its original form.");
 		uarm = uskin;
-		uskin = (struct obj *)0;
+		uskin = (struct Object *)0;
 		/* undo save/restore hack */
 		uarm->owornmask &= ~I_SPECIAL;
 	}

@@ -362,7 +362,7 @@ STATIC_OVL void newmail(struct mail_info *info) {
     verbalize("%s, %s!  %s.", Hello(md), plname, info->display_txt);
 
     if (info->message_typ) {
-	struct obj *obj = mksobj(SCR_MAIL, FALSE, FALSE);
+	struct Object *obj = mksobj(SCR_MAIL, FALSE, FALSE);
 	if (distu(md->mx,md->my) > 2)
 	    verbalize("Catch!");
 	display_nhwindow(WIN_MESSAGE, FALSE);
@@ -425,7 +425,7 @@ void ckmailstatus() {
 }
 
 /*ARGSUSED*/
-void readmail(struct obj *otmp) {
+void readmail(struct Object *otmp) {
 #  ifdef DEF_MAILREADER			/* This implies that UNIX is defined */
 	const char *mr = 0;
 
@@ -468,7 +468,7 @@ void ckmailstatus() {
     }
 }
 
-void readmail(struct obj *otmp) {
+void readmail(struct Object *otmp) {
 #  ifdef SHELL	/* can't access mail reader without spawning subprocess */
     const char *txt, *cmd;
     char *p, buf[BUFSZ], qbuf[BUFSZ];
@@ -525,7 +525,7 @@ void ckmailstatus() {
 }
 
 /*ARGSUSED*/
-void readmail(struct obj *otmp) {
+void readmail(struct Object *otmp) {
 	lan_mail_read(otmp);
 }
 

@@ -42,7 +42,7 @@ STATIC_OVL int pet_type() {
 	    return (rn2(2) ? PM_KITTEN : PM_LITTLE_DOG);
 }
 
-struct monst * make_familiar(struct obj *otmp, xchar x, xchar y, boolean quietly) {
+struct monst * make_familiar(struct Object *otmp, xchar x, xchar y, boolean quietly) {
 	struct permonst *pm;
 	struct monst *mtmp = 0;
 	int chance, trycnt = 100;
@@ -119,7 +119,7 @@ struct monst * make_familiar(struct obj *otmp, xchar x, xchar y, boolean quietly
 struct monst * makedog() {
 	struct monst *mtmp;
 #ifdef STEED
-	struct obj *otmp;
+	struct Object *otmp;
 #endif
 	const char *petname;
 	int   pettype;
@@ -347,7 +347,7 @@ void mon_arrive(struct monst *mtmp, boolean with_you) {
 		 * probably because the level is full.
 		 * Dump the monster's cargo and leave the monster dead.
 		 */
-	    	struct obj *obj, *corpse;
+	    	struct Object *obj, *corpse;
 		while ((obj = mtmp->minvent) != 0) {
 		    obj_extract_self(obj);
 		    obj_no_longer_held(obj);
@@ -460,7 +460,7 @@ void mon_catchup_elapsed_time(struct monst *mtmp, long nmv) {
 /* called when you move to another level */
 void keepdogs(boolean pets_only) {
 	struct monst *mtmp, *mtmp2;
-	struct obj *obj;
+	struct Object *obj;
 	int num_segs;
 	boolean stay_behind;
 
@@ -557,7 +557,7 @@ void keepdogs(boolean pets_only) {
 #ifdef OVLB
 
 void migrate_to_level(struct monst *mtmp, xchar tolev, xchar xyloc, coord *cc) {
-	struct obj *obj;
+	struct Object *obj;
 	d_level new_lev;
 	xchar xyflags;
 	int num_segs = 0;	/* count of worm segments */
@@ -611,7 +611,7 @@ void migrate_to_level(struct monst *mtmp, xchar tolev, xchar xyloc, coord *cc) {
 
 /* return quality of food; the lower the better */
 /* fungi will eat even tainted food */
-int dogfood(struct monst *mon, struct obj *obj) {
+int dogfood(struct monst *mon, struct Object *obj) {
 	boolean carni = carnivorous(mon->data);
 	boolean herbi = herbivorous(mon->data);
 	struct permonst *fptr = &mons[obj->corpsenm];
@@ -706,7 +706,7 @@ int dogfood(struct monst *mon, struct obj *obj) {
 #endif /* OVL1 */
 #ifdef OVLB
 
-struct monst * tamedog(struct monst *mtmp, struct obj *obj) {
+struct monst * tamedog(struct monst *mtmp, struct Object *obj) {
 	struct monst *mtmp2;
 
 	/* The Wiz, Medusa and the quest nemeses aren't even made peaceful. */

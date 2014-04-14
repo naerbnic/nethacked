@@ -14,8 +14,8 @@ extern long bytes_counted;
 
 STATIC_DCL boolean FDECL(no_bones_level, (d_level *));
 STATIC_DCL void FDECL(goodfruit, (int));
-STATIC_DCL void FDECL(resetobjs,(struct obj *,BOOLEAN_P));
-STATIC_DCL void FDECL(drop_upon_death, (struct monst *, struct obj *));
+STATIC_DCL void FDECL(resetobjs,(struct Object *,BOOLEAN_P));
+STATIC_DCL void FDECL(drop_upon_death, (struct monst *, struct Object *));
 
 STATIC_OVL boolean no_bones_level(d_level *lev) {
 	extern d_level save_dlevel;		/* in do.c */
@@ -49,8 +49,8 @@ STATIC_OVL void goodfruit(int id) {
 	}
 }
 
-STATIC_OVL void resetobjs(struct obj *ochain, boolean restore) {
-	struct obj *otmp;
+STATIC_OVL void resetobjs(struct Object *ochain, boolean restore) {
+	struct Object *otmp;
 
 	for (otmp = ochain; otmp; otmp = otmp->nobj) {
 		if (otmp->cobj)
@@ -110,8 +110,8 @@ STATIC_OVL void resetobjs(struct obj *ochain, boolean restore) {
 	}
 }
 
-STATIC_OVL void drop_upon_death(struct monst *mtmp, struct obj *cont) {
-	struct obj *otmp;
+STATIC_OVL void drop_upon_death(struct monst *mtmp, struct Object *cont) {
+	struct Object *otmp;
 
 	uswapwep = 0; /* ensure curse() won't cause swapwep to drop twice */
 	while ((otmp = invent) != 0) {
@@ -175,7 +175,7 @@ boolean can_make_bones() {
 }
 
 /* save bones and possessions of a deceased adventurer */
-void savebones(struct obj *corpse) {
+void savebones(struct Object *corpse) {
 	int fd, x, y;
 	struct trap *ttmp;
 	struct monst *mtmp;
@@ -230,7 +230,7 @@ void savebones(struct obj *corpse) {
 
 	/* dispose of your possessions, usually cursed */
 	if (u.ugrave_arise == (NON_PM - 1)) {
-		struct obj *otmp;
+		struct Object *otmp;
 
 		/* embed your possessions in your statue */
 		otmp = mk_named_object(STATUE, &mons[u.umonnum],
@@ -241,7 +241,7 @@ void savebones(struct obj *corpse) {
 		mtmp = (struct monst *)0;
 	} else if (u.ugrave_arise < LOW_PM) {
 		/* drop everything */
-		drop_upon_death((struct monst *)0, (struct obj *)0);
+		drop_upon_death((struct monst *)0, (struct Object *)0);
 		/* trick makemon() into allowing monster creation
 		 * on your location
 		 */
@@ -258,7 +258,7 @@ void savebones(struct obj *corpse) {
 		mtmp = makemon(&mons[u.ugrave_arise], u.ux, u.uy, NO_MM_FLAGS);
 		in_mklev = FALSE;
 		if (!mtmp) {
-			drop_upon_death((struct monst *)0, (struct obj *)0);
+			drop_upon_death((struct monst *)0, (struct Object *)0);
 			return;
 		}
 		mtmp = christen_monst(mtmp, plname);
@@ -266,7 +266,7 @@ void savebones(struct obj *corpse) {
 		Your("body rises from the dead as %s...",
 			an(mons[u.ugrave_arise].mname));
 		display_nhwindow(WIN_MESSAGE, FALSE);
-		drop_upon_death(mtmp, (struct obj *)0);
+		drop_upon_death(mtmp, (struct Object *)0);
 		m_dowear(mtmp, TRUE);
 	}
 	if (mtmp) {

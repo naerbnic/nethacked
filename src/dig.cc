@@ -15,7 +15,7 @@ static NEARDATA boolean did_dig_msg;
 STATIC_DCL boolean NDECL(rm_waslit);
 STATIC_DCL void FDECL(mkcavepos, (XCHAR_P,XCHAR_P,int,BOOLEAN_P,BOOLEAN_P));
 STATIC_DCL void FDECL(mkcavearea, (BOOLEAN_P));
-STATIC_DCL int FDECL(dig_typ, (struct obj *,XCHAR_P,XCHAR_P));
+STATIC_DCL int FDECL(dig_typ, (struct Object *,XCHAR_P,XCHAR_P));
 STATIC_DCL int NDECL(dig);
 STATIC_DCL schar FDECL(fillholetyp, (int, int));
 STATIC_DCL void NDECL(dig_up_grave);
@@ -122,7 +122,7 @@ STATIC_OVL void mkcavearea(boolean rockit) {
 }
 
 /* When digging into location <x,y>, what are you actually digging into? */
-STATIC_OVL int dig_typ(struct obj *otmp, xchar x, xchar y) {
+STATIC_OVL int dig_typ(struct Object *otmp, xchar x, xchar y) {
 	boolean ispick = is_pick(otmp);
 
 	return (ispick && sobj_at(STATUE, x, y) ? DIGTYP_STATUE :
@@ -281,7 +281,7 @@ STATIC_OVL int dig() {
 
 	if (digging.effort > 100) {
 		const char *digtxt, *dmgtxt = (const char*) 0;
-		struct obj *obj;
+		struct Object *obj;
 		boolean shopedge = *in_rooms(dpx, dpy, SHOPBASE);
 
 		if ((obj = sobj_at(STATUE, dpx, dpy)) != 0) {
@@ -293,7 +293,7 @@ STATIC_OVL int dig() {
 				 */
 				digtxt = (char *)0;
 		} else if ((obj = sobj_at(BOULDER, dpx, dpy)) != 0) {
-			struct obj *bobj;
+			struct Object *bobj;
 
 			fracture_rock(obj);
 			if ((bobj = sobj_at(BOULDER, dpx, dpy)) != 0) {
@@ -450,7 +450,7 @@ schar fillholetyp(int x, int y) {
 }
 
 void digactualhole(int x, int y, struct monst *madeby, int ttyp) {
-	struct obj *oldobjs, *newobjs;
+	struct Object *oldobjs, *newobjs;
 	struct trap *ttmp;
 	char surface_type[BUFSZ];
 	struct rm *lev = &levl[x][y];
@@ -556,7 +556,7 @@ void digactualhole(int x, int y, struct monst *madeby, int ttyp) {
 		 */
 		if (u.ustuck || wont_fall) {
 		    if (newobjs)
-			impact_drop((struct obj *)0, x, y, 0);
+			impact_drop((struct Object *)0, x, y, 0);
 		    if (oldobjs != newobjs)
 			(void) pickup(1);
 		    if (shopdoor && madeby_u) pay_for_damage("ruin", FALSE);
@@ -582,7 +582,7 @@ void digactualhole(int x, int y, struct monst *madeby, int ttyp) {
 	    } else {
 		if (shopdoor && madeby_u) pay_for_damage("ruin", FALSE);
 		if (newobjs)
-		    impact_drop((struct obj *)0, x, y, 0);
+		    impact_drop((struct Object *)0, x, y, 0);
 		if (mtmp) {
 		     /*[don't we need special sokoban handling here?]*/
 		    if (is_flyer(mtmp->data) || is_floater(mtmp->data) ||
@@ -617,7 +617,7 @@ void digactualhole(int x, int y, struct monst *madeby, int ttyp) {
 boolean dighole(boolean pit_only) {
 	struct trap *ttmp = t_at(u.ux, u.uy);
 	struct rm *lev = &levl[u.ux][u.uy];
-	struct obj *boulder_here;
+	struct Object *boulder_here;
 	schar typ;
 	boolean nohole = !Can_dig_down(&u.uz);
 
@@ -728,7 +728,7 @@ boolean dighole(boolean pit_only) {
 }
 
 STATIC_OVL void dig_up_grave() {
-	struct obj *otmp;
+	struct Object *otmp;
 
 	/* Grave-robbing is frowned upon... */
 	exercise(A_WIS, FALSE);
@@ -771,7 +771,7 @@ STATIC_OVL void dig_up_grave() {
 	return;
 }
 
-int use_pick_axe(struct obj *obj) {
+int use_pick_axe(struct Object *obj) {
 	boolean ispick;
 	char dirsyms[12];
 	char qbuf[QBUFSZ];
@@ -821,7 +821,7 @@ int use_pick_axe(struct obj *obj) {
 /*       the "In what direction do you want to dig?" query.        */
 /*       use_pick_axe2() uses the existing u.dx, u.dy and u.dz    */
 
-int use_pick_axe2(struct obj *obj) {
+int use_pick_axe2(struct Object *obj) {
 	int rx, ry;
 	struct rm *lev;
 	int dig_target;
@@ -1092,7 +1092,7 @@ boolean mdig_tunnel(struct monst *mtmp) {
 void zap_dig() {
 	struct rm *room;
 	struct monst *mtmp;
-	struct obj *otmp;
+	struct Object *otmp;
 	int zx, zy, digdepth;
 	boolean shopdoor, shopwall, maze_dig;
 	/*
@@ -1230,8 +1230,8 @@ void zap_dig() {
 
 /* move objects from fobj/nexthere lists to buriedobjlist, keeping position */
 /* information */
-struct obj * bury_an_obj(struct obj *otmp) {
-	struct obj *otmp2;
+struct Object * bury_an_obj(struct Object *otmp) {
+	struct Object *otmp2;
 	boolean under_ice;
 
 #ifdef DEBUG
@@ -1263,7 +1263,7 @@ struct obj * bury_an_obj(struct obj *otmp) {
 	under_ice = is_ice(otmp->ox, otmp->oy);
 	if (otmp->otyp == ROCK && !under_ice) {
 		/* merges into burying material */
-		obfree(otmp, (struct obj *)0);
+		obfree(otmp, (struct Object *)0);
 		return(otmp2);
 	}
 	/*
@@ -1282,10 +1282,10 @@ struct obj * bury_an_obj(struct obj *otmp) {
 }
 
 void bury_objs(int x, int y) {
-	struct obj *otmp, *otmp2;
+	struct Object *otmp, *otmp2;
 
 #ifdef DEBUG
-	if(level.objects[x][y] != (struct obj *)0)
+	if(level.objects[x][y] != (struct Object *)0)
 		pline("bury_objs: at %d, %d", x, y);
 #endif
 	for (otmp = level.objects[x][y]; otmp; otmp = otmp2)
@@ -1298,7 +1298,7 @@ void bury_objs(int x, int y) {
 
 /* move objects from buriedobjlist to fobj/nexthere lists */
 void unearth_objs(int x, int y) {
-	struct obj *otmp, *otmp2;
+	struct Object *otmp, *otmp2;
 
 #ifdef DEBUG
 	pline("unearth_objs: at %d, %d", x, y);
@@ -1328,7 +1328,7 @@ void unearth_objs(int x, int y) {
  */
 /* ARGSUSED */
 void rot_organic(genericptr_t arg, long timeout) {
-	struct obj *obj = (struct obj *) arg;
+	struct Object *obj = (struct Object *) arg;
 
 	while (Has_contents(obj)) {
 	    /* We don't need to place contained object on the floor
@@ -1340,7 +1340,7 @@ void rot_organic(genericptr_t arg, long timeout) {
 	    (void)bury_an_obj(obj->cobj);
 	}
 	obj_extract_self(obj);
-	obfree(obj, (struct obj *) 0);
+	obfree(obj, (struct Object *) 0);
 }
 
 /*
@@ -1348,7 +1348,7 @@ void rot_organic(genericptr_t arg, long timeout) {
  */
 void rot_corpse(genericptr_t arg, long timeout) {
 	xchar x = 0, y = 0;
-	struct obj *obj = (struct obj *) arg;
+	struct Object *obj = (struct Object *) arg;
 	boolean on_floor = obj->where == OBJ_FLOOR,
 		in_invent = obj->where == OBJ_INVENT;
 
@@ -1459,7 +1459,7 @@ void escape_tomb() {
 	}
 }
 
-void bury_obj(struct obj *otmp) {
+void bury_obj(struct Object *otmp) {
 
 #ifdef DEBUG
 	pline("bury_obj");

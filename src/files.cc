@@ -1872,7 +1872,7 @@ STATIC_OVL FILE * fopen_wizkit_file() {
 void read_wizkit() {
 	FILE *fp;
 	char *ep, buf[BUFSZ];
-	struct obj *otmp;
+	struct Object *otmp;
 	boolean bad_items = FALSE, skip = FALSE;
 
 	if (!wizard || !(fp = fopen_wizkit_file())) return;
@@ -1886,7 +1886,7 @@ void read_wizkit() {
 		else *ep = '\0';		/* remove newline */
 
 		if (buf[0]) {
-			otmp = readobjnam(buf, (struct obj *)0, FALSE);
+			otmp = readobjnam(buf, (struct Object *)0, FALSE);
 			if (otmp) {
 			    if (otmp != &zeroobj)
 				otmp = addinv(otmp);

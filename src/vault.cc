@@ -17,7 +17,7 @@ STATIC_DCL struct monst *NDECL(findgd);
 STATIC_DCL boolean FDECL(clear_fcorr, (struct monst *,BOOLEAN_P));
 STATIC_DCL void FDECL(restfakecorr,(struct monst *));
 STATIC_DCL boolean FDECL(in_fcorridor, (struct monst *,int,int));
-STATIC_DCL void FDECL(move_gold,(struct obj *,int));
+STATIC_DCL void FDECL(move_gold,(struct Object *,int));
 STATIC_DCL void FDECL(wallify_vault,(struct monst *));
 
 STATIC_OVL boolean clear_fcorr(struct monst *grd, boolean forceshow) {
@@ -331,7 +331,7 @@ fnd:
 #endif /* OVL0 */
 #ifdef OVLB
 
-STATIC_OVL void move_gold(struct obj *gold, int vroom) {
+STATIC_OVL void move_gold(struct Object *gold, int vroom) {
 	xchar nx, ny;
 
 	remove_object(gold);
@@ -350,7 +350,7 @@ STATIC_OVL void wallify_vault(struct monst *grd) {
 	xchar lox = rooms[vlt].lx - 1, hix = rooms[vlt].hx + 1,
 	      loy = rooms[vlt].ly - 1, hiy = rooms[vlt].hy + 1;
 	struct monst *mon;
-	struct obj *gold;
+	struct Object *gold;
 	struct trap *trap;
 	boolean fixed = FALSE;
 	boolean movedgold = FALSE;
@@ -547,7 +547,7 @@ letknow:
 		x = grd->mx;
 		y = grd->my;
 		if (m == u.ux && n == u.uy) {
-		    struct obj *gold = g_at(m,n);
+		    struct Object *gold = g_at(m,n);
 		    /* Grab the gold from between the hero's feet.  */
 #ifndef GOLDOBJ
 		    grd->mgold += gold->quan;
@@ -713,10 +713,10 @@ cleanup:
 void paygd() {
 	struct monst *grd = findgd();
 #ifndef GOLDOBJ
-	struct obj *gold;
+	struct Object *gold;
 #else
         long umoney = money_cnt(invent);
-	struct obj *coins, *nextcoins;
+	struct Object *coins, *nextcoins;
 #endif
 	int gx,gy;
 	char buf[BUFSZ];
@@ -770,7 +770,7 @@ void paygd() {
 
 long hidden_gold() {
 	long value = 0L;
-	struct obj *obj;
+	struct Object *obj;
 
 	for (obj = invent; obj; obj = obj->nobj)
 	    if (Has_contents(obj))

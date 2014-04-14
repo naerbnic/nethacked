@@ -133,9 +133,9 @@ struct monst {
 #ifndef GOLDOBJ
 	long mgold;
 #endif
-	struct obj *minvent;
+	struct Object *minvent;
 
-	struct obj *mw;
+	struct Object *mw;
 	long misc_worn_check;
 	xchar weapon_check;
 
@@ -174,7 +174,7 @@ struct monst {
 #define NAME(mtmp)	(((char *)(mtmp)->mextra) + (mtmp)->mxlth)
 
 #define MON_WEP(mon)	((mon)->mw)
-#define MON_NOWEP(mon)	((mon)->mw = (struct obj *)0)
+#define MON_NOWEP(mon)	((mon)->mw = (Object *)0)
 
 #define DEADMONSTER(mon)	((mon)->mhp < 1)
 

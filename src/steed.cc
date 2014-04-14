@@ -34,7 +34,7 @@ boolean can_saddle(struct monst *mtmp) {
 }
 
 
-int use_saddle(struct obj *otmp) {
+int use_saddle(struct Object *otmp) {
 	struct monst *mtmp;
 	struct permonst *ptr;
 	int chance;
@@ -177,7 +177,7 @@ int doride() {
 
 /* Start riding, with the given monster */
 boolean mount_steed(struct monst *mtmp, boolean force) {
-	struct obj *otmp;
+	struct Object *otmp;
 	char buf[BUFSZ];
 	struct permonst *ptr;
 
@@ -436,7 +436,7 @@ STATIC_OVL boolean landing_spot(coord *spot, int reason, int forceit) {
 /* Stop riding the current steed */
 void dismount_steed(int reason) {
 	struct monst *mtmp;
-	struct obj *otmp;
+	struct Object *otmp;
 	coord cc;
 	const char *verb = "fall";
 	boolean repair_leg_damage = TRUE;

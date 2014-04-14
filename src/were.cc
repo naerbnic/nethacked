@@ -121,7 +121,7 @@ int were_summon(
 		if (canseemon(mtmp)) *visible += 1;
 	    }
 	    if (yours && mtmp)
-		(void) tamedog(mtmp, (struct obj *) 0);
+		(void) tamedog(mtmp, (struct Object *) 0);
 	}
 	return total;
 }

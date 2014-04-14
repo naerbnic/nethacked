@@ -844,7 +844,7 @@ STATIC_OVL void create_monster(monster *m, struct mkroom *croom) {
  */
 
 STATIC_OVL void create_object(object *o, struct mkroom *croom) {
-    struct obj *otmp;
+    struct Object *otmp;
     schar x, y;
     char c;
     boolean named;	/* has a name been supplied in level description? */
@@ -914,7 +914,7 @@ STATIC_OVL void create_object(object *o, struct mkroom *croom) {
 	    otmp = oname(otmp, o->name.str);
 
 	switch(o->containment) {
-	    static struct obj *container = 0;
+	    static struct Object *container = 0;
 
 	    /* contents */
 	    case 1:
@@ -943,7 +943,7 @@ STATIC_OVL void create_object(object *o, struct mkroom *croom) {
 	if (o->id == STATUE && Is_medusa_level(&u.uz) &&
 		    o->corpsenm == NON_PM) {
 	    struct monst *was;
-	    struct obj *obj;
+	    struct Object *obj;
 	    int wastyp;
 
 	    /* Named random statues are of player types, and aren't stone-

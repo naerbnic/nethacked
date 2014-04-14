@@ -6,7 +6,7 @@
 
 #include "hack.h"
 
-STATIC_DCL int FDECL(drop_throw,(struct obj *,BOOLEAN_P,int,int));
+STATIC_DCL int FDECL(drop_throw,(struct Object *,BOOLEAN_P,int,int));
 
 #define URETREATING(x,y) (distmin(u.ux,u.uy,x,y) > distmin(u.ux0,u.uy0,x,y))
 
@@ -35,7 +35,7 @@ STATIC_OVL NEARDATA const char *breathwep[] = {
 };
 
 /* hero is hit by something other than a monster */
-int thitu(int tlev, int dam, struct obj *obj, const char *name) {
+int thitu(int tlev, int dam, struct Object *obj, const char *name) {
 	const char *onm, *knm;
 	boolean is_acid;
 	int kprefix = KILLED_BY_AN;
@@ -89,7 +89,7 @@ int thitu(int tlev, int dam, struct obj *obj, const char *name) {
  * Returns 0 if object still exists (not destroyed).
  */
 
-STATIC_OVL int drop_throw(struct obj *obj, boolean ohit, int x, int y) {
+STATIC_OVL int drop_throw(struct Object *obj, boolean ohit, int x, int y) {
 	int retvalu = 1;
 	int create;
 	struct monst *mtmp;
@@ -120,7 +120,7 @@ STATIC_OVL int drop_throw(struct obj *obj, boolean ohit, int x, int y) {
 			    retvalu = 0;
 			}
 		}
-	} else obfree(obj, (struct obj*) 0);
+	} else obfree(obj, (struct Object*) 0);
 	return retvalu;
 }
 
@@ -134,7 +134,7 @@ int ohitmon(
     struct monst* mtmp, 
 
     /* missile; might be destroyed by drop_throw */
-    struct obj *otmp,
+    struct Object *otmp,
 
     /* how much farther will object travel if it misses */
     /* Use -1 to signify to keep going even after hit, */
@@ -238,9 +238,9 @@ int ohitmon(
 	return 0;
 }
 
-void m_throw(struct monst *mon, int x, int y, int dx, int dy, int range, struct obj *obj) {
+void m_throw(struct monst *mon, int x, int y, int dx, int dy, int range, struct Object *obj) {
 	struct monst *mtmp;
-	struct obj *singleobj;
+	struct Object *singleobj;
 	char sym = obj->oclass;
 	int hitu, blindinc = 0;
 
@@ -266,7 +266,7 @@ void m_throw(struct monst *mon, int x, int y, int dx, int dy, int range, struct 
 	    }
 	    obj_extract_self(obj);
 	    singleobj = obj;
-	    obj = (struct obj *) 0;
+	    obj = (struct Object *) 0;
 	} else {
 	    singleobj = splitobj(obj, 1L);
 	    obj_extract_self(singleobj);
@@ -450,7 +450,7 @@ void m_throw(struct monst *mon, int x, int y, int dx, int dy, int range, struct 
 #ifdef OVLB
 
 /* Remove an item from the monster's inventory and destroy it. */
-void m_useup(struct monst *mon, struct obj *obj) {
+void m_useup(struct monst *mon, struct Object *obj) {
 	if (obj->quan > 1L) {
 		obj->quan--;
 		obj->owt = weight(obj);
@@ -461,7 +461,7 @@ void m_useup(struct monst *mon, struct obj *obj) {
 		    mon->misc_worn_check &= ~obj->owornmask;
 		    update_mon_intrinsics(mon, obj, FALSE, FALSE);
 		}
-		obfree(obj, (struct obj*) 0);
+		obfree(obj, (struct Object*) 0);
 	}
 }
 
@@ -470,7 +470,7 @@ void m_useup(struct monst *mon, struct obj *obj) {
 
 /* monster attempts ranged weapon attack against player */
 void thrwmu(struct monst *mtmp) {
-	struct obj *otmp, *mwep;
+	struct Object *otmp, *mwep;
 	xchar x, y;
 	schar skill;
 	int multishot;
@@ -601,7 +601,7 @@ void thrwmu(struct monst *mtmp) {
 
 /* monster spits substance at you */
 int spitmu(struct monst *mtmp, struct attack *mattk) {
-	struct obj *otmp;
+	struct Object *otmp;
 
 	if(mtmp->mcan) {
 
@@ -703,18 +703,18 @@ boolean lined_up(struct monst *mtmp) {
 
 /* Check if a monster is carrying a particular item.
  */
-struct obj * m_carrying(struct monst *mtmp, int type) {
-	struct obj *otmp;
+struct Object * m_carrying(struct monst *mtmp, int type) {
+	struct Object *otmp;
 
 	for(otmp = mtmp->minvent; otmp; otmp = otmp->nobj)
 		if(otmp->otyp == type)
 			return(otmp);
-	return((struct obj *) 0);
+	return((struct Object *) 0);
 }
 
 /* TRUE iff thrown/kicked/rolled object doesn't pass through iron bars */
-boolean hits_bars(struct obj **obj_p, int x, int y, int always_hit, int whodidit) {
-    struct obj *otmp = *obj_p;
+boolean hits_bars(struct Object **obj_p, int x, int y, int always_hit, int whodidit) {
+    struct Object *otmp = *obj_p;
     int obj_type = otmp->otyp;
     boolean hits = always_hit;
 

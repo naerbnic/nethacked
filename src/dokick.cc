@@ -20,10 +20,10 @@ STATIC_DCL void FDECL(kickdmg, (struct monst *, BOOLEAN_P));
 STATIC_DCL void FDECL(kick_monster, (XCHAR_P, XCHAR_P));
 STATIC_DCL int FDECL(kick_object, (XCHAR_P, XCHAR_P));
 STATIC_DCL char *FDECL(kickstr, (char *));
-STATIC_DCL void FDECL(otransit_msg, (struct obj *, BOOLEAN_P, long));
+STATIC_DCL void FDECL(otransit_msg, (struct Object *, BOOLEAN_P, long));
 STATIC_DCL void FDECL(drop_to, (coord *,SCHAR_P));
 
-static NEARDATA struct obj *kickobj;
+static NEARDATA struct Object *kickobj;
 
 static const char kick_passes_thru[] = "kick passes harmlessly through";
 
@@ -119,7 +119,7 @@ STATIC_OVL void kick_monster(xchar x, xchar y) {
 
 	bhitpos.x = x;
 	bhitpos.y = y;
-	if (attack_checks(mon, (struct obj *)0)) return;
+	if (attack_checks(mon, (struct Object *)0)) return;
 	setmangry(mon);
 
 	/* Kick attacks by kicking monsters are normal attacks, not special.
@@ -227,7 +227,7 @@ doit:
  *  Return TRUE if caught (the gold taken care of), FALSE otherwise.
  *  The gold object is *not* attached to the fobj chain!
  */
-boolean ghitm(struct monst *mtmp, struct obj *gold) {
+boolean ghitm(struct monst *mtmp, struct Object *gold) {
 	boolean msg_given = FALSE;
 
 	if(!likes_gold(mtmp->data) && !mtmp->isshk && !mtmp->ispriest
@@ -329,9 +329,9 @@ boolean ghitm(struct monst *mtmp, struct obj *gold) {
 
 /* container is kicked, dropped, thrown or otherwise impacted by player.
  * Assumes container is on floor.  Checks contents for possible damage. */
-void container_impact_dmg(struct obj *obj) {
+void container_impact_dmg(struct Object *obj) {
 	struct monst *shkp;
-	struct obj *otmp, *otmp2;
+	struct Object *otmp, *otmp2;
 	long loss = 0L;
 	boolean costly, insider;
 	xchar x = obj->ox, y = obj->oy;
@@ -369,7 +369,7 @@ void container_impact_dmg(struct obj *obj) {
 		    useup(otmp);
 		else {
 		    obj_extract_self(otmp);
-		    obfree(otmp, (struct obj *) 0);
+		    obfree(otmp, (struct Object *) 0);
 		}
 	    }
 	}
@@ -754,7 +754,7 @@ int dokick() {
 		return 1;
 	}
 
-	kickobj = (struct obj *)0;
+	kickobj = (struct Object *)0;
 	if (OBJ_AT(x, y) &&
 	    (!Levitation || Is_airlevel(&u.uz) || Is_waterlevel(&u.uz)
 	     || sobj_at(BOULDER,x,y))) {
@@ -868,7 +868,7 @@ int dokick() {
 		if(IS_GRAVE(maploc->typ) || maploc->typ == IRONBARS)
 		    goto ouch;
 		if(IS_TREE(maploc->typ)) {
-		    struct obj *treefruit;
+		    struct Object *treefruit;
 		    /* nothing, fruit or trouble? 75:23.5:1.5% */
 		    if (rn2(3)) {
 			if ( !rn2(6) && !(mvitals[PM_KILLER_BEE].mvflags & G_GONE) )
@@ -1122,9 +1122,9 @@ STATIC_OVL void drop_to(coord *cc, schar loc) {
 	}
 }
 
-void impact_drop(struct obj *missile, xchar x, xchar y, xchar dlev) {
+void impact_drop(struct Object *missile, xchar x, xchar y, xchar dlev) {
 	schar toloc;
-	struct obj *obj, *obj2;
+	struct Object *obj, *obj2;
 	struct monst *shkp;
 	long oct, dct, price, debit, robbed;
 	boolean angry, costly, isrock;
@@ -1240,11 +1240,11 @@ void impact_drop(struct obj *missile, xchar x, xchar y, xchar dlev) {
  * <x,y> is the point of drop.  otmp is _not_ an <x,y> resident:
  * otmp is either a kicked, dropped, or thrown object.
  */
-boolean ship_object(struct obj *otmp, xchar x, xchar y, boolean shop_floor_obj) {
+boolean ship_object(struct Object *otmp, xchar x, xchar y, boolean shop_floor_obj) {
 	schar toloc;
 	xchar ox, oy;
 	coord cc;
-	struct obj *obj;
+	struct Object *obj;
 	struct trap *t;
 	boolean nodrop, unpaid, container, impact = FALSE;
 	long n = 0L;
@@ -1303,9 +1303,9 @@ boolean ship_object(struct obj *otmp, xchar x, xchar y, boolean shop_floor_obj) 
 		otmp->no_charge = 0;
 	}
 
-	if (otmp == uwep) setuwep((struct obj *)0);
-	if (otmp == uquiver) setuqwep((struct obj *)0);
-	if (otmp == uswapwep) setuswapwep((struct obj *)0);
+	if (otmp == uwep) setuwep((struct Object *)0);
+	if (otmp == uquiver) setuqwep((struct Object *)0);
+	if (otmp == uswapwep) setuswapwep((struct Object *)0);
 
 	/* some things break rather than ship */
 	if (breaktest(otmp)) {
@@ -1327,7 +1327,7 @@ boolean ship_object(struct obj *otmp, xchar x, xchar y, boolean shop_floor_obj) 
 	    }
 	    You_hear("a muffled %s.",result);
 	    obj_extract_self(otmp);
-	    obfree(otmp, (struct obj *) 0);
+	    obfree(otmp, (struct Object *) 0);
 	    return TRUE;
 	}
 
@@ -1355,7 +1355,7 @@ boolean ship_object(struct obj *otmp, xchar x, xchar y, boolean shop_floor_obj) 
 }
 
 void obj_delivery() {
-	struct obj *otmp, *otmp2;
+	struct Object *otmp, *otmp2;
 	int nx, ny;
 	long where;
 
@@ -1393,7 +1393,7 @@ void obj_delivery() {
 	}
 }
 
-STATIC_OVL void otransit_msg(struct obj *otmp, boolean nodrop, long num) {
+STATIC_OVL void otransit_msg(struct Object *otmp, boolean nodrop, long num) {
 	char obuf[BUFSZ];
 
 	Sprintf(obuf, "%s%s",

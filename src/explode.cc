@@ -376,7 +376,7 @@ void explode(int x, int y, int type, int dam, char olet, int expltype) {
 
 struct scatter_chain {
 	struct scatter_chain *next;	/* pointer to next scatter item	*/
-	struct obj *obj;		/* pointer to the object	*/
+	struct Object *obj;		/* pointer to the object	*/
 	xchar ox;			/* location of			*/
 	xchar oy;			/*	item			*/
 	schar dx;			/* direction of			*/
@@ -396,8 +396,8 @@ struct scatter_chain {
  */
 
 /* returns number of scattered objects */
-long scatter(int sx, int sy, int blastforce, unsigned int scflags, struct obj *obj) {
-	struct obj *otmp;
+long scatter(int sx, int sy, int blastforce, unsigned int scflags, struct Object *obj) {
+	struct Object *otmp;
 	int tmp;
 	int farthest = 0;
 	uchar typ;
@@ -416,7 +416,7 @@ long scatter(int sx, int sy, int blastforce, unsigned int scflags, struct obj *o
 		qtmp = (long)rnd((int)qtmp);
 		otmp = splitobj(otmp, qtmp);
 	    } else {
-		obj = (struct obj *)0; /* all used */
+		obj = (struct Object *)0; /* all used */
 	    }
 	    obj_extract_self(otmp);
 	    used_up = FALSE;
@@ -494,7 +494,7 @@ long scatter(int sx, int sy, int blastforce, unsigned int scflags, struct obj *o
 				if (scflags & MAY_HITMON) {
 				    stmp->range--;
 				    if (ohitmon(mtmp, stmp->obj, 1, FALSE)) {
-					stmp->obj = (struct obj *)0;
+					stmp->obj = (struct Object *)0;
 					stmp->stopped = TRUE;
 				    }
 				}

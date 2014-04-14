@@ -25,20 +25,20 @@ static NEARDATA const char readable[] =
 		   { ALL_CLASSES, SCROLL_CLASS, SPBOOK_CLASS, 0 };
 static const char all_count[] = { ALLOW_COUNT, ALL_CLASSES, 0 };
 
-static void FDECL(wand_explode, (struct obj *));
+static void FDECL(wand_explode, (struct Object *));
 static void NDECL(do_class_genocide);
-static void FDECL(stripspe,(struct obj *));
-static void FDECL(p_glow1,(struct obj *));
-static void FDECL(p_glow2,(struct obj *,const char *));
+static void FDECL(stripspe,(struct Object *));
+static void FDECL(p_glow1,(struct Object *));
+static void FDECL(p_glow2,(struct Object *,const char *));
 static void FDECL(randomize,(int *, int));
 static void FDECL(forget_single_object, (int));
 static void FDECL(forget, (int));
-static void FDECL(maybe_tame, (struct monst *,struct obj *));
+static void FDECL(maybe_tame, (struct monst *,struct Object *));
 
 STATIC_PTR void FDECL(set_lit, (int,int,genericptr_t));
 
 int doread() {
-	struct obj *scroll;
+	struct Object *scroll;
 	boolean confused;
 
 	known = FALSE;
@@ -152,7 +152,7 @@ int doread() {
 	return(1);
 }
 
-static void stripspe(struct obj *obj) {
+static void stripspe(struct Object *obj) {
 	if (obj->blessed) pline(nothing_happens);
 	else {
 		if (obj->spe > 0) {
@@ -164,12 +164,12 @@ static void stripspe(struct obj *obj) {
 	}
 }
 
-static void p_glow1(struct obj *otmp) {
+static void p_glow1(struct Object *otmp) {
 	Your("%s %s briefly.", xname(otmp),
 	     otense(otmp, Blind ? "vibrate" : "glow"));
 }
 
-static void p_glow2(struct obj *otmp, const char *color) {
+static void p_glow2(struct Object *otmp, const char *color) {
 	Your("%s %s%s%s for a moment.",
 		xname(otmp),
 		otense(otmp, Blind ? "vibrate" : "glow"),
@@ -179,7 +179,7 @@ static void p_glow2(struct obj *otmp, const char *color) {
 
 /* Is the object chargeable?  For purposes of inventory display; it is */
 /* possible to be able to charge things for which this returns FALSE. */
-boolean is_chargeable(struct obj *obj) {
+boolean is_chargeable(struct Object *obj) {
 	if (obj->oclass == WAND_CLASS) return TRUE;
 	/* known && !uname is possible after amnesia/mind flayer */
 	if (obj->oclass == RING_CLASS)
@@ -196,7 +196,7 @@ boolean is_chargeable(struct obj *obj) {
  * recharge an object; curse_bless is -1 if the recharging implement
  * was cursed, +1 if blessed, 0 otherwise.
  */
-void recharge(struct obj *obj, int curse_bless) {
+void recharge(struct Object *obj, int curse_bless) {
 	int n;
 	boolean is_cursed, is_blessed;
 
@@ -587,21 +587,21 @@ static void forget(int howmuch) {
 }
 
 /* monster is hit by scroll of taming's effect */
-static void maybe_tame(struct monst *mtmp, struct obj *sobj) {
+static void maybe_tame(struct monst *mtmp, struct Object *sobj) {
 	if (sobj->cursed) {
 	    setmangry(mtmp);
 	} else {
 	    if (mtmp->isshk)
 		make_happy_shk(mtmp, FALSE);
 	    else if (!resist(mtmp, sobj->oclass, 0, NOTELL))
-		(void) tamedog(mtmp, (struct obj *) 0);
+		(void) tamedog(mtmp, (struct Object *) 0);
 	}
 }
 
-int seffects(struct obj *sobj) {
+int seffects(struct Object *sobj) {
 	int cval;
 	boolean confused = (Confusion != 0);
-	struct obj *otmp;
+	struct Object *otmp;
 
 	if (objects[sobj->otyp].oc_magic)
 		exercise(A_WIS, TRUE);		/* just for trying */
@@ -696,7 +696,7 @@ int seffects(struct obj *sobj) {
 					otmp->otyp <= YELLOW_DRAGON_SCALES) {
 			/* dragon scales get turned into dragon scale mail */
 			Your("%s merges and hardens!", xname(otmp));
-			setworn((struct obj *)0, W_ARM);
+			setworn((struct Object *)0, W_ARM);
 			/* assumes same order */
 			otmp->otyp = GRAY_DRAGON_SCALE_MAIL +
 						otmp->otyp - GRAY_DRAGON_SCALES;
@@ -842,7 +842,7 @@ int seffects(struct obj *sobj) {
 	    break;
 	case SCR_REMOVE_CURSE:
 	case SPE_REMOVE_CURSE:
-	    {	struct obj *obj;
+	    {	struct Object *obj;
 		if(confused)
 		    if (Hallucination)
 			You_feel("the power of the Force against you!");
@@ -861,7 +861,7 @@ int seffects(struct obj *sobj) {
 			long wornmask;
 #ifdef GOLDOBJ
 			/* gold isn't subject to cursing and blessing */
-			if (obj->oclass == COIN_CLASS) continue;
+			if (Object->oclass == COIN_CLASS) continue;
 #endif
 			wornmask = (obj->owornmask & ~(W_BALL|W_ART|W_ARTI));
 			if (wornmask && !sobj->blessed) {
@@ -1128,7 +1128,7 @@ int seffects(struct obj *sobj) {
 	    	    			!IS_ROCK(levl[x][y].typ) &&
 	    	    			!IS_AIR(levl[x][y].typ) &&
 					(x != u.ux || y != u.uy)) {
-			    struct obj *otmp2;
+			    struct Object *otmp2;
 			    struct monst *mtmp;
 
 	    	    	    /* Make the object(s) */
@@ -1144,7 +1144,7 @@ int seffects(struct obj *sobj) {
 	    	    	    		!passes_walls(mtmp->data) &&
 	    	    	    		!noncorporeal(mtmp->data) &&
 	    	    	    		!unsolid(mtmp->data)) {
-				struct obj *helmet = which_armor(mtmp, W_ARMH);
+				struct Object *helmet = which_armor(mtmp, W_ARMH);
 				int mdmg;
 
 				if (cansee(mtmp->mx, mtmp->my)) {
@@ -1184,7 +1184,7 @@ int seffects(struct obj *sobj) {
 		/* Attack the player */
 		if (!sobj->blessed) {
 		    int dmg;
-		    struct obj *otmp2;
+		    struct Object *otmp2;
 
 		    /* Okay, _you_ write this without repeating the code */
 		    otmp2 = mksobj(confused ? ROCK : BOULDER,
@@ -1253,7 +1253,7 @@ int seffects(struct obj *sobj) {
 	return(0);
 }
 
-static void wand_explode(struct obj *obj) {
+static void wand_explode(struct Object *obj) {
     obj->in_use = TRUE;	/* in case losehp() is fatal */
     Your("%s vibrates violently, and explodes!",xname(obj));
     nhbell();
@@ -1274,13 +1274,13 @@ STATIC_PTR void set_lit(int x, int y, genericptr_t val) {
 	}
 }
 
-void litroom(boolean on, struct obj *obj) {
+void litroom(boolean on, struct Object *obj) {
 	char is_lit;	/* value is irrelevant; we use its address
 			   as a `not null' flag for set_lit() */
 
 	/* first produce the text (provided you're not blind) */
 	if(!on) {
-		struct obj *otmp;
+		struct Object *otmp;
 
 		if (!Blind) {
 		    if(u.uswallow) {
@@ -1665,7 +1665,7 @@ void do_genocide(int how) {
 	}
 }
 
-void punish(struct obj *sobj) {
+void punish(struct Object *sobj) {
 	/* KMH -- Punishment is still okay when you are riding */
 	You("are being punished for your misbehavior!");
 	if(Punished){
@@ -1694,14 +1694,14 @@ void punish(struct obj *sobj) {
 }
 
 void unpunish() {
-	struct obj *savechain = uchain;
+	struct Object *savechain = uchain;
 
 	obj_extract_self(uchain);
 	newsym(uchain->ox,uchain->oy);
-	setworn((struct obj *)0, W_CHAIN);
+	setworn((struct Object *)0, W_CHAIN);
 	dealloc_obj(savechain);
 	uball->spe = 0;
-	setworn((struct obj *)0, W_BALL);
+	setworn((struct Object *)0, W_BALL);
 }
 
 /* some creatures have special data structures that only make sense in their

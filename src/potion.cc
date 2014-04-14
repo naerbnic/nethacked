@@ -15,7 +15,7 @@ static NEARDATA const char beverages[] = { POTION_CLASS, 0 };
 STATIC_DCL long FDECL(itimeout, (long));
 STATIC_DCL long FDECL(itimeout_incr, (long,int));
 STATIC_DCL void NDECL(ghost_from_bottle);
-STATIC_DCL short FDECL(mixtype, (struct obj *,struct obj *));
+STATIC_DCL short FDECL(mixtype, (struct Object *,struct Object *));
 
 /* force `val' to be within valid range for intrinsic timeout value */
 STATIC_OVL long itimeout(long val) {
@@ -156,7 +156,7 @@ void make_blinded(long xtime, boolean talk) {
 	    /* clearing temporary blindness without toggling blindness */
 	    if (talk) {
 		if (!haseyes(youmonst.data)) {
-		    strange_feeling((struct obj *)0, (char *)0);
+		    strange_feeling((struct Object *)0, (char *)0);
 		} else if (Blindfolded) {
 		    Strcpy(buf, body_part(EYE));
 		    eyecnt = eyecount(youmonst.data);
@@ -182,7 +182,7 @@ void make_blinded(long xtime, boolean talk) {
 	    /* setting temporary blindness without toggling blindness */
 	    if (talk) {
 		if (!haseyes(youmonst.data)) {
-		    strange_feeling((struct obj *)0, (char *)0);
+		    strange_feeling((struct Object *)0, (char *)0);
 		} else if (Blindfolded) {
 		    Strcpy(buf, body_part(EYE));
 		    eyecnt = eyecount(youmonst.data);
@@ -226,7 +226,7 @@ boolean make_hallucinated(long xtime, boolean talk, long mask) {
 	    /* clearing temporary hallucination without toggling vision */
 	    if (!changed && !HHallucination && old && talk) {
 		if (!haseyes(youmonst.data)) {
-		    strange_feeling((struct obj *)0, (char *)0);
+		    strange_feeling((struct Object *)0, (char *)0);
 		} else if (Blind) {
 		    char buf[BUFSZ];
 		    int eyecnt = eyecount(youmonst.data);
@@ -282,7 +282,7 @@ STATIC_OVL void ghost_from_bottle() {
 /* "Quaffing is like drinking, except you spill more."  -- Terry Pratchett
  */
 int dodrink() {
-	struct obj *otmp;
+	struct Object *otmp;
 	const char *potion_descr;
 
 	if (Strangled) {
@@ -339,7 +339,7 @@ int dodrink() {
 	return dopotion(otmp);
 }
 
-int dopotion(struct obj *otmp) {
+int dopotion(struct Object *otmp) {
 	int retval;
 
 	otmp->in_use = TRUE;
@@ -362,7 +362,7 @@ int dopotion(struct obj *otmp) {
 	return(1);
 }
 
-int peffects(struct obj *otmp) {
+int peffects(struct Object *otmp) {
 	int i, ii, lim;
 
 	switch(otmp->otyp){
@@ -870,7 +870,7 @@ void healup(int nhp, int nxtra, boolean curesick, boolean cureblind) {
 	return;
 }
 
-void strange_feeling(struct obj *obj, const char *txt) {
+void strange_feeling(struct Object *obj, const char *txt) {
 	if (flags.beginner || !txt)
 		You("have a %s feeling for a moment, then it passes.",
 		Hallucination ? "normal" : "strange");
@@ -895,7 +895,7 @@ const char * bottlename() {
 	return bottlenames[rn2(SIZE(bottlenames))];
 }
 
-void potionhit(struct monst *mon, struct obj *obj, boolean your_fault) {
+void potionhit(struct monst *mon, struct Object *obj, boolean your_fault) {
 	const char *botlnam = bottlename();
 	boolean isyou = (mon == &youmonst);
 	int distance;
@@ -1110,11 +1110,11 @@ void potionhit(struct monst *mon, struct obj *obj, boolean your_fault) {
 		    subfrombill(obj, shkp);
 		}
 	}
-	obfree(obj, (struct obj *)0);
+	obfree(obj, (struct Object *)0);
 }
 
 /* vapors are inhaled or get in your eyes */
-void potionbreathe(struct obj *obj) {
+void potionbreathe(struct Object *obj) {
 	int i, ii, isdone, kn = 0;
 
 	switch(obj->otyp) {
@@ -1252,7 +1252,7 @@ void potionbreathe(struct obj *obj) {
 }
 
 /* returns the potion type when o1 is dipped in o2 */
-STATIC_OVL short mixtype(struct obj* o1, struct obj* o2) {
+STATIC_OVL short mixtype(struct Object* o1, struct Object* o2) {
 	/* cut down on the number of cases below */
 	if (o1->oclass == POTION_CLASS &&
 	    (o2->otyp == POT_GAIN_LEVEL ||
@@ -1262,7 +1262,7 @@ STATIC_OVL short mixtype(struct obj* o1, struct obj* o2) {
 	     o2->otyp == POT_FULL_HEALING ||
 	     o2->otyp == POT_ENLIGHTENMENT ||
 	     o2->otyp == POT_FRUIT_JUICE)) {
-		struct obj *swp;
+		struct Object *swp;
 
 		swp = o1; o1 = o2; o2 = swp;
 	}
@@ -1347,7 +1347,7 @@ STATIC_OVL short mixtype(struct obj* o1, struct obj* o2) {
 
 
 /* returns TRUE if something happened (potion should be used up) */
-boolean get_wet(struct obj* obj) {
+boolean get_wet(struct Object* obj) {
 	char Your_buf[BUFSZ];
 
 	if (snuff_lit(obj)) return(TRUE);
@@ -1379,8 +1379,8 @@ boolean get_wet(struct obj* obj) {
 		if (obj->odiluted) {
 			obj->odiluted = 0;
 #ifdef UNIXPC
-			obj->blessed = FALSE;
-			obj->cursed = FALSE;
+			Object->blessed = FALSE;
+			Object->cursed = FALSE;
 #else
 			obj->blessed = obj->cursed = FALSE;
 #endif
@@ -1449,8 +1449,8 @@ boolean get_wet(struct obj* obj) {
 }
 
 int dodip() {
-	struct obj *potion, *obj;
-	struct obj *singlepotion;
+	struct Object *potion, *obj;
+	struct Object *singlepotion;
 	const char *tmp;
 	uchar here;
 	char allowall[2];
@@ -1627,10 +1627,10 @@ int dodip() {
 				break;
 			case 4:
 				{
-				  struct obj *otmp;
+				  struct Object *otmp;
 				  otmp = mkobj(POTION_CLASS,FALSE);
 				  obj->otyp = otmp->otyp;
-				  obfree(otmp, (struct obj *)0);
+				  obfree(otmp, (struct Object *)0);
 				}
 				break;
 			default:
@@ -1657,22 +1657,22 @@ int dodip() {
 	}
 
 #ifdef INVISIBLE_OBJECTS
-	if (potion->otyp == POT_INVISIBILITY && !obj->oinvis) {
-		obj->oinvis = TRUE;
+	if (potion->otyp == POT_INVISIBILITY && !Object->oinvis) {
+		Object->oinvis = TRUE;
 		if (!Blind) {
 		    if (!See_invisible) pline("Where did %s go?",
-		    		the(xname(obj)));
+		    		the(xname(Object)));
 		    else You("notice a little haziness around %s.",
-		    		the(xname(obj)));
+		    		the(xname(Object)));
 		}
 		goto poof;
-	} else if (potion->otyp == POT_SEE_INVISIBLE && obj->oinvis) {
-		obj->oinvis = FALSE;
+	} else if (potion->otyp == POT_SEE_INVISIBLE && Object->oinvis) {
+		Object->oinvis = FALSE;
 		if (!Blind) {
 		    if (!See_invisible) pline("So that's where %s went!",
-		    		the(xname(obj)));
+		    		the(xname(Object)));
 		    else pline_The("haziness around %s disappears.",
-		    		the(xname(obj)));
+		    		the(xname(Object)));
 		}
 		goto poof;
 	}
@@ -1718,8 +1718,8 @@ int dodip() {
 			    yname(obj));
 		    if (obj->oeroded == MAX_ERODE) {
 			obj_extract_self(obj);
-			obfree(obj, (struct obj *)0);
-			obj = (struct obj *) 0;
+			obfree(obj, (struct Object *)0);
+			obj = (struct Object *) 0;
 		    } else {
 			/* we know it's carried */
 			if (obj->unpaid) {
@@ -1839,7 +1839,7 @@ int dodip() {
 			      newbuf);
 		    if(!objects[old_otyp].oc_uname &&
 			!objects[old_otyp].oc_name_known && old_dknown) {
-			struct obj fakeobj;
+			struct Object fakeobj;
 			fakeobj = zeroobj;
 			fakeobj.dknown = 1;
 			fakeobj.otyp = old_otyp;
@@ -1867,7 +1867,7 @@ poof:
 }
 
 
-void djinni_from_bottle(struct obj *obj) {
+void djinni_from_bottle(struct Object *obj) {
 	struct monst *mtmp;
 	int chance;
 
@@ -1895,7 +1895,7 @@ void djinni_from_bottle(struct obj *obj) {
 		mongone(mtmp);
 		break;
 	case 1 : verbalize("Thank you for freeing me!");
-		(void) tamedog(mtmp, (struct obj *)0);
+		(void) tamedog(mtmp, (struct Object *)0);
 		break;
 	case 2 : verbalize("You freed me!");
 		mtmp->mpeaceful = TRUE;

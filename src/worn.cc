@@ -6,13 +6,13 @@
 
 #include "hack.h"
 
-STATIC_DCL void FDECL(m_lose_armor, (struct monst *,struct obj *));
+STATIC_DCL void FDECL(m_lose_armor, (struct monst *,struct Object *));
 STATIC_DCL void FDECL(m_dowear_type, (struct monst *,long, BOOLEAN_P, BOOLEAN_P));
-STATIC_DCL int FDECL(extra_pref, (struct monst *, struct obj *));
+STATIC_DCL int FDECL(extra_pref, (struct monst *, struct Object *));
 
 const struct worn {
 	long w_mask;
-	struct obj **w_obj;
+	struct Object **w_obj;
 } worn[] = {
 	{ W_ARM, &uarm },
 	{ W_ARMC, &uarmc },
@@ -45,9 +45,9 @@ const struct worn {
 
 
 /* Updated to use the extrinsic and blocked fields. */
-void setworn(struct obj *obj, long mask) {
+void setworn(struct Object *obj, long mask) {
 	const struct worn *wp;
-	struct obj *oobj;
+	struct Object *oobj;
 	int p;
 
 	if ((mask & (W_ARM|I_SPECIAL)) == (W_ARM|I_SPECIAL)) {
@@ -103,7 +103,7 @@ void setworn(struct obj *obj, long mask) {
 
 /* called e.g. when obj is destroyed */
 /* Updated to use the extrinsic and blocked fields. */
-void setnotworn(struct obj *obj) {
+void setnotworn(struct Object *obj) {
 	const struct worn *wp;
 	int p;
 
@@ -132,8 +132,8 @@ void mon_set_minvis(struct monst *mon) {
 	}
 }
 
-void mon_adjust_speed(struct monst *mon, int adjust, struct obj *obj) {
-    struct obj *otmp;
+void mon_adjust_speed(struct monst *mon, int adjust, struct Object *obj) {
+    struct Object *otmp;
     boolean give_msg = !in_mklev, petrify = FALSE;
     unsigned int oldspeed = mon->mspeed;
 
@@ -194,10 +194,10 @@ void mon_adjust_speed(struct monst *mon, int adjust, struct obj *obj) {
 }
 
 /* armor put on or taken off; might be magical variety */
-void update_mon_intrinsics(struct monst *mon, struct obj *obj, boolean on, boolean silently) {
+void update_mon_intrinsics(struct monst *mon, struct Object *obj, boolean on, boolean silently) {
     int unseen;
     uchar mask;
-    struct obj *otmp;
+    struct Object *otmp;
     int which = (int) objects[obj->otyp].oc_oprop;
 
     unseen = !canseemon(mon);
@@ -307,7 +307,7 @@ void update_mon_intrinsics(struct monst *mon, struct obj *obj, boolean on, boole
 }
 
 int find_mac(struct monst *mon) {
-	struct obj *obj;
+	struct Object *obj;
 	int base = mon->data->ac;
 	long mwflags = mon->misc_worn_check;
 
@@ -371,7 +371,7 @@ void m_dowear(struct monst *mon, boolean creation) {
 }
 
 STATIC_OVL void m_dowear_type(struct monst *mon, long flag, boolean creation, boolean racialexception) {
-	struct obj *old, *best, *obj;
+	struct Object *old, *best, *obj;
 	int m_delay = 0;
 	int unseen = !canseemon(mon);
 	char nambuf[BUFSZ];
@@ -481,16 +481,16 @@ outer_break:
 }
 #undef RACE_EXCEPTION
 
-struct obj * which_armor(struct monst *mon, long flag) {
-	struct obj *obj;
+struct Object * which_armor(struct monst *mon, long flag) {
+	struct Object *obj;
 
 	for(obj = mon->minvent; obj; obj = obj->nobj)
 		if (obj->owornmask & flag) return obj;
-	return((struct obj *)0);
+	return((struct Object *)0);
 }
 
 /* remove an item of armor and then drop it */
-STATIC_OVL void m_lose_armor(struct monst *mon, struct obj *obj) {
+STATIC_OVL void m_lose_armor(struct monst *mon, struct Object *obj) {
 	mon->misc_worn_check &= ~obj->owornmask;
 	if (obj->owornmask)
 	    update_mon_intrinsics(mon, obj, FALSE, FALSE);
@@ -504,7 +504,7 @@ STATIC_OVL void m_lose_armor(struct monst *mon, struct obj *obj) {
 
 /* all objects with their bypass bit set should now be reset to normal */
 void clear_bypasses() {
-	struct obj *otmp, *nobj;
+	struct Object *otmp, *nobj;
 	struct monst *mtmp;
 
 	for (otmp = fobj; otmp; otmp = nobj) {
@@ -541,13 +541,13 @@ void clear_bypasses() {
 	flags.bypasses = FALSE;
 }
 
-void bypass_obj(struct obj *obj) {
+void bypass_obj(struct Object *obj) {
 	obj->bypass = 1;
 	flags.bypasses = TRUE;
 }
 
 void mon_break_armor(struct monst *mon, boolean polyspot) {
-	struct obj *otmp;
+	struct Object *otmp;
 	struct permonst *mdat = mon->data;
 	boolean vis = cansee(mon->mx, mon->my);
 	boolean handless_or_tiny = (nohands(mdat) || verysmall(mdat));
@@ -707,7 +707,7 @@ void mon_break_armor(struct monst *mon, boolean polyspot) {
 /* bias a monster's preferences towards armor that has special benefits. */
 /* currently only does speed boots, but might be expanded if monsters get to
    use more armor abilities */
-static int extra_pref(struct monst *mon, struct obj *obj) {
+static int extra_pref(struct monst *mon, struct Object *obj) {
     if (obj) {
 	if (obj->otyp == SPEED_BOOTS && mon->permspeed != MFAST)
 	    return 20;
@@ -722,7 +722,7 @@ static int extra_pref(struct monst *mon, struct obj *obj) {
  * 	 1 If the race/object combination is acceptable.
  *	-1 If the race/object combination is unacceptable.
  */
-int racial_exception(struct monst *mon, struct obj *obj) {
+int racial_exception(struct monst *mon, struct Object *obj) {
     const struct permonst *ptr = raceptr(mon);
 
     /* Acceptable Exceptions: */

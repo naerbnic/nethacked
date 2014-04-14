@@ -14,7 +14,7 @@
 
 extern boolean known;	/* from read.c */
 
-STATIC_DCL void FDECL(do_dknown_of, (struct obj *));
+STATIC_DCL void FDECL(do_dknown_of, (struct Object *));
 STATIC_DCL boolean FDECL(check_map_spot, (int,int,CHAR_P,unsigned));
 STATIC_DCL boolean FDECL(clear_stale_map, (CHAR_P,unsigned));
 STATIC_DCL void FDECL(sense_trap, (struct trap *,XCHAR_P,XCHAR_P,int));
@@ -23,9 +23,9 @@ STATIC_PTR void FDECL(findone,(int,int,genericptr_t));
 STATIC_PTR void FDECL(openone,(int,int,genericptr_t));
 
 /* Recursively search obj for an object in class_id oclass and return 1st found */
-struct obj * o_in(struct obj* obj, char oclass) {
-    struct obj* otmp;
-    struct obj *temp;
+struct Object * o_in(struct Object* obj, char oclass) {
+    struct Object* otmp;
+    struct Object *temp;
 
     if (obj->oclass == oclass) return obj;
 
@@ -35,13 +35,13 @@ struct obj * o_in(struct obj* obj, char oclass) {
 	    else if (Has_contents(otmp) && (temp = o_in(otmp, oclass)))
 		return temp;
     }
-    return (struct obj *) 0;
+    return (struct Object *) 0;
 }
 
 /* Recursively search obj for an object made of specified material and return 1st found */
-struct obj * o_material(struct obj* obj, unsigned material) {
-    struct obj* otmp;
-    struct obj *temp;
+struct Object * o_material(struct Object* obj, unsigned material) {
+    struct Object* otmp;
+    struct Object *temp;
 
     if (objects[obj->otyp].oc_material == material) return obj;
 
@@ -51,11 +51,11 @@ struct obj * o_material(struct obj* obj, unsigned material) {
 	    else if (Has_contents(otmp) && (temp = o_material(otmp, material)))
 		return temp;
     }
-    return (struct obj *) 0;
+    return (struct Object *) 0;
 }
 
-STATIC_OVL void do_dknown_of(struct obj *obj) {
-    struct obj *otmp;
+STATIC_OVL void do_dknown_of(struct Object *obj) {
+    struct Object *otmp;
 
     obj->dknown = 1;
     if (Has_contents(obj)) {
@@ -67,7 +67,7 @@ STATIC_OVL void do_dknown_of(struct obj *obj) {
 /* Check whether the location has an outdated object displayed on it. */
 STATIC_OVL boolean check_map_spot(int x, int y, char oclass, unsigned material) {
 	int glyph;
-	struct obj *otmp;
+	struct Object *otmp;
 	struct monst *mtmp;
 
 	glyph = glyph_at(x,y);
@@ -141,11 +141,11 @@ STATIC_OVL boolean clear_stale_map(char oclass, unsigned material) {
 }
 
 /* look for gold, on the floor or in monsters' possession */
-int gold_detect(struct obj *sobj) {
-    struct obj *obj;
+int gold_detect(struct Object *sobj) {
+    struct Object *obj;
     struct monst *mtmp;
     int uw = u.uinwater;
-    struct obj *temp;
+    struct Object *temp;
     boolean stale;
 
     known = stale = clear_stale_map(COIN_CLASS,
@@ -236,7 +236,7 @@ outgoldmap:
 #else
 	if (findgold(mtmp->minvent) || monsndx(mtmp->data) == PM_GOLD_GOLEM) {
 #endif
-	    struct obj gold;
+	    struct Object gold;
 
 	    gold.otyp = GOLD_PIECE;
 	    gold.ox = mtmp->mx;
@@ -269,8 +269,8 @@ outgoldmap:
 
 /* returns 1 if nothing was detected		*/
 /* returns 0 if something was detected		*/
-int food_detect(struct obj *sobj) {
-    struct obj *obj;
+int food_detect(struct Object *sobj) {
+    struct Object *obj;
     struct monst *mtmp;
     int ct = 0, ctu = 0;
     boolean confused = (Confusion || (sobj && sobj->cursed)), stale;
@@ -325,7 +325,7 @@ int food_detect(struct obj *sobj) {
 		u.uedibility = 1;
 	}
     } else {
-	struct obj *temp;
+	struct Object *temp;
 	known = TRUE;
 	cls();
 	u.uinwater = 0;
@@ -372,7 +372,7 @@ int food_detect(struct obj *sobj) {
  *	1 - nothing was detected
  *	0 - something was detected
  */
-int object_detect(struct obj *detector, int class_id) {
+int object_detect(struct Object *detector, int class_id) {
     int x, y;
     char stuff[BUFSZ];
     int is_cursed = (detector && detector->cursed);
@@ -380,7 +380,7 @@ int object_detect(struct obj *detector, int class_id) {
 				    detector->oclass == SPBOOK_CLASS) &&
 			detector->blessed);
     int ct = 0, ctu = 0;
-    struct obj *obj, *otmp = (struct obj *)0;
+    struct Object *obj, *otmp = (struct Object *)0;
     struct monst *mtmp;
     int uw = u.uinwater;
     int sym, boulder = 0;
@@ -509,7 +509,7 @@ int object_detect(struct obj *detector, int class_id) {
 	/* Allow a mimic to override the detected objects it is carrying. */
 	if (is_cursed && mtmp->m_ap_type == M_AP_OBJECT &&
 		(!class_id || class_id == objects[mtmp->mappearance].oc_class)) {
-	    struct obj temp;
+	    struct Object temp;
 
 	    temp.otyp = mtmp->mappearance;	/* needed for obj_to_glyph() */
 	    temp.ox = mtmp->mx;
@@ -521,7 +521,7 @@ int object_detect(struct obj *detector, int class_id) {
 #else
 	} else if (findgold(mtmp->minvent) && (!class_id || class_id == COIN_CLASS)) {
 #endif
-	    struct obj gold;
+	    struct Object gold;
 
 	    gold.otyp = GOLD_PIECE;
 	    gold.ox = mtmp->mx;
@@ -551,7 +551,7 @@ int object_detect(struct obj *detector, int class_id) {
  * Returns 1 if nothing was detected.
  * Returns 0 if something was detected.
  */
-int monster_detect(struct obj *otmp, int mclass) {
+int monster_detect(struct Object *otmp, int mclass) {
     struct monst *mtmp;
     int mcnt = 0;
 
@@ -611,7 +611,7 @@ int monster_detect(struct obj *otmp, int mclass) {
 
 STATIC_OVL void sense_trap(struct trap *trap, xchar x, xchar y, int src_cursed) {
     if (Hallucination || src_cursed) {
-	struct obj obj;			/* fake object */
+	struct Object obj;			/* fake object */
 	if (trap) {
 	    obj.ox = trap->tx;
 	    obj.oy = trap->ty;
@@ -640,9 +640,9 @@ STATIC_OVL void sense_trap(struct trap *trap, xchar x, xchar y, int src_cursed) 
 /* returns 1 if nothing was detected		*/
 /* returns 0 if something was detected		*/
 /* sobj is null if crystal ball, *scroll if gold detection scroll */
-int trap_detect(struct obj *sobj) {
+int trap_detect(struct Object *sobj) {
     struct trap *ttmp;
-    struct obj *obj;
+    struct Object *obj;
     int door;
     int uw = u.uinwater;
     boolean found = FALSE;
@@ -743,7 +743,7 @@ static const struct {
   { "the Wizard of Yendor's tower", &wiz1_level },
 };
 
-void use_crystal_ball(struct obj *obj) {
+void use_crystal_ball(struct Object *obj) {
     char ch;
     int oops;
 
@@ -832,14 +832,14 @@ void use_crystal_ball(struct obj *obj) {
 	if (ch == DEF_MIMIC_DEF) ch = DEF_MIMIC;
 
 	if ((class_id = def_char_to_objclass(ch)) != MAXOCLASSES)
-		ret = object_detect((struct obj *)0, class_id);
+		ret = object_detect((struct Object *)0, class_id);
 	else if ((class_id = def_char_to_monclass(ch)) != MAXMCLASSES)
-		ret = monster_detect((struct obj *)0, class_id);
+		ret = monster_detect((struct Object *)0, class_id);
 	else if (iflags.bouldersym && (ch == iflags.bouldersym))
-		ret = object_detect((struct obj *)0, ROCK_CLASS);
+		ret = object_detect((struct Object *)0, ROCK_CLASS);
 	else switch(ch) {
 		case '^':
-		    ret = trap_detect((struct obj *)0);
+		    ret = trap_detect((struct Object *)0);
 		    break;
 		default:
 		    {
@@ -986,7 +986,7 @@ STATIC_PTR void findone(int zx, int zy, genericptr_t num) {
 
 STATIC_PTR void openone(int zx, int zy, genericptr_t num) {
 	struct trap *ttmp;
-	struct obj *otmp;
+	struct Object *otmp;
 
 	if(OBJ_AT(zx, zy)) {
 		for(otmp = level.objects[zx][zy];
@@ -1199,7 +1199,7 @@ int dosearch() {
 void sokoban_detect() {
 	int x, y;
 	struct trap *ttmp;
-	struct obj *obj;
+	struct Object *obj;
 
 	/* Map the background and boulders */
 	for (x = 1; x < COLNO; x++)

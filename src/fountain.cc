@@ -258,7 +258,7 @@ void drinkfountain() {
 			break;
 
 		case 24: /* Curse an item */ {
-			struct obj *obj;
+			struct Object *obj;
 
 			pline("This water's no good!");
 			morehungry(rn1(20, 11));
@@ -288,7 +288,7 @@ void drinkfountain() {
 
 		case 26: /* See Monsters */
 
-			(void) monster_detect((struct obj *)0, 0);
+			(void) monster_detect((struct Object *)0, 0);
 			exercise(A_WIS, TRUE);
 			break;
 
@@ -328,7 +328,7 @@ void drinkfountain() {
 	dryup(u.ux, u.uy, TRUE);
 }
 
-void dipfountain(struct obj *obj) {
+void dipfountain(struct Object *obj) {
 	if (Levitation) {
 		floating_above("fountain");
 		return;
@@ -430,7 +430,7 @@ void dipfountain(struct obj *obj) {
 #else
 			{
 			    long money = money_cnt(invent);
-			    struct obj *otmp;
+			    struct Object *otmp;
                             if (money > 10) {
 				/* Amount to loose.  Might get rounded up as fountains don't pay change... */
 			        money = somegold(money) / 10; 
@@ -482,7 +482,7 @@ void breaksink(int x, int y) {
 }
 
 void drinksink() {
-	struct obj *otmp;
+	struct Object *otmp;
 	struct monst *mtmp;
 
 	if (Levitation) {
@@ -513,8 +513,8 @@ void drinksink() {
 		case 4: do {
 				otmp = mkobj(POTION_CLASS,FALSE);
 				if (otmp->otyp == POT_WATER) {
-					obfree(otmp, (struct obj *)0);
-					otmp = (struct obj *) 0;
+					obfree(otmp, (struct Object *)0);
+					otmp = (struct Object *) 0;
 				}
 			} while(!otmp);
 			otmp->cursed = otmp->blessed = 0;
@@ -525,7 +525,7 @@ void drinksink() {
 			otmp->quan++; /* Avoid panic upon useup() */
 			otmp->fromsink = 1; /* kludge for docall() */
 			(void) dopotion(otmp);
-			obfree(otmp, (struct obj *)0);
+			obfree(otmp, (struct Object *)0);
 			break;
 		case 5: if (!(levl[u.ux][u.uy].looted & S_LRING)) {
 			    You("find a ring in the sink!");

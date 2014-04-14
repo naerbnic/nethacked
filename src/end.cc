@@ -35,9 +35,9 @@ STATIC_PTR void FDECL(done_intr, (int));
 static void FDECL(done_hangup, (int));
 #endif
 STATIC_DCL void FDECL(disclose,(int,BOOLEAN_P));
-STATIC_DCL void FDECL(get_valuables, (struct obj *));
+STATIC_DCL void FDECL(get_valuables, (struct Object *));
 STATIC_DCL void FDECL(sort_valuables, (struct valuable_data *,int));
-STATIC_DCL void FDECL(artifact_score, (struct obj *,BOOLEAN_P,winid));
+STATIC_DCL void FDECL(artifact_score, (struct Object *,BOOLEAN_P,winid));
 STATIC_DCL void FDECL(savelife, (int));
 void FDECL(list_vanquished, (CHAR_P,BOOLEAN_P));
 #ifdef DUMP_LOG
@@ -427,7 +427,7 @@ STATIC_OVL void disclose(int how, boolean taken) {
 #ifdef DUMP_LOG
 			boolean want_disp = (c == 'y')? TRUE: FALSE;
 #endif
-			struct obj *obj;
+			struct Object *obj;
 
 			for (obj = invent; obj; obj = obj->nobj) {
 			    makeknown(obj->otyp);
@@ -521,8 +521,8 @@ STATIC_OVL void savelife(int how) {
  * Get valuables from the given list.  Revised code: the list always remains
  * intact.
  */
-STATIC_OVL void get_valuables(struct obj *list) {
-    struct obj *obj;
+STATIC_OVL void get_valuables(struct Object *list) {
+    struct Object *obj;
     int i;
 
     /* find amulets and gems, ignoring all artifacts */
@@ -570,9 +570,9 @@ STATIC_OVL void sort_valuables(struct valuable_data list[], int size) {
 }
 
 /* called twice; first to calculate total, then to list relevant items */
-STATIC_OVL void artifact_score(struct obj *list, boolean counting, winid endwin) {
+STATIC_OVL void artifact_score(struct Object *list, boolean counting, winid endwin) {
     char pbuf[BUFSZ];
-    struct obj *otmp;
+    struct Object *otmp;
     long value, points;
     short dummy;	/* object type returned by artifact_name() */
 
@@ -617,7 +617,7 @@ void done(int how) {
 	char kilbuf[BUFSZ], pbuf[BUFSZ];
 	winid endwin = WIN_ERR;
 	boolean bones_ok, have_windows = iflags.window_inited;
-	struct obj *corpse = (struct obj *)0;
+	struct Object *corpse = (struct Object *)0;
 	long umoney;
 	int i;
 
@@ -853,7 +853,7 @@ die:
 		savebones(corpse);
 	    /* corpse may be invalid pointer now so
 		ensure that it isn't used again */
-	    corpse = (struct obj *)0;
+	    corpse = (struct Object *)0;
 	}
 
 	/* update gold for the rip output, which can't use hidden_gold()
@@ -908,7 +908,7 @@ die:
 
 	if (how == ESCAPED || how == ASCENDED) {
 	    struct monst *mtmp;
-	    struct obj *otmp;
+	    struct Object *otmp;
 	    struct val_list *val;
 	    int i;
 
@@ -982,7 +982,7 @@ die:
 			Sprintf(pbuf, "%8ld %s (worth %ld %s),",
 				count, xname(otmp),
 				count * (long)objects[typ].oc_cost, currency(2L));
-			obfree(otmp, (struct obj *)0);
+			obfree(otmp, (struct Object *)0);
 		    } else {
 			Sprintf(pbuf,
 				"%8ld worthless piece%s of colored glass,",
@@ -1067,21 +1067,21 @@ die:
 
 
 void container_contents(
-    struct obj* list, boolean identified, boolean all_containers)
+    struct Object* list, boolean identified, boolean all_containers)
 #ifdef DUMP_LOG
 {
 	do_containerconts(list, identified, all_containers, FALSE, TRUE);
 }
 
 void do_containerconts(
-    struct obj* list, boolean identified, boolean all_containers,
+    struct Object* list, boolean identified, boolean all_containers,
     boolean want_dump, boolean want_disp)
 #endif
 /* The original container_contents function */
 {
-	struct obj *box, *obj;
+	struct Object *box, *obj;
 #ifdef SORTLOOT
-	struct obj **oarray;
+	struct Object **oarray;
 	int i,j,n;
 	char *invlet;
 #endif /* SORTLOOT */
@@ -1101,7 +1101,7 @@ void do_containerconts(
 		    /* count the number of items */
 		    for (n = 0, obj = box->cobj; obj; obj = obj->nobj) n++;
 		    /* Make a temporary array to store the objects sorted */
-		    oarray = (struct obj **) alloc(n*sizeof(struct obj*));
+		    oarray = (struct Object **) alloc(n*sizeof(struct Object*));
 
 		    /* Add objects to the array */
 		    i = 0;
@@ -1145,7 +1145,7 @@ void do_containerconts(
 		    for (i = 0; i < n; i++) {
 		      obj = oarray[i];
 #else
-		    for (obj = box->cobj; obj; obj = obj->nobj) {
+		    for (Object = box->cobj; Object; Object = Object->nobj) {
 #endif
 			if (identified) {
 			    makeknown(obj->otyp);

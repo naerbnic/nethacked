@@ -17,14 +17,14 @@ STATIC_DCL boolean FDECL(dog_hunger,(struct monst *,struct edog *));
 STATIC_DCL int FDECL(dog_invent,(struct monst *,struct edog *,int));
 STATIC_DCL int FDECL(dog_goal,(struct monst *,struct edog *,int,int,int));
 
-STATIC_DCL struct obj *FDECL(DROPPABLES, (struct monst *));
+STATIC_DCL struct Object *FDECL(DROPPABLES, (struct monst *));
 STATIC_DCL boolean FDECL(can_reach_location,(struct monst *,XCHAR_P,XCHAR_P,
     XCHAR_P,XCHAR_P));
 STATIC_DCL boolean FDECL(could_reach_item,(struct monst *, XCHAR_P,XCHAR_P));
 
-STATIC_OVL struct obj * DROPPABLES(struct monst *mon) {
-	struct obj *obj;
-	struct obj *wep = MON_WEP(mon);
+STATIC_OVL struct Object * DROPPABLES(struct monst *mon) {
+	struct Object *obj;
+	struct Object *wep = MON_WEP(mon);
 	boolean item1 = FALSE, item2 = FALSE;
 
 	if (is_animal(mon->data) || mindless(mon->data))
@@ -43,7 +43,7 @@ STATIC_OVL struct obj * DROPPABLES(struct monst *mon) {
 		}
 		if (!obj->owornmask && obj != wep) return obj;
 	}
-	return (struct obj *)0;
+	return (struct Object *)0;
 }
 
 static NEARDATA const char nofetch[] = { BALL_CLASS, CHAIN_CLASS, ROCK_CLASS, 0 };
@@ -58,14 +58,14 @@ STATIC_PTR void FDECL(wantdoor, (int, int, genericptr_t));
 
 #ifdef OVLB
 STATIC_OVL boolean cursed_object_at(int x, int y) {
-	struct obj *otmp;
+	struct Object *otmp;
 
 	for(otmp = level.objects[x][y]; otmp; otmp = otmp->nexthere)
 		if (otmp->cursed) return TRUE;
 	return FALSE;
 }
 
-int dog_nutrition(struct monst *mtmp, struct obj *obj) {
+int dog_nutrition(struct monst *mtmp, struct Object *obj) {
 	int nutrit;
 
 	/*
@@ -111,7 +111,7 @@ int dog_nutrition(struct monst *mtmp, struct obj *obj) {
 }
 
 /* returns 2 if pet dies, otherwise 1 */
-int dog_eat(struct monst *mtmp, struct obj * obj, int x, int y, boolean devour) {
+int dog_eat(struct monst *mtmp, struct Object * obj, int x, int y, boolean devour) {
 	struct edog *edog = EDOG(mtmp);
 	boolean poly = FALSE, grow = FALSE, heal = FALSE;
 	int nutrit;
@@ -241,7 +241,7 @@ STATIC_OVL boolean dog_hunger(struct monst *mtmp, struct edog *edog) {
  */
 STATIC_OVL int dog_invent(struct monst *mtmp, struct edog *edog, int udist) {
 	int omx, omy;
-	struct obj *obj;
+	struct Object *obj;
 
 	if (mtmp->msleeping || !mtmp->mcanmove) return(0);
 
@@ -307,7 +307,7 @@ STATIC_OVL int dog_invent(struct monst *mtmp, struct edog *edog, int udist) {
 STATIC_OVL int dog_goal(struct monst *mtmp, struct edog *edog, int after, int udist, int whappr) {
 	int omx, omy;
 	boolean in_masters_sight, dog_has_minvent;
-	struct obj *obj;
+	struct Object *obj;
 	xchar otyp;
 	int appr;
 
@@ -452,7 +452,7 @@ int dog_move(struct monst *mtmp, int after) {
 	int appr, whappr, udist;
 	int i, j, k;
 	struct edog *edog = EDOG(mtmp);
-	struct obj *obj = (struct obj *) 0;
+	struct Object *obj = (struct Object *) 0;
 	xchar otyp;
 	boolean has_edog, cursemsg[9], do_eat = FALSE;
 	xchar nix, niy;		/* position mtmp is (considering) moving to */
@@ -679,7 +679,7 @@ int dog_move(struct monst *mtmp, int after) {
 	}
 newdogpos:
 	if (nix != omx || niy != omy) {
-		struct obj *mw_tmp;
+		struct Object *mw_tmp;
 
 		if (info[chi] & ALLOW_U) {
 			if (mtmp->mleashed) { /* play it safe */

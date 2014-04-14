@@ -125,7 +125,7 @@ NEARDATA boolean stoned = FALSE;	/* done to monsters hit by 'c' */
 NEARDATA boolean unweapon = FALSE;
 NEARDATA boolean mrg_to_wielded = FALSE;
 			 /* weapon picked is merged with wielded one */
-NEARDATA struct obj *current_wand = 0;	/* wand currently zapped/applied */
+NEARDATA struct Object *current_wand = 0;	/* wand currently zapped/applied */
 
 NEARDATA boolean in_steed_dismounting = FALSE;
 
@@ -143,22 +143,22 @@ NEARDATA struct flag flags = DUMMY;
 NEARDATA struct instance_flags iflags = DUMMY;
 NEARDATA struct you u = DUMMY;
 
-NEARDATA struct obj *invent = (struct obj *)0,
-	*uwep = (struct obj *)0, *uarm = (struct obj *)0,
-	*uswapwep = (struct obj *)0,
-	*uquiver = (struct obj *)0, /* quiver */
+NEARDATA struct Object *invent = (struct Object *)0,
+	*uwep = (struct Object *)0, *uarm = (struct Object *)0,
+	*uswapwep = (struct Object *)0,
+	*uquiver = (struct Object *)0, /* quiver */
 #ifdef TOURIST
-	*uarmu = (struct obj *)0, /* under-wear, so to speak */
+	*uarmu = (struct Object *)0, /* under-wear, so to speak */
 #endif
-	*uskin = (struct obj *)0, /* dragon armor, if a dragon */
-	*uarmc = (struct obj *)0, *uarmh = (struct obj *)0,
-	*uarms = (struct obj *)0, *uarmg = (struct obj *)0,
-	*uarmf = (struct obj *)0, *uamul = (struct obj *)0,
-	*uright = (struct obj *)0,
-	*uleft = (struct obj *)0,
-	*ublindf = (struct obj *)0,
-	*uchain = (struct obj *)0,
-	*uball = (struct obj *)0;
+	*uskin = (struct Object *)0, /* dragon armor, if a dragon */
+	*uarmc = (struct Object *)0, *uarmh = (struct Object *)0,
+	*uarms = (struct Object *)0, *uarmg = (struct Object *)0,
+	*uarmf = (struct Object *)0, *uamul = (struct Object *)0,
+	*uright = (struct Object *)0,
+	*uleft = (struct Object *)0,
+	*ublindf = (struct Object *)0,
+	*uchain = (struct Object *)0,
+	*uball = (struct Object *)0;
 
 #ifdef TEXTCOLOR
 /*
@@ -189,12 +189,12 @@ NEARDATA long moves = 1L, monstermoves = 1L;
 NEARDATA long wailmsg = 0L;
 
 /* objects that are moving to another dungeon level */
-NEARDATA struct obj *migrating_objs = (struct obj *)0;
+NEARDATA struct Object *migrating_objs = (struct Object *)0;
 /* objects not yet paid for */
-NEARDATA struct obj *billobjs = (struct obj *)0;
+NEARDATA struct Object *billobjs = (struct Object *)0;
 
 /* used to zero all elements of a struct obj */
-NEARDATA struct obj zeroobj = DUMMY;
+NEARDATA struct Object zeroobj = DUMMY;
 
 /* originally from dog.c */
 NEARDATA char dogname[PL_PSIZ] = DUMMY;

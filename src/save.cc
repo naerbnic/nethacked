@@ -27,7 +27,7 @@ STATIC_DCL void FDECL(bputc, (int));
 #endif
 STATIC_DCL void FDECL(savelevchn, (int,int));
 STATIC_DCL void FDECL(savedamage, (int,int));
-STATIC_DCL void FDECL(saveobjchn, (int,struct obj *,int));
+STATIC_DCL void FDECL(saveobjchn, (int,struct Object *,int));
 STATIC_DCL void FDECL(savemonchn, (int,struct monst *,int));
 STATIC_DCL void FDECL(savetrapchn, (int,struct trap *,int));
 STATIC_DCL void FDECL(savegamestate, (int,int));
@@ -766,8 +766,8 @@ STATIC_OVL void savedamage(int fd, int mode) {
 	    level.damagelist = 0;
 }
 
-STATIC_OVL void saveobjchn(int fd, struct obj *otmp, int mode) {
-	struct obj *otmp2;
+STATIC_OVL void saveobjchn(int fd, struct Object *otmp, int mode) {
+	struct Object *otmp2;
 	unsigned int xl;
 	int minusone = -1;
 
@@ -776,7 +776,7 @@ STATIC_OVL void saveobjchn(int fd, struct obj *otmp, int mode) {
 	    if (perform_bwrite(mode)) {
 		xl = otmp->oxlth + otmp->onamelth;
 		bwrite(fd, (genericptr_t) &xl, sizeof(int));
-		bwrite(fd, (genericptr_t) otmp, xl + sizeof(struct obj));
+		bwrite(fd, (genericptr_t) otmp, xl + sizeof(struct Object));
 	    }
 	    if (Has_contents(otmp))
 		saveobjchn(fd,otmp->cobj,mode);

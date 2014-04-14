@@ -14,19 +14,19 @@ extern boolean notonhead;
 
 static NEARDATA boolean vis, far_noise;
 static NEARDATA long noisetime;
-static NEARDATA struct obj *otmp;
+static NEARDATA struct Object *otmp;
 
 static const char brief_feeling[] =
 	"have a %s feeling for a moment, then it passes.";
 
 STATIC_DCL char *FDECL(mon_nam_too, (char *,struct monst *,struct monst *));
-STATIC_DCL void FDECL(mrustm, (struct monst *, struct monst *, struct obj *));
+STATIC_DCL void FDECL(mrustm, (struct monst *, struct monst *, struct Object *));
 STATIC_DCL int FDECL(hitmm, (struct monst *,struct monst *,struct attack *));
 STATIC_DCL int FDECL(gazemm, (struct monst *,struct monst *,struct attack *));
 STATIC_DCL int FDECL(gulpmm, (struct monst *,struct monst *,struct attack *));
 STATIC_DCL int FDECL(explmm, (struct monst *,struct monst *,struct attack *));
 STATIC_DCL int FDECL(mdamagem, (struct monst *,struct monst *,struct attack *));
-STATIC_DCL void FDECL(mswingsm, (struct monst *, struct monst *, struct obj *));
+STATIC_DCL void FDECL(mswingsm, (struct monst *, struct monst *, struct Object *));
 STATIC_DCL void FDECL(noises,(struct monst *,struct attack *));
 STATIC_DCL void FDECL(missmm,(struct monst *,struct monst *,struct attack *));
 STATIC_DCL int FDECL(passivemm, (struct monst *, struct monst *, BOOLEAN_P, int));
@@ -235,7 +235,7 @@ int mattackm(struct monst *magr, struct monst *mdef) {
     for (i = 0; i < NATTK; i++) {
 	res[i] = MM_MISS;
 	mattk = getmattk(pa, i, res, &alt_attk);
-	otmp = (struct obj *)0;
+	otmp = (struct Object *)0;
 	attk = 1;
 	switch (mattk->aatyp) {
 	    case AT_WEAP:		/* "hand to hand" attacks */
@@ -465,7 +465,7 @@ STATIC_OVL int gulpmm(struct monst *magr, struct monst *mdef, struct attack *mat
 	xchar	ax, ay, dx, dy;
 	int	status;
 	char buf[BUFSZ];
-	struct obj *obj;
+	struct Object *obj;
 
 	if (mdef->data->msize >= MZ_HUGE) return MM_MISS;
 
@@ -553,7 +553,7 @@ STATIC_OVL int explmm(struct monst *magr, struct monst *mdef, struct attack *mat
  *  See comment at top of mattackm(), for return values.
  */
 STATIC_OVL int mdamagem(struct monst *magr, struct monst *mdef, struct attack *mattk) {
-	struct obj *obj;
+	struct Object *obj;
 	char buf[BUFSZ];
 	struct permonst *pa = magr->data, *pd = mdef->data;
 	int armpro, num, tmp = d((int)mattk->damn, (int)mattk->damd);
@@ -618,7 +618,7 @@ STATIC_OVL int mdamagem(struct monst *magr, struct monst *mdef, struct attack *m
 		num = monsndx(mdef->data);
 		if (magr->mtame && !magr->isminion &&
 		    !(mvitals[num].mvflags & G_NOCORPSE)) {
-		    struct obj *virtualcorpse = mksobj(CORPSE, FALSE, FALSE);
+		    struct Object *virtualcorpse = mksobj(CORPSE, FALSE, FALSE);
 		    int nutrit;
 
 		    virtualcorpse->corpsenm = num;
@@ -855,7 +855,7 @@ STATIC_OVL int mdamagem(struct monst *magr, struct monst *mdef, struct attack *m
 		if (!cancelled && mdef->mspeed != MSLOW) {
 		    unsigned int oldspeed = mdef->mspeed;
 
-		    mon_adjust_speed(mdef, -1, (struct obj *)0);
+		    mon_adjust_speed(mdef, -1, (struct Object *)0);
 		    mdef->mstrategy &= ~STRAT_WAITFORU;
 		    if (mdef->mspeed != oldspeed && vis)
 			pline("%s slows down.", Monnam(mdef));
@@ -873,7 +873,7 @@ STATIC_OVL int mdamagem(struct monst *magr, struct monst *mdef, struct attack *m
 		}
 		break;
 	    case AD_BLND:
-		if (can_blnd(magr, mdef, mattk->aatyp, (struct obj*)0)) {
+		if (can_blnd(magr, mdef, mattk->aatyp, (struct Object*)0)) {
 		    unsigned rnd_tmp;
 
 		    if (vis && mdef->mcansee)
@@ -936,7 +936,7 @@ STATIC_OVL int mdamagem(struct monst *magr, struct monst *mdef, struct attack *m
 		 * between mdef's feet...
 		 */
                 {
-		    struct obj *gold = findgold(mdef->minvent);
+		    struct Object *gold = findgold(mdef->minvent);
 		    if (!gold) break;
                     obj_extract_self(gold);
 		    add_to_minv(magr, gold);
@@ -1172,7 +1172,7 @@ void slept_monst(struct monst *mon) {
 #endif /* OVL0 */
 #ifdef OVLB
 
-STATIC_OVL void mrustm(struct monst *magr, struct monst *mdef, struct obj *obj) {
+STATIC_OVL void mrustm(struct monst *magr, struct monst *mdef, struct Object *obj) {
 	boolean is_acid;
 
 	if (!magr || !mdef || !obj) return; /* just in case */
@@ -1205,7 +1205,7 @@ STATIC_OVL void mrustm(struct monst *magr, struct monst *mdef, struct obj *obj) 
 	}
 }
 
-STATIC_OVL void mswingsm(struct monst *magr, struct monst *mdef, struct obj *otemp) {
+STATIC_OVL void mswingsm(struct monst *magr, struct monst *mdef, struct Object *otemp) {
 	char buf[BUFSZ];
 	if (!flags.verbose || Blind || !mon_visible(magr)) return;
 	Strcpy(buf, mon_nam(mdef));

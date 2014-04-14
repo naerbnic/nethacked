@@ -7,7 +7,7 @@
 #include "hack.h"
 
 static NEARDATA schar delay;		/* moves left for this spell */
-static NEARDATA struct obj *book;	/* last/current book being xscribed */
+static NEARDATA struct Object *book;	/* last/current book being xscribed */
 
 /* spellmenu arguments; 0 thru n-1 used as spl_book[] index when swapping */
 #define SPELLMENU_CAST (-2)
@@ -23,9 +23,9 @@ static NEARDATA struct obj *book;	/* last/current book being xscribed */
 	((char)((spell < 26) ? ('a' + spell) : ('A' + spell - 26)))
 
 STATIC_DCL int FDECL(spell_let_to_idx, (CHAR_P));
-STATIC_DCL boolean FDECL(cursed_book, (struct obj *bp));
-STATIC_DCL boolean FDECL(confused_book, (struct obj *));
-STATIC_DCL void FDECL(deadbook, (struct obj *));
+STATIC_DCL boolean FDECL(cursed_book, (struct Object *bp));
+STATIC_DCL boolean FDECL(confused_book, (struct Object *));
+STATIC_DCL void FDECL(deadbook, (struct Object *));
 STATIC_PTR int NDECL(learn);
 STATIC_DCL boolean FDECL(getspell, (int *));
 STATIC_DCL boolean FDECL(dospellmenu, (const char *,int,int *));
@@ -104,7 +104,7 @@ STATIC_OVL int spell_let_to_idx(char ilet) {
 }
 
 /* TRUE: book should be destroyed by caller */
-STATIC_OVL boolean cursed_book(struct obj *bp) {
+STATIC_OVL boolean cursed_book(struct Object *bp) {
 	int lev = objects[bp->otyp].oc_level;
 
 	switch(rn2(lev)) {
@@ -171,7 +171,7 @@ STATIC_OVL boolean cursed_book(struct obj *bp) {
 }
 
 /* study while confused: returns TRUE if the book is destroyed */
-STATIC_OVL boolean confused_book(struct obj *spellbook) {
+STATIC_OVL boolean confused_book(struct Object *spellbook) {
 	boolean gone = FALSE;
 
 	if (!rn2(3) && spellbook->otyp != SPE_BOOK_OF_THE_DEAD) {
@@ -193,7 +193,7 @@ STATIC_OVL boolean confused_book(struct obj *spellbook) {
 }
 
 /* special effects for The Book of the Dead */
-STATIC_OVL void deadbook(struct obj *book2) {
+STATIC_OVL void deadbook(struct Object *book2) {
     struct monst *mtmp, *mtmp2;
     coord mm;
 
@@ -202,7 +202,7 @@ STATIC_OVL void deadbook(struct obj *book2) {
     /* KMH -- Need ->known to avoid "_a_ Book of the Dead" */
     book2->known = 1;
     if(invocation_pos(u.ux, u.uy) && !On_stairs(u.ux, u.uy)) {
-	struct obj *otmp;
+	struct Object *otmp;
 	boolean arti1_primed = FALSE, arti2_primed = FALSE,
 			 arti_cursed = FALSE;
 
@@ -283,7 +283,7 @@ raise_dead:
 			if (mtmp->mtame < 20)
 			    mtmp->mtame++;
 		    } else
-			(void) tamedog(mtmp, (struct obj *)0);
+			(void) tamedog(mtmp, (struct Object *)0);
 		else monflee(mtmp, 0, FALSE, TRUE);
 	    }
 	}
@@ -374,7 +374,7 @@ STATIC_PTR int learn() {
 	return(0);
 }
 
-int study_book(struct obj *spellbook) {
+int study_book(struct Object *spellbook) {
 	int	 booktype = spellbook->otyp;
 	boolean confused = (Confusion != 0);
 	boolean too_hard = FALSE;
@@ -481,14 +481,14 @@ int study_book(struct obj *spellbook) {
 
 /* a spellbook has been destroyed or the character has changed levels;
    the stored address for the current book is no longer valid */
-void book_disappears(struct obj *obj) {
-	if (obj == book) book = (struct obj *)0;
+void book_disappears(struct Object *obj) {
+	if (obj == book) book = (struct Object *)0;
 }
 
 /* renaming an object usually results in it having a different address;
    so the sequence start reading, get interrupted, name the book, resume
    reading would read the "new" book from scratch */
-void book_substitution(struct obj *old_obj, struct obj *new_obj) {
+void book_substitution(struct Object *old_obj, struct Object *new_obj) {
 	if (old_obj == book) book = new_obj;
 }
 
@@ -674,7 +674,7 @@ int spelleffects(int spell, boolean atme) {
 	int energy, damage, chance, n, intell;
 	int skill, role_skill;
 	boolean confused = (Confusion != 0);
-	struct obj *pseudo;
+	struct Object *pseudo;
 	coord cc;
 
 	/*
@@ -890,7 +890,7 @@ int spelleffects(int spell, boolean atme) {
 		healup(0, 0, TRUE, FALSE);
 		break;
 	case SPE_CREATE_FAMILIAR:
-		(void) make_familiar((struct obj *)0, u.ux, u.uy, FALSE);
+		(void) make_familiar((struct Object *)0, u.ux, u.uy, FALSE);
 		break;
 	case SPE_CLAIRVOYANCE:
 		if (!BClairvoyant)
@@ -909,14 +909,14 @@ int spelleffects(int spell, boolean atme) {
 		break;
 	default:
 		impossible("Unknown spell %d attempted.", spell);
-		obfree(pseudo, (struct obj *)0);
+		obfree(pseudo, (struct Object *)0);
 		return(0);
 	}
 
 	/* gain skill for successful cast */
 	use_skill(skill, spellev(spell));
 
-	obfree(pseudo, (struct obj *)0);	/* now, get rid of it */
+	obfree(pseudo, (struct Object *)0);	/* now, get rid of it */
 	return(1);
 }
 
@@ -1205,7 +1205,7 @@ STATIC_OVL int percent_success(int spell) {
 
 
 /* Learn a spell during creation of the initial inventory */
-void initialspell(struct obj *obj) {
+void initialspell(struct Object *obj) {
 	int i;
 
 	for (i = 0; i < MAXSPELL; i++) {

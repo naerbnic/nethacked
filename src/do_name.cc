@@ -8,7 +8,7 @@
 
 #ifdef OVLB
 
-STATIC_DCL void FDECL(do_oname, (struct obj *));
+STATIC_DCL void FDECL(do_oname, (struct Object *));
 static void FDECL(getpos_help, (BOOLEAN_P,const char *));
 
 extern const char what_is_an_unknown_object[];		/* from pager.c */
@@ -292,7 +292,7 @@ int do_mname() {
  * when obj is in the inventory.
  */
 STATIC_OVL
-void do_oname(struct obj *obj) {
+void do_oname(struct Object *obj) {
 	char buf[BUFSZ], qbuf[QBUFSZ];
 	const char *aname;
 	short objtyp;
@@ -328,8 +328,8 @@ void do_oname(struct obj *obj) {
 /*
  * Allocate a new and possibly larger storage space for an obj.
  */
-struct obj * realloc_obj(struct obj *obj, int oextra_size, genericptr_t oextra_src, int oname_size, const char *name) {
-	struct obj *otmp;
+struct Object * realloc_obj(struct Object *obj, int oextra_size, genericptr_t oextra_src, int oname_size, const char *name) {
+	struct Object *otmp;
 
 	otmp = newobj(oextra_size + oname_size);
 	*otmp = *obj;	/* the cobj pointer is copied to otmp */
@@ -359,7 +359,7 @@ struct obj * realloc_obj(struct obj *obj, int oextra_size, genericptr_t oextra_s
 		boolean save_twoweap = u.twoweap;
 		/* unwearing the old instance will clear dual-wield mode
 		   if this object is either of the two weapons */
-		setworn((struct obj *)0, obj->owornmask);
+		setworn((struct Object *)0, obj->owornmask);
 		setworn(otmp, otmp->owornmask);
 		u.twoweap = save_twoweap;
 	}
@@ -369,7 +369,7 @@ struct obj * realloc_obj(struct obj *obj, int oextra_size, genericptr_t oextra_s
 
 	/* fix ocontainer pointers */
 	if (Has_contents(obj)) {
-		struct obj *inside;
+		struct Object *inside;
 
 		for(inside = obj->cobj; inside; inside = inside->nobj)
 			inside->ocontainer = otmp;
@@ -391,7 +391,7 @@ struct obj * realloc_obj(struct obj *obj, int oextra_size, genericptr_t oextra_s
 	return otmp;
 }
 
-struct obj * oname(struct obj *obj, const char *name) {
+struct Object * oname(struct Object *obj, const char *name) {
 	int lth;
 	char buf[PL_PSIZ];
 
@@ -431,7 +431,7 @@ static NEARDATA const char callable[] = {
 	GEM_CLASS, SPBOOK_CLASS, ARMOR_CLASS, TOOL_CLASS, 0 };
 
 int ddocall() {
-	struct obj *obj;
+	struct Object *obj;
 #ifdef REDO
 	char	ch;
 #endif
@@ -474,9 +474,9 @@ int ddocall() {
 	return 0;
 }
 
-void docall(struct obj *obj) {
+void docall(struct Object *obj) {
 	char buf[BUFSZ], qbuf[QBUFSZ];
-	struct obj otemp;
+	struct Object otemp;
 	char **str1;
 
 	if (!obj->dknown) return; /* probably blind */

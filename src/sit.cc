@@ -15,7 +15,7 @@ void take_gold() {
 		flags.botl = 1;
 	}
 #else
-        struct obj *otmp, *nobj;
+        struct Object *otmp, *nobj;
 	int lost_money = 0;
 	for (otmp = invent; otmp; otmp = nobj) {
 		nobj = otmp->nobj;
@@ -57,7 +57,7 @@ int dosit() {
 	}
 
 	if(OBJ_AT(u.ux, u.uy)) {
-	    struct obj *obj;
+	    struct Object *obj;
 
 	    obj = level.objects[u.ux][u.uy];
 	    You("sit on %s.", the(xname(obj)));
@@ -274,7 +274,7 @@ int dosit() {
 	    }
 
 	} else if (lays_eggs(youmonst.data)) {
-		struct obj *uegg;
+		struct Object *uegg;
 
 		if (!flags.female) {
 			pline("Males can't lay eggs!");
@@ -308,7 +308,7 @@ int dosit() {
 void rndcurse() {
 	int	nobj = 0;
 	int	cnt, onum;
-	struct	obj	*otmp;
+	struct	Object	*otmp;
 	static const char mal_aura[] = "feel a malignant aura surround %s.";
 
 	if (uwep && (uwep->oartifact == ART_MAGICBANE) && rn2(20)) {

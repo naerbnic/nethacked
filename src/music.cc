@@ -36,23 +36,23 @@ STATIC_DCL void FDECL(charm_snakes,(int));
 STATIC_DCL void FDECL(calm_nymphs,(int));
 STATIC_DCL void FDECL(charm_monsters,(int));
 STATIC_DCL void FDECL(do_earthquake,(int));
-STATIC_DCL int FDECL(do_improvisation,(struct obj *));
+STATIC_DCL int FDECL(do_improvisation,(struct Object *));
 
 #ifdef UNIX386MUSIC
 STATIC_DCL int NDECL(atconsole);
-STATIC_DCL void FDECL(speaker,(struct obj *,char *));
+STATIC_DCL void FDECL(speaker,(struct Object *,char *));
 #endif
 #ifdef VPIX_MUSIC
 extern int sco_flag_console;	/* will need changing if not _M_UNIX */
 STATIC_DCL void NDECL(playinit);
 STATIC_DCL void FDECL(playstring, (char *,size_t));
-STATIC_DCL void FDECL(speaker,(struct obj *,char *));
+STATIC_DCL void FDECL(speaker,(struct Object *,char *));
 #endif
 #ifdef PCMUSIC
-void FDECL( pc_speaker, ( struct obj *, char * ) );
+void FDECL( pc_speaker, ( struct Object *, char * ) );
 #endif
 #ifdef AMIGA
-void FDECL( amii_speaker, ( struct obj *, char *, int ) );
+void FDECL( amii_speaker, ( struct Object *, char *, int ) );
 #endif
 
 /*
@@ -178,7 +178,7 @@ STATIC_OVL void charm_monsters(int distance) {
 
 	if (u.uswallow) {
 	    if (!resist(u.ustuck, TOOL_CLASS, 0, NOTELL))
-		(void) tamedog(u.ustuck, (struct obj *) 0);
+		(void) tamedog(u.ustuck, (struct Object *) 0);
 	} else {
 	    for (mtmp = fmon; mtmp; mtmp = mtmp2) {
 		mtmp2 = mtmp->nmon;
@@ -186,7 +186,7 @@ STATIC_OVL void charm_monsters(int distance) {
 
 		if (distu(mtmp->mx, mtmp->my) <= distance) {
 		    if (!resist(mtmp, TOOL_CLASS, 0, NOTELL))
-			(void) tamedog(mtmp, (struct obj *) 0);
+			(void) tamedog(mtmp, (struct Object *) 0);
 		}
 	    }
 	}
@@ -200,7 +200,7 @@ STATIC_OVL void charm_monsters(int distance) {
 STATIC_OVL void do_earthquake(int force) {
 	int x,y;
 	struct monst *mtmp;
-	struct obj *otmp;
+	struct Object *otmp;
 	struct trap *chasm;
 	int start_x, start_y, end_x, end_y;
 
@@ -331,10 +331,10 @@ do_pit:		    chasm = maketrap(x,y,PIT);
  * The player is trying to extract something from his/her instrument.
  */
 
-STATIC_OVL int do_improvisation(struct obj *instr) {
+STATIC_OVL int do_improvisation(struct Object *instr) {
 	int damage, do_spec = !Confusion;
 #if defined(AMIGA) || defined(VPIX_MUSIC) || defined (PCMUSIC)
-	struct obj itmp;
+	struct Object itmp;
 
 	itmp = *instr;
 	/* if won't yield special effect, make sound of mundane counterpart */
@@ -448,7 +448,7 @@ STATIC_OVL int do_improvisation(struct obj *instr) {
  * So you want music...
  */
 
-int do_play_instrument(struct obj *instr) {
+int do_play_instrument(struct Object *instr) {
     char buf[BUFSZ], c = 'y';
     char *s;
     int x,y;
@@ -600,7 +600,7 @@ STATIC_OVL int atconsole() {
      return(!strcmp(termtype, "AT386") || !strcmp(termtype, "xterm"));
 }
 
-STATIC_OVL void speaker(struct obj *instr, char *buf) {
+STATIC_OVL void speaker(struct Object *instr, char *buf) {
     /*
      * For this to work, you need to have installed the PD speaker-control
      * driver for PC-compatible UNIX boxes that I (esr@snark.thyrsus.com)
@@ -675,7 +675,7 @@ int	ticks;
 #include "interp.c"	/* from snd86unx.shr */
 
 
-STATIC_OVL void speaker(struct obj *instr, char *buf) {
+STATIC_OVL void speaker(struct Object *instr, char *buf) {
     /* emit a prefix to modify instrumental `timbre' */
     playinit();
     switch (instr->otyp)

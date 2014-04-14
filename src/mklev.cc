@@ -494,7 +494,7 @@ STATIC_OVL void clear_level_structures() {
 	    for(y=0; y<ROWNO; y++) {
 		*lev++ = zerorm;
 #ifdef MICROPORT_BUG
-		level.objects[x][y] = (struct obj *)0;
+		level.objects[x][y] = (struct Object *)0;
 		level.monsters[x][y] = (struct monst *)0;
 #endif
 	    }
@@ -503,8 +503,8 @@ STATIC_OVL void clear_level_structures() {
 	(void) memset((genericptr_t)level.objects, 0, sizeof(level.objects));
 	(void) memset((genericptr_t)level.monsters, 0, sizeof(level.monsters));
 #endif
-	level.objlist = (struct obj *)0;
-	level.buriedobjlist = (struct obj *)0;
+	level.objlist = (struct Object *)0;
+	level.buriedobjlist = (struct Object *)0;
 	level.monlist = (struct monst *)0;
 	level.damagelist = (struct damage *)0;
 
@@ -778,7 +778,7 @@ skip0:
  */
 STATIC_OVL void mineralize() {
 	s_level *sp;
-	struct obj *otmp;
+	struct Object *otmp;
 	int goldprob, gemprob, x, y, cnt;
 
 
@@ -1267,7 +1267,7 @@ STATIC_OVL void mkaltar(struct mkroom *croom) {
 static void mkgrave(struct mkroom *croom) {
 	coord m;
 	int tryct = 0;
-	struct obj *otmp;
+	struct Object *otmp;
 	boolean dobell = !rn2(10);
 
 
@@ -1359,7 +1359,7 @@ void mkinvokearea() {
  */
 STATIC_OVL void mkinvpos(xchar x, xchar y, int dist) {
     struct trap *ttmp;
-    struct obj *otmp;
+    struct Object *otmp;
     boolean make_rocks;
     struct rm *lev = &levl[x][y];
 
@@ -1383,7 +1383,7 @@ STATIC_OVL void mkinvpos(xchar x, xchar y, int dist) {
 	    make_rocks = FALSE;		/* don't bother with more rocks */
 	} else {
 	    obj_extract_self(otmp);
-	    obfree(otmp, (struct obj *)0);
+	    obfree(otmp, (struct Object *)0);
 	}
     }
     unblock_point(x,y);	/* make sure vision knows this location is open */

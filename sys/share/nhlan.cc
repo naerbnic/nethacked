@@ -123,9 +123,7 @@ boolean lan_mail_check()
 	return FALSE;
 }
 
-void lan_mail_read(otmp)
-struct obj *otmp;
-{
+void lan_mail_read(Object *otmp) {
 	if (flags.biff) {
 		(void) mail_fetch(&mailmessage);
 		/* after a successful fetch iflags.lan_mail_fetched

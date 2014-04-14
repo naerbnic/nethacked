@@ -7,9 +7,9 @@
 #include "hack.h"
 #include "artifact.h"
 
-STATIC_VAR NEARDATA struct obj *otmp;
+STATIC_VAR NEARDATA struct Object *otmp;
 
-STATIC_DCL void FDECL(urustm, (struct monst *, struct obj *));
+STATIC_DCL void FDECL(urustm, (struct monst *, struct Object *));
 # ifdef OVL1
 STATIC_DCL boolean FDECL(u_slip_free, (struct monst *,struct attack *));
 STATIC_DCL int FDECL(passiveum, (struct permonst *,struct monst *,struct attack *));
@@ -17,7 +17,7 @@ STATIC_DCL int FDECL(passiveum, (struct permonst *,struct monst *,struct attack 
 
 #ifdef OVLB
 # ifdef SEDUCE
-STATIC_DCL void FDECL(mayberem, (struct obj *, const char *));
+STATIC_DCL void FDECL(mayberem, (struct Object *, const char *));
 # endif
 #endif /* OVLB */
 
@@ -26,7 +26,7 @@ STATIC_DCL int FDECL(hitmu, (struct monst *,struct attack *));
 STATIC_DCL int FDECL(gulpmu, (struct monst *,struct attack *));
 STATIC_DCL int FDECL(explmu, (struct monst *,struct attack *,BOOLEAN_P));
 STATIC_DCL void FDECL(missmu,(struct monst *,BOOLEAN_P,struct attack *));
-STATIC_DCL void FDECL(mswings,(struct monst *,struct obj *));
+STATIC_DCL void FDECL(mswings,(struct monst *,struct Object *));
 STATIC_DCL void FDECL(wildmiss, (struct monst *,struct attack *));
 
 STATIC_DCL void FDECL(hurtarmor,(int));
@@ -97,7 +97,7 @@ STATIC_OVL void missmu(struct monst *mtmp, boolean nearmiss, struct attack *matt
 }
 
 /* monster swings obj */
-STATIC_OVL void mswings(struct monst *mtmp, struct obj *otemp) {
+STATIC_OVL void mswings(struct monst *mtmp, struct Object *otemp) {
 	if (!flags.verbose || Blind || !mon_visible(mtmp))
 		return;
 	pline("%s %s %s %s.", Monnam(mtmp),
@@ -108,7 +108,7 @@ STATIC_OVL void mswings(struct monst *mtmp, struct obj *otemp) {
 /* return how a poison attack was delivered */
 const char * mpoisons_subj(struct monst *mtmp, struct attack *mattk) {
 	if (mattk->aatyp == AT_WEAP) {
-	    struct obj *mwep = (mtmp == &youmonst) ? uwep : MON_WEP(mtmp);
+	    struct Object *mwep = (mtmp == &youmonst) ? uwep : MON_WEP(mtmp);
 	    /* "Foo's attack was poisoned." is pretty lame, but at least
 	       it's better than "sting" when not a stinging attack... */
 	    return (!mwep || !mwep->opoisoned) ? "attack" : "weapon";
@@ -325,7 +325,7 @@ int mattacku(struct monst *mtmp) {
 		u.uundetected = 0;
 		if (is_hider(youmonst.data)) {
 		    coord cc; /* maybe we need a unexto() function? */
-		    struct obj *obj;
+		    struct Object *obj;
 
 		    You("fall from the %s!", ceiling(u.ux,u.uy));
 		    if (enexto(&cc, u.ux, u.uy, youmonst.data)) {
@@ -371,7 +371,7 @@ int mattacku(struct monst *mtmp) {
 			 * parallelism to work, we can't rephrase it, so we
 			 * zap the "laid by you" momentarily instead.
 			 */
-			struct obj *obj = level.objects[u.ux][u.uy];
+			struct Object *obj = level.objects[u.ux][u.uy];
 
 			if (obj ||
 			      (youmonst.data->mlet == S_EEL && is_pool(u.ux, u.uy))) {
@@ -741,7 +741,7 @@ STATIC_OVL boolean diseasemu(struct permonst *mdat) {
 
 /* check whether slippery clothing protects from hug or wrap attack */
 STATIC_OVL boolean u_slip_free(struct monst *mtmp, struct attack *mattk) {
-	struct obj *obj = (uarmc ? uarmc : uarm);
+	struct Object *obj = (uarmc ? uarmc : uarm);
 
 #ifdef TOURIST
 	if (!obj) obj = uarmu;
@@ -774,7 +774,7 @@ STATIC_OVL boolean u_slip_free(struct monst *mtmp, struct attack *mattk) {
 
 /* armor that sufficiently covers the body might be able to block magic */
 int magic_negation(struct monst *mon) {
-	struct obj *armor;
+	struct Object *armor;
 	int armpro = 0;
 
 	armor = (mon == &youmonst) ? uarm : which_armor(mon, W_ARM);
@@ -837,7 +837,7 @@ STATIC_OVL int hitmu(struct monst *mtmp, struct attack *mattk) {
 	if(mtmp->mundetected && (hides_under(mdat) || mdat->mlet == S_EEL)) {
 	    mtmp->mundetected = 0;
 	    if (!(Blind ? Blind_telepat : Unblind_telepat)) {
-		struct obj *obj;
+		struct Object *obj;
 		const char *what;
 
 		if ((obj = level.objects[mtmp->mx][mtmp->my]) != 0) {
@@ -985,7 +985,7 @@ STATIC_OVL int hitmu(struct monst *mtmp, struct attack *mattk) {
 		}
 		break;
 	    case AD_BLND:
-		if (can_blnd(mtmp, &youmonst, mattk->aatyp, (struct obj*)0)) {
+		if (can_blnd(mtmp, &youmonst, mattk->aatyp, (struct Object*)0)) {
 		    if (!Blind) pline("%s blinds you!", Monnam(mtmp));
 		    make_blinded(Blinded+(long)dmg,FALSE);
 		    if (!Blind) Your(vision_clears);
@@ -1030,7 +1030,7 @@ dopois:
 		    /* No such thing as mindless players... */
 		    if (ABASE(A_INT) <= ATTRMIN(A_INT)) {
 			int lifesaved = 0;
-			struct obj *wore_amulet = uamul;
+			struct Object *wore_amulet = uamul;
 
 			while(1) {
 			    /* avoid looping on "die(y/n)?" */
@@ -1497,7 +1497,7 @@ dopois:
 		/* uncancelled is sufficient enough; please
 		   don't make this attack less frequent */
 		if (uncancelled) {
-		    struct obj *obj = some_armor(&youmonst);
+		    struct Object *obj = some_armor(&youmonst);
 
 		    if (drain_item(obj)) {
 			Your("%s less effective.", aobjnam(obj, "seem"));
@@ -1576,7 +1576,7 @@ STATIC_OVL int gulpmu(struct monst *mtmp, struct attack *mattk) {
 	struct trap *t = t_at(u.ux, u.uy);
 	int	tmp = d((int)mattk->damn, (int)mattk->damd);
 	int	tim_tmp;
-	struct obj *otmp2;
+	struct Object *otmp2;
 	int	i;
 
 	if (!u.uswallow) {	/* swallows you */
@@ -1687,7 +1687,7 @@ STATIC_OVL int gulpmu(struct monst *mtmp, struct attack *mattk) {
 		    }
 		    break;
 		case AD_BLND:
-		    if (can_blnd(mtmp, &youmonst, mattk->aatyp, (struct obj*)0)) {
+		    if (can_blnd(mtmp, &youmonst, mattk->aatyp, (struct Object*)0)) {
 			if(!Blind) {
 			    You_cant("see in here!");
 			    make_blinded((long)tmp,FALSE);
@@ -1997,7 +1997,7 @@ void mdamageu(struct monst *mtmp, int n) {
 #endif /* OVL1 */
 #ifdef OVLB
 
-STATIC_OVL void urustm(struct monst *mon, struct obj *obj) {
+STATIC_OVL void urustm(struct monst *mon, struct Object *obj) {
 	boolean vis;
 	boolean is_acid;
 
@@ -2088,7 +2088,7 @@ int could_seduce(struct monst* magr, struct monst* mdef,
 #ifdef SEDUCE
 /* Returns 1 if monster teleported */
 int doseduce(struct monst *mon) {
-	struct obj *ring, *nring;
+	struct Object *ring, *nring;
 	boolean fem = (mon->data == &mons[PM_SUCCUBUS]); /* otherwise incubus */
 	char qbuf[QBUFSZ];
 
@@ -2122,9 +2122,9 @@ int doseduce(struct monst *mon) {
 			Blind ? "She" : Monnam(mon), xname(ring));
 		makeknown(RIN_ADORNMENT);
 		if (ring==uleft || ring==uright) Ring_gone(ring);
-		if (ring==uwep) setuwep((struct obj *)0);
-		if (ring==uswapwep) setuswapwep((struct obj *)0);
-		if (ring==uquiver) setuqwep((struct obj *)0);
+		if (ring==uwep) setuwep((struct Object *)0);
+		if (ring==uswapwep) setuswapwep((struct Object *)0);
+		if (ring==uquiver) setuqwep((struct Object *)0);
 		freeinv(ring);
 		(void) mpickobj(mon,ring);
 	    } else {
@@ -2335,7 +2335,7 @@ int doseduce(struct monst *mon) {
 	return 1;
 }
 
-STATIC_OVL void mayberem(struct obj *obj, const char *str) {
+STATIC_OVL void mayberem(struct Object *obj, const char *str) {
 	char qbuf[QBUFSZ];
 
 	if (!obj || !obj->owornmask) return;

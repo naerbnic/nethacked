@@ -683,7 +683,7 @@ public:
 	NetHackQtInvUsageWindow(QWidget* parent);
 	virtual void paintEvent(QPaintEvent*);
 private:
-	void drawWorn(QPainter& painter, obj*, int x, int y, bool canbe=TRUE);
+	void drawWorn(QPainter& painter, Object*, int x, int y, bool canbe=TRUE);
 };
 
 // This class is the main widget for NetHack

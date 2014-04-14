@@ -19,7 +19,7 @@ STATIC_DCL long FDECL(mm_aggression, (struct monst *,struct monst *));
 #ifdef OVL2
 STATIC_DCL int NDECL(pick_animal);
 STATIC_DCL int FDECL(select_newcham_form, (struct monst *));
-STATIC_DCL void FDECL(kill_eggs, (struct obj *));
+STATIC_DCL void FDECL(kill_eggs, (struct Object *));
 #endif
 
 #ifdef REINCARNATION
@@ -50,7 +50,7 @@ STATIC_DCL void NDECL(warn_effects);
 #ifndef OVLB
 STATIC_VAR short cham_to_pm[];
 #else
-STATIC_DCL struct obj *FDECL(make_corpse,(struct monst *));
+STATIC_DCL struct Object *FDECL(make_corpse,(struct monst *));
 STATIC_DCL void FDECL(m_detach, (struct monst *, struct permonst *));
 STATIC_DCL void FDECL(lifesaved_monster, (struct monst *));
 
@@ -158,10 +158,10 @@ STATIC_VAR short cham_to_pm[] = {
  * G_NOCORPSE set in order to prevent wishing for one, finding tins of one,
  * etc....
  */
-STATIC_OVL struct obj * make_corpse(struct monst *mtmp) {
+STATIC_OVL struct Object * make_corpse(struct monst *mtmp) {
 	struct permonst *mdat = mtmp->data;
 	int num;
-	struct obj *obj = (struct obj *)0;
+	struct Object *obj = (struct Object *)0;
 	int x = mtmp->mx, y = mtmp->my;
 	int mndx = monsndx(mdat);
 
@@ -277,7 +277,7 @@ STATIC_OVL struct obj * make_corpse(struct monst *mtmp) {
 	    default_1:
 	    default:
 		if (mvitals[mndx].mvflags & G_NOCORPSE)
-		    return (struct obj *)0;
+		    return (struct Object *)0;
 		else	/* preserve the unique traits of some creatures */
 		    obj = mkcorpstat(CORPSE, KEEPTRAITS(mtmp) ? mtmp : 0,
 				     mdat, x, y, TRUE);
@@ -304,7 +304,7 @@ STATIC_OVL struct obj * make_corpse(struct monst *mtmp) {
 
 #ifdef INVISIBLE_OBJECTS
 	/* Invisible monster ==> invisible corpse */
-	obj->oinvis = mtmp->minvis;
+	Object->oinvis = mtmp->minvis;
 #endif
 
 	stackobj(obj);
@@ -636,7 +636,7 @@ int movemon() {
  * has young and old forms).
  */
 int meatmetal(struct monst *mtmp) {
-	struct obj *otmp;
+	struct Object *otmp;
 	struct permonst *ptr;
 	int poly, grow, heal, mstone;
 
@@ -723,7 +723,7 @@ int meatmetal(struct monst *mtmp) {
 
 /* for gelatinous cubes */
 int meatobj(struct monst *mtmp) {
-	struct obj *otmp, *otmp2;
+	struct Object *otmp, *otmp2;
 	struct permonst *ptr;
 	int poly, grow, heal, count = 0, ecount = 0;
 	char buf[BUFSZ];
@@ -756,7 +756,7 @@ int meatobj(struct monst *mtmp) {
 		    if (mtmp->mhp > mtmp->mhpmax) mtmp->mhp = mtmp->mhpmax;
 		}
 		if (Has_contents(otmp)) {
-		    struct obj *otmp3;
+		    struct Object *otmp3;
 		    /* contents of eaten containers become engulfed; this
 		       is arbitrary, but otherwise g.cubes are too powerful */
 		    while ((otmp3 = otmp->cobj) != 0) {
@@ -810,7 +810,7 @@ int meatobj(struct monst *mtmp) {
 }
 
 void mpickgold(struct monst *mtmp) {
-    struct obj *gold;
+    struct Object *gold;
     int mat_idx;
 
     if ((gold = g_at(mtmp->mx, mtmp->my)) != 0) {
@@ -834,7 +834,7 @@ void mpickgold(struct monst *mtmp) {
 #ifdef OVL2
 
 boolean mpickstuff(struct monst *mtmp, const char *str) {
-	struct obj *otmp, *otmp2;
+	struct Object *otmp, *otmp2;
 
 /*	prevent shopkeepers from leaving the door of their shop */
 	if(mtmp->isshk && inhishop(mtmp)) return FALSE;
@@ -877,7 +877,7 @@ boolean mpickstuff(struct monst *mtmp, const char *str) {
 
 int curr_mon_load(struct monst *mtmp) {
 	int curload = 0;
-	struct obj *obj;
+	struct Object *obj;
 
 	for(obj = mtmp->minvent; obj; obj = obj->nobj) {
 		if(obj->otyp != BOULDER || !throws_rocks(mtmp->data))
@@ -913,7 +913,7 @@ int max_mon_load(struct monst *mtmp) {
 }
 
 /* for restricting monsters' object-pickup */
-boolean can_carry(struct monst *mtmp, struct obj *otmp) {
+boolean can_carry(struct monst *mtmp, struct Object *otmp) {
 	int otyp = otmp->otyp, newload = otmp->owt;
 	struct permonst *mdat = mtmp->data;
 
@@ -973,7 +973,7 @@ int mfndpos(struct monst *mon, coord *poss, long *info, long flag) {
 	lavaok = is_flyer(mdat) || is_clinger(mdat) || likes_lava(mdat);
 	thrudoor = ((flag & (ALLOW_WALL|BUSTDOOR)) != 0L);
 	if (flag & ALLOW_DIG) {
-	    struct obj *mw_tmp;
+	    struct Object *mw_tmp;
 
 	    /* need to be specific about what can currently be dug */
 	    if (!needspick(mdat)) {
@@ -1209,7 +1209,7 @@ void dmonsfree() {
 
 /* called when monster is moved to larger structure */
 void replmon(struct monst *mtmp, struct monst *mtmp2) {
-    struct obj *otmp;
+    struct Object *otmp;
 
     /* transfer the monster's inventory */
     for (otmp = mtmp2->minvent; otmp; otmp = otmp->nobj) {
@@ -1287,18 +1287,18 @@ STATIC_OVL void m_detach(struct monst *mtmp, struct permonst *mptr) {
 }
 
 /* find the worn amulet of life saving which will save a monster */
-struct obj * mlifesaver(struct monst *mon) {
+struct Object * mlifesaver(struct monst *mon) {
 	if (!nonliving(mon->data)) {
-	    struct obj *otmp = which_armor(mon, W_AMUL);
+	    struct Object *otmp = which_armor(mon, W_AMUL);
 
 	    if (otmp && otmp->otyp == AMULET_OF_LIFE_SAVING)
 		return otmp;
 	}
-	return (struct obj *)0;
+	return (struct Object *)0;
 }
 
 STATIC_OVL void lifesaved_monster(struct monst *mtmp) {
-	struct obj *lifesave = mlifesaver(mtmp);
+	struct Object *lifesave = mlifesaver(mtmp);
 
 	if (lifesave) {
 		/* not canseemon; amulets are on the head, so you don't want */
@@ -1513,7 +1513,7 @@ void mongone(struct monst *mdef) {
 
 /* drop a statue or rock and remove monster */
 void monstone(struct monst *mdef) {
-	struct obj *otmp, *obj, *oldminvent;
+	struct Object *otmp, *obj, *oldminvent;
 	xchar x = mdef->mx, y = mdef->my;
 	boolean wasinside = FALSE;
 
@@ -1540,7 +1540,7 @@ void monstone(struct monst *mdef) {
 		    obj->owornmask = 0L;
 		    if (obj->otyp == BOULDER ||
 #if 0				/* monsters don't carry statues */
-     (obj->otyp == STATUE && mons[obj->corpsenm].msize >= mdef->data->msize) ||
+     (Object->otyp == STATUE && mons[Object->corpsenm].msize >= mdef->data->msize) ||
 #endif
 				obj_resists(obj, 0, 0)) {
 			if (flooreffects(obj, x, y, "fall")) continue;
@@ -1563,7 +1563,7 @@ void monstone(struct monst *mdef) {
 		}
 #ifndef GOLDOBJ
 		if (mdef->mgold) {
-			struct obj *au;
+			struct Object *au;
 			au = mksobj(GOLD_PIECE, FALSE, FALSE);
 			au->quan = mdef->mgold;
 			au->owt = weight(au);
@@ -1648,7 +1648,7 @@ void xkilled(
 	int tmp, x = mtmp->mx, y = mtmp->my;
 	struct permonst *mdat;
 	int mndx;
-	struct obj *otmp;
+	struct Object *otmp;
 	struct trap *t;
 	boolean redisp = FALSE;
 	boolean wasinside = u.uswallow && (u.ustuck == mtmp);
@@ -2195,7 +2195,7 @@ STATIC_OVL int select_newcham_form(struct monst *mon) {
 		break;
 	    case CHAM_ORDINARY:
 	      {
-		struct obj *m_armr = which_armor(mon, W_ARM);
+		struct Object *m_armr = which_armor(mon, W_ARM);
 
 		if (m_armr && Is_dragon_scales(m_armr))
 		    mndx = Dragon_scales_to_pm(m_armr) - mons;
@@ -2393,7 +2393,7 @@ int newcham(struct monst *mtmp, struct permonst *mdat, boolean polyspot, boolean
 	 */
 	/* former giants can't continue carrying boulders */
 	if (mtmp->minvent && !throws_rocks(mdat)) {
-	    struct obj *otmp, *otmp2;
+	    struct Object *otmp, *otmp2;
 
 	    for (otmp = mtmp->minvent; otmp; otmp = otmp2) {
 		otmp2 = otmp->nobj;
@@ -2465,8 +2465,8 @@ boolean dead_species(int m_idx, boolean egg) {
 }
 
 /* kill off any eggs of genocided monsters */
-STATIC_OVL void kill_eggs(struct obj *obj_list) {
-	struct obj *otmp;
+STATIC_OVL void kill_eggs(struct Object *obj_list) {
+	struct Object *otmp;
 
 	for (otmp = obj_list; otmp; otmp = otmp->nobj)
 	    if (otmp->otyp == EGG) {
@@ -2547,7 +2547,7 @@ void golemeffects(struct monst *mon, int damtype, int dam) {
     }
     if (slow) {
 	if (mon->mspeed != MSLOW)
-	    mon_adjust_speed(mon, -1, (struct obj *)0);
+	    mon_adjust_speed(mon, -1, (struct Object *)0);
     }
     if (heal) {
 	if (mon->mhp < mon->mhpmax) {

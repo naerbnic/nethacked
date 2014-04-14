@@ -301,7 +301,7 @@ void cutoff(struct monst *worm, struct wseg *tail) {
  *  there is a chance that the worm will be cut in half, and a chance
  *  that both halves will survive.
  */
-void cutworm(struct monst *worm, xchar x, xchar y, struct obj *weap) {
+void cutworm(struct monst *worm, xchar x, xchar y, struct Object *weap) {
     struct wseg  *curr, *new_tail;
     struct monst *new_worm;
     int wnum = worm->wormno;

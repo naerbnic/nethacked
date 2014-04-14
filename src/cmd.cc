@@ -135,8 +135,8 @@ extern void FDECL(show_borlandc_stats, (winid));
 #ifdef DEBUG_MIGRATING_MONS
 STATIC_PTR int NDECL(wiz_migrate_mons);
 #endif
-STATIC_DCL void FDECL(count_obj, (struct obj *, long *, long *, BOOLEAN_P, BOOLEAN_P));
-STATIC_DCL void FDECL(obj_chain, (winid, const char *, struct obj *, long *, long *));
+STATIC_DCL void FDECL(count_obj, (struct Object *, long *, long *, BOOLEAN_P, BOOLEAN_P));
+STATIC_DCL void FDECL(obj_chain, (winid, const char *, struct Object *, long *, long *));
 STATIC_DCL void FDECL(mon_invent_chain, (winid, const char *, struct monst *, long *, long *));
 STATIC_DCL void FDECL(mon_chain, (winid, const char *, struct monst *, long *, long *));
 STATIC_DCL void FDECL(contained, (winid, const char *, long *, long *));
@@ -445,7 +445,7 @@ STATIC_PTR int domonability() {
 		    dryup(u.ux, u.uy, TRUE);
 	    } else There("is no fountain here.");
 	} else if (is_unicorn(youmonst.data)) {
-	    use_unicorn_horn((struct obj *)0);
+	    use_unicorn_horn((struct Object *)0);
 	    return 1;
 	} else if (youmonst.data->msound == MS_SHRIEK) {
 	    You("shriek.");
@@ -1939,14 +1939,14 @@ static const char templ_str[] = "%-18s %4ld  %6ld";
 static const char count_str[] = "                   count  bytes";
 static const char separator[] = "------------------ -----  ------";
 
-STATIC_OVL void count_obj(struct obj *chain, long *total_count, long *total_size, boolean top, boolean recurse) {
+STATIC_OVL void count_obj(struct Object *chain, long *total_count, long *total_size, boolean top, boolean recurse) {
 	long count, size;
-	struct obj *obj;
+	struct Object *obj;
 
 	for (count = size = 0, obj = chain; obj; obj = obj->nobj) {
 	    if (top) {
 		count++;
-		size += sizeof(struct obj) + obj->oxlth + obj->onamelth;
+		size += sizeof(struct Object) + obj->oxlth + obj->onamelth;
 	    }
 	    if (recurse && obj->cobj)
 		count_obj(obj->cobj, total_count, total_size, TRUE, TRUE);
@@ -1955,7 +1955,7 @@ STATIC_OVL void count_obj(struct obj *chain, long *total_count, long *total_size
 	*total_size += size;
 }
 
-STATIC_OVL void obj_chain(winid win, const char *src, struct obj *chain, long *total_count, long *total_size) {
+STATIC_OVL void obj_chain(winid win, const char *src, struct Object *chain, long *total_count, long *total_size) {
 	char buf[BUFSZ];
 	long count = 0, size = 0;
 
@@ -2027,7 +2027,7 @@ static int wiz_show_stats() {
 	win = create_nhwindow(NHW_TEXT);
 	putstr(win, 0, "Current memory statistics:");
 	putstr(win, 0, "");
-	Sprintf(buf, "Objects, size %d", (int) sizeof(struct obj));
+	Sprintf(buf, "Objects, size %d", (int) sizeof(struct Object));
 	putstr(win, 0, buf);
 	putstr(win, 0, "");
 	putstr(win, 0, count_str);

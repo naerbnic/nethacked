@@ -23,11 +23,11 @@ static int NDECL(mgetc);
 STATIC_DCL void NDECL(find_lev_obj);
 STATIC_DCL void FDECL(restlevchn, (int));
 STATIC_DCL void FDECL(restdamage, (int,BOOLEAN_P));
-STATIC_DCL struct obj *FDECL(restobjchn, (int,BOOLEAN_P,BOOLEAN_P));
+STATIC_DCL struct Object *FDECL(restobjchn, (int,BOOLEAN_P,BOOLEAN_P));
 STATIC_DCL struct monst *FDECL(restmonchn, (int,BOOLEAN_P));
 STATIC_DCL struct fruit *FDECL(loadfruitchn, (int));
 STATIC_DCL void FDECL(freefruitchn, (struct fruit *));
-STATIC_DCL void FDECL(ghostfruit, (struct obj *));
+STATIC_DCL void FDECL(ghostfruit, (struct Object *));
 STATIC_DCL boolean FDECL(restgamestate, (int, unsigned int *, unsigned int *));
 STATIC_DCL void FDECL(restlevelstate, (unsigned int, unsigned int));
 STATIC_DCL int FDECL(restlevelfile, (int,XCHAR_P));
@@ -68,12 +68,12 @@ static NEARDATA long omoves;
 
 /* Recalculate level.objects[x][y], since this info was not saved. */
 STATIC_OVL void find_lev_obj() {
-	struct obj *fobjtmp = (struct obj *)0;
-	struct obj *otmp;
+	struct Object *fobjtmp = (struct Object *)0;
+	struct Object *otmp;
 	int x,y;
 
 	for(x=0; x<COLNO; x++) for(y=0; y<ROWNO; y++)
-		level.objects[x][y] = (struct obj *)0;
+		level.objects[x][y] = (struct Object *)0;
 
 	/*
 	 * Reverse the entire fobj chain, which is necessary so that we can
@@ -99,7 +99,7 @@ STATIC_OVL void find_lev_obj() {
  * infamous "HUP" cheat) get used up here.
  */
 void inven_inuse(boolean quietly) {
-	struct obj *otmp, *otmp2;
+	struct Object *otmp, *otmp2;
 
 	for (otmp = invent; otmp; otmp = otmp2) {
 	    otmp2 = otmp->nobj;
@@ -180,9 +180,9 @@ STATIC_OVL void restdamage(int fd, boolean ghostly) {
 	free((genericptr_t)tmp_dam);
 }
 
-STATIC_OVL struct obj * restobjchn(int fd, boolean ghostly, boolean frozen) {
-	struct obj *otmp, *otmp2 = 0;
-	struct obj *first = (struct obj *)0;
+STATIC_OVL struct Object * restobjchn(int fd, boolean ghostly, boolean frozen) {
+	struct Object *otmp, *otmp2 = 0;
+	struct Object *first = (struct Object *)0;
 	int xl;
 
 	while(1) {
@@ -192,7 +192,7 @@ STATIC_OVL struct obj * restobjchn(int fd, boolean ghostly, boolean frozen) {
 		if(!first) first = otmp;
 		else otmp2->nobj = otmp;
 		mread(fd, (genericptr_t) otmp,
-					(unsigned) xl + sizeof(struct obj));
+					(unsigned) xl + sizeof(struct Object));
 		if (ghostly) {
 		    unsigned nid = flags.ident++;
 		    add_id_mapping(otmp->o_id, nid);
@@ -208,7 +208,7 @@ STATIC_OVL struct obj * restobjchn(int fd, boolean ghostly, boolean frozen) {
 
 		/* get contents of a container or statue */
 		if (Has_contents(otmp)) {
-		    struct obj *otmp3;
+		    struct Object *otmp3;
 		    otmp->cobj = restobjchn(fd, ghostly, Is_IceBox(otmp));
 		    /* restore container back pointers */
 		    for (otmp3 = otmp->cobj; otmp3; otmp3 = otmp3->nobj)
@@ -261,14 +261,14 @@ STATIC_OVL struct monst * restmonchn(int fd, boolean ghostly) {
 			}
 		}
 		if(mtmp->minvent) {
-			struct obj *obj;
+			struct Object *obj;
 			mtmp->minvent = restobjchn(fd, ghostly, FALSE);
 			/* restore monster back pointer */
 			for (obj = mtmp->minvent; obj; obj = obj->nobj)
 				obj->ocarry = mtmp;
 		}
 		if (mtmp->mw) {
-			struct obj *obj;
+			struct Object *obj;
 
 			for(obj = mtmp->minvent; obj; obj = obj->nobj)
 				if (obj->owornmask & W_WEP) break;
@@ -315,7 +315,7 @@ STATIC_OVL void freefruitchn(struct fruit *flist) {
 	}
 }
 
-STATIC_OVL void ghostfruit(struct obj *otmp) {
+STATIC_OVL void ghostfruit(struct Object *otmp) {
 	struct fruit *oldf;
 
 	for (oldf = oldfruit; oldf; oldf = oldf->nextf)
@@ -329,7 +329,7 @@ STATIC_OVL
 boolean restgamestate(int fd, unsigned int *stuckid, unsigned int *steedid) {
 	/* discover is actually flags.explore */
 	boolean remember_discover = discover;
-	struct obj *otmp;
+	struct Object *otmp;
 	int uid;
 
 	mread(fd, (genericptr_t) &uid, sizeof uid);
@@ -512,7 +512,7 @@ int dorecover(int fd) {
 	unsigned int stuckid = 0, steedid = 0;	/* not a */
 	xchar ltmp;
 	int rtmp;
-	struct obj *otmp;
+	struct Object *otmp;
 
 #ifdef STORE_PLNAME_IN_FILE
 	mread(fd, (genericptr_t) plname, PL_NSIZ);
@@ -930,7 +930,7 @@ boolean lookup_id_mapping(unsigned gid, unsigned *nidp) {
 }
 
 STATIC_OVL void reset_oattached_mids(boolean ghostly) {
-    struct obj *otmp;
+    struct Object *otmp;
     unsigned oldid, nid;
     for (otmp = fobj; otmp; otmp = otmp->nobj) {
 	if (ghostly && otmp->oattached == OATTACHED_MONST && otmp->oxlth) {

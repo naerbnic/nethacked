@@ -871,7 +871,7 @@ STATIC_OVL boolean restricted_spell_discipline(int otyp) {
 }
 
 STATIC_OVL void ini_inv(struct trobj *trop) {
-	struct obj *obj;
+	struct Object *obj;
 	int otyp, i;
 
 	while (trop->trclass) {
@@ -970,7 +970,7 @@ STATIC_OVL void ini_inv(struct trobj *trop) {
 #ifdef GOLDOBJ
 		if (trop->trclass == COIN_CLASS) {
 			/* no "blessed" or "identified" money */
-			obj->quan = u.umoney0;
+			Object->quan = u.umoney0;
 		} else {
 #endif
 			obj->dknown = obj->bknown = obj->rknown = 1;
@@ -1006,7 +1006,7 @@ STATIC_OVL void ini_inv(struct trobj *trop) {
 		if(obj->oclass == ARMOR_CLASS){
 			if (is_shield(obj) && !uarms) {
 				setworn(obj, W_ARMS);
-				if (uswapwep) setuswapwep((struct obj *) 0);
+				if (uswapwep) setuswapwep((struct Object *) 0);
 			} else if (is_helmet(obj) && !uarmh)
 				setworn(obj, W_ARMH);
 			else if (is_gloves(obj) && !uarmg)

@@ -137,7 +137,7 @@ STATIC_OVL void m_initgrp(struct monst *mtmp, int x, int y, int n) {
 
 STATIC_OVL
 void m_initthrow(struct monst *mtmp, int otyp, int oquan) {
-	struct obj *otmp;
+	struct Object *otmp;
 
 	otmp = mksobj(otyp, TRUE, FALSE);
 	otmp->quan = (long) rn1(oquan, 3);
@@ -152,7 +152,7 @@ void m_initthrow(struct monst *mtmp, int otyp, int oquan) {
 STATIC_OVL void m_initweap(struct monst *mtmp) {
 	struct permonst *ptr = mtmp->data;
 	int mm = monsndx(ptr);
-	struct obj *otmp;
+	struct Object *otmp;
 
 #ifdef REINCARNATION
 	if (Is_rogue_level(&u.uz)) return;
@@ -460,7 +460,7 @@ STATIC_OVL void m_initweap(struct monst *mtmp) {
  *   This will change with silver & copper coins
  */
 void mkmonmoney(struct monst *mtmp, long amount) {
-    struct obj *gold = mksobj(GOLD_PIECE, FALSE, FALSE);
+    struct Object *gold = mksobj(GOLD_PIECE, FALSE, FALSE);
     gold->quan = amount;
     add_to_minv(mtmp, gold);
 }
@@ -468,7 +468,7 @@ void mkmonmoney(struct monst *mtmp, long amount) {
 
 STATIC_OVL void m_initinv(struct monst *mtmp) {
 	int cnt;
-	struct obj *otmp;
+	struct Object *otmp;
 	struct permonst *ptr = mtmp->data;
 #ifdef REINCARNATION
 	if (Is_rogue_level(&u.uz)) return;
@@ -678,7 +678,7 @@ struct monst * clone_mon(struct monst *mon, xchar x, xchar y) {
 	m2->mx = mm.x;
 	m2->my = mm.y;
 
-	m2->minvent = (struct obj *) 0; /* objects don't clone */
+	m2->minvent = (struct Object *) 0; /* objects don't clone */
 	m2->mleashed = FALSE;
 #ifndef GOLDOBJ
 	m2->mgold = 0L;
@@ -737,7 +737,7 @@ struct monst * clone_mon(struct monst *mon, xchar x, xchar y) {
 		 * must be made non-tame to get initialized properly.
 		 */
 		m2->mtame = 0;
-		if ((m3 = tamedog(m2, (struct obj *)0)) != 0) {
+		if ((m3 = tamedog(m2, (struct Object *)0)) != 0) {
 		    m2 = m3;
 		    *(EDOG(m2)) = *(EDOG(mon));
 		}
@@ -957,7 +957,7 @@ struct monst * makemon(struct permonst *ptr, int x, int y, int mmflags) {
 			break;
 		case S_BAT:
 			if (Inhell && is_bat(ptr))
-			    mon_adjust_speed(mtmp, 2, (struct obj *)0);
+			    mon_adjust_speed(mtmp, 2, (struct Object *)0);
 			break;
 	}
 	if ((ct = emits_light(mtmp->data)) > 0)
@@ -1047,7 +1047,7 @@ struct monst * makemon(struct permonst *ptr, int x, int y, int mmflags) {
 	} else {
 	    /* no initial inventory is allowed */
 	    if (mtmp->minvent) discard_minvent(mtmp);
-	    mtmp->minvent = (struct obj *)0;    /* caller expects this */
+	    mtmp->minvent = (struct Object *)0;    /* caller expects this */
 	}
 	if ((ptr->mflags3 & M3_WAITMASK) && !(mmflags & MM_NOWAIT)) {
 		if (ptr->mflags3 & M3_WAITFORU)
@@ -1421,7 +1421,7 @@ struct permonst * grow_up(struct monst *mtmp, struct monst *victim) {
 #ifdef OVL1
 
 int mongets(struct monst *mtmp, int otyp) {
-	struct obj *otmp;
+	struct Object *otmp;
 	int spe;
 
 	if (!otyp) return 0;
@@ -1593,7 +1593,7 @@ void set_mimic_sym(struct monst *mtmp) {
 	int typ, roomno, rt;
 	unsigned appear, ap_type;
 	int s_sym;
-	struct obj *otmp;
+	struct Object *otmp;
 	int mx, my;
 
 	if (!mtmp) return;
@@ -1687,7 +1687,7 @@ assign_sym:
 				otmp = mkobj( (char) s_sym, FALSE );
 				appear = otmp->otyp;
 				/* make sure container contents are free'ed */
-				obfree(otmp, (struct obj *) 0);
+				obfree(otmp, (struct Object *) 0);
 			}
 		}
 	}
@@ -1696,7 +1696,7 @@ assign_sym:
 }
 
 /* release a monster from a bag of tricks */
-void bagotricks(struct obj *bag) {
+void bagotricks(struct Object *bag) {
     if (!bag || bag->otyp != BAG_OF_TRICKS) {
 	impossible("bad bag o' tricks");
     } else if (bag->spe < 1) {

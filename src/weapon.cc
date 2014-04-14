@@ -124,7 +124,7 @@ static NEARDATA const char kebabable[] = {
  *	hitval returns an integer representing the "to hit" bonuses
  *	of "otmp" against the monster.
  */
-int hitval(struct obj *otmp, struct monst *mon) {
+int hitval(struct Object *otmp, struct monst *mon) {
 	int	tmp = 0;
 	struct permonst *ptr = mon->data;
 	boolean Is_weapon = (otmp->oclass == WEAPON_CLASS || is_weptool(otmp));
@@ -191,7 +191,7 @@ int hitval(struct obj *otmp, struct monst *mon) {
  *	dmgval returns an integer representing the damage bonuses
  *	of "otmp" against the monster.
  */
-int dmgval(struct obj *otmp, struct monst *mon) {
+int dmgval(struct Object *otmp, struct monst *mon) {
 	int tmp = 0, otyp = otmp->otyp;
 	struct permonst *ptr = mon->data;
 	boolean Is_weapon = (otmp->oclass == WEAPON_CLASS || is_weptool(otmp));
@@ -312,11 +312,11 @@ int dmgval(struct obj *otmp, struct monst *mon) {
 #endif /* OVLB */
 #ifdef OVL0
 
-STATIC_DCL struct obj *FDECL(oselect, (struct monst *,int));
+STATIC_DCL struct Object *FDECL(oselect, (struct monst *,int));
 #define Oselect(x)	if ((otmp = oselect(mtmp, x)) != 0) return(otmp);
 
-STATIC_OVL struct obj * oselect(struct monst *mtmp, int x) {
-	struct obj *otmp;
+STATIC_OVL struct Object * oselect(struct monst *mtmp, int x) {
+	struct Object *otmp;
 
 	for (otmp = mtmp->minvent; otmp; otmp = otmp->nobj) {
 	    if (otmp->otyp == x &&
@@ -326,7 +326,7 @@ STATIC_OVL struct obj * oselect(struct monst *mtmp, int x) {
 		    (!otmp->oartifact || touch_artifact(otmp,mtmp)))
 		return otmp;
 	}
-	return (struct obj *)0;
+	return (struct Object *)0;
 }
 
 static NEARDATA const int rwep[] =
@@ -343,11 +343,11 @@ static NEARDATA const int pwep[] =
 	GLAIVE, LUCERN_HAMMER, BEC_DE_CORBIN, FAUCHARD, PARTISAN, LANCE
 };
 
-static struct obj *propellor;
+static struct Object *propellor;
 
 /* select a ranged weapon for the monster */
-struct obj * select_rwep(struct monst *mtmp) {
-	struct obj *otmp;
+struct Object * select_rwep(struct monst *mtmp) {
+	struct Object *otmp;
 	int i;
 
 #ifdef KOPS
@@ -450,7 +450,7 @@ struct obj * select_rwep(struct monst *mtmp) {
 	  }
 
 	/* failure */
-	return (struct obj *)0;
+	return (struct Object *)0;
 }
 
 /* Weapons in order of preference */
@@ -471,8 +471,8 @@ static const NEARDATA short hwep[] = {
 	};
 
 /* select a hand to hand weapon for the monster */
-struct obj * select_hwep(struct monst *mtmp) {
-	struct obj *otmp;
+struct Object * select_hwep(struct monst *mtmp) {
+	struct Object *otmp;
 	int i;
 	boolean strong = strongmonst(mtmp->data);
 	boolean wearing_shield = (mtmp->misc_worn_check & W_ARMS) != 0;
@@ -503,14 +503,14 @@ struct obj * select_hwep(struct monst *mtmp) {
 	}
 
 	/* failure */
-	return (struct obj *)0;
+	return (struct Object *)0;
 }
 
 /* Called after polymorphing a monster, robbing it, etc....  Monsters
  * otherwise never unwield stuff on their own.  Might print message.
  */
 void possibly_unwield(struct monst *mon, boolean polyspot) {
-	struct obj *obj, *mw_tmp;
+	struct Object *obj, *mw_tmp;
 
 	if (!(mw_tmp = MON_WEP(mon)))
 		return;
@@ -561,7 +561,7 @@ void possibly_unwield(struct monst *mon, boolean polyspot) {
  * Returns 1 if the monster took time to do it, 0 if it did not.
  */
 int mon_wield_item(struct monst *mon) {
-	struct obj *obj;
+	struct Object *obj;
 
 	/* This case actually should never happen */
 	if (mon->weapon_check == NO_WEAPON_WANTED) return 0;
@@ -599,7 +599,7 @@ int mon_wield_item(struct monst *mon) {
 			return 0;
 	}
 	if (obj && obj != &zeroobj) {
-		struct obj *mw_tmp = MON_WEP(mon);
+		struct Object *mw_tmp = MON_WEP(mon);
 		if (mw_tmp && mw_tmp->otyp == obj->otyp) {
 		/* already wielding it */
 			mon->weapon_check = NEED_WEAPON;
@@ -1070,7 +1070,7 @@ void lose_weapon_skill(int n) {
     }
 }
 
-int weapon_type(struct obj *obj) {
+int weapon_type(struct Object *obj) {
 	/* KMH -- now uses the object table */
 	int type;
 
@@ -1095,7 +1095,7 @@ int uwep_skill_type() {
  * Return hit bonus/penalty based on skill of weapon.
  * Treat restricted weapons as unskilled.
  */
-int weapon_hit_bonus(struct obj *weapon) {
+int weapon_hit_bonus(struct Object *weapon) {
     int type, wep_type, skill, bonus = 0;
     static const char bad_skill[] = "weapon_hit_bonus: bad skill %d";
 
@@ -1161,7 +1161,7 @@ int weapon_hit_bonus(struct obj *weapon) {
  * Return damage bonus/penalty based on skill of weapon.
  * Treat restricted weapons as unskilled.
  */
-int weapon_dam_bonus(struct obj *weapon) {
+int weapon_dam_bonus(struct Object *weapon) {
     int type, wep_type, skill, bonus = 0;
 
     wep_type = weapon_type(weapon);
@@ -1229,7 +1229,7 @@ int weapon_dam_bonus(struct obj *weapon) {
  * maximums.
  */
 void skill_init(const struct def_skill *class_skill) {
-	struct obj *obj;
+	struct Object *obj;
 	int skmax, skill;
 
 	/* initialize skill array; by default, everything is restricted */
@@ -1291,7 +1291,7 @@ void skill_init(const struct def_skill *class_skill) {
 	}
 }
 
-void setmnotwielded(struct monst *mon, struct obj *obj) {
+void setmnotwielded(struct monst *mon, struct Object *obj) {
     if (!obj) return;
     if (artifact_light(obj) && obj->lamplit) {
 	end_burn(obj, FALSE);

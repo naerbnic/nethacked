@@ -11,12 +11,12 @@
 
 #ifdef SINKS
 # ifdef OVLB
-STATIC_DCL void FDECL(trycall, (struct obj *));
+STATIC_DCL void FDECL(trycall, (struct Object *));
 # endif /* OVLB */
-STATIC_DCL void FDECL(dosinkring, (struct obj *));
+STATIC_DCL void FDECL(dosinkring, (struct Object *));
 #endif /* SINKS */
 
-STATIC_PTR int FDECL(drop, (struct obj *));
+STATIC_PTR int FDECL(drop, (struct Object *));
 STATIC_PTR int NDECL(wipeoff);
 
 #ifdef OVL0
@@ -56,7 +56,7 @@ int dodrop() {
  * in a pool, it either fills the pool up or sinks away.  In either case,
  * it's gone for good...  If the destination is not a pool, returns FALSE.
  */
-boolean boulder_hits_pool(struct obj *otmp, int rx, int ry, boolean pushing) {
+boolean boulder_hits_pool(struct Object *otmp, int rx, int ry, boolean pushing) {
 	if (!otmp || otmp->otyp != BOULDER)
 	    impossible("Not a boulder?");
 	else if (!Is_waterlevel(&u.uz) && (is_pool(rx,ry) || is_lava(rx,ry))) {
@@ -115,7 +115,7 @@ boolean boulder_hits_pool(struct obj *otmp, int rx, int ry, boolean pushing) {
 
 	    /* boulder is now gone */
 	    if (pushing) delobj(otmp);
-	    else obfree(otmp, (struct obj *)0);
+	    else obfree(otmp, (struct Object *)0);
 	    return TRUE;
 	}
 	return FALSE;
@@ -125,7 +125,7 @@ boolean boulder_hits_pool(struct obj *otmp, int rx, int ry, boolean pushing) {
  * called with the object not in any chain.  Returns TRUE if the object goes
  * away.
  */
-boolean flooreffects(struct obj *obj, int x, int y, const char *verb) {
+boolean flooreffects(struct Object *obj, int x, int y, const char *verb) {
 	struct trap *t;
 	struct monst *mtmp;
 
@@ -133,7 +133,7 @@ boolean flooreffects(struct obj *obj, int x, int y, const char *verb) {
 	    panic("flooreffects: obj not free");
 
 	/* make sure things like water_damage() have no pointers to follow */
-	obj->nobj = obj->nexthere = (struct obj *)0;
+	obj->nobj = obj->nexthere = (struct Object *)0;
 
 	if (obj->otyp == BOULDER && boulder_hits_pool(obj, x, y, FALSE))
 		return TRUE;
@@ -176,7 +176,7 @@ boolean flooreffects(struct obj *obj, int x, int y, const char *verb) {
 			}
 		}
 		deltrap(t);
-		obfree(obj, (struct obj *)0);
+		obfree(obj, (struct Object *)0);
 		bury_objs(x, y);
 		newsym(x,y);
 		return TRUE;
@@ -219,7 +219,7 @@ boolean flooreffects(struct obj *obj, int x, int y, const char *verb) {
 #ifdef OVLB
 
 /* obj is an object dropped on an altar */
-void doaltarobj(struct obj *obj) {
+void doaltarobj(struct Object *obj) {
 	if (Blind)
 		return;
 
@@ -240,7 +240,7 @@ void doaltarobj(struct obj *obj) {
 
 #ifdef SINKS
 STATIC_OVL
-void trycall(struct obj *obj) {
+void trycall(struct Object *obj) {
 	if(!objects[obj->otyp].oc_name_known &&
 	   !objects[obj->otyp].oc_uname)
 	   docall(obj);
@@ -248,8 +248,8 @@ void trycall(struct obj *obj) {
 
 STATIC_OVL
 /* obj is a ring being dropped over a kitchen sink */
-void dosinkring(struct obj *obj) {
-	struct obj *otmp,*otmp2;
+void dosinkring(struct Object *obj) {
+	struct Object *otmp,*otmp2;
 	boolean ideed = TRUE;
 
 	You("drop %s down the drain.", doname(obj));
@@ -391,7 +391,7 @@ giveback:
 #ifdef OVL0
 
 /* some common tests when trying to drop or throw items */
-boolean canletgo(struct obj *obj, const char *word) {
+boolean canletgo(struct Object *obj, const char *word) {
 	if(obj->owornmask & (W_ARMOR | W_RING | W_AMUL | W_TOOL)){
 		if (*word)
 			Norep("You cannot %s %s you are wearing.",word,
@@ -432,7 +432,7 @@ boolean canletgo(struct obj *obj, const char *word) {
 }
 
 STATIC_PTR
-int drop(struct obj *obj) {
+int drop(struct Object *obj) {
 	if(!obj) return(0);
 	if(!canletgo(obj,"drop"))
 		return(0);
@@ -441,13 +441,13 @@ int drop(struct obj *obj) {
 			weldmsg(obj);
 			return(0);
 		}
-		setuwep((struct obj *)0);
+		setuwep((struct Object *)0);
 	}
 	if(obj == uquiver) {
-		setuqwep((struct obj *)0);
+		setuqwep((struct Object *)0);
 	}
 	if (obj == uswapwep) {
-		setuswapwep((struct obj *)0);
+		setuswapwep((struct Object *)0);
 	}
 
 	if (u.uswallow) {
@@ -475,8 +475,8 @@ int drop(struct obj *obj) {
 		if (obj->oclass != COIN_CLASS || obj == invent) freeinv(obj);
 #else
 		/* Ensure update when we drop gold objects */
-		if (obj->oclass == COIN_CLASS) flags.botl = 1;
-		freeinv(obj);
+		if (Object->oclass == COIN_CLASS) flags.botl = 1;
+		freeinv(Object);
 #endif
 		hitfloor(obj);
 		return(1);
@@ -490,13 +490,13 @@ int drop(struct obj *obj) {
 
 /* Called in several places - may produce output */
 /* eg ship_object() and dropy() -> sellobj() both produce output */
-void dropx(struct obj *obj) {
+void dropx(struct Object *obj) {
 #ifndef GOLDOBJ
 	if (obj->oclass != COIN_CLASS || obj == invent) freeinv(obj);
 #else
         /* Ensure update when we drop gold objects */
-        if (obj->oclass == COIN_CLASS) flags.botl = 1;
-        freeinv(obj);
+        if (Object->oclass == COIN_CLASS) flags.botl = 1;
+        freeinv(Object);
 #endif
 	if (!u.uswallow) {
 	    if (ship_object(obj, u.ux, u.uy, FALSE)) return;
@@ -506,10 +506,10 @@ void dropx(struct obj *obj) {
 	dropy(obj);
 }
 
-void dropy(struct obj *obj) {
-	if (obj == uwep) setuwep((struct obj *)0);
-	if (obj == uquiver) setuqwep((struct obj *)0);
-	if (obj == uswapwep) setuswapwep((struct obj *)0);
+void dropy(struct Object *obj) {
+	if (obj == uwep) setuwep((struct Object *)0);
+	if (obj == uquiver) setuqwep((struct Object *)0);
+	if (obj == uswapwep) setuswapwep((struct Object *)0);
 
 	if (!u.uswallow && flooreffects(obj,u.ux,u.uy,"drop")) return;
 	/* uswallow check done by GAN 01/29/87 */
@@ -564,11 +564,11 @@ void dropy(struct obj *obj) {
 
 /* things that must change when not held; recurse into containers.
    Called for both player and monsters */
-void obj_no_longer_held(struct obj *obj) {
+void obj_no_longer_held(struct Object *obj) {
 	if (!obj) {
 	    return;
 	} else if ((Is_container(obj) || obj->otyp == STATUE) && obj->cobj) {
-	    struct obj *contents;
+	    struct Object *contents;
 	    for(contents=obj->cobj; contents; contents=contents->nobj)
 		obj_no_longer_held(contents);
 	}
@@ -603,9 +603,9 @@ int doddrop() {
 STATIC_OVL int menu_drop(int retry) {
     int n, i, n_dropped = 0;
     long cnt;
-    struct obj *otmp, *otmp2;
+    struct Object *otmp, *otmp2;
 #ifndef GOLDOBJ
-    struct obj *u_gold = 0;
+    struct Object *u_gold = 0;
 #endif
     menu_item *pick_list;
     boolean all_categories = TRUE;
@@ -728,7 +728,7 @@ int dodown() {
 	    if ((HLevitation & I_SPECIAL) || (ELevitation & W_ARTI)) {
 		/* end controlled levitation */
 		if (ELevitation & W_ARTI) {
-		    struct obj *obj;
+		    struct Object *obj;
 
 		    for(obj = invent; obj; obj = obj->nobj) {
 			if (obj->oartifact &&
@@ -976,7 +976,7 @@ void goto_level(d_level *newlevel, boolean at_stairs, boolean falling, boolean p
 	if (fd < 0) return;
 
 	if (falling) /* assuming this is only trap door or hole */
-	    impact_drop((struct obj *)0, u.ux, u.uy, newlevel->dlevel);
+	    impact_drop((struct Object *)0, u.ux, u.uy, newlevel->dlevel);
 
 	check_special_room(TRUE);		/* probably was a trap door */
 	if (Punished) unplacebc();
@@ -1115,11 +1115,11 @@ void goto_level(d_level *newlevel, boolean at_stairs, boolean falling, boolean p
 			drag_down();
 			if (carried(uball)) {
 			    if (uwep == uball)
-				setuwep((struct obj *)0);
+				setuwep((struct Object *)0);
 			    if (uswapwep == uball)
-				setuswapwep((struct obj *)0);
+				setuswapwep((struct Object *)0);
 			    if (uquiver == uball)
-				setuqwep((struct obj *)0);
+				setuqwep((struct Object *)0);
 			    freeinv(uball);
 			}
 		    }
@@ -1311,7 +1311,7 @@ void goto_level(d_level *newlevel, boolean at_stairs, boolean falling, boolean p
 
 STATIC_OVL void final_level() {
 	struct monst *mtmp;
-	struct obj *otmp;
+	struct Object *otmp;
 	coord mm;
 	int i;
 
@@ -1426,12 +1426,12 @@ void deferred_goto() {
  * Return TRUE if we created a monster for the corpse.  If successful, the
  * corpse is gone.
  */
-boolean revive_corpse(struct obj *corpse) {
+boolean revive_corpse(struct Object *corpse) {
     struct monst *mtmp, *mcarry;
     boolean is_uwep, chewed;
     xchar where;
     char *cname, cname_buf[BUFSZ];
-    struct obj *container = (struct obj *)0;
+    struct Object *container = (struct Object *)0;
     int container_where = 0;
     
     where = corpse->where;
@@ -1510,7 +1510,7 @@ boolean revive_corpse(struct obj *corpse) {
 /* Revive the corpse via a timeout. */
 /*ARGSUSED*/
 void revive_mon(genericptr_t arg, long timeout) {
-    struct obj *body = (struct obj *) arg;
+    struct Object *body = (struct Object *) arg;
 
     /* if we succeed, the corpse is gone, otherwise, rot it away */
     if (!revive_corpse(body)) {

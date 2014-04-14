@@ -17,11 +17,11 @@ void ballfall() {
 	if (carried(uball)) {
 		pline("Startled, you drop the iron ball.");
 		if (uwep == uball)
-			setuwep((struct obj *)0);
+			setuwep((struct Object *)0);
 		if (uswapwep == uball)
-			setuswapwep((struct obj *)0);
+			setuswapwep((struct Object *)0);
 		if (uquiver == uball)
-			setuqwep((struct obj *)0);;
+			setuqwep((struct Object *)0);;
 		if (uwep != uball)
 			freeinv(uball);
 	}
@@ -141,7 +141,7 @@ void unplacebc() {
  *  hero is being punished.
  */
 STATIC_OVL int bc_order() {
-    struct obj *obj;
+    struct Object *obj;
 
     if (uchain->ox != uball->ox || uchain->oy != uball->oy || carried(uball)
 		|| u.uswallow)
@@ -705,7 +705,7 @@ void drop_ball(xchar x, xchar y) {
 
 
 STATIC_OVL void litter() {
-	struct obj *otmp = invent, *nextobj;
+	struct Object *otmp = invent, *nextobj;
 	int capacity = weight_cap();
 
 	while (otmp) {

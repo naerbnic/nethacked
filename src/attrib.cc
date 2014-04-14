@@ -156,7 +156,7 @@ boolean adjattrib(int ndx, int incr, int msgflg) {
 	return TRUE;
 }
 
-void gainstr(struct obj *otmp, int incr) {
+void gainstr(struct Object *otmp, int incr) {
 	int num = 1;
 
 	if(incr) num = incr;
@@ -192,7 +192,7 @@ void change_luck(schar n) {
 }
 
 int stone_luck(boolean parameter) {
-	struct obj *otmp;
+	struct Object *otmp;
 	long bonchance = 0;
 
 	for (otmp = invent; otmp; otmp = otmp->nobj)

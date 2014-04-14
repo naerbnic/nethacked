@@ -9,10 +9,10 @@
 STATIC_PTR int NDECL(stealarm);
 
 #ifdef OVLB
-STATIC_DCL const char *FDECL(equipname, (struct obj *));
-STATIC_DCL void FDECL(mdrop_obj, (struct monst *,struct obj *,BOOLEAN_P));
+STATIC_DCL const char *FDECL(equipname, (struct Object *));
+STATIC_DCL void FDECL(mdrop_obj, (struct monst *,struct Object *,BOOLEAN_P));
 
-STATIC_OVL const char * equipname(struct obj *otmp) {
+STATIC_OVL const char * equipname(struct Object *otmp) {
 	return (
 #ifdef TOURIST
 		(otmp == uarmu) ? "shirt" :
@@ -35,7 +35,7 @@ long		/* actually returns something that fits in an int */ somegold() {
 }
 
 void stealgold(struct monst *mtmp) {
-	struct obj *gold = g_at(u.ux, u.uy);
+	struct Object *gold = g_at(u.ux, u.uy);
 	long tmp;
 
 	if (gold && ( !u.ugold || gold->quan > u.ugold || !rn2(5))) {
@@ -79,7 +79,7 @@ be seized without further searching.
 May search containers too.
 Deals in gold only, as leprechauns don't care for lesser coins.
 */
-struct obj * findgold(struct obj *chain) {
+struct Object * findgold(struct Object *chain) {
         while (chain && chain->otyp != GOLD_PIECE) chain = chain->nobj;
         return chain;
 }
@@ -88,8 +88,8 @@ struct obj * findgold(struct obj *chain) {
 Steal gold coins only.  Leprechauns don't care for lesser coins.
 */
 void stealgold(struct monst *mtmp) {
-	struct obj *fgold = g_at(u.ux, u.uy);
-	struct obj *ygold;
+	struct Object *fgold = g_at(u.ux, u.uy);
+	struct Object *ygold;
 	long tmp;
 
         /* skip lesser coins on the floor */        
@@ -129,7 +129,7 @@ unsigned int stealmid;		/* monster doing the stealing */
 
 STATIC_PTR int stealarm() {
 	struct monst *mtmp;
-	struct obj *otmp;
+	struct Object *otmp;
 
 	for(otmp = invent; otmp; otmp = otmp->nobj) {
 	    if(otmp->o_id == stealoid) {
@@ -159,7 +159,7 @@ botm:   stealoid = 0;
 
 /* An object you're wearing has been taken off by a monster (theft or
    seduction).  Also used if a worn item gets transformed (stone to flesh). */
-void remove_worn_item(struct obj *obj, boolean unchain_ball) {
+void remove_worn_item(struct Object *obj, boolean unchain_ball) {
 	if (donning(obj))
 	    cancel_don();
 	if (!obj->owornmask)
@@ -180,7 +180,7 @@ void remove_worn_item(struct obj *obj, boolean unchain_ball) {
 	    else if (obj == uarmu) (void) Shirt_off();
 #endif
 	    /* catchall -- should never happen */
-	    else setworn((struct obj *)0, obj->owornmask & W_ARMOR);
+	    else setworn((struct Object *)0, obj->owornmask & W_ARMOR);
 	} else if (obj->owornmask & W_AMUL) {
 	    Amulet_off();
 	} else if (obj->owornmask & W_RING) {
@@ -209,7 +209,7 @@ void remove_worn_item(struct obj *obj, boolean unchain_ball) {
  * Avoid stealing the object stealoid
  */
 int steal(struct monst *mtmp, char *objnambuf) {
-	struct obj *otmp;
+	struct Object *otmp;
 	int tmp, could_petrify, named = 0, armordelay;
 	boolean monkey_business; /* true iff an animal is doing the thievery */
 
@@ -404,13 +404,13 @@ gotobj:
 #ifdef OVL1
 
 /* Returns 1 if otmp is free'd, 0 otherwise. */
-int mpickobj(struct monst *mtmp, struct obj *otmp) {
+int mpickobj(struct monst *mtmp, struct Object *otmp) {
     int freed_otmp;
 
 #ifndef GOLDOBJ
     if (otmp->oclass == COIN_CLASS) {
 	mtmp->mgold += otmp->quan;
-	obfree(otmp, (struct obj *)0);
+	obfree(otmp, (struct Object *)0);
 	freed_otmp = 1;
     } else {
 #endif
@@ -443,7 +443,7 @@ int mpickobj(struct monst *mtmp, struct obj *otmp) {
 #ifdef OVLB
 
 void stealamulet(struct monst *mtmp) {
-    struct obj *otmp = (struct obj *)0;
+    struct Object *otmp = (struct Object *)0;
     int real=0, fake=0;
 
     /* select the artifact to steal */
@@ -487,7 +487,7 @@ void stealamulet(struct monst *mtmp) {
 #ifdef OVL0
 
 /* drop one object taken from a (possibly dead) monster's inventory */
-STATIC_OVL void mdrop_obj(struct monst *mon, struct obj *obj, boolean verbosely) {
+STATIC_OVL void mdrop_obj(struct monst *mon, struct Object *obj, boolean verbosely) {
     int omx = mon->mx, omy = mon->my;
 
     if (obj->owornmask) {
@@ -518,7 +518,7 @@ STATIC_OVL void mdrop_obj(struct monst *mon, struct obj *obj, boolean verbosely)
    even leaving the game entirely; when that happens, prevent them from
    taking the Amulet or invocation tools with them */
 void mdrop_special_objs(struct monst *mon) {
-    struct obj *obj, *otmp;
+    struct Object *obj, *otmp;
 
     for (obj = mon->minvent; obj; obj = otmp) {
 	otmp = obj->nobj;
@@ -533,10 +533,10 @@ void mdrop_special_objs(struct monst *mon) {
 
 /* release the objects the creature is carrying */
 void relobj(struct monst *mtmp, int show, boolean is_pet) {
-	struct obj *otmp;
+	struct Object *otmp;
 	int omx = mtmp->mx, omy = mtmp->my;
-	struct obj *keepobj = 0;
-	struct obj *wep = MON_WEP(mtmp);
+	struct Object *keepobj = 0;
+	struct Object *wep = MON_WEP(mtmp);
 	boolean item1 = FALSE, item2 = FALSE;
 
 	if (!is_pet || mindless(mtmp->data) || is_animal(mtmp->data))
@@ -566,7 +566,7 @@ void relobj(struct monst *mtmp, int show, boolean is_pet) {
 	}
 
 	/* put kept objects back */
-	while ((otmp = keepobj) != (struct obj *)0) {
+	while ((otmp = keepobj) != (struct Object *)0) {
 	    keepobj = otmp->nobj;
 	    (void) add_to_minv(mtmp, otmp);
 	}
