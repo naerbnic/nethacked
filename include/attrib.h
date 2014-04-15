@@ -34,7 +34,7 @@
 #define STR18(x)	(18+(x))	/* 18/xx */
 #define STR19(x)	(100+(x))	/* For 19 and above */
 
-struct	attribs {
+struct	Attributes {
 	schar	a[A_MAX];
 };
 

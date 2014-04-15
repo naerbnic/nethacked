@@ -457,7 +457,7 @@ static void make_version() {
 	version.struct_sizes = (((unsigned long)sizeof (struct flag)  << 24) |
 				((unsigned long)sizeof (struct Object)   << 17) |
 				((unsigned long)sizeof (struct Monster) << 10) |
-				((unsigned long)sizeof (struct you)));
+				((unsigned long)sizeof (struct You)));
 	return;
 }
 

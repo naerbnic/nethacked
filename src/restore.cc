@@ -351,7 +351,7 @@ boolean restgamestate(int fd, unsigned int *stuckid, unsigned int *steedid) {
 #ifdef AMII_GRAPHICS
 	amii_setpens(amii_numcolors);	/* use colors from save file */
 #endif
-	mread(fd, (genericptr_t) &u, sizeof(struct you));
+	mread(fd, (genericptr_t) &u, sizeof(struct You));
 	set_uasmon();
 #ifdef CLIPPING
 	cliparound(u.ux, u.uy);

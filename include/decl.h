@@ -263,7 +263,7 @@ E struct Object *billobjs;
 E struct Object zeroobj;		/* init'd and defined in decl.c */
 
 #include "you.h"
-E struct you u;
+E struct You u;
 
 #include "onames.h"
 #ifndef PM_H		/* (pm.h has already been included via youprop.h) */

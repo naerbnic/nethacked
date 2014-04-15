@@ -26,7 +26,7 @@ struct RoleAdvance {
 	xchar hifix, hirnd;	/* gained per level >= urole.xlev */
 };
 
-struct u_have {
+struct YouHave {
 	Bitfield(amulet,1);	/* carrying Amulet	*/
 	Bitfield(bell,1);	/* carrying Bell	*/
 	Bitfield(book,1);	/* carrying Book	*/
@@ -35,7 +35,7 @@ struct u_have {
 	Bitfield(unused,3);
 };
 
-struct u_event {
+struct YourEvents {
 	Bitfield(minor_oracle,1);	/* received at least 1 cheap oracle */
 	Bitfield(major_oracle,1);	/*  "  expensive oracle */
 	Bitfield(qcalled,1);		/* called by Quest leader to do task */
@@ -57,7 +57,7 @@ struct u_event {
  * These are voluntary challenges.  Each field denotes the number of
  * times a challenge has been violated.
  */
-struct u_conduct {		/* number of times... */
+struct YourConduct {		/* number of times... */
 	long	unvegetarian;	/* eaten any animal */
 	long	unvegan;	/* ... or any animal byproduct */
 	long	food;		/* ... or any comestible */
@@ -229,7 +229,7 @@ extern const struct Align aligns[];	/* table of available alignments */
 
 
 /*** Information about the player ***/
-struct you {
+struct You {
 	xchar ux, uy;
 	schar dx, dy, dz;	/* direction of move (or zap or ... ) */
 	schar di;		/* direction of FF */
@@ -288,7 +288,7 @@ struct you {
 	int umonnum;			/* current monster number */
 
 	int mh, mhmax, mtimedone;	/* for polymorph-self */
-	struct attribs	macurr,		/* for monster attribs */
+	struct Attributes	macurr,		/* for monster attribs */
 			mamax;		/* for monster attribs */
 	int ulycn;			/* lycanthrope type */
 
@@ -306,10 +306,10 @@ struct you {
 	/* 1 free bit! */
 
 	unsigned udg_cnt;		/* how long you have been demigod */
-	struct u_event	uevent;		/* certain events have happened */
-	struct u_have	uhave;		/* you're carrying special objects */
-	struct u_conduct uconduct;	/* KMH, conduct */
-	struct attribs	acurr,		/* your current attributes (eg. str)*/
+	struct YourEvents	uevent;		/* certain events have happened */
+	struct YouHave	uhave;		/* you're carrying special objects */
+	struct YourConduct uconduct;	/* KMH, conduct */
+	struct Attributes	acurr,		/* your current attributes (eg. str)*/
 			aexe,		/* for gain/loss via "exercise" */
 			abon,		/* your bonus attributes (eg. str) */
 			amax,		/* your max attributes (eg. str) */

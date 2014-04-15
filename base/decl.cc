@@ -141,7 +141,7 @@ struct trap *ftrap = (struct trap *)0;
 struct Monster youmonst = DUMMY;
 struct flag flags = DUMMY;
 struct instance_flags iflags = DUMMY;
-struct you u = DUMMY;
+struct You u = DUMMY;
 
 struct Object *invent = nullptr,
 	*uwep = nullptr, *uarm = nullptr,

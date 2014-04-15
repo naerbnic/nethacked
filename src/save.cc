@@ -271,7 +271,7 @@ STATIC_OVL void savegamestate(int fd, int mode) {
 	uid = getuid();
 	bwrite(fd, (genericptr_t) &uid, sizeof uid);
 	bwrite(fd, (genericptr_t) &flags, sizeof(struct flag));
-	bwrite(fd, (genericptr_t) &u, sizeof(struct you));
+	bwrite(fd, (genericptr_t) &u, sizeof(struct You));
 
 	/* must come before migrating_objs and migrating_mons are freed */
 	save_timers(fd, mode, RANGE_GLOBAL);
