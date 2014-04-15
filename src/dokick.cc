@@ -129,7 +129,7 @@ STATIC_OVL void kick_monster(xchar x, xchar y) {
 	 * If you have >1 kick attack, you get all of them.
 	 */
 	if (Upolyd && attacktype(youmonst.data, AT_KICK)) {
-	    struct attack *uattk;
+	    struct Attack *uattk;
 	    int sum;
 	    schar tmp = find_roll_to_hit(mon);
 

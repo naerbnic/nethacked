@@ -115,7 +115,7 @@ STATIC_OVL int drop_throw(struct Object *obj, boolean ohit, int x, int y) {
 			    if (!mtmp && x == u.ux && y == u.uy)
 				mtmp = &youmonst;
 			    if (mtmp && ohit)
-				passive_obj(mtmp, obj, (struct attack *)0);
+				passive_obj(mtmp, obj, (struct Attack *)0);
 			    stackobj(obj);
 			    retvalu = 0;
 			}
@@ -600,7 +600,7 @@ void thrwmu(struct Monster *mtmp) {
 #ifdef OVLB
 
 /* monster spits substance at you */
-int spitmu(struct Monster *mtmp, struct attack *mattk) {
+int spitmu(struct Monster *mtmp, struct Attack *mattk) {
 	struct Object *otmp;
 
 	if(mtmp->mcan) {
@@ -639,7 +639,7 @@ int spitmu(struct Monster *mtmp, struct attack *mattk) {
 #ifdef OVL1
 
 /* monster breathes at you (ranged) */
-int breamu(struct Monster* mtmp, struct attack* mattk) {
+int breamu(struct Monster* mtmp, struct Attack* mattk) {
 	/* if new breath types are added, change AD_ACID to max type */
 	int typ = (mattk->adtyp == AD_RBRE) ? rnd(AD_ACID) : mattk->adtyp ;
 

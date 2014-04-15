@@ -700,7 +700,7 @@ static int domonnoise(struct Monster *mtmp) {
 	case MS_SEDUCE:
 #ifdef SEDUCE
 	    if (ptr->mlet != S_NYMPH &&
-		could_seduce(mtmp, &youmonst, (struct attack *)0) == 1) {
+		could_seduce(mtmp, &youmonst, (struct Attack *)0) == 1) {
 			(void) doseduce(mtmp);
 			break;
 	    }

@@ -43,7 +43,7 @@ STATIC_OVL void stoned_dialogue() {
 }
 
 /* He is getting sicker and sicker prior to vomiting */
-static const char * const vomiting_texts[] = {
+static vector<const char*> const vomiting_texts = {
 	"are feeling mildly nauseated.",	/* 14 */
 	"feel slightly confused.",		/* 11 */
 	"can't seem to think straight.",	/* 8 */

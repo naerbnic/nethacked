@@ -21,14 +21,14 @@ static const char brief_feeling[] =
 
 STATIC_DCL char *FDECL(mon_nam_too, (char *,struct Monster *,struct Monster *));
 STATIC_DCL void FDECL(mrustm, (struct Monster *, struct Monster *, struct Object *));
-STATIC_DCL int FDECL(hitmm, (struct Monster *,struct Monster *,struct attack *));
-STATIC_DCL int FDECL(gazemm, (struct Monster *,struct Monster *,struct attack *));
-STATIC_DCL int FDECL(gulpmm, (struct Monster *,struct Monster *,struct attack *));
-STATIC_DCL int FDECL(explmm, (struct Monster *,struct Monster *,struct attack *));
-STATIC_DCL int FDECL(mdamagem, (struct Monster *,struct Monster *,struct attack *));
+STATIC_DCL int FDECL(hitmm, (struct Monster *,struct Monster *,struct Attack *));
+STATIC_DCL int FDECL(gazemm, (struct Monster *,struct Monster *,struct Attack *));
+STATIC_DCL int FDECL(gulpmm, (struct Monster *,struct Monster *,struct Attack *));
+STATIC_DCL int FDECL(explmm, (struct Monster *,struct Monster *,struct Attack *));
+STATIC_DCL int FDECL(mdamagem, (struct Monster *,struct Monster *,struct Attack *));
 STATIC_DCL void FDECL(mswingsm, (struct Monster *, struct Monster *, struct Object *));
-STATIC_DCL void FDECL(noises,(struct Monster *,struct attack *));
-STATIC_DCL void FDECL(missmm,(struct Monster *,struct Monster *,struct attack *));
+STATIC_DCL void FDECL(noises,(struct Monster *,struct Attack *));
+STATIC_DCL void FDECL(missmm,(struct Monster *,struct Monster *,struct Attack *));
 STATIC_DCL int FDECL(passivemm, (struct Monster *, struct Monster *, BOOLEAN_P, int));
 
 /* Needed for the special case of monsters wielding vorpal blades (rare).
@@ -50,7 +50,7 @@ STATIC_OVL char * mon_nam_too(char *outbuf, struct Monster *mon, struct Monster 
 	return outbuf;
 }
 
-STATIC_OVL void noises(struct Monster *magr, struct attack *mattk) {
+STATIC_OVL void noises(struct Monster *magr, struct Attack *mattk) {
 	boolean farq = (distu(magr->mx, magr->my) > 15);
 
 	if(flags.soundok && (farq != far_noise || moves-noisetime > 10)) {
@@ -63,7 +63,7 @@ STATIC_OVL void noises(struct Monster *magr, struct attack *mattk) {
 }
 
 STATIC_OVL
-void missmm(struct Monster *magr, struct Monster *mdef, struct attack *mattk) {
+void missmm(struct Monster *magr, struct Monster *mdef, struct Attack *mattk) {
 	const char *fmt;
 	char buf[BUFSZ], mdef_name[BUFSZ];
 
@@ -186,7 +186,7 @@ int mattackm(struct Monster *magr, struct Monster *mdef) {
 		    attk,	/* attack attempted this time */
 		    struck = 0,	/* hit at least once */
 		    res[NATTK];	/* results of all attacks */
-    struct attack   *mattk, alt_attk;
+    struct Attack   *mattk, alt_attk;
     struct permonst *pa, *pd;
 
     if (!magr || !mdef) return(MM_MISS);		/* mike@genat */
@@ -363,7 +363,7 @@ int mattackm(struct Monster *magr, struct Monster *mdef) {
 }
 
 /* Returns the result of mdamagem(). */
-STATIC_OVL int hitmm(struct Monster *magr, struct Monster *mdef, struct attack *mattk) {
+STATIC_OVL int hitmm(struct Monster *magr, struct Monster *mdef, struct Attack *mattk) {
 	if(vis){
 		int compat;
 		char buf[BUFSZ], mdef_name[BUFSZ];
@@ -416,7 +416,7 @@ STATIC_OVL int hitmm(struct Monster *magr, struct Monster *mdef, struct attack *
 }
 
 /* Returns the same values as mdamagem(). */
-STATIC_OVL int gazemm(struct Monster *magr, struct Monster *mdef, struct attack *mattk) {
+STATIC_OVL int gazemm(struct Monster *magr, struct Monster *mdef, struct Attack *mattk) {
 	char buf[BUFSZ];
 
 	if(vis) {
@@ -461,7 +461,7 @@ STATIC_OVL int gazemm(struct Monster *magr, struct Monster *mdef, struct attack 
 }
 
 /* Returns the same values as mattackm(). */
-STATIC_OVL int gulpmm(struct Monster *magr, struct Monster *mdef, struct attack *mattk) {
+STATIC_OVL int gulpmm(struct Monster *magr, struct Monster *mdef, struct Attack *mattk) {
 	xchar	ax, ay, dx, dy;
 	int	status;
 	char buf[BUFSZ];
@@ -525,7 +525,7 @@ STATIC_OVL int gulpmm(struct Monster *magr, struct Monster *mdef, struct attack 
 	return status;
 }
 
-STATIC_OVL int explmm(struct Monster *magr, struct Monster *mdef, struct attack *mattk) {
+STATIC_OVL int explmm(struct Monster *magr, struct Monster *mdef, struct Attack *mattk) {
 	int result;
 
 	if (magr->mcan)
@@ -552,7 +552,7 @@ STATIC_OVL int explmm(struct Monster *magr, struct Monster *mdef, struct attack 
 /*
  *  See comment at top of mattackm(), for return values.
  */
-STATIC_OVL int mdamagem(struct Monster *magr, struct Monster *mdef, struct attack *mattk) {
+STATIC_OVL int mdamagem(struct Monster *magr, struct Monster *mdef, struct Attack *mattk) {
 	struct Object *obj;
 	char buf[BUFSZ];
 	struct permonst *pa = magr->data, *pd = mdef->data;

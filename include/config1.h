@@ -52,28 +52,6 @@
 # define NEED_VARARGS
 #endif
 
-# define NEARDATA
-
-/*
- * Atari auto-detection
- */
-
-#ifdef atarist
-# error "Don't support!"
-# undef UNIX
-# ifndef TOS
-# define TOS
-# endif
-#else
-# ifdef __MINT__
-# error "Don't support!"
-#  undef UNIX
-#  ifndef TOS
-#  define TOS
-#  endif
-# endif
-#endif
-
 /*
  * Windows NT Autodetection
  */

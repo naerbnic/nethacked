@@ -148,7 +148,7 @@ STATIC_OVL int choose_clerical_spell(int spellnum) {
  * 1: successful spell
  * 0: unsuccessful spell
  */
-int castmu(struct Monster *mtmp, struct attack *mattk, boolean thinks_it_foundyou, boolean foundyou) {
+int castmu(struct Monster *mtmp, struct Attack *mattk, boolean thinks_it_foundyou, boolean foundyou) {
 	int	dmg, ml = mtmp->m_lev;
 	int ret;
 	int spellnum = 0;
@@ -722,7 +722,7 @@ boolean spell_would_be_useless(struct Monster *mtmp, unsigned int adtyp, int spe
 #define ad_to_typ(k) (10 + (int)k - 1)
 
 /* monster uses spell (ranged) */
-int buzzmu(struct Monster* mtmp, struct attack* mattk) {
+int buzzmu(struct Monster* mtmp, struct Attack* mattk) {
 	/* don't print constant stream of curse messages for 'normal'
 	   spellcasting monsters at range */
 	if (mattk->adtyp > AD_SPC2)

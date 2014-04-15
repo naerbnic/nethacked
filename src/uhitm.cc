@@ -6,19 +6,19 @@
 
 #include "hack.h"
 
-STATIC_DCL boolean FDECL(known_hitum, (struct Monster *,int *,struct attack *));
-STATIC_DCL void FDECL(steal_it, (struct Monster *, struct attack *));
-STATIC_DCL boolean FDECL(hitum, (struct Monster *,int,struct attack *));
+STATIC_DCL boolean FDECL(known_hitum, (struct Monster *,int *,struct Attack *));
+STATIC_DCL void FDECL(steal_it, (struct Monster *, struct Attack *));
+STATIC_DCL boolean FDECL(hitum, (struct Monster *,int,struct Attack *));
 STATIC_DCL boolean FDECL(hmon_hitmon, (struct Monster *,struct Object *,int));
 #ifdef STEED
 STATIC_DCL int FDECL(joust, (struct Monster *,struct Object *));
 #endif
 STATIC_DCL void NDECL(demonpet);
-STATIC_DCL boolean FDECL(m_slips_free, (struct Monster *mtmp,struct attack *mattk));
-STATIC_DCL int FDECL(explum, (struct Monster *,struct attack *));
+STATIC_DCL boolean FDECL(m_slips_free, (struct Monster *mtmp,struct Attack *mattk));
+STATIC_DCL int FDECL(explum, (struct Monster *,struct Attack *));
 STATIC_DCL void FDECL(start_engulf, (struct Monster *));
 STATIC_DCL void NDECL(end_engulf);
-STATIC_DCL int FDECL(gulpum, (struct Monster *,struct attack *));
+STATIC_DCL int FDECL(gulpum, (struct Monster *,struct Attack *));
 STATIC_DCL boolean FDECL(hmonas, (struct Monster *,int));
 STATIC_DCL void FDECL(nohandglow, (struct Monster *));
 STATIC_DCL boolean FDECL(shade_aware, (struct Object *));
@@ -412,7 +412,7 @@ atk_done:
 }
 
 /* returns TRUE if monster still lives */
-STATIC_OVL boolean known_hitum(struct Monster *mon, int *mhit, struct attack *uattk) {
+STATIC_OVL boolean known_hitum(struct Monster *mon, int *mhit, struct Attack *uattk) {
 	boolean malive = TRUE;
 
 	if (override_confirmation) {
@@ -468,7 +468,7 @@ STATIC_OVL boolean known_hitum(struct Monster *mon, int *mhit, struct attack *ua
 }
 
 /* returns TRUE if monster still lives */
-STATIC_OVL boolean hitum(struct Monster *mon, int tmp, struct attack *uattk) {
+STATIC_OVL boolean hitum(struct Monster *mon, int tmp, struct Attack *uattk) {
 	boolean malive;
 	int mhit = (tmp > (dieroll = rnd(20)) || u.uswallow);
 
@@ -1071,7 +1071,7 @@ STATIC_OVL boolean shade_aware(struct Object *obj) {
 
 /* check whether slippery clothing protects from hug or wrap attack */
 /* [currently assumes that you are the attacker] */
-STATIC_OVL boolean m_slips_free(struct Monster *mdef, struct attack *mattk) {
+STATIC_OVL boolean m_slips_free(struct Monster *mdef, struct Attack *mattk) {
 	struct Object *obj;
 
 	if (mattk->adtyp == AD_DRIN) {
@@ -1165,7 +1165,7 @@ STATIC_OVL void demonpet() {
  * If that ever changes, the check for touching a cockatrice corpse
  * will need to be smarter about whether to break out of the theft loop.
  */
-STATIC_OVL void steal_it(struct Monster *mdef, struct attack *mattk) {
+STATIC_OVL void steal_it(struct Monster *mdef, struct Attack *mattk) {
 	struct Object *otmp, *stealoid, **minvent_ptr;
 	long unwornmask;
 
@@ -1240,7 +1240,7 @@ STATIC_OVL void steal_it(struct Monster *mdef, struct attack *mattk) {
 	}
 }
 
-int damageum(struct Monster *mdef, struct attack *mattk) {
+int damageum(struct Monster *mdef, struct Attack *mattk) {
 	struct permonst *pd = mdef->data;
 	int	tmp = d((int)mattk->damn, (int)mattk->damd);
 	int armpro;
@@ -1618,7 +1618,7 @@ int damageum(struct Monster *mdef, struct attack *mattk) {
 	return(1);
 }
 
-STATIC_OVL int explum(struct Monster *mdef, struct attack *mattk) {
+STATIC_OVL int explum(struct Monster *mdef, struct Attack *mattk) {
 	int tmp = d((int)mattk->damn, (int)mattk->damd);
 
 	You("explode!");
@@ -1688,7 +1688,7 @@ STATIC_OVL void end_engulf() {
 	}
 }
 
-STATIC_OVL int gulpum(struct Monster *mdef, struct attack *mattk) {
+STATIC_OVL int gulpum(struct Monster *mdef, struct Attack *mattk) {
 	int tmp;
 	int dam = d((int)mattk->damn, (int)mattk->damd);
 	struct Object *otmp;
@@ -1865,7 +1865,7 @@ STATIC_OVL int gulpum(struct Monster *mdef, struct attack *mattk) {
 	return(0);
 }
 
-void missum(struct Monster *mdef, struct attack *mattk) {
+void missum(struct Monster *mdef, struct Attack *mattk) {
 	if (could_seduce(&youmonst, mdef, mattk))
 		You("pretend to be friendly to %s.", mon_nam(mdef));
 	else if(canspotmon(mdef) && flags.verbose)
@@ -1878,7 +1878,7 @@ void missum(struct Monster *mdef, struct attack *mattk) {
 
 /* attack monster as a monster. */
 STATIC_OVL boolean hmonas(struct Monster *mon, int tmp) {
-	struct attack *mattk, alt_attk;
+	struct Attack *mattk, alt_attk;
 	int	i, sum[NATTK], hittmp = 0;
 	int	nsum = 0;
 	int	dhit = 0;
@@ -2277,7 +2277,7 @@ int passive(struct Monster *mon, boolean mhit, int malive, uchar aatyp) {
  * Special (passive) attacks on an attacking object by monsters done here.
  * Assumes the attack was successful.
  */
-void passive_obj(struct Monster *mon, struct Object *obj, struct attack *mattk) {
+void passive_obj(struct Monster *mon, struct Object *obj, struct Attack *mattk) {
 	struct permonst *ptr = mon->data;
 	int i;
 

@@ -463,7 +463,7 @@ toofar:
 		   from you from having cast dozens of sticks-to-snakes
 		   or similar spells by the time you reach it */
 		if (dist2(mtmp->mx, mtmp->my, u.ux, u.uy) <= 49 && !mtmp->mspec_used) {
-		    struct attack *a;
+		    struct Attack *a;
 
 		    for (a = &mdat->mattk[0]; a < &mdat->mattk[NATTK]; a++) {
 			if (a->aatyp == AT_MAGC && (a->adtyp == AD_SPEL || a->adtyp == AD_CLRC)) {

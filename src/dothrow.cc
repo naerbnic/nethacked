@@ -1282,7 +1282,7 @@ int thitmonst(struct Monster *mon, struct Object *obj) {
 			return 1;
 		    }
 		}
-		passive_obj(mon, obj, (struct attack *)0);
+		passive_obj(mon, obj, (struct Attack *)0);
 	    } else {
 		tmiss(obj, mon);
 	    }

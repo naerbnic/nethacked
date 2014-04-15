@@ -718,7 +718,7 @@ void rehumanize() {
 }
 
 int dobreathe() {
-	struct attack *mattk;
+	struct Attack *mattk;
 
 	if (Strangled) {
 	    You_cant("breathe.  Sorry.");

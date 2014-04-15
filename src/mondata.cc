@@ -26,14 +26,14 @@ void set_mon_data(struct Monster *mon, struct permonst *ptr, int flag) {
 #endif /* OVLB */
 #ifdef OVL0
 
-struct attack * attacktype_fordmg(struct permonst *ptr, int atyp, int dtyp) {
-    struct attack *a;
+struct Attack * attacktype_fordmg(struct permonst *ptr, int atyp, int dtyp) {
+    struct Attack *a;
 
     for (a = &ptr->mattk[0]; a < &ptr->mattk[NATTK]; a++)
 	if (a->aatyp == atyp && (dtyp == AD_ANY || a->adtyp == dtyp))
 	    return a;
 
-    return (struct attack *)0;
+    return (struct Attack *)0;
 }
 
 boolean attacktype(struct permonst *ptr, int atyp) {
@@ -277,14 +277,14 @@ int num_horns(struct permonst *ptr) {
     return 0;
 }
 
-struct attack * dmgtype_fromattack(struct permonst *ptr, int dtyp, int atyp) {
-    struct attack *a;
+struct Attack * dmgtype_fromattack(struct permonst *ptr, int dtyp, int atyp) {
+    struct Attack *a;
 
     for (a = &ptr->mattk[0]; a < &ptr->mattk[NATTK]; a++)
 	if (a->adtyp == dtyp && (atyp == AT_ANY || a->aatyp == atyp))
 	    return a;
 
-    return (struct attack *)0;
+    return (struct Attack *)0;
 }
 
 boolean dmgtype(struct permonst *ptr, int dtyp) {
@@ -625,7 +625,7 @@ const char * stagger(const struct permonst *ptr, const char *def) {
 }
 
 /* return a phrase describing the effect of fire attack on a type of monster */
-const char * on_fire(struct permonst *mptr, struct attack *mattk) {
+const char * on_fire(struct permonst *mptr, struct Attack *mattk) {
     const char *what;
 
     switch (monsndx(mptr)) {

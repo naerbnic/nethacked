@@ -112,21 +112,8 @@ extern coord bhitpos;	/* place where throw or zap hits or stops */
 #include "rect.h"
 #include "region.h"
 
-#ifdef USE_TRAMPOLI /* This doesn't belong here, but we have little choice */
-#undef NDECL
-#define NDECL(f) f()
-#endif
-
 #include "extern.h"
 #include "winprocs.h"
-
-#ifdef USE_TRAMPOLI
-#include "wintty.h"
-#undef WINTTY_H
-#include "trampoli.h"
-#undef EXTERN_H
-#include "extern.h"
-#endif /* USE_TRAMPOLI */
 
 #define NO_SPELL	0
 

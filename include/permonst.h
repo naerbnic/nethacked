@@ -17,7 +17,7 @@
  *	for a blinding attack, they determine the amount of time blinded.
  */
 
-struct attack {
+struct Attack {
 	uchar		aatyp;
 	uchar		adtyp, damn, damd;
 };
@@ -47,7 +47,7 @@ struct permonst {
 			mr;			/* (base) magic resistance */
 	aligntyp	maligntyp;		/* basic monster alignment */
 	unsigned short	geno;			/* creation/geno mask value */
-	struct	attack	mattk[NATTK];		/* attacks matrix */
+	struct	Attack	mattk[NATTK];		/* attacks matrix */
 	unsigned short	cwt,			/* weight of corpse */
 			cnutrit;		/* its nutritional value */
 	short		pxlth;			/* length of extension */

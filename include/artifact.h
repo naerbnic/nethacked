@@ -42,7 +42,7 @@ struct Artifact {
 	unsigned long spfx;	/* special effect from wielding/wearing */
 	unsigned long cspfx;	/* special effect just from carrying obj */
 	unsigned long mtype;	/* monster type, symbol, or flag */
-	struct attack attk, defn, cary;
+	struct Attack attk, defn, cary;
 	uchar	    inv_prop;	/* property obtained by invoking artifact */
 	aligntyp    alignment;	/* alignment of bequeathing gods */
 	short	    role;	/* character role associated with */
