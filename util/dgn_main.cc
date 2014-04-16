@@ -17,8 +17,6 @@ using std::string;
 #include "config.h"
 #include "dlb.h"
 
-# define SpinCursor(x)
-
 #define MAX_ERRORS	25
 
 extern int  NDECL (yyparse);
@@ -131,9 +129,6 @@ void yywarning(char const* s) {
 
 extern "C" int yywrap()
 {
-	SpinCursor(3); /*	Don't know if this is a good place to put it ?
-						Is it called for our grammar ? Often enough ?
-						Too often ? -- h+ */
        return 1;
 }
 
