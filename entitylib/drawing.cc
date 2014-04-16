@@ -3,6 +3,9 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 #include <string.h>
+#include <vector>
+
+using std::vector;
 
 #include "hack.h"
 #include "tcap.h"
@@ -190,7 +193,7 @@ const char * const monexplain[MAXMCLASSES] = {
     "long worm tail",		"mimic"
 };
 
-const struct symdef def_warnsyms[WARNCOUNT] = {
+vector<struct SymbolDefn const> def_warnsyms = {
 	{'0', "unknown creature causing you worry", C(CLR_WHITE)},  	/* white warning  */
 	{'1', "unknown creature causing you concern", C(CLR_RED)},	/* pink warning   */
 	{'2', "unknown creature causing you anxiety", C(CLR_RED)},	/* red warning    */
@@ -205,7 +208,7 @@ const struct symdef def_warnsyms[WARNCOUNT] = {
  *  Default screen symbols with explanations and colors.
  *  Note:  {ibm|dec|mac}_graphics[] arrays also depend on this symbol order.
  */
-const struct symdef defsyms[MAXPCHARS] = {
+vector<struct SymbolDefn const> defsyms = {
 /* 0*/	{' ', "dark part of a room",C(NO_COLOR)},	/* stone */
 	{'|', "wall",		C(CLR_GRAY)},	/* vwall */
 	{'-', "wall",		C(CLR_GRAY)},	/* hwall */

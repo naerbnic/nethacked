@@ -5,6 +5,9 @@
 #ifndef RM_H
 #define RM_H
 
+#include <vector>
+
+using std::vector;
 /*
  * The dungeon presentation graphics code and data structures were rewritten
  * and generalized for NetHack's release 2 by Eric S. Raymond (eric@snark)
@@ -215,7 +218,7 @@
 #define MAXECHARS	29	/* maximum of mapped effects characters */
 #define MAXEXPCHARS	9	/* number of explosion characters */
 
-struct symdef {
+struct SymbolDefn {
     uchar sym;
     const char	*explanation;
 #ifdef TEXTCOLOR
@@ -223,9 +226,9 @@ struct symdef {
 #endif
 };
 
-extern const struct symdef defsyms[MAXPCHARS];	/* defaults */
+extern std::vector<struct SymbolDefn const> defsyms;	/* defaults */
 extern uchar showsyms[MAXPCHARS];
-extern const struct symdef def_warnsyms[WARNCOUNT];
+extern std::vector<struct SymbolDefn const> def_warnsyms;
 
 /*
  * Graphics sets for display symbols
