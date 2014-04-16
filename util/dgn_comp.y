@@ -91,8 +91,8 @@ dungeons	: dungeon
 		| dungeons dungeon
 		;
 
-dungeon		: dungeonline
-		| dungeondesc
+dungeon	: dungeonline
+        | dungeondesc
 		| branches
 		| levels
 		;
