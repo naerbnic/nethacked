@@ -285,24 +285,28 @@ int get_floor_type(char c) {
 /*
  * Find the type of a room in the table, knowing its name.
  */
-int get_room_type(char *s) {
+int get_room_type(string const& s) {
 	int i;
 
-	for(i=0; room_types[i].name; i++)
-	    if (!strcmp(s, room_types[i].name))
-		return ((int) room_types[i].type);
+	for (auto const& entry : room_types) {
+	  if (entry.name == s) {
+	    return entry.type;
+	  }
+	}
 	return ERR;
 }
 
 /*
  * Find the type of a trap in the table, knowing its name.
  */
-int get_trap_type(char *s) {
+int get_trap_type(string const& s) {
 	int i;
 
-	for (i=0; trap_types[i].name; i++)
-	    if(!strcmp(s,trap_types[i].name))
-		return trap_types[i].type;
+	for (auto const& entry : trap_types) {
+	  if (entry.name == s) {
+	    return entry.type;
+	  }
+	}
 	return ERR;
 }
 
