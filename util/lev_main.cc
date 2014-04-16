@@ -2,6 +2,12 @@
 /*	Copyright (c) 1989 by Jean-Christophe Collet */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include <string>
+#include <vector>
+
+using std::string;
+using std::vector;
+
 #include <string.h>
 
 /*
@@ -82,10 +88,13 @@ static boolean FDECL(write_maze, (int,specialmaze *));
 static boolean FDECL(write_rooms, (int,splev *));
 static void NDECL(init_obj_classes);
 
-static struct {
-	const char *name;
-	int type;
-} trap_types[] = {
+struct NameMapping {
+  NameMapping(string const& name, int type) : name(name), type(type) {}
+  string name;
+  int type;
+};
+
+static vector<NameMapping> trap_types = {
 	{ "arrow",	ARROW_TRAP },
 	{ "dart",	DART_TRAP },
 	{ "falling rock", ROCKTRAP },
@@ -108,13 +117,9 @@ static struct {
 	{ "magic",	MAGIC_TRAP },
 	{ "anti magic",	ANTI_MAGIC },
 	{ "polymorph",	POLY_TRAP },
-	{ 0, 0 }
 };
 
-static struct {
-	const char *name;
-	int type;
-} room_types[] = {
+static vector<NameMapping> room_types = {
 	/* for historical reasons, room types are not contiguous numbers */
 	/* (type 1 is skipped) */
 	{ "ordinary",	 OROOM },
@@ -141,7 +146,6 @@ static struct {
 	{ "tool shop",	 TOOLSHOP },
 	{ "book shop",	 BOOKSHOP },
 	{ "candle shop", CANDLESHOP },
-	{ 0, 0 }
 };
 
 const char *fname = "(stdin)";
