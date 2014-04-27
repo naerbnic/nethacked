@@ -240,9 +240,12 @@ void do_makedefs(string options, vector<string> const& rest) {
 		case 'h':
 		case 'H':	do_oracles();
 				break;
+		case 'y':
+		case 'Y':
+		  do_vision_header();
+		  break;
 		case 'z':
 		case 'Z':
-		  do_vision_header();
 		  do_vision_source();
 		  break;
 
