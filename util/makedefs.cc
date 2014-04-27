@@ -194,79 +194,83 @@ int main(int argc, const char *argv[]) {
 }
 
 void do_makedefs(string options, vector<string> const& args) {
-	boolean more_than_one;
+  boolean more_than_one;
 
-	/* Note:  these initializers don't do anything except guarantee that
-		we're linked properly.
-	*/
-	monst_init();
-	objects_init();
+  /* Note:  these initializers don't do anything except guarantee that
+   we're linked properly.
+   */
+  monst_init();
+  objects_init();
 
-	/* construct the current version number */
-	make_version();
+  /* construct the current version number */
+  make_version();
 
+  if (options.size() > 1) {
+    perror("Can only do one action");
+    exit(EXIT_FAILURE);
+  }
 
-	more_than_one = options.size() > 1;
-	while (!options.empty()) {
-	    if (more_than_one)
-		Fprintf(stderr, "makedefs -%c\n", options.front());
+  switch (options.front()) {
+  case 'o':
+  case 'O':
+    do_objs();
+    break;
+  case 'd':
+  case 'D':
+    do_data();
+    break;
+  case 'e':
+  case 'E':
+    do_dungeon();
+    break;
+  case 'm':
+  case 'M':
+    do_monstr();
+    break;
+  case 'v':
+  case 'V':
+    do_date();
+    do_options();
+    break;
+  case 'p':
+  case 'P':
+    do_permonst();
+    break;
+  case 'q':
+  case 'Q':
+    do_questtxt();
+    break;
+  case 'r':
+  case 'R':
+    do_rumors();
+    break;
+  case 'h':
+  case 'H':
+    do_oracles();
+    break;
+  case 'y':
+  case 'Y':
+    if (args.size() != 1) {
+      perror("Too few arguments");
+      exit(EXIT_FAILURE);
+    }
+    do_vision_header(args[0]);
+    break;
+  case 'z':
+  case 'Z':
+    if (args.size() != 1) {
+      perror("Too few arguments");
+      exit(EXIT_FAILURE);
+    }
+    do_vision_source(args[0]);
+    break;
 
-	    switch (options.front()) {
-		case 'o':
-		case 'O':	do_objs();
-				break;
-		case 'd':
-		case 'D':	do_data();
-				break;
-		case 'e':
-		case 'E':	do_dungeon();
-				break;
-		case 'm':
-		case 'M':	do_monstr();
-				break;
-		case 'v':
-		case 'V':	do_date();
-				do_options();
-				break;
-		case 'p':
-		case 'P':	do_permonst();
-				break;
-		case 'q':
-		case 'Q':	do_questtxt();
-				break;
-		case 'r':
-		case 'R':	do_rumors();
-				break;
-		case 'h':
-		case 'H':	do_oracles();
-				break;
-		case 'y':
-		case 'Y':
-		  if (args.size() != 1) {
-		    perror("Too few arguments");
-		    exit(EXIT_FAILURE);
-		  }
-		  do_vision_header(args[0]);
-		  break;
-		case 'z':
-		case 'Z':
-      if (args.size() != 1) {
-        perror("Too few arguments");
-        exit(EXIT_FAILURE);
-      }
-		  do_vision_source(args[0]);
-		  break;
+  default:
+    Fprintf (stderr, "Unknown option '%c'.\n", options.front());
+    (void) fflush(stderr);
+    exit(EXIT_FAILURE);
 
-		default:	Fprintf(stderr,	"Unknown option '%c'.\n",
-					options.front());
-				(void) fflush(stderr);
-				exit(EXIT_FAILURE);
-		
-	    }
-	    options = options.substr(1);
-	}
-	if (more_than_one) Fprintf(stderr, "Completed.\n");	/* feedback */
-
+  }
 }
 
 
