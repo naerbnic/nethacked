@@ -115,7 +115,7 @@ char *file_prefix="";
 #endif
 
 int FDECL(main, (int, const char **));
-void FDECL(do_makedefs, (string));
+void FDECL(do_makedefs, (string, vector<string> const&));
 void NDECL(do_objs);
 void NDECL(do_data);
 void NDECL(do_dungeon);
@@ -186,13 +186,13 @@ int main(int argc, const char *argv[]) {
     return 1;
   }
 
-  do_makedefs(args[1].substr(1));
+  do_makedefs(args[1].substr(1), vector<string>(args.begin() + 2, args.end()));
   exit(EXIT_SUCCESS);
   /*NOTREACHED*/
   return 0;
 }
 
-void do_makedefs(string options) {
+void do_makedefs(string options, vector<string> const& rest) {
 	boolean more_than_one;
 
 	/* Note:  these initializers don't do anything except guarantee that
