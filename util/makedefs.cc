@@ -5,8 +5,10 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 #include <vector>
+#include <string>
 
 using std::vector;
+using std::string;
 
 #define MAKEDEFS_C	/* use to conditionally include file sections */
 /* #define DEBUG */	/* uncomment for debugging info */
@@ -111,7 +113,7 @@ char *file_prefix="";
 #endif
 
 int FDECL(main, (int, const char **));
-void FDECL(do_makedefs, (const char *));
+void FDECL(do_makedefs, (string));
 void NDECL(do_objs);
 void NDECL(do_data);
 void NDECL(do_dungeon);
@@ -180,7 +182,7 @@ int main(int argc, const char *argv[]) {
   return 0;
 }
 
-void do_makedefs(const char *options) {
+void do_makedefs(string options) {
 	boolean more_than_one;
 
 	/* Note:  these initializers don't do anything except guarantee that
@@ -193,12 +195,12 @@ void do_makedefs(const char *options) {
 	make_version();
 
 
-	more_than_one = strlen(options) > 1;
-	while (*options) {
+	more_than_one = options.size() > 1;
+	while (!options.empty()) {
 	    if (more_than_one)
-		Fprintf(stderr, "makedefs -%c\n", *options);
+		Fprintf(stderr, "makedefs -%c\n", options.front());
 
-	    switch (*options) {
+	    switch (options.front()) {
 		case 'o':
 		case 'O':	do_objs();
 				break;
@@ -232,12 +234,12 @@ void do_makedefs(const char *options) {
 				break;
 
 		default:	Fprintf(stderr,	"Unknown option '%c'.\n",
-					*options);
+					options.front());
 				(void) fflush(stderr);
 				exit(EXIT_FAILURE);
 		
 	    }
-	    options++;
+	    options = options.substr(1);
 	}
 	if (more_than_one) Fprintf(stderr, "Completed.\n");	/* feedback */
 
