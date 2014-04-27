@@ -4,6 +4,8 @@
 /* Copyright (c) Dean Luick, 1990.				  */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include <algorithm>
+#include <iterator>
 #include <vector>
 #include <string>
 
@@ -167,16 +169,24 @@ static char *FDECL(eos, (char *));
 /* input, output, tmp */
 static FILE *ifp, *ofp, *tfp;
 
+vector<string> CollectArgs(int argc, const char* argv[]) {
+  vector<string> result;
+  std::transform(argv, argv + argc, std::back_inserter(result), 
+      [](const char* str) {
+        return string(str);
+      });
+  return result;
+}
 
 int main(int argc, const char *argv[]) {
-  vector<const char*> args(argv, argv + argc);
+  auto args = CollectArgs(argc, argv);
   if (argc < 2) {
     Fprintf(stderr, "Bad arg count (%d).\n", argc-1);
     (void) fflush(stderr);
     return 1;
   }
 
-  do_makedefs(&argv[1][1]);
+  do_makedefs(args[1].substr(1));
   exit(EXIT_SUCCESS);
   /*NOTREACHED*/
   return 0;
