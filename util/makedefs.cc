@@ -4,6 +4,10 @@
 /* Copyright (c) Dean Luick, 1990.				  */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include <vector>
+
+using std::vector;
+
 #define MAKEDEFS_C	/* use to conditionally include file sections */
 /* #define DEBUG */	/* uncomment for debugging info */
 
@@ -106,12 +110,8 @@ static char	in_line[256], filename[60];
 char *file_prefix="";
 #endif
 
-#ifdef MACsansMPWTOOL
-int FDECL(main, (void));
-#else
-int FDECL(main, (int,char **));
-#endif
-void FDECL(do_makedefs, (char *));
+int FDECL(main, (int, const char **));
+void FDECL(do_makedefs, (const char *));
 void NDECL(do_objs);
 void NDECL(do_data);
 void NDECL(do_dungeon);
@@ -165,35 +165,22 @@ static char *FDECL(eos, (char *));
 /* input, output, tmp */
 static FILE *ifp, *ofp, *tfp;
 
-#if defined(__BORLANDC__) && !defined(_WIN32)
-extern unsigned _stklen = STKSIZ;
-#endif
 
+int main(int argc, const char *argv[]) {
+  vector<const char*> args(argv, argv + argc);
+  if (argc < 2) {
+    Fprintf(stderr, "Bad arg count (%d).\n", argc-1);
+    (void) fflush(stderr);
+    return 1;
+  }
 
-int main(int argc, char *argv[]) {
-	if ( (argc != 2)
-#ifdef FILE_PREFIX
-		&& (argc != 3)
-#endif
-	) {
-	    Fprintf(stderr, "Bad arg count (%d).\n", argc-1);
-	    (void) fflush(stderr);
-	    return 1;
-	}
-
-#ifdef FILE_PREFIX
-	if(argc >=2 && argv[1][0]!='-'){
-	    file_prefix=argv[1];
-	    argc--;argv++;
-	}
-#endif
-	do_makedefs(&argv[1][1]);
-	exit(EXIT_SUCCESS);
-	/*NOTREACHED*/
-	return 0;
+  do_makedefs(&argv[1][1]);
+  exit(EXIT_SUCCESS);
+  /*NOTREACHED*/
+  return 0;
 }
 
-void do_makedefs(char *options) {
+void do_makedefs(const char *options) {
 	boolean more_than_one;
 
 	/* Note:  these initializers don't do anything except guarantee that

@@ -1,5 +1,5 @@
 include_rules
 
-: makedefs.cc ../entitylib/objects.o ../entitylib/monst.o |> gcc $(CCFLAGS) %f -o %o |> makedefs
+: makedefs.cc ../entitylib/objects.o ../entitylib/monst.o |> g++ $(CCFLAGS) %f -o %o |> makedefs
 
 # : foreach *.cc |> !cc |>
