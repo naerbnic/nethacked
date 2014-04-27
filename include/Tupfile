@@ -1,0 +1,2 @@
+include_rules
+: ../util/makedefs |> ../util/makedefs -p |> pm.h
