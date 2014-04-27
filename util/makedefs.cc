@@ -170,30 +170,6 @@ extern unsigned _stklen = STKSIZ;
 #endif
 
 
-#ifdef MACsansMPWTOOL
-int
-main(void)
-{
-    const char *def_options = "odemvpqrhz";
-    char buf[100];
-    int len;
-
-    printf("Enter options to run: [%s] ", def_options);
-    fflush(stdout);
-    fgets(buf, 100, stdin);
-    len = strlen(buf);
-    if (len <= 1)
-	Strcpy(buf, def_options);
-    else
-	buf[len-1] = 0;			/* remove return */
-
-    do_makedefs(buf);
-    exit(EXIT_SUCCESS);
-    return 0;
-}
-
-#else /* ! MAC */
-
 int main(int argc, char *argv[]) {
 	if ( (argc != 2)
 #ifdef FILE_PREFIX
@@ -216,8 +192,6 @@ int main(int argc, char *argv[]) {
 	/*NOTREACHED*/
 	return 0;
 }
-
-#endif
 
 void do_makedefs(char *options) {
 	boolean more_than_one;
