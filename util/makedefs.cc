@@ -126,7 +126,8 @@ void NDECL(do_permonst);
 void NDECL(do_questtxt);
 void NDECL(do_rumors);
 void NDECL(do_oracles);
-void NDECL(do_vision);
+void NDECL(do_vision_header);
+void NDECL(do_vision_source);
 
 extern void NDECL(monst_init);		/* monst.c */
 extern void NDECL(objects_init);	/* objects.c */
@@ -240,8 +241,10 @@ void do_makedefs(string options, vector<string> const& rest) {
 		case 'H':	do_oracles();
 				break;
 		case 'z':
-		case 'Z':	do_vision();
-				break;
+		case 'Z':
+		  do_vision_header();
+		  do_vision_source();
+		  break;
 
 		default:	Fprintf(stderr,	"Unknown option '%c'.\n",
 					options.front());
@@ -1685,7 +1688,7 @@ static char * eos(char *str) {
  *      VISION_TABLES => generate tables
  */
 
-void do_vision() {
+void do_vision_header() {
 #ifdef VISION_TABLES
     int i, j;
 
@@ -1720,6 +1723,23 @@ void do_vision() {
 #endif /* VISION_TABLES */
     Fprintf(ofp,"\n#endif /* VISION_TABLES */\n");
     Fclose(ofp);
+    return;
+}
+
+void do_vision_source() {
+#ifdef VISION_TABLES
+    int i, j;
+
+    /* Everything is clear.  xclear may be malloc'ed.
+     * Block the upper left corner (BLOCK_HEIGHTxBLOCK_WIDTH)
+     */
+    for (i = 0; i < MAX_ROW; i++)
+  for (j = 0; j < MAX_COL; j++)
+      if (i < BLOCK_HEIGHT && j < BLOCK_WIDTH)
+    xclear[i][j] = '\000';
+      else
+    xclear[i][j] = '\001';
+#endif /* VISION_TABLES */
 
     /*
      * create the source file, "vis_tab.c"
@@ -1730,10 +1750,10 @@ void do_vision() {
 #endif
     Sprintf(filename, SOURCE_TEMPLATE, VIS_TAB_C);
     if (!(ofp = fopen(filename, WRTMODE))) {
-	perror(filename);
-	Sprintf(filename, INCLUDE_TEMPLATE, VIS_TAB_H);
-	Unlink(filename);
-	exit(EXIT_FAILURE);
+  perror(filename);
+  Sprintf(filename, INCLUDE_TEMPLATE, VIS_TAB_H);
+  Unlink(filename);
+  exit(EXIT_FAILURE);
     }
     fputs(Dont_Edit_Code, ofp);
     Fprintf(ofp,"#include \"config.h\"\n");
