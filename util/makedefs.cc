@@ -242,10 +242,18 @@ void do_makedefs(string options, vector<string> const& args) {
 				break;
 		case 'y':
 		case 'Y':
+		  if (args.size() != 1) {
+		    perror("Too few arguments");
+		    exit(EXIT_FAILURE);
+		  }
 		  do_vision_header(args[0]);
 		  break;
 		case 'z':
 		case 'Z':
+      if (args.size() != 1) {
+        perror("Too few arguments");
+        exit(EXIT_FAILURE);
+      }
 		  do_vision_source(args[0]);
 		  break;
 
