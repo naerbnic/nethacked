@@ -1,2 +1,5 @@
 include_rules
+
 : ../util/makedefs |> ../util/makedefs -p |> pm.h
+: ../util/makedefs |> ../util/makedefs -o |> onames.h
+: ../util/makedefs |> ../util/makedefs -z |> vis_tab.h
