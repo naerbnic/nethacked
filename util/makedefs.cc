@@ -126,8 +126,8 @@ void NDECL(do_permonst);
 void NDECL(do_questtxt);
 void NDECL(do_rumors);
 void NDECL(do_oracles);
-void NDECL(do_vision_header);
-void NDECL(do_vision_source);
+void FDECL(do_vision_header, (string const&));
+void FDECL(do_vision_source, (string const&));
 
 extern void NDECL(monst_init);		/* monst.c */
 extern void NDECL(objects_init);	/* objects.c */
@@ -193,7 +193,7 @@ int main(int argc, const char *argv[]) {
   return 0;
 }
 
-void do_makedefs(string options, vector<string> const& rest) {
+void do_makedefs(string options, vector<string> const& args) {
 	boolean more_than_one;
 
 	/* Note:  these initializers don't do anything except guarantee that
@@ -242,11 +242,11 @@ void do_makedefs(string options, vector<string> const& rest) {
 				break;
 		case 'y':
 		case 'Y':
-		  do_vision_header();
+		  do_vision_header(args[0]);
 		  break;
 		case 'z':
 		case 'Z':
-		  do_vision_source();
+		  do_vision_source(args[0]);
 		  break;
 
 		default:	Fprintf(stderr,	"Unknown option '%c'.\n",
@@ -1691,7 +1691,7 @@ static char * eos(char *str) {
  *      VISION_TABLES => generate tables
  */
 
-void do_vision_header() {
+void do_vision_header(string const& path) {
 #ifdef VISION_TABLES
     int i, j;
 
@@ -1710,10 +1710,7 @@ void do_vision_header() {
      * create the include file, "vis_tab.h"
      */
     filename[0]='\0';
-#ifdef FILE_PREFIX
-    Strcat(filename, file_prefix);
-#endif
-    Sprintf(filename, INCLUDE_TEMPLATE, VIS_TAB_H);
+    Strcpy(filename, path.c_str());
     if (!(ofp = fopen(filename, WRTMODE))) {
 	perror(filename);
 	exit(EXIT_FAILURE);
@@ -1729,7 +1726,7 @@ void do_vision_header() {
     return;
 }
 
-void do_vision_source() {
+void do_vision_source(string const& path) {
 #ifdef VISION_TABLES
     int i, j;
 
@@ -1748,10 +1745,7 @@ void do_vision_source() {
      * create the source file, "vis_tab.c"
      */
     filename[0]='\0';
-#ifdef FILE_PREFIX
-    Strcat(filename, file_prefix);
-#endif
-    Sprintf(filename, SOURCE_TEMPLATE, VIS_TAB_C);
+    Strcpy(filename, path.c_str());
     if (!(ofp = fopen(filename, WRTMODE))) {
   perror(filename);
   Sprintf(filename, INCLUDE_TEMPLATE, VIS_TAB_H);
