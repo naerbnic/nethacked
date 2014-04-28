@@ -7,6 +7,8 @@ include_rules
 : ../util/makedefs |> ../util/makedefs -v |> options
 : dungeon.def ../util/makedefs |> ../util/makedefs -e |> dungeon.pdf
 
+# : dungeon.pdf | ../compilers/dgn_comp |> ../compilers/dgn_comp %f ; mv .pdf %o |> final-dungeon.pdf
+
 !lev = | ../compilers/lev_comp |> ../compilers/lev_comp %f |>
 
 # Special levels
