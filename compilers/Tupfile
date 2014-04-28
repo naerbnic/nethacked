@@ -1,0 +1,10 @@
+include_rules
+
+: dgn_comp.l |> flex -o dgn_lex.cc --header-file=dgn_lex.h %f |> dgn_lex.cc dgn_lex.h
+: dgn_comp.y |> bison -d -o dgn_yacc.cc %f |> dgn_yacc.cc dgn_yacc.hh
+
+: lev_comp.l |> flex -o lev_lex.cc --header-file=lev_lex.h %f |> lev_lex.cc lev_lex.h
+: lev_comp.y |> bison -d -o lev_yacc.cc %f |> lev_yacc.cc lev_yacc.hh
+
+: foreach dgn_yacc.cc dgn_lex.cc | dgn_yacc.hh ../include/pm.h ../include/onames.h ../include/date.h |> !cc |>
+: foreach lev_yacc.cc lev_lex.cc | lev_yacc.hh ../include/pm.h ../include/onames.h ../include/date.h |> !cc |>
