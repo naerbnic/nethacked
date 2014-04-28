@@ -4,6 +4,8 @@
 
 /* termcap library implementation */
 
+#include <string.h>
+
 #include "config.h"
 
 #ifndef TERMCAP		/* name of default termcap file */
@@ -388,12 +390,7 @@ char * tparam(const char *ctl, char *buf, int buflen, int row, int col, int row2
 }
 
 /* send a string to the terminal, possibly padded with trailing NULs */
-void
-tputs( string, range, output_func )
-const char *string;	/* characters to output */
-int range;		/* number of lines affected, used for `*' delays */
-int (*output_func)();	/* actual output routine; return value ignored */
-{
+void tputs(const char* string, int range, int (*output_func)(int) ) {
     int c, num = 0;
     const char *p = string;
 

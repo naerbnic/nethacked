@@ -77,10 +77,7 @@ static void outdec(char *, FILE *, int);
 /* single-character decode */
 #define DEC(c)	(((c) - ' ') & 077)
 
-int main(argc, argv)
-int argc;
-char **argv;
-{
+int main(int argc, char** argv) {
 	FILE *in, *out;
 	int mode;
 	char dest[128];
@@ -116,9 +113,9 @@ char **argv;
 	/* handle ~user/file format */
 	if (dest[0] == '~') {
 		char *sl;
-		struct passwd *getpwnam();
+                //struct passwd *getpwnam();
 		struct passwd *user;
-		char dnbuf[100], *index(), *strcat(), *strcpy();
+		char dnbuf[100]; // *index(), *strcat(), *strcpy();
 
 		sl = index(dest, '/');
 		if (sl == NULL) {
