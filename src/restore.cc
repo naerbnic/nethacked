@@ -906,7 +906,7 @@ STATIC_OVL void add_id_mapping(unsigned gid, unsigned nid) {
  * in the new ID value.  Otherwise, return false and return -1 in the new
  * ID.
  */
-boolean lookup_id_mapping(unsigned gid, unsigned *nidp) {
+boolean lookup_id_mapping(unsigned long gid, unsigned long *nidp) {
     int i;
     struct bucket *curr;
 
@@ -931,7 +931,7 @@ boolean lookup_id_mapping(unsigned gid, unsigned *nidp) {
 
 STATIC_OVL void reset_oattached_mids(boolean ghostly) {
     struct Object *otmp;
-    unsigned oldid, nid;
+    unsigned long oldid, nid;
     for (otmp = fobj; otmp; otmp = otmp->nobj) {
 	if (ghostly && otmp->oattached == OATTACHED_MONST && otmp->oxlth) {
 	    struct Monster *mtmp = (struct Monster *)otmp->oextra;
