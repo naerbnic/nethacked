@@ -12,6 +12,7 @@
 /* |   provided "as is" without express or implied warranty.           | */
 /* +-------------------------------------------------------------------+ */
 
+#include <string.h>
 
 #include "config.h"
 #include "tile.h"
@@ -555,10 +556,7 @@ boolean fopen_gif_file(const char *filename, const char *type) {
 }
 
 /* Read a tile.  Returns FALSE when there are no more tiles */
-boolean
-read_gif_tile(pixels)
-pixel (*pixels)[TILE_X];
-{
+boolean read_gif_tile(pixel (*pixels)[TILE_X]) {
 	int i, j;
 
 	if (curr_tiles_down >= tiles_down) return FALSE;

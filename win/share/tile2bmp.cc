@@ -298,10 +298,7 @@ static void build_bmih(BITMAPINFOHEADER *pbmih) {
  	pbmih->biClrImportant = (DWORD)0;
 }
 
-static void
-build_bmptile(pixels)
-pixel (*pixels)[TILE_X];
-{
+static void build_bmptile(pixel (*pixels)[TILE_X]) {
 	int cur_x, cur_y, cur_color;
 	int x,y;
 
