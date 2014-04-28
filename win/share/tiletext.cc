@@ -1,6 +1,8 @@
 /*	SCCS Id: @(#)tiletext.c	3.4	1999/10/24	*/
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include <string.h>
+
 #include "config.h"
 #include "tile.h"
 
@@ -76,11 +78,7 @@ static boolean write_text_colormap(FILE *txtfile) {
 	return TRUE;
 }
 
-static boolean
-read_txttile(txtfile, pixels)
-FILE *txtfile;
-pixel (*pixels)[TILE_X];
-{
+static boolean read_txttile(FILE* txtfile, pixel (*pixels)[TILE_X]) {
 	int ph, i, j, k;
 	char buf[BUFSZ], ttype[BUFSZ];
 	const char *p;
@@ -159,11 +157,7 @@ pixel (*pixels)[TILE_X];
 	return TRUE;
 }
 
-static void
-write_txttile(txtfile, pixels)
-FILE *txtfile;
-pixel (*pixels)[TILE_X];
-{
+static void write_txttile(FILE* txtfile, pixel (*pixels)[TILE_X]) {
 	const char *p;
 	const char *type;
 	int i, j, k;
@@ -292,17 +286,11 @@ boolean fopen_text_file(const char *filename, const char *type) {
 	}
 }
 
-boolean
-read_text_tile(pixels)
-pixel (*pixels)[TILE_X];
-{
+boolean read_text_tile(pixel (*pixels)[TILE_X]) {
 	return(read_txttile(tile_file, pixels));
 }
 
-boolean
-write_text_tile(pixels)
-pixel (*pixels)[TILE_X];
-{
+boolean write_text_tile(pixel (*pixels)[TILE_X]) {
 	write_txttile(tile_file, pixels);
 	return TRUE;
 }

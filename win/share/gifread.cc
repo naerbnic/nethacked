@@ -184,7 +184,7 @@ static void read_header(FILE *fd) {
 		exit(EXIT_FAILURE);
 	}
 
-	if (strncmp((genericptr_t)buf,"GIF",3) != 0) {
+	if (strncmp((const char*)buf,"GIF",3) != 0) {
 		Fprintf(stderr, "not a GIF file\n");
 		exit(EXIT_FAILURE);
 	}

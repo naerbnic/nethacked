@@ -2,6 +2,8 @@
  * "P6 3-digit-width 3-digit-height 255\n"
  */
 
+#include <string.h>
+
 #include "config.h"
 #include "tile.h"
 
@@ -72,10 +74,7 @@ boolean fopen_ppm_file(const char *filename, const char *type) {
 	return TRUE;
 }
 
-boolean
-write_ppm_tile(pixels)
-pixel (*pixels)[TILE_X];
-{
+boolean write_ppm_tile(pixel (*pixels)[TILE_X]) {
 	int i, j;
 
 	for (j = 0; j < TILE_Y; j++) {
