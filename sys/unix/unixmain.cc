@@ -65,12 +65,12 @@ int main(int argc, char *argv[]) {
 		mac_exe = argv[0];
 	    mac_tmp_len = (strlen(mac_exe) * 2) + strlen(MAC_PATH_VALUE);
 	    if(mac_tmp_len <= arg0_len) {
-		mac_tmp = malloc(mac_tmp_len + 1);
+		mac_tmp = (char *)malloc(mac_tmp_len + 1);
 		sprintf(mac_tmp, "%s%s%s", mac_exe, MAC_PATH_VALUE, mac_exe);
 		if(!strcmp(argv[0] + (arg0_len - mac_tmp_len), mac_tmp)) {
 		    mac_lhs_len = (arg0_len - mac_tmp_len) + strlen(mac_exe) + 5;
 		    if(mac_lhs_len > mac_tmp_len - 1)
-			mac_tmp = realloc(mac_tmp, mac_lhs_len);
+			mac_tmp = (char *)realloc(mac_tmp, mac_lhs_len);
 		    strncpy(mac_tmp, argv[0], mac_lhs_len);
 		    mac_tmp[mac_lhs_len] = '\0';
 		    chdir(mac_tmp);

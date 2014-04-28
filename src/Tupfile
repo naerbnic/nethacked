@@ -1,10 +1,10 @@
 include_rules
 
-: | ../util/makedefs |> ../util/makedefs -m |> monstr.c
+: | ../util/makedefs |> ../util/makedefs -m ; mv monstr.c monstr.cc |> monstr.cc
 : | ../util/makedefs |> ../util/makedefs -z %o |> vis_tab.cc
 
 : foreach *.cc | ../include/pm.h ../include/onames.h ../include/date.h |> !cc |>
 : foreach *.c |> !cc |>
 
-#: *.o ../entitylib/monst.o ../entitylib/objects.o |> g++ -o %o %f |> nethacked
+: *.o ../entitylib/monst.o ../entitylib/objects.o ../sys/unix/unixmain.o |> g++ -o %o %f |> nethacked
 : alloc.o decl.o drawing.o |> ar rcs %o %f |> base.a
