@@ -7,4 +7,4 @@ include_rules
 : foreach *.c |> !cc |>
 
 #: *.o ../entitylib/monst.o ../entitylib/objects.o |> g++ -o %o %f |> nethacked
-: *.o |> ar rcs %o %f |> base.a
+: alloc.o decl.o drawing.o |> ar rcs %o %f |> base.a

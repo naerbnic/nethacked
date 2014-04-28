@@ -2,4 +2,5 @@ CCFLAGS += -I$(TUP_CWD)/include
 CCFLAGS += -std=c++11
 
 !cc = |> g++ $(CCFLAGS) -c %f -o %o |> %B.o
+
 .gitignore
