@@ -2,3 +2,4 @@ include_rules
 
 : makedefs.cc ../entitylib/objects.o ../entitylib/monst.o |> g++ $(CCFLAGS) %f -o %o |> makedefs
 
+: panic.cc |> !cc |>
