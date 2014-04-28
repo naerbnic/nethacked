@@ -9,6 +9,6 @@ include_rules
 : foreach dgn_yacc.cc dgn_lex.cc dgn_main.cc | dgn_yacc.hh ../include/pm.h ../include/onames.h ../include/date.h |> !cc |>
 : foreach lev_yacc.cc lev_lex.cc lev_main.cc | lev_yacc.hh ../include/pm.h ../include/onames.h ../include/date.h |> !cc |>
 
-: dgn_yacc.o dgn_lex.o dgn_main.o ../util/panic.o ../base/base.a |> g++ -o %o %f |> dgn_comp
+: dgn_yacc.o dgn_lex.o dgn_main.o ../util/panic.o ../src/base.a |> g++ -o %o %f |> dgn_comp
 
-: lev_yacc.o lev_lex.o lev_main.o ../util/panic.o ../base/base.a ../entitylib/monst.o ../entitylib/objects.o |> g++ -o %o %f |> lev_comp
+: lev_yacc.o lev_lex.o lev_main.o ../util/panic.o ../src/base.a ../entitylib/monst.o ../entitylib/objects.o |> g++ -o %o %f |> lev_comp

@@ -1,3 +1,0 @@
-Import(['env'])
-baselib = env.Library(target = 'base', source = ['alloc.cc', 'decl.cc'])
-Return('baselib')

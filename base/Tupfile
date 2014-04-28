@@ -1,5 +1,0 @@
-include_rules
-
-: foreach *.cc | ../include/pm.h ../include/onames.h |> !cc |>
-
-: *.o |> ar rcs %o %f |> base.a
