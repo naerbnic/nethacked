@@ -66,7 +66,7 @@ int main(int argc, char **argv) {
 			/* build output file name */
 			/* Use the whole name - strip off the last 3 or 4 chars. */
 
-			basename = infile.substr(len);
+			basename = infile.substr(0, len);
 
 			outfile.clear();
 			outfile.append(basename);
