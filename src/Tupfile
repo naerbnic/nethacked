@@ -1,7 +1,7 @@
 include_rules
 
 : ../util/makedefs |> ../util/makedefs -m |> monstr.c
-: ../util/makedefs |> ../util/makedefs -z %o |> vis_tab.c
+: ../util/makedefs |> ../util/makedefs -z %o |> vis_tab.cc
 
 : foreach *.cc | ../include/pm.h ../include/onames.h ../include/date.h |> !cc |>
 : foreach *.c |> !cc |>
