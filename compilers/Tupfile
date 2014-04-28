@@ -6,5 +6,7 @@ include_rules
 : lev_comp.l |> flex -o lev_lex.cc --header-file=lev_lex.h %f |> lev_lex.cc lev_lex.h
 : lev_comp.y |> bison -d -o lev_yacc.cc %f |> lev_yacc.cc lev_yacc.hh
 
-: foreach dgn_yacc.cc dgn_lex.cc | dgn_yacc.hh ../include/pm.h ../include/onames.h ../include/date.h |> !cc |>
-: foreach lev_yacc.cc lev_lex.cc | lev_yacc.hh ../include/pm.h ../include/onames.h ../include/date.h |> !cc |>
+: foreach dgn_yacc.cc dgn_lex.cc dgn_main.cc | dgn_yacc.hh ../include/pm.h ../include/onames.h ../include/date.h |> !cc |>
+: foreach lev_yacc.cc lev_lex.cc lev_main.cc | lev_yacc.hh ../include/pm.h ../include/onames.h ../include/date.h |> !cc |>
+
+#: dgn_yacc.o dgn_lex.o dgn_main.o ../util/panic.o
