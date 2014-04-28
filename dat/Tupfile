@@ -36,6 +36,6 @@ include_rules
 : Rogue.des |> !lev |> Rog-strt.lev Rog-loca.lev Rog-goal.lev Rog-fila.lev Rog-filb.lev
 : Samurai.des |> !lev |> Sam-strt.lev Sam-loca.lev Sam-goal.lev Sam-fila.lev Sam-filb.lev
 : Tourist.des |> !lev |> Tou-strt.lev Tou-loca.lev Tou-goal.lev Tou-fila.lev Tou-filb.lev
-: Valkyrie.des |> !lev |> Val-strt.lev Val-loca.lev Val-fila.lev Val-filb.lev
+: Valkyrie.des |> !lev |> Val-strt.lev Val-loca.lev Val-goal.lev Val-fila.lev Val-filb.lev
 : Wizard.des |> !lev |> Wiz-strt.lev Wiz-loca.lev Wiz-goal.lev Wiz-fila.lev Wiz-filb.lev
 
