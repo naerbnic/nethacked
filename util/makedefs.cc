@@ -227,9 +227,12 @@ void do_makedefs(string options, vector<string> const& args) {
   case 'M':
     do_monstr();
     break;
+  case 'u':
+  case 'U':
+    do_date();
+    break;
   case 'v':
   case 'V':
-    do_date();
     do_options();
     break;
   case 'p':

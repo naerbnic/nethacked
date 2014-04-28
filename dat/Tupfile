@@ -1,0 +1,7 @@
+include_rules
+
+: data.base ../util/makedefs |> ../util/makedefs -d |> data
+: rumors.tru rumors.fal ../util/makedefs |> ../util/makedefs -r |> rumors
+: quest.txt ../util/makedefs |> ../util/makedefs -q |> quest.dat
+: oracles.txt ../util/makedefs |> ../util/makedefs -h |> oracles
+: ../util/makedefs |> ../util/makedefs -v |> options
