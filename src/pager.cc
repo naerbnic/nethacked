@@ -437,6 +437,8 @@ bad_data_file:	impossible("'data' file in wrong format");
 #define LOOK_ONCE		2	/* ';' -- skip and stop looping */
 #define LOOK_VERBOSE		3	/* ':' -- show more info w/o asking */
 
+extern const char what_is_an_unknown_object[];
+
 /* also used by getpos hack in do_name.c */
 const char what_is_an_unknown_object[] = "an unknown object";
 
