@@ -3,6 +3,12 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 #include <curses.h>
+#include <term.h>
+
+// Undef some things that interfere with compilation
+#undef bell
+#undef hangup
+#undef clear_screen
 
 #include "hack.h"
 
@@ -535,15 +541,8 @@ void cmov(int x, int y) {
 }
 
 /* See note at OVLx ifdef above.   xputc() is a special function. */
-void
-xputc(c)
-#if defined(apollo)
-int c;
-#else
-char c;
-#endif
-{
-	(void) putchar(c);
+int xputc(int c) {
+	return putchar(c);
 }
 
 void xputs(const char *s) {
@@ -551,7 +550,7 @@ void xputs(const char *s) {
 	(void) fputs(s, stdout);
 # else
 #  if defined(NHSTDC) || defined(ULTRIX_PROTO)
-	tputs(s, 1, (int (*)())xputc);
+	tputs(s, 1, xputc);
 #  else
 	tputs(s, 1, xputc);
 #  endif
@@ -703,7 +702,7 @@ void tty_delay_output() {
 # ifdef TERMINFO
 		/* cbosgd!cbcephus!pds for SYS V R2 */
 #  ifdef NHSTDC
-		tputs("$<50>", 1, (int (*)())xputc);
+		tputs("$<50>", 1, xputc);
 #  else
 		tputs("$<50>", 1, xputc);
 #  endif
