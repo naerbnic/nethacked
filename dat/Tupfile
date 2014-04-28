@@ -24,3 +24,18 @@ include_rules
 : tower.des |> !lev |> tower1.lev tower2.lev tower3.lev
 : yendor.des |> !lev |> fakewiz1.lev fakewiz2.lev wizard1.lev wizard2.lev wizard3.lev
 
+# Quest Levels:
+: Arch.des |> !lev |> Arc-strt.lev Arc-loca.lev Arc-goal.lev Arc-fila.lev Arc-filb.lev
+: Barb.des |> !lev |> Bar-strt.lev Bar-loca.lev Bar-goal.lev Bar-fila.lev Bar-filb.lev
+: Caveman.des |> !lev |> Cav-strt.lev Cav-loca.lev Cav-goal.lev Cav-fila.lev Cav-filb.lev
+: Healer.des |> !lev |> Hea-strt.lev Hea-loca.lev Hea-goal.lev Hea-fila.lev Hea-filb.lev
+: Knight.des |> !lev |> Kni-strt.lev Kni-loca.lev Kni-goal.lev Kni-fila.lev Kni-filb.lev
+: Monk.des |> !lev |> Mon-strt.lev Mon-loca.lev Mon-goal.lev Mon-fila.lev Mon-filb.lev
+: Priest.des |> !lev |> Pri-strt.lev Pri-loca.lev Pri-goal.lev Pri-fila.lev Pri-filb.lev
+: Ranger.des |> !lev |> Ran-strt.lev Ran-loca.lev Ran-goal.lev Ran-fila.lev Ran-filb.lev
+: Rogue.des |> !lev |> Rog-strt.lev Rog-loca.lev Rog-goal.lev Rog-fila.lev Rog-filb.lev
+: Samurai.des |> !lev |> Sam-strt.lev Sam-loca.lev Sam-goal.lev Sam-fila.lev Sam-filb.lev
+: Tourist.des |> !lev |> Tou-strt.lev Tou-loca.lev Tou-goal.lev Tou-fila.lev Tou-filb.lev
+: Valkyrie.des |> !lev |> Val-strt.lev Val-loca.lev Val-fila.lev Val-filb.lev
+: Wizard.des |> !lev |> Wiz-strt.lev Wiz-loca.lev Wiz-goal.lev Wiz-fila.lev Wiz-filb.lev
+
