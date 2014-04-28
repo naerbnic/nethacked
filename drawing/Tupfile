@@ -1,3 +1,0 @@
-include_rules
-
-: *.cc | ../include/pm.h ../include/onames.h |> !cc |>

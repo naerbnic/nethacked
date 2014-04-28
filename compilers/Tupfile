@@ -11,4 +11,4 @@ include_rules
 
 : dgn_yacc.o dgn_lex.o dgn_main.o ../util/panic.o ../base/base.a |> g++ -o %o %f |> dgn_comp
 
-: lev_yacc.o lev_lex.o lev_main.o ../util/panic.o ../base/base.a ../entitylib/monst.o ../entitylib/objects.o ../drawing/drawing.o |> g++ -o %o %f |> lev_comp
+: lev_yacc.o lev_lex.o lev_main.o ../util/panic.o ../base/base.a ../entitylib/monst.o ../entitylib/objects.o |> g++ -o %o %f |> lev_comp
