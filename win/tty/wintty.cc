@@ -179,7 +179,7 @@ STATIC_OVL void bail(const char *mesg) {
 }
 
 #if defined(SIGWINCH) && defined(CLIPPING)
-STATIC_OVL void winch() {
+STATIC_OVL void winch(int ignored) {
     int oldLI = LI, oldCO = CO, i;
     struct WinDesc *cw;
 
@@ -328,11 +328,7 @@ void tty_player_selection() {
 		tty_clear_nhwindow(BASE_WINDOW);
 	    
 	    if (pick4u != 'y' && pick4u != 'n') {
-give_up:	/* Quit */
-		if (selected) free((genericptr_t) selected);
-		bail((char *)0);
-		/*NOTREACHED*/
-		return;
+              goto give_up;
 	    }
 	}
 
@@ -622,6 +618,11 @@ give_up:	/* Quit */
 	}
 	/* Success! */
 	tty_display_nhwindow(BASE_WINDOW, FALSE);
+give_up:	/* Quit */
+		if (selected) free((genericptr_t) selected);
+		bail((char *)0);
+		/*NOTREACHED*/
+		return;
 }
 
 /*
@@ -1543,12 +1544,9 @@ void tty_destroy_nhwindow(winid window) {
     wins[window] = 0;
 }
 
-void
-tty_curs(window, x, y)
-winid window;
-int x, y;	/* not xchar: perhaps xchar is unsigned and
+/* not xchar: perhaps xchar is unsigned and
 			   curx-x would be unsigned as well */
-{
+void tty_curs(winid window, int x, int y) {
     struct WinDesc *cw = 0;
     int cx = ttyDisplay->curx;
     int cy = ttyDisplay->cury;

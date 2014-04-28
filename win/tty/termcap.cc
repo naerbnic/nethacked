@@ -2,6 +2,8 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include <curses.h>
+
 #include "hack.h"
 
 #if defined (TTY_GRAPHICS) && !defined(NO_TERMS)

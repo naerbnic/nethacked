@@ -293,10 +293,6 @@ STATIC_OVL void removetopl(int n) {
 
 extern char erase_char;		/* from xxxtty.c; don't need kill_char */
 
-char
-tty_yn_function(query,resp, def)
-const char *query,*resp;
-char def;
 /*
  *   Generic yes/no function. 'def' is the default (returned by space or
  *   return; 'esc' returns 'q', or 'n', or the default, depending on
@@ -308,7 +304,7 @@ char def;
  *   are allowed); if it includes an <esc>, anything beyond that won't
  *   be shown in the prompt to the user but will be acceptable as input.
  */
-{
+char tty_yn_function(const char* query, const char* resp, char def) {
 	char q;
 	char rtmp[40];
 	boolean digit_ok, allow_num;
