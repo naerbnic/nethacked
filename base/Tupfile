@@ -1,2 +1,3 @@
 include_rules
-# : foreach *.cc |> !cc |>
+
+: foreach *.cc | ../include/pm.h ../include/onames.h |> !cc |>
