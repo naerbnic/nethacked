@@ -64,6 +64,7 @@ extern const char * const flash_types[];
 #else
 STATIC_VAR const char are_blinded_by_the_flash[] = "are blinded by the flash!";
 
+extern const char * const flash_types[];
 const char * const flash_types[] = {	/* also used in buzzmu(mcastu.c) */
 	"magic missile",	/* Wands must be 0-9 */
 	"bolt of fire",
@@ -3666,6 +3667,8 @@ boolean break_statue(struct Object *obj) {
 	fracture_rock(obj);
 	return TRUE;
 }
+
+extern const char * const destroy_strings[];
 
 const char * const destroy_strings[] = {	/* also used in trap.c */
 	"freezes and shatters", "freeze and shatter", "shattered potion",

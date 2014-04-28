@@ -9,6 +9,8 @@
 #include "hack.h"
 #include "eshk.h"
 
+extern const struct shclass shtypes[];
+
 #ifndef OVLB
 extern const struct shclass shtypes[];
 

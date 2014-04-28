@@ -1281,6 +1281,7 @@ void do_monstr() {
     }
     fputs(Dont_Edit_Code,ofp);
     Fprintf(ofp,"#include \"config.h\"\n");
+    Fprintf(ofp,"\nextern const int monstr[];\n");
     Fprintf(ofp,"\nconst int monstr[] = {\n");
     for (ptr = &mons[0], j = 0; ptr->mlet; ptr++) {
 
