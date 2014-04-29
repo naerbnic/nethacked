@@ -999,9 +999,6 @@ STATIC_OVL char * make_lockname(const char *filename, char *lockname) {
 
 /* lock a file */
 bool lock_file(const char *filename, int whichprefix, int retryct) {
-#if (defined(macintosh) && (defined(__SC__) || defined(__MRC__))) || defined(__MWERKS__)
-# pragma unused(filename, retryct)
-#endif
 	char locknambuf[BUFSZ];
 	const char *lockname;
 
