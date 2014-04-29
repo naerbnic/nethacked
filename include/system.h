@@ -7,6 +7,6 @@
 
 #include <unistd.h>
 
-#define SIG_RET_TYPE void (*)(int)
+typedef void (*SIG_RET_TYPE)(int);
 
 #endif /* SYSTEM_H */
