@@ -1109,12 +1109,12 @@ static const char removeables[] =
 /* If combo is TRUE, we just use this to get a category list */
 int ggetobj(
     char const* word, 
-    int (*fn)(OBJ_P),
+    int (*fn)(Object*),
     int mx, 
     bool combo, /* combination menu flag */
     unsigned int* resultflags) {
-	int FDECL((*ckfn),(OBJ_P)) = (int FDECL((*),(OBJ_P))) 0;
-	bool FDECL((*filter),(OBJ_P)) = (bool FDECL((*),(OBJ_P))) 0;
+	int FDECL((*ckfn),(Object*)) = (int FDECL((*),(Object*))) 0;
+	bool FDECL((*filter),(Object*)) = (bool FDECL((*),(Object*))) 0;
 	bool takeoff, ident, allflag, m_seen;
 	int itemcount;
 #ifndef GOLDOBJ
@@ -1305,8 +1305,8 @@ askchain(
     struct Object** objchn, 
     char const* olets, /* olets is an Obj Class char array */
     int allflag, 
-    int (*fn)(OBJ_P),
-    int (*ckfn)(OBJ_P),
+    int (*fn)(Object*),
+    int (*ckfn)(Object*),
     int mx,
     char const* word) {
 	struct Object *otmp, *otmp2, *otmpo;
@@ -2037,7 +2037,7 @@ int dotypeinv() {
 #ifndef GOLDOBJ
 					      (u.ugold != 0),
 #endif
-					      (bool FDECL((*),(OBJ_P))) 0, &itemcount);
+					      (bool FDECL((*),(Object*))) 0, &itemcount);
 	    if (unpaid_count) {
 		strcat(types, "u");
 		class_count++;

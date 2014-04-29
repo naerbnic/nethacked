@@ -1643,7 +1643,7 @@ smell:
 /* returns nonzero if something was hit */
 int bhitpile(
     struct Object* obj,
-    int (*fhito)(OBJ_P, OBJ_P),
+    int (*fhito)(Object*, Object*),
     int tx, int ty) {
     int hitanything = 0;
     struct Object *otmp, *next_obj;
@@ -2508,8 +2508,8 @@ struct Monster * bhit(
     int weapon,
     
     /* fns called when mon/obj hit */
-    int (*fhitm)(MONST_P, OBJ_P),
-    int (*fhito)(OBJ_P, OBJ_P),
+    int (*fhitm)(MONST_P, Object*),
+    int (*fhito)(Object*, Object*),
 
     /* object tossed/used */
     struct Object* obj,

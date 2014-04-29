@@ -28,8 +28,8 @@ STATIC_DCL void FDECL(mreadmsg, (struct Monster *,struct Object *));
 STATIC_DCL void FDECL(mquaffmsg, (struct Monster *,struct Object *));
 STATIC_PTR int FDECL(mbhitm, (struct Monster *,struct Object *));
 STATIC_DCL void FDECL(mbhit,
-	(struct Monster *,int,int FDECL((*),(MONST_P,OBJ_P)),
-	int FDECL((*),(OBJ_P,OBJ_P)),struct Object *));
+	(struct Monster *,int,int FDECL((*),(MONST_P,Object*)),
+	int FDECL((*),(Object*,Object*)),struct Object *));
 STATIC_DCL void FDECL(you_aggravate, (struct Monster *));
 STATIC_DCL void FDECL(mon_consume_unstone, (struct Monster *,struct Object *,
 	bool,bool));
@@ -1148,8 +1148,8 @@ STATIC_OVL void mbhit(
     int range,
 
     /* fns called when mon/obj hit */
-    int (*fhitm)(MONST_P, OBJ_P),
-    int (*fhito)(OBJ_P, OBJ_P),
+    int (*fhitm)(MONST_P, Object*),
+    int (*fhito)(Object*, Object*),
 
     /* 2nd arg to fhitm/fhito */
     struct Object* obj) {

@@ -91,14 +91,14 @@ int collect_obj_classes(
     struct Object* otmp, 
     bool here, 
     bool incl_gold, 
-    bool (*filter)(OBJ_P),
+    bool (*filter)(Object*),
     int* itemcount)
 #else
 int collect_obj_classes(
     char ilets[],
     struct Object* otmp, 
     bool here, 
-    bool (*filter)(OBJ_P),
+    bool (*filter)(Object*),
     int* itemcount)
 #endif
 {
@@ -168,7 +168,7 @@ STATIC_OVL bool query_classes(
 #ifndef GOLDOBJ
 				     incl_gold,
 #endif
-				     (bool FDECL((*),(OBJ_P))) 0, &itemcount);
+				     (bool FDECL((*),(Object*))) 0, &itemcount);
 	if (iletct == 0) {
 		return FALSE;
 	} else if (iletct == 1) {
@@ -654,7 +654,7 @@ query_objlist(
     /* type of query */
     int how,
     /* allow function */
-    bool (*allow)(OBJ_P)) {
+    bool (*allow)(Object*)) {
 #ifdef SORTLOOT
 	int i, j;
 #endif
@@ -2119,7 +2119,7 @@ ask_again2:
 			if (askchain((struct Object **)&current_container->cobj,
 				     (one_by_one ? (char *)0 : select),
 				     allflag, out_container,
-				     (int FDECL((*),(OBJ_P)))0,
+				     (int FDECL((*),(Object*)))0,
 				     0, "nodot"))
 			    used = 1;
 		    } else if (menu_on_request < 0) {

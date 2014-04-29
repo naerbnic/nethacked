@@ -798,12 +798,12 @@ E bool FDECL(is_worn, (struct Object *));
 E struct Object *FDECL(g_at, (int,int));
 E struct Object *FDECL(mkgoldobj, (long));
 E struct Object *FDECL(getobj, (const char *,const char *));
-E int FDECL(ggetobj, (const char *,int (*)(OBJ_P),int,bool,unsigned *));
+E int FDECL(ggetobj, (const char *,int (*)(Object*),int,bool,unsigned *));
 E void FDECL(fully_identify_obj, (struct Object *));
 E int FDECL(identify, (struct Object *));
 E void FDECL(identify_pack, (int));
-E int FDECL(askchain, (struct Object **,const char *,int,int (*)(OBJ_P),
-			int (*)(OBJ_P),int,const char *));
+E int FDECL(askchain, (struct Object **,const char *,int,int (*)(Object*),
+			int (*)(Object*),int,const char *));
 E void FDECL(prinv, (const char *,struct Object *,long));
 E char *FDECL(xprname, (struct Object *,const char *,CHAR_P,bool,long,long));
 E int NDECL(ddoinv);
@@ -1366,7 +1366,7 @@ E void NDECL(objects_init);
 E char *FDECL(obj_typename, (int));
 E char *FDECL(simple_typename, (int));
 E bool FDECL(obj_is_pname, (struct Object *));
-E char *FDECL(distant_name, (struct Object *,char *(*)(OBJ_P)));
+E char *FDECL(distant_name, (struct Object *,char *(*)(Object*)));
 E char *FDECL(fruitname, (bool));
 E char *FDECL(xname, (struct Object *));
 E char *FDECL(mshot_xname, (struct Object *));
@@ -1379,7 +1379,7 @@ E char *FDECL(cxname, (struct Object *));
 E char *FDECL(cxname2, (struct Object *));
 #endif
 E char *FDECL(killer_xname, (struct Object *));
-E const char *FDECL(singular, (struct Object *,char *(*)(OBJ_P)));
+E const char *FDECL(singular, (struct Object *,char *(*)(Object*)));
 E char *FDECL(an, (const char *));
 E char *FDECL(An, (const char *));
 E char *FDECL(The, (const char *));
@@ -1490,10 +1490,10 @@ E void NDECL(getlock);
 
 #ifdef GOLDOBJ
 E int FDECL(collect_obj_classes,
-	(char *,struct Object *,bool,bool FDECL((*),(OBJ_P)), int *));
+	(char *,struct Object *,bool,bool FDECL((*),(Object*)), int *));
 #else
 E int FDECL(collect_obj_classes,
-	(char *,struct Object *,bool,bool,bool FDECL((*),(OBJ_P)), int *));
+	(char *,struct Object *,bool,bool,bool FDECL((*),(Object*)), int *));
 #endif
 E void FDECL(add_valid_menu_class, (int));
 E bool FDECL(allow_all, (struct Object *));
@@ -1509,7 +1509,7 @@ E int FDECL(pickup_object, (struct Object *, long, bool));
 E int FDECL(query_category, (const char *, struct Object *, int,
 				menu_item **, int));
 E int FDECL(query_objlist, (const char *, struct Object *, int,
-				menu_item **, int, bool (*)(OBJ_P)));
+				menu_item **, int, bool (*)(Object*)));
 E struct Object *FDECL(pick_obj, (struct Object *));
 E int NDECL(encumber_msg);
 E int NDECL(doloot);
@@ -2367,7 +2367,7 @@ E bool FDECL(obj_resists, (struct Object *,int,int));
 E bool FDECL(obj_shudders, (struct Object *));
 E void FDECL(do_osshock, (struct Object *));
 E int FDECL(bhito, (struct Object *,struct Object *));
-E int FDECL(bhitpile, (struct Object *,int (*)(OBJ_P,OBJ_P),int,int));
+E int FDECL(bhitpile, (struct Object *,int (*)(Object*,Object*),int,int));
 E int FDECL(zappable, (struct Object *));
 E void FDECL(zapnodir, (struct Object *));
 E int NDECL(dozap);
@@ -2379,8 +2379,8 @@ E int NDECL(spell_damage_bonus);
 E const char *FDECL(exclam, (int force));
 E void FDECL(hit, (const char *,struct Monster *,const char *));
 E void FDECL(miss, (const char *,struct Monster *));
-E struct Monster *FDECL(bhit, (int,int,int,int,int (*)(MONST_P,OBJ_P),
-			     int (*)(OBJ_P,OBJ_P),struct Object *, bool *));
+E struct Monster *FDECL(bhit, (int,int,int,int,int (*)(MONST_P,Object*),
+			     int (*)(Object*,Object*),struct Object *, bool *));
 E struct Monster *FDECL(boomhit, (int,int));
 E int FDECL(burn_floor_paper, (int,int,bool,bool));
 E void FDECL(buzz, (int,int,XCHAR_P,XCHAR_P,int,int));

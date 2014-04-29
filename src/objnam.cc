@@ -185,7 +185,7 @@ bool obj_is_pname(struct Object *obj) {
  * frequently used, it'd probably be better to pass a parameter to xname()
  * or doname() instead.
  */
-char * distant_name(struct Object* obj, char* (*func)(OBJ_P)) {
+char * distant_name(struct Object* obj, char* (*func)(Object*)) {
 	char *str;
 
 	long save_Blinded = Blinded;
@@ -871,7 +871,7 @@ char * killer_xname(struct Object *obj) {
  * Used if only one of a collection of objects is named (e.g. in eat.c).
  */
 const char *
-singular(struct Object* otmp, char* (*func)(OBJ_P)) {
+singular(struct Object* otmp, char* (*func)(Object*)) {
 	long savequan;
 	char *nam;
 

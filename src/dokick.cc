@@ -536,8 +536,8 @@ STATIC_OVL int kick_object(xchar x, xchar y) {
 	(void) snuff_candle(kickobj);
 	newsym(x, y);
 	mon = bhit(u.dx, u.dy, range, KICKED_WEAPON,
-		   (int FDECL((*),(MONST_P,OBJ_P)))0,
-		   (int FDECL((*),(OBJ_P,OBJ_P)))0,
+		   (int FDECL((*),(MONST_P,Object*)))0,
+		   (int FDECL((*),(Object*,Object*)))0,
 		   kickobj, NULL);
 
 	if(mon) {
