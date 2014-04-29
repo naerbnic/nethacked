@@ -28,7 +28,7 @@ STATIC_DCL void FDECL(polyuse, (struct Object*, int, int));
 STATIC_DCL void FDECL(create_polymon, (struct Object *, int));
 STATIC_DCL bool FDECL(zap_updown, (struct Object *));
 STATIC_DCL int FDECL(zhitm, (struct Monster *,int,int,struct Object **));
-STATIC_DCL void FDECL(zhitu, (int,int,const char *,XCHAR_P,XCHAR_P));
+STATIC_DCL void FDECL(zhitu, (int,int,const char *,xchar,xchar));
 STATIC_DCL void FDECL(revive_egg, (struct Object *));
 #ifdef STEED
 STATIC_DCL bool FDECL(zap_steed, (struct Object *));

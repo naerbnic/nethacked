@@ -43,7 +43,7 @@ static void FDECL(Fread, (genericptr_t, int, int, dlb *));
 STATIC_DCL xchar FDECL(dname_to_dnum, (const char *));
 STATIC_DCL int FDECL(find_branch, (const char *, struct proto_dungeon *));
 STATIC_DCL xchar FDECL(parent_dnum, (const char *, struct proto_dungeon *));
-STATIC_DCL int FDECL(level_range, (XCHAR_P,int,int,int,struct proto_dungeon *,int *));
+STATIC_DCL int FDECL(level_range, (xchar,int,int,int,struct proto_dungeon *,int *));
 STATIC_DCL xchar FDECL(parent_dlevel, (const char *, struct proto_dungeon *));
 STATIC_DCL int FDECL(correct_branch_type, (struct tmpbranch *));
 STATIC_DCL branch *FDECL(add_branch, (int, int, struct proto_dungeon *));

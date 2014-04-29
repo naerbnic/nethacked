@@ -24,8 +24,8 @@ STATIC_DCL int FDECL(try_lift, (struct Monster *, struct trap *, int, bool));
 STATIC_DCL int FDECL(help_monster_out, (struct Monster *, struct trap *));
 STATIC_DCL bool FDECL(thitm, (int,struct Monster *,struct Object *,int,bool));
 STATIC_DCL int FDECL(mkroll_launch,
-			(struct trap *,XCHAR_P,XCHAR_P,SHORT_P,long));
-STATIC_DCL bool FDECL(isclearpath,(coord *, int, SCHAR_P, SCHAR_P));
+			(struct trap *,xchar,xchar,short,long));
+STATIC_DCL bool FDECL(isclearpath,(coord *, int, schar, schar));
 #ifdef STEED
 STATIC_OVL int FDECL(steedintrap, (struct trap *, struct Object *));
 STATIC_OVL bool FDECL(keep_saddle_with_steedcorpse,

@@ -127,7 +127,7 @@ STATIC_PTR int NDECL(wiz_mon_polycontrol);
 STATIC_PTR int NDECL(wiz_show_wmodes);
 STATIC_PTR int NDECL(wiz_showkills);	/* showborn patch */
 #ifdef SHOW_BORN
-extern void FDECL(list_vanquished, (CHAR_P, bool)); /* showborn patch */
+extern void FDECL(list_vanquished, (char, bool)); /* showborn patch */
 #endif /* SHOW_BORN */
 #if defined(__BORLANDC__) && !defined(_WIN32)
 extern void FDECL(show_borlandc_stats, (winid));
@@ -159,7 +159,7 @@ static void NDECL(end_of_input);
 static const char* readchar_queue="";
 
 STATIC_DCL char *NDECL(parse);
-STATIC_DCL bool FDECL(help_dir, (CHAR_P,const char *));
+STATIC_DCL bool FDECL(help_dir, (char,const char *));
 
 #ifdef OVL1
 

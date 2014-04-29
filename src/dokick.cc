@@ -17,11 +17,11 @@ static const char *gate_str;
 extern bool notonhead;	/* for long worms */
 
 STATIC_DCL void FDECL(kickdmg, (struct Monster *, bool));
-STATIC_DCL void FDECL(kick_monster, (XCHAR_P, XCHAR_P));
-STATIC_DCL int FDECL(kick_object, (XCHAR_P, XCHAR_P));
+STATIC_DCL void FDECL(kick_monster, (xchar, xchar));
+STATIC_DCL int FDECL(kick_object, (xchar, xchar));
 STATIC_DCL char *FDECL(kickstr, (char *));
 STATIC_DCL void FDECL(otransit_msg, (struct Object *, bool, long));
-STATIC_DCL void FDECL(drop_to, (coord *,SCHAR_P));
+STATIC_DCL void FDECL(drop_to, (coord *,schar));
 
 static struct Object *kickobj;
 

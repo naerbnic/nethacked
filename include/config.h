@@ -143,7 +143,7 @@ typedef std::int8_t	schar;
  *	typedef unsigned short int uchar;
  */
 #ifndef _AIX32		/* identical typedef in system file causes trouble */
-typedef unsigned char	uchar;
+typedef std::uint8_t	uchar;
 #endif
 
 /*

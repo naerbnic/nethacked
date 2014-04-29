@@ -10,7 +10,7 @@
 STATIC_DCL void NDECL(maybe_wail);
 #endif /*OVL1*/
 STATIC_DCL int NDECL(moverock);
-STATIC_DCL int FDECL(still_chewing,(XCHAR_P,XCHAR_P));
+STATIC_DCL int FDECL(still_chewing,(xchar,xchar));
 #ifdef SINKS
 STATIC_DCL void NDECL(dosinkfall);
 #endif

@@ -1229,11 +1229,11 @@ void do_storms() {
  */
 
 #ifdef WIZARD
-STATIC_DCL const char *FDECL(kind_name, (SHORT_P));
+STATIC_DCL const char *FDECL(kind_name, (short));
 STATIC_DCL void FDECL(print_queue, (winid, TimerElement *));
 #endif
 STATIC_DCL void FDECL(insert_timer, (TimerElement *));
-STATIC_DCL TimerElement *FDECL(remove_timer, (TimerElement **, SHORT_P,
+STATIC_DCL TimerElement *FDECL(remove_timer, (TimerElement **, short,
 								genericptr_t));
 STATIC_DCL void FDECL(write_timer, (int, TimerElement *));
 STATIC_DCL bool FDECL(mon_is_local, (struct Monster *));

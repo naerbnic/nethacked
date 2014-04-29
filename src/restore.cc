@@ -30,7 +30,7 @@ STATIC_DCL void FDECL(freefruitchn, (struct fruit *));
 STATIC_DCL void FDECL(ghostfruit, (struct Object *));
 STATIC_DCL bool FDECL(restgamestate, (int, unsigned int *, unsigned int *));
 STATIC_DCL void FDECL(restlevelstate, (unsigned int, unsigned int));
-STATIC_DCL int FDECL(restlevelfile, (int,XCHAR_P));
+STATIC_DCL int FDECL(restlevelfile, (int,xchar));
 STATIC_DCL void FDECL(reset_oattached_mids, (bool));
 
 /*

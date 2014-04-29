@@ -22,7 +22,7 @@ static struct Object *book;	/* last/current book being xscribed */
 #define spellet(spell)	\
 	((char)((spell < 26) ? ('a' + spell) : ('A' + spell - 26)))
 
-STATIC_DCL int FDECL(spell_let_to_idx, (CHAR_P));
+STATIC_DCL int FDECL(spell_let_to_idx, (char));
 STATIC_DCL bool FDECL(cursed_book, (struct Object *bp));
 STATIC_DCL bool FDECL(confused_book, (struct Object *));
 STATIC_DCL void FDECL(deadbook, (struct Object *));

@@ -68,11 +68,6 @@ typedef schar	xchar;
 #define Bitfield(x,n)	uchar x
 #endif
 
-#define CHAR_P char
-#define SCHAR_P schar
-#define UCHAR_P uchar
-#define XCHAR_P xchar
-#define SHORT_P short
 #define ALIGNTYP_P aligntyp
 
 #define SIZE(x) (int)(sizeof(x) / sizeof(x[0]))

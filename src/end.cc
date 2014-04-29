@@ -39,7 +39,7 @@ STATIC_DCL void FDECL(get_valuables, (struct Object *));
 STATIC_DCL void FDECL(sort_valuables, (struct valuable_data *,int));
 STATIC_DCL void FDECL(artifact_score, (struct Object *,bool,winid));
 STATIC_DCL void FDECL(savelife, (int));
-void FDECL(list_vanquished, (CHAR_P,bool));
+void FDECL(list_vanquished, (char,bool));
 #ifdef DUMP_LOG
 extern char msgs[][BUFSZ];
 extern int lastmsg;
@@ -47,7 +47,7 @@ extern void NDECL(dump_spells);
 void FDECL(do_vanquished, (int, bool, bool));
 STATIC_DCL void FDECL(list_genocided, (int, bool, bool));
 #else
-STATIC_DCL void FDECL(list_genocided, (CHAR_P,bool));
+STATIC_DCL void FDECL(list_genocided, (char,bool));
 #endif /* DUMP_LOG */
 STATIC_DCL bool FDECL(should_query_disclose_option, (int,char *));
 

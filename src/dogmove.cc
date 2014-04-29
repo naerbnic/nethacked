@@ -18,9 +18,9 @@ STATIC_DCL int FDECL(dog_invent,(struct Monster *,struct edog *,int));
 STATIC_DCL int FDECL(dog_goal,(struct Monster *,struct edog *,int,int,int));
 
 STATIC_DCL struct Object *FDECL(DROPPABLES, (struct Monster *));
-STATIC_DCL bool FDECL(can_reach_location,(struct Monster *,XCHAR_P,XCHAR_P,
-    XCHAR_P,XCHAR_P));
-STATIC_DCL bool FDECL(could_reach_item,(struct Monster *, XCHAR_P,XCHAR_P));
+STATIC_DCL bool FDECL(can_reach_location,(struct Monster *,xchar,xchar,
+    xchar,xchar));
+STATIC_DCL bool FDECL(could_reach_item,(struct Monster *, xchar,xchar));
 
 STATIC_OVL struct Object * DROPPABLES(struct Monster *mon) {
 	struct Object *obj;

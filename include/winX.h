@@ -376,7 +376,7 @@ E void FDECL(X11_putstr, (winid, int, const char *));
 E void FDECL(X11_display_file, (const char *, bool));
 E void FDECL(X11_start_menu, (winid));
 E void FDECL(X11_add_menu, (winid,int,const ANY_P *,
-			CHAR_P, CHAR_P, int, const char *, bool));
+			char, char, int, const char *, bool));
 E void FDECL(X11_end_menu, (winid, const char *));
 E int FDECL(X11_select_menu, (winid, int, MENU_ITEM_P **));
 E void NDECL(X11_update_inventory);
@@ -385,14 +385,14 @@ E void NDECL(X11_wait_synch);
 #ifdef CLIPPING
 E void FDECL(X11_cliparound, (int, int));
 #endif
-E void FDECL(X11_print_glyph, (winid,XCHAR_P,XCHAR_P,int));
+E void FDECL(X11_print_glyph, (winid,xchar,xchar,int));
 E void FDECL(X11_raw_print, (const char *));
 E void FDECL(X11_raw_print_bold, (const char *));
 E int NDECL(X11_nhgetch);
 E int FDECL(X11_nh_poskey, (int *, int *, int *));
 E void NDECL(X11_nhbell);
 E int NDECL(X11_doprev_message);
-E char FDECL(X11_yn_function, (const char *, const char *, CHAR_P));
+E char FDECL(X11_yn_function, (const char *, const char *, char));
 E void FDECL(X11_getlin, (const char *,char *));
 E int NDECL(X11_get_ext_cmd);
 E void FDECL(X11_number_pad, (int));

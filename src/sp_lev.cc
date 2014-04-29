@@ -40,12 +40,12 @@ STATIC_DCL void FDECL(create_altar, (altar *, struct mkroom *));
 STATIC_DCL void FDECL(create_gold, (gold *, struct mkroom *));
 STATIC_DCL void FDECL(create_feature, (int,int,struct mkroom *,int));
 STATIC_DCL bool FDECL(search_door, (struct mkroom *, xchar *, xchar *,
-					XCHAR_P, int));
+					xchar, int));
 STATIC_DCL void NDECL(fix_stair_rooms);
 STATIC_DCL void FDECL(create_corridor, (corridor *));
 
-STATIC_DCL bool FDECL(create_subroom, (struct mkroom *, XCHAR_P, XCHAR_P,
-					XCHAR_P, XCHAR_P, XCHAR_P, XCHAR_P));
+STATIC_DCL bool FDECL(create_subroom, (struct mkroom *, xchar, xchar,
+					xchar, xchar, xchar, xchar));
 
 #define LEFT	1
 #define H_LEFT	2
@@ -76,7 +76,7 @@ static aligntyp	ralign[3] = { AM_CHAOTIC, AM_NEUTRAL, AM_LAWFUL };
 static xchar xstart, ystart;
 static char xsize, ysize;
 
-STATIC_DCL void FDECL(set_wall_property, (XCHAR_P,XCHAR_P,XCHAR_P,XCHAR_P,int));
+STATIC_DCL void FDECL(set_wall_property, (xchar,xchar,xchar,xchar,int));
 STATIC_DCL int NDECL(rnddoor);
 STATIC_DCL int NDECL(rndtrap);
 STATIC_DCL void FDECL(get_location, (schar *,schar *,int));
@@ -159,7 +159,7 @@ STATIC_OVL int rndtrap() {
 #define DRY	0x1
 #define WET	0x2
 
-STATIC_DCL bool FDECL(is_ok_location, (SCHAR_P, SCHAR_P, int));
+STATIC_DCL bool FDECL(is_ok_location, (schar, schar, int));
 
 STATIC_OVL void get_location(schar *x, schar *y, int humidity) {
 	int cpt = 0;

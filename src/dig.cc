@@ -13,9 +13,9 @@
 static bool did_dig_msg;
 
 STATIC_DCL bool NDECL(rm_waslit);
-STATIC_DCL void FDECL(mkcavepos, (XCHAR_P,XCHAR_P,int,bool,bool));
+STATIC_DCL void FDECL(mkcavepos, (xchar,xchar,int,bool,bool));
 STATIC_DCL void FDECL(mkcavearea, (bool));
-STATIC_DCL int FDECL(dig_typ, (struct Object *,XCHAR_P,XCHAR_P));
+STATIC_DCL int FDECL(dig_typ, (struct Object *,xchar,xchar));
 STATIC_DCL int NDECL(dig);
 STATIC_DCL schar FDECL(fillholetyp, (int, int));
 STATIC_DCL void NDECL(dig_up_grave);

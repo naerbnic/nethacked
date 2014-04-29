@@ -8,7 +8,7 @@
 #include "prop.h"
 
 STATIC_DCL void FDECL(mkbox_cnts,(struct Object *));
-STATIC_DCL void FDECL(obj_timer_checks,(struct Object *, XCHAR_P, XCHAR_P, int));
+STATIC_DCL void FDECL(obj_timer_checks,(struct Object *, xchar, xchar, int));
 #ifdef OVL1
 STATIC_DCL void FDECL(container_weight, (struct Object *));
 STATIC_DCL struct Object *FDECL(save_mtraits, (struct Object *, struct Monster *));

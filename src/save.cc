@@ -32,7 +32,7 @@ STATIC_DCL void FDECL(savemonchn, (int,struct Monster *,int));
 STATIC_DCL void FDECL(savetrapchn, (int,struct trap *,int));
 STATIC_DCL void FDECL(savegamestate, (int,int));
 #ifdef MFLOPPY
-STATIC_DCL void FDECL(savelev0, (int,XCHAR_P,int));
+STATIC_DCL void FDECL(savelev0, (int,xchar,int));
 STATIC_DCL bool NDECL(swapout_oldest);
 STATIC_DCL void FDECL(copyfile, (char *,char *));
 #endif /* MFLOPPY */

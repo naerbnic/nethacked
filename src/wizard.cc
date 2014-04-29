@@ -16,9 +16,9 @@ extern const int monstr[];
 #ifdef OVLB
 
 STATIC_DCL short FDECL(which_arti, (int));
-STATIC_DCL bool FDECL(mon_has_arti, (struct Monster *,SHORT_P));
-STATIC_DCL struct Monster *FDECL(other_mon_has_arti, (struct Monster *,SHORT_P));
-STATIC_DCL struct Object *FDECL(on_ground, (SHORT_P));
+STATIC_DCL bool FDECL(mon_has_arti, (struct Monster *,short));
+STATIC_DCL struct Monster *FDECL(other_mon_has_arti, (struct Monster *,short));
+STATIC_DCL struct Object *FDECL(on_ground, (short));
 STATIC_DCL bool FDECL(you_have, (int));
 STATIC_DCL long FDECL(target_on, (int,struct Monster *));
 STATIC_DCL long FDECL(strategy, (struct Monster *));
