@@ -162,14 +162,14 @@ constexpr int PL_FSIZ	= 32;	/* fruit name */
 constexpr int PL_PSIZ	= 63;	/* player-given names for pets, other
 				 * monsters, objects */
 
-#define MAXDUNGEON	16	/* current maximum number of dungeons */
-#define MAXLEVEL	32	/* max number of levels in one dungeon */
-#define MAXSTAIRS	1	/* max # of special stairways in a dungeon */
-#define ALIGNWEIGHT	4	/* generation weight of alignment */
+constexpr int MAXDUNGEON = 16;	/* current maximum number of dungeons */
+constexpr int MAXLEVEL = 32;	/* max number of levels in one dungeon */
+constexpr int MAXSTAIRS = 1;	/* max # of special stairways in a dungeon */
+constexpr int ALIGNWEIGHT = 4;	/* generation weight of alignment */
 
-#define MAXULEV		30	/* max character experience level */
+constexpr int MAXULEV	= 30;	/* max character experience level */
 
-#define MAXMONNO	120	/* extinct monst after this number created */
-#define MHPMAX		500	/* maximum monster hp */
+constexpr int MAXMONNO = 120;	/* extinct monst after this number created */
+constexpr int MHPMAX = 500;	/* maximum monster hp */
 
 #endif /* GLOBAL_H */
