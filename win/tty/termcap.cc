@@ -549,11 +549,7 @@ void xputs(const char *s) {
 # ifndef TERMLIB
 	(void) fputs(s, stdout);
 # else
-#  if defined(NHSTDC) || defined(ULTRIX_PROTO)
 	tputs(s, 1, xputc);
-#  else
-	tputs(s, 1, xputc);
-#  endif
 # endif
 }
 
@@ -701,17 +697,9 @@ void tty_delay_output() {
 	if(flags.null)
 # ifdef TERMINFO
 		/* cbosgd!cbcephus!pds for SYS V R2 */
-#  ifdef NHSTDC
 		tputs("$<50>", 1, xputc);
-#  else
-		tputs("$<50>", 1, xputc);
-#  endif
 # else
-#  if defined(NHSTDC) || defined(ULTRIX_PROTO)
 		tputs("50", 1, (int (*)())xputc);
-#  else
-		tputs("50", 1, xputc);
-#  endif
 # endif
 
 	else if(ospeed > 0 && ospeed < SIZE(tmspc10) && nh_CM) {

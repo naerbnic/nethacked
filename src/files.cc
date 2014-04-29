@@ -18,109 +18,27 @@
 #endif
 
 #include <errno.h>
-#ifdef _MSC_VER	/* MSC 6.0 defines errno quite differently */
-# if (_MSC_VER >= 600)
-#  define SKIP_ERRNO
-# endif
-#else
-# ifdef NHSTDC
-#  define SKIP_ERRNO
-# endif
-#endif
-#ifndef SKIP_ERRNO
-# ifdef _DCC
-const
-# endif
-extern int errno;
-#endif
-
-#if defined(QT_GRAPHICS)
-#include <dirent.h>
-#endif
+#define SKIP_ERRNO
 
 #include <signal.h>
 
-#if defined(OS2) || defined(TOS) || defined(WIN32)
-# ifndef GNUDOS
-#include <sys\stat.h>
-# else
-#include <sys/stat.h>
-# endif
-#endif
 #ifndef O_BINARY	/* used for micros, no-op for others */
 # define O_BINARY 0
 #endif
 
-#ifdef PREFIXES_IN_USE
-#define FQN_NUMBUF 4
-static char fqn_filename_buffer[FQN_NUMBUF][FQN_MAX_FILENAME];
-#endif
 
-#if !defined(MFLOPPY) && !defined(VMS) && !defined(WIN32)
 char bones[] = "bonesnn.xxx";
 char lock[PL_NSIZ+14] = "1lock"; /* long enough for uid+name+.99 */
-#else
-# if defined(MFLOPPY)
-char bones[FILENAME];		/* pathname of bones files */
-char lock[FILENAME];		/* pathname of level files */
-# endif
-# if defined(VMS)
-char bones[] = "bonesnn.xxx;1";
-char lock[PL_NSIZ+17] = "1lock"; /* long enough for _uid+name+.99;1 */
-# endif
-# if defined(WIN32)
-char bones[] = "bonesnn.xxx";
-char lock[PL_NSIZ+25];		/* long enough for username+-+name+.99 */
-# endif
-#endif
 
 #define SAVESIZE	(PL_NSIZ + 13)	/* save/99999player.e */
 
 char SAVEF[SAVESIZE];	/* holds relative path of save file from playground */
-#ifdef MICRO
-char SAVEP[SAVESIZE];	/* holds path of directory for save file */
-#endif
 
-#ifdef HOLD_LOCKFILE_OPEN
-struct level_ftrack {
-int init;
-int fd;					/* file descriptor for level file     */
-int oflag;				/* open flags                         */
-bool nethack_thinks_it_is_open;	/* Does NetHack think it's open?       */
-} lftrack;
-# if defined(WIN32)
-#include <share.h>
-# endif
-#endif /*HOLD_LOCKFILE_OPEN*/
 
 #ifdef WIZARD
 #define WIZKIT_MAX 128
 static char wizkit[WIZKIT_MAX];
 STATIC_DCL FILE *NDECL(fopen_wizkit_file);
-#endif
-
-#ifdef AMIGA
-extern char PATH[];	/* see sys/amiga/amidos.c */
-extern char bbs_id[];
-static int lockptr;
-# ifdef __SASC_60
-#include <proto/dos.h>
-# endif
-
-#include <libraries/dos.h>
-extern void FDECL(amii_set_text_font, ( char *, int ));
-#endif
-
-#if defined(WIN32)
-static int lockptr;
-#define Close close
-#ifndef WIN_CE
-#define DeleteFile unlink
-#endif
-#endif
-
-#ifdef USER_SOUNDS
-extern char *sounddir;
 #endif
 
 extern int n_dgns;		/* from dungeon.c */
@@ -291,9 +209,7 @@ int validate_prefix_locations(char *reasonbuf) {
 			}
 			/* the paniclog entry gets the value of errno as well */
 			sprintf(panicbuf1,"Invalid %s", fqn_prefix_names[prefcnt]);
-#if defined (NHSTDC) && !defined(NOTSTDC)
 			if (!(details = strerror(errno)))
-#endif
 			details = "";
 			sprintf(panicbuf2,"\"%s\", (%d) %s",
 				fqn_prefix[prefcnt], errno, details);
@@ -314,43 +230,11 @@ FILE * fopen_datafile(const char *filename, const char *mode, int prefix) {
 	FILE *fp;
 
 	filename = fqname(filename, prefix, prefix == TROUBLEPREFIX ? 3 : 0);
-#ifdef VMS	/* essential to have punctuation, to avoid logical names */
-    {
-	char tmp[BUFSIZ];
-
-	if (!index(filename, '.') && !index(filename, ';'))
-		filename = strcat(strcpy(tmp, filename), ";0");
-	fp = fopen(filename, mode, "mbc=16");
-    }
-#else
 	fp = fopen(filename, mode);
-#endif
 	return fp;
 }
 
 /* ----------  BEGIN LEVEL FILE HANDLING ----------- */
-
-#ifdef MFLOPPY
-/* Set names for bones[] and lock[] */
-void set_lock_and_bones() {
-	if (!ramdisk) {
-		strcpy(levels, permbones);
-		strcpy(bones, permbones);
-	}
-	append_slash(permbones);
-	append_slash(levels);
-#ifdef AMIGA
-	strncat(levels, bbs_id, PATHLEN);
-#endif
-	append_slash(bones);
-	strcat(bones, "bonesnn.*");
-	strcpy(lock, levels);
-#ifndef AMIGA
-	strcat(lock, alllevels);
-#endif
-	return;
-}
-#endif /* MFLOPPY */
 
 
 /* Construct a file name for a level-type file, which is of the form
@@ -1348,9 +1232,7 @@ STATIC_OVL FILE * fopen_config_file(const char *filename) {
 	    /* e.g., problems when setuid NetHack can't search home
 	     * directory restricted to user */
 
-#if defined (NHSTDC) && !defined(NOTSTDC)
 	    if ((details = strerror(errno)) == 0)
-#endif
 		details = "";
 	    raw_printf("Couldn't open default config file %s %s(%d).",
 		       tmp_config, details, errno);

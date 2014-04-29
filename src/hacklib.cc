@@ -430,7 +430,7 @@ static struct tm * getlt() {
 #else
 	(void) time(&date);
 #endif
-#if (defined(ULTRIX) && !(defined(ULTRIX_PROTO) || defined(NHSTDC))) || (defined(BSD) && !defined(POSIX_TYPES))
+#if defined(ULTRIX) || (defined(BSD) && !defined(POSIX_TYPES))
 	return(localtime((long *)(&date)));
 #else
 	return(localtime(&date));
@@ -450,7 +450,7 @@ char * yymmdd(time_t date) {
 	if (date == 0)
 		lt = getlt();
 	else
-#if (defined(ULTRIX) && !(defined(ULTRIX_PROTO) || defined(NHSTDC))) || defined(BSD)
+#if defined(ULTRIX) || defined(BSD)
 		lt = localtime((long *)(&date));
 #else
 		lt = localtime(&date);
@@ -469,7 +469,7 @@ long yyyymmdd(time_t date) {
 	if (date == 0)
 		lt = getlt();
 	else
-#if (defined(ULTRIX) && !(defined(ULTRIX_PROTO) || defined(NHSTDC))) || (defined(BSD) && !defined(POSIX_TYPES))
+#if defined(ULTRIX) || (defined(BSD) && !defined(POSIX_TYPES))
 		lt = localtime((long *)(&date));
 #else
 		lt = localtime(&date);
