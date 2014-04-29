@@ -144,16 +144,16 @@ struct version_info {
  */
 
 /* size of terminal screen is (at least) (ROWNO+3) by COLNO */
-#define COLNO	80
-#define ROWNO	21
+constexpr int COLNO =	80;
+constexpr int ROWNO	= 21;
 
-#define MAXNROFROOMS	40	/* max number of rooms per level */
-#define MAX_SUBROOMS	24	/* max # of subrooms in a given room */
-#define DOORMAX		120	/* max number of doors per level */
+constexpr int MAXNROFROOMS = 40;	/* max number of rooms per level */
+constexpr int MAX_SUBROOMS = 24;	/* max # of subrooms in a given room */
+constexpr int DOORMAX = 120;	/* max number of doors per level */
 
-#define BUFSZ		256	/* for getlin buffers */
-#define QBUFSZ		128	/* for building question text */
-#define TBUFSZ		300	/* toplines[] buffer max msg: 3 81char names */
+constexpr int BUFSZ = 256;	/* for getlin buffers */
+constexpr int QBUFSZ = 128;  /* for building question text */
+constexpr int TBUFSZ = 300;	 /* toplines[] buffer max msg: 3 81char names */
 				/* plus longest prefix plus a few extra words */
 
 #define PL_NSIZ		32	/* name of player, ghost, shopkeeper */
