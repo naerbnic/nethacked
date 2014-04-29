@@ -8,7 +8,8 @@
  * arnold@ucsf-cgl, wcs@bo95b, cbcephus!pds and others.
  */
 
-#define NEED_VARARGS
+#include <stdarg.h>
+
 #include "hack.h"
 
 /*
@@ -406,15 +407,14 @@ void init_linux_cons() {
 #ifndef __begui__	/* the Be GUI will define its own error proc */
 /* fatal error */
 /*VARARGS1*/
-void
-error VA_DECL(const char *,s)
-	VA_START(s);
-	VA_INIT(s, const char *);
+void error(const char *s, ...) {
+  va_list args;
+	va_start(args, s);
 	if(settty_needed)
 		settty((char *)0);
-	Vprintf(s,VA_ARGS);
-	(void) putchar('\n');
-	VA_END();
+	vprintf(s, args);
+	putchar('\n');
+	va_end(args);
 	exit(EXIT_FAILURE);
 }
 #endif /* !__begui__ */
