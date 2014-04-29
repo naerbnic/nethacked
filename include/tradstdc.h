@@ -23,7 +23,6 @@
 #define VDECL(f,p)	f p
 typedef void* genericptr_t;
 
-
 /*
  * Allow gcc2 to check parameters of printf-like calls with -Wformat;
  * append this to a prototype declaration (see pline() in extern.h).
