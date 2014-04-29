@@ -75,8 +75,6 @@ typedef schar	xchar;
 #define SHORT_P short
 #define ALIGNTYP_P aligntyp
 
-#define MONST_P Monster*
-
 #define SIZE(x) (int)(sizeof(x) / sizeof(x[0]))
 
 

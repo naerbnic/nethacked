@@ -2508,7 +2508,7 @@ struct Monster * bhit(
     int weapon,
     
     /* fns called when mon/obj hit */
-    int (*fhitm)(MONST_P, Object*),
+    int (*fhitm)(Monster*, Object*),
     int (*fhito)(Object*, Object*),
 
     /* object tossed/used */

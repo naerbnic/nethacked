@@ -2379,7 +2379,7 @@ E int NDECL(spell_damage_bonus);
 E const char *FDECL(exclam, (int force));
 E void FDECL(hit, (const char *,struct Monster *,const char *));
 E void FDECL(miss, (const char *,struct Monster *));
-E struct Monster *FDECL(bhit, (int,int,int,int,int (*)(MONST_P,Object*),
+E struct Monster *FDECL(bhit, (int,int,int,int,int (*)(Monster*,Object*),
 			     int (*)(Object*,Object*),struct Object *, bool *));
 E struct Monster *FDECL(boomhit, (int,int));
 E int FDECL(burn_floor_paper, (int,int,bool,bool));

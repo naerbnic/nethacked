@@ -935,7 +935,7 @@ void throwit(struct Object *obj, long wep_mask, bool twoweap) {
 
 		bool obj_destroyed = FALSE;
 		mon = bhit(u.dx, u.dy, range, THROWN_WEAPON,
-			   (int FDECL((*),(MONST_P,Object*)))0,
+			   (int FDECL((*),(Monster*,Object*)))0,
 			   (int FDECL((*),(Object*,Object*)))0,
 			   obj, &obj_destroyed);
 
@@ -1660,7 +1660,7 @@ STATIC_OVL int throw_gold(struct Object *obj) {
 			bhitpos.y = u.uy;
 		} else {
 			mon = bhit(u.dx, u.dy, range, THROWN_WEAPON,
-				   (int FDECL((*),(MONST_P,Object*)))0,
+				   (int FDECL((*),(Monster*,Object*)))0,
 				   (int FDECL((*),(Object*,Object*)))0,
 				   obj, NULL);
 			if(mon) {
