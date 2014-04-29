@@ -19,8 +19,8 @@ static int max_regions = 0;
 
 #define NO_CALLBACK (-1)
 
-bool FDECL(inside_gas_cloud, (genericptr,genericptr));
-bool FDECL(expire_gas_cloud, (genericptr,genericptr));
+bool FDECL(inside_gas_cloud, (void*,void*));
+bool FDECL(expire_gas_cloud, (void*,void*));
 bool FDECL(inside_rect, (NhRect *,int,int));
 bool FDECL(inside_region, (NhRegion *,int,int));
 NhRegion *FDECL(create_region, (NhRect *,int));
@@ -41,7 +41,7 @@ void FDECL(replace_mon_regions, (struct Monster *,struct Monster *));
 void FDECL(remove_mon_from_regions, (struct Monster *));
 NhRegion *FDECL(create_msg_region, (xchar,xchar,xchar,xchar,
 				    const char *,const char *));
-bool FDECL(enter_force_field, (genericptr,genericptr));
+bool FDECL(enter_force_field, (void*,void*));
 NhRegion *FDECL(create_force_field, (xchar,xchar,int,int));
 #endif
 

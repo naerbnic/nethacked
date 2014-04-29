@@ -522,7 +522,7 @@ int candle_light_range(struct Object *obj) {
 }
 
 #ifdef WIZARD
-extern char *FDECL(fmt_ptr, (const genericptr, char *));  /* from alloc.c */
+extern char *FDECL(fmt_ptr, (const void*, char *));  /* from alloc.c */
 
 int wiz_light_sources() {
     winid win;

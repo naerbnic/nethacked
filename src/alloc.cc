@@ -11,7 +11,7 @@
 #include "config.h"
 
 #if defined(WIZARD)
-char *FDECL(fmt_ptr, (const genericptr,char *));
+char *FDECL(fmt_ptr, (const void*,char *));
 #endif
 
 long *FDECL(alloc,(unsigned int));
@@ -33,7 +33,7 @@ long* alloc(unsigned int lth)
 # define PTR_TYP genericptr_t
 
 /* format a pointer for display purposes; caller supplies the result buffer */
-char * fmt_ptr(const genericptr ptr, char *buf) {
+char * fmt_ptr(const void* ptr, char *buf) {
 	sprintf(buf, PTR_FMT, (PTR_TYP)ptr);
 	return buf;
 }

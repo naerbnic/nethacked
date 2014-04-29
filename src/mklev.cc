@@ -37,7 +37,7 @@ STATIC_DCL bool FDECL(place_niche,(struct mkroom *,int*,int*,int*));
 STATIC_DCL void FDECL(makeniche,(int));
 STATIC_DCL void NDECL(make_niches);
 
-STATIC_PTR int FDECL( CFDECLSPEC do_comp,(const genericptr,const genericptr));
+STATIC_PTR int FDECL( CFDECLSPEC do_comp,(const void*,const void*));
 
 STATIC_DCL void FDECL(dosdoor,(xchar,xchar,struct mkroom *,int));
 STATIC_DCL void FDECL(join,(int,int,bool));
@@ -55,9 +55,9 @@ static xchar		vault_x, vault_y;
 bool goldseen;
 static bool made_branch;	/* used only during level creation */
 
-/* Args must be (const genericptr) so that qsort will always be happy. */
+/* Args must be (const void*) so that qsort will always be happy. */
 
-STATIC_PTR int CFDECLSPEC do_comp(const genericptr vx, const genericptr vy) {
+STATIC_PTR int CFDECLSPEC do_comp(const void* vx, const void* vy) {
 #ifdef LINT
 /* lint complains about possible pointer alignment problems, but we know
    that vx and vy are always properly aligned. Hence, the following

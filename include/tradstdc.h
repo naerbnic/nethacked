@@ -33,10 +33,7 @@
 
 #define VDECL(f,p)	f p
 
-/* generic pointer, always a macro; genericptr_t is usually a typedef */
-# define genericptr	void *
-
-typedef genericptr genericptr_t;	/* (void *) or (char *) */
+typedef void* genericptr_t;	/* (void *) or (char *) */
 
 
 #ifndef UNWIDENED_PROTOTYPES
