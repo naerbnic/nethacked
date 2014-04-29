@@ -38,34 +38,6 @@
 #endif
 
 /*
- * ANSI X3J11 detection.
- * Makes substitutes for compatibility with the old C standard.
- */
-
-/* Decide how to handle variable parameter lists:
- * USE_STDARG means use the ANSI <stdarg.h> facilities (only ANSI compilers
- * should do this, and only if the library supports it).
- * USE_VARARGS means use the <varargs.h> facilities.  Again, this should only
- * be done if the library supports it.	ANSI is *not* required for this.
- * Otherwise, the kludgy old methods are used.
- * The defaults are USE_STDARG for ANSI compilers, and USE_OLDARGS for
- * others.
- */
-
-/* #define USE_VARARGS */	/* use <varargs.h> instead of <stdarg.h> */
-/* #define USE_OLDARGS */	/* don't use any variable argument facilites */
-
-#if defined(apollo)		/* Apollos have stdarg(3) but not stdarg.h */
-# define USE_VARARGS
-#endif
-
-#if defined(NHSTDC) || defined(ULTRIX_PROTO) || defined(MAC)
-# if !defined(USE_VARARGS) && !defined(USE_OLDARGS) && !defined(USE_STDARG)
-#   define USE_STDARG
-# endif
-#endif
-
-/*
  * Used for robust ANSI parameter forward declarations:
  * int VDECL(sprintf, (char *, const char *, ...));
  *

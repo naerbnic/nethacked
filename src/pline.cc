@@ -232,7 +232,6 @@ verbalize(const char *line, ...) {
  * of the variable argument handling stuff in "tradstdc.h"
  */
 
-#if defined(USE_STDARG) || defined(USE_VARARGS)
 static void FDECL(vraw_printf,(const char *,va_list));
 
 void
@@ -243,19 +242,7 @@ raw_printf(const char *line, ...) {
 	va_end(args);
 }
 
-# ifdef USE_STDARG
-static void
-vraw_printf(const char *line, va_list the_args) {
-# else
-static void
-vraw_printf(line, the_args) const char *line; va_list the_args; {
-# endif
-
-#else  /* USE_STDARG | USE_VARARG */
-
-void
-raw_printf VA_DECL(const char *, line)
-#endif
+static void vraw_printf(const char *line, va_list the_args) {
 /* Do NOT use VA_START and VA_END in here... see above */
 
 	if(!index(line, '%'))
