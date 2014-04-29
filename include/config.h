@@ -5,6 +5,8 @@
 #ifndef CONFIG_H /* make sure the compiler does not see the typedefs twice */
 #define CONFIG_H
 
+#include <cstdint>
+
 #define UNIX		/* delete if no fork(), exec() available */
 
 #include "config1.h"	/* should auto-detect MSDOS, MAC, AMIGA, and WIN32 */
@@ -128,11 +130,7 @@
  *
  *	typedef short int schar;
  */
-#ifdef AZTEC
-# define schar	char
-#else
-typedef signed char	schar;
-#endif
+typedef std::int8_t	schar;
 
 /*
  * type uchar: small unsigned integers (8 bits suffice - but 7 bits do not)

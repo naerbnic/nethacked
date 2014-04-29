@@ -6,6 +6,7 @@
 #define GLOBAL_H
 
 #include <stdio.h>
+#include <cstdint>
 
 
 /* #define BETA	*/	/* if a beta-test copy	[MRS] */
@@ -99,9 +100,7 @@ typedef schar	xchar;
  * Please don't change the order.  It does matter.
  */
 
-#ifdef UNIX
 #include "unixconf.h"
-#endif
 
 /* Displayable name of this port; don't redefine if defined in *conf.h */
 # ifdef UNIX
