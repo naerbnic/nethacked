@@ -40,8 +40,8 @@
 typedef schar	xchar;
 
 #ifndef TRUE		/* defined in some systems' native include files */
-#define TRUE	((bool)1)
-#define FALSE	((bool)0)
+#define TRUE	true
+#define FALSE	false
 #endif
 
 #ifndef STRNCMPI
