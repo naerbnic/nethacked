@@ -3,8 +3,8 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 #include <string.h>
+#include <stdarg.h>
 
-#define NEED_VARARGS /* Uses ... */	/* comment line for pre-compiled headers */
 #include "hack.h"
 #include "epri.h"
 #ifdef WIZARD
@@ -60,12 +60,11 @@ int msgpline_type(char const* msg) {
 #if defined(USE_STDARG) || defined(USE_VARARGS)
 static void FDECL(vpline, (const char *, va_list));
 
-void
-pline VA_DECL(const char *, line)
-	VA_START(line);
-	VA_INIT(line, char *);
-	vpline(line, VA_ARGS);
-	VA_END();
+void pline(const char *line, ...) {
+  va_list args;
+	va_start(args, line);
+	vpline(line, args);
+	va_end(args);
 }
 
 char prevmsg[BUFSZ];
@@ -92,7 +91,7 @@ pline VA_DECL(const char *, line)
 
 	if (!line || !*line) return;
 	if (index(line, '%')) {
-	    Vsprintf(pbuf,line,VA_ARGS);
+	    vsprintf(pbuf,line, the_args);
 	    line = pbuf;
 	}
 #if defined(DUMP_LOG) && defined(DUMPMSGS)
@@ -118,14 +117,13 @@ pline VA_DECL(const char *, line)
 }
 
 /*VARARGS1*/
-void
-Norep VA_DECL(const char *, line)
-	VA_START(line);
-	VA_INIT(line, const char *);
+void Norep(const char *line, ...) {
+  va_list args;
+  va_start(args, line);
 	no_repeat = TRUE;
-	vpline(line, VA_ARGS);
+	vpline(line, args);
 	no_repeat = FALSE;
-	VA_END();
+	va_end(args);
 	return;
 }
 
@@ -155,95 +153,92 @@ void free_youbuf() {
  strcat((YouPrefix(pointer, prefix, text), pointer), text)
 
 /*VARARGS1*/
-void
-You VA_DECL(const char *, line)
+void You(const char *line, ...) {
+  va_list args;
 	char *tmp;
-	VA_START(line);
-	VA_INIT(line, const char *);
-	vpline(YouMessage(tmp, "You ", line), VA_ARGS);
-	VA_END();
+	va_start(args, line);
+	vpline(YouMessage(tmp, "You ", line), args);
+	va_end(args);
 }
 
 /*VARARGS1*/
-void
-Your VA_DECL(const char *,line)
+void Your(const char *line, ...) {
 	char *tmp;
-	VA_START(line);
-	VA_INIT(line, const char *);
-	vpline(YouMessage(tmp, "Your ", line), VA_ARGS);
-	VA_END();
+	va_list args;
+	va_start(args, line);
+	vpline(YouMessage(tmp, "Your ", line), args);
+	va_end(args);
 }
 
 /*VARARGS1*/
-void
-You_feel VA_DECL(const char *,line)
+void You_feel(const char *line, ...) {
 	char *tmp;
-	VA_START(line);
-	VA_INIT(line, const char *);
-	vpline(YouMessage(tmp, "You feel ", line), VA_ARGS);
-	VA_END();
+	va_list args;
+	va_start(args, line);
+	vpline(YouMessage(tmp, "You feel ", line), args);
+	va_end(args);
 }
 
 
 /*VARARGS1*/
 void
-You_cant VA_DECL(const char *,line)
+You_cant(const char *line, ...) {
 	char *tmp;
-	VA_START(line);
-	VA_INIT(line, const char *);
-	vpline(YouMessage(tmp, "You can't ", line), VA_ARGS);
-	VA_END();
+  va_list args;
+	va_start(args, line);
+	vpline(YouMessage(tmp, "You can't ", line), args);
+	va_end(args);
 }
 
 /*VARARGS1*/
 void
-pline_The VA_DECL(const char *,line)
+pline_The(const char *line, ...) {
 	char *tmp;
-	VA_START(line);
-	VA_INIT(line, const char *);
-	vpline(YouMessage(tmp, "The ", line), VA_ARGS);
-	VA_END();
+  va_list args;
+	va_start(args, line);
+	vpline(YouMessage(tmp, "The ", line), args);
+	va_end(args);
 }
 
 /*VARARGS1*/
 void
-There VA_DECL(const char *,line)
+There(const char *line, ...) {
 	char *tmp;
-	VA_START(line);
-	VA_INIT(line, const char *);
-	vpline(YouMessage(tmp, "There ", line), VA_ARGS);
-	VA_END();
+  va_list args;
+	va_start(args, line);
+	vpline(YouMessage(tmp, "There ", line), args);
+	va_end(args);
 }
 
 /*VARARGS1*/
 void
-You_hear VA_DECL(const char *,line)
+You_hear(const char *line, ...) {
 	char *tmp;
-	VA_START(line);
-	VA_INIT(line, const char *);
+  va_list args;
+	va_start(args, line);
 	if (Underwater)
 		YouPrefix(tmp, "You barely hear ", line);
 	else if (u.usleep)
 		YouPrefix(tmp, "You dream that you hear ", line);
 	else
 		YouPrefix(tmp, "You hear ", line);
-	vpline(strcat(tmp, line), VA_ARGS);
-	VA_END();
+	vpline(strcat(tmp, line), args);
+	va_end(args);
 }
 
 /*VARARGS1*/
 void
-verbalize VA_DECL(const char *,line)
+verbalize(const char *line, ...) {
 	char *tmp;
 	if (!flags.soundok) return;
-	VA_START(line);
-	VA_INIT(line, const char *);
+  va_list args;
+	va_start(args, line);
 	tmp = You_buf((int)strlen(line) + sizeof "\"\"");
 	strcpy(tmp, "\"");
 	strcat(tmp, line);
 	strcat(tmp, "\"");
-	vpline(tmp, VA_ARGS);
-	VA_END();
+	vpline(tmp, args);
+	va_end(args);
 }
 
 /*VARARGS1*/
@@ -255,11 +250,11 @@ verbalize VA_DECL(const char *,line)
 static void FDECL(vraw_printf,(const char *,va_list));
 
 void
-raw_printf VA_DECL(const char *, line)
-	VA_START(line);
-	VA_INIT(line, char *);
-	vraw_printf(line, VA_ARGS);
-	VA_END();
+raw_printf(const char *line, ...) {
+  va_list args;
+	va_start(args, line);
+	vraw_printf(line, args);
+	va_end(args);
 }
 
 # ifdef USE_STDARG
@@ -281,7 +276,7 @@ raw_printf VA_DECL(const char *, line)
 	    raw_print(line);
 	else {
 	    char pbuf[BUFSZ];
-	    Vsprintf(pbuf,line,VA_ARGS);
+	    vsprintf(pbuf,line,the_args);
 	    raw_print(pbuf);
 	}
 }
@@ -289,21 +284,21 @@ raw_printf VA_DECL(const char *, line)
 
 /*VARARGS1*/
 void
-impossible VA_DECL(const char *, s)
-	VA_START(s);
-	VA_INIT(s, const char *);
+impossible(const char *s, ...) {
+  va_list args;
+	va_start(args, s);
 	if (program_state.in_impossible)
 		panic("impossible called impossible");
 	program_state.in_impossible = 1;
 	{
 	    char pbuf[BUFSZ];
-	    Vsprintf(pbuf,s,VA_ARGS);
+	    vsprintf(pbuf,s,args);
 	    paniclog("impossible", pbuf);
 	}
-	vpline(s,VA_ARGS);
+	vpline(s,args);
 	pline("Program in disorder - perhaps you'd better #quit.");
 	program_state.in_impossible = 0;
-	VA_END();
+	va_end(args);
 }
 
 const char * align_str(aligntyp alignment) {
