@@ -370,8 +370,8 @@ void tty_player_selection() {
 			} else {
 				if (roles[i].name.f) {
 					Strcpy(rolenamebuf, roles[i].name.m);
-					Strcat(rolenamebuf, "/");
-					Strcat(rolenamebuf, roles[i].name.f);
+					strcat(rolenamebuf, "/");
+					strcat(rolenamebuf, roles[i].name.f);
 				} else 
 					Strcpy(rolenamebuf, roles[i].name.m);
 			}	
@@ -1195,10 +1195,10 @@ STATIC_OVL void process_menu_window(winid window, struct WinDesc *cw) {
 	    }
 
 	    /* set extra chars.. */
-	    Strcat(resp, default_menu_cmds);
-	    Strcat(resp, "0123456789\033\n\r");	/* counts, quit */
-	    Strcat(resp, gacc);			/* group accelerators */
-	    Strcat(resp, mapped_menu_cmds);
+	    strcat(resp, default_menu_cmds);
+	    strcat(resp, "0123456789\033\n\r");	/* counts, quit */
+	    strcat(resp, gacc);			/* group accelerators */
+	    strcat(resp, mapped_menu_cmds);
 
 	    if (cw->npages > 1)
 		sprintf(cw->morestr, "(%d of %d)",

@@ -404,7 +404,7 @@ int object_detect(struct Object *detector, int class_id) {
 	Strcpy(stuff, something);
     else
     	Strcpy(stuff, class_id ? oclass_names[class_id] : "objects");
-    if (boulder && class_id != ROCK_CLASS) Strcat(stuff, " and/or large stones");
+    if (boulder && class_id != ROCK_CLASS) strcat(stuff, " and/or large stones");
 
     if (do_dknown) for(obj = invent; obj; obj = obj->nobj) do_dknown_of(obj);
 

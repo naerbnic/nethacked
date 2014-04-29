@@ -1220,10 +1220,10 @@ proceed:
 					   shkname(shkp), dtmp, currency(dtmp));
 		if(loan) {
 		    if(loan == dtmp)
-			Strcat(sbuf, "you picked up in the store.");
-		    else Strcat(sbuf,
+			strcat(sbuf, "you picked up in the store.");
+		    else strcat(sbuf,
 			   "for gold picked up and the use of merchandise.");
-		} else Strcat(sbuf, "for the use of merchandise.");
+		} else strcat(sbuf, "for the use of merchandise.");
 		pline(sbuf);
 #ifndef GOLDOBJ
 		if (u.ugold + eshkp->credit < dtmp) {
@@ -1554,10 +1554,10 @@ STATIC_OVL bool inherits(struct Monster *shkp, int numsk, int croaked) {
 #endif
 		takes[0] = '\0';
 		if (!shkp->mcanmove || shkp->msleeping)
-			Strcat(takes, "wakes up and ");
+			strcat(takes, "wakes up and ");
 		if (distu(shkp->mx, shkp->my) > 2)
-			Strcat(takes, "comes and ");
-		Strcat(takes, "takes");
+			strcat(takes, "comes and ");
+		strcat(takes, "takes");
 
 #ifndef GOLDOBJ
 		if (loss > u.ugold || !loss || roomno == eshkp->shoproom) {
@@ -2066,16 +2066,16 @@ speak:
 		return;
 	    }
 	    Strcpy(buf, "\"For you, ");
-	    if (ANGRY(shkp)) Strcat(buf, "scum ");
+	    if (ANGRY(shkp)) strcat(buf, "scum ");
 	    else {
 		static const char *honored[5] = {
 		  "good", "honored", "most gracious", "esteemed",
 		  "most renowned and sacred"
 		};
-		Strcat(buf, honored[rn2(4) + u.uevent.udemigod]);
-		if (!is_human(youmonst.data)) Strcat(buf, " creature");
+		strcat(buf, honored[rn2(4) + u.uevent.udemigod]);
+		if (!is_human(youmonst.data)) strcat(buf, " creature");
 		else
-		    Strcat(buf, (flags.female) ? " lady" : " sir");
+		    strcat(buf, (flags.female) ? " lady" : " sir");
 	    }
 	    if(ininv) {
 		long quan = obj->quan;

@@ -872,7 +872,7 @@ static void init_hilite() {
 	scratch = tparm(setf,COLOR_WHITE);
 	hilites[CLR_WHITE] = (char *) alloc(strlen(scratch) + length_md + 1);
 	Strcpy(hilites[CLR_WHITE],MD);
-	Strcat(hilites[CLR_WHITE],scratch);
+	strcat(hilites[CLR_WHITE],scratch);
 
 	hilites[CLR_GRAY] = "";
 	hilites[NO_COLOR] = "";
@@ -887,7 +887,7 @@ static void init_hilite() {
 	    scratch = tparm(setf,COLOR_BLACK);
 	    hilites[CLR_BLACK] = (char *) alloc(strlen(scratch) + length_md + 1);
 	    Strcpy(hilites[CLR_BLACK],MD);
-	    Strcat(hilites[CLR_BLACK],scratch);
+	    strcat(hilites[CLR_BLACK],scratch);
 	}
 	else
 	{
@@ -1052,7 +1052,7 @@ static void init_hilite() {
 			sprintf(eos(hilites[c]), ";3%d", c & ~BRIGHT);
 		    if (backg != CLR_BLACK)
 			sprintf(eos(hilites[c]), ";4%d", backg & ~BRIGHT);
-		    Strcat(hilites[c], "m");
+		    strcat(hilites[c], "m");
 		}
 	    }
 

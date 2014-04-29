@@ -78,8 +78,8 @@ STATIC_OVL void get_mplname(struct Monster *mtmp, char *nam) {
 	    mtmp->female = 1;
 	else
 	    mtmp->female = 0;
-	Strcat(nam, " the ");
-	Strcat(nam, rank_of((int)mtmp->m_lev,
+	strcat(nam, " the ");
+	strcat(nam, rank_of((int)mtmp->m_lev,
 			    monsndx(mtmp->data),
 			    (bool)mtmp->female));
 }

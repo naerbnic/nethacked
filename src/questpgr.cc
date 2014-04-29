@@ -276,10 +276,10 @@ STATIC_OVL void convert_line() {
 			    switch (*(++c)) {
 
 					/* insert "a"/"an" prefix */
-				case 'A': Strcat(cc, An(cvt_buf));
+				case 'A': strcat(cc, An(cvt_buf));
 				    cc += strlen(cc);
 				    continue; /* for */
-				case 'a': Strcat(cc, an(cvt_buf));
+				case 'a': strcat(cc, an(cvt_buf));
 				    cc += strlen(cc);
 				    continue; /* for */
 
@@ -299,7 +299,7 @@ STATIC_OVL void convert_line() {
 
 					/* strip any "the" prefix */
 				case 't': if (!strncmpi(cvt_buf, "the ", 4)) {
-					Strcat(cc, &cvt_buf[4]);
+					strcat(cc, &cvt_buf[4]);
 					cc += strlen(cc);
 					continue; /* for */
 				    }
@@ -308,7 +308,7 @@ STATIC_OVL void convert_line() {
 				default: --c;	/* undo switch increment */
 				    break;
 			    }
-			    Strcat(cc, cvt_buf);
+			    strcat(cc, cvt_buf);
 			    cc += strlen(cvt_buf);
 			    break;
 			}	/* else fall through */

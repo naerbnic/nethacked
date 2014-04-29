@@ -628,29 +628,29 @@ char* x_monnam(
 		/* pathological case: "the angry Asidonhopo the blue dragon"
 		   sounds silly */
 		Strcpy(buf, "the ");
-		Strcat(strcat(buf, adjective), " ");
-		Strcat(buf, shkname(mtmp));
+		strcat(strcat(buf, adjective), " ");
+		strcat(buf, shkname(mtmp));
 		return buf;
 	    }
-	    Strcat(buf, shkname(mtmp));
+	    strcat(buf, shkname(mtmp));
 	    if (mdat == &mons[PM_SHOPKEEPER] && !do_invis)
 		return buf;
-	    Strcat(buf, " the ");
+	    strcat(buf, " the ");
 	    if (do_invis)
-		Strcat(buf, "invisible ");
-	    Strcat(buf, mdat->mname);
+		strcat(buf, "invisible ");
+	    strcat(buf, mdat->mname);
 	    return buf;
 	}
 
 	/* Put the adjectives in the buffer */
 	if (adjective)
-	    Strcat(strcat(buf, adjective), " ");
+	    strcat(strcat(buf, adjective), " ");
 	if (do_invis)
-	    Strcat(buf, "invisible ");
+	    strcat(buf, "invisible ");
 #ifdef STEED
 	if (do_saddle && (mtmp->misc_worn_check & W_SADDLE) &&
 	    !Blind && !Hallucination)
-	    Strcat(buf, "saddled ");
+	    strcat(buf, "saddled ");
 #endif
 	if (buf[0] != 0)
 	    has_adjectives = TRUE;
@@ -660,7 +660,7 @@ char* x_monnam(
 	/* Put the actual monster name or type into the buffer now */
 	/* Be sure to remember whether the buffer starts with a name */
 	if (do_hallu) {
-	    Strcat(buf, rndmonnam());
+	    strcat(buf, rndmonnam());
 	    name_at_start = FALSE;
 	} else if (mtmp->mnamelth) {
 	    char *name = NAME(mtmp);
@@ -678,13 +678,13 @@ char* x_monnam(
 		Strcpy(pbuf, name);
 		pbuf[bp - name + 5] = '\0'; /* adjectives right after " the " */
 		if (has_adjectives)
-		    Strcat(pbuf, buf);
-		Strcat(pbuf, bp + 5);	/* append the rest of the name */
+		    strcat(pbuf, buf);
+		strcat(pbuf, bp + 5);	/* append the rest of the name */
 		Strcpy(buf, pbuf);
 		article = ARTICLE_NONE;
 		name_at_start = TRUE;
 	    } else {
-		Strcat(buf, name);
+		strcat(buf, name);
 		name_at_start = TRUE;
 	    }
 	} else if (is_mplayer(mdat) && !In_endgame(&u.uz)) {
@@ -692,10 +692,10 @@ char* x_monnam(
 	    Strcpy(pbuf, rank_of((int)mtmp->m_lev,
 				 monsndx(mdat),
 				 (bool)mtmp->female));
-	    Strcat(buf, lcase(pbuf));
+	    strcat(buf, lcase(pbuf));
 	    name_at_start = FALSE;
 	} else {
-	    Strcat(buf, mdat->mname);
+	    strcat(buf, mdat->mname);
 	    name_at_start = (bool)type_is_pname(mdat);
 	}
 
@@ -714,12 +714,12 @@ char* x_monnam(
 	    switch(article) {
 		case ARTICLE_YOUR:
 		    Strcpy(buf2, "your ");
-		    Strcat(buf2, buf);
+		    strcat(buf2, buf);
 		    Strcpy(buf, buf2);
 		    return buf;
 		case ARTICLE_THE:
 		    Strcpy(buf2, "the ");
-		    Strcat(buf2, buf);
+		    strcat(buf2, buf);
 		    Strcpy(buf, buf2);
 		    return buf;
 		case ARTICLE_A:
@@ -823,7 +823,7 @@ char * distant_monnam(struct Monster *mon, int article, char *outbuf) {
     if (mon->data == &mons[PM_HIGH_PRIEST] && !Hallucination &&
 	    Is_astralevel(&u.uz) && distu(mon->mx, mon->my) > 2) {
 	Strcpy(outbuf, article == ARTICLE_THE ? "the " : "");
-	Strcat(outbuf, mon->female ? "high priestess" : "high priest");
+	strcat(outbuf, mon->female ? "high priestess" : "high priest");
     } else {
 	Strcpy(outbuf, x_monnam(mon, article, (char *)0, 0, TRUE));
     }

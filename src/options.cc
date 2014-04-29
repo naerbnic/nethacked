@@ -2890,7 +2890,7 @@ ape_again:
 		getlin("What new autopickup exception pattern?", &apebuf[1]);
 		if (apebuf[1] == '\033') return FALSE;
 		apebuf[0] = '"';
-		Strcat(apebuf,"\"");
+		strcat(apebuf,"\"");
 		add_autopickup_exception(apebuf);
 		goto ape_again;
 	} else if (opt_idx == 3) {
@@ -2976,12 +2976,12 @@ STATIC_OVL const char * get_compopt_value(const char *optname, char *buf) {
 	else if (!strcmp(optname, "disclose")) {
 		for (i = 0; i < NUM_DISCLOSURE_OPTIONS; i++) {
 			char topt[2];
-			if (i) Strcat(buf," ");
+			if (i) strcat(buf," ");
 			topt[1] = '\0';
 			topt[0] = flags.end_disclose[i];
-			Strcat(buf, topt);
+			strcat(buf, topt);
 			topt[0] = disclosure_options[i];
-			Strcat(buf, topt);
+			strcat(buf, topt);
 		}
 	}
 	else if (!strcmp(optname, "dogname")) 
@@ -3401,8 +3401,8 @@ void next_opt(winid datawin, const char *str) {
 		buf[0] = 0;
 	}
 	if (*str) {
-		Strcat(buf, str);
-		Strcat(buf, ", ");
+		strcat(buf, str);
+		strcat(buf, ", ");
 	} else {
 		putstr(datawin, 0, str);
 		free(buf),  buf = 0;

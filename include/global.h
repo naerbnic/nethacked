@@ -116,7 +116,7 @@ typedef schar	xchar;
 #endif
 
 #define sprintf  sprintf
-#define Strcat   strcat
+#define strcat   strcat
 #define Strcpy   strcpy
 #ifdef NEED_VARARGS
 #define Vprintf  (void) vprintf

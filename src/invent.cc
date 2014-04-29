@@ -1338,7 +1338,7 @@ nextclass:
 		if (!allflag) {
 			Strcpy(qbuf, !ininv ? doname(otmp) :
 				xprname(otmp, (char *)0, ilet, !nodot, 0L, 0L));
-			Strcat(qbuf, "?");
+			strcat(qbuf, "?");
 			sym = (takeoff || ident || otmp->quan < 2L) ?
 				nyaq(qbuf) : nyNaq(qbuf);
 		}
@@ -2039,11 +2039,11 @@ int dotypeinv() {
 #endif
 					      (bool FDECL((*),(OBJ_P))) 0, &itemcount);
 	    if (unpaid_count) {
-		Strcat(types, "u");
+		strcat(types, "u");
 		class_count++;
 	    }
 	    if (billx) {
-		Strcat(types, "x");
+		strcat(types, "x");
 		class_count++;
 	    }
 	    /* add everything not already included; user won't see these */
@@ -2195,7 +2195,7 @@ int look_here(int obj_cnt, bool picked_some) {
 			if (otmp->otyp == CORPSE) feel_cockatrice(otmp, FALSE);
 		}
 		if (Blind) Strcpy(fbuf, "You feel");
-		Strcat(fbuf,":");
+		strcat(fbuf,":");
 	    	(void) display_minventory(mtmp, MINV_ALL, fbuf);
 	    } else {
 		You("%s no objects here.", verb);
@@ -2270,7 +2270,7 @@ int look_here(int obj_cnt, bool picked_some) {
 			char buf[BUFSZ];
 			felt_cockatrice = TRUE;
 			Strcpy(buf, doname(otmp));
-			Strcat(buf, "...");
+			strcat(buf, "...");
 			putstr(tmpwin, 0, buf);
 			break;
 		}
@@ -2591,7 +2591,7 @@ char * let_to_name(char let, bool unpaid) {
 	    invbuf = (char *) alloc(invbufsiz);
 	}
 	if (unpaid)
-	    Strcat(strcpy(invbuf, "Unpaid "), class_name);
+	    strcat(strcpy(invbuf, "Unpaid "), class_name);
 	else
 	    Strcpy(invbuf, class_name);
 	return invbuf;

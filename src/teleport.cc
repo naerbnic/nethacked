@@ -549,10 +549,10 @@ void level_tele() {
 	    do {
 		if (++trycnt == 2) {
 #ifdef WIZARD
-			if (wizard) Strcat(qbuf, " [type a number or ? for a menu]");
+			if (wizard) strcat(qbuf, " [type a number or ? for a menu]");
 			else
 #endif
-			Strcat(qbuf, " [type a number]");
+			strcat(qbuf, " [type a number]");
 		}
 		getlin(qbuf, buf);
 		if (!strcmp(buf,"\033")) {	/* cancelled */
@@ -584,7 +584,7 @@ void level_tele() {
 							TRUE, FALSE);
 					if (obj) {
 						obj = addinv(obj);
-						Strcat(buf, " with the amulet");
+						strcat(buf, " with the amulet");
 					}
 				}
 				assign_level(&newlevel, &earth_level);

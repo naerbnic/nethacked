@@ -286,8 +286,8 @@ int validate_prefix_locations(char *reasonbuf) {
 			(void) unlink(filename);
 		} else {
 			if (reasonbuf) {
-				if (failcount) Strcat(reasonbuf,", ");
-				Strcat(reasonbuf, fqn_prefix_names[prefcnt]);
+				if (failcount) strcat(reasonbuf,", ");
+				strcat(reasonbuf, fqn_prefix_names[prefcnt]);
 			}
 			/* the paniclog entry gets the value of errno as well */
 			sprintf(panicbuf1,"Invalid %s", fqn_prefix_names[prefcnt]);
@@ -343,10 +343,10 @@ void set_lock_and_bones() {
 	strncat(levels, bbs_id, PATHLEN);
 #endif
 	append_slash(bones);
-	Strcat(bones, "bonesnn.*");
+	strcat(bones, "bonesnn.*");
 	Strcpy(lock, levels);
 #ifndef AMIGA
-	Strcat(lock, alllevels);
+	strcat(lock, alllevels);
 #endif
 	return;
 }
@@ -366,7 +366,7 @@ void set_levelfile_name(char *file, int lev) {
 	if (!tf) tf = eos(file);
 	sprintf(tf, ".%d", lev);
 #ifdef VMS
-	Strcat(tf, ";1");
+	strcat(tf, ";1");
 #endif
 	return;
 }
@@ -539,7 +539,7 @@ STATIC_OVL char * set_bonesfile_name(char *file, d_level *lev) {
 	else
 	    sprintf(dptr, ".%d", lev->dlevel);
 #ifdef VMS
-	Strcat(dptr, ";1");
+	strcat(dptr, ";1");
 #endif
 	return(dptr-2);
 }
@@ -557,7 +557,7 @@ STATIC_OVL char * set_bonestemp_name() {
 	if (!tf) tf = eos(lock);
 	sprintf(tf, ".bn");
 #ifdef VMS
-	Strcat(tf, ";1");
+	strcat(tf, ";1");
 #endif
 	return lock;
 }
@@ -675,7 +675,7 @@ void set_savefile_name() {
 #ifdef VMS
 	sprintf(SAVEF, "[.save]%d%s", getuid(), plname);
 	regularize(SAVEF+7);
-	Strcat(SAVEF, ";1");
+	strcat(SAVEF, ";1");
 #else
 # if defined(MICRO)
 	Strcpy(SAVEF, SAVEP);
@@ -692,7 +692,7 @@ void set_savefile_name() {
 #  endif
 		regularize(SAVEF+i);
 	}
-	Strcat(SAVEF, ".sav");
+	strcat(SAVEF, ".sav");
 # else
 #  if defined(WIN32)
 	/* Obtain the name of the logged on user and incorporate
@@ -724,9 +724,9 @@ void set_error_savefile() {
 	char *semi_colon = rindex(SAVEF, ';');
 	if (semi_colon) *semi_colon = '\0';
       }
-	Strcat(SAVEF, ".e;1");
+	strcat(SAVEF, ".e;1");
 # else
-	Strcat(SAVEF, ".e");
+	strcat(SAVEF, ".e");
 # endif
 }
 #endif
@@ -928,7 +928,7 @@ STATIC_OVL void docompress_file(const char *filename, bool uncomp) {
 
 	Strcpy(cfn, filename);
 # ifdef COMPRESS_EXTENSION
-	Strcat(cfn, COMPRESS_EXTENSION);
+	strcat(cfn, COMPRESS_EXTENSION);
 # endif
 	/* when compressing, we know the file exists */
 	if (uncomp) {
@@ -1094,8 +1094,8 @@ STATIC_OVL char * make_lockname(const char *filename, char *lockname) {
 #else
 #  ifdef NO_FILE_LINKS
 	Strcpy(lockname, LOCKDIR);
-	Strcat(lockname, "/");
-	Strcat(lockname, filename);
+	strcat(lockname, "/");
+	strcat(lockname, filename);
 #  else
 	Strcpy(lockname, filename);
 #  endif
@@ -1104,9 +1104,9 @@ STATIC_OVL char * make_lockname(const char *filename, char *lockname) {
 	char *semi_colon = rindex(lockname, ';');
 	if (semi_colon) *semi_colon = '\0';
       }
-	Strcat(lockname, ".lock;1");
+	strcat(lockname, ".lock;1");
 #  else
-	Strcat(lockname, "_lock");
+	strcat(lockname, "_lock");
 #  endif
 	return lockname;
 #endif
@@ -1950,7 +1950,7 @@ void check_recordfile(const char *dir) {
 	tmp[PATHLEN-1] = '\0';
 	if ((strlen(tmp) + 1 + strlen(RECORD)) < (PATHLEN - 1)) {
 		append_slash(tmp);
-		Strcat(tmp, RECORD);
+		strcat(tmp, RECORD);
 	}
 	fq_record = tmp;
 # else

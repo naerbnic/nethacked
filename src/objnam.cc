@@ -129,7 +129,7 @@ char * obj_typename(int otyp) {
 		if(nn) {
 			Strcpy(buf, actualn);
 			if (GemStone(otyp))
-				Strcat(buf, " stone");
+				strcat(buf, " stone");
 			if(un)
 				sprintf(eos(buf), " called %s", un);
 			if(dn)
@@ -137,7 +137,7 @@ char * obj_typename(int otyp) {
 		} else {
 			Strcpy(buf, dn ? dn : actualn);
 			if(ocl->oc_class == GEM_CLASS)
-				Strcat(buf, (ocl->oc_material == MINERAL) ?
+				strcat(buf, (ocl->oc_material == MINERAL) ?
 						" stone" : " gem");
 			if(un)
 				sprintf(eos(buf), " called %s", un);
@@ -270,15 +270,15 @@ char * xname2(struct Object* obj, bool ignore_oquan)
 			Strcpy(buf, "pair of ");
 
 		if (!obj->dknown)
-			Strcat(buf, dn ? dn : actualn);
+			strcat(buf, dn ? dn : actualn);
 		else if (nn)
-			Strcat(buf, actualn);
+			strcat(buf, actualn);
 		else if (un) {
-			Strcat(buf, dn ? dn : actualn);
-			Strcat(buf, " called ");
-			Strcat(buf, un);
+			strcat(buf, dn ? dn : actualn);
+			strcat(buf, " called ");
+			strcat(buf, un);
 		} else
-			Strcat(buf, dn ? dn : actualn);
+			strcat(buf, dn ? dn : actualn);
 		/* If we use an() here we'd have to remember never to use */
 		/* it whenever calling doname() or xname(). */
 		if (typ == FIGURINE)
@@ -304,12 +304,12 @@ char * xname2(struct Object* obj, bool ignore_oquan)
 			break;
 		}
 
-		if(nn)	Strcat(buf, actualn);
+		if(nn)	strcat(buf, actualn);
 		else if(un) {
 			if(is_boots(obj))
-				Strcat(buf,"boots");
+				strcat(buf,"boots");
 			else if(is_gloves(obj))
-				Strcat(buf,"gloves");
+				strcat(buf,"gloves");
 			else if(is_cloak(obj))
 				Strcpy(buf,"cloak");
 			else if(is_helmet(obj))
@@ -318,9 +318,9 @@ char * xname2(struct Object* obj, bool ignore_oquan)
 				Strcpy(buf,"shield");
 			else
 				Strcpy(buf,"armor");
-			Strcat(buf, " called ");
-			Strcat(buf, un);
-		} else	Strcat(buf, dn);
+			strcat(buf, " called ");
+			strcat(buf, un);
+		} else	strcat(buf, dn);
 		break;
 	    case FOOD_CLASS:
 		if (typ == SLIME_MOLD) {
@@ -339,7 +339,7 @@ char * xname2(struct Object* obj, bool ignore_oquan)
 		Strcpy(buf, actualn);
 		if (typ == TIN && obj->known) {
 		    if(obj->spe > 0)
-			Strcat(buf, " of spinach");
+			strcat(buf, " of spinach");
 		    else if (obj->corpsenm == NON_PM)
 		        Strcpy(buf, "empty tin");
 		    else if (vegetarian(&mons[obj->corpsenm]))
@@ -372,39 +372,39 @@ char * xname2(struct Object* obj, bool ignore_oquan)
 		if (obj->dknown && obj->odiluted)
 			Strcpy(buf, "diluted ");
 		if(nn || un || !obj->dknown) {
-			Strcat(buf, "potion");
+			strcat(buf, "potion");
 			if(!obj->dknown) break;
 			if(nn) {
-			    Strcat(buf, " of ");
+			    strcat(buf, " of ");
 			    if (typ == POT_WATER &&
 				obj->bknown && (obj->blessed || obj->cursed)) {
-				Strcat(buf, obj->blessed ? "holy " : "unholy ");
+				strcat(buf, obj->blessed ? "holy " : "unholy ");
 			    }
-			    Strcat(buf, actualn);
+			    strcat(buf, actualn);
 			} else {
-				Strcat(buf, " called ");
-				Strcat(buf, un);
+				strcat(buf, " called ");
+				strcat(buf, un);
 			}
 		} else {
-			Strcat(buf, dn);
-			Strcat(buf, " potion");
+			strcat(buf, dn);
+			strcat(buf, " potion");
 		}
 		break;
 	case SCROLL_CLASS:
 		Strcpy(buf, "scroll");
 		if(!obj->dknown) break;
 		if(nn) {
-			Strcat(buf, " of ");
-			Strcat(buf, actualn);
+			strcat(buf, " of ");
+			strcat(buf, actualn);
 		} else if(un) {
-			Strcat(buf, " called ");
-			Strcat(buf, un);
+			strcat(buf, " called ");
+			strcat(buf, un);
 		} else if (ocl->oc_magic) {
-			Strcat(buf, " labeled ");
-			Strcat(buf, dn);
+			strcat(buf, " labeled ");
+			strcat(buf, dn);
 		} else {
 			Strcpy(buf, dn);
-			Strcat(buf, " scroll");
+			strcat(buf, " scroll");
 		}
 		break;
 	case WAND_CLASS:
@@ -423,7 +423,7 @@ char * xname2(struct Object* obj, bool ignore_oquan)
 		} else if (nn) {
 			if (typ != SPE_BOOK_OF_THE_DEAD)
 			    Strcpy(buf, "spellbook of ");
-			Strcat(buf, actualn);
+			strcat(buf, actualn);
 		} else if (un) {
 			sprintf(buf, "spellbook called %s", un);
 		} else
@@ -450,7 +450,7 @@ char * xname2(struct Object* obj, bool ignore_oquan)
 		    else sprintf(buf, "%s %s", dn, rock);
 		} else {
 		    Strcpy(buf, actualn);
-		    if (GemStone(typ)) Strcat(buf, " stone");
+		    if (GemStone(typ)) strcat(buf, " stone");
 		}
 		break;
 	    }
@@ -463,9 +463,9 @@ char * xname2(struct Object* obj, bool ignore_oquan)
 	if (obj->quan != 1L) Strcpy(buf, makeplural(buf));
 
 	if (obj->onamelth && obj->dknown) {
-		Strcat(buf, " named ");
+		strcat(buf, " named ");
 nameit:
-		Strcat(buf, ONAME(obj));
+		strcat(buf, ONAME(obj));
 	}
 
 	if (!strncmpi(buf, "the ", 4)) buf += 4;
@@ -513,21 +513,21 @@ static void add_erosion_words(struct Object *obj, char *prefix) {
 	 */
 	if (obj->oeroded && !iscrys) {
 		switch (obj->oeroded) {
-			case 2:	Strcat(prefix, "very "); break;
-			case 3:	Strcat(prefix, "thoroughly "); break;
+			case 2:	strcat(prefix, "very "); break;
+			case 3:	strcat(prefix, "thoroughly "); break;
 		}			
-		Strcat(prefix, is_rustprone(obj) ? "rusty " : "burnt ");
+		strcat(prefix, is_rustprone(obj) ? "rusty " : "burnt ");
 	}
 	if (obj->oeroded2 && !iscrys) {
 		switch (obj->oeroded2) {
-			case 2:	Strcat(prefix, "very "); break;
-			case 3:	Strcat(prefix, "thoroughly "); break;
+			case 2:	strcat(prefix, "very "); break;
+			case 3:	strcat(prefix, "thoroughly "); break;
 		}			
-		Strcat(prefix, is_corrodeable(obj) ? "corroded " :
+		strcat(prefix, is_corrodeable(obj) ? "corroded " :
 			"rotted ");
 	}
 	if (obj->rknown && obj->oerodeproof)
-		Strcat(prefix,
+		strcat(prefix,
 		       iscrys ? "fixed " :
 		       is_rustprone(obj) ? "rustproof " :
 		       is_corrodeable(obj) ? "corrodeproof " :	/* "stainless"? */
@@ -539,7 +539,7 @@ char * doname(struct Object *obj) {
 	char prefix[PREFIX];
 	char tmpbuf[PREFIX+1];
 	/* when we have to add something at the start of prefix instead of the
-	 * end (Strcat is used on the end)
+	 * end (strcat is used on the end)
 	 */
 	char *bp = xname(obj);
 
@@ -564,7 +564,7 @@ char * doname(struct Object *obj) {
 		Strcpy(prefix, "a ");
 
 #ifdef INVISIBLE_OBJECTS
-	if (Object->oinvis) Strcat(prefix,"invisible ");
+	if (Object->oinvis) strcat(prefix,"invisible ");
 #endif
 
 	if (obj->bknown &&
@@ -575,9 +575,9 @@ char * doname(struct Object *obj) {
 	     * always allow "uncursed potion of water"
 	     */
 	    if (obj->cursed)
-		Strcat(prefix, "cursed ");
+		strcat(prefix, "cursed ");
 	    else if (obj->blessed)
-		Strcat(prefix, "blessed ");
+		strcat(prefix, "blessed ");
 	    else if (iflags.show_buc || (!obj->known || !objects[obj->otyp].oc_charged ||
 		      (obj->oclass == ARMOR_CLASS ||
 		       obj->oclass == RING_CLASS))
@@ -597,29 +597,29 @@ char * doname(struct Object *obj) {
 			&& obj->otyp != FAKE_AMULET_OF_YENDOR
 			&& obj->otyp != AMULET_OF_YENDOR
 			&& !Role_if(PM_PRIEST))
-		Strcat(prefix, "uncursed ");
+		strcat(prefix, "uncursed ");
 	}
 
-	if (obj->greased) Strcat(prefix, "greased ");
+	if (obj->greased) strcat(prefix, "greased ");
 
 	switch(obj->oclass) {
 	case AMULET_CLASS:
 		if(obj->owornmask & W_AMUL)
-			Strcat(bp, " (being worn)");
+			strcat(bp, " (being worn)");
 		break;
 	case WEAPON_CLASS:
 		if(ispoisoned)
-			Strcat(prefix, "poisoned ");
+			strcat(prefix, "poisoned ");
 plus:
 		add_erosion_words(obj, prefix);
 		if(obj->known) {
-			Strcat(prefix, sitoa(obj->spe));
-			Strcat(prefix, " ");
+			strcat(prefix, sitoa(obj->spe));
+			strcat(prefix, " ");
 		}
 		break;
 	case ARMOR_CLASS:
 		if(obj->owornmask & W_ARMOR)
-			Strcat(bp, (obj == uskin) ? " (embedded in your skin)" :
+			strcat(bp, (obj == uskin) ? " (embedded in your skin)" :
 				" (being worn)");
 		goto plus;
 	case TOOL_CLASS:
@@ -631,11 +631,11 @@ plus:
 				| W_SADDLE
 #endif
 				)) {
-			Strcat(bp, " (being worn)");
+			strcat(bp, " (being worn)");
 			break;
 		}
 		if (obj->otyp == LEASH && obj->leashmon != 0) {
-			Strcat(bp, " (in use)");
+			strcat(bp, " (in use)");
 			break;
 		}
 		if (is_weptool(obj))
@@ -653,9 +653,9 @@ plus:
 			obj->otyp == BRASS_LANTERN || Is_candle(obj)) {
 			if (Is_candle(obj) &&
 			    obj->age < 20L * (long)objects[obj->otyp].oc_cost)
-				Strcat(prefix, "partly used ");
+				strcat(prefix, "partly used ");
 			if(obj->lamplit)
-				Strcat(bp, " (lit)");
+				strcat(bp, " (lit)");
 			break;
 		}
 		if(objects[obj->otyp].oc_charged)
@@ -669,48 +669,48 @@ charges:
 		break;
 	case POTION_CLASS:
 		if (obj->otyp == POT_OIL && obj->lamplit)
-		    Strcat(bp, " (lit)");
+		    strcat(bp, " (lit)");
 		break;
 	case RING_CLASS:
 		add_erosion_words(obj, prefix);
 ring:
-		if(obj->owornmask & W_RINGR) Strcat(bp, " (on right ");
-		if(obj->owornmask & W_RINGL) Strcat(bp, " (on left ");
+		if(obj->owornmask & W_RINGR) strcat(bp, " (on right ");
+		if(obj->owornmask & W_RINGL) strcat(bp, " (on left ");
 		if(obj->owornmask & W_RING) {
-		    Strcat(bp, body_part(HAND));
-		    Strcat(bp, ")");
+		    strcat(bp, body_part(HAND));
+		    strcat(bp, ")");
 		}
 		if(obj->known && objects[obj->otyp].oc_charged) {
-			Strcat(prefix, sitoa(obj->spe));
-			Strcat(prefix, " ");
+			strcat(prefix, sitoa(obj->spe));
+			strcat(prefix, " ");
 		}
 		break;
 	case FOOD_CLASS:
 		if (obj->oeaten)
-		    Strcat(prefix, "partly eaten ");
+		    strcat(prefix, "partly eaten ");
 		if (obj->otyp == CORPSE) {
 		    if (mons[obj->corpsenm].geno & G_UNIQ) {
 			sprintf(prefix, "%s%s ",
 				(type_is_pname(&mons[obj->corpsenm]) ?
 					"" : "the "),
 				s_suffix(mons[obj->corpsenm].mname));
-			if (obj->oeaten) Strcat(prefix, "partly eaten ");
+			if (obj->oeaten) strcat(prefix, "partly eaten ");
 		    } else {
-			Strcat(prefix, mons[obj->corpsenm].mname);
-			Strcat(prefix, " ");
+			strcat(prefix, mons[obj->corpsenm].mname);
+			strcat(prefix, " ");
 		    }
 		} else if (obj->otyp == EGG) {
 #if 0	/* corpses don't tell if they're stale either */
 		    if (Object->known && stale_egg(Object))
-			Strcat(prefix, "stale ");
+			strcat(prefix, "stale ");
 #endif
 		    if (obj->corpsenm >= LOW_PM &&
 			    (obj->known ||
 			    mvitals[obj->corpsenm].mvflags & MV_KNOWS_EGG)) {
-			Strcat(prefix, mons[obj->corpsenm].mname);
-			Strcat(prefix, " ");
+			strcat(prefix, mons[obj->corpsenm].mname);
+			strcat(prefix, " ");
 			if (obj->spe)
-			    Strcat(bp, " (laid by you)");
+			    strcat(bp, " (laid by you)");
 		    }
 		}
 		if (obj->otyp == MEAT_RING) goto ring;
@@ -719,13 +719,13 @@ ring:
 	case CHAIN_CLASS:
 		add_erosion_words(obj, prefix);
 		if(obj->owornmask & W_BALL)
-			Strcat(bp, " (chained to you)");
+			strcat(bp, " (chained to you)");
 			break;
 	}
 
 	if((obj->owornmask & W_WEP) && !mrg_to_wielded) {
 		if (obj->quan != 1L) {
-			Strcat(bp, " (wielded)");
+			strcat(bp, " (wielded)");
 		} else {
 			const char *hand_s = body_part(HAND);
 
@@ -738,9 +738,9 @@ ring:
 			sprintf(eos(bp), " (wielded in other %s)",
 				body_part(HAND));
 		else
-			Strcat(bp, " (alternate weapon; not wielded)");
+			strcat(bp, " (alternate weapon; not wielded)");
 	}
-	if(obj->owornmask & W_QUIVER) Strcat(bp, " (in quiver)");
+	if(obj->owornmask & W_QUIVER) strcat(bp, " (in quiver)");
 	if(obj->unpaid) {
 		xchar ox, oy; 
 		long quotedprice = unpaid_cost(obj);
@@ -906,7 +906,7 @@ char * an(const char *str) {
 			Strcpy(buf, "a ");
 	}
 
-	Strcat(buf, str);
+	strcat(buf, str);
 	return buf;
 }
 
@@ -959,7 +959,7 @@ char * the(const char *str) {
 	    Strcpy(buf, "the ");
 	else
 	    buf[0] = '\0';
-	Strcat(buf, str);
+	strcat(buf, str);
 
 	return buf;
 }
@@ -981,8 +981,8 @@ char * aobjnam(struct Object *otmp, const char *verb) {
 	}
 
 	if(verb) {
-	    Strcat(bp, " ");
-	    Strcat(bp, otense(otmp, verb));
+	    strcat(bp, " ");
+	    strcat(bp, otense(otmp, verb));
 	}
 	return(bp);
 }
@@ -992,8 +992,8 @@ char * Tobjnam(struct Object *otmp, const char *verb) {
 	char *bp = The(xname(otmp));
 
 	if(verb) {
-	    Strcat(bp, " ");
-	    Strcat(bp, otense(otmp, verb));
+	    strcat(bp, " ");
+	    strcat(bp, otense(otmp, verb));
 	}
 	return(bp);
 }
@@ -1106,14 +1106,14 @@ char * vtense(const char *subj, const char *verb) {
 		 (len == 2 && *spot == 'o')) {
 	    /* Ends in z, x, s, ch, sh; add an "es" */
 	    Strcpy(buf, verb);
-	    Strcat(buf, "es");
+	    strcat(buf, "es");
 	} else if (*spot == 'y' && (!index(vowels, *(spot-1)))) {
 	    /* like "y" case in makeplural */
 	    Strcpy(buf, verb);
 	    Strcpy(buf + len - 1, "ies");
 	} else {
 	    Strcpy(buf, verb);
-	    Strcat(buf, "s");
+	    strcat(buf, "s");
 	}
 
 	return buf;
@@ -1826,7 +1826,7 @@ struct Object * readobjnam(char *bp, struct Object *no_wish, bool from_user) {
 		    } else {
 			spesgn = 1;
 			p++;
-			if (*p) Strcat(bp, p);
+			if (*p) strcat(bp, p);
 		    }
 		}
 	    }
@@ -2093,7 +2093,7 @@ struct Object * readobjnam(char *bp, struct Object *no_wish, bool from_user) {
 		} else {		/* try to construct canonical form */
 			char tbuf[BUFSZ];
 			Strcpy(tbuf, "worthless piece of ");
-			Strcat(tbuf, g);  /* assume it starts with the color */
+			strcat(tbuf, g);  /* assume it starts with the color */
 			Strcpy(bp, tbuf);
 		}
 	}
