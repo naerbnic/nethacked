@@ -6,7 +6,7 @@
 
 #include "hack.h"
 
-STATIC_DCL int FDECL(drop_throw,(struct Object *,BOOLEAN_P,int,int));
+STATIC_DCL int FDECL(drop_throw,(struct Object *,bool,int,int));
 
 #define URETREATING(x,y) (distmin(u.ux,u.uy,x,y) > distmin(u.ux0,u.uy0,x,y))
 
@@ -37,7 +37,7 @@ STATIC_OVL const char *breathwep[] = {
 /* hero is hit by something other than a monster */
 int thitu(int tlev, int dam, struct Object *obj, const char *name) {
 	const char *onm, *knm;
-	boolean is_acid;
+	bool is_acid;
 	int kprefix = KILLED_BY_AN;
 	char onmbuf[BUFSZ], knmbuf[BUFSZ];
 
@@ -89,7 +89,7 @@ int thitu(int tlev, int dam, struct Object *obj, const char *name) {
  * Returns 0 if object still exists (not destroyed).
  */
 
-STATIC_OVL int drop_throw(struct Object *obj, boolean ohit, int x, int y) {
+STATIC_OVL int drop_throw(struct Object *obj, bool ohit, int x, int y) {
 	int retvalu = 1;
 	int create;
 	struct Monster *mtmp;
@@ -142,9 +142,9 @@ int ohitmon(
     int range, 
 
     /* give message(s) even when you can't see what happened */
-    boolean verbose) {
+    bool verbose) {
 	int damage, tmp;
-	boolean vis, ismimic;
+	bool vis, ismimic;
 	int objgone = 1;
 
 	ismimic = mtmp->m_ap_type && mtmp->m_ap_type != M_AP_MONSTER;
@@ -677,7 +677,7 @@ int breamu(struct Monster* mtmp, struct Attack* mattk) {
 	return(1);
 }
 
-boolean linedup(xchar ax, xchar ay, xchar bx, xchar by) {
+bool linedup(xchar ax, xchar ay, xchar bx, xchar by) {
 	tbx = ax - bx;	/* These two values are set for use */
 	tby = ay - by;	/* after successful return.	    */
 
@@ -687,14 +687,14 @@ boolean linedup(xchar ax, xchar ay, xchar bx, xchar by) {
 
 	if((!tbx || !tby || abs(tbx) == abs(tby)) /* straight line or diagonal */
 	   && distmin(tbx, tby, 0, 0) < BOLT_LIM) {
-	    if(ax == u.ux && ay == u.uy) return((boolean)(couldsee(bx,by)));
+	    if(ax == u.ux && ay == u.uy) return((bool)(couldsee(bx,by)));
 	    else if(clear_path(ax,ay,bx,by)) return TRUE;
 	}
 	return FALSE;
 }
 
 /* is mtmp in position to use ranged attack? */
-boolean lined_up(struct Monster *mtmp) {
+bool lined_up(struct Monster *mtmp) {
 	return(linedup(mtmp->mux,mtmp->muy,mtmp->mx,mtmp->my));
 }
 
@@ -713,10 +713,10 @@ struct Object * m_carrying(struct Monster *mtmp, int type) {
 }
 
 /* TRUE iff thrown/kicked/rolled object doesn't pass through iron bars */
-boolean hits_bars(struct Object **obj_p, int x, int y, int always_hit, int whodidit) {
+bool hits_bars(struct Object **obj_p, int x, int y, int always_hit, int whodidit) {
     struct Object *otmp = *obj_p;
     int obj_type = otmp->otyp;
-    boolean hits = always_hit;
+    bool hits = always_hit;
 
     if (!hits)
 	switch (otmp->oclass) {

@@ -62,7 +62,7 @@ STATIC_OVL void init_rumors(dlb *fp) {
  * cookies should not appear.  This has no effect for true rumors since none
  * of them contain such references anyway.
  */
-char * getrumor(int truth, char *rumor_buf, boolean exclude_cookie) {
+char * getrumor(int truth, char *rumor_buf, bool exclude_cookie) {
 	dlb	*rumors;
 	long tidbit, beginning;
 	char	*endp, line[BUFSZ], xbuf[BUFSZ];
@@ -133,7 +133,7 @@ void outrumor(int truth, int mechanism) {
 		"This cookie has a scrap of paper inside.";
 	const char *line;
 	char buf[BUFSZ];
-	boolean reading = (mechanism == BY_COOKIE ||
+	bool reading = (mechanism == BY_COOKIE ||
 			   mechanism == BY_PAPER);
 
 	if (reading) {
@@ -211,7 +211,7 @@ void restore_oracles(int fd) {
 	}
 }
 
-void outoracle(boolean special, boolean delphi) {
+void outoracle(bool special, bool delphi) {
 	char	line[COLNO];
 	char	*endp;
 	dlb	*oracles;
@@ -338,7 +338,7 @@ int doconsult(struct Monster *oracl) {
 		    /* 5 pts if very 1st, or 2 pts if major already done */
 		u.uevent.minor_oracle = TRUE;
 	} else {
-		boolean cheapskate = u_pay < major_cost;
+		bool cheapskate = u_pay < major_cost;
 		outoracle(cheapskate, TRUE);
 		if (!cheapskate && !u.uevent.major_oracle)
 		    add_xpts = u_pay / (u.uevent.minor_oracle ? 25 : 10);

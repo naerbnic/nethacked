@@ -27,8 +27,8 @@ static const char *text_sets[] = { "monsters.txt", "objects.txt", "other.txt" };
 
 extern const char *FDECL(tilename, (int, int));
 static void FDECL(read_text_colormap, (FILE *));
-static boolean FDECL(write_text_colormap, (FILE *));
-static boolean FDECL(read_txttile, (FILE *, pixel(*)[TILE_X]));
+static bool FDECL(write_text_colormap, (FILE *));
+static bool FDECL(read_txttile, (FILE *, pixel(*)[TILE_X]));
 static void FDECL(write_txttile, (FILE *, pixel(*)[TILE_X]));
 
 /* Ugh.  DICE doesn't like %[A-Z], so we have to spell it out... */
@@ -55,7 +55,7 @@ static void read_text_colormap(FILE *txtfile) {
 
 #undef FORMAT_STRING
 
-static boolean write_text_colormap(FILE *txtfile) {
+static bool write_text_colormap(FILE *txtfile) {
 	int i;
 	char c;
 
@@ -78,7 +78,7 @@ static boolean write_text_colormap(FILE *txtfile) {
 	return TRUE;
 }
 
-static boolean read_txttile(FILE* txtfile, pixel (*pixels)[TILE_X]) {
+static bool read_txttile(FILE* txtfile, pixel (*pixels)[TILE_X]) {
 	int ph, i, j, k;
 	char buf[BUFSZ], ttype[BUFSZ];
 	const char *p;
@@ -234,7 +234,7 @@ void merge_colormap() {
 	}
 }
 
-boolean fopen_text_file(const char *filename, const char *type) {
+bool fopen_text_file(const char *filename, const char *type) {
 	const char *p;
 	int i;
 
@@ -286,11 +286,11 @@ boolean fopen_text_file(const char *filename, const char *type) {
 	}
 }
 
-boolean read_text_tile(pixel (*pixels)[TILE_X]) {
+bool read_text_tile(pixel (*pixels)[TILE_X]) {
 	return(read_txttile(tile_file, pixels));
 }
 
-boolean write_text_tile(pixel (*pixels)[TILE_X]) {
+bool write_text_tile(pixel (*pixels)[TILE_X]) {
 	write_txttile(tile_file, pixels);
 	return TRUE;
 }

@@ -9,7 +9,7 @@
 #include "artifact.h"
 #include "epri.h"
 
-extern boolean notonhead;
+extern bool notonhead;
 
 #ifdef OVL0
 
@@ -21,7 +21,7 @@ STATIC_DCL void FDECL(watch_on_duty,(struct Monster *));
 #endif /* OVL0 */
 #ifdef OVLB
 
-boolean /* TRUE : mtmp died */ mb_trapped(struct Monster *mtmp) {
+bool /* TRUE : mtmp died */ mb_trapped(struct Monster *mtmp) {
 	if (flags.verbose) {
 	    if (cansee(mtmp->mx, mtmp->my))
 		pline("KABOOM!!  You see a door explode.");
@@ -77,7 +77,7 @@ STATIC_OVL void watch_on_duty(struct Monster *mtmp) {
 
 int dochugw(struct Monster *mtmp) {
 	int x = mtmp->mx, y = mtmp->my;
-	boolean already_saw_mon = !occupation ? 0 : canspotmon(mtmp);
+	bool already_saw_mon = !occupation ? 0 : canspotmon(mtmp);
 	int rd = dochug(mtmp);
 #if 0
 	/* part of the original warning code which was replaced in 3.3.1 */
@@ -119,14 +119,14 @@ int dochugw(struct Monster *mtmp) {
 #endif /* OVL1 */
 #ifdef OVL2
 
-boolean onscary(int x, int y, struct Monster *mtmp) {
+bool onscary(int x, int y, struct Monster *mtmp) {
 	if (mtmp->isshk || mtmp->isgd || mtmp->iswiz || !mtmp->mcansee ||
 	    mtmp->mpeaceful || mtmp->data->mlet == S_HUMAN ||
 	    is_lminion(mtmp) || mtmp->data == &mons[PM_ANGEL] ||
 	    is_rider(mtmp->data) || mtmp->data == &mons[PM_MINOTAUR])
 		return(FALSE);
 
-	return (boolean)(sobj_at(SCR_SCARE_MONSTER, x, y)
+	return (bool)(sobj_at(SCR_SCARE_MONSTER, x, y)
 #ifdef ELBERETH
 			 || sengr_at("Elbereth", x, y)
 #endif
@@ -138,7 +138,7 @@ boolean onscary(int x, int y, struct Monster *mtmp) {
 #ifdef OVL0
 
 /* regenerate lost hit points */
-void mon_regen(struct Monster *mon, boolean digest_meal) {
+void mon_regen(struct Monster *mon, bool digest_meal) {
 	if (mon->mhp < mon->mhpmax &&
 	    (moves % 20 == 0 || regenerates(mon->data))) mon->mhp++;
 	if (mon->mspec_used) mon->mspec_used--;
@@ -187,7 +187,7 @@ STATIC_OVL int disturb(struct Monster *mtmp) {
 /* monster begins fleeing for the specified time, 0 means untimed flee
  * if first, only adds fleetime if monster isn't already fleeing
  * if fleemsg, prints a message about new flight, otherwise, caller should */
-void monflee(struct Monster *mtmp, int fleetime, boolean first, boolean fleemsg) {
+void monflee(struct Monster *mtmp, int fleetime, bool first, bool fleemsg) {
 	if (u.ustuck == mtmp) {
 	    if (u.uswallow)
 		expels(mtmp, mtmp->data, TRUE);
@@ -382,7 +382,7 @@ int dochug(struct Monster *mtmp) {
 		    (!Conflict || resist(mtmp, RING_CLASS, 0, 0)))
 			pline("It feels quite soothing.");
 		else {
-			boolean m_sen = sensemon(mtmp);
+			bool m_sen = sensemon(mtmp);
 
 			if (m_sen || (Blind_telepat && rn2(2)) || !rn2(10)) {
 				int dmg;
@@ -539,7 +539,7 @@ static const char indigestion[] = { BALL_CLASS, ROCK_CLASS, 0 };
 static const char boulder_class[] = { ROCK_CLASS, 0 };
 static const char gem_class[] = { GEM_CLASS, 0 };
 
-boolean itsstuck(struct Monster *mtmp) {
+bool itsstuck(struct Monster *mtmp) {
 	if (sticks(youmonst.data) && mtmp==u.ustuck && !u.uswallow) {
 		pline("%s cannot escape from you!", Monnam(mtmp));
 		return(TRUE);
@@ -557,11 +557,11 @@ int m_move(struct Monster *mtmp, int after) {
 	int appr;
 	xchar gx,gy,nix,niy,chcnt;
 	int chi;	/* could be schar except for stupid Sun-2 compiler */
-	boolean likegold=0, likegems=0, likeobjs=0, likemagic=0, conceals=0;
-	boolean likerock=0, can_tunnel=0;
-	boolean can_open=0, can_unlock=0, doorbuster=0;
-	boolean uses_items=0, setlikes=0;
-	boolean avoid=FALSE;
+	bool likegold=0, likegems=0, likeobjs=0, likemagic=0, conceals=0;
+	bool likerock=0, can_tunnel=0;
+	bool can_open=0, can_unlock=0, doorbuster=0;
+	bool uses_items=0, setlikes=0;
+	bool avoid=FALSE;
 	struct permonst *ptr;
 	struct Monster *mtoo;
 	schar mmoved = 0;	/* not strictly nec.: chi >= 0 will do */
@@ -679,7 +679,7 @@ not_special:
 #ifdef GOLDOBJ
 		struct Object *lepgold, *ygold;
 #endif
-		boolean should_see = (couldsee(omx, omy) &&
+		bool should_see = (couldsee(omx, omy) &&
 				      (levl[gx][gy].lit ||
 				       !levl[omx][omy].lit) &&
 				      (dist2(omx, omy, gx, gy) <= 36));
@@ -718,7 +718,7 @@ not_special:
 				    && (!Is_rogue_level(&u.uz))
 #endif
 							    ) {
-	    boolean in_line = lined_up(mtmp) &&
+	    bool in_line = lined_up(mtmp) &&
 		(distmin(mtmp->mx, mtmp->my, mtmp->mux, mtmp->muy) <=
 		    (throws_rocks(youmonst.data) ? 20 : ACURRSTR/2+1)
 		);
@@ -1001,7 +1001,7 @@ not_special:
 	}
 postmov:
 	if(mmoved == 1 || mmoved == 3) {
-	    boolean canseeit = cansee(mtmp->mx, mtmp->my);
+	    bool canseeit = cansee(mtmp->mx, mtmp->my);
 
 	    if(mmoved == 1) {
 		newsym(omx,omy);		/* update the old position */
@@ -1017,7 +1017,7 @@ postmov:
 			&& !can_tunnel /* taken care of below */
 		      ) {
 		    struct rm *here = &levl[mtmp->mx][mtmp->my];
-		    boolean btrapped = (here->doormask & D_TRAPPED);
+		    bool btrapped = (here->doormask & D_TRAPPED);
 
 		    if(here->doormask & (D_LOCKED|D_CLOSED) && amorphous(ptr)) {
 			if (flags.verbose && canseemon(mtmp))
@@ -1139,7 +1139,7 @@ postmov:
 		}
 
 		if(!*in_rooms(mtmp->mx, mtmp->my, SHOPBASE) || !rn2(25)) {
-		    boolean picked = FALSE;
+		    bool picked = FALSE;
 
 		    if(likeobjs) picked |= mpickstuff(mtmp, practical);
 		    if(likemagic) picked |= mpickstuff(mtmp, magical);
@@ -1176,13 +1176,13 @@ postmov:
 #endif /* OVL0 */
 #ifdef OVL2
 
-boolean closed_door(int x, int y) {
-	return((boolean)(IS_DOOR(levl[x][y].typ) &&
+bool closed_door(int x, int y) {
+	return((bool)(IS_DOOR(levl[x][y].typ) &&
 			(levl[x][y].doormask & (D_LOCKED | D_CLOSED))));
 }
 
-boolean accessible(int x, int y) {
-	return((boolean)(ACCESSIBLE(levl[x][y].typ) && !closed_door(x, y)));
+bool accessible(int x, int y) {
+	return((bool)(ACCESSIBLE(levl[x][y].typ) && !closed_door(x, y)));
 }
 
 #endif /* OVL2 */
@@ -1190,7 +1190,7 @@ boolean accessible(int x, int y) {
 
 /* decide where the monster thinks you are standing */
 void set_apparxy(struct Monster *mtmp) {
-	boolean notseen, gotu;
+	bool notseen, gotu;
 	int disp, mx = mtmp->mux, my = mtmp->muy;
 #ifdef GOLDOBJ
 	long umoney = money_cnt(invent);
@@ -1258,7 +1258,7 @@ found_you:
 	mtmp->muy = my;
 }
 
-boolean can_ooze(struct Monster *mtmp) {
+bool can_ooze(struct Monster *mtmp) {
 	struct Object *chain, *obj;
 
 	if (!amorphous(mtmp->data)) return FALSE;

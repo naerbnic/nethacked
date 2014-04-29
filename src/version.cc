@@ -48,12 +48,12 @@ int doextversion() {
 }
 
 #ifdef MICRO
-boolean comp_times(long filetime) {
-	return((boolean)(filetime < BUILD_TIME));
+bool comp_times(long filetime) {
+	return((bool)(filetime < BUILD_TIME));
 }
 #endif
 
-boolean check_version(struct version_info *version_data, const char *filename, boolean complain) {
+bool check_version(struct version_info *version_data, const char *filename, bool complain) {
 	if (
 #ifdef VERSION_COMPATIBILITY
 	    version_data->incarnation < VERSION_COMPATIBILITY ||
@@ -84,10 +84,10 @@ boolean check_version(struct version_info *version_data, const char *filename, b
 
 /* this used to be based on file date and somewhat OS-dependant,
    but now examines the initial part of the file's contents */
-boolean uptodate(int fd, const char *name) {
+bool uptodate(int fd, const char *name) {
     int rlen;
     struct version_info vers_info;
-    boolean verbose = name ? TRUE : FALSE;
+    bool verbose = name ? TRUE : FALSE;
 
     rlen = read(fd, (genericptr_t) &vers_info, sizeof vers_info);
     minit();		/* ZEROCOMP */

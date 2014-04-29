@@ -33,9 +33,9 @@
  *			 random intervals.
  */
 
-STATIC_DCL boolean FDECL(md_start,(coord *));
-STATIC_DCL boolean FDECL(md_stop,(coord *, coord *));
-STATIC_DCL boolean FDECL(md_rush,(struct Monster *,int,int));
+STATIC_DCL bool FDECL(md_start,(coord *));
+STATIC_DCL bool FDECL(md_stop,(coord *, coord *));
+STATIC_DCL bool FDECL(md_rush,(struct Monster *,int,int));
 STATIC_DCL void FDECL(newmail, (struct mail_info *));
 
 extern char *viz_rmin, *viz_rmax;	/* line-of-sight limits (vision.c) */
@@ -115,7 +115,7 @@ void getmailstatus() {
  * Pick coordinates for a starting position for the mail daemon.  Called
  * from newmail() and newphone().
  */
-STATIC_OVL boolean md_start(coord *startp) {
+STATIC_OVL bool md_start(coord *startp) {
     coord testcc;	/* scratch coordinates */
     int row;		/* current row we are checking */
     int lax;		/* if TRUE, pick a position in sight. */
@@ -213,7 +213,7 @@ retry:
  * enexto().  Use enexto() as a last resort because enexto() chooses
  * its point randomly, which is not what we want.
  */
-STATIC_OVL boolean md_stop(coord *stopp, coord *startp) {
+STATIC_OVL bool md_stop(coord *stopp, coord *startp) {
     int x, y, distance, min_distance = -1;
 
     for (x = u.ux-1; x <= u.ux+1; x++)
@@ -253,7 +253,7 @@ static const char *mail_text[] = {
  * FALSE if the md gets stuck in a position where there is a monster.  Return
  * TRUE otherwise.
  */
-STATIC_OVL boolean md_rush(struct Monster *md, int tx, int ty) {
+STATIC_OVL bool md_rush(struct Monster *md, int tx, int ty) {
     struct Monster *mon;			/* displaced monster */
     int dx, dy;		/* direction counters */
     int fx = md->mx, fy = md->my;	/* current location */
@@ -348,7 +348,7 @@ STATIC_OVL boolean md_rush(struct Monster *md, int tx, int ty) {
 STATIC_OVL void newmail(struct mail_info *info) {
     struct Monster *md;
     coord start, stop;
-    boolean message_seen = FALSE;
+    bool message_seen = FALSE;
 
     /* Try to find good starting and stopping places. */
     if (!md_start(&start) || !md_stop(&stop,&start)) goto give_up;

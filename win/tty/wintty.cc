@@ -119,14 +119,14 @@ extern struct menucoloring *menu_colorings;
 #endif
 
 #ifdef CLIPPING
-static boolean clipping = FALSE;	/* clipping on? */
+static bool clipping = FALSE;	/* clipping on? */
 static int clipx = 0, clipxmax = 0;
 static int clipy = 0, clipymax = 0;
 #endif /* CLIPPING */
 
 #if defined(ASCIIGRAPH) && !defined(NO_TERMS)
-boolean GFlag = FALSE;
-boolean HE_resets_AS;	/* see termcap.c */
+bool GFlag = FALSE;
+bool HE_resets_AS;	/* see termcap.c */
 #endif
 
 #if defined(MICRO) || defined(WIN32CON)
@@ -135,8 +135,8 @@ static const char to_continue[] = "to continue";
 #else
 STATIC_DCL void NDECL(getret);
 #endif
-STATIC_DCL void FDECL(erase_menu_or_text, (winid, struct WinDesc *, BOOLEAN_P));
-STATIC_DCL void FDECL(free_window_info, (struct WinDesc *, BOOLEAN_P));
+STATIC_DCL void FDECL(erase_menu_or_text, (winid, struct WinDesc *, bool));
+STATIC_DCL void FDECL(free_window_info, (struct WinDesc *, bool));
 STATIC_DCL void FDECL(dmore,(struct WinDesc *, const char *));
 STATIC_DCL void FDECL(set_item_state, (winid, int, tty_menu_item *));
 STATIC_DCL void FDECL(set_all_on_page, (winid,tty_menu_item *,tty_menu_item *));
@@ -849,7 +849,7 @@ winid tty_create_nhwindow(int type) {
     return newid;
 }
 
-STATIC_OVL void erase_menu_or_text(winid window, struct WinDesc *cw, boolean clear) {
+STATIC_OVL void erase_menu_or_text(winid window, struct WinDesc *cw, bool clear) {
     if(cw->offx == 0)
 	if(cw->offy) {
 	    tty_curs(window, 1, 0);
@@ -862,7 +862,7 @@ STATIC_OVL void erase_menu_or_text(winid window, struct WinDesc *cw, boolean cle
 	docorner((int)cw->offx, cw->maxrow+1);
 }
 
-STATIC_OVL void free_window_info(struct WinDesc *cw, boolean free_data) {
+STATIC_OVL void free_window_info(struct WinDesc *cw, bool free_data) {
     int i;
 
     if (cw->data) {
@@ -1011,7 +1011,7 @@ STATIC_OVL void invert_all_on_page(winid window, tty_menu_item *page_start, tty_
  */
 STATIC_OVL void invert_all(winid window, tty_menu_item *page_start, tty_menu_item *page_end, char acc) {
     tty_menu_item *curr;
-    boolean on_curr_page;
+    bool on_curr_page;
     struct WinDesc *cw =  wins[window];
 
     invert_all_on_page(window, page_start, page_end, acc);
@@ -1035,7 +1035,7 @@ STATIC_OVL void invert_all(winid window, tty_menu_item *page_start, tty_menu_ite
 }
 
 #ifdef MENU_COLOR
-STATIC_OVL boolean get_menu_coloring(char *str, int *color, int *attr) {
+STATIC_OVL bool get_menu_coloring(char *str, int *color, int *attr) {
     struct menucoloring *tmpmc;
     if (iflags.use_menu_color)
 	for (tmpmc = menu_colorings; tmpmc; tmpmc = tmpmc->next)
@@ -1060,7 +1060,7 @@ STATIC_OVL void process_menu_window(winid window, struct WinDesc *cw) {
     tty_menu_item *page_start, *page_end, *curr;
     long count;
     int n, curr_page, page_lines;
-    boolean finished, counting, reset_count;
+    bool finished, counting, reset_count;
     char *cp, *rp, resp[QBUFSZ], gacc[QBUFSZ],
 	 *msave, *morestr;
 
@@ -1130,7 +1130,7 @@ STATIC_OVL void process_menu_window(winid window, struct WinDesc *cw) {
 			page_lines++, curr = curr->next) {
 #ifdef MENU_COLOR
 		    int color = NO_COLOR, attr = ATR_NONE;
-		    boolean menucolr = FALSE;
+		    bool menucolr = FALSE;
 #endif
 		    if (curr->selector)
 			*rp++ = curr->selector;
@@ -1422,7 +1422,7 @@ STATIC_OVL void process_text_window(winid window, struct WinDesc *cw) {
 }
 
 /*ARGSUSED*/
-void tty_display_nhwindow(winid window, boolean blocking) {
+void tty_display_nhwindow(winid window, bool blocking) {
     struct WinDesc *cw = 0;
 
     if(window == WIN_ERR || (cw = wins[window]) == (struct WinDesc *) 0)
@@ -1800,7 +1800,7 @@ void tty_putstr(winid window, int attr, const char *str) {
     }
 }
 
-void tty_display_file(const char *fname, boolean complain) {
+void tty_display_file(const char *fname, bool complain) {
 #ifdef DEF_PAGER			/* this implies that UNIX is defined */
     {
 	/* use external pager; this may give security problems */
@@ -1843,7 +1843,7 @@ void tty_display_file(const char *fname, boolean complain) {
 	    } else if(u.ux) docrt();
 	} else {
 	    winid datawin = tty_create_nhwindow(NHW_TEXT);
-	    boolean empty = TRUE;
+	    bool empty = TRUE;
 
 	    if(complain
 #ifndef NO_TERMS
@@ -1881,7 +1881,7 @@ void tty_start_menu(winid window) {
  * Add a menu item to the beginning of the menu list.  This list is reversed
  * later.
  */
-void tty_add_menu(winid window, int glyph, const anything *identifier, char ch, char gch, int attr, const char *str, boolean preselected) {
+void tty_add_menu(winid window, int glyph, const anything *identifier, char ch, char gch, int attr, const char *str, bool preselected) {
     struct WinDesc *cw = 0;
     tty_menu_item *item;
     const char *newstr;
@@ -2215,7 +2215,7 @@ void setclipped() {
 }
 
 void tty_cliparound(int x, int y) {
-	extern boolean restoring;
+	extern bool restoring;
 	int oldx = clipx, oldy = clipy;
 
 	if (!clipping) return;
@@ -2254,7 +2254,7 @@ void tty_cliparound(int x, int y) {
 
 void tty_print_glyph(winid window, xchar x, xchar y, int glyph) {
     int ch;
-    boolean reverse_on = FALSE;
+    bool reverse_on = FALSE;
     int	    color;
     unsigned special;
     

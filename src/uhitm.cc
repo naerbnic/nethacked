@@ -6,28 +6,28 @@
 
 #include "hack.h"
 
-STATIC_DCL boolean FDECL(known_hitum, (struct Monster *,int *,struct Attack *));
+STATIC_DCL bool FDECL(known_hitum, (struct Monster *,int *,struct Attack *));
 STATIC_DCL void FDECL(steal_it, (struct Monster *, struct Attack *));
-STATIC_DCL boolean FDECL(hitum, (struct Monster *,int,struct Attack *));
-STATIC_DCL boolean FDECL(hmon_hitmon, (struct Monster *,struct Object *,int));
+STATIC_DCL bool FDECL(hitum, (struct Monster *,int,struct Attack *));
+STATIC_DCL bool FDECL(hmon_hitmon, (struct Monster *,struct Object *,int));
 #ifdef STEED
 STATIC_DCL int FDECL(joust, (struct Monster *,struct Object *));
 #endif
 STATIC_DCL void NDECL(demonpet);
-STATIC_DCL boolean FDECL(m_slips_free, (struct Monster *mtmp,struct Attack *mattk));
+STATIC_DCL bool FDECL(m_slips_free, (struct Monster *mtmp,struct Attack *mattk));
 STATIC_DCL int FDECL(explum, (struct Monster *,struct Attack *));
 STATIC_DCL void FDECL(start_engulf, (struct Monster *));
 STATIC_DCL void NDECL(end_engulf);
 STATIC_DCL int FDECL(gulpum, (struct Monster *,struct Attack *));
-STATIC_DCL boolean FDECL(hmonas, (struct Monster *,int));
+STATIC_DCL bool FDECL(hmonas, (struct Monster *,int));
 STATIC_DCL void FDECL(nohandglow, (struct Monster *));
-STATIC_DCL boolean FDECL(shade_aware, (struct Object *));
+STATIC_DCL bool FDECL(shade_aware, (struct Object *));
 
-extern boolean notonhead;	/* for long worms */
+extern bool notonhead;	/* for long worms */
 /* The below might become a parameter instead if we use it a lot */
 static int dieroll;
 /* Used to flag attacks caused by Stormbringer's maliciousness. */
-static boolean override_confirmation = FALSE;
+static bool override_confirmation = FALSE;
 
 #define PROJECTILE(obj)	((obj) && is_ammo(obj))
 
@@ -91,7 +91,7 @@ void hurtmarmor(struct Monster *mdef, int attk) {
 }
 
 /* FALSE means it's OK to attack */
-boolean attack_checks(struct Monster *mtmp, struct Object *wep) {
+bool attack_checks(struct Monster *mtmp, struct Object *wep) {
 	char qbuf[QBUFSZ];
 #ifdef PARANOID
 	char buf[BUFSZ];
@@ -295,7 +295,7 @@ schar find_roll_to_hit(struct Monster *mtmp) {
 
 /* try to attack; return FALSE if monster evaded */
 /* u.dx and u.dy must be set */
-boolean attack(struct Monster *mtmp) {
+bool attack(struct Monster *mtmp) {
 	schar tmp;
 	struct permonst *mdat = mtmp->data;
 
@@ -318,7 +318,7 @@ boolean attack(struct Monster *mtmp) {
 		 * there's also a chance of displacing a "frozen" monster.
 		 * sleeping monsters might magically walk in their sleep.
 		 */
-		boolean foo = (Punished || !rn2(7) || is_longworm(mtmp->data)),
+		bool foo = (Punished || !rn2(7) || is_longworm(mtmp->data)),
 			inshop = FALSE;
 		char *p;
 
@@ -412,8 +412,8 @@ atk_done:
 }
 
 /* returns TRUE if monster still lives */
-STATIC_OVL boolean known_hitum(struct Monster *mon, int *mhit, struct Attack *uattk) {
-	boolean malive = TRUE;
+STATIC_OVL bool known_hitum(struct Monster *mon, int *mhit, struct Attack *uattk) {
+	bool malive = TRUE;
 
 	if (override_confirmation) {
 	    /* this may need to be generalized if weapons other than
@@ -468,8 +468,8 @@ STATIC_OVL boolean known_hitum(struct Monster *mon, int *mhit, struct Attack *ua
 }
 
 /* returns TRUE if monster still lives */
-STATIC_OVL boolean hitum(struct Monster *mon, int tmp, struct Attack *uattk) {
-	boolean malive;
+STATIC_OVL bool hitum(struct Monster *mon, int tmp, struct Attack *uattk) {
+	bool malive;
 	int mhit = (tmp > (dieroll = rnd(20)) || u.uswallow);
 
 	if(tmp > dieroll) exercise(A_DEX, TRUE);
@@ -479,8 +479,8 @@ STATIC_OVL boolean hitum(struct Monster *mon, int tmp, struct Attack *uattk) {
 }
 
 /* return TRUE if mon still alive */
-boolean			/* general "damage monster" routine */ hmon(struct Monster *mon, struct Object *obj, int thrown) {
-	boolean result, anger_guards;
+bool			/* general "damage monster" routine */ hmon(struct Monster *mon, struct Object *obj, int thrown) {
+	bool result, anger_guards;
 
 	anger_guards = (mon->mpeaceful &&
 			    (mon->ispriest || mon->isshk ||
@@ -493,7 +493,7 @@ boolean			/* general "damage monster" routine */ hmon(struct Monster *mon, struc
 }
 
 /* guts of hmon() */
-STATIC_OVL boolean hmon_hitmon(struct Monster *mon, struct Object *obj, int thrown) {
+STATIC_OVL bool hmon_hitmon(struct Monster *mon, struct Object *obj, int thrown) {
 	int tmp;
 	struct permonst *mdat = mon->data;
 	int barehand_silver_rings = 0;
@@ -503,12 +503,12 @@ STATIC_OVL boolean hmon_hitmon(struct Monster *mon, struct Object *obj, int thro
 	 * associated with the damage don't come out until _after_ outputting
 	 * a hit message.
 	 */
-	boolean hittxt = FALSE, destroyed = FALSE, already_killed = FALSE;
-	boolean get_dmg_bonus = TRUE;
-	boolean ispoisoned = FALSE, needpoismsg = FALSE, poiskilled = FALSE;
-	boolean silvermsg = FALSE, silverobj = FALSE;
-	boolean valid_weapon_attack = FALSE;
-	boolean unarmed = !uwep && !uarm && !uarms;
+	bool hittxt = FALSE, destroyed = FALSE, already_killed = FALSE;
+	bool get_dmg_bonus = TRUE;
+	bool ispoisoned = FALSE, needpoismsg = FALSE, poiskilled = FALSE;
+	bool silvermsg = FALSE, silverobj = FALSE;
+	bool valid_weapon_attack = FALSE;
+	bool unarmed = !uwep && !uarm && !uarms;
 #ifdef STEED
 	int jousting = 0;
 #endif
@@ -571,7 +571,7 @@ STATIC_OVL boolean hmon_hitmon(struct Monster *mon, struct Object *obj, int thro
 			tmp = rnd(2);
 		    if (!thrown && obj == uwep && obj->otyp == BOOMERANG &&
 			    rnl(4) == 4-1) {
-			boolean more_than_1 = (obj->quan > 1L);
+			bool more_than_1 = (obj->quan > 1L);
 
 			pline("As you hit %s, %s%s %s breaks into splinters.",
 			      mon_nam(mon), more_than_1 ? "one of " : "",
@@ -718,7 +718,7 @@ STATIC_OVL boolean hmon_hitmon(struct Monster *mon, struct Object *obj, int thro
 				minstapetrify(mon, TRUE);
 			    if (resists_ston(mon)) break;
 			    /* note: hp may be <= 0 even if munstoned==TRUE */
-			    return (boolean) (mon->mhp > 0);
+			    return (bool) (mon->mhp > 0);
 #if 0
 			} else if (touch_petrifies(mdat)) {
 			    /* maybe turn the corpse into a statue? */
@@ -759,7 +759,7 @@ STATIC_OVL boolean hmon_hitmon(struct Monster *mon, struct Object *obj, int thro
 			    if (!munstone(mon, TRUE))
 				minstapetrify(mon, TRUE);
 			    if (resists_ston(mon)) break;
-			    return (boolean) (mon->mhp > 0);
+			    return (bool) (mon->mhp > 0);
 			} else {	/* ordinary egg(s) */
 			    const char *eggp =
 				     (obj->corpsenm != NON_PM && obj->known) ?
@@ -1048,10 +1048,10 @@ STATIC_OVL boolean hmon_hitmon(struct Monster *mon, struct Object *obj, int thro
 		}
 	}
 
-	return((boolean)(destroyed ? FALSE : TRUE));
+	return((bool)(destroyed ? FALSE : TRUE));
 }
 
-STATIC_OVL boolean shade_aware(struct Object *obj) {
+STATIC_OVL bool shade_aware(struct Object *obj) {
 	if (!obj) return FALSE;
 	/*
 	 * The things in this list either
@@ -1071,7 +1071,7 @@ STATIC_OVL boolean shade_aware(struct Object *obj) {
 
 /* check whether slippery clothing protects from hug or wrap attack */
 /* [currently assumes that you are the attacker] */
-STATIC_OVL boolean m_slips_free(struct Monster *mdef, struct Attack *mattk) {
+STATIC_OVL bool m_slips_free(struct Monster *mdef, struct Attack *mattk) {
 	struct Object *obj;
 
 	if (mattk->adtyp == AD_DRIN) {
@@ -1244,7 +1244,7 @@ int damageum(struct Monster *mdef, struct Attack *mattk) {
 	struct permonst *pd = mdef->data;
 	int	tmp = d((int)mattk->damn, (int)mattk->damd);
 	int armpro;
-	boolean negated;
+	bool negated;
 
 	armpro = magic_negation(mdef);
 	/* since hero can't be cancelled, only defender's armor applies */
@@ -1394,7 +1394,7 @@ int damageum(struct Monster *mdef, struct Attack *mattk) {
 		if (tmp <= 0) tmp = 1;
 		if (!negated && tmp < mdef->mhp) {
 		    char nambuf[BUFSZ];
-		    boolean u_saw_mon = canseemon(mdef) ||
+		    bool u_saw_mon = canseemon(mdef) ||
 					(u.uswallow && u.ustuck == mdef);
 		    /* record the name before losing sight of monster */
 		    Strcpy(nambuf, Monnam(mdef));
@@ -1623,7 +1623,7 @@ STATIC_OVL int explum(struct Monster *mdef, struct Attack *mattk) {
 
 	You("explode!");
 	switch(mattk->adtyp) {
-	    boolean resistance; /* only for cold/fire/elec */
+	    bool resistance; /* only for cold/fire/elec */
 
 	    case AD_BLND:
 		if (!resists_blnd(mdef)) {
@@ -1877,7 +1877,7 @@ void missum(struct Monster *mdef, struct Attack *mattk) {
 }
 
 /* attack monster as a monster. */
-STATIC_OVL boolean hmonas(struct Monster *mon, int tmp) {
+STATIC_OVL bool hmonas(struct Monster *mon, int tmp) {
 	struct Attack *mattk, alt_attk;
 	int	i, sum[NATTK], hittmp = 0;
 	int	nsum = 0;
@@ -1913,7 +1913,7 @@ use_weapon:
 			    break;
 			} else sum[i] = dhit;
 			/* might be a worm that gets cut in half */
-			if (m_at(u.ux+u.dx, u.uy+u.dy) != mon) return((boolean)(nsum != 0));
+			if (m_at(u.ux+u.dx, u.uy+u.dy) != mon) return((bool)(nsum != 0));
 			/* Do not print "You hit" message, since known_hitum
 			 * already did it.
 			 */
@@ -2058,7 +2058,7 @@ use_weapon:
 		rehumanize();
 	    }
 	    if (sum[i] == 2)
-		return((boolean)passive(mon, 1, 0, mattk->aatyp));
+		return((bool)passive(mon, 1, 0, mattk->aatyp));
 							/* defender dead */
 	    else {
 		(void) passive(mon, sum[i], 1, mattk->aatyp);
@@ -2069,12 +2069,12 @@ use_weapon:
 	    if (multi < 0)
 		break; /* If paralyzed while attacking, i.e. floating eye */
 	}
-	return((boolean)(nsum != 0));
+	return((bool)(nsum != 0));
 }
 
 /*	Special (passive) attacks on you by monsters done here.		*/
 
-int passive(struct Monster *mon, boolean mhit, int malive, uchar aatyp) {
+int passive(struct Monster *mon, bool mhit, int malive, uchar aatyp) {
 	struct permonst *ptr = mon->data;
 	int i, tmp;
 

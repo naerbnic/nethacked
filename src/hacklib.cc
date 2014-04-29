@@ -12,8 +12,8 @@
 NetHack, except that rounddiv may call panic().
 
       return type     routine name    argument type(s)
-	boolean		digit		(char)
-	boolean		letter		(char)
+	bool		digit		(char)
+	bool		letter		(char)
 	char		highc		(char)
 	char		lowc		(char)
 	char *		lcase		(char *)
@@ -23,7 +23,7 @@ NetHack, except that rounddiv may call panic().
 	char *		strkitten	(char *,char)
 	char *		s_suffix	(const char *)
 	char *		xcrypt		(const char *, char *)
-	boolean		onlyspace	(const char *)
+	bool		onlyspace	(const char *)
 	char *		tabexpand	(char *)
 	char *		visctrl		(char)
 	const char *	ordin		(int)
@@ -32,17 +32,17 @@ NetHack, except that rounddiv may call panic().
 	int		rounddiv	(long, int)
 	int		distmin		(int, int, int, int)
 	int		dist2		(int, int, int, int)
-	boolean		online2		(int, int)
-	boolean		pmatch		(const char *, const char *)
+	bool		online2		(int, int)
+	bool		pmatch		(const char *, const char *)
 	int		strncmpi	(const char *, const char *, int)
 	char *		strstri		(const char *, const char *)
-	boolean		fuzzymatch	(const char *,const char *,const char *,boolean)
+	bool		fuzzymatch	(const char *,const char *,const char *,bool)
 	void		setrandom	(void)
 	int		getyear		(void)
 	char *		yymmdd		(time_t)
 	long		yyyymmdd	(time_t)
 	int		phase_of_the_moon	(void)
-	boolean		friday_13th	(void)
+	bool		friday_13th	(void)
 	int		night		(void)
 	int		midnight	(void)
 =*/
@@ -54,13 +54,13 @@ NetHack, except that rounddiv may call panic().
 
 #ifdef OVLB
 /* is 'c' a digit? */
-boolean digit(char c) {
-    return((boolean)('0' <= c && c <= '9'));
+bool digit(char c) {
+    return((bool)('0' <= c && c <= '9'));
 }
 
 /* is 'c' a letter?  note: '@' classed as letter */
-boolean letter(char c) {
-    return((boolean)(('@' <= c && c <= 'Z') || ('a' <= c && c <= 'z')));
+bool letter(char c) {
+    return((bool)(('@' <= c && c <= 'Z') || ('a' <= c && c <= 'z')));
 }
 #endif /* OVLB */
 
@@ -95,7 +95,7 @@ char * upstart(char *s) {
 /* remove excess whitespace from a string buffer (in place) */
 char * mungspaces(char *bp) {
     char c, *p, *p2;
-    boolean was_space = TRUE;
+    bool was_space = TRUE;
 
     for (p = p2 = bp; (c = *p) != '\0'; p++) {
 	if (c == '\t') c = ' ';
@@ -158,7 +158,7 @@ char * xcrypt(char const* str, char* buf) {
 
 #ifdef OVL2
 /* is a string entirely whitespace? */
-boolean onlyspace(const char *s) {
+bool onlyspace(const char *s) {
     for (; *s; s++)
 	if (*s != ' ' && *s != '\t') return FALSE;
     return TRUE;
@@ -273,19 +273,19 @@ int dist2(int x0, int y0, int x1, int y1) {
 }
 
 /* are two points lined up (on a straight line)? */
-boolean online2(int x0, int y0, int x1, int y1) {
+bool online2(int x0, int y0, int x1, int y1) {
     int dx = x0 - x1, dy = y0 - y1;
     /*  If either delta is zero then they're on an orthogonal line,
      *  else if the deltas are equal (signs ignored) they're on a diagonal.
      */
-    return((boolean)(!dy || !dx || (dy == dx) || (dy + dx == 0)));	/* (dy == -dx) */
+    return((bool)(!dy || !dx || (dy == dx) || (dy + dx == 0)));	/* (dy == -dx) */
 }
 
 #endif /* OVL0 */
 #ifdef OVLB
 
 /* match a string against a pattern */
-boolean pmatch(const char *patrn, const char *strng) {
+bool pmatch(const char *patrn, const char *strng) {
     char s, p;
   /*
    :  Simple pattern matcher:  '*' matches 0 or more characters, '?' matches
@@ -294,9 +294,9 @@ boolean pmatch(const char *patrn, const char *strng) {
 pmatch_top:
     s = *strng++;  p = *patrn++;	/* get next chars and pre-advance */
     if (!p)			/* end of pattern */
-	return((boolean)(s == '\0'));		/* matches iff end of string too */
+	return((bool)(s == '\0'));		/* matches iff end of string too */
     else if (p == '*')		/* wildcard reached */
-	return((boolean)((!*patrn || pmatch(patrn, strng-1)) ? TRUE :
+	return((bool)((!*patrn || pmatch(patrn, strng-1)) ? TRUE :
 		s ? pmatch(patrn-1, strng) : FALSE));
     else if (p != s && (p != '?' || !s))  /* check single character */
 	return FALSE;		/* doesn't match */
@@ -363,7 +363,7 @@ char * strstri(const char *str, const char *sub) {
 
 /* compare two strings for equality, ignoring the presence of specified
    characters (typically whitespace) and possibly ignoring case */
-boolean fuzzymatch(const char *s1, const char *s2, const char *ignore_chars, boolean caseblind) {
+bool fuzzymatch(const char *s1, const char *s2, const char *ignore_chars, bool caseblind) {
     char c1, c2;
 
     do {
@@ -378,7 +378,7 @@ boolean fuzzymatch(const char *s1, const char *s2, const char *ignore_chars, boo
     } while (c1 == c2);
 
     /* match occurs only when the end of both strings has been reached */
-    return (boolean)(!c1 && !c2);
+    return (bool)(!c1 && !c2);
 }
 
 #endif /* OVLB */
@@ -515,10 +515,10 @@ int phase_of_the_moon() {
 	return( (((((diy + epact) * 6) + 11) % 177) / 22) & 7 );
 }
 
-boolean friday_13th() {
+bool friday_13th() {
 	struct tm *lt = getlt();
 
-	return((boolean)(lt->tm_wday == 5 /* friday */ && lt->tm_mday == 13));
+	return((bool)(lt->tm_wday == 5 /* friday */ && lt->tm_mday == 13));
 }
 
 int night() {

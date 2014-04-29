@@ -8,9 +8,9 @@
 #include "lev.h"	/* save & restore info */
 
 STATIC_DCL void FDECL(setgemprobs, (d_level*));
-STATIC_DCL void FDECL(shuffle,(int,int,BOOLEAN_P));
+STATIC_DCL void FDECL(shuffle,(int,int,bool));
 STATIC_DCL void NDECL(shuffle_all);
-STATIC_DCL boolean FDECL(interesting_to_discover,(int));
+STATIC_DCL bool FDECL(interesting_to_discover,(int));
 
 
 static short disco[NUM_OBJECTS] = DUMMY;
@@ -65,7 +65,7 @@ STATIC_OVL void setgemprobs(d_level *dlev) {
 }
 
 /* shuffle descriptions on objects o_low to o_high */
-STATIC_OVL void shuffle(int o_low, int o_high, boolean domaterial) {
+STATIC_OVL void shuffle(int o_low, int o_high, bool domaterial) {
 	int i, j, num_to_shuffle;
 	short sw;
 	int color;
@@ -277,7 +277,7 @@ void restnames(int fd) {
 #endif
 }
 
-void discover_object(int oindx, boolean mark_as_known, boolean credit_hero) {
+void discover_object(int oindx, bool mark_as_known, bool credit_hero) {
     if (!objects[oindx].oc_name_known) {
 	int dindx, acls = objects[oindx].oc_class;
 
@@ -301,7 +301,7 @@ void discover_object(int oindx, boolean mark_as_known, boolean credit_hero) {
 void undiscover_object(int oindx) {
     if (!objects[oindx].oc_name_known) {
 	int dindx, acls = objects[oindx].oc_class;
-	boolean found = FALSE;
+	bool found = FALSE;
 
 	/* find the object; shift those behind it forward one slot */
 	for (dindx = bases[acls];
@@ -319,9 +319,9 @@ void undiscover_object(int oindx) {
     }
 }
 
-STATIC_OVL boolean interesting_to_discover(int i) {
+STATIC_OVL bool interesting_to_discover(int i) {
 	/* Pre-discovered objects are now printed with a '*' */
-    return((boolean)(objects[i].oc_uname != (char *)0 ||
+    return((bool)(objects[i].oc_uname != (char *)0 ||
 	    (objects[i].oc_name_known && OBJ_DESCR(objects[i]) != (char *)0)));
 }
 

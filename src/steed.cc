@@ -14,7 +14,7 @@ static const char steeds[] = {
 	S_QUADRUPED, S_UNICORN, S_ANGEL, S_CENTAUR, S_DRAGON, S_JABBERWOCK, '\0'
 };
 
-STATIC_DCL boolean FDECL(landing_spot, (coord *, int, int));
+STATIC_DCL bool FDECL(landing_spot, (coord *, int, int));
 
 /* caller has decided that hero can't reach something while mounted */
 void rider_cant_reach() {
@@ -24,7 +24,7 @@ void rider_cant_reach() {
 /*** Putting the saddle on ***/
 
 /* Can this monster wear a saddle? */
-boolean can_saddle(struct Monster *mtmp) {
+bool can_saddle(struct Monster *mtmp) {
 	struct permonst *ptr = mtmp->data;
 
 	return (index(steeds, ptr->mlet) && (ptr->msize >= MZ_MEDIUM) &&
@@ -151,7 +151,7 @@ int use_saddle(struct Object *otmp) {
 /*** Riding the monster ***/
 
 /* Can we ride this monster?  Caller should also check can_saddle() */
-boolean can_ride(struct Monster *mtmp) {
+bool can_ride(struct Monster *mtmp) {
 	return (mtmp->mtame && humanoid(youmonst.data) &&
 			!verysmall(youmonst.data) && !bigmonst(youmonst.data) &&
 			(!Underwater || is_swimmer(mtmp->data)));
@@ -159,7 +159,7 @@ boolean can_ride(struct Monster *mtmp) {
 
 
 int doride() {
-	boolean forcemount = FALSE;
+	bool forcemount = FALSE;
 
 	if (u.usteed)
 	    dismount_steed(DISMOUNT_BYCHOICE);
@@ -176,7 +176,7 @@ int doride() {
 
 
 /* Start riding, with the given monster */
-boolean mount_steed(struct Monster *mtmp, boolean force) {
+bool mount_steed(struct Monster *mtmp, bool force) {
 	struct Object *otmp;
 	char buf[BUFSZ];
 	struct permonst *ptr;
@@ -395,9 +395,9 @@ void kick_steed() {
  * room's walls, which is not what we want.
  * Adapted from mail daemon code.
  */
-STATIC_OVL boolean landing_spot(coord *spot, int reason, int forceit) {
+STATIC_OVL bool landing_spot(coord *spot, int reason, int forceit) {
     int i = 0, x, y, distance, min_distance = -1;
-    boolean found = FALSE;
+    bool found = FALSE;
     struct trap *t;
 
     /* avoid known traps (i == 0) and boulders, but allow them as a backup */
@@ -439,9 +439,9 @@ void dismount_steed(int reason) {
 	struct Object *otmp;
 	coord cc;
 	const char *verb = "fall";
-	boolean repair_leg_damage = TRUE;
+	bool repair_leg_damage = TRUE;
 	unsigned save_utrap = u.utrap;
-	boolean have_spot = landing_spot(&cc,reason,0);
+	bool have_spot = landing_spot(&cc,reason,0);
 	
 	mtmp = u.usteed;		/* make a copy of steed pointer */
 	/* Sanity check */

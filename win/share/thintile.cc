@@ -36,7 +36,7 @@ static void copy_colormap() {
 	}
 }
 
-static boolean read_txttile() {
+static bool read_txttile() {
 	int i, j;
 	char buf[BUFSZ];
 	char buf2[BUFSZ];

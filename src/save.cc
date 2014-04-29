@@ -33,7 +33,7 @@ STATIC_DCL void FDECL(savetrapchn, (int,struct trap *,int));
 STATIC_DCL void FDECL(savegamestate, (int,int));
 #ifdef MFLOPPY
 STATIC_DCL void FDECL(savelev0, (int,XCHAR_P,int));
-STATIC_DCL boolean NDECL(swapout_oldest);
+STATIC_DCL bool NDECL(swapout_oldest);
 STATIC_DCL void FDECL(copyfile, (char *,char *));
 #endif /* MFLOPPY */
 #ifdef GCC_WARN
@@ -287,8 +287,8 @@ STATIC_OVL void savegamestate(int fd, int mode) {
 	}
 	bwrite(fd, (genericptr_t) mvitals, sizeof(mvitals));
 
-	save_dungeon(fd, (boolean)!!perform_bwrite(mode),
-			 (boolean)!!release_data(mode));
+	save_dungeon(fd, (bool)!!perform_bwrite(mode),
+			 (bool)!!release_data(mode));
 	savelevchn(fd, mode);
 	bwrite(fd, (genericptr_t) &moves, sizeof moves);
 	bwrite(fd, (genericptr_t) &monstermoves, sizeof monstermoves);
@@ -324,7 +324,7 @@ STATIC_OVL void savegamestate(int fd, int mode) {
 #ifdef INSURANCE
 void savestateinlock() {
 	int fd, hpid;
-	static boolean havestate = TRUE;
+	static bool havestate = TRUE;
 	char whynot[BUFSZ];
 
 	/* When checkpointing is on, the full state needs to be written
@@ -395,7 +395,7 @@ void savestateinlock() {
 #endif
 
 #ifdef MFLOPPY
-boolean savelev(int fd, xchar lev, int mode) {
+bool savelev(int fd, xchar lev, int mode) {
 	if (mode & COUNT_SAVE) {
 		bytes_counted = 0;
 		savelev0(fd, lev, COUNT_SAVE);
@@ -559,7 +559,7 @@ static unsigned char outbuf[ZEROCOMP_BUFSIZ];
 static unsigned short outbufp = 0;
 static short outrunlength = -1;
 static int bwritefd;
-static boolean compressing = FALSE;
+static bool compressing = FALSE;
 
 /*dbg()
 {
@@ -658,7 +658,7 @@ void bclose(int fd) {
 
 static int bw_fd = -1;
 static FILE *bw_FILE = 0;
-static boolean buffering = FALSE;
+static bool buffering = FALSE;
 
 void bufon(int fd) {
     if(bw_fd >= 0)
@@ -683,7 +683,7 @@ void bflush(int fd) {
 }
 
 void bwrite(int fd, genericptr_t loc, unsigned num) {
-	boolean failed;
+	bool failed;
 
 #ifdef MFLOPPY
 	bytes_counted += num;
@@ -954,7 +954,7 @@ void freedynamicdata() {
 }
 
 #ifdef MFLOPPY
-boolean swapin_file(int lev) {
+bool swapin_file(int lev) {
 	char to[PATHLEN], from[PATHLEN];
 
 	Sprintf(from, "%s%s", permbones, alllevels);
@@ -978,7 +978,7 @@ boolean swapin_file(int lev) {
 	return TRUE;
 }
 
-STATIC_OVL boolean
+STATIC_OVL bool
 swapout_oldest() {
 	char to[PATHLEN], from[PATHLEN];
 	int i, oldest;

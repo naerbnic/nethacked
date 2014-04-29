@@ -167,7 +167,7 @@ E struct sinfo {
 #endif
 } program_state;
 
-E boolean restoring;
+E bool restoring;
 
 E const char quitchars[];
 E const char vowels[];
@@ -211,26 +211,26 @@ E const schar xdir[], ydir[], zdir[];
 
 E schar tbx, tby;		/* set in mthrowu.c */
 
-E struct multishot { int n, i; short o; boolean s; } m_shot;
+E struct multishot { int n, i; short o; bool s; } m_shot;
 
 E struct dig_info {		/* apply.c, hack.c */
 	int	effort;
 	d_level level;
 	coord	pos;
 	long lastdigtime;
-	boolean down, chew, warned, quiet;
+	bool down, chew, warned, quiet;
 } digging;
 
 E long moves, monstermoves;
 E long wailmsg;
 
-E boolean in_mklev;
-E boolean stoned;
-E boolean unweapon;
-E boolean mrg_to_wielded;
+E bool in_mklev;
+E bool stoned;
+E bool unweapon;
+E bool mrg_to_wielded;
 E struct Object *current_wand;
 
-E boolean in_steed_dismounting;
+E bool in_steed_dismounting;
 
 E const int shield_static[];
 
@@ -335,7 +335,7 @@ E const char *materialnm[];
 #define EXACT_NAME		0x0F
 
 /* Vision */
-E boolean vision_full_recalc;	/* TRUE if need vision recalc */
+E bool vision_full_recalc;	/* TRUE if need vision recalc */
 E char **viz_array;		/* could see/in sight row pointers */
 
 /* Window system stuff */
@@ -391,7 +391,7 @@ E char *fqn_prefix_names[PREFIX_COUNT];
 #ifdef AUTOPICKUP_EXCEPTIONS
 struct autopickup_exception {
 	char *pattern;
-	boolean grab;
+	bool grab;
 	struct autopickup_exception *next;
 };
 #endif /* AUTOPICKUP_EXCEPTIONS */

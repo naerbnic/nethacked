@@ -160,7 +160,7 @@ void newexplevel() {
 	    pluslvl(TRUE);
 }
 
-void pluslvl(boolean incr) {
+void pluslvl(bool incr) {
 	int num;
 
 	if (!incr) You_feel("more experienced.");
@@ -200,7 +200,7 @@ void pluslvl(boolean incr) {
 /* compute a random amount of experience points suitable for the hero's
    experience level:  base number of points needed to reach the current
    level plus a random portion of what it takes to get to the next level */
-long rndexp(boolean gaining) {
+long rndexp(bool gaining) {
 	long minexp, maxexp, diff, factor, result;
 
 	minexp = (u.ulevel == 1) ? 0L : newuexp(u.ulevel - 1);

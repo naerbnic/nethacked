@@ -13,7 +13,7 @@
 
 #ifdef OVLB
 
-static boolean no_repeat = FALSE;
+static bool no_repeat = FALSE;
 
 static char *FDECL(You_buf, (int));
 

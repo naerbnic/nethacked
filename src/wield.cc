@@ -383,9 +383,9 @@ int dowieldquiver() {
 
 /* used for #rub and for applying pick-axe, whip, grappling hook, or polearm */
 /* (moved from apply.c) */
-boolean wield_tool(struct Object *obj, const char *verb) {
+bool wield_tool(struct Object *obj, const char *verb) {
     const char *what;
-    boolean more_than_1;
+    bool more_than_1;
 
     if (obj == uwep) return TRUE;   /* nothing to do if already wielding it */
 
@@ -560,11 +560,11 @@ void untwoweapon() {
 }
 
 /* Maybe rust object, or corrode it if acid damage is called for */
-void erode_obj(struct Object *target, boolean acid_dmg, boolean fade_scrolls) {
+void erode_obj(struct Object *target, bool acid_dmg, bool fade_scrolls) {
 	int erosion;
 	struct Monster *victim;
-	boolean vismon;
-	boolean visobj;
+	bool vismon;
+	bool visobj;
 
 	if (!target)
 	    return;
@@ -655,7 +655,7 @@ int chwepon(struct Object *otmp, int amount) {
 		Sprintf(buf, "Your %s %s.", makeplural(body_part(HAND)),
 			(amount >= 0) ? "twitch" : "itch");
 		strange_feeling(otmp, buf);
-		exercise(A_DEX, (boolean) (amount >= 0));
+		exercise(A_DEX, (bool) (amount >= 0));
 		return(0);
 	}
 

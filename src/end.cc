@@ -34,22 +34,22 @@ static struct val_list { struct valuable_data *list; int size; } valuables[] = {
 STATIC_PTR void FDECL(done_intr, (int));
 static void FDECL(done_hangup, (int));
 #endif
-STATIC_DCL void FDECL(disclose,(int,BOOLEAN_P));
+STATIC_DCL void FDECL(disclose,(int,bool));
 STATIC_DCL void FDECL(get_valuables, (struct Object *));
 STATIC_DCL void FDECL(sort_valuables, (struct valuable_data *,int));
-STATIC_DCL void FDECL(artifact_score, (struct Object *,BOOLEAN_P,winid));
+STATIC_DCL void FDECL(artifact_score, (struct Object *,bool,winid));
 STATIC_DCL void FDECL(savelife, (int));
-void FDECL(list_vanquished, (CHAR_P,BOOLEAN_P));
+void FDECL(list_vanquished, (CHAR_P,bool));
 #ifdef DUMP_LOG
 extern char msgs[][BUFSZ];
 extern int lastmsg;
 extern void NDECL(dump_spells);
-void FDECL(do_vanquished, (int, BOOLEAN_P, BOOLEAN_P));
-STATIC_DCL void FDECL(list_genocided, (int, BOOLEAN_P, BOOLEAN_P));
+void FDECL(do_vanquished, (int, bool, bool));
+STATIC_DCL void FDECL(list_genocided, (int, bool, bool));
 #else
-STATIC_DCL void FDECL(list_genocided, (CHAR_P,BOOLEAN_P));
+STATIC_DCL void FDECL(list_genocided, (CHAR_P,bool));
 #endif /* DUMP_LOG */
-STATIC_DCL boolean FDECL(should_query_disclose_option, (int,char *));
+STATIC_DCL bool FDECL(should_query_disclose_option, (int,char *));
 
 #if defined(__BEOS__) || defined(MICRO) || defined(WIN32) || defined(OS2)
 extern void FDECL(nethack_exit,(int));
@@ -240,7 +240,7 @@ static void done_hangup(int sig) {
 
 void done_in_by(struct Monster *mtmp) {
 	char buf[BUFSZ];
-	boolean distorted = (boolean)(Hallucination && canspotmon(mtmp));
+	bool distorted = (bool)(Hallucination && canspotmon(mtmp));
 
 	You("die...");
 	mark_synch();	/* flush buffered screen output */
@@ -371,7 +371,7 @@ panic VA_DECL(const char *, str)
 	done(PANICKED);
 }
 
-STATIC_OVL boolean should_query_disclose_option(int category, char *defquery) {
+STATIC_OVL bool should_query_disclose_option(int category, char *defquery) {
     int idx;
     char *dop = index(disclosure_options, category);
 
@@ -405,10 +405,10 @@ STATIC_OVL boolean should_query_disclose_option(int category, char *defquery) {
     return TRUE;
 }
 
-STATIC_OVL void disclose(int how, boolean taken) {
+STATIC_OVL void disclose(int how, bool taken) {
 	char	c = 0, defquery;
 	char	qbuf[QBUFSZ];
-	boolean ask;
+	bool ask;
 
 	if (invent) {
 	    if(taken)
@@ -425,7 +425,7 @@ STATIC_OVL void disclose(int how, boolean taken) {
 	    }
 		{
 #ifdef DUMP_LOG
-			boolean want_disp = (c == 'y')? TRUE: FALSE;
+			bool want_disp = (c == 'y')? TRUE: FALSE;
 #endif
 			struct Object *obj;
 
@@ -570,7 +570,7 @@ STATIC_OVL void sort_valuables(struct valuable_data list[], int size) {
 }
 
 /* called twice; first to calculate total, then to list relevant items */
-STATIC_OVL void artifact_score(struct Object *list, boolean counting, winid endwin) {
+STATIC_OVL void artifact_score(struct Object *list, bool counting, winid endwin) {
     char pbuf[BUFSZ];
     struct Object *otmp;
     long value, points;
@@ -613,10 +613,10 @@ void done(int how) {
 	char paranoid_buf[BUFSZ];
 	int really_bon = TRUE;
 #endif
-	boolean taken;
+	bool taken;
 	char kilbuf[BUFSZ], pbuf[BUFSZ];
 	winid endwin = WIN_ERR;
-	boolean bones_ok, have_windows = iflags.window_inited;
+	bool bones_ok, have_windows = iflags.window_inited;
 	struct Object *corpse = nullptr;
 	long umoney;
 	int i;
@@ -1067,15 +1067,15 @@ die:
 
 
 void container_contents(
-    struct Object* list, boolean identified, boolean all_containers)
+    struct Object* list, bool identified, bool all_containers)
 #ifdef DUMP_LOG
 {
 	do_containerconts(list, identified, all_containers, FALSE, TRUE);
 }
 
 void do_containerconts(
-    struct Object* list, boolean identified, boolean all_containers,
-    boolean want_dump, boolean want_disp)
+    struct Object* list, bool identified, bool all_containers,
+    bool want_dump, bool want_disp)
 #endif
 /* The original container_contents function */
 {
@@ -1208,13 +1208,13 @@ void terminate(int status) {
 }
 
 /* showborn patch */
-void list_vanquished(char defquery, boolean ask)
+void list_vanquished(char defquery, bool ask)
 #ifdef DUMP_LOG
 {
   do_vanquished(defquery, ask, FALSE);
 }
 
-void do_vanquished(int defquery, boolean ask, boolean want_dump)
+void do_vanquished(int defquery, bool ask, bool want_dump)
 #endif
 {
     int i, lev;
@@ -1323,9 +1323,9 @@ int num_genocides() {
 }
 
 #ifdef DUMP_LOG
-STATIC_OVL void list_genocided(int defquery, boolean ask, boolean want_dump)
+STATIC_OVL void list_genocided(int defquery, bool ask, bool want_dump)
 #else
-STATIC_OVL void list_genocided(char defquery, boolean ask)
+STATIC_OVL void list_genocided(char defquery, bool ask)
 #endif
 {
     int i;

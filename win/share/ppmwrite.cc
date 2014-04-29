@@ -39,7 +39,7 @@ static void WriteTileStrip() {
 	}
 }
 
-boolean fopen_ppm_file(const char *filename, const char *type) {
+bool fopen_ppm_file(const char *filename, const char *type) {
 	int i;
 
 	if (strcmp(type, WRBMODE)) {
@@ -74,7 +74,7 @@ boolean fopen_ppm_file(const char *filename, const char *type) {
 	return TRUE;
 }
 
-boolean write_ppm_tile(pixel (*pixels)[TILE_X]) {
+bool write_ppm_tile(pixel (*pixels)[TILE_X]) {
 	int i, j;
 
 	for (j = 0; j < TILE_Y; j++) {

@@ -23,8 +23,8 @@ STATIC_DCL void FDECL(fry_by_god,(ALIGNTYP_P));
 STATIC_DCL void FDECL(gods_angry,(ALIGNTYP_P));
 STATIC_DCL void FDECL(gods_upset,(ALIGNTYP_P));
 STATIC_DCL void FDECL(consume_offering,(struct Object *));
-STATIC_DCL boolean FDECL(water_prayer,(BOOLEAN_P));
-STATIC_DCL boolean FDECL(blocked_boulder,(int,int));
+STATIC_DCL bool FDECL(water_prayer,(bool));
+STATIC_DCL bool FDECL(blocked_boulder,(int,int));
 
 /* simplify a few tests */
 #define Cursed_obj(obj,typ) ((obj) && (obj)->otyp == (typ) && (obj)->cursed)
@@ -619,7 +619,7 @@ static void at_your_feet(const char *str) {
 #ifdef ELBERETH
 STATIC_OVL void gcrownu() {
     struct Object *obj;
-    boolean already_exists, in_hand;
+    bool already_exists, in_hand;
     short class_gift;
     int sp_no;
 #define ok_wep(o) ((o) && ((o)->oclass == WEAPON_CLASS || is_weptool(o)))
@@ -1006,10 +1006,10 @@ STATIC_OVL void pleased(aligntyp g_align) {
 /* either blesses or curses water on the altar,
  * returns true if it found any water here.
  */
-STATIC_OVL boolean water_prayer(boolean bless_water) {
+STATIC_OVL bool water_prayer(bool bless_water) {
     struct Object* otmp;
     long changed = 0;
-    boolean other = FALSE, bc_known = !(Blind || Hallucination);
+    bool other = FALSE, bc_known = !(Blind || Hallucination);
 
     for(otmp = level.objects[u.ux][u.uy]; otmp; otmp = otmp->nexthere) {
 	/* turn water into (un)holy water */
@@ -1029,7 +1029,7 @@ STATIC_OVL boolean water_prayer(boolean bless_water) {
 	      ((other || changed > 1L) ? "s" : ""), (changed > 1L ? "" : "s"),
 	      (bless_water ? hcolor(NH_LIGHT_BLUE) : hcolor(NH_BLACK)));
     }
-    return((boolean)(changed > 0L));
+    return((bool)(changed > 0L));
 }
 
 STATIC_OVL void godvoice(aligntyp g_align, const char *words) {
@@ -1467,7 +1467,7 @@ verbalize("In return for thy service, I grant thee the gift of Immortality!");
 
 
 /* determine prayer results in advance; also used for enlightenment */
-boolean can_pray(boolean praying) {
+bool can_pray(bool praying) {
     int alignment;
 
     p_aligntyp = on_altar() ? a_align(u.ux,u.uy) : u.ualign.type;
@@ -1509,7 +1509,7 @@ boolean can_pray(boolean praying) {
        return value a non-deterministic approximation for enlightenment.
        This case should be uncommon enough to live with... */
 
-    return !praying ? (boolean)(p_type == 3 && !Inhell) : TRUE;
+    return !praying ? (bool)(p_type == 3 && !Inhell) : TRUE;
 }
 
 int dopray() {
@@ -1781,7 +1781,7 @@ void altar_wrath(int x, int y) {
 }
 
 /* assumes isok() at one space away, but not necessarily at two */
-STATIC_OVL boolean blocked_boulder(int dx, int dy) {
+STATIC_OVL bool blocked_boulder(int dx, int dy) {
     struct Object *otmp;
     long count = 0L;
 

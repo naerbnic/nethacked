@@ -43,7 +43,7 @@ static const char *developers[] = {
 STATIC_OVL const char * dev_name() {
 	int i, m = 0, n = SIZE(developers);
 	struct Monster *mtmp;
-	boolean match;
+	bool match;
 
 	do {
 	    match = FALSE;
@@ -64,7 +64,7 @@ STATIC_OVL const char * dev_name() {
 }
 
 STATIC_OVL void get_mplname(struct Monster *mtmp, char *nam) {
-	boolean fmlkind = is_female(mtmp->data);
+	bool fmlkind = is_female(mtmp->data);
 	const char *devnam;
 
 	devnam = dev_name();
@@ -81,7 +81,7 @@ STATIC_OVL void get_mplname(struct Monster *mtmp, char *nam) {
 	Strcat(nam, " the ");
 	Strcat(nam, rank_of((int)mtmp->m_lev,
 			    monsndx(mtmp->data),
-			    (boolean)mtmp->female));
+			    (bool)mtmp->female));
 }
 
 STATIC_OVL void mk_mplayer_armor(struct Monster *mon, short typ) {
@@ -100,7 +100,7 @@ STATIC_OVL void mk_mplayer_armor(struct Monster *mon, short typ) {
 	(void) mpickobj(mon, obj);
 }
 
-struct Monster * mk_mplayer(struct permonst *ptr, xchar x, xchar y, boolean special) {
+struct Monster * mk_mplayer(struct permonst *ptr, xchar x, xchar y, bool special) {
 	struct Monster *mtmp;
 	char nam[PL_NSIZ];
 
@@ -273,7 +273,7 @@ struct Monster * mk_mplayer(struct permonst *ptr, xchar x, xchar y, boolean spec
  * developers array, otherwise a bunch of Adams and Eves will
  * fill up the overflow.
  */
-void create_mplayers(int num, boolean special) {
+void create_mplayers(int num, bool special) {
 	int pm, x, y;
 	struct Monster fakemon;
 

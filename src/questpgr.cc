@@ -161,8 +161,8 @@ STATIC_OVL const char * intermed() {
 	return (urole.intermed);
 }
 
-boolean is_quest_artifact(struct Object *otmp) {
-	return((boolean)(otmp->oartifact == urole.questarti));
+bool is_quest_artifact(struct Object *otmp) {
+	return((bool)(otmp->oartifact == urole.questarti));
 }
 
 /* return your role nemesis' name */

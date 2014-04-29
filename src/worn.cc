@@ -7,7 +7,7 @@
 #include "hack.h"
 
 STATIC_DCL void FDECL(m_lose_armor, (struct Monster *,struct Object *));
-STATIC_DCL void FDECL(m_dowear_type, (struct Monster *,long, BOOLEAN_P, BOOLEAN_P));
+STATIC_DCL void FDECL(m_dowear_type, (struct Monster *,long, bool, bool));
 STATIC_DCL int FDECL(extra_pref, (struct Monster *, struct Object *));
 
 const struct worn {
@@ -134,7 +134,7 @@ void mon_set_minvis(struct Monster *mon) {
 
 void mon_adjust_speed(struct Monster *mon, int adjust, struct Object *obj) {
     struct Object *otmp;
-    boolean give_msg = !in_mklev, petrify = FALSE;
+    bool give_msg = !in_mklev, petrify = FALSE;
     unsigned int oldspeed = mon->mspeed;
 
     switch (adjust) {
@@ -194,7 +194,7 @@ void mon_adjust_speed(struct Monster *mon, int adjust, struct Object *obj) {
 }
 
 /* armor put on or taken off; might be magical variety */
-void update_mon_intrinsics(struct Monster *mon, struct Object *obj, boolean on, boolean silently) {
+void update_mon_intrinsics(struct Monster *mon, struct Object *obj, bool on, bool silently) {
     int unseen;
     uchar mask;
     struct Object *otmp;
@@ -210,7 +210,7 @@ void update_mon_intrinsics(struct Monster *mon, struct Object *obj, boolean on, 
 	    break;
 	 case FAST:
 	  {
-	    boolean save_in_mklev = in_mklev;
+	    bool save_in_mklev = in_mklev;
 	    if (silently) in_mklev = TRUE;
 	    mon_adjust_speed(mon, 0, obj);
 	    in_mklev = save_in_mklev;
@@ -250,7 +250,7 @@ void update_mon_intrinsics(struct Monster *mon, struct Object *obj, boolean on, 
 	    break;
 	 case FAST:
 	  {
-	    boolean save_in_mklev = in_mklev;
+	    bool save_in_mklev = in_mklev;
 	    if (silently) in_mklev = TRUE;
 	    mon_adjust_speed(mon, 0, obj);
 	    in_mklev = save_in_mklev;
@@ -334,7 +334,7 @@ int find_mac(struct Monster *mon) {
  * players to influence what gets worn.  Putting on a shirt underneath
  * already worn body armor is too obviously buggy...
  */
-void m_dowear(struct Monster *mon, boolean creation) {
+void m_dowear(struct Monster *mon, bool creation) {
 #define RACE_EXCEPTION TRUE
 	/* Note the restrictions here are the same as in dowear in do_wear.c
 	 * except for the additional restriction on intelligence.  (Players
@@ -370,7 +370,7 @@ void m_dowear(struct Monster *mon, boolean creation) {
 	    m_dowear_type(mon, W_ARM, creation, RACE_EXCEPTION);
 }
 
-STATIC_OVL void m_dowear_type(struct Monster *mon, long flag, boolean creation, boolean racialexception) {
+STATIC_OVL void m_dowear_type(struct Monster *mon, long flag, bool creation, bool racialexception) {
 	struct Object *old, *best, *obj;
 	int m_delay = 0;
 	int unseen = !canseemon(mon);
@@ -546,11 +546,11 @@ void bypass_obj(struct Object *obj) {
 	flags.bypasses = TRUE;
 }
 
-void mon_break_armor(struct Monster *mon, boolean polyspot) {
+void mon_break_armor(struct Monster *mon, bool polyspot) {
 	struct Object *otmp;
 	struct permonst *mdat = mon->data;
-	boolean vis = cansee(mon->mx, mon->my);
-	boolean handless_or_tiny = (nohands(mdat) || verysmall(mdat));
+	bool vis = cansee(mon->mx, mon->my);
+	bool handless_or_tiny = (nohands(mdat) || verysmall(mdat));
 	const char *pronoun = mhim(mon),
 			*ppronoun = mhis(mon);
 

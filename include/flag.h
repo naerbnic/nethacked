@@ -16,73 +16,73 @@
 
 struct flag {
 #ifdef AMIFLUSH
-	boolean  altmeta;	/* use ALT keys as META */
-	boolean  amiflush;	/* kill typeahead */
+	bool  altmeta;	/* use ALT keys as META */
+	bool  amiflush;	/* kill typeahead */
 #endif
 #ifdef	MFLOPPY
-	boolean  asksavedisk;
+	bool  asksavedisk;
 #endif
-	boolean  autodig;       /* MRKR: Automatically dig */
-	boolean  autoquiver;	/* Automatically fill quiver */
-	boolean  beginner;
+	bool  autodig;       /* MRKR: Automatically dig */
+	bool  autoquiver;	/* Automatically fill quiver */
+	bool  beginner;
 #ifdef MAIL
-	boolean  biff;		/* enable checking for mail */
+	bool  biff;		/* enable checking for mail */
 #endif
-	boolean  botl;		/* partially redo status line */
-	boolean  botlx;		/* print an entirely new bottom line */
-	boolean  confirm;	/* confirm before hitting tame monsters */
-	boolean  debug;		/* in debugging mode */
+	bool  botl;		/* partially redo status line */
+	bool  botlx;		/* print an entirely new bottom line */
+	bool  confirm;	/* confirm before hitting tame monsters */
+	bool  debug;		/* in debugging mode */
 #define wizard	 flags.debug
-	boolean  end_own;	/* list all own scores */
-	boolean  explore;	/* in exploration mode */
+	bool  end_own;	/* list all own scores */
+	bool  explore;	/* in exploration mode */
 #ifdef OPT_DISPMAP
-	boolean  fast_map;	/* use optimized, less flexible map display */
+	bool  fast_map;	/* use optimized, less flexible map display */
 #endif
 #define discover flags.explore
-	boolean  female;
-	boolean  forcefight;
-	boolean  friday13;	/* it's Friday the 13th */
-	boolean  help;		/* look in data file for info about stuff */
-	boolean  ignintr;	/* ignore interrupts */
+	bool  female;
+	bool  forcefight;
+	bool  friday13;	/* it's Friday the 13th */
+	bool  help;		/* look in data file for info about stuff */
+	bool  ignintr;	/* ignore interrupts */
 #ifdef INSURANCE
-	boolean  ins_chkpt;	/* checkpoint as appropriate */
+	bool  ins_chkpt;	/* checkpoint as appropriate */
 #endif
-	boolean  invlet_constant; /* let objects keep their inventory symbol */
-	boolean  legacy;	/* print game entry "story" */
-	boolean  lit_corridor;	/* show a dark corr as lit if it is in sight */
-	boolean  made_amulet;
-	boolean  mon_moving;	/* monsters' turn to move */
-	boolean  move;
-	boolean  mv;
-	boolean  bypasses;	/* bypass flag is set on at least one fobj */
-	boolean  nap;		/* `timed_delay' option for display effects */
-	boolean  nopick;	/* do not pickup objects (as when running) */
-	boolean  null;		/* OK to send nulls to the terminal */
+	bool  invlet_constant; /* let objects keep their inventory symbol */
+	bool  legacy;	/* print game entry "story" */
+	bool  lit_corridor;	/* show a dark corr as lit if it is in sight */
+	bool  made_amulet;
+	bool  mon_moving;	/* monsters' turn to move */
+	bool  move;
+	bool  mv;
+	bool  bypasses;	/* bypass flag is set on at least one fobj */
+	bool  nap;		/* `timed_delay' option for display effects */
+	bool  nopick;	/* do not pickup objects (as when running) */
+	bool  null;		/* OK to send nulls to the terminal */
 #ifdef MAC
-	boolean  page_wait;	/* put up a --More-- after a page of messages */
+	bool  page_wait;	/* put up a --More-- after a page of messages */
 #endif
-	boolean  perm_invent;	/* keep full inventories up until dismissed */
-	boolean  pickup;	/* whether you pickup or move and look */
+	bool  perm_invent;	/* keep full inventories up until dismissed */
+	bool  pickup;	/* whether you pickup or move and look */
 
-	boolean  pushweapon;	/* When wielding, push old weapon into second slot */
-	boolean  rest_on_space; /* space means rest */
-	boolean  safe_dog;	/* give complete protection to the dog */
+	bool  pushweapon;	/* When wielding, push old weapon into second slot */
+	bool  rest_on_space; /* space means rest */
+	bool  safe_dog;	/* give complete protection to the dog */
 #ifdef EXP_ON_BOTL
-	boolean  showexp;	/* show experience points */
+	bool  showexp;	/* show experience points */
 #endif
 #ifdef SCORE_ON_BOTL
-	boolean  showscore;	/* show score */
+	bool  showscore;	/* show score */
 #endif
-	boolean  silent;	/* whether the bell rings or not */
-	boolean  sortpack;	/* sorted inventory */
-	boolean  soundok;	/* ok to tell about sounds heard */
-	boolean  sparkle;	/* show "resisting" special FX (Scott Bigham) */
-	boolean  standout;	/* use standout for --More-- */
-	boolean  time;		/* display elapsed 'time' */
-	boolean  tombstone;	/* print tombstone */
-	boolean  toptenwin;	/* ending list in window instead of stdout */
-	boolean  verbose;	/* max battle info */
-	boolean  prayconfirm;	/* confirm before praying */
+	bool  silent;	/* whether the bell rings or not */
+	bool  sortpack;	/* sorted inventory */
+	bool  soundok;	/* ok to tell about sounds heard */
+	bool  sparkle;	/* show "resisting" special FX (Scott Bigham) */
+	bool  standout;	/* use standout for --More-- */
+	bool  time;		/* display elapsed 'time' */
+	bool  tombstone;	/* print tombstone */
+	bool  toptenwin;	/* ending list in window instead of stdout */
+	bool  verbose;	/* max battle info */
+	bool  prayconfirm;	/* confirm before praying */
 	int	 end_top, end_around;	/* describe desired score list */
 	unsigned ident;		/* social security number for each monster */
 	unsigned moonphase;
@@ -90,7 +90,7 @@ struct flag {
 #define NEW_MOON	0
 #define FULL_MOON	4
 	unsigned no_of_wizards; /* 0, 1 or 2 (wizard and his shadow) */
-	boolean  travel;	/* find way automatically to u.tx,u.ty */
+	bool  travel;	/* find way automatically to u.tx,u.ty */
 	unsigned run;		/* 0: h (etc), 1: H (etc), 2: fh (etc) */
 				/* 3: FH, 4: ff+, 5: ff-, 6: FF+, 7: FF- */
 				/* 8: travel */
@@ -155,63 +155,63 @@ struct flag {
  */
 
 struct instance_flags {
-	boolean  cbreak;	/* in cbreak mode, rogue format */
-	boolean  DECgraphics;	/* use DEC VT-xxx extended character set */
-	boolean  echo;		/* 1 to echo characters */
-	boolean  IBMgraphics;	/* use IBM extended character set */
+	bool  cbreak;	/* in cbreak mode, rogue format */
+	bool  DECgraphics;	/* use DEC VT-xxx extended character set */
+	bool  echo;		/* 1 to echo characters */
+	bool  IBMgraphics;	/* use IBM extended character set */
 	unsigned msg_history;	/* hint: # of top lines to save */
-	boolean  num_pad;	/* use numbers for movement commands */
-	boolean  news;		/* print news */
-	boolean  window_inited; /* true if init_nhwindows() completed */
-	boolean  vision_inited; /* true if vision is ready */
-	boolean  menu_tab_sep;	/* Use tabs to separate option menu fields */
-	boolean  menu_requested; /* Flag for overloaded use of 'm' prefix
+	bool  num_pad;	/* use numbers for movement commands */
+	bool  news;		/* print news */
+	bool  window_inited; /* true if init_nhwindows() completed */
+	bool  vision_inited; /* true if vision is ready */
+	bool  menu_tab_sep;	/* Use tabs to separate option menu fields */
+	bool  menu_requested; /* Flag for overloaded use of 'm' prefix
 				  * on some non-move commands */
 	uchar num_pad_mode;
 	int	menu_headings;	/* ATR for menu headings */
 	int      purge_monsters;	/* # of dead monsters still on fmon list */
-	int *opt_booldup;	/* for duplication of boolean opts in config file */
+	int *opt_booldup;	/* for duplication of bool opts in config file */
 	int *opt_compdup;	/* for duplication of compound opts in config file */
 	uchar	bouldersym;	/* symbol for boulder display */
-	boolean travel1;	/* first travel step */
+	bool travel1;	/* first travel step */
 	coord	travelcc;	/* coordinates for travel_cache */
 #ifdef CONFIRM_LOCKING
-	boolean	 confirm_locking; /* ynq question for (un)locking */
+	bool	 confirm_locking; /* ynq question for (un)locking */
 #endif
 #ifdef WIZARD
-	boolean  sanity_check;	/* run sanity checks */
-	boolean  mon_polycontrol;	/* debug: control monster polymorphs */
+	bool  sanity_check;	/* run sanity checks */
+	bool  mon_polycontrol;	/* debug: control monster polymorphs */
 #endif
 #ifdef TTY_GRAPHICS
 	char prevmsg_window;	/* type of old message window to use */
-	boolean  extmenu;	/* extended commands use menu interface */
+	bool  extmenu;	/* extended commands use menu interface */
 #endif
 #ifdef MENU_COLOR
-	boolean use_menu_color;	/* use color in menus; only if wc_color */
+	bool use_menu_color;	/* use color in menus; only if wc_color */
 #endif
 #ifdef SHOW_BORN
-	boolean show_born;	/* show numbers of created monsters */
+	bool show_born;	/* show numbers of created monsters */
 #endif
 #ifdef SORTLOOT
 	char sortloot;          /* sort items to loot alphabetically */
 #endif
 #ifdef PARANOID
-	boolean  paranoid_hit;  /* Ask for 'yes' when hitting peacefuls */
-	boolean  paranoid_quit; /* Ask for 'yes' when quitting */
-	boolean  paranoid_remove; /* Always show menu for 'T' and 'R' */
+	bool  paranoid_hit;  /* Ask for 'yes' when hitting peacefuls */
+	bool  paranoid_quit; /* Ask for 'yes' when quitting */
+	bool  paranoid_remove; /* Always show menu for 'T' and 'R' */
 #endif
 /*
  * Window capability support.
  */
-	boolean wc_color;		/* use color graphics                  */
-	boolean wc_hilite_pet;		/* hilight pets                        */
-	boolean wc_ascii_map;		/* show map using traditional ascii    */
-	boolean wc_tiled_map;		/* show map using tiles                */
-	boolean wc_preload_tiles;	/* preload tiles into memory           */
+	bool wc_color;		/* use color graphics                  */
+	bool wc_hilite_pet;		/* hilight pets                        */
+	bool wc_ascii_map;		/* show map using traditional ascii    */
+	bool wc_tiled_map;		/* show map using tiles                */
+	bool wc_preload_tiles;	/* preload tiles into memory           */
 	int	wc_tile_width;		/* tile width                          */
 	int	wc_tile_height;		/* tile height                         */
 	char	*wc_tile_file;		/* name of tile file;overrides default */
-	boolean wc_inverse;		/* use inverse video for some things   */
+	bool wc_inverse;		/* use inverse video for some things   */
 	int	wc_align_status;	/*  status win at top|bot|right|left   */
 	int	wc_align_message;	/* message win at top|bot|right|left   */
 	int     wc_vary_msgcount;	/* show more old messages at a time    */
@@ -239,24 +239,24 @@ struct instance_flags {
 	int	wc_map_mode;		/* specify map viewing options, mostly
 						for backward compatibility */
 	int	wc_player_selection;	/* method of choosing character */
-	boolean	wc_splash_screen;	/* display an opening splash screen or not */
-	boolean	wc_popup_dialog;	/* put queries in pop up dialogs instead of
+	bool	wc_splash_screen;	/* display an opening splash screen or not */
+	bool	wc_popup_dialog;	/* put queries in pop up dialogs instead of
 				   		in the message window */
-	boolean wc_eight_bit_input;	/* allow eight bit input               */
-	boolean wc_mouse_support;	/* allow mouse support */
-	boolean wc2_fullscreen;		/* run fullscreen */
-	boolean wc2_softkeyboard;	/* use software keyboard */
-	boolean wc2_wraptext;		/* wrap text */
-	boolean wc2_darkgray;		/* try to use PC dark-gray color
+	bool wc_eight_bit_input;	/* allow eight bit input               */
+	bool wc_mouse_support;	/* allow mouse support */
+	bool wc2_fullscreen;		/* run fullscreen */
+	bool wc2_softkeyboard;	/* use software keyboard */
+	bool wc2_wraptext;		/* wrap text */
+	bool wc2_darkgray;		/* try to use PC dark-gray color
 					 * to represent black object */
 
-	boolean  show_buc;	/* always show BUC status */
-	boolean  cmdassist;	/* provide detailed assistance for some commands */
-	boolean	 obsolete;	/* obsolete options can point at this, it isn't used */
+	bool  show_buc;	/* always show BUC status */
+	bool  cmdassist;	/* provide detailed assistance for some commands */
+	bool	 obsolete;	/* obsolete options can point at this, it isn't used */
 	/* Items which belong in flags, but are here to allow save compatibility */
-	boolean  lootabc;	/* use "a/b/c" rather than "o/i/b" when looting */
-	boolean  showrace;	/* show hero glyph by race rather than by role */
-	boolean  travelcmd;	/* allow travel command */
+	bool  lootabc;	/* use "a/b/c" rather than "o/i/b" when looting */
+	bool  showrace;	/* show hero glyph by race rather than by role */
+	bool  travelcmd;	/* allow travel command */
 	int	 runmode;	/* update screen display during run moves */
 #ifdef AUTOPICKUP_EXCEPTIONS
 	struct autopickup_exception *autopickup_exceptions[2];
@@ -268,7 +268,7 @@ struct instance_flags {
 	char	 altkeyhandler[MAX_ALTKEYHANDLER];
 #endif
 #ifdef REALTIME_ON_BOTL
-  boolean  showrealtime; /* show actual elapsed time */
+  bool  showrealtime; /* show actual elapsed time */
 #endif
 };
 

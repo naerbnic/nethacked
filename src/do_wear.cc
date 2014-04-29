@@ -16,7 +16,7 @@ STATIC_OVL long takeoff_mask = 0L;
 static long taking_off = 0L;
 
 static int todelay;
-static boolean cancelled_don = FALSE;
+static bool cancelled_don = FALSE;
 
 static const char see_yourself[] = "see yourself";
 static const char unknown_type[] = "Unknown type of %s (%d)";
@@ -54,7 +54,7 @@ STATIC_PTR int NDECL(Shield_on);
 STATIC_PTR int NDECL(Shirt_on);
 #endif
 STATIC_DCL void NDECL(Amulet_on);
-STATIC_DCL void FDECL(Ring_off_or_gone, (struct Object *, BOOLEAN_P));
+STATIC_DCL void FDECL(Ring_off_or_gone, (struct Object *, bool));
 STATIC_PTR int FDECL(select_off, (struct Object *));
 STATIC_DCL struct Object *NDECL(do_takeoff);
 STATIC_PTR int NDECL(take_off);
@@ -743,7 +743,7 @@ void Ring_on(struct Object *obj) {
     }
 }
 
-STATIC_OVL void Ring_off_or_gone(struct Object *obj, boolean gone) {
+STATIC_OVL void Ring_off_or_gone(struct Object *obj, bool gone) {
     long mask = (obj->owornmask & W_RING);
     int old_attrib, which;
 
@@ -854,7 +854,7 @@ void Ring_gone(struct Object *obj) {
 }
 
 void Blindf_on(struct Object *otmp) {
-	boolean already_blind = Blind, changed = FALSE;
+	bool already_blind = Blind, changed = FALSE;
 
 	if (otmp == uwep)
 	    setuwep((struct Object *) 0);
@@ -884,7 +884,7 @@ void Blindf_on(struct Object *otmp) {
 }
 
 void Blindf_off(struct Object *otmp) {
-	boolean was_blind = Blind, changed = FALSE;
+	bool was_blind = Blind, changed = FALSE;
 
 	takeoff_mask &= ~W_TOOL;
 	setworn(nullptr, otmp->owornmask);
@@ -930,10 +930,10 @@ void set_wear() {
 
 /* check whether the target object is currently being put on (or taken off) */
 /* also checks for doffing */
-boolean donning(struct Object *otmp) {
+bool donning(struct Object *otmp) {
  /* long what = (occupation == take_off) ? taking_off : 0L; */
     long what = taking_off;	/* if nonzero, occupation is implied */
-    boolean result = FALSE;
+    bool result = FALSE;
 
     if (otmp == uarm)
 	result = (afternmv == Armor_on || afternmv == Armor_off ||
@@ -1178,7 +1178,7 @@ STATIC_OVL void already_wearing2(const char *cc1, const char *cc2) {
  *         noisy (if TRUE give error messages, otherwise be quiet about it)
  * output: mask (otmp's armor type)
  */
-int canwearobj(struct Object *otmp, long *mask, boolean noisy) {
+int canwearobj(struct Object *otmp, long *mask, bool noisy) {
     int err = 0;
     const char *which;
 
@@ -1540,7 +1540,7 @@ void find_ac() {
 void glibr() {
 	struct Object *otmp;
 	int xfl = 0;
-	boolean leftfall, rightfall;
+	bool leftfall, rightfall;
 	const char *otherwep = 0;
 
 	leftfall = (uleft && !uleft->cursed &&
@@ -1621,7 +1621,7 @@ struct Object * some_armor(struct Monster *victim) {
 }
 
 /* erode some arbitrary armor worn by the victim */
-void erode_armor(struct Monster *victim, boolean acid_dmg) {
+void erode_armor(struct Monster *victim, bool acid_dmg) {
 	struct Object *otmph = some_armor(victim);
 
 	if (otmph && (otmph != uarmf)) {
@@ -1952,7 +1952,7 @@ int doddoremarm() {
 STATIC_OVL int menu_remarm(int retry) {
     int n, i = 0;
     menu_item *pick_list;
-    boolean all_worn_categories = TRUE;
+    bool all_worn_categories = TRUE;
 
     if (retry) {
 	all_worn_categories = (retry == -2);

@@ -39,12 +39,12 @@ STATIC_DCL void FDECL(create_stairs, (stair *, struct mkroom *));
 STATIC_DCL void FDECL(create_altar, (altar *, struct mkroom *));
 STATIC_DCL void FDECL(create_gold, (gold *, struct mkroom *));
 STATIC_DCL void FDECL(create_feature, (int,int,struct mkroom *,int));
-STATIC_DCL boolean FDECL(search_door, (struct mkroom *, xchar *, xchar *,
+STATIC_DCL bool FDECL(search_door, (struct mkroom *, xchar *, xchar *,
 					XCHAR_P, int));
 STATIC_DCL void NDECL(fix_stair_rooms);
 STATIC_DCL void FDECL(create_corridor, (corridor *));
 
-STATIC_DCL boolean FDECL(create_subroom, (struct mkroom *, XCHAR_P, XCHAR_P,
+STATIC_DCL bool FDECL(create_subroom, (struct mkroom *, XCHAR_P, XCHAR_P,
 					XCHAR_P, XCHAR_P, XCHAR_P, XCHAR_P));
 
 #define LEFT	1
@@ -86,9 +86,9 @@ STATIC_DCL void FDECL(load_common_data, (dlb *,int));
 STATIC_DCL void FDECL(load_one_monster, (dlb *,monster *));
 STATIC_DCL void FDECL(load_one_object, (dlb *,object *));
 STATIC_DCL void FDECL(load_one_engraving, (dlb *,engraving *));
-STATIC_DCL boolean FDECL(load_rooms, (dlb *));
+STATIC_DCL bool FDECL(load_rooms, (dlb *));
 STATIC_DCL void FDECL(maze1xy, (coord *,int));
-STATIC_DCL boolean FDECL(load_maze, (dlb *));
+STATIC_DCL bool FDECL(load_maze, (dlb *));
 STATIC_DCL void FDECL(create_door, (room_door *, struct mkroom *));
 STATIC_DCL void FDECL(free_rooms,(room **, int));
 STATIC_DCL void FDECL(build_room, (room *, room*));
@@ -159,7 +159,7 @@ STATIC_OVL int rndtrap() {
 #define DRY	0x1
 #define WET	0x2
 
-STATIC_DCL boolean FDECL(is_ok_location, (SCHAR_P, SCHAR_P, int));
+STATIC_DCL bool FDECL(is_ok_location, (SCHAR_P, SCHAR_P, int));
 
 STATIC_OVL void get_location(schar *x, schar *y, int humidity) {
 	int cpt = 0;
@@ -196,7 +196,7 @@ found_it:;
 	}
 }
 
-STATIC_OVL boolean is_ok_location(schar x, schar y, int humidity) {
+STATIC_OVL bool is_ok_location(schar x, schar y, int humidity) {
 	int typ;
 
 	if (Is_waterlevel(&u.uz)) return TRUE;	/* accept any spot */
@@ -278,7 +278,7 @@ STATIC_OVL void get_free_room_loc(schar *x, schar *y, struct mkroom *croom) {
 	*x = try_x,  *y = try_y;
 }
 
-boolean check_room(xchar *lowx, xchar *ddx, xchar *lowy, xchar *ddy, boolean vault) {
+bool check_room(xchar *lowx, xchar *ddx, xchar *lowy, xchar *ddy, bool vault) {
 	int x,y,hix = *lowx + *ddx, hiy = *lowy + *ddy;
 	struct rm *lev;
 	int xlim, ylim, ymax;
@@ -329,12 +329,12 @@ chk:
  * This is still very incomplete...
  */
 
-boolean create_room(xchar x, xchar y, xchar w, xchar h, xchar xal, xchar yal, xchar rtype, xchar rlit) {
+bool create_room(xchar x, xchar y, xchar w, xchar h, xchar xal, xchar yal, xchar rtype, xchar rlit) {
 	xchar	xabs, yabs;
 	int	wtmp, htmp, xaltmp, yaltmp, xtmp, ytmp;
 	NhRect	*r1 = 0, r2;
 	int	trycnt = 0;
-	boolean	vault = FALSE;
+	bool	vault = FALSE;
 	int	xlim = XLIM, ylim = YLIM;
 
 	if (rtype == -1)	/* Is the type random ? */
@@ -493,7 +493,7 @@ boolean create_room(xchar x, xchar y, xchar w, xchar h, xchar xal, xchar yal, xc
  * x & y are relative to the parent room.
  */
 
-STATIC_OVL boolean create_subroom(struct mkroom *proom, xchar x, xchar y, xchar w, xchar h, xchar rtype, xchar rlit) {
+STATIC_OVL bool create_subroom(struct mkroom *proom, xchar x, xchar y, xchar w, xchar h, xchar rtype, xchar rlit) {
 	xchar width, height;
 
 	width = proom->hx - proom->lx + 1;
@@ -847,7 +847,7 @@ STATIC_OVL void create_object(object *o, struct mkroom *croom) {
     struct Object *otmp;
     schar x, y;
     char c;
-    boolean named;	/* has a name been supplied in level description? */
+    bool named;	/* has a name been supplied in level description? */
 
     if (rn2(100) < o->chance) {
 	named = o->name.str ? TRUE : FALSE;
@@ -1024,7 +1024,7 @@ STATIC_OVL void create_stairs(stair *s, struct mkroom *croom) {
 STATIC_OVL void create_altar(altar *a, struct mkroom *croom) {
 	schar		sproom,x,y;
 	aligntyp	amask;
-	boolean		croom_is_temple = TRUE;
+	bool		croom_is_temple = TRUE;
 	int oldtyp; 
 
 	x = a->x; y = a->y;
@@ -1141,7 +1141,7 @@ STATIC_OVL void create_feature(int fx, int fy, struct mkroom *croom, int typ) {
  * Search for a door in a room on a specified wall.
  */
 
-STATIC_OVL boolean search_door(struct mkroom *croom, xchar *x, xchar *y, xchar wall, int cnt) {
+STATIC_OVL bool search_door(struct mkroom *croom, xchar *x, xchar *y, xchar wall, int cnt) {
 	int dx, dy;
 	int xx,yy;
 
@@ -1188,7 +1188,7 @@ STATIC_OVL boolean search_door(struct mkroom *croom, xchar *x, xchar *y, xchar w
  * Dig a corridor between two points.
  */
 
-boolean dig_corridor(coord *org, coord *dest, boolean nxcor, schar ftyp, schar btyp) {
+bool dig_corridor(coord *org, coord *dest, bool nxcor, schar ftyp, schar btyp) {
 	int dx=0, dy=0, dix, diy, cct;
 	struct rm *crm;
 	int tx, ty, xx, yy;
@@ -1370,7 +1370,7 @@ STATIC_OVL void create_corridor(corridor *c) {
  * Fill a room (shop, zoo, etc...) with appropriate stuff.
  */
 
-void fill_room(struct mkroom *croom, boolean prefilled) {
+void fill_room(struct mkroom *croom, bool prefilled) {
 	if (!croom || croom->rtype == OROOM)
 	    return;
 
@@ -1496,7 +1496,7 @@ STATIC_OVL void free_rooms(room **ro, int n) {
 }
 
 STATIC_OVL void build_room(room *r, room *pr) {
-  boolean okroom;
+  bool okroom;
   struct mkroom	*aroom;
   short i;
   xchar rtype = (!r->chance || rn2(100) < r->chance) ? r->rtype : OROOM;
@@ -1574,7 +1574,7 @@ STATIC_OVL void build_room(room *r, room *pr) {
  * set lighting in a region that will not become a room.
  */
 STATIC_OVL void light_region(region *tmpregion) {
-    boolean litstate = tmpregion->rlit ? 1 : 0;
+    bool litstate = tmpregion->rlit ? 1 : 0;
     int hiy = tmpregion->y2;
     int x, y;
     struct rm *lev;
@@ -1683,7 +1683,7 @@ STATIC_OVL void load_one_engraving(dlb *fd, engraving *e) {
 	e->engr.str[size] = '\0';
 }
 
-STATIC_OVL boolean load_rooms(dlb *fd) {
+STATIC_OVL bool load_rooms(dlb *fd) {
 	xchar		nrooms, ncorr;
 	char		n;
 	short		size;
@@ -1932,9 +1932,9 @@ STATIC_OVL void maze1xy(coord *m, int humidity) {
  * Could be cleaner, but it works.
  */
 
-STATIC_OVL boolean load_maze(dlb *fd) {
+STATIC_OVL bool load_maze(dlb *fd) {
     xchar   x, y, typ;
-    boolean prefilled, room_not_needed;
+    bool prefilled, room_not_needed;
 
     char    n, numpart = 0;
     xchar   nwalk = 0, nwalk_sav;
@@ -1962,7 +1962,7 @@ STATIC_OVL boolean load_maze(dlb *fd) {
     engraving tmpengraving;
     xchar   mustfill[(MAXNROFROOMS+1)*2];
     struct trap *badtrap;
-    boolean has_bounds;
+    bool has_bounds;
 
     (void) memset((genericptr_t)&Map[0][0], 0, sizeof Map);
     load_common_data(fd, SP_LEV_MAZE);
@@ -2499,9 +2499,9 @@ STATIC_OVL boolean load_maze(dlb *fd) {
  * General loader
  */
 
-boolean load_special(const char *name) {
+bool load_special(const char *name) {
 	dlb *fd;
-	boolean result = FALSE;
+	bool result = FALSE;
 	char c;
 	struct version_info vers_info;
 

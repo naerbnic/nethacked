@@ -168,7 +168,7 @@ void nh_timeout() {
 	 * Luck is based at 0 usually, +1 if a full moon and -1 on Friday 13th
 	 */
 	    int time_luck = stone_luck(FALSE);
-	    boolean nostone = !carrying(LUCKSTONE) && !stone_luck(TRUE);
+	    bool nostone = !carrying(LUCKSTONE) && !stone_luck(TRUE);
 
 	    if(u.uluck > baseluck && (nostone || time_luck < 0))
 		u.uluck--;
@@ -349,7 +349,7 @@ void nh_timeout() {
 #endif /* OVL0 */
 #ifdef OVL1
 
-void fall_asleep(int how_long, boolean wakeup_msg) {
+void fall_asleep(int how_long, bool wakeup_msg) {
 	stop_occupation();
 	nomul(how_long, "sleeping");
 	/* generally don't notice sounds while sleeping */
@@ -398,8 +398,8 @@ void hatch_egg(genericptr_t arg, long timeout) {
 	struct Monster *mon, *mon2;
 	coord cc;
 	xchar x, y;
-	boolean yours, silent, knows_egg = FALSE;
-	boolean cansee_hatchspot = FALSE;
+	bool yours, silent, knows_egg = FALSE;
+	bool cansee_hatchspot = FALSE;
 	int i, mnum, hatchcount = 0;
 
 	egg = (struct Object *) arg;
@@ -471,7 +471,7 @@ void hatch_egg(genericptr_t arg, long timeout) {
 
 	if (mon) {
 	    char monnambuf[BUFSZ], carriedby[BUFSZ];
-	    boolean siblings = (hatchcount > 1), redraw = FALSE;
+	    bool siblings = (hatchcount > 1), redraw = FALSE;
 
 	    if (cansee_hatchspot) {
 		Sprintf(monnambuf, "%s%s",
@@ -590,7 +590,7 @@ STATIC_OVL void slip_or_trip() {
 	struct Object *otmp = vobj_at(u.ux, u.uy);
 	const char *what, *pronoun;
 	char buf[BUFSZ];
-	boolean on_foot = TRUE;
+	bool on_foot = TRUE;
 #ifdef STEED
 	if (u.usteed) on_foot = FALSE;
 #endif
@@ -706,7 +706,7 @@ STATIC_OVL void lantern_message(struct Object *obj) {
  */
 void burn_object(genericptr_t arg, long timeout) {
 	struct Object *obj = (struct Object *) arg;
-	boolean canseeit, many, menorah, need_newsym;
+	bool canseeit, many, menorah, need_newsym;
 	xchar x, y;
 	char whose[BUFSZ];
 
@@ -999,10 +999,10 @@ void burn_object(genericptr_t arg, long timeout) {
  *
  * This is a "silent" routine - it should not print anything out.
  */
-void begin_burn(struct Object *obj, boolean already_lit) {
+void begin_burn(struct Object *obj, bool already_lit) {
 	int radius = 3;
 	long turns = 0;
-	boolean do_timer = TRUE;
+	bool do_timer = TRUE;
 
 	if (obj->age == 0 && obj->otyp != MAGIC_LAMP && !artifact_light(obj))
 	    return;
@@ -1088,7 +1088,7 @@ void begin_burn(struct Object *obj, boolean already_lit) {
  * Stop a burn timeout on the given object if timer attached.  Darken
  * light source.
  */
-void end_burn(struct Object *obj, boolean timer_attached) {
+void end_burn(struct Object *obj, bool timer_attached) {
 	if (!obj->lamplit) {
 	    impossible("end_burn: obj %s not lit", xname(obj));
 	    return;
@@ -1182,7 +1182,7 @@ void do_storms() {
  * Interface:
  *
  * General:
- *	boolean start_timer(long timeout,short kind,short func_index,
+ *	bool start_timer(long timeout,short kind,short func_index,
  *							genericptr_t arg)
  *		Start a timer of kind 'kind' that will expire at time
  *		monstermoves+'timeout'.  Call the function at 'func_index'
@@ -1208,12 +1208,12 @@ void do_storms() {
  *		are saved with a level.  Object and monster timers are
  *		saved using their respective id's instead of pointers.
  *
- *	void restore_timers(int fd, int range, boolean ghostly, long adjust)
+ *	void restore_timers(int fd, int range, bool ghostly, long adjust)
  *		Restore timers of range 'range'.  If from a ghost pile,
  *		adjust the timeout by 'adjust'.  The object and monster
  *		ids are not restored until later.
  *
- *	void relink_timers(boolean ghostly)
+ *	void relink_timers(bool ghostly)
  *		Relink all object and monster timers that had been saved
  *		using their object's or monster's id number.
  *
@@ -1236,9 +1236,9 @@ STATIC_DCL void FDECL(insert_timer, (TimerElement *));
 STATIC_DCL TimerElement *FDECL(remove_timer, (TimerElement **, SHORT_P,
 								genericptr_t));
 STATIC_DCL void FDECL(write_timer, (int, TimerElement *));
-STATIC_DCL boolean FDECL(mon_is_local, (struct Monster *));
-STATIC_DCL boolean FDECL(timer_is_local, (TimerElement *));
-STATIC_DCL int FDECL(maybe_write_timer, (int, int, BOOLEAN_P));
+STATIC_DCL bool FDECL(mon_is_local, (struct Monster *));
+STATIC_DCL bool FDECL(timer_is_local, (TimerElement *));
+STATIC_DCL int FDECL(maybe_write_timer, (int, int, bool));
 
 /* ordered timer list */
 static TimerElement *timer_base;		/* "active" */
@@ -1370,7 +1370,7 @@ void run_timers() {
 /*
  * Start a timer.  Return TRUE if successful.
  */
-boolean start_timer(long when, short kind, short func_index, genericptr_t arg) {
+bool start_timer(long when, short kind, short func_index, genericptr_t arg) {
     TimerElement *gnu;
 
     if (func_index < 0 || func_index >= NUM_TIME_FUNCS)
@@ -1559,7 +1559,7 @@ STATIC_OVL void write_timer(int fd, TimerElement *timer) {
  * Return TRUE if the object will stay on the level when the level is
  * saved.
  */
-boolean obj_is_local(struct Object *obj) {
+bool obj_is_local(struct Object *obj) {
     switch (obj->where) {
 	case OBJ_INVENT:
 	case OBJ_MIGRATING:	return FALSE;
@@ -1577,7 +1577,7 @@ boolean obj_is_local(struct Object *obj) {
  * Return TRUE if the given monster will stay on the level when the
  * level is saved.
  */
-STATIC_OVL boolean mon_is_local(struct Monster *mon) {
+STATIC_OVL bool mon_is_local(struct Monster *mon) {
     struct Monster *curr;
 
     for (curr = migrating_mons; curr; curr = curr->nmon)
@@ -1593,7 +1593,7 @@ STATIC_OVL boolean mon_is_local(struct Monster *mon) {
  * Return TRUE if the timer is attached to something that will stay on the
  * level when the level is saved.
  */
-STATIC_OVL boolean timer_is_local(TimerElement *timer) {
+STATIC_OVL bool timer_is_local(TimerElement *timer) {
     switch (timer->kind) {
 	case TIMER_LEVEL:	return TRUE;
 	case TIMER_GLOBAL:	return FALSE;
@@ -1609,7 +1609,7 @@ STATIC_OVL boolean timer_is_local(TimerElement *timer) {
  * Part of the save routine.  Count up the number of timers that would
  * be written.  If write_it is true, actually write the timer.
  */
-STATIC_OVL int maybe_write_timer(int fd, int range, boolean write_it) {
+STATIC_OVL int maybe_write_timer(int fd, int range, bool write_it) {
     int count = 0;
     TimerElement *curr;
 
@@ -1686,7 +1686,7 @@ void save_timers(int fd, int mode, int range) {
  * Pull in the structures from disk, but don't recalculate the object and
  * monster pointers.
  */
-void restore_timers(int fd, int range, boolean ghostly, long adjust) {
+void restore_timers(int fd, int range, bool ghostly, long adjust) {
     int count;
     TimerElement *curr;
 
@@ -1706,7 +1706,7 @@ void restore_timers(int fd, int range, boolean ghostly, long adjust) {
 
 
 /* reset all timers that are marked for reseting */
-void relink_timers(boolean ghostly) {
+void relink_timers(bool ghostly) {
     TimerElement *curr;
     unsigned long nid;
 

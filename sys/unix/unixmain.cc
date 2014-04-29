@@ -25,9 +25,9 @@ extern struct passwd *FDECL(getpwuid,(int));
 #endif
 extern struct passwd *FDECL(getpwnam,(const char *));
 #ifdef CHDIR
-static void FDECL(chdirx, (const char *,BOOLEAN_P));
+static void FDECL(chdirx, (const char *,bool));
 #endif /* CHDIR */
-static boolean NDECL(whoami);
+static bool NDECL(whoami);
 static void FDECL(process_options, (int, char **));
 
 #ifdef _M_UNIX
@@ -41,7 +41,7 @@ extern void NDECL(init_linux_cons);
 
 static void NDECL(wd_message);
 #ifdef WIZARD
-static boolean wiz_error_flag = FALSE;
+static bool wiz_error_flag = FALSE;
 #endif
 
 int main(int argc, char *argv[]) {
@@ -49,7 +49,7 @@ int main(int argc, char *argv[]) {
 #ifdef CHDIR
 	char *dir;
 #endif
-	boolean exact_username;
+	bool exact_username;
 
 #if defined(__APPLE__)
 	/* special hack to change working directory to a resource fork when
@@ -237,7 +237,7 @@ int main(int argc, char *argv[]) {
 		/* Since wizard is actually flags.debug, restoring might
 		 * overwrite it.
 		 */
-		boolean remember_wiz_mode = wizard;
+		bool remember_wiz_mode = wizard;
 #endif
 		const char *fq_save = fqname(SAVEF, SAVEPREFIX, 1);
 
@@ -398,7 +398,7 @@ static void process_options(int argc, char *argv[]) {
 }
 
 #ifdef CHDIR
-static void chdirx(const char *dir, boolean wr) {
+static void chdirx(const char *dir, bool wr) {
 	if (dir					/* User specified directory? */
 # ifdef HACKDIR
 	       && strcmp(dir, HACKDIR)		/* and not the default? */
@@ -451,7 +451,7 @@ static void chdirx(const char *dir, boolean wr) {
 }
 #endif /* CHDIR */
 
-static boolean
+static bool
 whoami() {
 	/*
 	 * Who am i? Algorithm: 1. Use name as specified in NETHACKOPTIONS

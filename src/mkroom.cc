@@ -18,8 +18,8 @@
 #include "hack.h"
 
 #ifdef OVLB
-STATIC_DCL boolean FDECL(isbig, (struct mkroom *));
-STATIC_DCL struct mkroom * FDECL(pick_room,(BOOLEAN_P));
+STATIC_DCL bool FDECL(isbig, (struct mkroom *));
+STATIC_DCL struct mkroom * FDECL(pick_room,(bool));
 STATIC_DCL void NDECL(mkshop), FDECL(mkzoo,(int)), NDECL(mkswamp);
 STATIC_DCL void NDECL(mktemple);
 STATIC_DCL coord * FDECL(shrine_pos, (int));
@@ -36,10 +36,10 @@ extern const struct shclass shtypes[];	/* defined in shknam.c */
 
 #ifdef OVLB
 
-STATIC_OVL boolean isbig(struct mkroom *sroom) {
+STATIC_OVL bool isbig(struct mkroom *sroom) {
 	int area = (sroom->hx - sroom->lx + 1)
 			   * (sroom->hy - sroom->ly + 1);
-	return((boolean)( area > 20 ));
+	return((bool)( area > 20 ));
 }
 
 /* make and stock a room of a given type */
@@ -173,7 +173,7 @@ gottype:
 }
 
 /* pick an unused room, preferably with only one door */
-STATIC_OVL struct mkroom *pick_room(boolean strict) {
+STATIC_OVL struct mkroom *pick_room(bool strict) {
 	struct mkroom *sroom;
 	int i = nroom;
 
@@ -372,7 +372,7 @@ void fill_zoo(struct mkroom *sroom) {
 }
 
 /* make a swarm of undead around mm */
-void mkundead(coord *mm, boolean revive_corpses, int mm_flags) {
+void mkundead(coord *mm, bool revive_corpses, int mm_flags) {
 	int cnt = (level_difficulty() + 1)/10 + rnd(5);
 	struct permonst *mdat;
 	struct Object *otmp;
@@ -482,7 +482,7 @@ STATIC_OVL void mktemple() {
 	level.flags.has_temple = 1;
 }
 
-boolean nexttodoor(int sx, int sy) {
+bool nexttodoor(int sx, int sy) {
 	int dx, dy;
 	struct rm *lev;
 	for(dx = -1; dx <= 1; dx++) for(dy = -1; dy <= 1; dy++) {
@@ -494,19 +494,19 @@ boolean nexttodoor(int sx, int sy) {
 	return(FALSE);
 }
 
-boolean has_dnstairs(struct mkroom *sroom) {
+bool has_dnstairs(struct mkroom *sroom) {
 	if (sroom == dnstairs_room)
 		return TRUE;
 	if (sstairs.sx && !sstairs.up)
-		return((boolean)(sroom == sstairs_room));
+		return((bool)(sroom == sstairs_room));
 	return FALSE;
 }
 
-boolean has_upstairs(struct mkroom *sroom) {
+bool has_upstairs(struct mkroom *sroom) {
 	if (sroom == upstairs_room)
 		return TRUE;
 	if (sstairs.sx && sstairs.up)
-		return((boolean)(sroom == sstairs_room));
+		return((bool)(sroom == sstairs_room));
 	return FALSE;
 }
 
@@ -521,12 +521,12 @@ int somey(struct mkroom *croom) {
 	return rn2(croom->hy-croom->ly+1) + croom->ly;
 }
 
-boolean inside_room(struct mkroom *croom, xchar x, xchar y) {
-	return((boolean)(x >= croom->lx-1 && x <= croom->hx+1 &&
+bool inside_room(struct mkroom *croom, xchar x, xchar y) {
+	return((bool)(x >= croom->lx-1 && x <= croom->hx+1 &&
 		y >= croom->ly-1 && y <= croom->hy+1));
 }
 
-boolean somexy(struct mkroom *croom, coord *c) {
+bool somexy(struct mkroom *croom, coord *c) {
 	int try_cnt = 0;
 	int i;
 

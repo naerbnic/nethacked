@@ -16,10 +16,10 @@ extern const int monstr[];
 #ifdef OVLB
 
 STATIC_DCL short FDECL(which_arti, (int));
-STATIC_DCL boolean FDECL(mon_has_arti, (struct Monster *,SHORT_P));
+STATIC_DCL bool FDECL(mon_has_arti, (struct Monster *,SHORT_P));
 STATIC_DCL struct Monster *FDECL(other_mon_has_arti, (struct Monster *,SHORT_P));
 STATIC_DCL struct Object *FDECL(on_ground, (SHORT_P));
-STATIC_DCL boolean FDECL(you_have, (int));
+STATIC_DCL bool FDECL(you_have, (int));
 STATIC_DCL long FDECL(target_on, (int,struct Monster *));
 STATIC_DCL long FDECL(strategy, (struct Monster *));
 
@@ -140,7 +140,7 @@ STATIC_OVL short which_arti(int mask) {
  *	since bell, book, candle, and amulet are all objects, not really
  *	artifacts right now.	[MRS]
  */
-STATIC_OVL boolean mon_has_arti(struct Monster *mtmp, short otyp) {
+STATIC_OVL bool mon_has_arti(struct Monster *mtmp, short otyp) {
 	struct Object *otmp;
 
 	for(otmp = mtmp->minvent; otmp; otmp = otmp->nobj) {
@@ -177,13 +177,13 @@ STATIC_OVL struct Object * on_ground(short otyp) {
 	return(nullptr);
 }
 
-STATIC_OVL boolean you_have(int mask) {
+STATIC_OVL bool you_have(int mask) {
 	switch(mask) {
-	    case M3_WANTSAMUL:	return(boolean)(u.uhave.amulet);
-	    case M3_WANTSBELL:	return(boolean)(u.uhave.bell);
-	    case M3_WANTSCAND:	return(boolean)(u.uhave.menorah);
-	    case M3_WANTSBOOK:	return(boolean)(u.uhave.book);
-	    case M3_WANTSARTI:	return(boolean)(u.uhave.questart);
+	    case M3_WANTSAMUL:	return(bool)(u.uhave.amulet);
+	    case M3_WANTSBELL:	return(bool)(u.uhave.bell);
+	    case M3_WANTSCAND:	return(bool)(u.uhave.menorah);
+	    case M3_WANTSBOOK:	return(bool)(u.uhave.book);
+	    case M3_WANTSARTI:	return(bool)(u.uhave.questart);
 	    default:		break;
 	}
 	return(0);

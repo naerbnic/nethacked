@@ -14,13 +14,13 @@ STATIC_DCL struct Monster *NDECL(findgd);
 
 #ifdef OVLB
 
-STATIC_DCL boolean FDECL(clear_fcorr, (struct Monster *,BOOLEAN_P));
+STATIC_DCL bool FDECL(clear_fcorr, (struct Monster *,bool));
 STATIC_DCL void FDECL(restfakecorr,(struct Monster *));
-STATIC_DCL boolean FDECL(in_fcorridor, (struct Monster *,int,int));
+STATIC_DCL bool FDECL(in_fcorridor, (struct Monster *,int,int));
 STATIC_DCL void FDECL(move_gold,(struct Object *,int));
 STATIC_DCL void FDECL(wallify_vault,(struct Monster *));
 
-STATIC_OVL boolean clear_fcorr(struct Monster *grd, boolean forceshow) {
+STATIC_OVL bool clear_fcorr(struct Monster *grd, bool forceshow) {
 	int fcx, fcy, fcbeg;
 	struct Monster *mtmp;
 
@@ -63,8 +63,8 @@ STATIC_OVL void restfakecorr(struct Monster *grd) {
 }
 
 /* called in mon.c */
-boolean grddead(struct Monster *grd) {
-	boolean dispose = clear_fcorr(grd, TRUE);
+bool grddead(struct Monster *grd) {
+	bool dispose = clear_fcorr(grd, TRUE);
 
 	if(!dispose) {
 		/* see comment by newpos in gd_move() */
@@ -78,7 +78,7 @@ boolean grddead(struct Monster *grd) {
 	return(dispose);
 }
 
-STATIC_OVL boolean in_fcorridor(struct Monster *grd, int x, int y) {
+STATIC_OVL bool in_fcorridor(struct Monster *grd, int x, int y) {
 	int fci;
 
 	for(fci = EGD(grd)->fcbeg; fci < EGD(grd)->fcend; fci++)
@@ -352,8 +352,8 @@ STATIC_OVL void wallify_vault(struct Monster *grd) {
 	struct Monster *mon;
 	struct Object *gold;
 	struct trap *trap;
-	boolean fixed = FALSE;
-	boolean movedgold = FALSE;
+	bool fixed = FALSE;
+	bool movedgold = FALSE;
 
 	for (x = lox; x <= hix; x++)
 	    for (y = loy; y <= hiy; y++) {
@@ -415,18 +415,18 @@ int gd_move(struct Monster *grd) {
 	struct fakecorridor *fcp;
 	struct egd *egrd = EGD(grd);
 	struct rm *crm;
-	boolean goldincorridor = FALSE,
+	bool goldincorridor = FALSE,
 			 u_in_vault = vault_occupied(u.urooms)? TRUE : FALSE,
 			 grd_in_vault = *in_rooms(grd->mx, grd->my, VAULT)?
 					TRUE : FALSE;
-	boolean disappear_msg_seen = FALSE, semi_dead = (grd->mhp <= 0);
+	bool disappear_msg_seen = FALSE, semi_dead = (grd->mhp <= 0);
 #ifndef GOLDOBJ
-	boolean u_carry_gold = ((u.ugold + hidden_gold()) > 0L);
+	bool u_carry_gold = ((u.ugold + hidden_gold()) > 0L);
 #else
         long umoney = money_cnt(invent);
-	boolean u_carry_gold = ((umoney + hidden_gold()) > 0L);
+	bool u_carry_gold = ((umoney + hidden_gold()) > 0L);
 #endif
-	boolean see_guard;
+	bool see_guard;
 
 	if(!on_level(&(egrd->gdlevel), &u.uz)) return(-1);
 	nx = ny = m = n = 0;
@@ -781,11 +781,11 @@ long hidden_gold() {
 }
 
 /* prevent "You hear footsteps.." when inappropriate */
-boolean gd_sound() {
+bool gd_sound() {
 	struct Monster *grd = findgd();
 
 	if (vault_occupied(u.urooms)) return(FALSE);
-	else return((boolean)(grd == (struct Monster *)0));
+	else return((bool)(grd == (struct Monster *)0));
 }
 
 #endif /* OVLB */

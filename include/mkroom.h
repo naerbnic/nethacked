@@ -15,7 +15,7 @@ struct mkroom {
 	schar rlit;		/* is the room lit ? */
 	schar doorct;		/* door count */
 	schar fdoor;		/* index for the first door of the room */
-	boolean irregular;	/* true if room is non-rectangular */
+	bool irregular;	/* true if room is non-rectangular */
         std::vector<struct mkroom *> subrooms;  /* Subrooms pointers */
 	struct Monster *resident; /* priest/shopkeeper/guard for this room */
 };

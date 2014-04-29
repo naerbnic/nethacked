@@ -138,17 +138,17 @@ static char *FDECL(version_id_string, (char *,const char *));
 static char *FDECL(xcrypt, (const char *));
 static int FDECL(check_control, (char *));
 static char *FDECL(without_control, (char *));
-static boolean FDECL(d_filter, (char *));
-static boolean FDECL(h_filter, (char *));
-static boolean FDECL(ranged_attk,(struct permonst*));
+static bool FDECL(d_filter, (char *));
+static bool FDECL(h_filter, (char *));
+static bool FDECL(ranged_attk,(struct permonst*));
 static int FDECL(mstrength,(struct permonst *));
 static void NDECL(build_savebones_compat_string);
 
-static boolean FDECL(qt_comment, (char *));
-static boolean FDECL(qt_control, (char *));
+static bool FDECL(qt_comment, (char *));
+static bool FDECL(qt_control, (char *));
 static int FDECL(get_hdr, (char *));
-static boolean FDECL(new_id, (char *));
-static boolean FDECL(known_msg, (int,int));
+static bool FDECL(new_id, (char *));
+static bool FDECL(known_msg, (int,int));
 static void FDECL(new_msg, (char *,int,int));
 static void FDECL(do_qt_control, (char *));
 static void FDECL(do_qt_text, (char *));
@@ -194,7 +194,7 @@ int main(int argc, const char *argv[]) {
 }
 
 void do_makedefs(string options, vector<string> const& args) {
-  boolean more_than_one;
+  bool more_than_one;
 
   /* Note:  these initializers don't do anything except guarantee that
    we're linked properly.
@@ -829,7 +829,7 @@ void do_options() {
 }
 
 /* routine to decide whether to discard something from data.base */
-static boolean d_filter(char* line) {
+static bool d_filter(char* line) {
     if (*line == '#') return TRUE;	/* ignore comment lines */
     return FALSE;
 }
@@ -858,7 +858,7 @@ text-b/text-c		at fseek(0x01234567L + 456L)
 
 void do_data() {
 	char	infile[60], tempfile[60];
-	boolean ok;
+	bool ok;
 	long	txt_offset;
 	int	entry_cnt, line_cnt;
 
@@ -957,8 +957,8 @@ dead_data:  perror(in_line);	/* report the problem */
 }
 
 /* routine to decide whether to discard something from oracles.txt */
-static boolean h_filter(char* line) {
-    static boolean skip = FALSE;
+static bool h_filter(char* line) {
+    static bool skip = FALSE;
     char tag[sizeof in_line];
 
     if (*line == '#') return TRUE;	/* ignore comment lines */
@@ -998,7 +998,7 @@ static const char *special_oracle[] = {
 
 void do_oracles() {
 	char	infile[60], tempfile[60];
-	boolean in_oracle, ok;
+	bool in_oracle, ok;
 	long	txt_offset, offset, fpos;
 	int	oracle_cnt;
 	int i;
@@ -1123,7 +1123,7 @@ dead_data:  perror(in_line);	/* report the problem */
 static	struct deflist {
 
 	const char	*defname;
-	boolean	true_or_false;
+	bool	true_or_false;
 } deflist[] = {
 #ifdef REINCARNATION
 	      {	"REINCARNATION", TRUE },
@@ -1194,7 +1194,7 @@ recheck:
 }
 
 /* returns TRUE if monster can attack at range */
-static boolean ranged_attk(struct permonst *ptr) {
+static bool ranged_attk(struct permonst *ptr) {
 	int	i, j;
 	int atk_mask = (1<<AT_BREA) | (1<<AT_SPIT) | (1<<AT_GAZE);
 
@@ -1349,16 +1349,16 @@ static struct qtmsg	*curr_msg;
 
 static int	qt_line;
 
-static boolean	in_msg;
+static bool	in_msg;
 #define NO_MSG	1	/* strlen of a null line returned by fgets() */
 
-static boolean qt_comment(char* s) {
+static bool qt_comment(char* s) {
 	if(s[0] == '#') return(TRUE);
-	return((boolean)(!in_msg  && strlen(s) == NO_MSG));
+	return((bool)(!in_msg  && strlen(s) == NO_MSG));
 }
 
-static boolean qt_control(char* s) {
-	return((boolean)(s[0] == '%' && (s[1] == 'C' || s[1] == 'E')));
+static bool qt_control(char* s) {
+	return((bool)(s[0] == '%' && (s[1] == 'C' || s[1] == 'E')));
 }
 
 static int get_hdr (char* code) {
@@ -1370,7 +1370,7 @@ static int get_hdr (char* code) {
 	return(0);
 }
 
-static boolean new_id (char* code) {
+static bool new_id (char* code) {
 	if(qt_hdr.n_hdr >= N_HDR) {
 	    Fprintf(stderr, OUT_OF_HEADERS, qt_line);
 	    return(FALSE);
@@ -1382,7 +1382,7 @@ static boolean new_id (char* code) {
 	return(TRUE);
 }
 
-static boolean known_msg(int num, int id) {
+static bool known_msg(int num, int id) {
 	int i;
 
 	for(i = 0; i < msg_hdr[num].n_msg; i++)
@@ -1581,7 +1581,7 @@ void do_objs() {
 	int nspell = 0;
 	int prefix = 0;
 	char class_id = '\0';
-	boolean	sumerr = FALSE;
+	bool	sumerr = FALSE;
 
 	filename[0]='\0';
 #ifdef FILE_PREFIX

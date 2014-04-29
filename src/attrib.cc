@@ -101,7 +101,7 @@ STATIC_DCL void NDECL(exerper);
 STATIC_DCL void FDECL(postadjabil, (long *));
 
 /* adjust an attribute; return TRUE if change is made, FALSE otherwise */
-boolean adjattrib(int ndx, int incr, int msgflg) {
+bool adjattrib(int ndx, int incr, int msgflg) {
 	if (Fixed_abil || !incr) return FALSE;
 
 	if ((ndx == A_INT || ndx == A_WIS)
@@ -191,7 +191,7 @@ void change_luck(schar n) {
 	if (u.uluck > 0 && u.uluck > LUCKMAX)	u.uluck = LUCKMAX;
 }
 
-int stone_luck(boolean parameter) {
+int stone_luck(bool parameter) {
 	struct Object *otmp;
 	long bonchance = 0;
 
@@ -239,7 +239,7 @@ void restore_attrib() {
 
 #define AVAL	50		/* tune value for exercise gains */
 
-void exercise(int i, boolean inc_or_dec) {
+void exercise(int i, bool inc_or_dec) {
 #ifdef DEBUG
 	pline("Exercise:");
 #endif

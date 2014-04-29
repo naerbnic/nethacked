@@ -25,8 +25,8 @@ static int expl[3][3] = {
  */
 void explode(int x, int y, int type, int dam, char olet, int expltype) {
 	int i, j, k, damu = dam;
-	boolean starting = 1;
-	boolean visible, any_shield;
+	bool starting = 1;
+	bool visible, any_shield;
 	int uhurt = 0; /* 0=unhurt, 1=items damaged, 2=you and items damaged */
 	const char *str;
 	int idamres, idamnonres;
@@ -34,8 +34,8 @@ void explode(int x, int y, int type, int dam, char olet, int expltype) {
 	uchar adtyp;
 	int explmask[3][3];
 		/* 0=normal explosion, 1=do shieldeff, 2=do nothing */
-	boolean shopdamage = FALSE;
-	boolean generic = FALSE;
+	bool shopdamage = FALSE;
+	bool generic = FALSE;
 
 	if (olet == WAND_CLASS)		/* retributive strike */
 		switch (Role_switch) {
@@ -382,7 +382,7 @@ struct scatter_chain {
 	schar dx;			/* direction of			*/
 	schar dy;			/*	travel			*/
 	int range;			/* range of object		*/
-	boolean stopped;		/* flag for in-motion/stopped	*/
+	bool stopped;		/* flag for in-motion/stopped	*/
 };
 
 /*
@@ -402,8 +402,8 @@ long scatter(int sx, int sy, int blastforce, unsigned int scflags, struct Object
 	int farthest = 0;
 	uchar typ;
 	long qtmp;
-	boolean used_up;
-	boolean individual_object = obj ? TRUE : FALSE;
+	bool used_up;
+	bool individual_object = obj ? TRUE : FALSE;
 	struct Monster *mtmp;
 	struct scatter_chain *stmp, *stmp2 = 0;
 	struct scatter_chain *schain = (struct scatter_chain *)0;

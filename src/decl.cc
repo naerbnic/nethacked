@@ -120,14 +120,14 @@ dest_area updest = { 0, 0, 0, 0, 0, 0, 0, 0 };
 dest_area dndest = { 0, 0, 0, 0, 0, 0, 0, 0 };
 coord inv_pos = { 0, 0 };
 
-boolean in_mklev = FALSE;
-boolean stoned = FALSE;	/* done to monsters hit by 'c' */
-boolean unweapon = FALSE;
-boolean mrg_to_wielded = FALSE;
+bool in_mklev = FALSE;
+bool stoned = FALSE;	/* done to monsters hit by 'c' */
+bool unweapon = FALSE;
+bool mrg_to_wielded = FALSE;
 			 /* weapon picked is merged with wielded one */
 struct Object *current_wand = 0;	/* wand currently zapped/applied */
 
-boolean in_steed_dismounting = FALSE;
+bool in_steed_dismounting = FALSE;
 
 coord bhitpos = DUMMY;
 coord doors[DOORMAX] = {DUMMY};
@@ -264,7 +264,7 @@ const char *materialnm[] = {
 };
 
 /* Vision */
-boolean vision_full_recalc = 0;
+bool vision_full_recalc = 0;
 char	 **viz_array = 0;/* used in cansee() and couldsee() macros */
 
 /* Global windowing data, defined here for multi-window-system support */

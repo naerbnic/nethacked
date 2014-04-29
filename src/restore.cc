@@ -22,16 +22,16 @@ static int NDECL(mgetc);
 #endif
 STATIC_DCL void NDECL(find_lev_obj);
 STATIC_DCL void FDECL(restlevchn, (int));
-STATIC_DCL void FDECL(restdamage, (int,BOOLEAN_P));
-STATIC_DCL struct Object *FDECL(restobjchn, (int,BOOLEAN_P,BOOLEAN_P));
-STATIC_DCL struct Monster *FDECL(restmonchn, (int,BOOLEAN_P));
+STATIC_DCL void FDECL(restdamage, (int,bool));
+STATIC_DCL struct Object *FDECL(restobjchn, (int,bool,bool));
+STATIC_DCL struct Monster *FDECL(restmonchn, (int,bool));
 STATIC_DCL struct fruit *FDECL(loadfruitchn, (int));
 STATIC_DCL void FDECL(freefruitchn, (struct fruit *));
 STATIC_DCL void FDECL(ghostfruit, (struct Object *));
-STATIC_DCL boolean FDECL(restgamestate, (int, unsigned int *, unsigned int *));
+STATIC_DCL bool FDECL(restgamestate, (int, unsigned int *, unsigned int *));
 STATIC_DCL void FDECL(restlevelstate, (unsigned int, unsigned int));
 STATIC_DCL int FDECL(restlevelfile, (int,XCHAR_P));
-STATIC_DCL void FDECL(reset_oattached_mids, (BOOLEAN_P));
+STATIC_DCL void FDECL(reset_oattached_mids, (bool));
 
 /*
  * Save a mapping of IDs from ghost levels to the current level.  This
@@ -60,7 +60,7 @@ extern int amii_numcolors;
 
 #include "quest.h"
 
-boolean restoring = FALSE;
+bool restoring = FALSE;
 static struct fruit *oldfruit;
 static long omoves;
 
@@ -98,7 +98,7 @@ STATIC_OVL void find_lev_obj() {
 /* Things that were marked "in_use" when the game was saved (ex. via the
  * infamous "HUP" cheat) get used up here.
  */
-void inven_inuse(boolean quietly) {
+void inven_inuse(bool quietly) {
 	struct Object *otmp, *otmp2;
 
 	for (otmp = invent; otmp; otmp = otmp2) {
@@ -141,7 +141,7 @@ STATIC_OVL void restlevchn(int fd) {
 	}
 }
 
-STATIC_OVL void restdamage(int fd, boolean ghostly) {
+STATIC_OVL void restdamage(int fd, bool ghostly) {
 	int counter;
 	struct damage *tmp_dam;
 
@@ -180,7 +180,7 @@ STATIC_OVL void restdamage(int fd, boolean ghostly) {
 	free((genericptr_t)tmp_dam);
 }
 
-STATIC_OVL struct Object * restobjchn(int fd, boolean ghostly, boolean frozen) {
+STATIC_OVL struct Object * restobjchn(int fd, bool ghostly, bool frozen) {
 	struct Object *otmp, *otmp2 = 0;
 	struct Object *first = nullptr;
 	int xl;
@@ -226,12 +226,12 @@ STATIC_OVL struct Object * restobjchn(int fd, boolean ghostly, boolean frozen) {
 	return(first);
 }
 
-STATIC_OVL struct Monster * restmonchn(int fd, boolean ghostly) {
+STATIC_OVL struct Monster * restmonchn(int fd, bool ghostly) {
 	struct Monster *mtmp, *mtmp2 = 0;
 	struct Monster *first = (struct Monster *)0;
 	int xl;
 	struct permonst *monbegin;
-	boolean moved;
+	bool moved;
 
 	/* get the original base address */
 	mread(fd, (genericptr_t)&monbegin, sizeof(monbegin));
@@ -326,9 +326,9 @@ STATIC_OVL void ghostfruit(struct Object *otmp) {
 }
 
 STATIC_OVL
-boolean restgamestate(int fd, unsigned int *stuckid, unsigned int *steedid) {
+bool restgamestate(int fd, unsigned int *stuckid, unsigned int *steedid) {
 	/* discover is actually flags.explore */
-	boolean remember_discover = discover;
+	bool remember_discover = discover;
 	struct Object *otmp;
 	int uid;
 
@@ -665,7 +665,7 @@ void trickery(char *reason) {
 	done(TRICKED);
 }
 
-void getlev(int fd, int pid, xchar lev, boolean ghostly) {
+void getlev(int fd, int pid, xchar lev, bool ghostly) {
 	struct trap *trap;
 	struct Monster *mtmp;
 	branch *br;
@@ -906,7 +906,7 @@ STATIC_OVL void add_id_mapping(unsigned gid, unsigned nid) {
  * in the new ID value.  Otherwise, return false and return -1 in the new
  * ID.
  */
-boolean lookup_id_mapping(unsigned long gid, unsigned long *nidp) {
+bool lookup_id_mapping(unsigned long gid, unsigned long *nidp) {
     int i;
     struct bucket *curr;
 
@@ -929,7 +929,7 @@ boolean lookup_id_mapping(unsigned long gid, unsigned long *nidp) {
     return FALSE;
 }
 
-STATIC_OVL void reset_oattached_mids(boolean ghostly) {
+STATIC_OVL void reset_oattached_mids(bool ghostly) {
     struct Object *otmp;
     unsigned long oldid, nid;
     for (otmp = fobj; otmp; otmp = otmp->nobj) {

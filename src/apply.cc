@@ -17,7 +17,7 @@ static const char tools_too[] = { ALL_CLASSES, TOOL_CLASS, POTION_CLASS,
 STATIC_DCL int FDECL(use_camera, (struct Object *));
 #endif
 STATIC_DCL int FDECL(use_towel, (struct Object *));
-STATIC_DCL boolean FDECL(its_dead, (int,int,int *));
+STATIC_DCL bool FDECL(its_dead, (int,int,int *));
 STATIC_DCL int FDECL(use_stethoscope, (struct Object *));
 STATIC_DCL void FDECL(use_whistle, (struct Object *));
 STATIC_DCL void FDECL(use_magic_whistle, (struct Object *));
@@ -39,9 +39,9 @@ STATIC_DCL int FDECL(use_pole, (struct Object *));
 STATIC_DCL int FDECL(use_cream_pie, (struct Object *));
 STATIC_DCL int FDECL(use_grapple, (struct Object *));
 STATIC_DCL int FDECL(do_break_wand, (struct Object *));
-STATIC_DCL boolean FDECL(figurine_location_checks,
-				(struct Object *, coord *, BOOLEAN_P));
-STATIC_DCL boolean NDECL(uhave_graystone);
+STATIC_DCL bool FDECL(figurine_location_checks,
+				(struct Object *, coord *, bool));
+STATIC_DCL bool NDECL(uhave_graystone);
 STATIC_DCL void FDECL(add_class, (char *, CHAR_P));
 
 #ifdef	AMIGA
@@ -154,7 +154,7 @@ STATIC_OVL int use_towel(struct Object *obj) {
 }
 
 /* maybe give a stethoscope message based on floor objects */
-STATIC_OVL boolean its_dead(int rx, int ry, int *resp) {
+STATIC_OVL bool its_dead(int rx, int ry, int *resp) {
 	struct Object *otmp;
 	struct trap *ttmp;
 
@@ -199,7 +199,7 @@ STATIC_OVL int use_stethoscope(struct Object *obj) {
 	struct Monster *mtmp;
 	struct rm *lev;
 	int rx, ry, res;
-	boolean interference = (u.uswallow && is_whirly(u.ustuck->data) &&
+	bool interference = (u.uswallow && is_whirly(u.ustuck->data) &&
 				!rn2(Role_if(PM_HEALER) ? 10 : 3));
 
 	if (nohands(youmonst.data)) {	/* should also check for no ears and/or deaf */
@@ -331,8 +331,8 @@ STATIC_OVL void use_magic_whistle(struct Object *obj) {
 	}
 }
 
-boolean um_dist(xchar x, xchar y, xchar n) {
-	return((boolean)(abs(u.ux - x) > n  || abs(u.uy - y) > n));
+bool um_dist(xchar x, xchar y, xchar n) {
+	return((bool)(abs(u.ux - x) > n  || abs(u.uy - y) > n));
 }
 
 int number_leashed() {
@@ -355,7 +355,7 @@ void o_unleash(struct Object *otmp) {
 }
 
 /* mtmp is about to die, or become untame */
-void m_unleash(struct Monster *mtmp, boolean feedback) {
+void m_unleash(struct Monster *mtmp, bool feedback) {
 	struct Object *otmp;
 
 	if (feedback) {
@@ -473,7 +473,7 @@ struct Object *get_mleash(struct Monster *mtmp)
 #endif /* OVLB */
 #ifdef OVL1
 
-boolean next_to_u() {
+bool next_to_u() {
 	struct Monster *mtmp;
 	struct Object *otmp;
 
@@ -569,7 +569,7 @@ static const char look_str[] = "look %s.";
 STATIC_OVL int use_mirror(struct Object *obj) {
 	struct Monster *mtmp;
 	char mlet;
-	boolean vis;
+	bool vis;
 
 	if(!getdir((char *)0)) return 0;
 	if(obj->cursed && !rn2(2)) {
@@ -703,7 +703,7 @@ STATIC_OVL int use_mirror(struct Object *obj) {
 STATIC_OVL void use_bell(struct Object **optr) {
 	struct Object *obj = *optr;
 	struct Monster *mtmp;
-	boolean wakem = FALSE, learno = FALSE,
+	bool wakem = FALSE, learno = FALSE,
 		ordinary = (obj->otyp != BELL_OF_OPENING || !obj->spe),
 		invoking = (obj->otyp == BELL_OF_OPENING &&
 			 invocation_pos(u.ux, u.uy) && !On_stairs(u.ux, u.uy));
@@ -924,15 +924,15 @@ STATIC_OVL void use_candle(struct Object **optr) {
 	}
 }
 
-boolean snuff_candle(struct Object *otmp)  /* call in drop, throw, and put in box, etc. */
+bool snuff_candle(struct Object *otmp)  /* call in drop, throw, and put in box, etc. */
 {
-	boolean candle = Is_candle(otmp);
+	bool candle = Is_candle(otmp);
 
 	if ((candle || otmp->otyp == CANDELABRUM_OF_INVOCATION) &&
 		otmp->lamplit) {
 	    char buf[BUFSZ];
 	    xchar x, y;
-	    boolean many = candle ? otmp->quan > 1L : otmp->spe > 1;
+	    bool many = candle ? otmp->quan > 1L : otmp->spe > 1;
 
 	    (void) get_obj_location(otmp, &x, &y, 0);
 	    if (otmp->where == OBJ_MINVENT ? cansee(x,y) : !Blind)
@@ -949,7 +949,7 @@ boolean snuff_candle(struct Object *otmp)  /* call in drop, throw, and put in bo
 /* called when lit lamp is hit by water or put into a container or
    you've been swallowed by a monster; obj might be in transit while
    being thrown or dropped so don't assume that its location is valid */
-boolean snuff_lit(struct Object *obj) {
+bool snuff_lit(struct Object *obj) {
 	xchar x, y;
 
 	if (obj->lamplit) {
@@ -968,7 +968,7 @@ boolean snuff_lit(struct Object *obj) {
 
 /* Called when potentially lightable object is affected by fire_damage().
    Return TRUE if object was lit and FALSE otherwise --ALI */
-boolean catch_lit(struct Object *obj) {
+bool catch_lit(struct Object *obj) {
 	xchar x, y;
 
 	if (!obj->lamplit && (obj->otyp == MAGIC_LAMP || ignitable(obj))) {
@@ -1295,7 +1295,7 @@ int jump(int magic) {
 	}
 }
 
-boolean tinnable(struct Object *corpse) {
+bool tinnable(struct Object *corpse) {
 	if (corpse->oeaten) return 0;
 	if (!mons[corpse->corpsenm].cnutrit) return 0;
 	return 1;
@@ -1515,8 +1515,8 @@ void fig_transform(genericptr_t arg, long timeout) {
 	struct Object *figurine = (struct Object *)arg;
 	struct Monster *mtmp;
 	coord cc;
-	boolean cansee_spot, silent, okay_spot;
-	boolean redraw = FALSE;
+	bool cansee_spot, silent, okay_spot;
+	bool redraw = FALSE;
 	char monnambuf[BUFSZ], carriedby[BUFSZ];
 
 	if (!figurine) {
@@ -1596,7 +1596,7 @@ void fig_transform(genericptr_t arg, long timeout) {
 	if (redraw) newsym(cc.x, cc.y);
 }
 
-STATIC_OVL boolean figurine_location_checks(struct Object *obj, coord *cc, boolean quietly) {
+STATIC_OVL bool figurine_location_checks(struct Object *obj, coord *cc, bool quietly) {
 	xchar x,y;
 
 	if (carried(obj) && u.uswallow) {
@@ -1727,7 +1727,7 @@ static struct trapinfo {
 	struct Object *tobj;
 	xchar tx, ty;
 	int time_needed;
-	boolean force_bungle;
+	bool force_bungle;
 } trapinfo;
 
 void reset_trapset() {
@@ -1738,7 +1738,7 @@ void reset_trapset() {
 /* touchstones - by Ken Arnold */
 STATIC_OVL void use_stone(struct Object *tstone) {
     struct Object *obj;
-    boolean do_scratch;
+    bool do_scratch;
     const char *streak_color, *choices;
     char stonebuf[QBUFSZ];
     static const char scritch[] = "\"scritch, scritch\"";
@@ -1927,7 +1927,7 @@ STATIC_OVL void use_trap(struct Object *otmp) {
 	   should be incorporated here instead of in set_trap]*/
 #ifdef STEED
 	if (u.usteed && P_SKILL(P_RIDING) < P_BASIC) {
-	    boolean chance;
+	    bool chance;
 
 	    if (Fumbling || otmp->cursed) chance = (rnl(10) > 3);
 	    else  chance = (rnl(10) > 5);
@@ -2143,7 +2143,7 @@ STATIC_OVL int use_whip(struct Object *obj) {
 	if (otmp) {
 	    char onambuf[BUFSZ];
 	    const char *mon_hand;
-	    boolean gotit = proficient && (!Fumbling || !rn2(10));
+	    bool gotit = proficient && (!Fumbling || !rn2(10));
 
 	    Strcpy(onambuf, cxname(otmp));
 	    if (gotit) {
@@ -2321,9 +2321,9 @@ STATIC_OVL int use_pole (struct Object *obj) {
 }
 
 STATIC_OVL int use_cream_pie(struct Object *obj) {
-	boolean wasblind = Blind;
-	boolean wascreamed = u.ucreamed;
-	boolean several = FALSE;
+	bool wasblind = Blind;
+	bool wascreamed = u.ucreamed;
+	bool several = FALSE;
 
 	if (obj->quan > 1L) {
 		several = TRUE;
@@ -2485,8 +2485,8 @@ STATIC_OVL int do_break_wand(struct Object *obj) {
     int i, x, y;
     struct Monster *mon;
     int dmg, damage;
-    boolean affects_objects;
-    boolean shop_damage = FALSE;
+    bool affects_objects;
+    bool shop_damage = FALSE;
     int expltype = EXPL_MAGICAL;
     char confirm[QBUFSZ], the_wand[BUFSZ], buf[BUFSZ];
 
@@ -2635,7 +2635,7 @@ STATIC_OVL int do_break_wand(struct Object *obj) {
     return 1;
 }
 
-STATIC_OVL boolean uhave_graystone() {
+STATIC_OVL bool uhave_graystone() {
 	struct Object *otmp;
 
 	for(otmp = invent; otmp; otmp = otmp->nobj)
@@ -2896,7 +2896,7 @@ int doapply() {
 /* Keep track of unfixable troubles for purposes of messages saying you feel
  * great.
  */
-int unfixable_trouble_count(boolean is_horn) {
+int unfixable_trouble_count(bool is_horn) {
 	int unfixable_trbl = 0;
 
 	if (Stoned) unfixable_trbl++;

@@ -8,11 +8,11 @@
 #include "artifact.h"
 #include "edog.h"
 
-extern boolean notonhead;
+extern bool notonhead;
 
 #ifdef OVLB
 
-static boolean vis, far_noise;
+static bool vis, far_noise;
 static long noisetime;
 static struct Object *otmp;
 
@@ -29,7 +29,7 @@ STATIC_DCL int FDECL(mdamagem, (struct Monster *,struct Monster *,struct Attack 
 STATIC_DCL void FDECL(mswingsm, (struct Monster *, struct Monster *, struct Object *));
 STATIC_DCL void FDECL(noises,(struct Monster *,struct Attack *));
 STATIC_DCL void FDECL(missmm,(struct Monster *,struct Monster *,struct Attack *));
-STATIC_DCL int FDECL(passivemm, (struct Monster *, struct Monster *, BOOLEAN_P, int));
+STATIC_DCL int FDECL(passivemm, (struct Monster *, struct Monster *, bool, int));
 
 /* Needed for the special case of monsters wielding vorpal blades (rare).
  * If we use this a lot it should probably be a parameter to mdamagem()
@@ -51,7 +51,7 @@ STATIC_OVL char * mon_nam_too(char *outbuf, struct Monster *mon, struct Monster 
 }
 
 STATIC_OVL void noises(struct Monster *magr, struct Attack *mattk) {
-	boolean farq = (distu(magr->mx, magr->my) > 15);
+	bool farq = (distu(magr->mx, magr->my) > 15);
 
 	if(flags.soundok && (farq != far_noise || moves-noisetime > 10)) {
 		far_noise = farq;
@@ -557,7 +557,7 @@ STATIC_OVL int mdamagem(struct Monster *magr, struct Monster *mdef, struct Attac
 	char buf[BUFSZ];
 	struct permonst *pa = magr->data, *pd = mdef->data;
 	int armpro, num, tmp = d((int)mattk->damn, (int)mattk->damd);
-	boolean cancelled;
+	bool cancelled;
 
 	if (touch_petrifies(pd) && !resists_ston(magr)) {
 	    long protector = attk_protection((int)mattk->aatyp),
@@ -1173,7 +1173,7 @@ void slept_monst(struct Monster *mon) {
 #ifdef OVLB
 
 STATIC_OVL void mrustm(struct Monster *magr, struct Monster *mdef, struct Object *obj) {
-	boolean is_acid;
+	bool is_acid;
 
 	if (!magr || !mdef || !obj) return; /* just in case */
 
@@ -1218,7 +1218,7 @@ STATIC_OVL void mswingsm(struct Monster *magr, struct Monster *mdef, struct Obje
  * Passive responses by defenders.  Does not replicate responses already
  * handled above.  Returns same values as mattackm.
  */
-STATIC_OVL int passivemm(struct Monster *magr, struct Monster *mdef, boolean mhit, int mdead) {
+STATIC_OVL int passivemm(struct Monster *magr, struct Monster *mdef, bool mhit, int mdead) {
 	struct permonst *mddat = mdef->data;
 	struct permonst *madat = magr->data;
 	char buf[BUFSZ];

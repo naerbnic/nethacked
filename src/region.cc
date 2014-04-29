@@ -19,15 +19,15 @@ static int max_regions = 0;
 
 #define NO_CALLBACK (-1)
 
-boolean FDECL(inside_gas_cloud, (genericptr,genericptr));
-boolean FDECL(expire_gas_cloud, (genericptr,genericptr));
-boolean FDECL(inside_rect, (NhRect *,int,int));
-boolean FDECL(inside_region, (NhRegion *,int,int));
+bool FDECL(inside_gas_cloud, (genericptr,genericptr));
+bool FDECL(expire_gas_cloud, (genericptr,genericptr));
+bool FDECL(inside_rect, (NhRect *,int,int));
+bool FDECL(inside_region, (NhRegion *,int,int));
 NhRegion *FDECL(create_region, (NhRect *,int));
 void FDECL(add_rect_to_reg, (NhRegion *,NhRect *));
 void FDECL(add_mon_to_reg, (NhRegion *,struct Monster *));
 void FDECL(remove_mon_from_reg, (NhRegion *,struct Monster *));
-boolean FDECL(mon_in_region, (NhRegion *,struct Monster *));
+bool FDECL(mon_in_region, (NhRegion *,struct Monster *));
 
 #if 0
 NhRegion *FDECL(clone_region, (NhRegion *));
@@ -41,7 +41,7 @@ void FDECL(replace_mon_regions, (struct Monster *,struct Monster *));
 void FDECL(remove_mon_from_regions, (struct Monster *));
 NhRegion *FDECL(create_msg_region, (XCHAR_P,XCHAR_P,XCHAR_P,XCHAR_P,
 				    const char *,const char *));
-boolean FDECL(enter_force_field, (genericptr,genericptr));
+bool FDECL(enter_force_field, (genericptr,genericptr));
 NhRegion *FDECL(create_force_field, (XCHAR_P,XCHAR_P,int,int));
 #endif
 
@@ -55,14 +55,14 @@ static callback_proc callbacks[] = {
 };
 
 /* Should be inlined. */
-boolean inside_rect(NhRect *r, int x, int y) {
+bool inside_rect(NhRect *r, int x, int y) {
     return (x >= r->lx && x <= r->hx && y >= r->ly && y <= r->hy);
 }
 
 /*
  * Check if a point is inside a region.
  */
-boolean inside_region(NhRegion *reg, int x, int y) {
+bool inside_region(NhRegion *reg, int x, int y) {
     int i;
 
     if (reg == NULL || !inside_rect(&(reg->bounding_box), x, y))
@@ -190,7 +190,7 @@ void remove_mon_from_reg(NhRegion *reg, struct Monster *mon) {
  * It's probably quicker to check with the region internal list
  * than to check for coordinates.
  */
-boolean mon_in_region(NhRegion *reg, struct Monster *mon) {
+bool mon_in_region(NhRegion *reg, struct Monster *mon) {
     int i;
 
     for (i = 0; i < reg->n_monst; i++)
@@ -373,7 +373,7 @@ void run_regions() {
 /*
  * check whether player enters/leaves one or more regions.
  */
-boolean in_out_region(xchar x, xchar y) {
+bool in_out_region(xchar x, xchar y) {
     int i, f_indx;
 
     /* First check if we can do the move */
@@ -420,7 +420,7 @@ boolean in_out_region(xchar x, xchar y) {
 /*
  * check wether a monster enters/leaves one or more region.
 */
-boolean m_in_out_region(struct Monster *mon, xchar x, xchar y) {
+bool m_in_out_region(struct Monster *mon, xchar x, xchar y) {
     int i, f_indx;
 
     /* First check if we can do the move */
@@ -556,7 +556,7 @@ void save_regions(int fd, int mode) {
 	bwrite(fd, (genericptr_t) &regions[i]->nrects, sizeof (short));
 	for (j = 0; j < regions[i]->nrects; j++)
 	    bwrite(fd, (genericptr_t) &regions[i]->rects[j], sizeof (NhRect));
-	bwrite(fd, (genericptr_t) &regions[i]->attach_2_u, sizeof (boolean));
+	bwrite(fd, (genericptr_t) &regions[i]->attach_2_u, sizeof (bool));
 	n = 0;
 	bwrite(fd, (genericptr_t) &regions[i]->attach_2_m, sizeof (unsigned));
 	n = regions[i]->enter_msg != NULL ? strlen(regions[i]->enter_msg) : 0;
@@ -574,12 +574,12 @@ void save_regions(int fd, int mode) {
 	bwrite(fd, (genericptr_t) &regions[i]->can_leave_f, sizeof (short));
 	bwrite(fd, (genericptr_t) &regions[i]->leave_f, sizeof (short));
 	bwrite(fd, (genericptr_t) &regions[i]->inside_f, sizeof (short));
-	bwrite(fd, (genericptr_t) &regions[i]->player_flags, sizeof (boolean));
+	bwrite(fd, (genericptr_t) &regions[i]->player_flags, sizeof (bool));
 	bwrite(fd, (genericptr_t) &regions[i]->n_monst, sizeof (short));
 	for (j = 0; j < regions[i]->n_monst; j++)
 	    bwrite(fd, (genericptr_t) &regions[i]->monsters[j],
 	     sizeof (unsigned));
-	bwrite(fd, (genericptr_t) &regions[i]->visible, sizeof (boolean));
+	bwrite(fd, (genericptr_t) &regions[i]->visible, sizeof (bool));
 	bwrite(fd, (genericptr_t) &regions[i]->glyph, sizeof (int));
 	bwrite(fd, (genericptr_t) &regions[i]->arg, sizeof (genericptr_t));
     }
@@ -589,7 +589,7 @@ skip_lots:
 	clear_regions();
 }
 
-void rest_regions(int fd, boolean ghostly) {
+void rest_regions(int fd, bool ghostly) {
     int i, j;
     unsigned n;
     long tmstamp;
@@ -613,7 +613,7 @@ void rest_regions(int fd, boolean ghostly) {
 				  alloc(sizeof (NhRect) * regions[i]->nrects);
 	for (j = 0; j < regions[i]->nrects; j++)
 	    mread(fd, (genericptr_t) &regions[i]->rects[j], sizeof (NhRect));
-	mread(fd, (genericptr_t) &regions[i]->attach_2_u, sizeof (boolean));
+	mread(fd, (genericptr_t) &regions[i]->attach_2_u, sizeof (bool));
 	mread(fd, (genericptr_t) &regions[i]->attach_2_m, sizeof (unsigned));
 
 	mread(fd, (genericptr_t) &n, sizeof n);
@@ -645,7 +645,7 @@ void rest_regions(int fd, boolean ghostly) {
 	mread(fd, (genericptr_t) &regions[i]->can_leave_f, sizeof (short));
 	mread(fd, (genericptr_t) &regions[i]->leave_f, sizeof (short));
 	mread(fd, (genericptr_t) &regions[i]->inside_f, sizeof (short));
-	mread(fd, (genericptr_t) &regions[i]->player_flags, sizeof (boolean));
+	mread(fd, (genericptr_t) &regions[i]->player_flags, sizeof (bool));
 	if (ghostly) {	/* settings pertained to old player */
 	    clear_hero_inside(regions[i]);
 	    clear_heros_fault(regions[i]);
@@ -660,7 +660,7 @@ void rest_regions(int fd, boolean ghostly) {
 	for (j = 0; j < regions[i]->n_monst; j++)
 	    mread(fd, (genericptr_t) &regions[i]->monsters[j],
 		  sizeof (unsigned));
-	mread(fd, (genericptr_t) &regions[i]->visible, sizeof (boolean));
+	mread(fd, (genericptr_t) &regions[i]->visible, sizeof (bool));
 	mread(fd, (genericptr_t) &regions[i]->glyph, sizeof (int));
 	mread(fd, (genericptr_t) &regions[i]->arg, sizeof (genericptr_t));
     }
@@ -721,7 +721,7 @@ NhRegion * create_msg_region(xchar x, xchar y, xchar w, xchar h, const char *msg
  *			(unused yet)				*
  *--------------------------------------------------------------*/
 
-boolean enter_force_field(genericptr_t p1, genericptr_t p2) {
+bool enter_force_field(genericptr_t p1, genericptr_t p2) {
     struct Monster *mtmp;
 
     if (p2 == NULL) {		/* That means the player */
@@ -779,7 +779,7 @@ NhRegion * create_force_field(xchar x, xchar y, int radius, int ttl) {
  * Here is an example of an expire function that may prolong
  * region life after some mods...
  */
-boolean expire_gas_cloud(genericptr_t p1, genericptr_t p2) {
+bool expire_gas_cloud(genericptr_t p1, genericptr_t p2) {
     NhRegion *reg;
     unsigned long damage;
 
@@ -796,7 +796,7 @@ boolean expire_gas_cloud(genericptr_t p1, genericptr_t p2) {
     return TRUE;		/* OK, it's gone, you can free it! */
 }
 
-boolean inside_gas_cloud(genericptr_t p1, genericptr_t p2) {
+bool inside_gas_cloud(genericptr_t p1, genericptr_t p2) {
     NhRegion *reg;
     struct Monster *mtmp;
     long dam;

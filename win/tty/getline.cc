@@ -14,9 +14,9 @@
 #ifdef OVL1
 char morc = 0;	/* tell the outside world what char you chose */
 #endif /* OVL1 */
-STATIC_DCL boolean FDECL(ext_cmd_getlin_hook, (char *));
+STATIC_DCL bool FDECL(ext_cmd_getlin_hook, (char *));
 
-typedef boolean FDECL((*getlin_hook_proc), (char *));
+typedef bool FDECL((*getlin_hook_proc), (char *));
 
 STATIC_DCL void FDECL(hooked_tty_getlin, (const char*,char*,getlin_hook_proc));
 extern int NDECL(extcmd_via_menu);	/* cmd.c */
@@ -39,7 +39,7 @@ STATIC_OVL void hooked_tty_getlin(const char *query, char *bufp, getlin_hook_pro
 	char *obufp = bufp;
 	int c;
 	struct WinDesc *cw = wins[WIN_MESSAGE];
-	boolean doprev = 0;
+	bool doprev = 0;
 
 	if(ttyDisplay->toplin == 1 && !(cw->flags & WIN_STOP)) more();
 	cw->flags &= ~WIN_STOP;
@@ -198,7 +198,7 @@ void xwaitforspace(const char *s) {
  *	+ we don't change the characters that are already in base
  *	+ base has enough room to hold our string
  */
-STATIC_OVL boolean ext_cmd_getlin_hook(char *base) {
+STATIC_OVL bool ext_cmd_getlin_hook(char *base) {
 	int oindex, com_index;
 
 	com_index = -1;

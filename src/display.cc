@@ -127,7 +127,7 @@ STATIC_DCL void FDECL(display_warning,(struct Monster *));
 
 STATIC_DCL int FDECL(check_pos, (int, int, int));
 #ifdef WA_VERBOSE
-STATIC_DCL boolean FDECL(more_than_one, (int, int, int, int, int));
+STATIC_DCL bool FDECL(more_than_one, (int, int, int, int, int));
 #endif
 STATIC_DCL int FDECL(set_twall, (int,int, int,int, int,int, int,int));
 STATIC_DCL int FDECL(set_wall, (int, int, int));
@@ -337,7 +337,7 @@ display_monster(
     int sightflags,   /* 1 if the monster is physically seen */
     				/* 2 if detected using Detect_monsters */
     xchar worm_tail) {	/* mon is actually a worm tail */
-    boolean mon_mimic = (mon->m_ap_type != M_AP_NOTHING);
+    bool mon_mimic = (mon->m_ap_type != M_AP_NOTHING);
     int sensed = mon_mimic &&
 	(Protection_from_shape_changers || sensemon(mon));
     /*
@@ -933,7 +933,7 @@ void swallowed(int first) {
  */
 void under_water(int mode) {
     static xchar lastx, lasty;
-    static boolean dela;
+    static bool dela;
     int x, y;
 
     /* swallowing has a higher precedence than under water */
@@ -974,7 +974,7 @@ void under_water(int mode) {
  *	Very restricted display.  You can only see yourself.
  */
 void under_ground(int mode) {
-    static boolean dela;
+    static bool dela;
 
     /* swallowing has a higher precedence than under ground */
     if (u.uswallow) return;
@@ -1266,8 +1266,8 @@ void flush_screen(int cursor_on_u) {
     /* Prevent infinite loops on errors:
      *	    flush_screen->print_glyph->impossible->pline->flush_screen
      */
-    static   boolean flushing = 0;
-    static   boolean delay_flushing = 0;
+    static   bool flushing = 0;
+    static   bool delay_flushing = 0;
     int x,y;
 
     if (cursor_on_u == -1) delay_flushing = !delay_flushing;
@@ -1596,7 +1596,7 @@ STATIC_OVL int check_pos(int x, int y, int which) {
 /* Return TRUE if more than one is non-zero. */
 /*ARGSUSED*/
 #ifdef WA_VERBOSE
-STATIC_OVL boolean more_than_one(int x, int y, int a, int b, int c) {
+STATIC_OVL bool more_than_one(int x, int y, int a, int b, int c) {
     if ((a && (b|c)) || (b && (a|c)) || (c && (a|b))) {
 	error4(x,y,a,b,c,0);
 	return TRUE;

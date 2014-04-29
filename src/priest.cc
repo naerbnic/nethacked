@@ -15,14 +15,14 @@
 
 #ifdef OVLB
 
-STATIC_DCL boolean FDECL(histemple_at,(struct Monster *,XCHAR_P,XCHAR_P));
-STATIC_DCL boolean FDECL(has_shrine,(struct Monster *));
+STATIC_DCL bool FDECL(histemple_at,(struct Monster *,XCHAR_P,XCHAR_P));
+STATIC_DCL bool FDECL(has_shrine,(struct Monster *));
 
 /*
  * Move for priests and shopkeepers.  Called from shk_move() and pri_move().
  * Valid returns are  1: moved  0: didn't  -1: let m_move do it  -2: died.
  */
-int move_special(struct Monster *mtmp, boolean in_his_shop, schar appr, boolean uondoor, boolean avoid, xchar omx, xchar omy, xchar gx, xchar gy) {
+int move_special(struct Monster *mtmp, bool in_his_shop, schar appr, bool uondoor, bool avoid, xchar omx, xchar omy, xchar gx, xchar gy) {
 	xchar nx,ny,nix,niy;
 	schar i;
 	schar chcnt,cnt;
@@ -120,8 +120,8 @@ char temple_occupied(char *array) {
 #endif /* OVL0 */
 #ifdef OVLB
 
-STATIC_OVL boolean histemple_at(struct Monster *priest, xchar x, xchar y) {
-	return((boolean)((EPRI(priest)->shroom == *in_rooms(x, y, TEMPLE)) &&
+STATIC_OVL bool histemple_at(struct Monster *priest, xchar x, xchar y) {
+	return((bool)((EPRI(priest)->shroom == *in_rooms(x, y, TEMPLE)) &&
 	       on_level(&(EPRI(priest)->shrlevel), &u.uz)));
 }
 
@@ -131,7 +131,7 @@ STATIC_OVL boolean histemple_at(struct Monster *priest, xchar x, xchar y) {
 int pri_move(struct Monster *priest) {
 	xchar gx,gy,omx,omy;
 	schar temple;
-	boolean avoid = TRUE;
+	bool avoid = TRUE;
 
 	omx = priest->mx;
 	omy = priest->my;
@@ -168,7 +168,7 @@ int pri_move(struct Monster *priest) {
 }
 
 /* exclusively for mktemple() */
-void priestini(d_level *lvl, struct mkroom *sroom, int sx, int sy, boolean sanctum) {
+void priestini(d_level *lvl, struct mkroom *sroom, int sx, int sy, bool sanctum) {
 	struct Monster *priest;
 	struct Object *otmp;
 	int cnt;
@@ -259,11 +259,11 @@ char * priestname(struct Monster *mon, char *pname) {
 	return(pname);
 }
 
-boolean p_coaligned(struct Monster *priest) {
-	return((boolean)(u.ualign.type == ((int)EPRI(priest)->shralign)));
+bool p_coaligned(struct Monster *priest) {
+	return((bool)(u.ualign.type == ((int)EPRI(priest)->shralign)));
 }
 
-STATIC_OVL boolean has_shrine(struct Monster *pri) {
+STATIC_OVL bool has_shrine(struct Monster *pri) {
 	struct rm *lev;
 
 	if(!pri)
@@ -271,7 +271,7 @@ STATIC_OVL boolean has_shrine(struct Monster *pri) {
 	lev = &levl[EPRI(pri)->shrpos.x][EPRI(pri)->shrpos.y];
 	if (!IS_ALTAR(lev->typ) || !(lev->altarmask & AM_SHRINE))
 		return(FALSE);
-	return((boolean)(EPRI(pri)->shralign == Amask2align(lev->altarmask & ~AM_SHRINE)));
+	return((bool)(EPRI(pri)->shralign == Amask2align(lev->altarmask & ~AM_SHRINE)));
 }
 
 struct Monster * findpriest(char roomno) {
@@ -289,8 +289,8 @@ struct Monster * findpriest(char roomno) {
 /* called from check_special_room() when the player enters the temple room */
 void intemple(int roomno) {
 	struct Monster *priest = findpriest((char)roomno);
-	boolean tended = (priest != (struct Monster *)0);
-	boolean shrined, sanctum, can_speak;
+	bool tended = (priest != (struct Monster *)0);
+	bool shrined, sanctum, can_speak;
 	const char *msg1, *msg2;
 	char buf[BUFSZ];
 
@@ -364,8 +364,8 @@ void intemple(int roomno) {
 }
 
 void priest_talk(struct Monster *priest) {
-	boolean coaligned = p_coaligned(priest);
-	boolean strayed = (u.ualign.record < 0);
+	bool coaligned = p_coaligned(priest);
+	bool strayed = (u.ualign.record < 0);
 
 	/* KMH, conduct */
 	u.uconduct.gnostic++;
@@ -490,9 +490,9 @@ void priest_talk(struct Monster *priest) {
 	}
 }
 
-struct Monster * mk_roamer(struct permonst *ptr, aligntyp alignment, xchar x, xchar y, boolean peaceful) {
+struct Monster * mk_roamer(struct permonst *ptr, aligntyp alignment, xchar x, xchar y, bool peaceful) {
 	struct Monster *roamer;
-	boolean coaligned = (u.ualign.type == alignment);
+	bool coaligned = (u.ualign.type == alignment);
 
 	if (ptr != &mons[PM_ALIGNED_PRIEST] && ptr != &mons[PM_ANGEL])
 		return((struct Monster *)0);
@@ -528,7 +528,7 @@ void reset_hostility(struct Monster *roamer) {
 	newsym(roamer->mx, roamer->my);
 }
 
-boolean in_your_sanctuary(struct Monster *mon, xchar x, xchar y) {
+bool in_your_sanctuary(struct Monster *mon, xchar x, xchar y) {
 	char roomno;
 	struct Monster *priest;
 
@@ -543,7 +543,7 @@ boolean in_your_sanctuary(struct Monster *mon, xchar x, xchar y) {
 	    return FALSE;
 	if ((priest = findpriest(roomno)) == 0)
 	    return FALSE;
-	return (boolean)(has_shrine(priest) &&
+	return (bool)(has_shrine(priest) &&
 			 p_coaligned(priest) &&
 			 priest->mpeaceful);
 }
@@ -646,7 +646,7 @@ void clearpriests() {
 }
 
 /* munge priest-specific structure when restoring -dlc */
-void restpriest(struct Monster *mtmp, boolean ghostly) {
+void restpriest(struct Monster *mtmp, bool ghostly) {
     if(u.uz.dlevel) {
 	if (ghostly)
 	    assign_level(&(EPRI(mtmp)->shrlevel), &u.uz);

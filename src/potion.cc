@@ -7,7 +7,7 @@
 #include "hack.h"
 
 #ifdef OVLB
-boolean notonhead = FALSE;
+bool notonhead = FALSE;
 
 static int nothing, unkn;
 static const char beverages[] = { POTION_CLASS, 0 };
@@ -41,7 +41,7 @@ void incr_itimeout(long *which, int incr) {
     set_itimeout(which, itimeout_incr(*which, incr));
 }
 
-void make_confused(long xtime, boolean talk) {
+void make_confused(long xtime, bool talk) {
 	long old = HConfusion;
 
 	if (!xtime && old) {
@@ -54,7 +54,7 @@ void make_confused(long xtime, boolean talk) {
 	set_itimeout(&HConfusion, xtime);
 }
 
-void make_stunned(long xtime, boolean talk) {
+void make_stunned(long xtime, bool talk) {
 	long old = HStun;
 
 	if (!xtime && old) {
@@ -77,7 +77,7 @@ void make_stunned(long xtime, boolean talk) {
 	set_itimeout(&HStun, xtime);
 }
 
-void make_sick(long xtime, const char *cause, boolean talk, int type) {
+void make_sick(long xtime, const char *cause, bool talk, int type) {
 	long old = Sick;
 
 	if (xtime > 0L) {
@@ -118,7 +118,7 @@ void make_sick(long xtime, const char *cause, boolean talk, int type) {
 	    u.usick_cause[0] = 0;
 }
 
-void make_vomiting(long xtime, boolean talk) {
+void make_vomiting(long xtime, bool talk) {
 	long old = Vomiting;
 
 	if(!xtime && old)
@@ -130,9 +130,9 @@ void make_vomiting(long xtime, boolean talk) {
 static const char vismsg[] = "vision seems to %s for a moment but is %s now.";
 static const char eyemsg[] = "%s momentarily %s.";
 
-void make_blinded(long xtime, boolean talk) {
+void make_blinded(long xtime, bool talk) {
 	long old = Blinded;
-	boolean u_could_see, can_see_now;
+	bool u_could_see, can_see_now;
 	int eyecnt;
 	char buf[BUFSZ];
 
@@ -204,9 +204,9 @@ void make_blinded(long xtime, boolean talk) {
 	}
 }
 
-boolean make_hallucinated(long xtime, boolean talk, long mask) {
+bool make_hallucinated(long xtime, bool talk, long mask) {
 	long old = HHallucination;
-	boolean changed = 0;
+	bool changed = 0;
 	const char *message, *verb;
 
 	message = (!xtime) ? "Everything %s SO boring now." :
@@ -701,7 +701,7 @@ int peffects(struct Object *otmp) {
 		if(Blind) nothing++;
 		make_blinded(itimeout_incr(Blinded,
 					   rn1(200, 250 - 125 * bcsign(otmp))),
-			     (boolean)!Blind);
+			     (bool)!Blind);
 		break;
 	case POT_GAIN_LEVEL:
 		if (otmp->cursed) {
@@ -811,7 +811,7 @@ int peffects(struct Object *otmp) {
 		break;
 	case POT_OIL:				/* P. Winner */
 		{
-			boolean good_for_you = FALSE;
+			bool good_for_you = FALSE;
 
 			if (otmp->lamplit) {
 			    if (likes_fire(youmonst.data)) {
@@ -854,7 +854,7 @@ int peffects(struct Object *otmp) {
 	return(-1);
 }
 
-void healup(int nhp, int nxtra, boolean curesick, boolean cureblind) {
+void healup(int nhp, int nxtra, bool curesick, bool cureblind) {
 	if (nhp) {
 		if (Upolyd) {
 			u.mh += nhp;
@@ -895,9 +895,9 @@ const char * bottlename() {
 	return bottlenames[rn2(SIZE(bottlenames))];
 }
 
-void potionhit(struct Monster *mon, struct Object *obj, boolean your_fault) {
+void potionhit(struct Monster *mon, struct Object *obj, bool your_fault) {
 	const char *botlnam = bottlename();
-	boolean isyou = (mon == &youmonst);
+	bool isyou = (mon == &youmonst);
 	int distance;
 
 	if(isyou) {
@@ -950,7 +950,7 @@ void potionhit(struct Monster *mon, struct Object *obj, boolean your_fault) {
 		break;
 	}
     } else {
-	boolean angermon = TRUE;
+	bool angermon = TRUE;
 
 	if (!your_fault) angermon = FALSE;
 	switch (obj->otyp) {
@@ -1106,7 +1106,7 @@ void potionhit(struct Monster *mon, struct Object *obj, boolean your_fault) {
 		    obj->unpaid = 0;
 		else {
 		    (void)stolen_value(obj, u.ux, u.uy,
-				 (boolean)shkp->mpeaceful, FALSE);
+				 (bool)shkp->mpeaceful, FALSE);
 		    subfrombill(obj, shkp);
 		}
 	}
@@ -1347,7 +1347,7 @@ STATIC_OVL short mixtype(struct Object* o1, struct Object* o2) {
 
 
 /* returns TRUE if something happened (potion should be used up) */
-boolean get_wet(struct Object* obj) {
+bool get_wet(struct Object* obj) {
 	char Your_buf[BUFSZ];
 
 	if (snuff_lit(obj)) return(TRUE);
@@ -1395,7 +1395,7 @@ boolean get_wet(struct Object* obj) {
 #endif
 		    ) {
 			if (!Blind) {
-				boolean oq1 = obj->quan == 1L;
+				bool oq1 = obj->quan == 1L;
 				pline_The("scroll%s %s.",
 					  oq1 ? "" : "s", otense(obj, "fade"));
 			}
@@ -1416,7 +1416,7 @@ boolean get_wet(struct Object* obj) {
 				The(xname(obj)));
 			} else {
 			    if (!Blind) {
-				    boolean oq1 = obj->quan == 1L;
+				    bool oq1 = obj->quan == 1L;
 				    pline_The("spellbook%s %s.",
 					oq1 ? "" : "s", otense(obj, "fade"));
 			    }
@@ -1509,7 +1509,7 @@ int dodip() {
 	}
 	potion->in_use = TRUE;		/* assume it will be used up */
 	if(potion->otyp == POT_WATER) {
-		boolean useeit = !Blind;
+		bool useeit = !Blind;
 		if (useeit) (void) Shk_Your(Your_buf, obj);
 		if (potion->blessed) {
 			if (obj->cursed) {
@@ -1569,7 +1569,7 @@ int dodip() {
 				potion : obj, 5, 95)) {
 		pline(nothing_happens);
 	    } else {
-	    	boolean was_wep = FALSE, was_swapwep = FALSE, was_quiver = FALSE;
+	    	bool was_wep = FALSE, was_swapwep = FALSE, was_quiver = FALSE;
 		short save_otyp = obj->otyp;
 		/* KMH, conduct */
 		u.uconduct.polypiles++;
@@ -1700,7 +1700,7 @@ int dodip() {
 	}
 
 	if (potion->otyp == POT_OIL) {
-	    boolean wisx = FALSE;
+	    bool wisx = FALSE;
 	    if (potion->lamplit) {	/* burning */
 		int omat = objects[obj->otyp].oc_material;
 		/* the code here should be merged with fire_damage */
@@ -1799,8 +1799,8 @@ int dodip() {
 	    (mixture = mixtype(obj, potion)) != 0) {
 		char oldbuf[BUFSZ], newbuf[BUFSZ];
 		short old_otyp = potion->otyp;
-		boolean old_dknown = FALSE;
-		boolean more_than_one = potion->quan > 1;
+		bool old_dknown = FALSE;
+		bool more_than_one = potion->quan > 1;
 
 		oldbuf[0] = '\0';
 		if (potion->dknown) {

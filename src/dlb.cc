@@ -19,9 +19,9 @@
  */
 
 typedef struct dlb_procs {
-    boolean NDECL((*dlb_init_proc));
+    bool NDECL((*dlb_init_proc));
     void NDECL((*dlb_cleanup_proc));
-    boolean FDECL((*dlb_fopen_proc), (DLB_P,const char *,const char *));
+    bool FDECL((*dlb_fopen_proc), (DLB_P,const char *,const char *));
     int FDECL((*dlb_fclose_proc), (DLB_P));
     int FDECL((*dlb_fread_proc), (char *,int,int,DLB_P));
     int FDECL((*dlb_fseek_proc), (DLB_P,long,int));
@@ -53,12 +53,12 @@ extern FILE *FDECL(fopen_datafile, (const char *,const char *,int));
 #define MAX_LIBS 4
 static library dlb_libs[MAX_LIBS];
 
-static boolean FDECL(readlibdir,(library *lp));
-static boolean FDECL(find_file,(const char *name, library **lib, long *startp,
+static bool FDECL(readlibdir,(library *lp));
+static bool FDECL(find_file,(const char *name, library **lib, long *startp,
 								long *sizep));
-static boolean NDECL(lib_dlb_init);
+static bool NDECL(lib_dlb_init);
 static void NDECL(lib_dlb_cleanup);
-static boolean FDECL(lib_dlb_fopen,(dlb *, const char *, const char *));
+static bool FDECL(lib_dlb_fopen,(dlb *, const char *, const char *));
 static int FDECL(lib_dlb_fclose,(dlb *));
 static int FDECL(lib_dlb_fread,(char *, int, int, dlb *));
 static int FDECL(lib_dlb_fseek,(dlb *, long, int));
@@ -67,7 +67,7 @@ static int FDECL(lib_dlb_fgetc,(dlb *));
 static long FDECL(lib_dlb_ftell,(dlb *));
 
 /* not static because shared with dlb_main.c */
-boolean FDECL(open_library,(const char *lib_name, library *lp));
+bool FDECL(open_library,(const char *lib_name, library *lp));
 void FDECL(close_library,(library *lp));
 
 /* without extern.h via hack.h, these haven't been declared for us */
@@ -117,7 +117,7 @@ extern char *FDECL(eos, (char *));
  *
  * Return TRUE on success, FALSE on failure.
  */
-static boolean readlibdir(library *lp) {
+static bool readlibdir(library *lp) {
     int i;
     char *sp;
     long liboffset, totalsize;
@@ -162,7 +162,7 @@ static boolean readlibdir(library *lp) {
  * Look for the file in our directory structure.  Return 1 if successful,
  * 0 if not found.  Fill in the size and starting position.
  */
-static boolean find_file(const char *name, library **lib, long *startp, long *sizep) {
+static bool find_file(const char *name, library **lib, long *startp, long *sizep) {
     int i, j;
     library *lp;
 
@@ -186,8 +186,8 @@ static boolean find_file(const char *name, library **lib, long *startp, long *si
  * Open the library of the given name and fill in the given library
  * structure.  Return TRUE if successful, FALSE otherwise.
  */
-boolean open_library(const char *lib_name, library *lp) {
-    boolean status = FALSE;
+bool open_library(const char *lib_name, library *lp) {
+    bool status = FALSE;
 
     lp->fdata = fopen_datafile(lib_name, RDBMODE, DATAPREFIX);
     if (lp->fdata) {
@@ -213,7 +213,7 @@ void close_library(library *lp) {
  * Open the library file once using stdio.  Keep it open, but
  * keep track of the file position.
  */
-static boolean lib_dlb_init() {
+static bool lib_dlb_init() {
     /* zero out array */
     (void) memset((char *)&dlb_libs[0], 0, sizeof(dlb_libs));
 
@@ -236,7 +236,7 @@ static void lib_dlb_cleanup() {
 	close_library(&dlb_libs[i]);
 }
 
-static boolean lib_dlb_fopen(dlb *dp, const char *name, const char *mode) {
+static bool lib_dlb_fopen(dlb *dp, const char *name, const char *mode) {
     long start, size;
     library *lp;
 
@@ -374,9 +374,9 @@ const dlb_procs_t rsrc_dlb_procs = {
 #define do_dlb_ftell (*dlb_procs->dlb_ftell_proc)
 
 static const dlb_procs_t *dlb_procs;
-static boolean dlb_initialized = FALSE;
+static bool dlb_initialized = FALSE;
 
-boolean dlb_init() {
+bool dlb_init() {
     if (!dlb_initialized) {
 #ifdef DLBLIB
 	dlb_procs = &lib_dlb_procs;

@@ -13,12 +13,12 @@
 
 STATIC_DCL char *FDECL(strprepend,(char *,const char *));
 #ifdef OVLB
-static boolean FDECL(wishymatch, (const char *,const char *,BOOLEAN_P));
+static bool FDECL(wishymatch, (const char *,const char *,bool));
 #endif
 static char *NDECL(nextobuf);
 static void FDECL(add_erosion_words, (struct Object *, char *));
 #ifdef SORTLOOT
-char * FDECL(xname2, (struct Object *, boolean));
+char * FDECL(xname2, (struct Object *, bool));
 #endif
 
 struct Jitem {
@@ -171,8 +171,8 @@ char * simple_typename(int otyp) {
     return bufp;
 }
 
-boolean obj_is_pname(struct Object *obj) {
-    return((boolean)(obj->dknown && obj->known && obj->onamelth &&
+bool obj_is_pname(struct Object *obj) {
+    return((bool)(obj->dknown && obj->known && obj->onamelth &&
 		     /* Since there aren't any objects which are both
 		        artifacts and unique, the last check is redundant. */
 		     obj->oartifact && !objects[obj->otyp].oc_unique));
@@ -197,7 +197,7 @@ char * distant_name(struct Object* obj, char* (*func)(OBJ_P)) {
 
 /* convert player specified fruit name into corresponding fruit juice name
    ("slice of pizza" -> "pizza juice" rather than "slice of pizza juice") */
-char * fruitname(boolean juice) {
+char * fruitname(bool juice) {
     char *buf = nextobuf();
     const char *fruit_nam = strstri(pl_fruit, " of ");
 
@@ -219,7 +219,7 @@ char *xname(struct Object* obj)
 	return xname2(obj, FALSE);
 }
 
-char * xname2(struct Object* obj, boolean ignore_oquan)
+char * xname2(struct Object* obj, bool ignore_oquan)
 #endif
 {
 	char *buf;
@@ -492,18 +492,18 @@ char * mshot_xname(struct Object *obj) {
 #ifdef OVL0
 
 /* used for naming "the unique_item" instead of "a unique_item" */
-boolean the_unique_obj(struct Object *obj) {
+bool the_unique_obj(struct Object *obj) {
     if (!obj->dknown)
 	return FALSE;
     else if (obj->otyp == FAKE_AMULET_OF_YENDOR && !obj->known)
 	return TRUE;		/* lie */
     else
-	return (boolean)(objects[obj->otyp].oc_unique &&
+	return (bool)(objects[obj->otyp].oc_unique &&
 			 (obj->known || obj->otyp == AMULET_OF_YENDOR));
 }
 
 static void add_erosion_words(struct Object *obj, char *prefix) {
-	boolean iscrys = (obj->otyp == CRYSKNIFE);
+	bool iscrys = (obj->otyp == CRYSKNIFE);
 
 
 	if (!is_damageable(obj) && !iscrys) return;
@@ -535,7 +535,7 @@ static void add_erosion_words(struct Object *obj, char *prefix) {
 }
 
 char * doname(struct Object *obj) {
-	boolean ispoisoned = FALSE;
+	bool ispoisoned = FALSE;
 	char prefix[PREFIX];
 	char tmpbuf[PREFIX+1];
 	/* when we have to add something at the start of prefix instead of the
@@ -771,7 +771,7 @@ ring:
 #ifdef OVLB
 
 /* used from invent.c */
-boolean not_fully_identified(struct Object *otmp) {
+bool not_fully_identified(struct Object *otmp) {
 #ifdef GOLDOBJ
     /* gold doesn't have any interesting attributes [yet?] */
     if (otmp->oclass == COIN_CLASS) return FALSE;	/* always fully ID'd */
@@ -799,12 +799,12 @@ boolean not_fully_identified(struct Object *otmp) {
 			 otmp->oclass != BALL_CLASS))	    /* (useless) */
 	return FALSE;
     else	/* lack of `rknown' only matters for vulnerable objects */
-	return (boolean)(is_rustprone(otmp) ||
+	return (bool)(is_rustprone(otmp) ||
 			 is_corrodeable(otmp) ||
 			 is_flammable(otmp));
 }
 
-char * corpse_xname(struct Object *otmp, boolean ignore_oquan) {
+char * corpse_xname(struct Object *otmp, bool ignore_oquan) {
 	char *nambuf = nextobuf();
 
 	Sprintf(nambuf, "%s corpse", mons[otmp->corpsenm].mname);
@@ -922,7 +922,7 @@ char * An(const char *str) {
  */
 char * the(const char *str) {
 	char *buf = nextobuf();
-	boolean insert_the = FALSE;
+	bool insert_the = FALSE;
 
 	if (!strncmpi(str, "the ", 4)) {
 	    buf[0] = lowc(*str);
@@ -1558,7 +1558,7 @@ char * makesingular(const char *oldstr) {
 }
 
 /* compare user string against object name string using fuzzy matching */
-static boolean wishymatch(const char *u_str, const char *o_str, boolean retry_inverted) {
+static bool wishymatch(const char *u_str, const char *o_str, bool retry_inverted) {
 	/* special case: wizards can wish for traps.  The object is "beartrap"
 	 * and the trap is "bear trap", so to let wizards wish for both we
 	 * must not fuzzymatch.
@@ -1661,7 +1661,7 @@ struct alt_spellings {
  * return null.
  * If from_user is false, we're reading from the wizkit, nothing was typed in.
  */
-struct Object * readobjnam(char *bp, struct Object *no_wish, boolean from_user) {
+struct Object * readobjnam(char *bp, struct Object *no_wish, bool from_user) {
 	char *p;
 	int i;
 	struct Object *otmp;

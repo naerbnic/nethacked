@@ -10,7 +10,7 @@ STATIC_PTR int NDECL(stealarm);
 
 #ifdef OVLB
 STATIC_DCL const char *FDECL(equipname, (struct Object *));
-STATIC_DCL void FDECL(mdrop_obj, (struct Monster *,struct Object *,BOOLEAN_P));
+STATIC_DCL void FDECL(mdrop_obj, (struct Monster *,struct Object *,bool));
 
 STATIC_OVL const char * equipname(struct Object *otmp) {
 	return (
@@ -159,7 +159,7 @@ botm:   stealoid = 0;
 
 /* An object you're wearing has been taken off by a monster (theft or
    seduction).  Also used if a worn item gets transformed (stone to flesh). */
-void remove_worn_item(struct Object *obj, boolean unchain_ball) {
+void remove_worn_item(struct Object *obj, bool unchain_ball) {
 	if (donning(obj))
 	    cancel_don();
 	if (!obj->owornmask)
@@ -211,7 +211,7 @@ void remove_worn_item(struct Object *obj, boolean unchain_ball) {
 int steal(struct Monster *mtmp, char *objnambuf) {
 	struct Object *otmp;
 	int tmp, could_petrify, named = 0, armordelay;
-	boolean monkey_business; /* true iff an animal is doing the thievery */
+	bool monkey_business; /* true iff an animal is doing the thievery */
 
 	if (objnambuf) *objnambuf = '\0';
 	/* the following is true if successful on first of two attacks. */
@@ -282,7 +282,7 @@ gotobj:
 
 	/* animals can't overcome curse stickiness nor unlock chains */
 	if (monkey_business) {
-	    boolean ostuck;
+	    bool ostuck;
 	    /* is the player prevented from voluntarily giving up this item?
 	       (ignores loadstones; the !can_carry() check will catch those) */
 	    if (otmp == uball)
@@ -337,7 +337,7 @@ gotobj:
 		    } else {
 			int curssv = otmp->cursed;
 			int slowly;
-			boolean seen = canspotmon(mtmp);
+			bool seen = canspotmon(mtmp);
 
 			otmp->cursed = 0;
 			/* can't charm you without first waking you */
@@ -414,7 +414,7 @@ int mpickobj(struct Monster *mtmp, struct Object *otmp) {
 	freed_otmp = 1;
     } else {
 #endif
-    boolean snuff_otmp = FALSE;
+    bool snuff_otmp = FALSE;
     /* don't want hidden light source inside the monster; assumes that
        engulfers won't have external inventories; whirly monsters cause
        the light to be extinguished rather than letting it shine thru */
@@ -487,7 +487,7 @@ void stealamulet(struct Monster *mtmp) {
 #ifdef OVL0
 
 /* drop one object taken from a (possibly dead) monster's inventory */
-STATIC_OVL void mdrop_obj(struct Monster *mon, struct Object *obj, boolean verbosely) {
+STATIC_OVL void mdrop_obj(struct Monster *mon, struct Object *obj, bool verbosely) {
     int omx = mon->mx, omy = mon->my;
 
     if (obj->owornmask) {
@@ -532,12 +532,12 @@ void mdrop_special_objs(struct Monster *mon) {
 }
 
 /* release the objects the creature is carrying */
-void relobj(struct Monster *mtmp, int show, boolean is_pet) {
+void relobj(struct Monster *mtmp, int show, bool is_pet) {
 	struct Object *otmp;
 	int omx = mtmp->mx, omy = mtmp->my;
 	struct Object *keepobj = 0;
 	struct Object *wep = MON_WEP(mtmp);
-	boolean item1 = FALSE, item2 = FALSE;
+	bool item1 = FALSE, item2 = FALSE;
 
 	if (!is_pet || mindless(mtmp->data) || is_animal(mtmp->data))
 		item1 = item2 = TRUE;

@@ -81,7 +81,7 @@ void msummon(struct Monster *mon) {
 	}
 }
 
-void summon_minion(aligntyp alignment, boolean talk) {
+void summon_minion(aligntyp alignment, bool talk) {
     struct Monster *mon;
     int mnum;
 

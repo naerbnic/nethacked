@@ -14,25 +14,25 @@
 static struct rm *maploc;
 static const char *gate_str;
 
-extern boolean notonhead;	/* for long worms */
+extern bool notonhead;	/* for long worms */
 
-STATIC_DCL void FDECL(kickdmg, (struct Monster *, BOOLEAN_P));
+STATIC_DCL void FDECL(kickdmg, (struct Monster *, bool));
 STATIC_DCL void FDECL(kick_monster, (XCHAR_P, XCHAR_P));
 STATIC_DCL int FDECL(kick_object, (XCHAR_P, XCHAR_P));
 STATIC_DCL char *FDECL(kickstr, (char *));
-STATIC_DCL void FDECL(otransit_msg, (struct Object *, BOOLEAN_P, long));
+STATIC_DCL void FDECL(otransit_msg, (struct Object *, bool, long));
 STATIC_DCL void FDECL(drop_to, (coord *,SCHAR_P));
 
 static struct Object *kickobj;
 
 static const char kick_passes_thru[] = "kick passes harmlessly through";
 
-STATIC_OVL void kickdmg(struct Monster *mon, boolean clumsy) {
+STATIC_OVL void kickdmg(struct Monster *mon, bool clumsy) {
 	int mdx, mdy;
 	int dmg = ( ACURRSTR + ACURR(A_DEX) + ACURR(A_CON) )/ 15;
 	int kick_skill = P_NONE;
 	int blessed_foot_damage = 0;
-	boolean trapkilled = FALSE;
+	bool trapkilled = FALSE;
 
 	if (uarmf && uarmf->otyp == KICKING_BOOTS)
 	    dmg += 5;
@@ -113,7 +113,7 @@ STATIC_OVL void kickdmg(struct Monster *mon, boolean clumsy) {
 }
 
 STATIC_OVL void kick_monster(xchar x, xchar y) {
-	boolean clumsy = FALSE;
+	bool clumsy = FALSE;
 	struct Monster *mon = m_at(x, y);
 	int i, j;
 
@@ -151,7 +151,7 @@ STATIC_OVL void kick_monster(xchar x, xchar y) {
 		} else if (tmp > rnd(20)) {
 		    You("kick %s.", mon_nam(mon));
 		    sum = damageum(mon, uattk);
-		    (void)passive(mon, (boolean)(sum > 0), (sum != 2), AT_KICK);
+		    (void)passive(mon, (bool)(sum > 0), (sum != 2), AT_KICK);
 		    if (sum == 2)
 			break;		/* Defender died */
 		} else {
@@ -227,8 +227,8 @@ doit:
  *  Return TRUE if caught (the gold taken care of), FALSE otherwise.
  *  The gold object is *not* attached to the fobj chain!
  */
-boolean ghitm(struct Monster *mtmp, struct Object *gold) {
-	boolean msg_given = FALSE;
+bool ghitm(struct Monster *mtmp, struct Object *gold) {
+	bool msg_given = FALSE;
 
 	if(!likes_gold(mtmp->data) && !mtmp->isshk && !mtmp->ispriest
 			&& !is_mercenary(mtmp->data)) {
@@ -333,7 +333,7 @@ void container_impact_dmg(struct Object *obj) {
 	struct Monster *shkp;
 	struct Object *otmp, *otmp2;
 	long loss = 0L;
-	boolean costly, insider;
+	bool costly, insider;
 	xchar x = obj->ox, y = obj->oy;
 
 	/* only consider normal containers */
@@ -364,7 +364,7 @@ void container_impact_dmg(struct Object *obj) {
 		You_hear("a muffled %s.", result);
 		if (costly)
 		    loss += stolen_value(otmp, x, y,
-					 (boolean)shkp->mpeaceful, TRUE);
+					 (bool)shkp->mpeaceful, TRUE);
 		if (otmp->quan > 1L)
 		    useup(otmp);
 		else {
@@ -389,7 +389,7 @@ STATIC_OVL int kick_object(xchar x, xchar y) {
 	struct Monster *mon, *shkp;
 	struct trap *trap;
 	char bhitroom;
-	boolean costly, isgold, slide = FALSE;
+	bool costly, isgold, slide = FALSE;
 
 	/* if a pile, the "top" object gets kicked */
 	kickobj = level.objects[x][y];
@@ -489,7 +489,7 @@ STATIC_OVL int kick_object(xchar x, xchar y) {
 
 	/* a box gets a chance of breaking open here */
 	if(Is_box(kickobj)) {
-		boolean otrp = kickobj->otrapped;
+		bool otrp = kickobj->otrapped;
 
 		if(range < 2) pline("THUD!");
 
@@ -556,7 +556,7 @@ STATIC_OVL int kick_object(xchar x, xchar y) {
 		if(isgold)
 		    costly_gold(x, y, kickobj->quan);
 		else (void)stolen_value(kickobj, x, y,
-					(boolean)shkp->mpeaceful, FALSE);
+					(bool)shkp->mpeaceful, FALSE);
 	    }
 	    return 1;
 	}
@@ -567,7 +567,7 @@ STATIC_OVL int kick_object(xchar x, xchar y) {
 	    if(isgold)
 		costly_gold(x, y, kickobj->quan);
 	    else (void)stolen_value(kickobj, x, y,
-				    (boolean)shkp->mpeaceful, FALSE);
+				    (bool)shkp->mpeaceful, FALSE);
 	}
 
 	if(flooreffects(kickobj,bhitpos.x,bhitpos.y,"fall")) return(1);
@@ -604,7 +604,7 @@ int dokick() {
 	int x, y;
 	int avrg_attrib;
 	struct Monster *mtmp;
-	boolean no_kick = FALSE;
+	bool no_kick = FALSE;
 	char buf[BUFSZ];
 
 	if (nolimbs(youmonst.data) || slithy(youmonst.data)) {
@@ -1024,7 +1024,7 @@ dumb:
 	exercise(A_DEX, TRUE);
 	/* door is known to be CLOSED or LOCKED */
 	if(rnl(35) < avrg_attrib + (!martial() ? 0 : ACURR(A_DEX))) {
-		boolean shopdoor = *in_rooms(x, y, SHOPBASE) ? TRUE : FALSE;
+		bool shopdoor = *in_rooms(x, y, SHOPBASE) ? TRUE : FALSE;
 		/* break the door */
 		if(maploc->doormask & D_TRAPPED) {
 		    if (flags.verbose) You("kick the door.");
@@ -1127,7 +1127,7 @@ void impact_drop(struct Object *missile, xchar x, xchar y, xchar dlev) {
 	struct Object *obj, *obj2;
 	struct Monster *shkp;
 	long oct, dct, price, debit, robbed;
-	boolean angry, costly, isrock;
+	bool angry, costly, isrock;
 	coord cc;
 
 	if(!OBJ_AT(x, y)) return;
@@ -1240,13 +1240,13 @@ void impact_drop(struct Object *missile, xchar x, xchar y, xchar dlev) {
  * <x,y> is the point of drop.  otmp is _not_ an <x,y> resident:
  * otmp is either a kicked, dropped, or thrown object.
  */
-boolean ship_object(struct Object *otmp, xchar x, xchar y, boolean shop_floor_obj) {
+bool ship_object(struct Object *otmp, xchar x, xchar y, bool shop_floor_obj) {
 	schar toloc;
 	xchar ox, oy;
 	coord cc;
 	struct Object *obj;
 	struct trap *t;
-	boolean nodrop, unpaid, container, impact = FALSE;
+	bool nodrop, unpaid, container, impact = FALSE;
 	long n = 0L;
 
 	if (!otmp) return(FALSE);
@@ -1393,7 +1393,7 @@ void obj_delivery() {
 	}
 }
 
-STATIC_OVL void otransit_msg(struct Object *otmp, boolean nodrop, long num) {
+STATIC_OVL void otransit_msg(struct Object *otmp, bool nodrop, long num) {
 	char obuf[BUFSZ];
 
 	Sprintf(obuf, "%s%s",

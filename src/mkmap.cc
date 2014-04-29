@@ -140,7 +140,7 @@ STATIC_OVL void pass_three(schar bg_typ, schar fg_typ) {
  * if anyroom is TRUE, use IS_ROOM to check room membership instead of
  * exactly matching levl[sx][sy].typ and walls are included as well.
  */
-void flood_fill_rm(int sx, int sy, int rmno, boolean lit, boolean anyroom) {
+void flood_fill_rm(int sx, int sy, int rmno, bool lit, bool anyroom) {
     int i;
     int nx;
     schar fg_typ = levl[sx][sy].typ;
@@ -306,7 +306,7 @@ joinm:
     }
 }
 
-STATIC_OVL void finish_map(schar fg_typ, schar bg_typ, boolean lit, boolean walled) {
+STATIC_OVL void finish_map(schar fg_typ, schar bg_typ, bool lit, bool walled) {
 	int	i, j;
 
 	if(walled) wallify_map();
@@ -398,7 +398,7 @@ STATIC_OVL void remove_room(unsigned roomno) {
 void mkmap(lev_init *init_lev) {
 	schar	bg_typ = init_lev->bg,
 		fg_typ = init_lev->fg;
-	boolean smooth = init_lev->smoothed,
+	bool smooth = init_lev->smoothed,
 		join = init_lev->joined;
 	xchar   lit = init_lev->lit,
 		walled = init_lev->walled;
@@ -425,7 +425,7 @@ void mkmap(lev_init *init_lev) {
 	if(join)
 	    join_map(bg_typ, fg_typ);
 
-	finish_map(fg_typ, bg_typ, (boolean)lit, (boolean)walled);
+	finish_map(fg_typ, bg_typ, (bool)lit, (bool)walled);
 	/* a walled, joined level is cavernous, not mazelike -dlc */
 	if (walled && join) {
 	    level.flags.is_maze_lev = FALSE;

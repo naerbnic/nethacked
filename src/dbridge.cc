@@ -25,17 +25,17 @@ STATIC_DCL const char *FDECL(e_nam, (struct entity *));
 static const char *FDECL(Enam, (struct entity *)); /* unused */
 #endif
 STATIC_DCL const char *FDECL(E_phrase, (struct entity *, const char *));
-STATIC_DCL boolean FDECL(e_survives_at, (struct entity *, int, int));
+STATIC_DCL bool FDECL(e_survives_at, (struct entity *, int, int));
 STATIC_DCL void FDECL(e_died, (struct entity *, int, int));
-STATIC_DCL boolean FDECL(automiss, (struct entity *));
-STATIC_DCL boolean FDECL(e_missed, (struct entity *, BOOLEAN_P));
-STATIC_DCL boolean FDECL(e_jumps, (struct entity *));
+STATIC_DCL bool FDECL(automiss, (struct entity *));
+STATIC_DCL bool FDECL(e_missed, (struct entity *, bool));
+STATIC_DCL bool FDECL(e_jumps, (struct entity *));
 STATIC_DCL void FDECL(do_entity, (struct entity *));
 #endif /* OVLB */
 
 #ifdef OVL0
 
-boolean is_pool(int x, int y) {
+bool is_pool(int x, int y) {
     schar ltyp;
 
     if (!isok(x,y)) return FALSE;
@@ -46,7 +46,7 @@ boolean is_pool(int x, int y) {
     return FALSE;
 }
 
-boolean is_lava(int x, int y) {
+bool is_lava(int x, int y) {
     schar ltyp;
 
     if (!isok(x,y)) return FALSE;
@@ -57,7 +57,7 @@ boolean is_lava(int x, int y) {
     return FALSE;
 }
 
-boolean is_ice(int x, int y) {
+bool is_ice(int x, int y) {
     schar ltyp;
 
     if (!isok(x,y)) return FALSE;
@@ -107,8 +107,8 @@ int is_drawbridge_wall(int x, int y) {
  * drawbridge "wall" is UP in the location x, y
  * (instead of UP or DOWN, as with is_drawbridge_wall).
  */
-boolean is_db_wall(int x, int y) {
-	return((boolean)( levl[x][y].typ == DBWALL ));
+bool is_db_wall(int x, int y) {
+	return((bool)( levl[x][y].typ == DBWALL ));
 }
 
 
@@ -116,7 +116,7 @@ boolean is_db_wall(int x, int y) {
  * Return true with x,y pointing to the drawbridge if x,y initially indicate
  * a drawbridge or drawbridge wall.
  */
-boolean find_drawbridge(int *x, int *y) {
+bool find_drawbridge(int *x, int *y) {
 	int dir;
 
 	if (IS_DRAWBRIDGE(levl[*x][*y].typ))
@@ -155,10 +155,10 @@ STATIC_OVL void get_wall_for_db(int *x, int *y) {
  *     flag must be put to TRUE if we want the drawbridge to be opened.
  */
 
-boolean create_drawbridge(int x, int y, int dir, boolean flag) {
+bool create_drawbridge(int x, int y, int dir, bool flag) {
 	int x2,y2;
-	boolean horiz;
-	boolean lava = levl[x][y].typ == LAVAPOOL; /* assume initialized map */
+	bool horiz;
+	bool lava = levl[x][y].typ == LAVAPOOL; /* assume initialized map */
 
 	x2 = x; y2 = y;
 	switch(dir) {
@@ -258,7 +258,7 @@ STATIC_OVL void set_entity(int x, int y, struct entity *etmp) {
 }
 
 #define is_u(etmp) (etmp->emon == &youmonst)
-#define e_canseemon(etmp) (is_u(etmp) ? (boolean)TRUE : canseemon(etmp->emon))
+#define e_canseemon(etmp) (is_u(etmp) ? (bool)TRUE : canseemon(etmp->emon))
 
 /*
  * e_strg is a utility routine which is not actually in use anywhere, since
@@ -303,21 +303,21 @@ STATIC_OVL const char * E_phrase(struct entity *etmp, const char *verb) {
  * Simple-minded "can it be here?" routine
  */
 
-STATIC_OVL boolean e_survives_at(struct entity *etmp, int x, int y) {
+STATIC_OVL bool e_survives_at(struct entity *etmp, int x, int y) {
 	if (noncorporeal(etmp->edata))
 		return(TRUE);
 	if (is_pool(x, y))
-		return (boolean)((is_u(etmp) &&
+		return (bool)((is_u(etmp) &&
 				(Wwalking || Amphibious || Swimming ||
 				Flying || Levitation)) ||
 			is_swimmer(etmp->edata) || is_flyer(etmp->edata) ||
 			is_floater(etmp->edata));
 	/* must force call to lava_effects in e_died if is_u */
 	if (is_lava(x, y))
-		return (boolean)((is_u(etmp) && (Levitation || Flying)) ||
+		return (bool)((is_u(etmp) && (Levitation || Flying)) ||
 			    likes_lava(etmp->edata) || is_flyer(etmp->edata));
 	if (is_db_wall(x, y))
-		return((boolean)(is_u(etmp) ? Passes_walls :
+		return((bool)(is_u(etmp) ? Passes_walls :
 			passes_walls(etmp->edata)));
 	return(TRUE);
 }
@@ -383,8 +383,8 @@ STATIC_OVL void e_died(struct entity *etmp, int dest, int how) {
  * These are never directly affected by a bridge or portcullis.
  */
 
-STATIC_OVL boolean automiss(struct entity *etmp) {
-	return (boolean)((is_u(etmp) ? Passes_walls :
+STATIC_OVL bool automiss(struct entity *etmp) {
+	return (bool)((is_u(etmp) ? Passes_walls :
 			passes_walls(etmp->edata)) || noncorporeal(etmp->edata));
 }
 
@@ -392,7 +392,7 @@ STATIC_OVL boolean automiss(struct entity *etmp) {
  * Does falling drawbridge or portcullis miss etmp?
  */
 
-STATIC_OVL boolean e_missed(struct entity *etmp, boolean chunks) {
+STATIC_OVL bool e_missed(struct entity *etmp, bool chunks) {
 	int misses;
 
 #ifdef D_DEBUG
@@ -422,14 +422,14 @@ STATIC_OVL boolean e_missed(struct entity *etmp, boolean chunks) {
 	pline("Miss chance = %d (out of 8)", misses);
 #endif
 
-	return((boolean)((misses >= rnd(8))? TRUE : FALSE));
+	return((bool)((misses >= rnd(8))? TRUE : FALSE));
 }
 
 /*
  * Can etmp jump from death?
  */
 
-STATIC_OVL boolean e_jumps(struct entity *etmp) {
+STATIC_OVL bool e_jumps(struct entity *etmp) {
 	int tmp = 4;		/* out of 10 */
 
 	if (is_u(etmp)? (Sleeping || Fumbling) :
@@ -449,12 +449,12 @@ STATIC_OVL boolean e_jumps(struct entity *etmp) {
 #ifdef D_DEBUG
 	pline("%s to jump (%d chances in 10)", E_phrase(etmp, "try"), tmp);
 #endif
-	return((boolean)((tmp >= rnd(10))? TRUE : FALSE));
+	return((bool)((tmp >= rnd(10))? TRUE : FALSE));
 }
 
 STATIC_OVL void do_entity(struct entity *etmp) {
 	int newx, newy, at_portcullis, oldx, oldy;
-	boolean must_jump = FALSE, relocates = FALSE, e_inview;
+	bool must_jump = FALSE, relocates = FALSE, e_inview;
 	struct rm *crm;
 
 	if (!etmp->edata)
@@ -650,7 +650,7 @@ STATIC_OVL void do_entity(struct entity *etmp) {
 		if (is_pool(etmp->ex, etmp->ey) || is_lava(etmp->ex, etmp->ey))
 		    if (e_inview && !is_u(etmp)) {
 			/* drown() will supply msgs if nec. */
-			boolean lava = is_lava(etmp->ex, etmp->ey);
+			bool lava = is_lava(etmp->ex, etmp->ey);
 
 			if (Hallucination)
 			    pline("%s the %s and disappears.",
@@ -763,7 +763,7 @@ void destroy_drawbridge(int x, int y) {
 	struct rm *lev1, *lev2;
 	struct trap *t;
 	int x2, y2;
-	boolean e_inview;
+	bool e_inview;
 	struct entity *etmp1 = &(occupants[0]), *etmp2 = &(occupants[1]);
 
 	lev1 = &levl[x][y];
@@ -775,7 +775,7 @@ void destroy_drawbridge(int x, int y) {
 	if ((lev1->drawbridgemask & DB_UNDER) == DB_MOAT ||
 	    (lev1->drawbridgemask & DB_UNDER) == DB_LAVA) {
 		struct Object *otmp;
-		boolean lava = (lev1->drawbridgemask & DB_UNDER) == DB_LAVA;
+		bool lava = (lev1->drawbridgemask & DB_UNDER) == DB_LAVA;
 		if (lev1->typ == DRAWBRIDGE_UP) {
 			if (cansee(x2,y2))
 			    pline_The("portcullis of the drawbridge falls into the %s!",

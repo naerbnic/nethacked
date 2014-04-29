@@ -86,7 +86,7 @@ struct level_ftrack {
 int init;
 int fd;					/* file descriptor for level file     */
 int oflag;				/* open flags                         */
-boolean nethack_thinks_it_is_open;	/* Does NetHack think it's open?       */
+bool nethack_thinks_it_is_open;	/* Does NetHack think it's open?       */
 } lftrack;
 # if defined(WIN32)
 #include <share.h>
@@ -128,18 +128,18 @@ extern int n_dgns;		/* from dungeon.c */
 STATIC_DCL char *FDECL(set_bonesfile_name, (char *,d_level*));
 STATIC_DCL char *NDECL(set_bonestemp_name);
 #ifdef COMPRESS
-STATIC_DCL void FDECL(redirect, (const char *,const char *,FILE *,BOOLEAN_P));
-STATIC_DCL void FDECL(docompress_file, (const char *,BOOLEAN_P));
+STATIC_DCL void FDECL(redirect, (const char *,const char *,FILE *,bool));
+STATIC_DCL void FDECL(docompress_file, (const char *,bool));
 #endif
 STATIC_DCL char *FDECL(make_lockname, (const char *,char *));
 STATIC_DCL FILE *FDECL(fopen_config_file, (const char *));
-STATIC_DCL int FDECL(get_uchars, (FILE *,char *,char *,uchar *,BOOLEAN_P,int,const char *));
+STATIC_DCL int FDECL(get_uchars, (FILE *,char *,char *,uchar *,bool,int,const char *));
 int FDECL(parse_config_line, (FILE *,char *,char *,char *));
 #ifdef NOCWD_ASSUMPTIONS
 STATIC_DCL void FDECL(adjust_prefix, (char *, int));
 #endif
 #ifdef SELF_RECOVER
-STATIC_DCL boolean FDECL(copy_bytes, (int, int));
+STATIC_DCL bool FDECL(copy_bytes, (int, int));
 #endif
 #ifdef HOLD_LOCKFILE_OPEN
 STATIC_DCL int FDECL(open_levelfile_exclusively, (const char *, int, int));
@@ -898,7 +898,7 @@ void free_saved_games(char** saved) {
 
 #ifdef COMPRESS
 
-STATIC_OVL void redirect(const char *filename, const char *mode, FILE *stream, boolean uncomp) {
+STATIC_OVL void redirect(const char *filename, const char *mode, FILE *stream, bool uncomp) {
 	if (freopen(filename, mode, stream) == (FILE *)0) {
 		(void) fprintf(stderr, "freopen of %s for %scompress failed\n",
 			filename, uncomp ? "un" : "");
@@ -913,7 +913,7 @@ STATIC_OVL void redirect(const char *filename, const char *mode, FILE *stream, b
  *
  * cf. child() in unixunix.c.
  */
-STATIC_OVL void docompress_file(const char *filename, boolean uncomp) {
+STATIC_OVL void docompress_file(const char *filename, bool uncomp) {
 	char cfn[80];
 	FILE *cf;
 	const char *args[10];
@@ -923,7 +923,7 @@ STATIC_OVL void docompress_file(const char *filename, boolean uncomp) {
 	int i = 0;
 	int f;
 # ifdef TTY_GRAPHICS
-	boolean istty = !strncmpi(windowprocs.name, "tty", 3);
+	bool istty = !strncmpi(windowprocs.name, "tty", 3);
 # endif
 
 	Strcpy(cfn, filename);
@@ -943,7 +943,7 @@ STATIC_OVL void docompress_file(const char *filename, boolean uncomp) {
 	{
 	    /* we can't guarantee there's only one additional option, sigh */
 	    char *opt;
-	    boolean inword = FALSE;
+	    bool inword = FALSE;
 
 	    Strcpy(opts, COMPRESS_OPTIONS);
 	    opt = opts;
@@ -1114,7 +1114,7 @@ STATIC_OVL char * make_lockname(const char *filename, char *lockname) {
 
 
 /* lock a file */
-boolean lock_file(const char *filename, int whichprefix, int retryct) {
+bool lock_file(const char *filename, int whichprefix, int retryct) {
 #if (defined(macintosh) && (defined(__SC__) || defined(__MRC__))) || defined(__MWERKS__)
 # pragma unused(filename, retryct)
 #endif
@@ -1369,10 +1369,10 @@ STATIC_OVL FILE * fopen_config_file(const char *filename) {
  * NOTE: zeros are inserted unless modlist is TRUE, in which case the list
  *  location is unchanged.  Callers must handle zeros if modlist is FALSE.
  */
-STATIC_OVL int get_uchars(FILE *fp, char *buf, char *bufp, uchar *list, boolean modlist, int size, const char *name) {
+STATIC_OVL int get_uchars(FILE *fp, char *buf, char *bufp, uchar *list, bool modlist, int size, const char *name) {
     unsigned int num = 0;
     int count = 0;
-    boolean havenum = FALSE;
+    bool havenum = FALSE;
 
     while (1) {
 	switch(*bufp) {
@@ -1741,7 +1741,7 @@ int parse_config_line(FILE *fp, char *buf, char *tmp_ramdisk, char *tmp_levels) 
 }
 
 #ifdef USER_SOUNDS
-boolean can_read_file(const char *filename) {
+bool can_read_file(const char *filename) {
 	return (access(filename, 4) == 0);
 }
 #endif /* USER_SOUNDS */
@@ -1873,7 +1873,7 @@ void read_wizkit() {
 	FILE *fp;
 	char *ep, buf[BUFSZ];
 	struct Object *otmp;
-	boolean bad_items = FALSE, skip = FALSE;
+	bool bad_items = FALSE, skip = FALSE;
 
 	if (!wizard || !(fp = fopen_wizkit_file())) return;
 
@@ -2008,7 +2008,7 @@ void paniclog(const char *type, const char *reason) {
 #ifdef SELF_RECOVER
 
 /* ----------  BEGIN INTERNAL RECOVER ----------- */
-boolean recover_savefile() {
+bool recover_savefile() {
 	int gfd, lfd, sfd;
 	int lev, savelev, hpid;
 	xchar levc;
@@ -2143,7 +2143,7 @@ boolean recover_savefile() {
 	return TRUE;
 }
 
-boolean copy_bytes(int ifd, int ofd) {
+bool copy_bytes(int ifd, int ofd) {
 	char buf[BUFSIZ];
 	int nfrom, nto;
 

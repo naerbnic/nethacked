@@ -22,10 +22,10 @@ STATIC_VAR struct Monster zeromonst;
 		  (mptr->msound == MS_LEADER || mptr->msound == MS_NEMESIS))
 
 #ifdef OVL0
-STATIC_DCL boolean FDECL(uncommon, (int));
+STATIC_DCL bool FDECL(uncommon, (int));
 STATIC_DCL int FDECL(align_shift, (struct permonst *));
 #endif /* OVL0 */
-STATIC_DCL boolean FDECL(wrong_elem_type, (struct permonst *));
+STATIC_DCL bool FDECL(wrong_elem_type, (struct permonst *));
 STATIC_DCL void FDECL(m_initgrp,(struct Monster *,int,int,int));
 STATIC_DCL void FDECL(m_initthrow,(struct Monster *,int,int));
 STATIC_DCL void FDECL(m_initweap,(struct Monster *));
@@ -41,7 +41,7 @@ extern const int monstr[];
 #define tooweak(monindx, lev)	(monstr[monindx] < lev)
 
 #ifdef OVLB
-boolean is_home_elemental(struct permonst *ptr) {
+bool is_home_elemental(struct permonst *ptr) {
 	if (ptr->mlet == S_ELEMENTAL)
 	    switch (monsndx(ptr)) {
 		case PM_AIR_ELEMENTAL: return Is_airlevel(&u.uz);
@@ -55,9 +55,9 @@ boolean is_home_elemental(struct permonst *ptr) {
 /*
  * Return true if the given monster cannot exist on this elemental level.
  */
-STATIC_OVL boolean wrong_elem_type(struct permonst *ptr) {
+STATIC_OVL bool wrong_elem_type(struct permonst *ptr) {
     if (ptr->mlet == S_ELEMENTAL) {
-	return((boolean)(!is_home_elemental(ptr)));
+	return((bool)(!is_home_elemental(ptr)));
     } else if (Is_earthlevel(&u.uz)) {
 	/* no restrictions? */
     } else if (Is_waterlevel(&u.uz)) {
@@ -759,10 +759,10 @@ struct Monster * clone_mon(struct Monster *mon, xchar x, xchar y) {
  * Returns FALSE propagation unsuccessful
  *         TRUE  propagation successful
  */
-boolean propagate(int mndx, boolean tally, boolean ghostly) {
-	boolean result;
+bool propagate(int mndx, bool tally, bool ghostly) {
+	bool result;
 	uchar lim = mbirth_limit(mndx);
-	boolean gone = (mvitals[mndx].mvflags & G_GONE); /* genocided or extinct */
+	bool gone = (mvitals[mndx].mvflags & G_GONE); /* genocided or extinct */
 
 	result = (((int) mvitals[mndx].born < lim) && !gone) ? TRUE : FALSE;
 
@@ -793,10 +793,10 @@ boolean propagate(int mndx, boolean tally, boolean ghostly) {
 struct Monster * makemon(struct permonst *ptr, int x, int y, int mmflags) {
 	struct Monster *mtmp;
 	int mndx, mcham, ct, mitem, xlth;
-	boolean anymon = (!ptr);
-	boolean byyou = (x == u.ux && y == u.uy);
-	boolean allow_minvent = ((mmflags & NO_MINVENT) == 0);
-	boolean countbirth = ((mmflags & MM_NOCOUNTBIRTH) == 0);
+	bool anymon = (!ptr);
+	bool byyou = (x == u.ux && y == u.uy);
+	bool allow_minvent = ((mmflags & NO_MINVENT) == 0);
+	bool countbirth = ((mmflags & MM_NOCOUNTBIRTH) == 0);
 	unsigned gpflags = (mmflags & MM_IGNOREWATER) ? MM_IGNOREWATER : 0;
 
 	/* if caller wants random location, do it here */
@@ -1069,13 +1069,13 @@ int mbirth_limit(int mndx) {
 
 /* used for wand/scroll/spell of create monster */
 /* returns TRUE iff you know monsters have been created */
-boolean create_critters(int cnt, struct permonst *mptr) {
+bool create_critters(int cnt, struct permonst *mptr) {
 	coord c;
 	int x, y;
 	struct Monster *mon;
-	boolean known = FALSE;
+	bool known = FALSE;
 #ifdef WIZARD
-	boolean ask = wizard;
+	bool ask = wizard;
 #endif
 
 	while (cnt--) {
@@ -1103,7 +1103,7 @@ boolean create_critters(int cnt, struct permonst *mptr) {
 #endif /* OVL1 */
 #ifdef OVL0
 
-STATIC_OVL boolean uncommon(int mndx) {
+STATIC_OVL bool uncommon(int mndx) {
 	if (mons[mndx].geno & (G_NOGEN | G_UNIQ)) return TRUE;
 	if (mvitals[mndx].mvflags & G_GONE) return TRUE;
 	if (Inhell)
@@ -1155,9 +1155,9 @@ struct permonst * rndmonst() {
 
 	if (rndmonst_state.choice_count < 0) {	/* need to recalculate */
 	    int zlevel, minmlev, maxmlev;
-	    boolean elemlevel;
+	    bool elemlevel;
 #ifdef REINCARNATION
-	    boolean upper;
+	    bool upper;
 #endif
 
 	    rndmonst_state.choice_count = 0;
@@ -1492,7 +1492,7 @@ int golemhp(int type) {
  *	Alignment vs. yours determines monster's attitude to you.
  *	( some "animal" types are co-aligned, but also hungry )
  */
-boolean peace_minded(struct permonst *ptr) {
+bool peace_minded(struct permonst *ptr) {
 	aligntyp mal = ptr->maligntyp, ual = u.ualign.type;
 
 	if (always_peaceful(ptr)) return TRUE;
@@ -1512,13 +1512,13 @@ boolean peace_minded(struct permonst *ptr) {
 	if (mal < A_NEUTRAL && u.uhave.amulet) return FALSE;
 
 	/* minions are hostile to players that have strayed at all */
-	if (is_minion(ptr)) return((boolean)(u.ualign.record >= 0));
+	if (is_minion(ptr)) return((bool)(u.ualign.record >= 0));
 
 	/* Last case:  a chance of a co-aligned monster being
 	 * hostile.  This chance is greater if the player has strayed
 	 * (u.ualign.record negative) or the monster is not strongly aligned.
 	 */
-	return((boolean)(!!rn2(16 + (u.ualign.record < -15 ? -15 : u.ualign.record)) &&
+	return((bool)(!!rn2(16 + (u.ualign.record < -15 ? -15 : u.ualign.record)) &&
 		!!rn2(2 + abs(mal))));
 }
 
@@ -1534,7 +1534,7 @@ boolean peace_minded(struct permonst *ptr) {
  */
 void set_malign(struct Monster *mtmp) {
 	schar mal = mtmp->data->maligntyp;
-	boolean coaligned;
+	bool coaligned;
 
 	if (mtmp->ispriest || mtmp->isminion) {
 		/* some monsters have individual alignments; check them */
@@ -1702,7 +1702,7 @@ void bagotricks(struct Object *bag) {
     } else if (bag->spe < 1) {
 	pline(nothing_happens);
     } else {
-	boolean gotone = FALSE;
+	bool gotone = FALSE;
 	int cnt = 1;
 
 	consume_obj_charge(bag, TRUE);

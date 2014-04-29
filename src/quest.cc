@@ -15,9 +15,9 @@
 STATIC_DCL void NDECL(on_start);
 STATIC_DCL void NDECL(on_locate);
 STATIC_DCL void NDECL(on_goal);
-STATIC_DCL boolean NDECL(not_capable);
-STATIC_DCL int FDECL(is_pure, (BOOLEAN_P));
-STATIC_DCL void FDECL(expulsion, (BOOLEAN_P));
+STATIC_DCL bool NDECL(not_capable);
+STATIC_DCL int FDECL(is_pure, (bool));
+STATIC_DCL void FDECL(expulsion, (bool));
 STATIC_DCL void NDECL(chat_with_leader);
 STATIC_DCL void NDECL(chat_with_nemesis);
 STATIC_DCL void NDECL(chat_with_guardian);
@@ -80,16 +80,16 @@ void artitouch() {
 }
 
 /* external hook for do.c (level change check) */
-boolean ok_to_quest() {
-	return((boolean)((Qstat(got_quest) || Qstat(got_thanks)))
+bool ok_to_quest() {
+	return((bool)((Qstat(got_quest) || Qstat(got_thanks)))
 			&& (is_pure(FALSE) > 0));
 }
 
-STATIC_OVL boolean not_capable() {
-	return((boolean)(u.ulevel < MIN_QUEST_LEVEL));
+STATIC_OVL bool not_capable() {
+	return((bool)(u.ulevel < MIN_QUEST_LEVEL));
 }
 
-STATIC_OVL int is_pure(boolean talk) {
+STATIC_OVL int is_pure(bool talk) {
     int purity;
     aligntyp original_alignment = u.ualignbase[A_ORIGINAL];
 
@@ -121,7 +121,7 @@ STATIC_OVL int is_pure(boolean talk) {
  * This assumes that the hero is currently _in_ the quest dungeon and that
  * there is a single branch to and from it.
  */
-STATIC_OVL void expulsion(boolean seal) {
+STATIC_OVL void expulsion(bool seal) {
     branch *br;
     d_level *dest;
     struct trap *t;

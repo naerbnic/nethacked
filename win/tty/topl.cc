@@ -307,9 +307,9 @@ extern char erase_char;		/* from xxxtty.c; don't need kill_char */
 char tty_yn_function(const char* query, const char* resp, char def) {
 	char q;
 	char rtmp[40];
-	boolean digit_ok, allow_num;
+	bool digit_ok, allow_num;
 	struct WinDesc *cw = wins[WIN_MESSAGE];
-	boolean doprev = 0;
+	bool doprev = 0;
 	char prompt[QBUFSZ];
 
 	if(ttyDisplay->toplin == 1 && !(cw->flags & WIN_STOP)) more();

@@ -42,7 +42,7 @@ STATIC_OVL int pet_type() {
 	    return (rn2(2) ? PM_KITTEN : PM_LITTLE_DOG);
 }
 
-struct Monster * make_familiar(struct Object *otmp, xchar x, xchar y, boolean quietly) {
+struct Monster * make_familiar(struct Object *otmp, xchar x, xchar y, bool quietly) {
 	struct permonst *pm;
 	struct Monster *mtmp = 0;
 	int chance, trycnt = 100;
@@ -201,7 +201,7 @@ void losedogs() {
 }
 
 /* called from resurrect() in addition to losedogs() */
-void mon_arrive(struct Monster *mtmp, boolean with_you) {
+void mon_arrive(struct Monster *mtmp, bool with_you) {
 	struct trap *t;
 	xchar xlocale, ylocale, xyloc, xyflags, wander;
 	int num_segs;
@@ -458,11 +458,11 @@ void mon_catchup_elapsed_time(struct Monster *mtmp, long nmv) {
 #ifdef OVL2
 
 /* called when you move to another level */
-void keepdogs(boolean pets_only) {
+void keepdogs(bool pets_only) {
 	struct Monster *mtmp, *mtmp2;
 	struct Object *obj;
 	int num_segs;
-	boolean stay_behind;
+	bool stay_behind;
 
 	for (mtmp = fmon; mtmp; mtmp = mtmp2) {
 	    mtmp2 = mtmp->nmon;
@@ -612,10 +612,10 @@ void migrate_to_level(struct Monster *mtmp, xchar tolev, xchar xyloc, coord *cc)
 /* return quality of food; the lower the better */
 /* fungi will eat even tainted food */
 int dogfood(struct Monster *mon, struct Object *obj) {
-	boolean carni = carnivorous(mon->data);
-	boolean herbi = herbivorous(mon->data);
+	bool carni = carnivorous(mon->data);
+	bool herbi = herbivorous(mon->data);
 	struct permonst *fptr = &mons[obj->corpsenm];
-	boolean starving;
+	bool starving;
 
 	if (is_quest_artifact(obj) || obj_resists(obj, 0, 95))
 	    return (obj->cursed ? TABU : APPORT);
@@ -742,7 +742,7 @@ struct Monster * tamedog(struct Monster *mtmp, struct Object *obj) {
 		 (tasty <= ACCFOOD && EDOG(mtmp)->hungrytime <= monstermoves))) {
 		/* pet will "catch" and eat this thrown food */
 		if (canseemon(mtmp)) {
-		    boolean big_corpse = (obj->otyp == CORPSE &&
+		    bool big_corpse = (obj->otyp == CORPSE &&
 					  obj->corpsenm >= LOW_PM &&
 				mons[obj->corpsenm].msize > mtmp->data->msize);
 		    pline("%s catches %s%s",
@@ -804,9 +804,9 @@ struct Monster * tamedog(struct Monster *mtmp, struct Object *obj) {
  * If you abused the pet at all while alive, it revives untame.
  * If the pet wasn't abused and was very tame, it might revive tame.
  */
-void wary_dog(struct Monster *mtmp, boolean was_dead) {
+void wary_dog(struct Monster *mtmp, bool was_dead) {
     struct edog *edog;
-    boolean quietly = was_dead;
+    bool quietly = was_dead;
 
     mtmp->meating = 0;
     if (!mtmp->mtame) return;

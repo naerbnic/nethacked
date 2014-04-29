@@ -19,7 +19,7 @@
 
 #ifdef OVLB
 
-boolean	known;
+bool	known;
 
 static const char readable[] =
 		   { ALL_CLASSES, SCROLL_CLASS, SPBOOK_CLASS, 0 };
@@ -39,7 +39,7 @@ STATIC_PTR void FDECL(set_lit, (int,int,genericptr_t));
 
 int doread() {
 	struct Object *scroll;
-	boolean confused;
+	bool confused;
 
 	known = FALSE;
 	if(check_capacity((char *)0)) return (0);
@@ -179,16 +179,16 @@ static void p_glow2(struct Object *otmp, const char *color) {
 
 /* Is the object chargeable?  For purposes of inventory display; it is */
 /* possible to be able to charge things for which this returns FALSE. */
-boolean is_chargeable(struct Object *obj) {
+bool is_chargeable(struct Object *obj) {
 	if (obj->oclass == WAND_CLASS) return TRUE;
 	/* known && !uname is possible after amnesia/mind flayer */
 	if (obj->oclass == RING_CLASS)
-	    return (boolean)(objects[obj->otyp].oc_charged &&
+	    return (bool)(objects[obj->otyp].oc_charged &&
 			(obj->known || objects[obj->otyp].oc_uname));
 	if (is_weptool(obj))	/* specific check before general tools */
 	    return FALSE;
 	if (obj->oclass == TOOL_CLASS)
-	    return (boolean)(objects[obj->otyp].oc_charged);
+	    return (bool)(objects[obj->otyp].oc_charged);
 	return FALSE; /* why are weapons/armor considered charged anyway? */
 }
 
@@ -198,7 +198,7 @@ boolean is_chargeable(struct Object *obj) {
  */
 void recharge(struct Object *obj, int curse_bless) {
 	int n;
-	boolean is_cursed, is_blessed;
+	bool is_cursed, is_blessed;
 
 	is_cursed = curse_bless < 0;
 	is_blessed = curse_bless > 0;
@@ -254,7 +254,7 @@ void recharge(struct Object *obj, int curse_bless) {
 					objects[obj->otyp].oc_charged) {
 	    /* charging does not affect ring's curse/bless status */
 	    int s = is_blessed ? rnd(3) : is_cursed ? -rnd(2) : 1;
-	    boolean is_on = (obj == uleft || obj == uright);
+	    bool is_on = (obj == uleft || obj == uright);
 
 	    /* destruction depends on current state, not adjustment */
 	    if (obj->spe > rn2(7) || obj->spe <= -5) {
@@ -600,7 +600,7 @@ static void maybe_tame(struct Monster *mtmp, struct Object *sobj) {
 
 int seffects(struct Object *sobj) {
 	int cval;
-	boolean confused = (Confusion != 0);
+	bool confused = (Confusion != 0);
 	struct Object *otmp;
 
 	if (objects[sobj->otyp].oc_magic)
@@ -620,8 +620,8 @@ int seffects(struct Object *sobj) {
 	case SCR_ENCHANT_ARMOR:
 	    {
 		schar s;
-		boolean special_armor;
-		boolean same_color;
+		bool special_armor;
+		bool same_color;
 
 		otmp = some_armor(&youmonst);
 		if(!otmp) {
@@ -1274,7 +1274,7 @@ STATIC_PTR void set_lit(int x, int y, genericptr_t val) {
 	}
 }
 
-void litroom(boolean on, struct Object *obj) {
+void litroom(bool on, struct Object *obj) {
 	char is_lit;	/* value is irrelevant; we use its address
 			   as a `not null' flag for set_lit() */
 
@@ -1368,7 +1368,7 @@ do_it:
 static void do_class_genocide() {
 	int i, j, immunecnt, gonecnt, goodcnt, class_id, feel_dead = 0;
 	char buf[BUFSZ];
-	boolean gameover = FALSE;	/* true iff killed self */
+	bool gameover = FALSE;	/* true iff killed self */
 
 	for(j=0; ; j++) {
 		if (j >= 5) {
@@ -1493,7 +1493,7 @@ static void do_class_genocide() {
 			/* non-leader/nemesis/guardian role-specific monster */
 			   && (i != PM_NINJA ||		/* nuisance */
 			       Role_if(PM_SAMURAI))) {
-				boolean named, uniq;
+				bool named, uniq;
 
 				named = type_is_pname(&mons[i]) ? TRUE : FALSE;
 				uniq = (mons[i].geno & G_UNIQ) ? TRUE : FALSE;
@@ -1708,7 +1708,7 @@ void unpunish() {
  * normal locations -- if the player tries to create one elsewhere, or to revive
  * one, the disoriented creature becomes a zombie
  */
-boolean cant_create(int *mtype, boolean revival) {
+bool cant_create(int *mtype, bool revival) {
 
 	/* SHOPKEEPERS can be revived now */
 	if (*mtype==PM_GUARD || (*mtype==PM_SHOPKEEPER && !revival)
@@ -1730,13 +1730,13 @@ boolean cant_create(int *mtype, boolean revival) {
  * "strange object" (']') symbol produces a random monster rather
  * than a mimic; this behavior quirk is useful so don't "fix" it...
  */
-boolean create_particular() {
+bool create_particular() {
 	char buf[BUFSZ], *bufp, monclass = MAXMCLASSES;
 	int which, tries, i;
 	struct permonst *whichpm;
 	struct Monster *mtmp;
-	boolean madeany = FALSE;
-	boolean maketame, makepeaceful, makehostile;
+	bool madeany = FALSE;
+	bool maketame, makepeaceful, makehostile;
 
 	tries = 0;
 	do {

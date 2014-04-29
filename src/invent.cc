@@ -11,28 +11,28 @@
 
 #ifdef OVL1
 STATIC_DCL void NDECL(reorder_invent);
-STATIC_DCL boolean FDECL(mergable,(struct Object *,struct Object *));
+STATIC_DCL bool FDECL(mergable,(struct Object *,struct Object *));
 STATIC_DCL void FDECL(invdisp_nothing, (const char *,const char *));
-STATIC_DCL boolean FDECL(worn_wield_only, (struct Object *));
-STATIC_DCL boolean FDECL(only_here, (struct Object *));
+STATIC_DCL bool FDECL(worn_wield_only, (struct Object *));
+STATIC_DCL bool FDECL(only_here, (struct Object *));
 #endif /* OVL1 */
 STATIC_DCL void FDECL(compactify,(char *));
-STATIC_DCL boolean FDECL(taking_off, (const char *));
-STATIC_DCL boolean FDECL(putting_on, (const char *));
+STATIC_DCL bool FDECL(taking_off, (const char *));
+STATIC_DCL bool FDECL(putting_on, (const char *));
 STATIC_PTR int FDECL(ckunpaid,(struct Object *));
 STATIC_PTR int FDECL(ckvalidcat,(struct Object *));
 #ifdef DUMP_LOG
 static char FDECL(display_pickinv,
-		 (const char *,BOOLEAN_P, long *, BOOLEAN_P, BOOLEAN_P));
+		 (const char *,bool, long *, bool, bool));
 #else
-static char FDECL(display_pickinv, (const char *,BOOLEAN_P, long *));
+static char FDECL(display_pickinv, (const char *,bool, long *));
 #endif /* DUMP_LOG */
 #ifdef OVLB
-STATIC_DCL boolean FDECL(this_type_only, (struct Object *));
+STATIC_DCL bool FDECL(this_type_only, (struct Object *));
 STATIC_DCL void NDECL(dounpaid);
 STATIC_DCL struct Object *FDECL(find_unpaid,(struct Object *,struct Object **));
 STATIC_DCL void FDECL(menu_identify, (int));
-STATIC_DCL boolean FDECL(tool_in_use, (struct Object *));
+STATIC_DCL bool FDECL(tool_in_use, (struct Object *));
 #endif /* OVLB */
 STATIC_DCL char FDECL(obj_to_let,(struct Object *));
 
@@ -52,7 +52,7 @@ static char venom_inv[] = { VENOM_CLASS, 0 };	/* (constant) */
 #endif
 
 void assigninvlet(struct Object *otmp) {
-	boolean inuse[52];
+	bool inuse[52];
 	int i;
 	struct Object *obj;
 
@@ -92,7 +92,7 @@ void assigninvlet(struct Object *otmp) {
 /* sort the inventory; used by addinv() and doorganize() */
 STATIC_OVL void reorder_invent() {
 	struct Object *otmp, *prev, *next;
-	boolean need_more_sorting;
+	bool need_more_sorting;
 
 	do {
 	    /*
@@ -385,9 +385,9 @@ struct Object * hold_another_object(struct Object *obj, const char *drop_fmt, co
 	if (!Blind) obj->dknown = 1;	/* maximize mergibility */
 	if (obj->oartifact) {
 	    /* place_object may change these */
-	    boolean crysknife = (obj->otyp == CRYSKNIFE);
+	    bool crysknife = (obj->otyp == CRYSKNIFE);
 	    int oerode = obj->oerodeproof;
-	    boolean wasUpolyd = Upolyd;
+	    bool wasUpolyd = Upolyd;
 
 	    /* in case touching this object turns out to be fatal */
 	    place_object(obj, u.ux, u.uy);
@@ -464,7 +464,7 @@ void useup(struct Object *obj) {
 }
 
 /* use one charge from an item and possibly incur shop debt for it */
-void consume_obj_charge(struct Object *obj, boolean maybe_unpaid) {
+void consume_obj_charge(struct Object *obj, bool maybe_unpaid) {
 	if (maybe_unpaid) check_unpaid(obj);
 	obj->spe -= 1;
 	if (obj->known) update_inventory();
@@ -545,7 +545,7 @@ void delallobj(int x, int y) {
 
 /* destroy object in fobj chain (if unpaid, it remains on the bill) */
 void delobj(struct Object *obj) {
-	boolean update_map;
+	bool update_map;
 
 	if (obj->otyp == AMULET_OF_YENDOR ||
 			obj->otyp == CANDELABRUM_OF_INVOCATION ||
@@ -593,7 +593,7 @@ const char * currency(long amount) {
 	else return "zorkmids";
 }
 
-boolean have_lizard() {
+bool have_lizard() {
 	struct Object *otmp;
 
 	for(otmp = invent; otmp; otmp = otmp->nobj)
@@ -614,7 +614,7 @@ struct Object * o_on(unsigned int id, struct Object *objchn) {
 	return((struct Object *) 0);
 }
 
-boolean obj_here(struct Object *obj, int x, int y) {
+bool obj_here(struct Object *obj, int x, int y) {
 	struct Object *otmp;
 
 	for(otmp = level.objects[x][y]; otmp; otmp = otmp->nexthere)
@@ -680,12 +680,12 @@ STATIC_OVL void compactify(char* buf) {
 }
 
 /* match the prompt for either 'T' or 'R' command */
-STATIC_OVL boolean taking_off(const char *action) {
+STATIC_OVL bool taking_off(const char *action) {
     return !strcmp(action, "take off") || !strcmp(action, "remove");
 }
 
 /* match the prompt for either 'W' or 'P' command */
-STATIC_OVL boolean putting_on(const char *action) {
+STATIC_OVL bool putting_on(const char *action) {
     return !strcmp(action, "wear") || !strcmp(action, "put on");
 }
 
@@ -708,15 +708,15 @@ struct Object * getobj(const char *let, const char *word) {
 	char *bp = buf;
 	xchar allowcnt = 0;	/* 0, 1 or 2 */
 #ifndef GOLDOBJ
-	boolean allowgold = FALSE;	/* can't use gold because they don't have any */
+	bool allowgold = FALSE;	/* can't use gold because they don't have any */
 #endif
-	boolean usegold = FALSE;	/* can't use gold because its illegal */
-	boolean allowall = FALSE;
-	boolean allownone = FALSE;
-	boolean useboulder = FALSE;
+	bool usegold = FALSE;	/* can't use gold because its illegal */
+	bool allowall = FALSE;
+	bool allownone = FALSE;
+	bool useboulder = FALSE;
 	xchar foox = 0;
 	long cnt;
-	boolean prezero = FALSE;
+	bool prezero = FALSE;
 	long dummymask;
 
 	if(*let == ALLOW_COUNT) let++, allowcnt = 1;
@@ -1085,16 +1085,16 @@ STATIC_PTR int ckunpaid(struct Object *otmp) {
 	return((int)(otmp->unpaid));
 }
 
-boolean wearing_armor() {
-	return((boolean)(uarm || uarmc || uarmf || uarmg || uarmh || uarms
+bool wearing_armor() {
+	return((bool)(uarm || uarmc || uarmf || uarmg || uarmh || uarms
 #ifdef TOURIST
 		|| uarmu
 #endif
 		));
 }
 
-boolean is_worn(struct Object *otmp) {
-    return((boolean)(!!(otmp->owornmask & (W_ARMOR | W_RING | W_AMUL | W_TOOL |
+bool is_worn(struct Object *otmp) {
+    return((bool)(!!(otmp->owornmask & (W_ARMOR | W_RING | W_AMUL | W_TOOL |
 #ifdef STEED
 			W_SADDLE |
 #endif
@@ -1111,11 +1111,11 @@ int ggetobj(
     char const* word, 
     int (*fn)(OBJ_P),
     int mx, 
-    boolean combo, /* combination menu flag */
+    bool combo, /* combination menu flag */
     unsigned int* resultflags) {
 	int FDECL((*ckfn),(OBJ_P)) = (int FDECL((*),(OBJ_P))) 0;
-	boolean FDECL((*filter),(OBJ_P)) = (boolean FDECL((*),(OBJ_P))) 0;
-	boolean takeoff, ident, allflag, m_seen;
+	bool FDECL((*filter),(OBJ_P)) = (bool FDECL((*),(OBJ_P))) 0;
+	bool takeoff, ident, allflag, m_seen;
 	int itemcount;
 #ifndef GOLDOBJ
 	int oletct, iletct, allowgold, unpaid, oc_of_sym;
@@ -1312,7 +1312,7 @@ askchain(
 	struct Object *otmp, *otmp2, *otmpo;
 	char sym, ilet;
 	int cnt = 0, dud = 0, tmp;
-	boolean takeoff, nodot, ident, ininv;
+	bool takeoff, nodot, ident, ininv;
 	char qbuf[QBUFSZ];
 
 	takeoff = taking_off(word);
@@ -1509,13 +1509,13 @@ void prinv(const char *prefix, struct Object *obj, long quan) {
 #endif /* OVL2 */
 #ifdef OVL1
 
-char * xprname(struct Object *obj, const char *txt, char let, boolean dot, long cost, long quan) {
+char * xprname(struct Object *obj, const char *txt, char let, bool dot, long cost, long quan) {
 #ifdef LINT	/* handle static char li[BUFSZ]; */
     char li[BUFSZ];
 #else
     static char li[BUFSZ];
 #endif
-    boolean use_invlet = flags.invlet_constant && let != CONTAINED_SYM;
+    bool use_invlet = flags.invlet_constant && let != CONTAINED_SYM;
     long savequan = 0;
 
     if (quan && obj) {
@@ -1596,14 +1596,14 @@ STATIC_OVL struct Object * find_unpaid(struct Object *list, struct Object **last
 #ifdef DUMP_LOG
 static char display_pickinv(
     char const* lets, 
-    boolean want_reply, 
+    bool want_reply, 
     long* out_cnt, 
-    boolean want_dump, 
-    boolean want_disp)
+    bool want_dump, 
+    bool want_disp)
 #else
 static char display_pickinv(
     char const* lets, 
-    boolean want_reply, 
+    bool want_reply, 
     long* out_cnt)
 #endif
 {
@@ -1837,7 +1837,7 @@ nextclass:
  * Returns the letter identifier of a selected item, or 0 if nothing
  * was selected.
  */
-char display_inventory(const char *lets, boolean want_reply) {
+char display_inventory(const char *lets, bool want_reply) {
 	return display_pickinv(lets, want_reply, (long *)0
 #ifdef DUMP_LOG
 			       , FALSE , TRUE
@@ -1847,7 +1847,7 @@ char display_inventory(const char *lets, boolean want_reply) {
 
 #ifdef DUMP_LOG
 /* See display_inventory. This is the same thing WITH dumpfile creation */
-char dump_inventory(const char *lets, boolean want_reply, boolean want_disp) {
+char dump_inventory(const char *lets, bool want_reply, bool want_disp) {
   return display_pickinv(lets, want_reply, (long *)0, TRUE, want_disp);
 }
 #endif
@@ -1993,7 +1993,7 @@ STATIC_OVL void dounpaid() {
 /* query objlist callback: return TRUE if obj type matches "this_type" */
 static int this_type;
 
-STATIC_OVL boolean this_type_only(struct Object *obj) {
+STATIC_OVL bool this_type_only(struct Object *obj) {
     return (obj->oclass == this_type);
 }
 
@@ -2003,9 +2003,9 @@ int dotypeinv() {
 	int n, i = 0;
 	char *extra_types, types[BUFSZ];
 	int class_count, oclass, unpaid_count, itemcount;
-	boolean billx = *u.ushops && doinvbill(0);
+	bool billx = *u.ushops && doinvbill(0);
 	menu_item *pick_list;
-	boolean traditional = TRUE;
+	bool traditional = TRUE;
 	const char *prompt = "What type of object do you want an inventory of?";
 
 #ifndef GOLDOBJ
@@ -2037,7 +2037,7 @@ int dotypeinv() {
 #ifndef GOLDOBJ
 					      (u.ugold != 0),
 #endif
-					      (boolean FDECL((*),(OBJ_P))) 0, &itemcount);
+					      (bool FDECL((*),(OBJ_P))) 0, &itemcount);
 	    if (unpaid_count) {
 		Strcat(types, "u");
 		class_count++;
@@ -2172,14 +2172,14 @@ const char * dfeature_at(int x, int y, char *buf) {
 
 /* look at what is here; if there are many objects (5 or more),
    don't show them unless obj_cnt is 0 */
-int look_here(int obj_cnt, boolean picked_some) {
+int look_here(int obj_cnt, bool picked_some) {
 	struct Object *otmp;
 	struct trap *trap;
 	const char *verb = Blind ? "feel" : "see";
 	const char *dfeature = (char *)0;
 	char fbuf[BUFSZ], fbuf2[BUFSZ];
 	winid tmpwin;
-	boolean skip_objects = (obj_cnt >= 5), felt_cockatrice = FALSE;
+	bool skip_objects = (obj_cnt >= 5), felt_cockatrice = FALSE;
 
 	if (u.uswallow && u.ustuck) {
 	    struct Monster *mtmp = u.ustuck;
@@ -2212,7 +2212,7 @@ int look_here(int obj_cnt, boolean picked_some) {
 		dfeature = 0;
 
 	if (Blind) {
-		boolean drift = Is_airlevel(&u.uz) || Is_waterlevel(&u.uz);
+		bool drift = Is_airlevel(&u.uz) || Is_waterlevel(&u.uz);
 		if (dfeature && !strncmp(dfeature, "altar ", 6)) {
 		    /* don't say "altar" twice, dfeature has more info */
 		    You("try to feel what is here.");
@@ -2289,14 +2289,14 @@ int dolook() {
 	return look_here(0, FALSE);
 }
 
-boolean will_feel_cockatrice(struct Object *otmp, boolean force_touch) {
+bool will_feel_cockatrice(struct Object *otmp, bool force_touch) {
 	if ((Blind || force_touch) && !uarmg && !Stone_resistance &&
 		(otmp->otyp == CORPSE && touch_petrifies(&mons[otmp->corpsenm])))
 			return TRUE;
 	return FALSE;
 }
 
-void feel_cockatrice(struct Object *otmp, boolean force_touch) {
+void feel_cockatrice(struct Object *otmp, bool force_touch) {
 	char kbuf[BUFSZ];
 
 	if (will_feel_cockatrice(otmp, force_touch)) {
@@ -2324,7 +2324,7 @@ void stackobj(struct Object *obj) {
 }
 
 /* returns TRUE if obj  & otmp can be merged */
-STATIC_OVL boolean mergable(struct Object *otmp, struct Object *obj) {
+STATIC_OVL bool mergable(struct Object *otmp, struct Object *obj) {
 	if (obj->otyp != otmp->otyp) return FALSE;
 #ifdef GOLDOBJ
 	/* coins of the same kind will always merge */
@@ -2394,7 +2394,7 @@ STATIC_OVL boolean mergable(struct Object *otmp, struct Object *obj) {
 
 	if(obj->known == otmp->known ||
 		!objects[otmp->otyp].oc_uses_known) {
-		return((boolean)(objects[obj->otyp].oc_merge));
+		return((bool)(objects[obj->otyp].oc_merge));
 	} else return(FALSE);
 }
 
@@ -2479,14 +2479,14 @@ int dopramulet() {
 	return 0;
 }
 
-STATIC_OVL boolean tool_in_use(struct Object *obj) {
+STATIC_OVL bool tool_in_use(struct Object *obj) {
 	if ((obj->owornmask & (W_TOOL
 #ifdef STEED
 			| W_SADDLE
 #endif
 			)) != 0L) return TRUE;
 	if (obj->oclass != TOOL_CLASS) return FALSE;
-	return (boolean)(obj == uwep || obj->lamplit ||
+	return (bool)(obj == uwep || obj->lamplit ||
 				(obj->otyp == LEASH && obj->leashmon));
 }
 
@@ -2525,7 +2525,7 @@ int doprinuse() {
  */
 void useupf(struct Object *obj, long numused) {
 	struct Object *otmp;
-	boolean at_u = (obj->ox == u.ux && obj->oy == u.uy);
+	bool at_u = (obj->ox == u.ux && obj->oy == u.uy);
 
 	/* burn_floor_paper() keeps an object pointer that it tries to
 	 * useupf() multiple times, so obj must survive if plural */
@@ -2571,7 +2571,7 @@ static const char *oth_names[] = {
 static char *invbuf = (char *)0;
 static unsigned invbufsiz = 0;
 
-char * let_to_name(char let, boolean unpaid) {
+char * let_to_name(char let, bool unpaid) {
 	const char *class_name;
 	const char *pos;
 	int oclass = (let >= 1 && let < MAXOCLASSES) ? let : 0;
@@ -2722,7 +2722,7 @@ STATIC_OVL void invdisp_nothing(const char *hdr, const char *txt) {
 }
 
 /* query_objlist callback: return things that could possibly be worn/wielded */
-STATIC_OVL boolean worn_wield_only(struct Object *obj) {
+STATIC_OVL bool worn_wield_only(struct Object *obj) {
     return (obj->oclass == WEAPON_CLASS
 		|| obj->oclass == ARMOR_CLASS
 		|| obj->oclass == AMULET_CLASS
@@ -2848,7 +2848,7 @@ struct Object * display_cinventory(struct Object *obj) {
 /* query objlist callback: return TRUE if obj is at given location */
 static coord only;
 
-STATIC_OVL boolean only_here(struct Object *obj) {
+STATIC_OVL bool only_here(struct Object *obj) {
     return (obj->ox == only.x && obj->oy == only.y);
 }
 
@@ -2858,7 +2858,7 @@ STATIC_OVL boolean only_here(struct Object *obj) {
  *
  * Currently, this is only used with a wand of probing zapped downwards.
  */
-int display_binventory(int x, int y, boolean as_if_seen) {
+int display_binventory(int x, int y, bool as_if_seen) {
 	struct Object *obj;
 	menu_item *selected = 0;
 	int n;

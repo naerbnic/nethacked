@@ -25,7 +25,7 @@ STATIC_DCL int FDECL(menu_drop, (int));
 #ifdef OVL2
 STATIC_DCL int NDECL(currentlevel_rewrite);
 STATIC_DCL void NDECL(final_level);
-/* static boolean FDECL(badspot, (XCHAR_P,XCHAR_P)); */
+/* static bool FDECL(badspot, (XCHAR_P,XCHAR_P)); */
 #endif
 
 #ifdef OVLB
@@ -56,11 +56,11 @@ int dodrop() {
  * in a pool, it either fills the pool up or sinks away.  In either case,
  * it's gone for good...  If the destination is not a pool, returns FALSE.
  */
-boolean boulder_hits_pool(struct Object *otmp, int rx, int ry, boolean pushing) {
+bool boulder_hits_pool(struct Object *otmp, int rx, int ry, bool pushing) {
 	if (!otmp || otmp->otyp != BOULDER)
 	    impossible("Not a boulder?");
 	else if (!Is_waterlevel(&u.uz) && (is_pool(rx,ry) || is_lava(rx,ry))) {
-	    boolean lava = is_lava(rx,ry), fills_up;
+	    bool lava = is_lava(rx,ry), fills_up;
 	    const char *what = waterbody_name(rx,ry);
 	    schar ltyp = levl[rx][ry].typ;
 	    int chance = rn2(10);		/* water: 90%; lava: 10% */
@@ -125,7 +125,7 @@ boolean boulder_hits_pool(struct Object *otmp, int rx, int ry, boolean pushing) 
  * called with the object not in any chain.  Returns TRUE if the object goes
  * away.
  */
-boolean flooreffects(struct Object *obj, int x, int y, const char *verb) {
+bool flooreffects(struct Object *obj, int x, int y, const char *verb) {
 	struct trap *t;
 	struct Monster *mtmp;
 
@@ -250,7 +250,7 @@ STATIC_OVL
 /* obj is a ring being dropped over a kitchen sink */
 void dosinkring(struct Object *obj) {
 	struct Object *otmp,*otmp2;
-	boolean ideed = TRUE;
+	bool ideed = TRUE;
 
 	You("drop %s down the drain.", doname(obj));
 	obj->in_use = TRUE;	/* block free identification via interrupt */
@@ -391,7 +391,7 @@ giveback:
 #ifdef OVL0
 
 /* some common tests when trying to drop or throw items */
-boolean canletgo(struct Object *obj, const char *word) {
+bool canletgo(struct Object *obj, const char *word) {
 	if(obj->owornmask & (W_ARMOR | W_RING | W_AMUL | W_TOOL)){
 		if (*word)
 			Norep("You cannot %s %s you are wearing.",word,
@@ -514,11 +514,11 @@ void dropy(struct Object *obj) {
 	if (!u.uswallow && flooreffects(obj,u.ux,u.uy,"drop")) return;
 	/* uswallow check done by GAN 01/29/87 */
 	if(u.uswallow) {
-	    boolean could_petrify = FALSE;
-	    boolean could_poly = FALSE;
-	    boolean could_slime = FALSE;
-	    boolean could_grow = FALSE;
-	    boolean could_heal = FALSE;
+	    bool could_petrify = FALSE;
+	    bool could_poly = FALSE;
+	    bool could_slime = FALSE;
+	    bool could_grow = FALSE;
+	    bool could_heal = FALSE;
 
 	    if (obj != uball) {		/* mon doesn't pick up ball */
 		if (obj->otyp == CORPSE) {
@@ -608,8 +608,8 @@ STATIC_OVL int menu_drop(int retry) {
     struct Object *u_gold = 0;
 #endif
     menu_item *pick_list;
-    boolean all_categories = TRUE;
-    boolean drop_everything = FALSE;
+    bool all_categories = TRUE;
+    bool drop_everything = FALSE;
 
 #ifndef GOLDOBJ
     if (u.ugold) {
@@ -707,11 +707,11 @@ STATIC_OVL int menu_drop(int retry) {
 #ifdef OVL2
 
 /* on a ladder, used in goto_level */
-static boolean at_ladder = FALSE;
+static bool at_ladder = FALSE;
 
 int dodown() {
 	struct trap *trap = 0;
-	boolean stairs_down = ((u.ux == xdnstair && u.uy == ydnstair) ||
+	bool stairs_down = ((u.ux == xdnstair && u.uy == ydnstair) ||
 		    (u.ux == sstairs.sx && u.uy == sstairs.sy && !sstairs.up)),
 		ladder_down = (u.ux == xdnladder && u.uy == ydnladder);
 
@@ -788,7 +788,7 @@ int dodown() {
 	if (trap && Is_stronghold(&u.uz)) {
 		goto_hell(FALSE, TRUE);
 	} else {
-		at_ladder = (boolean) (levl[u.ux][u.uy].typ == LADDER);
+		at_ladder = (bool) (levl[u.ux][u.uy].typ == LADDER);
 		next_level(!trap);
 		at_ladder = FALSE;
 	}
@@ -833,7 +833,7 @@ int doup() {
 		You("are held back by your pet!");
 		return(0);
 	}
-	at_ladder = (boolean) (levl[u.ux][u.uy].typ == LADDER);
+	at_ladder = (bool) (levl[u.ux][u.uy].typ == LADDER);
 	prev_level(TRUE);
 	at_ladder = FALSE;
 	return(1);
@@ -894,21 +894,21 @@ void save_currentstate() {
 #endif
 
 /*
-static boolean badspot(xchar x, xchar y) {
+static bool badspot(xchar x, xchar y) {
 	return((levl[x][y].typ != ROOM && levl[x][y].typ != AIR &&
 			 levl[x][y].typ != CORR) || MON_AT(x, y));
 }
 */
 
-void goto_level(d_level *newlevel, boolean at_stairs, boolean falling, boolean portal) {
+void goto_level(d_level *newlevel, bool at_stairs, bool falling, bool portal) {
 	int fd, l_idx;
 	xchar new_ledger;
-	boolean cant_go_back,
+	bool cant_go_back,
 		up = (depth(newlevel) < depth(&u.uz)),
 		newdungeon = (u.uz.dnum != newlevel->dnum),
 		was_in_W_tower = In_W_tower(u.ux, u.uy, &u.uz),
 		familiar = FALSE;
-	boolean is_new = FALSE;	/* made a is_new level? */
+	bool is_new = FALSE;	/* made a is_new level? */
 	struct Monster *mtmp;
 	char whynot[BUFSZ];
 
@@ -1375,7 +1375,7 @@ static char *dfr_pre_msg = 0,	/* pline() before level change */
 	    *dfr_post_msg = 0;	/* pline() after level change */
 
 /* change levels at the end of this turn, after monsters finish moving */
-void schedule_goto(d_level *tolev, boolean at_stairs, boolean falling, int portal_flag, const char *pre_msg, const char *post_msg) {
+void schedule_goto(d_level *tolev, bool at_stairs, bool falling, int portal_flag, const char *pre_msg, const char *post_msg) {
 	int typmask = 0100;		/* non-zero triggers `deferred_goto' */
 
 	/* destination flags (`goto_level' args) */
@@ -1426,9 +1426,9 @@ void deferred_goto() {
  * Return TRUE if we created a monster for the corpse.  If successful, the
  * corpse is gone.
  */
-boolean revive_corpse(struct Object *corpse) {
+bool revive_corpse(struct Object *corpse) {
     struct Monster *mtmp, *mcarry;
-    boolean is_uwep, chewed;
+    bool is_uwep, chewed;
     xchar where;
     char *cname, cname_buf[BUFSZ];
     struct Object *container = nullptr;

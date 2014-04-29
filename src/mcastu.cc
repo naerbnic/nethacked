@@ -30,13 +30,13 @@
 #define CLC_FIRE_PILLAR	 8
 #define CLC_GEYSER	 9
 
-STATIC_DCL void FDECL(cursetxt,(struct Monster *,BOOLEAN_P));
+STATIC_DCL void FDECL(cursetxt,(struct Monster *,bool));
 STATIC_DCL int FDECL(choose_magic_spell, (int));
 STATIC_DCL int FDECL(choose_clerical_spell, (int));
 STATIC_DCL void FDECL(cast_wizard_spell,(struct Monster *, int,int));
 STATIC_DCL void FDECL(cast_cleric_spell,(struct Monster *, int,int));
-STATIC_DCL boolean FDECL(is_undirected_spell,(unsigned int,int));
-STATIC_DCL boolean FDECL(spell_would_be_useless,(struct Monster *,unsigned int,int));
+STATIC_DCL bool FDECL(is_undirected_spell,(unsigned int,int));
+STATIC_DCL bool FDECL(spell_would_be_useless,(struct Monster *,unsigned int,int));
 
 #ifdef OVL0
 
@@ -44,7 +44,7 @@ extern const char * const flash_types[];	/* from zap.c */
 
 /* feedback when frustrated monster couldn't cast a spell */
 STATIC_OVL
-void cursetxt(struct Monster *mtmp, boolean undirected) {
+void cursetxt(struct Monster *mtmp, bool undirected) {
 	if (canseemon(mtmp) && couldsee(mtmp->mx, mtmp->my)) {
 	    const char *point_msg;  /* spellcasting monsters are impolite */
 
@@ -148,7 +148,7 @@ STATIC_OVL int choose_clerical_spell(int spellnum) {
  * 1: successful spell
  * 0: unsuccessful spell
  */
-int castmu(struct Monster *mtmp, struct Attack *mattk, boolean thinks_it_foundyou, boolean foundyou) {
+int castmu(struct Monster *mtmp, struct Attack *mattk, bool thinks_it_foundyou, bool foundyou) {
 	int	dmg, ml = mtmp->m_lev;
 	int ret;
 	int spellnum = 0;
@@ -485,7 +485,7 @@ void cast_cleric_spell(struct Monster *mtmp, int dmg, int spellnum) {
 	break;
     case CLC_LIGHTNING:
     {
-	boolean reflects;
+	bool reflects;
 
 	pline("A bolt of lightning strikes down at you from above!");
 	reflects = ureflects("It bounces off your %s%s.", "");
@@ -513,7 +513,7 @@ void cast_cleric_spell(struct Monster *mtmp, int dmg, int spellnum) {
 	struct permonst *pm = mkclass(S_ANT,0);
 	struct Monster *mtmp2 = (struct Monster *)0;
 	char let = (pm ? S_ANT : S_SNAKE);
-	boolean success;
+	bool success;
 	int i;
 	coord bypos;
 	int quan;
@@ -589,7 +589,7 @@ void cast_cleric_spell(struct Monster *mtmp, int dmg, int spellnum) {
 	    shieldeff(u.ux, u.uy);
 	    You_feel("momentarily dizzy.");
 	} else {
-	    boolean oldprop = !!Confusion;
+	    bool oldprop = !!Confusion;
 
 	    dmg = (int)mtmp->m_lev;
 	    if (Half_spell_damage) dmg = (dmg + 1) / 2;
@@ -635,7 +635,7 @@ void cast_cleric_spell(struct Monster *mtmp, int dmg, int spellnum) {
 }
 
 STATIC_DCL
-boolean is_undirected_spell(unsigned int adtyp, int spellnum) {
+bool is_undirected_spell(unsigned int adtyp, int spellnum) {
     if (adtyp == AD_SPEL) {
 	switch (spellnum) {
 	case MGC_CLONE_WIZ:
@@ -662,14 +662,14 @@ boolean is_undirected_spell(unsigned int adtyp, int spellnum) {
 
 /* Some spells are useless under some circumstances. */
 STATIC_DCL
-boolean spell_would_be_useless(struct Monster *mtmp, unsigned int adtyp, int spellnum) {
+bool spell_would_be_useless(struct Monster *mtmp, unsigned int adtyp, int spellnum) {
     /* Some spells don't require the player to really be there and can be cast
      * by the monster when you're invisible, yet still shouldn't be cast when
      * the monster doesn't even think you're there.
      * This check isn't quite right because it always uses your real position.
      * We really want something like "if the monster could see mux, muy".
      */
-    boolean mcouldseeu = couldsee(mtmp->mx, mtmp->my);
+    bool mcouldseeu = couldsee(mtmp->mx, mtmp->my);
 
     if (adtyp == AD_SPEL) {
 	/* aggravate monsters, etc. won't be cast by peaceful monsters */

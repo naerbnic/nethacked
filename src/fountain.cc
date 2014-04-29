@@ -132,7 +132,7 @@ STATIC_OVL void dofindgem() {
 	exercise(A_WIS, TRUE);			/* a discovery! */
 }
 
-void dryup(xchar x, xchar y, boolean isyou) {
+void dryup(xchar x, xchar y, bool isyou) {
 	if (IS_FOUNTAIN(levl[x][y].typ) &&
 	    (!rn2(3) || FOUNTAIN_IS_WARNED(x,y))) {
 		if(isyou && in_town(x, y) && !FOUNTAIN_IS_WARNED(x,y)) {
@@ -176,7 +176,7 @@ void dryup(xchar x, xchar y, boolean isyou) {
 
 void drinkfountain() {
 	/* What happens when you drink from a fountain? */
-	boolean mgkftn = (levl[u.ux][u.uy].blessedftn == 1);
+	bool mgkftn = (levl[u.ux][u.uy].blessedftn == 1);
 	int fate = rnd(30);
 
 	if (Levitation) {

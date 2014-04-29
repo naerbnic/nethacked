@@ -512,7 +512,7 @@ STATIC_DCL int FDECL(race_alignmentcount, (int));
 static char randomstr[] = "random";
 
 
-boolean validrole(int rolenum) {
+bool validrole(int rolenum) {
 	return (rolenum >= 0 && rolenum < SIZE(roles)-1);
 }
 
@@ -552,7 +552,7 @@ int str2role(char *str) {
 }
 
 
-boolean validrace(int rolenum, int racenum) {
+bool validrace(int rolenum, int racenum) {
 	/* Assumes validrole */
 	return (racenum >= 0 && racenum < SIZE(races)-1 &&
 		(roles[rolenum].allow & races[racenum].allow & ROLE_RACEMASK));
@@ -608,7 +608,7 @@ int str2race(char *str) {
 }
 
 
-boolean validgend(int rolenum, int racenum, int gendnum) {
+bool validgend(int rolenum, int racenum, int gendnum) {
 	/* Assumes validrole and validrace */
 	return (gendnum >= 0 && gendnum < ROLE_GENDERS &&
 		(roles[rolenum].allow & races[racenum].allow &
@@ -665,7 +665,7 @@ int str2gend(char *str) {
 }
 
 
-boolean validalign(int rolenum, int racenum, int alignnum) {
+bool validalign(int rolenum, int racenum, int alignnum) {
 	/* Assumes validrole and validrace */
 	return (alignnum >= 0 && alignnum < ROLE_ALIGNS &&
 		(roles[rolenum].allow & races[racenum].allow &
@@ -722,7 +722,7 @@ int str2align(char *str) {
 }
 
 /* is rolenum compatible with any racenum/gendnum/alignnum constraints? */
-boolean ok_role(int rolenum, int racenum, int gendnum, int alignnum) {
+bool ok_role(int rolenum, int racenum, int gendnum, int alignnum) {
     int i;
     short allow;
 
@@ -782,7 +782,7 @@ int pick_role(int racenum, int gendnum, int alignnum, int pickhow) {
 }
 
 /* is racenum compatible with any rolenum/gendnum/alignnum constraints? */
-boolean ok_race(int rolenum, int racenum, int gendnum, int alignnum) {
+bool ok_race(int rolenum, int racenum, int gendnum, int alignnum) {
     int i;
     short allow;
 
@@ -843,7 +843,7 @@ int pick_race(int rolenum, int gendnum, int alignnum, int pickhow) {
 
 /* is gendnum compatible with any rolenum/racenum/alignnum constraints? */
 /* gender and alignment are not comparable (and also not constrainable) */
-boolean ok_gend(int rolenum, int racenum, int gendnum, int alignnum) {
+bool ok_gend(int rolenum, int racenum, int gendnum, int alignnum) {
     int i;
     short allow;
 
@@ -899,7 +899,7 @@ int pick_gend(int rolenum, int racenum, int alignnum, int pickhow) {
 
 /* is alignnum compatible with any rolenum/racenum/gendnum constraints? */
 /* alignment and gender are not comparable (and also not constrainable) */
-boolean ok_align(int rolenum, int racenum, int gendnum, int alignnum) {
+bool ok_align(int rolenum, int racenum, int gendnum, int alignnum) {
     int i;
     short allow;
 
@@ -1028,7 +1028,7 @@ char * root_plselection_prompt(char *suppliedbuf, int buflen, int rolenum, int r
 	int k, gendercount = 0, aligncount = 0;
 	char buf[BUFSZ];
 	static char err_ret[] = " character's";
-	boolean donefirst = FALSE;
+	bool donefirst = FALSE;
 
 	if (!suppliedbuf || buflen < 1) return err_ret;
 

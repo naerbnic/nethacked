@@ -73,7 +73,7 @@ int dowrite(struct Object *pen) {
 	int curseval;
 	char qbuf[QBUFSZ];
 	int first, last, i;
-	boolean by_descr = FALSE;
+	bool by_descr = FALSE;
 	const char *typeword;
 
 	if (nohands(youmonst.data)) {

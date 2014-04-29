@@ -63,7 +63,7 @@ int rank_to_xlev(int rank) {
 }
 #endif
 
-const char * rank_of(int lev, short monnum, boolean female) {
+const char * rank_of(int lev, short monnum, bool female) {
 	struct Role *role;
 	int i;
 

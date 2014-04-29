@@ -211,7 +211,7 @@ int tgetnum(const char *which) {
     return atoi(numbuf);
 }
 
-/* look up a boolean entry */
+/* look up a bool entry */
 int tgetflag(const char *which) {
     const char *p = tc_field(which, (const char **)0);
 

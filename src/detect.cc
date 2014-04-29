@@ -12,11 +12,11 @@
 #include "hack.h"
 #include "artifact.h"
 
-extern boolean known;	/* from read.c */
+extern bool known;	/* from read.c */
 
 STATIC_DCL void FDECL(do_dknown_of, (struct Object *));
-STATIC_DCL boolean FDECL(check_map_spot, (int,int,CHAR_P,unsigned));
-STATIC_DCL boolean FDECL(clear_stale_map, (CHAR_P,unsigned));
+STATIC_DCL bool FDECL(check_map_spot, (int,int,CHAR_P,unsigned));
+STATIC_DCL bool FDECL(clear_stale_map, (CHAR_P,unsigned));
 STATIC_DCL void FDECL(sense_trap, (struct trap *,XCHAR_P,XCHAR_P,int));
 STATIC_DCL void FDECL(show_map_spot, (int,int));
 STATIC_PTR void FDECL(findone,(int,int,genericptr_t));
@@ -65,7 +65,7 @@ STATIC_OVL void do_dknown_of(struct Object *obj) {
 }
 
 /* Check whether the location has an outdated object displayed on it. */
-STATIC_OVL boolean check_map_spot(int x, int y, char oclass, unsigned material) {
+STATIC_OVL bool check_map_spot(int x, int y, char oclass, unsigned material) {
 	int glyph;
 	struct Object *otmp;
 	struct Monster *mtmp;
@@ -74,7 +74,7 @@ STATIC_OVL boolean check_map_spot(int x, int y, char oclass, unsigned material) 
 	if (glyph_is_object(glyph)) {
 	    /* there's some object shown here */
 	    if (oclass == ALL_CLASSES) {
-		return((boolean)( !(level.objects[x][y] ||     /* stale if nothing here */
+		return((bool)( !(level.objects[x][y] ||     /* stale if nothing here */
 			    ((mtmp = m_at(x,y)) != 0 &&
 				(
 #ifndef GOLDOBJ
@@ -126,9 +126,9 @@ STATIC_OVL boolean check_map_spot(int x, int y, char oclass, unsigned material) 
    reappear after the detection has completed.  Return true if noticeable
    change occurs.
  */
-STATIC_OVL boolean clear_stale_map(char oclass, unsigned material) {
+STATIC_OVL bool clear_stale_map(char oclass, unsigned material) {
 	int zx, zy;
-	boolean change_made = FALSE;
+	bool change_made = FALSE;
 
 	for (zx = 1; zx < COLNO; zx++)
 	    for (zy = 0; zy < ROWNO; zy++)
@@ -146,7 +146,7 @@ int gold_detect(struct Object *sobj) {
     struct Monster *mtmp;
     int uw = u.uinwater;
     struct Object *temp;
-    boolean stale;
+    bool stale;
 
     known = stale = clear_stale_map(COIN_CLASS,
 				(unsigned)(sobj->blessed ? GOLD : 0));
@@ -273,7 +273,7 @@ int food_detect(struct Object *sobj) {
     struct Object *obj;
     struct Monster *mtmp;
     int ct = 0, ctu = 0;
-    boolean confused = (Confusion || (sobj && sobj->cursed)), stale;
+    bool confused = (Confusion || (sobj && sobj->cursed)), stale;
     char oclass = confused ? POTION_CLASS : FOOD_CLASS;
     const char *what = confused ? something : "food";
     int uw = u.uinwater;
@@ -308,7 +308,7 @@ int food_detect(struct Object *sobj) {
 	    Sprintf(buf, "Your %s twitches%s.", body_part(NOSE),
 			(sobj->blessed && !u.uedibility) ? " then starts to tingle" : "");
 	    if (sobj->blessed && !u.uedibility) {
-		boolean savebeginner = flags.beginner;	/* prevent non-delivery of */
+		bool savebeginner = flags.beginner;	/* prevent non-delivery of */
 		flags.beginner = FALSE;			/* 	message            */
 		strange_feeling(sobj, buf);
 		flags.beginner = savebeginner;
@@ -574,7 +574,7 @@ int monster_detect(struct Object *otmp, int mclass) {
 			    "You feel threatened.");
 	return 1;
     } else {
-	boolean woken = FALSE;
+	bool woken = FALSE;
 
 	cls();
 	for (mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
@@ -645,7 +645,7 @@ int trap_detect(struct Object *sobj) {
     struct Object *obj;
     int door;
     int uw = u.uinwater;
-    boolean found = FALSE;
+    bool found = FALSE;
     coord cc;
 
     for (ttmp = ftrap; ttmp; ttmp = ttmp->ntrap) {
@@ -706,7 +706,7 @@ outtrapmap:
 
 const char * level_distance(d_level *where) {
     schar ll = depth(&u.uz) - depth(where);
-    boolean indun = (u.uz.dnum == where->dnum);
+    bool indun = (u.uz.dnum == where->dnum);
 
     if (ll < 0) {
 	if (ll < (-8 - rn2(3)))
@@ -1061,7 +1061,7 @@ int openit() {
 
 void find_trap(struct trap *trap) {
     int tt = what_trap(trap->ttyp);
-    boolean cleared = FALSE;
+    bool cleared = FALSE;
 
     trap->tseen = 1;
     exercise(A_WIS, TRUE);

@@ -82,7 +82,7 @@ void new_were(struct Monster *mon) {
 /* were-creature (even you) summons a horde */
 int were_summon(
     struct permonst* ptr,
-    boolean yours,
+    bool yours,
 
     /* number of visible helpers created */
     int* visible,
@@ -139,7 +139,7 @@ void you_were() {
 	(void) polymon(u.ulycn);
 }
 
-void you_unwere(boolean purify) {
+void you_unwere(bool purify) {
 	if (purify) {
 	    You_feel("purified.");
 	    u.ulycn = NON_PM;	/* cure lycanthropy */

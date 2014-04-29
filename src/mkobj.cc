@@ -80,7 +80,7 @@ const struct icp hellprobs[] = {
 { 4, AMULET_CLASS}
 };
 
-struct Object * mkobj_at(char let, int x, int y, boolean artif) {
+struct Object * mkobj_at(char let, int x, int y, bool artif) {
 	struct Object *otmp;
 
 	otmp = mkobj(let, artif);
@@ -88,7 +88,7 @@ struct Object * mkobj_at(char let, int x, int y, boolean artif) {
 	return(otmp);
 }
 
-struct Object * mksobj_at(int otyp, int x, int y, boolean init, boolean artif) {
+struct Object * mksobj_at(int otyp, int x, int y, bool init, bool artif) {
 	struct Object *otmp;
 
 	otmp = mksobj(otyp, init, artif);
@@ -96,7 +96,7 @@ struct Object * mksobj_at(int otyp, int x, int y, boolean init, boolean artif) {
 	return(otmp);
 }
 
-struct Object * mkobj(char oclass, boolean artif) {
+struct Object * mkobj(char oclass, bool artif) {
 	int tprob, i, prob = rnd(1000);
 
 	if(oclass == RANDOM_CLASS) {
@@ -333,7 +333,7 @@ static const char dknowns[] = {
 		GEM_CLASS, SPBOOK_CLASS, WEAPON_CLASS, TOOL_CLASS, 0
 };
 
-struct Object * mksobj(int otyp, boolean init, boolean artif) {
+struct Object * mksobj(int otyp, bool init, bool artif) {
 	int mndx, tryct;
 	struct Object *otmp;
 	char let = objects[otyp].oc_class;
@@ -840,7 +840,7 @@ struct Object * mkgold(long amount, int x, int y) {
  * yet still allow restoration of the original monster upon
  * resurrection.
  */
-struct Object * mkcorpstat(int objtype, struct Monster *mtmp, struct permonst *ptr, int x, int y, boolean init) {
+struct Object * mkcorpstat(int objtype, struct Monster *mtmp, struct permonst *ptr, int x, int y, bool init) {
 	struct Object *otmp;
 
 	if (objtype != CORPSE && objtype != STATUE)
@@ -924,7 +924,7 @@ static struct Object * save_mtraits(struct Object *obj, struct Monster *mtmp) {
 /* returns a pointer to a new monst structure based on
  * the one contained within the obj.
  */
-struct Monster * get_mtraits(struct Object *obj, boolean copyof) {
+struct Monster * get_mtraits(struct Object *obj, bool copyof) {
 	struct Monster *mtmp = (struct Monster *)0;
 	struct Monster *mnew = (struct Monster *)0;
 
@@ -951,7 +951,7 @@ struct Monster * get_mtraits(struct Object *obj, boolean copyof) {
 /* make an object named after someone listed in the scoreboard file */
 struct Object * mk_tt_object(int objtype, int x, int y) {
 	struct Object *otmp, *otmp2;
-	boolean initialize_it;
+	bool initialize_it;
 
 	/* player statues never contain books */
 	initialize_it = (objtype != STATUE);
@@ -967,26 +967,26 @@ struct Object * mk_named_object(int objtype, struct permonst *ptr, int x, int y,
 	struct Object *otmp;
 
 	otmp = mkcorpstat(objtype, (struct Monster *)0, ptr,
-				x, y, (boolean)(objtype != STATUE));
+				x, y, (bool)(objtype != STATUE));
 	if (nm)
 		otmp = oname(otmp, nm);
 	return(otmp);
 }
 
-boolean is_flammable(struct Object *otmp) {
+bool is_flammable(struct Object *otmp) {
 	int otyp = otmp->otyp;
 	int omat = objects[otyp].oc_material;
 
 	if (objects[otyp].oc_oprop == FIRE_RES || otyp == WAN_FIRE)
 		return FALSE;
 
-	return((boolean)((omat <= WOOD && omat != LIQUID) || omat == PLASTIC));
+	return((bool)((omat <= WOOD && omat != LIQUID) || omat == PLASTIC));
 }
 
-boolean is_rottable(struct Object *otmp) {
+bool is_rottable(struct Object *otmp) {
 	int otyp = otmp->otyp;
 
-	return((boolean)(objects[otyp].oc_material <= WOOD &&
+	return((bool)(objects[otyp].oc_material <= WOOD &&
 			objects[otyp].oc_material != LIQUID));
 }
 
@@ -1035,7 +1035,7 @@ void place_object(struct Object *otmp, int x, int y) {
 /* If ice was affecting any objects correct that now
  * Also used for starting ice effects too. [zap.c]
  */
-void obj_ice_effects(int x, int y, boolean do_buried) {
+void obj_ice_effects(int x, int y, bool do_buried) {
 	struct Object *otmp;
 
 	for (otmp = level.objects[x][y]; otmp; otmp = otmp->nexthere) {
@@ -1077,9 +1077,9 @@ long peek_at_iced_corpse_age(struct Object *otmp) {
 STATIC_OVL void obj_timer_checks(struct Object *otmp, xchar x, xchar y, int force) {
     long tleft = 0L;
     short action = ROT_CORPSE;
-    boolean restart_timer = FALSE;
-    boolean on_floor = (otmp->where == OBJ_FLOOR);
-    boolean buried = (otmp->where == OBJ_BURIED);
+    bool restart_timer = FALSE;
+    bool on_floor = (otmp->where == OBJ_FLOOR);
+    bool buried = (otmp->where == OBJ_BURIED);
 
     /* Check for corpses just placed on or in ice */
     if (otmp->otyp == CORPSE && (on_floor || buried) && is_ice(x,y)) {

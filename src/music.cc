@@ -452,7 +452,7 @@ int do_play_instrument(struct Object *instr) {
     char buf[BUFSZ], c = 'y';
     char *s;
     int x,y;
-    boolean ok;
+    bool ok;
 
     if (Underwater) {
 	You_cant("play music underwater!");
@@ -536,7 +536,7 @@ int do_play_instrument(struct Object *instr) {
 				ok = TRUE;
 		if(ok) { /* There is a drawbridge near */
 		    int tumblers, gears;
-		    boolean matched[5];
+		    bool matched[5];
 
 		    tumblers = gears = 0;
 		    for(x=0; x < 5; x++)

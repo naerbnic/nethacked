@@ -65,7 +65,7 @@ STATIC_DCL void FDECL(topten_print, (const char *));
 STATIC_DCL void FDECL(topten_print_bold, (const char *));
 STATIC_DCL xchar FDECL(observable_depth, (d_level *));
 STATIC_DCL void NDECL(outheader);
-STATIC_DCL void FDECL(outentry, (int,struct toptenentry *,BOOLEAN_P));
+STATIC_DCL void FDECL(outentry, (int,struct toptenentry *,bool));
 STATIC_DCL void FDECL(readentry, (FILE *,struct toptenentry *));
 STATIC_DCL void FDECL(writeentry, (FILE *,struct toptenentry *));
 #ifdef XLOGFILE
@@ -73,9 +73,9 @@ STATIC_DCL void FDECL(munge_xlstring, (char *dest, char *src, int n));
 STATIC_DCL void FDECL(write_xlentry, (FILE *,struct toptenentry *));
 #endif
 STATIC_DCL void FDECL(free_ttlist, (struct toptenentry *));
-STATIC_DCL int FDECL(classmon, (char *,BOOLEAN_P));
+STATIC_DCL int FDECL(classmon, (char *,bool));
 STATIC_DCL int FDECL(score_wanted,
-		(BOOLEAN_P, int,struct toptenentry *,int,const char **,int));
+		(bool, int,struct toptenentry *,int,const char **,int));
 #ifdef RECORD_CONDUCT
 STATIC_DCL long FDECL(encodeconduct, (void));
 #endif
@@ -340,7 +340,7 @@ void topten(int how) {
 	struct toptenentry *t1;
 	FILE *rfile;
 	int flg = 0;
-	boolean t0_used;
+	bool t0_used;
 	char buf[15];
 #ifdef LOGFILE
 	FILE *lfile;
@@ -704,8 +704,8 @@ STATIC_OVL void outheader() {
 }
 
 /* so>0: standout line; so=0: ordinary line */
-STATIC_OVL void outentry(int rank, struct toptenentry *t1, boolean so) {
-	boolean second_line = TRUE;
+STATIC_OVL void outentry(int rank, struct toptenentry *t1, bool so) {
+	bool second_line = TRUE;
 	char linebuf[BUFSZ];
 	char *bp, hpbuf[24], linebuf3[BUFSZ];
 	int hppos, lngr;
@@ -852,7 +852,7 @@ STATIC_OVL void outentry(int rank, struct toptenentry *t1, boolean so) {
 #endif
 }
 
-STATIC_OVL int score_wanted(boolean current_ver, int rank, struct toptenentry *t1, int playerct, const char **players, int uid) {
+STATIC_OVL int score_wanted(bool current_ver, int rank, struct toptenentry *t1, int playerct, const char **players, int uid) {
 	int i;
 
 	if (current_ver && (t1->ver_major != VERSION_MAJOR ||
@@ -958,10 +958,10 @@ encodeachieve(void)
 void prscore(int argc, char **argv) {
 	const char **players;
 	int playerct, rank;
-	boolean current_ver = TRUE, init_done = FALSE;
+	bool current_ver = TRUE, init_done = FALSE;
 	struct toptenentry *t1;
 	FILE *rfile;
-	boolean match_found = FALSE;
+	bool match_found = FALSE;
 	int i;
 	char pbuf[BUFSZ];
 	int uid = -1;
@@ -1092,7 +1092,7 @@ void prscore(int argc, char **argv) {
 #endif
 }
 
-STATIC_OVL int classmon(char *plch, boolean fem) {
+STATIC_OVL int classmon(char *plch, bool fem) {
 	int i;
 
 	/* Look for this role in the role table */

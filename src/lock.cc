@@ -17,10 +17,10 @@ STATIC_VAR struct xlock_s {
 #ifdef OVLB
 
 STATIC_DCL const char *NDECL(lock_action);
-STATIC_DCL boolean FDECL(obstructed,(int,int));
+STATIC_DCL bool FDECL(obstructed,(int,int));
 STATIC_DCL void FDECL(chest_shatter_msg, (struct Object *));
 
-boolean picking_lock(int *x, int *y) {
+bool picking_lock(int *x, int *y) {
 	if (occupation == picklock) {
 	    *x = u.ux + u.dx;
 	    *y = u.uy + u.dy;
@@ -31,8 +31,8 @@ boolean picking_lock(int *x, int *y) {
 	}
 }
 
-boolean picking_at(int x, int y) {
-	return (boolean)(occupation == picklock && xlock.door == &levl[x][y]);
+bool picking_at(int x, int y) {
+	return (bool)(occupation == picklock && xlock.door == &levl[x][y]);
 }
 
 /* produce an occupation string appropriate for the current activity */
@@ -157,7 +157,7 @@ int forcelock() {
 	xlock.box->obroken = 1;
 	if(!xlock.picktyp && !rn2(3)) {
 	    struct Monster *shkp;
-	    boolean costly;
+	    bool costly;
 	    long loss = 0L;
 
 	    costly = (*u.ushops && costly_spot(u.ux, u.uy));
@@ -173,7 +173,7 @@ int forcelock() {
 		    chest_shatter_msg(otmp);
 		    if (costly)
 		        loss += stolen_value(otmp, u.ux, u.uy,
-					     (boolean)shkp->mpeaceful, TRUE);
+					     (bool)shkp->mpeaceful, TRUE);
 		    if (otmp->quan == 1L) {
 			obfree(otmp, (struct Object *) 0);
 			continue;
@@ -190,7 +190,7 @@ int forcelock() {
 
 	    if (costly)
 		loss += stolen_value(xlock.box, u.ux, u.uy,
-					     (boolean)shkp->mpeaceful, TRUE);
+					     (bool)shkp->mpeaceful, TRUE);
 	    if(loss) You("owe %ld %s for objects destroyed.", loss, currency(loss));
 	    delobj(xlock.box);
 	}
@@ -262,7 +262,7 @@ int pick_lock(struct Object *pick) {
 	if(!get_adjacent_loc((char *)0, "Invalid location!", u.ux, u.uy, &cc)) return 0;
 	if (cc.x == u.ux && cc.y == u.uy) {	/* pick lock on a container */
 	    const char *verb;
-	    boolean it;
+	    bool it;
 	    int count;
 
 	    if (u.dz < 0) {
@@ -593,7 +593,7 @@ int doopen() {
 }
 
 STATIC_OVL
-boolean obstructed(int x, int y) {
+bool obstructed(int x, int y) {
 	struct Monster *mtmp = m_at(x, y);
 
 	if(mtmp && mtmp->m_ap_type != M_AP_FURNITURE) {
@@ -706,8 +706,8 @@ int doclose() {
 }
 
 /* returns true if something happened */
-boolean			/* box obj was hit with spell effect otmp */ boxlock(struct Object *obj, struct Object *otmp) {
-	boolean res = 0;
+bool			/* box obj was hit with spell effect otmp */ boxlock(struct Object *obj, struct Object *otmp) {
+	bool res = 0;
 
 	switch(otmp->otyp) {
 	case WAN_LOCKING:
@@ -740,9 +740,9 @@ boolean			/* box obj was hit with spell effect otmp */ boxlock(struct Object *ob
 }
 
 /* returns true if something happened */
-boolean			/* Door/secret door was hit with spell effect otmp */ doorlock(struct Object *otmp, int x, int y) {
+bool			/* Door/secret door was hit with spell effect otmp */ doorlock(struct Object *otmp, int x, int y) {
 	struct rm *door = &levl[x][y];
-	boolean res = TRUE;
+	bool res = TRUE;
 	int loudness = 0;
 	const char *msg = (const char *)0;
 	const char *dustcloud = "A cloud of dust";
@@ -773,7 +773,7 @@ boolean			/* Door/secret door was hit with spell effect otmp */ doorlock(struct 
 	case SPE_WIZARD_LOCK:
 #ifdef REINCARNATION
 	    if (Is_rogue_level(&u.uz)) {
-	    	boolean vis = cansee(x,y);
+	    	bool vis = cansee(x,y);
 		/* Can't have real locking in Rogue, so just hide doorway */
 		if (vis) pline("%s springs up in the older, more primitive doorway.",
 			dustcloud);

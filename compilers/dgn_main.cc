@@ -37,7 +37,7 @@ int main(int argc, char **argv) {
 	string infile, outfile, basename;
 	FILE *fin, *fout;
 	int i, len;
-	boolean errors_encountered = FALSE;
+	bool errors_encountered = FALSE;
 
 	infile = "(stdin)";
 	fin = stdin;

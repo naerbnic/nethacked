@@ -9,23 +9,23 @@
 #include "mfndpos.h"
 #include "edog.h"
 
-extern boolean notonhead;
+extern bool notonhead;
 
 #ifdef OVL0
 
-STATIC_DCL boolean FDECL(dog_hunger,(struct Monster *,struct edog *));
+STATIC_DCL bool FDECL(dog_hunger,(struct Monster *,struct edog *));
 STATIC_DCL int FDECL(dog_invent,(struct Monster *,struct edog *,int));
 STATIC_DCL int FDECL(dog_goal,(struct Monster *,struct edog *,int,int,int));
 
 STATIC_DCL struct Object *FDECL(DROPPABLES, (struct Monster *));
-STATIC_DCL boolean FDECL(can_reach_location,(struct Monster *,XCHAR_P,XCHAR_P,
+STATIC_DCL bool FDECL(can_reach_location,(struct Monster *,XCHAR_P,XCHAR_P,
     XCHAR_P,XCHAR_P));
-STATIC_DCL boolean FDECL(could_reach_item,(struct Monster *, XCHAR_P,XCHAR_P));
+STATIC_DCL bool FDECL(could_reach_item,(struct Monster *, XCHAR_P,XCHAR_P));
 
 STATIC_OVL struct Object * DROPPABLES(struct Monster *mon) {
 	struct Object *obj;
 	struct Object *wep = MON_WEP(mon);
-	boolean item1 = FALSE, item2 = FALSE;
+	bool item1 = FALSE, item2 = FALSE;
 
 	if (is_animal(mon->data) || mindless(mon->data))
 		item1 = item2 = TRUE;
@@ -50,14 +50,14 @@ static const char nofetch[] = { BALL_CLASS, CHAIN_CLASS, ROCK_CLASS, 0 };
 
 #endif /* OVL0 */
 
-STATIC_OVL boolean FDECL(cursed_object_at, (int, int));
+STATIC_OVL bool FDECL(cursed_object_at, (int, int));
 
 STATIC_VAR xchar gtyp, gx, gy;	/* type and position of dog's current goal */
 
 STATIC_PTR void FDECL(wantdoor, (int, int, genericptr_t));
 
 #ifdef OVLB
-STATIC_OVL boolean cursed_object_at(int x, int y) {
+STATIC_OVL bool cursed_object_at(int x, int y) {
 	struct Object *otmp;
 
 	for(otmp = level.objects[x][y]; otmp; otmp = otmp->nexthere)
@@ -111,9 +111,9 @@ int dog_nutrition(struct Monster *mtmp, struct Object *obj) {
 }
 
 /* returns 2 if pet dies, otherwise 1 */
-int dog_eat(struct Monster *mtmp, struct Object * obj, int x, int y, boolean devour) {
+int dog_eat(struct Monster *mtmp, struct Object * obj, int x, int y, bool devour) {
 	struct edog *edog = EDOG(mtmp);
-	boolean poly = FALSE, grow = FALSE, heal = FALSE;
+	bool poly = FALSE, grow = FALSE, heal = FALSE;
 	int nutrit;
 
 	if(edog->hungrytime < monstermoves)
@@ -195,7 +195,7 @@ int dog_eat(struct Monster *mtmp, struct Object * obj, int x, int y, boolean dev
 #ifdef OVL0
 
 /* hunger effects -- returns TRUE on starvation */
-STATIC_OVL boolean dog_hunger(struct Monster *mtmp, struct edog *edog) {
+STATIC_OVL bool dog_hunger(struct Monster *mtmp, struct edog *edog) {
 	if (monstermoves > edog->hungrytime + 500) {
 	    if (!carnivorous(mtmp->data) && !herbivorous(mtmp->data)) {
 		edog->hungrytime = monstermoves + 500;
@@ -306,7 +306,7 @@ STATIC_OVL int dog_invent(struct Monster *mtmp, struct edog *edog, int udist) {
  */
 STATIC_OVL int dog_goal(struct Monster *mtmp, struct edog *edog, int after, int udist, int whappr) {
 	int omx, omy;
-	boolean in_masters_sight, dog_has_minvent;
+	bool in_masters_sight, dog_has_minvent;
 	struct Object *obj;
 	xchar otyp;
 	int appr;
@@ -454,7 +454,7 @@ int dog_move(struct Monster *mtmp, int after) {
 	struct edog *edog = EDOG(mtmp);
 	struct Object *obj = (struct Object *) 0;
 	xchar otyp;
-	boolean has_edog, cursemsg[9], do_eat = FALSE;
+	bool has_edog, cursemsg[9], do_eat = FALSE;
 	xchar nix, niy;		/* position mtmp is (considering) moving to */
 	int nx, ny;	/* temporary coordinates */
 	xchar cnt, uncursedcnt, chcnt;
@@ -760,7 +760,7 @@ dognext:
 }
 
 /* check if a monster could pick up objects from a location */
-STATIC_OVL boolean could_reach_item(struct Monster *mon, xchar nx, xchar ny) {
+STATIC_OVL bool could_reach_item(struct Monster *mon, xchar nx, xchar ny) {
     if ((!is_pool(nx,ny) || is_swimmer(mon->data)) &&
 	(!is_lava(nx,ny) || likes_lava(mon->data)) &&
 	(!sobj_at(BOULDER,nx,ny) || throws_rocks(mon->data)))
@@ -775,7 +775,7 @@ STATIC_OVL boolean could_reach_item(struct Monster *mon, xchar nx, xchar ny) {
  * Since the maximum food distance is 5, this should never be more than 5 calls
  * deep.
  */
-STATIC_OVL boolean can_reach_location(struct Monster *mon, xchar mx, xchar my, xchar fx, xchar fy) {
+STATIC_OVL bool can_reach_location(struct Monster *mon, xchar mx, xchar my, xchar fx, xchar fy) {
     int i, j;
     int dist;
 

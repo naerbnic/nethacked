@@ -57,7 +57,7 @@ static unsigned char input_code_size;
 
 static int FDECL(GetDataBlock, (FILE *fd, unsigned char *buf));
 static void FDECL(DoExtension, (FILE *fd, int label));
-static boolean FDECL(ReadColorMap, (FILE *fd, int number));
+static bool FDECL(ReadColorMap, (FILE *fd, int number));
 static void FDECL(read_header, (FILE *fd));
 static int FDECL(GetCode, (FILE *fd, int code_size, int flag));
 static int FDECL(LWZReadByte, (FILE *fd, int flag, int input_code_size));
@@ -65,8 +65,8 @@ static void FDECL(ReadInterleavedImage, (FILE *fd, int len, int height));
 static void FDECL(ReadTileStrip, (FILE *fd, int len));
 
 /* These should be in gif.h, but there isn't one. */
-boolean FDECL(fopen_gif_file, (const char *, const char *));
-boolean FDECL(read_gif_tile, (pixel(*)[]));
+bool FDECL(fopen_gif_file, (const char *, const char *));
+bool FDECL(read_gif_tile, (pixel(*)[]));
 int NDECL(fclose_gif_file);
 
 static int GetDataBlock(FILE *fd, unsigned char *buf) {
@@ -153,7 +153,7 @@ static void DoExtension(FILE *fd, int label) {
 }
 
 static
-boolean ReadColorMap(FILE *fd, int number) {
+bool ReadColorMap(FILE *fd, int number) {
 	int		i;
 	unsigned char	rgb[3];
 
@@ -490,7 +490,7 @@ void ReadTileStrip(FILE *fd, int len) {
 
 
 
-boolean fopen_gif_file(const char *filename, const char *type) {
+bool fopen_gif_file(const char *filename, const char *type) {
 	int i;
 
 	if (strcmp(type, RDBMODE)) {
@@ -556,7 +556,7 @@ boolean fopen_gif_file(const char *filename, const char *type) {
 }
 
 /* Read a tile.  Returns FALSE when there are no more tiles */
-boolean read_gif_tile(pixel (*pixels)[TILE_X]) {
+bool read_gif_tile(pixel (*pixels)[TILE_X]) {
 	int i, j;
 
 	if (curr_tiles_down >= tiles_down) return FALSE;

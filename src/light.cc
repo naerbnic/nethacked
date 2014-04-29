@@ -47,7 +47,7 @@
 static light_source *light_base = 0;
 
 STATIC_DCL void FDECL(write_ls, (int, light_source *));
-STATIC_DCL int FDECL(maybe_write_ls, (int, int, BOOLEAN_P));
+STATIC_DCL int FDECL(maybe_write_ls, (int, int, bool));
 
 /* imported from vision.c, for small circles */
 extern char circle_data[];
@@ -274,7 +274,7 @@ void restore_light_sources(int fd) {
 }
 
 /* Relink all lights that are so marked. */
-void relink_light_sources(boolean ghostly) {
+void relink_light_sources(bool ghostly) {
     char which;
     unsigned long nid;
     light_source *ls;
@@ -310,7 +310,7 @@ void relink_light_sources(boolean ghostly) {
  * sources that would be written.  If write_it is true, actually write
  * the light source out.
  */
-STATIC_OVL int maybe_write_ls(int fd, int range, boolean write_it) {
+STATIC_OVL int maybe_write_ls(int fd, int range, bool write_it) {
     int count = 0, is_global;
     light_source *ls;
 
@@ -391,7 +391,7 @@ void obj_move_light_source(struct Object *src, struct Object *dest) {
 }
 
 /* return true if there exist any light sources */
-boolean any_light_source() {
+bool any_light_source() {
     return light_base != (light_source *) 0;
 }
 
@@ -430,13 +430,13 @@ void snuff_light_source(int x, int y) {
 }
 
 /* Return TRUE if object sheds any light at all. */
-boolean obj_sheds_light(struct Object *obj) {
+bool obj_sheds_light(struct Object *obj) {
     /* so far, only burning objects shed light */
     return obj_is_burning(obj);
 }
 
 /* Return TRUE if sheds light AND will be snuffed by end_burn(). */
-boolean obj_is_burning(struct Object *obj) {
+bool obj_is_burning(struct Object *obj) {
     return (obj->lamplit &&
 		(obj->otyp == MAGIC_LAMP || ignitable(obj) || artifact_light(obj)));
 }

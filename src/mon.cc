@@ -14,7 +14,7 @@
 #include "edog.h"
 #include <ctype.h>
 
-STATIC_DCL boolean FDECL(restrap,(struct Monster *));
+STATIC_DCL bool FDECL(restrap,(struct Monster *));
 STATIC_DCL long FDECL(mm_aggression, (struct Monster *,struct Monster *));
 #ifdef OVL2
 STATIC_DCL int NDECL(pick_animal);
@@ -366,7 +366,7 @@ STATIC_OVL void warn_effects() {
 
 /* check mtmp and water/lava for compatibility, 0 (survived), 1 (died) */
 int minliquid(struct Monster *mtmp) {
-    boolean inpool, inlava, infountain;
+    bool inpool, inlava, infountain;
 
     inpool = is_pool(mtmp->mx,mtmp->my) &&
 	     !is_flyer(mtmp->data) && !is_floater(mtmp->data);
@@ -532,7 +532,7 @@ void mcalcdistress() {
 
 int movemon() {
     struct Monster *mtmp, *nmtmp;
-    boolean somebody_can_move = FALSE;
+    bool somebody_can_move = FALSE;
 #if 0
     /* part of the original warning code which was replaced in 3.3.1 */
     warnlevel = 0;
@@ -833,7 +833,7 @@ void mpickgold(struct Monster *mtmp) {
 #endif /* OVLB */
 #ifdef OVL2
 
-boolean mpickstuff(struct Monster *mtmp, const char *str) {
+bool mpickstuff(struct Monster *mtmp, const char *str) {
 	struct Object *otmp, *otmp2;
 
 /*	prevent shopkeepers from leaving the door of their shop */
@@ -913,7 +913,7 @@ int max_mon_load(struct Monster *mtmp) {
 }
 
 /* for restricting monsters' object-pickup */
-boolean can_carry(struct Monster *mtmp, struct Object *otmp) {
+bool can_carry(struct Monster *mtmp, struct Object *otmp) {
 	int otyp = otmp->otyp, newload = otmp->owt;
 	struct permonst *mdat = mtmp->data;
 
@@ -944,7 +944,7 @@ boolean can_carry(struct Monster *mtmp, struct Object *otmp) {
 
 	/* nymphs deal in stolen merchandise, but not boulders or statues */
 	if (mdat->mlet == S_NYMPH)
-		return (boolean)(otmp->oclass != ROCK_CLASS);
+		return (bool)(otmp->oclass != ROCK_CLASS);
 
 	if (curr_mon_load(mtmp) + newload > max_mon_load(mtmp)) return FALSE;
 
@@ -958,8 +958,8 @@ int mfndpos(struct Monster *mon, coord *poss, long *info, long flag) {
 	int cnt = 0;
 	uchar ntyp;
 	uchar nowtyp;
-	boolean wantpool,poolok,lavaok,nodiag;
-	boolean rockok = FALSE, treeok = FALSE, thrudoor;
+	bool wantpool,poolok,lavaok,nodiag;
+	bool rockok = FALSE, treeok = FALSE, thrudoor;
 	int maxx, maxy;
 
 	x = mon->mx;
@@ -1030,8 +1030,8 @@ nexttry:	/* eels prefer the water, but if there is no water nearby,
 	    if((is_pool(nx,ny) == wantpool || poolok) &&
 	       (lavaok || !is_lava(nx,ny))) {
 		int dispx, dispy;
-		boolean monseeu = (mon->mcansee && (!Invis || perceives(mdat)));
-		boolean checkobj = OBJ_AT(nx,ny);
+		bool monseeu = (mon->mcansee && (!Invis || perceives(mdat)));
+		bool checkobj = OBJ_AT(nx,ny);
 
 		/* Displacement also displaces the Elbereth/scare monster,
 		 * as long as you are visible.
@@ -1177,10 +1177,10 @@ STATIC_OVL long mm_aggression(
 }
 
 /* Is the square close enough for the monster to move or attack into? */
-boolean monnear(struct Monster* mon, int x, int y) {
+bool monnear(struct Monster* mon, int x, int y) {
 	int distance = dist2(mon->mx, mon->my, x, y);
 	if (distance==2 && mon->data==&mons[PM_GRID_BUG]) return 0;
-	return((boolean)(distance < 3));
+	return((bool)(distance < 3));
 }
 
 /* really free dead monsters */
@@ -1416,7 +1416,7 @@ void mondead(struct Monster *mtmp) {
 }
 
 /* TRUE if corpse might be dropped, magr may die if mon was swallowed */
-boolean corpse_chance(struct Monster *mon, struct Monster *magr, boolean was_swallowed) {
+bool corpse_chance(struct Monster *mon, struct Monster *magr, bool was_swallowed) {
 	struct permonst *mdat = mon->data;
 	int i, tmp;
 
@@ -1477,7 +1477,7 @@ boolean corpse_chance(struct Monster *mon, struct Monster *magr, boolean was_swa
 		   || is_mplayer(mdat)
 		   || is_rider(mdat))
 		return TRUE;
-	return (boolean) (!rn2((int)
+	return (bool) (!rn2((int)
 		(2 + ((int)(mdat->geno & G_FREQ)<2) + verysmall(mdat))));
 }
 
@@ -1515,7 +1515,7 @@ void mongone(struct Monster *mdef) {
 void monstone(struct Monster *mdef) {
 	struct Object *otmp, *obj, *oldminvent;
 	xchar x = mdef->mx, y = mdef->my;
-	boolean wasinside = FALSE;
+	bool wasinside = FALSE;
 
 	/* we have to make the statue before calling mondead, to be able to
 	 * put inventory in it, and we have to check for lifesaving before
@@ -1596,7 +1596,7 @@ void monstone(struct Monster *mdef) {
 
 /* another monster has killed the monster mdef */
 void monkilled(struct Monster *mdef, const char *fltxt, int how) {
-	boolean be_sad = FALSE;		/* true if unseen pet is killed */
+	bool be_sad = FALSE;		/* true if unseen pet is killed */
 
 	if ((mdef->wormno ? worm_known(mdef) : cansee(mdef->mx, mdef->my))
 		&& fltxt)
@@ -1650,8 +1650,8 @@ void xkilled(
 	int mndx;
 	struct Object *otmp;
 	struct trap *t;
-	boolean redisp = FALSE;
-	boolean wasinside = u.uswallow && (u.ustuck == mtmp);
+	bool redisp = FALSE;
+	bool wasinside = u.uswallow && (u.ustuck == mtmp);
 
 
 	/* KMH, conduct */
@@ -1847,7 +1847,7 @@ void mnexto(struct Monster* mtmp) {
  *	1 - if a monster was moved from x, y to put mtmp at x, y.
  *	0 - in most cases.
  */
-boolean mnearto(struct Monster *mtmp, xchar x, xchar y, boolean move_other) {
+bool mnearto(struct Monster *mtmp, xchar x, xchar y, bool move_other) {
 	struct Monster *othermon = (struct Monster *)0;
 	xchar newx, newy;
 	coord mm;
@@ -1899,7 +1899,7 @@ void poisontell(int typ) {
 
 void poisoned(const char *string, int typ, const char *pname, int fatal) {
 	int i, plural, kprefix = KILLED_BY_AN;
-	boolean thrown_weapon = (fatal < 0);
+	bool thrown_weapon = (fatal < 0);
 
 	if (thrown_weapon) fatal = -fatal;
 	if(strcmp(string, "blast") && !thrown_weapon) {
@@ -2129,7 +2129,7 @@ void restore_cham(struct Monster *mon) {
 }
 
 /* unwatched hiders may hide again; if so, a 1 is returned.  */
-STATIC_OVL boolean restrap(struct Monster *mtmp) {
+STATIC_OVL bool restrap(struct Monster *mtmp) {
 	if(mtmp->cham || mtmp->mcan || mtmp->m_ap_type ||
 	   cansee(mtmp->mx, mtmp->my) || rn2(3) || (mtmp == u.ustuck) ||
 	   (sensemon(mtmp) && distu(mtmp->mx, mtmp->my) <= 2))
@@ -2150,7 +2150,7 @@ STATIC_OVL boolean restrap(struct Monster *mtmp) {
 short *animal_list = 0;		/* list of PM values for animal monsters */
 int animal_list_count;
 
-void mon_animal_list(boolean construct) {
+void mon_animal_list(bool construct) {
 	if (construct) {
 	    short animal_temp[SPECIAL_PM];
 	    int i, n;
@@ -2227,7 +2227,7 @@ STATIC_OVL int select_newcham_form(struct Monster *mon) {
 }
 
 /* make a chameleon look like a new monster; returns 1 if it actually changed */
-int newcham(struct Monster *mtmp, struct permonst *mdat, boolean polyspot, boolean msg) {
+int newcham(struct Monster *mtmp, struct permonst *mdat, bool polyspot, bool msg) {
 	int mhp, hpn, hpd;
 	int mndx, tryct;
 	struct permonst *olddata = mtmp->data;
@@ -2439,7 +2439,7 @@ int can_be_hatched(int mnum) {
 }
 
 /* type of egg laid by #sit; usually matches parent */
-int egg_type_from_parent(int mnum, boolean force_ordinary) {
+int egg_type_from_parent(int mnum, bool force_ordinary) {
     if (force_ordinary || !BREEDER_EGG) {
 	if (mnum == PM_QUEEN_BEE) mnum = PM_KILLER_BEE;
 	else if (mnum == PM_WINGED_GARGOYLE) mnum = PM_GARGOYLE;
@@ -2449,7 +2449,7 @@ int egg_type_from_parent(int mnum, boolean force_ordinary) {
 
 /* decide whether an egg of the indicated monster type is viable; */
 /* also used to determine whether an egg or tin can be created... */
-boolean dead_species(int m_idx, boolean egg) {
+bool dead_species(int m_idx, bool egg) {
 	/*
 	 * For monsters with both baby and adult forms, genociding either
 	 * form kills all eggs of that monster.  Monsters with more than
@@ -2457,7 +2457,7 @@ boolean dead_species(int m_idx, boolean egg) {
 	 * fortunately, none of them have eggs.  Species extinction due to
 	 * overpopulation does not kill eggs.
 	 */
-	return (boolean)
+	return (bool)
 		(m_idx >= LOW_PM &&
 		 ((mvitals[m_idx].mvflags & G_GENOD) != 0 ||
 		  (egg &&
@@ -2495,7 +2495,7 @@ STATIC_OVL void kill_eggs(struct Object *obj_list) {
 /* kill all members of genocided species */
 void kill_genocided_monsters() {
 	struct Monster *mtmp, *mtmp2;
-	boolean kill_cham[CHAM_MAX_INDX+1];
+	bool kill_cham[CHAM_MAX_INDX+1];
 	int mndx;
 
 	kill_cham[CHAM_ORDINARY] = FALSE;	/* (this is mndx==0) */
@@ -2559,7 +2559,7 @@ void golemeffects(struct Monster *mon, int damtype, int dam) {
     }
 }
 
-boolean angry_guards(boolean silent) {
+bool angry_guards(bool silent) {
 	struct Monster *mtmp;
 	int ct = 0, nct = 0, sct = 0, slct = 0;
 

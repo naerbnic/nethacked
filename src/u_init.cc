@@ -17,7 +17,7 @@ struct trobj {
 STATIC_DCL void FDECL(ini_inv, (struct trobj *));
 STATIC_DCL void FDECL(knows_object,(int));
 STATIC_DCL void FDECL(knows_class,(CHAR_P));
-STATIC_DCL boolean FDECL(restricted_spell_discipline, (int));
+STATIC_DCL bool FDECL(restricted_spell_discipline, (int));
 
 #define UNDEF_TYP	0
 #define UNDEF_SPE	'\177'
@@ -840,7 +840,7 @@ void u_init() {
 }
 
 /* skills aren't initialized, so we use the role-specific skill lists */
-STATIC_OVL boolean restricted_spell_discipline(int otyp) {
+STATIC_OVL bool restricted_spell_discipline(int otyp) {
     const struct def_skill *skills;
     int this_skill = spell_skilltype(otyp);
 
