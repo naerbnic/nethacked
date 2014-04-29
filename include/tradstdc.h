@@ -5,14 +5,6 @@
 #ifndef TRADSTDC_H
 #define TRADSTDC_H
 
-#if defined(DUMB) && !defined(NOVOID)
-#define NOVOID
-#endif
-
-#ifdef NOVOID
-#define void int
-#endif
-
 /*
  * Borland C provides enough ANSI C compatibility in its Borland C++
  * mode to warrant this.  But it does not set __STDC__ unless it compiles
@@ -21,20 +13,6 @@
  */
 #if (defined(__STDC__) || defined(__TURBOC__)) && !defined(NOTSTDC)
 #define NHSTDC
-#endif
-
-#if defined(ultrix) && defined(__STDC__) && !defined(__LANGUAGE_C)
-/* Ultrix seems to be in a constant state of flux.  This check attempts to
- * set up ansi compatibility if it wasn't set up correctly by the compiler.
- */
-#ifdef mips
-#define __mips mips
-#endif
-
-#ifdef LANGUAGE_C
-#define __LANGUAGE_C LANGUAGE_C
-#endif
-
 #endif
 
 /*
@@ -58,68 +36,8 @@
 /* generic pointer, always a macro; genericptr_t is usually a typedef */
 # define genericptr	void *
 
-# if (defined(ULTRIX_PROTO) && !defined(__GNUC__)) || defined(OS2_CSET2)
-/* Cover for Ultrix on a DECstation with 2.0 compiler, which coredumps on
- *   typedef void * genericptr_t;
- *   extern void a(void(*)(int, genericptr_t));
- * Using the #define is OK for other compiler versions too.
- */
-/* And IBM CSet/2.  The redeclaration of free hoses the compile. */
-#  define genericptr_t	genericptr
-# else
-#  if !defined(NHSTDC) && !defined(MAC)
-#   define const
-#   define signed
-#   define volatile
-#  endif
-# endif
-
-/*
- * Suppress `const' if necessary and not handled elsewhere.
- * Don't use `#if defined(xxx) && !defined(const)'
- * because some compilers choke on `defined(const)'.
- * This has been observed with Lattice, MPW, and High C.
- */
-# if (defined(ULTRIX_PROTO) && !defined(NHSTDC)) || defined(apollo)
-	/* the system header files don't use `const' properly */
-#  ifndef const
-#   define const
-#  endif
-# endif
-
-
-#ifndef genericptr_t
 typedef genericptr genericptr_t;	/* (void *) or (char *) */
-#endif
 
-
-/*
- * According to ANSI, prototypes for old-style declarations must widen the
- * arguments to int.  However, the MSDOS compilers accept shorter arguments
- * (char, short, etc.) in prototypes and do typechecking with them.  Therefore
- * this mess to allow the better typechecking while also allowing some
- * prototypes for the ANSI compilers so people quit trying to fix the
- * prototypes to match the standard and thus lose the typechecking.
- */
-#if defined(AMIGA) && !defined(AZTEC_50)
-#define UNWIDENED_PROTOTYPES
-#endif
-#if defined(macintosh) && (defined(__SC__) || defined(__MRC__))
-#define WIDENED_PROTOTYPES
-#endif
-#if defined(__MWERKS__) && defined(__BEOS__)
-#define UNWIDENED_PROTOTYPES
-#endif
-#if defined(WIN32)
-#define UNWIDENED_PROTOTYPES
-#endif
-
-#if defined(ULTRIX_PROTO) && defined(ULTRIX_CC20)
-#define UNWIDENED_PROTOTYPES
-#endif
-#if defined(apollo)
-#define UNWIDENED_PROTOTYPES
-#endif
 
 #ifndef UNWIDENED_PROTOTYPES
 # if defined(NHSTDC) || defined(ULTRIX_PROTO) || defined(THINK_C)
