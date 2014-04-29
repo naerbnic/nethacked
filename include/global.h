@@ -106,12 +106,6 @@ typedef schar	xchar;
 # define EXIT_FAILURE 1
 #endif
 
-#ifdef NEED_VARARGS
-#define Vprintf  (void) vprintf
-#define Vfprintf (void) vfprintf
-#define Vsprintf (void) vsprintf
-#endif
-
 
 /* primitive memory leak debugging; see alloc.c */
 extern long *FDECL(alloc, (unsigned int));		/* alloc.c */

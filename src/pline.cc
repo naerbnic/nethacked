@@ -57,7 +57,6 @@ int msgpline_type(char const* msg) {
  * of the variable argument handling stuff in "tradstdc.h"
  */
 
-#if defined(USE_STDARG) || defined(USE_VARARGS)
 static void FDECL(vpline, (const char *, va_list));
 
 void pline(const char *line, ...) {
@@ -69,21 +68,8 @@ void pline(const char *line, ...) {
 
 char prevmsg[BUFSZ];
 
-# ifdef USE_STDARG
 static void
 vpline(const char *line, va_list the_args) {
-# else
-static void
-vpline(line, the_args) const char *line; va_list the_args; {
-# endif
-
-#else	/* USE_STDARG | USE_VARARG */
-
-#define vpline pline
-
-void
-pline VA_DECL(const char *, line)
-#endif	/* USE_STDARG | USE_VARARG */
 
 	char pbuf[BUFSZ];
 	int typ;
