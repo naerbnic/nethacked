@@ -451,7 +451,7 @@ void scan_map(char *map) {
 		}
 		for(i=0; i<len; i++)
 		  if((tmpmap[max_hig][i] = what_map_char(map[i])) == INVALID_TYPE) {
-		      Sprintf(msg,
+		      sprintf(msg,
 			 "Invalid character @ (%d, %d) - replacing with stone",
 			      max_hig, i);
 		      yywarning(msg);
@@ -471,7 +471,7 @@ void scan_map(char *map) {
 	/* Store the map into the mazepart structure */
 
 	if(max_len > MAP_X_LIM || max_hig > MAP_Y_LIM) {
-	    Sprintf(msg, "Map too large! (max %d x %d)", MAP_X_LIM, MAP_Y_LIM);
+	    sprintf(msg, "Map too large! (max %d x %d)", MAP_X_LIM, MAP_Y_LIM);
 	    yyerror(msg);
 	}
 
@@ -528,7 +528,7 @@ bool check_subrooms() {
 			break;
 		    }
 		if (!found) {
-		    Sprintf(msg,
+		    sprintf(msg,
 			    "Subroom error : parent room '%s' not found!",
 			    tmproom[i]->parent);
 		    yyerror(msg);
@@ -554,7 +554,7 @@ bool check_subrooms() {
 			n_subrooms++;
 			if(n_subrooms > MAX_SUBROOMS) {
 
-			    Sprintf(msg,
+			    sprintf(msg,
 	      "Subroom error: too many subrooms attached to parent room '%s'!",
 				    tmproom[i]->parent);
 			    yyerror(msg);
@@ -577,7 +577,7 @@ void check_coord(int x, int y, const char *str) {
 
     if (x >= 0 && y >= 0 && x <= (int)max_x_map && y <= (int)max_y_map &&
 	(IS_ROCK(tmpmap[y][x]) || IS_DOOR(tmpmap[y][x]))) {
-	Sprintf(ebuf, "%s placed in wall at (%02d,%02d)?!", str, x, y);
+	sprintf(ebuf, "%s placed in wall at (%02d,%02d)?!", str, x, y);
 	yywarning(ebuf);
     }
 }

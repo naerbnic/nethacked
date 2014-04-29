@@ -585,7 +585,7 @@ void init_dungeons() {
 	dgn_file = dlb_fopen(DUNGEON_FILE, RDBMODE);
 	if (!dgn_file) {
 	    char tbuf[BUFSZ];
-	    Sprintf(tbuf, "Cannot open dungeon description - \"%s",
+	    sprintf(tbuf, "Cannot open dungeon description - \"%s",
 		DUNGEON_FILE);
 #ifdef DLBRSRC /* using a resource from the executable */
 	    Strcat(tbuf, "\" resource!");
@@ -787,7 +787,7 @@ void init_dungeons() {
 				/* This is where the name substitution on the
 				 * levels of the quest dungeon occur.
 				 */
-				Sprintf(x->proto, "%s%s", urole.filecode, &lev_map->lev_name[1]);
+				sprintf(x->proto, "%s%s", urole.filecode, &lev_map->lev_name[1]);
 			} else if (lev_map->lev_spec == &knox_level) {
 				branch *br;
 				/*
@@ -1390,7 +1390,7 @@ STATIC_OVL void print_branch(winid win, int dnum, int lower_bound, int upper_bou
     for (br = branches; br; br = br->next) {
 	if (br->end1.dnum == dnum && lower_bound < br->end1.dlevel &&
 					br->end1.dlevel <= upper_bound) {
-	    Sprintf(buf,"   %s to %s: %d",
+	    sprintf(buf,"   %s to %s: %d",
 		    br_string(br->type),
 		    dungeons[br->end2.dnum].dname,
 		    depth(&br->end1));
@@ -1432,17 +1432,17 @@ schar print_dungeon(bool bymenu, schar *rlev, xchar *rdgn) {
     for (i = 0, dptr = dungeons; i < n_dgns; i++, dptr++) {
 	nlev = dptr->num_dunlevs;
 	if (nlev > 1)
-	    Sprintf(buf, "%s: levels %d to %d", dptr->dname, dptr->depth_start,
+	    sprintf(buf, "%s: levels %d to %d", dptr->dname, dptr->depth_start,
 						dptr->depth_start + nlev - 1);
 	else
-	    Sprintf(buf, "%s: level %d", dptr->dname, dptr->depth_start);
+	    sprintf(buf, "%s: level %d", dptr->dname, dptr->depth_start);
 
 	/* Most entrances are uninteresting. */
 	if (dptr->entry_lev != 1) {
 	    if (dptr->entry_lev == nlev)
 		Strcat(buf, ", entrance from below");
 	    else
-		Sprintf(eos(buf), ", entrance on %d",
+		sprintf(eos(buf), ", entrance on %d",
 			dptr->depth_start + dptr->entry_lev - 1);
 	}
 	if (bymenu) {
@@ -1461,9 +1461,9 @@ schar print_dungeon(bool bymenu, schar *rlev, xchar *rdgn) {
 	    /* print any branches before this level */
 	    print_branch(win, i, last_level, slev->dlevel.dlevel, bymenu, &lchoices);
 
-	    Sprintf(buf, "   %s: %d", slev->proto, depth(&slev->dlevel));
+	    sprintf(buf, "   %s: %d", slev->proto, depth(&slev->dlevel));
 	    if (Is_stronghold(&slev->dlevel))
-		Sprintf(eos(buf), " (tune %s)", tune);
+		sprintf(eos(buf), " (tune %s)", tune);
 	    if (bymenu) {
 	    	/* If other floating branches are added, this will need to change */
 	    	if (i != knox_level.dnum) {
@@ -1500,7 +1500,7 @@ schar print_dungeon(bool bymenu, schar *rlev, xchar *rdgn) {
 		}
 		first = FALSE;
 	    }
-	    Sprintf(buf, "   %s to %s",
+	    sprintf(buf, "   %s to %s",
 			br_string(br->type), dungeons[br->end2.dnum].dname);
 	    if (!bymenu)
 		putstr(win, 0, buf);
@@ -1529,7 +1529,7 @@ schar print_dungeon(bool bymenu, schar *rlev, xchar *rdgn) {
     /* I hate searching for the invocation pos while debugging. -dean */
     if (Invocation_lev(&u.uz)) {
 	putstr(win, 0, "");
-	Sprintf(buf, "Invocation position @ (%d,%d), hero @ (%d,%d)",
+	sprintf(buf, "Invocation position @ (%d,%d), hero @ (%d,%d)",
 		inv_pos.x, inv_pos.y, u.ux, u.uy);
 	putstr(win, 0, buf);
     }
@@ -1546,10 +1546,10 @@ schar print_dungeon(bool bymenu, schar *rlev, xchar *rdgn) {
 
 	putstr(win, 0, "");
 	if (trap)
-	    Sprintf(buf, "Portal @ (%d,%d), hero @ (%d,%d)",
+	    sprintf(buf, "Portal @ (%d,%d), hero @ (%d,%d)",
 		trap->tx, trap->ty, u.ux, u.uy);
 	else
-	    Sprintf(buf, "No portal found.");
+	    sprintf(buf, "No portal found.");
 	putstr(win, 0, buf);
     }
 

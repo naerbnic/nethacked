@@ -222,7 +222,7 @@ const char * ordin(int n) {
 char * sitoa(int n) {
     Static char buf[13];
 
-    Sprintf(buf, (n < 0) ? "%d" : "+%d", n);
+    sprintf(buf, (n < 0) ? "%d" : "+%d", n);
     return buf;
 }
 
@@ -456,7 +456,7 @@ char * yymmdd(time_t date) {
 		lt = localtime(&date);
 #endif
 
-	Sprintf(datestr, "%02d%02d%02d",
+	sprintf(datestr, "%02d%02d%02d",
 		lt->tm_year, lt->tm_mon + 1, lt->tm_mday);
 	return(datestr);
 }

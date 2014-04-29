@@ -66,7 +66,7 @@ bool			/* returns TRUE if hit on torso */ burnarmor(struct Monster *victim) {
 	    item = (victim == &youmonst) ? uarmh : which_armor(victim, W_ARMH);
 	    if (item) {
 		mat_idx = objects[item->otyp].oc_material;
-	    	Sprintf(buf,"%s helmet", materialnm[mat_idx] );
+	    	sprintf(buf,"%s helmet", materialnm[mat_idx] );
 	    }
 	    if (!burn_dmg(item, item ? buf : "helmet")) continue;
 	    break;
@@ -358,7 +358,7 @@ void fall_through(bool td) {
 	    dtmp.dlevel = newlevel;
 	}
 	if (!td)
-	    Sprintf(msgbuf, "The hole in the %s above you closes up.",
+	    sprintf(msgbuf, "The hole in the %s above you closes up.",
 		    ceiling(u.ux,u.uy));
 	schedule_goto(&dtmp, FALSE, TRUE, 0,
 		      (char *)0, !td ? msgbuf : (char *)0);
@@ -842,12 +842,12 @@ glovecheck:		(void) rust_dmg(uarmg, "gauntlets", 1, TRUE, &youmonst);
 #ifdef STEED
 		    if (u.usteed) {
 		    	if ((trflags & RECURSIVETRAP) != 0)
-			    Sprintf(verbbuf, "and %s fall",
+			    sprintf(verbbuf, "and %s fall",
 				x_monnam(u.usteed,
 				    u.usteed->mnamelth ? ARTICLE_NONE : ARTICLE_THE,
 				    (char *)0, SUPPRESS_SADDLE, FALSE));
 			else
-			    Sprintf(verbbuf,"lead %s",
+			    sprintf(verbbuf,"lead %s",
 				x_monnam(u.usteed,
 					 u.usteed->mnamelth ? ARTICLE_NONE : ARTICLE_THE,
 				 	 "poor", SUPPRESS_SADDLE, FALSE));
@@ -952,14 +952,14 @@ glovecheck:		(void) rust_dmg(uarmg, "gauntlets", 1, TRUE, &youmonst);
 		    verbbuf[0] = '\0';
 #ifdef STEED
 		    if (u.usteed)
-		   	Sprintf(verbbuf,"lead %s",
+		   	sprintf(verbbuf,"lead %s",
 				x_monnam(u.usteed,
 					 u.usteed->mnamelth ? ARTICLE_NONE : ARTICLE_THE,
 				 	 "poor", SUPPRESS_SADDLE, FALSE));
 		    else
 #endif
 			
-		    Sprintf(verbbuf, "%s", Levitation ? (const char *)"float" :
+		    sprintf(verbbuf, "%s", Levitation ? (const char *)"float" :
 		      		locomotion(youmonst.data, "stumble"));
 		    You("%s into %s spider web!",
 			verbbuf, a_your[trap->madeby_u]);
@@ -1045,13 +1045,13 @@ glovecheck:		(void) rust_dmg(uarmg, "gauntlets", 1, TRUE, &youmonst);
 		seetrap(trap);
 #ifdef STEED
 		if (u.usteed)
-			Sprintf(verbbuf, "lead %s",
+			sprintf(verbbuf, "lead %s",
 				x_monnam(u.usteed,
 					 u.usteed->mnamelth ? ARTICLE_NONE : ARTICLE_THE,
 				 	 (char *)0, SUPPRESS_SADDLE, FALSE));
 		else
 #endif
-		 Sprintf(verbbuf,"%s",
+		 sprintf(verbbuf,"%s",
 		    Levitation ? (const char *)"float" :
 		    locomotion(youmonst.data, "step"));
 		You("%s onto a polymorph trap!", verbbuf);
@@ -2130,7 +2130,7 @@ void selftouch(const char *arg) {
 			&& !Stone_resistance) {
 		pline("%s touch the %s corpse.", arg,
 		        mons[uwep->corpsenm].mname);
-		Sprintf(kbuf, "%s corpse", an(mons[uwep->corpsenm].mname));
+		sprintf(kbuf, "%s corpse", an(mons[uwep->corpsenm].mname));
 		instapetrify(kbuf);
 	}
 	/* Or your secondary weapon, if wielded */
@@ -2138,7 +2138,7 @@ void selftouch(const char *arg) {
 			touch_petrifies(&mons[uswapwep->corpsenm]) && !Stone_resistance){
 		pline("%s touch the %s corpse.", arg,
 		        mons[uswapwep->corpsenm].mname);
-		Sprintf(kbuf, "%s corpse", an(mons[uswapwep->corpsenm].mname));
+		sprintf(kbuf, "%s corpse", an(mons[uswapwep->corpsenm].mname));
 		instapetrify(kbuf);
 	}
 }
@@ -3199,7 +3199,7 @@ STATIC_OVL int help_monster_out(struct Monster *mtmp, struct trap *ttmp) {
 		else {
 			char kbuf[BUFSZ];
 
-			Sprintf(kbuf, "trying to help %s out of a pit",
+			sprintf(kbuf, "trying to help %s out of a pit",
 					an(mtmp->data->mname));
 			instapetrify(kbuf);
 			return 1;
@@ -3282,7 +3282,7 @@ int untrap(bool force) {
 			    trap_skipped = TRUE;
 			    deal_with_floor_trap = FALSE;
 			} else {
-			    Sprintf(qbuf, "There %s and %s here. %s %s?",
+			    sprintf(qbuf, "There %s and %s here. %s %s?",
 				(containercnt == 1) ? "is a container" : "are containers",
 				an(defsyms[trap_to_defsym(ttmp->ttyp)].explanation),
 				ttmp->ttyp == WEB ? "Remove" : "Disarm", the_trap);
@@ -3333,7 +3333,7 @@ int untrap(bool force) {
 	if(!u.dx && !u.dy) {
 	    for(otmp = level.objects[x][y]; otmp; otmp = otmp->nexthere)
 		if(Is_box(otmp)) {
-		    Sprintf(qbuf, "There is %s here. Check it for traps?",
+		    sprintf(qbuf, "There is %s here. Check it for traps?",
 			safe_qbuf("", sizeof("There is  here. Check it for traps?"),
 				doname(otmp), an(simple_typename(otmp->otyp)), "a box"));
 		    switch (ynq(qbuf)) {
@@ -3499,7 +3499,7 @@ bool chest_trap(struct Object *obj, int bodypart, bool disarm) {
 				    *in_rooms(ox, oy, SHOPBASE) == *u.ushops);
 
 			  pline("%s!", Tobjnam(obj, "explode"));
-			  Sprintf(buf, "exploding %s", xname(obj));
+			  sprintf(buf, "exploding %s", xname(obj));
 
 			  if(costly)
 			      loss += stolen_value(obj, ox, oy,

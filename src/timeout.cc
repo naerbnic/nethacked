@@ -474,7 +474,7 @@ void hatch_egg(genericptr_t arg, long timeout) {
 	    bool siblings = (hatchcount > 1), redraw = FALSE;
 
 	    if (cansee_hatchspot) {
-		Sprintf(monnambuf, "%s%s",
+		sprintf(monnambuf, "%s%s",
 			siblings ? "some " : "",
 			siblings ?
 			makeplural(m_monnam(mon)) : an(m_monnam(mon)));
@@ -516,7 +516,7 @@ void hatch_egg(genericptr_t arg, long timeout) {
 		    if (cansee_hatchspot) {
 			/* egg carring monster might be invisible */
 			if (canseemon(egg->ocarry)) {
-			    Sprintf(carriedby, "%s pack",
+			    sprintf(carriedby, "%s pack",
 				     s_suffix(a_monnam(egg->ocarry)));
 			    knows_egg = TRUE;
 			}
@@ -1291,12 +1291,12 @@ STATIC_OVL void print_queue(winid win, TimerElement *base) {
 	putstr(win, 0, "timeout  id   kind   call");
 	for (curr = base; curr; curr = curr->next) {
 #ifdef VERBOSE_TIMER
-	    Sprintf(buf, " %4ld   %4ld  %-6s %s(%s)",
+	    sprintf(buf, " %4ld   %4ld  %-6s %s(%s)",
 		curr->timeout, curr->tid, kind_name(curr->kind),
 		timeout_funcs[curr->func_index].name,
 		fmt_ptr((genericptr_t)curr->arg, arg_address));
 #else
-	    Sprintf(buf, " %4ld   %4ld  %-6s #%d(%s)",
+	    sprintf(buf, " %4ld   %4ld  %-6s #%d(%s)",
 		curr->timeout, curr->tid, kind_name(curr->kind),
 		curr->func_index,
 		fmt_ptr((genericptr_t)curr->arg, arg_address));
@@ -1313,7 +1313,7 @@ int wiz_timeout_queue() {
     win = create_nhwindow(NHW_MENU);	/* corner text window */
     if (win == WIN_ERR) return 0;
 
-    Sprintf(buf, "Current time = %ld.", monstermoves);
+    sprintf(buf, "Current time = %ld.", monstermoves);
     putstr(win, 0, buf);
     putstr(win, 0, "");
     putstr(win, 0, "Active timeout queue:");

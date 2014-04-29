@@ -160,7 +160,7 @@ const char * tilename(int set, int entry) {
 			if ( !obj_descr[i].oc_name )
 			    return obj_descr[i].oc_descr;
 
-			Sprintf(buf, "%s / %s",
+			sprintf(buf, "%s / %s",
 				obj_descr[i].oc_descr,
 				obj_descr[i].oc_name);
 			return buf;
@@ -190,10 +190,10 @@ const char * tilename(int set, int entry) {
 				 */
 				switch (i) {
 				    case S_sink:
-					    Sprintf(buf, "sink");
+					    sprintf(buf, "sink");
 					    break;
 				    default:
-					    Sprintf(buf, "cmap %d", tilenum);
+					    sprintf(buf, "cmap %d", tilenum);
 					    break;
 				}
 				return buf;
@@ -217,7 +217,7 @@ const char * tilename(int set, int entry) {
 			"dark", "noxious", "muddy", "wet",
 			"magical", "fiery", "frosty"
 		};
-		Sprintf(buf, "explosion %s %d",
+		sprintf(buf, "explosion %s %d",
 			explosion_types[i / MAXEXPCHARS], i % MAXEXPCHARS);
 		return buf;
 	    }
@@ -227,7 +227,7 @@ const char * tilename(int set, int entry) {
 	i = entry - tilenum;
 	if (i < (NUM_ZAP << 2)) {
 		if (set == OTH_GLYPH) {
-			Sprintf(buf, "zap %d %d", i/4, i%4);
+			sprintf(buf, "zap %d %d", i/4, i%4);
 			return buf;
 		}
 	}
@@ -236,7 +236,7 @@ const char * tilename(int set, int entry) {
 	i = entry - tilenum;
 	if (i < WARNCOUNT) {
 		if (set == OTH_GLYPH) {
-			Sprintf(buf, "warning %d", i);
+			sprintf(buf, "warning %d", i);
 			return buf;
 	        }
 	}
@@ -246,7 +246,7 @@ const char * tilename(int set, int entry) {
 	    j = entry - tilenum;
 	    if (j <= substitutes[i].last_glyph - substitutes[i].first_glyph) {
 		if (set == OTH_GLYPH) {
-		    Sprintf(buf, "sub %s %d", substitutes[i].sub_name, j);
+		    sprintf(buf, "sub %s %d", substitutes[i].sub_name, j);
 		    return buf;
 		}
 	    }
@@ -254,7 +254,7 @@ const char * tilename(int set, int entry) {
 				- substitutes[i].first_glyph + 1;
 	}
 
-	Sprintf(buf, "unknown %d %d", set, entry);
+	sprintf(buf, "unknown %d %d", set, entry);
 	return buf;
 }
 
@@ -486,7 +486,7 @@ int main()
     /*
      * create the source file, "tile.c"
      */
-    Sprintf(filename, SOURCE_TEMPLATE, TILE_FILE);
+    sprintf(filename, SOURCE_TEMPLATE, TILE_FILE);
     if (!(ofp = fopen(filename, "w"))) {
 	    perror(filename);
 	    exit(EXIT_FAILURE);

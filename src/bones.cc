@@ -392,7 +392,7 @@ int getbones() {
 		if (strcmp(bonesid, oldbonesid) != 0) {
 			char errbuf[BUFSZ];
 
-			Sprintf(errbuf, "This is bones level '%s', not '%s'!",
+			sprintf(errbuf, "This is bones level '%s', not '%s'!",
 				oldbonesid, bonesid);
 #ifdef WIZARD
 			if (wizard) {

@@ -425,7 +425,7 @@ STATIC_OVL int kick_object(xchar x, xchar y) {
 		You("turn to stone...");
 		killer_format = KILLED_BY;
 		/* KMH -- otmp should be kickobj */
-		Sprintf(kbuf, "kicking %s without boots",
+		sprintf(kbuf, "kicking %s without boots",
 			an(corpse_xname(kickobj, TRUE)));
 		killer = kbuf;
 		done(STONING);
@@ -1396,20 +1396,20 @@ void obj_delivery() {
 STATIC_OVL void otransit_msg(struct Object *otmp, bool nodrop, long num) {
 	char obuf[BUFSZ];
 
-	Sprintf(obuf, "%s%s",
+	sprintf(obuf, "%s%s",
 		 (otmp->otyp == CORPSE &&
 			type_is_pname(&mons[otmp->corpsenm])) ? "" : "The ",
 		 xname(otmp));
 
 	if(num) { /* means: other objects are impacted */
-	    Sprintf(eos(obuf), " %s %s object%s",
+	    sprintf(eos(obuf), " %s %s object%s",
 		    otense(otmp, "hit"),
 		    num == 1L ? "another" : "other",
 		    num > 1L ? "s" : "");
 	    if(nodrop)
-		Sprintf(eos(obuf), ".");
+		sprintf(eos(obuf), ".");
 	    else
-		Sprintf(eos(obuf), " and %s %s.",
+		sprintf(eos(obuf), " and %s %s.",
 			otense(otmp, "fall"), gate_str);
 	    pline("%s", obuf);
 	} else if(!nodrop)

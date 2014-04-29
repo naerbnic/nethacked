@@ -167,7 +167,7 @@ bot1()
 	Strcpy(newbot1, plname);
 	if('a' <= newbot1[0] && newbot1[0] <= 'z') newbot1[0] += 'A'-'a';
 	newbot1[10] = 0;
-	Sprintf(nb = eos(newbot1)," the ");
+	sprintf(nb = eos(newbot1)," the ");
 
 	if (Upolyd) {
 		char mbot[BUFSZ];
@@ -180,32 +180,32 @@ bot1()
 			mbot[k] += 'A' - 'a';
 		    k++;
 		}
-		Sprintf(nb = eos(nb), mbot);
+		sprintf(nb = eos(nb), mbot);
 	} else
-		Sprintf(nb = eos(nb), rank());
+		sprintf(nb = eos(nb), rank());
 
-	Sprintf(nb = eos(nb),"  ");
+	sprintf(nb = eos(nb),"  ");
 	i = mrank_sz + 15;
 	j = (nb + 2) - newbot1; /* aka strlen(newbot1) but less computation */
 	if((i - j) > 0)
-		Sprintf(nb = eos(nb),"%*s", i-j, " ");	/* pad with spaces */
+		sprintf(nb = eos(nb),"%*s", i-j, " ");	/* pad with spaces */
 	if (ACURR(A_STR) > 18) {
 		if (ACURR(A_STR) > STR18(100))
-		    Sprintf(nb = eos(nb),"St:%2d ",ACURR(A_STR)-100);
+		    sprintf(nb = eos(nb),"St:%2d ",ACURR(A_STR)-100);
 		else if (ACURR(A_STR) < STR18(100))
-		    Sprintf(nb = eos(nb), "St:18/%02d ",ACURR(A_STR)-18);
+		    sprintf(nb = eos(nb), "St:18/%02d ",ACURR(A_STR)-18);
 		else
-		    Sprintf(nb = eos(nb),"St:18/** ");
+		    sprintf(nb = eos(nb),"St:18/** ");
 	} else
-		Sprintf(nb = eos(nb), "St:%-1d ",ACURR(A_STR));
-	Sprintf(nb = eos(nb),
+		sprintf(nb = eos(nb), "St:%-1d ",ACURR(A_STR));
+	sprintf(nb = eos(nb),
 		"Dx:%-1d Co:%-1d In:%-1d Wi:%-1d Ch:%-1d",
 		ACURR(A_DEX), ACURR(A_CON), ACURR(A_INT), ACURR(A_WIS), ACURR(A_CHA));
-	Sprintf(nb = eos(nb), (u.ualign.type == A_CHAOTIC) ? "  Chaotic" :
+	sprintf(nb = eos(nb), (u.ualign.type == A_CHAOTIC) ? "  Chaotic" :
 			(u.ualign.type == A_NEUTRAL) ? "  Neutral" : "  Lawful");
 #ifdef SCORE_ON_BOTL
 	if (flags.showscore)
-	    Sprintf(nb = eos(nb), " S:%ld", botl_score());
+	    sprintf(nb = eos(nb), " S:%ld", botl_score());
 #endif
 #ifdef DUMP_LOG
 }
@@ -224,15 +224,15 @@ int describe_level(char *buf) {
 
 	/* TODO:	Add in dungeon name */
 	if (Is_knox(&u.uz))
-		Sprintf(buf, "%s ", dungeons[u.uz.dnum].dname);
+		sprintf(buf, "%s ", dungeons[u.uz.dnum].dname);
 	else if (In_quest(&u.uz))
-		Sprintf(buf, "Home %d ", dunlev(&u.uz));
+		sprintf(buf, "Home %d ", dunlev(&u.uz));
 	else if (In_endgame(&u.uz))
-		Sprintf(buf,
+		sprintf(buf,
 			Is_astralevel(&u.uz) ? "Astral Plane " : "End Game ");
 	else {
 		/* ports with more room may expand this one */
-		Sprintf(buf, "Dlvl:%-2d ", depth(&u.uz));
+		sprintf(buf, "Dlvl:%-2d ", depth(&u.uz));
 		ret = 0;
 	}
 	return ret;
@@ -251,7 +251,7 @@ void bot2str(char* newbot2) {
 
 	if(hp < 0) hp = 0;
 	(void) describe_level(newbot2);
-	Sprintf(nb = eos(newbot2),
+	sprintf(nb = eos(newbot2),
 #ifdef HPMON
 		"%c:%-2ld HP:", oc_syms[COIN_CLASS],
 #ifndef GOLDOBJ
@@ -273,7 +273,7 @@ void bot2str(char* newbot2) {
 	curs(WIN_STATUS, 1, 1);
 	putstr(WIN_STATUS, 0, newbot2);
 
-	Sprintf(nb = eos(newbot2), "%d(%d)", hp, hpmax);
+	sprintf(nb = eos(newbot2), "%d(%d)", hp, hpmax);
 #ifdef TEXTCOLOR
 	if (iflags.use_color) {
 	  curs(WIN_STATUS, 1, 1);
@@ -298,47 +298,47 @@ void bot2str(char* newbot2) {
 	    term_end_color();
 	}
 #endif /* TEXTCOLOR */
-	Sprintf(nb = eos(newbot2), " Pw:%d(%d) AC:%-2d",
+	sprintf(nb = eos(newbot2), " Pw:%d(%d) AC:%-2d",
 		u.uen, u.uenmax, u.uac);
 #endif /* HPMON */
 
 	if (Upolyd)
-		Sprintf(nb = eos(nb), " HD:%d", mons[u.umonnum].mlevel);
+		sprintf(nb = eos(nb), " HD:%d", mons[u.umonnum].mlevel);
 #ifdef EXP_ON_BOTL
 	else if(flags.showexp)
-		Sprintf(nb = eos(nb), " Xp:%u/%-1ld", u.ulevel,u.uexp);
+		sprintf(nb = eos(nb), " Xp:%u/%-1ld", u.ulevel,u.uexp);
 #endif
 	else
-		Sprintf(nb = eos(nb), " Exp:%u", u.ulevel);
+		sprintf(nb = eos(nb), " Exp:%u", u.ulevel);
 
 	if(flags.time)
-	    Sprintf(nb = eos(nb), " T:%ld", moves);
+	    sprintf(nb = eos(nb), " T:%ld", moves);
 
 #ifdef REALTIME_ON_BOTL
   if(iflags.showrealtime) {
     time_t currenttime = get_realtime();
-    Sprintf(nb = eos(nb), " %d:%2.2d", currenttime / 3600, 
+    sprintf(nb = eos(nb), " %d:%2.2d", currenttime / 3600, 
                                        (currenttime % 3600) / 60);
   }
 #endif
 
 	if(strcmp(hu_stat[u.uhs], "        ")) {
-		Sprintf(nb = eos(nb), " ");
+		sprintf(nb = eos(nb), " ");
 		Strcat(newbot2, hu_stat[u.uhs]);
 	}
-	if(Confusion)	   Sprintf(nb = eos(nb), " Conf");
+	if(Confusion)	   sprintf(nb = eos(nb), " Conf");
 	if(Sick) {
 		if (u.usick_type & SICK_VOMITABLE)
-			   Sprintf(nb = eos(nb), " FoodPois");
+			   sprintf(nb = eos(nb), " FoodPois");
 		if (u.usick_type & SICK_NONVOMITABLE)
-			   Sprintf(nb = eos(nb), " Ill");
+			   sprintf(nb = eos(nb), " Ill");
 	}
-	if(Blind)	   Sprintf(nb = eos(nb), " Blind");
-	if(Stunned)	   Sprintf(nb = eos(nb), " Stun");
-	if(Hallucination)  Sprintf(nb = eos(nb), " Hallu");
-	if(Slimed)         Sprintf(nb = eos(nb), " Slime");
+	if(Blind)	   sprintf(nb = eos(nb), " Blind");
+	if(Stunned)	   sprintf(nb = eos(nb), " Stun");
+	if(Hallucination)  sprintf(nb = eos(nb), " Hallu");
+	if(Slimed)         sprintf(nb = eos(nb), " Slime");
 	if(cap > UNENCUMBERED)
-		Sprintf(nb = eos(nb), " %s", enc_stat[cap]);
+		sprintf(nb = eos(nb), " %s", enc_stat[cap]);
 }
 STATIC_OVL void bot2() {
 	char newbot2[MAXCO];

@@ -475,7 +475,7 @@ int polymon(int mntmp) {
 
 	    	pline("No longer petrifying-resistant, you touch %s.",
 	    			mon_nam(u.usteed));
-	    	Sprintf(buf, "riding %s", an(u.usteed->data->mname));
+	    	sprintf(buf, "riding %s", an(u.usteed->data->mname));
 	    	instapetrify(buf);
  	    }
 	    if (!can_ride(u.usteed)) dismount_steed(DISMOUNT_POLY);
@@ -613,7 +613,7 @@ STATIC_OVL void break_armor() {
 		char hornbuf[BUFSZ], yourbuf[BUFSZ];
 
 		/* Future possiblities: This could damage/destroy helmet */
-		Sprintf(hornbuf, "horn%s", plur(num_horns(youmonst.data)));
+		sprintf(hornbuf, "horn%s", plur(num_horns(youmonst.data)));
 		Your("%s %s through %s %s.", hornbuf, vtense(hornbuf, "pierce"),
 		     shk_your(yourbuf, otmp), xname(otmp));
 	    } else {
@@ -704,7 +704,7 @@ void rehumanize() {
 	if (u.uhp < 1) {
 	    char kbuf[256];
 
-	    Sprintf(kbuf, "reverting to unhealthy %s form", urace.adj);
+	    sprintf(kbuf, "reverting to unhealthy %s form", urace.adj);
 	    killer_format = KILLED_BY;
 	    killer = kbuf;
 	    done(DIED);
@@ -940,7 +940,7 @@ int dogaze() {
 		} else {
 		    if (flags.confirm && mtmp->mpeaceful && !Confusion
 							&& !Hallucination) {
-			Sprintf(qbuf, "Really %s %s?",
+			sprintf(qbuf, "Really %s %s?",
 			    (adtyp == AD_CONF) ? "confuse" : "attack",
 			    mon_nam(mtmp));
 			if (yn(qbuf) != 'y') continue;

@@ -47,7 +47,7 @@ static bool read_txttile() {
 	if (fscanf(infile, "# %s %d (%[^)])", buf2, &i, buf) <= 0)
 		return FALSE;
 	
-	Sprintf(comment,"# tile %d (%s)", i, buf);
+	sprintf(comment,"# tile %d (%s)", i, buf);
 	
 	/* look for non-whitespace at each stage */
 	if (fscanf(infile, "%1s", c) < 0) {

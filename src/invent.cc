@@ -891,9 +891,9 @@ struct Object * getobj(const char *let, const char *word) {
 		cnt = 0;
 		if (allowcnt == 2) allowcnt = 1;  /* abort previous count */
 		if(!buf[0]) {
-			Sprintf(qbuf, "What do you want to %s? [*]", word);
+			sprintf(qbuf, "What do you want to %s? [*]", word);
 		} else {
-			Sprintf(qbuf, "What do you want to %s? [%s or ?*]",
+			sprintf(qbuf, "What do you want to %s? [%s or ?*]",
 				word, buf);
 		}
 #ifdef REDO
@@ -1175,7 +1175,7 @@ int ggetobj(
 	ilets[iletct] = '\0';
 
 	for (;;) {
-	    Sprintf(qbuf,"What kinds of thing do you want to %s? [%s]",
+	    sprintf(qbuf,"What kinds of thing do you want to %s? [%s]",
 		    word, ilets);
 	    getlin(qbuf, buf);
 	    if (buf[0] == '\033') return(0);
@@ -1423,7 +1423,7 @@ STATIC_OVL void menu_identify(int id_limit) {
     /* assumptions:  id_limit > 0 and at least one unID'd item is present */
 
     while (id_limit) {
-	Sprintf(buf, "What would you like to identify %s?",
+	sprintf(buf, "What would you like to identify %s?",
 		first ? "first" : "next");
 	n = query_objlist(buf, invent, SIGNAL_NOMENU|USE_INVLET|INVORDER_SORT,
 		&pick_list, PICK_ANY, not_fully_identified);
@@ -1530,17 +1530,17 @@ char * xprname(struct Object *obj, const char *txt, char let, bool dot, long cos
      */
     if (cost != 0 || let == '*') {
 	/* if dot is true, we're doing Iu, otherwise Ix */
-	Sprintf(li, "%c - %-45s %6ld %s",
+	sprintf(li, "%c - %-45s %6ld %s",
 		(dot && use_invlet ? obj->invlet : let),
 		(txt ? txt : doname(obj)), cost, currency(cost));
 #ifndef GOLDOBJ
     } else if (obj && obj->oclass == COIN_CLASS) {
-	Sprintf(li, "%ld gold piece%s%s", obj->quan, plur(obj->quan),
+	sprintf(li, "%ld gold piece%s%s", obj->quan, plur(obj->quan),
 		(dot ? "." : ""));
 #endif
     } else {
 	/* ordinary inventory display or pickup message */
-	Sprintf(li, "%c - %s%s",
+	sprintf(li, "%c - %s%s",
 		(use_invlet ? obj->invlet : let),
 		(txt ? txt : doname(obj)), (dot ? "." : ""));
     }
@@ -2141,7 +2141,7 @@ const char * dfeature_at(int x, int y, char *buf) {
 	    cmap = S_sink;				/* "sink" */
 #endif
 	else if (IS_ALTAR(ltyp)) {
-	    Sprintf(altbuf, "altar to %s (%s)", a_gname(),
+	    sprintf(altbuf, "altar to %s (%s)", a_gname(),
 		    align_str(Amask2align(lev->altarmask & ~AM_SHRINE)));
 	    dfeature = altbuf;
 	} else if ((x == xupstair && y == yupstair) ||
@@ -2183,7 +2183,7 @@ int look_here(int obj_cnt, bool picked_some) {
 
 	if (u.uswallow && u.ustuck) {
 	    struct Monster *mtmp = u.ustuck;
-	    Sprintf(fbuf, "Contents of %s %s",
+	    sprintf(fbuf, "Contents of %s %s",
 		s_suffix(mon_nam(mtmp)), mbodypart(mtmp, STOMACH));
 	    /* Skip "Contents of " by using fbuf index 12 */
 	    You("%s to %s what is lying in %s.",
@@ -2230,7 +2230,7 @@ int look_here(int obj_cnt, bool picked_some) {
 	}
 
 	if (dfeature)
-		Sprintf(fbuf, "There is %s here.", an(dfeature));
+		sprintf(fbuf, "There is %s here.", an(dfeature));
 
 	if (!otmp || is_lava(u.ux,u.uy) || (is_pool(u.ux,u.uy) && !Underwater)) {
 		if (dfeature) pline(fbuf);
@@ -2306,7 +2306,7 @@ void feel_cockatrice(struct Object *otmp, bool force_touch) {
 	    else
 			pline("Touching the %s corpse is a fatal mistake...",
 				mons[otmp->corpsenm].mname);
-		Sprintf(kbuf, "%s corpse", an(mons[otmp->corpsenm].mname));
+		sprintf(kbuf, "%s corpse", an(mons[otmp->corpsenm].mname));
 		instapetrify(kbuf);
 	}
 }
@@ -2655,7 +2655,7 @@ int doorganize() {
 
 	/* get new letter to use as inventory letter */
 	for (;;) {
-		Sprintf(qbuf, "Adjust letter to what [%s]?",buf);
+		sprintf(qbuf, "Adjust letter to what [%s]?",buf);
 		let = yn_function(qbuf, (char *)0, '\0');
 		if(index(quitchars,let)) {
 			pline(Never_mind);
@@ -2756,7 +2756,7 @@ struct Object * display_minventory(struct Monster *mon, int dflags, char *title)
 	int do_all = (dflags & MINV_ALL) != 0;
 #endif
 
-	Sprintf(tmp,"%s %s:", s_suffix(noit_Monnam(mon)),
+	sprintf(tmp,"%s %s:", s_suffix(noit_Monnam(mon)),
 		do_all ? "possessions" : "armament");
 
 #ifndef GOLDOBJ
@@ -2828,7 +2828,7 @@ struct Object * display_cinventory(struct Object *obj) {
 	int n;
 	menu_item *selected = 0;
 
-	Sprintf(tmp,"Contents of %s:", doname(obj));
+	sprintf(tmp,"Contents of %s:", doname(obj));
 
 	if (obj->cobj) {
 	    n = query_objlist(tmp, obj->cobj, INVORDER_SORT, &selected,

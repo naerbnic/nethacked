@@ -265,9 +265,9 @@ void done_in_by(struct Monster *mtmp) {
 
 	if(mtmp->data == &mons[PM_GHOST]) {
 		Strcat(buf, "ghost");
-		if (mtmp->mnamelth) Sprintf(eos(buf), " of %s", NAME(mtmp));
+		if (mtmp->mnamelth) sprintf(eos(buf), " of %s", NAME(mtmp));
 	} else if(mtmp->isshk) {
-		Sprintf(eos(buf), "%s %s, the shopkeeper",
+		sprintf(eos(buf), "%s %s, the shopkeeper",
 			(mtmp->female ? "Ms." : "Mr."), shkname(mtmp));
 		killer_format = KILLED_BY;
 	} else if (mtmp->ispriest || mtmp->isminion) {
@@ -278,12 +278,12 @@ void done_in_by(struct Monster *mtmp) {
 	} else {
 		Strcat(buf, mtmp->data->mname);
 		if (mtmp->mnamelth)
-		    Sprintf(eos(buf), " called %s", NAME(mtmp));
+		    sprintf(eos(buf), " called %s", NAME(mtmp));
 	}
 
 	if (multi) {
 	  if (strlen(multi_txt) > 0)
-	    Sprintf(eos(buf), ", while %s", multi_txt);
+	    sprintf(eos(buf), ", while %s", multi_txt);
 	  else
 	    Strcat(buf, ", while helpless");
 	}
@@ -412,7 +412,7 @@ STATIC_OVL void disclose(int how, bool taken) {
 
 	if (invent) {
 	    if(taken)
-		Sprintf(qbuf,"Do you want to see what you had when you %s?",
+		sprintf(qbuf,"Do you want to see what you had when you %s?",
 			(how == QUIT) ? "quit" : "died");
 	    else
 		Strcpy(qbuf,"Do you want your possessions identified?");
@@ -589,7 +589,7 @@ STATIC_OVL void artifact_score(struct Object *list, bool counting, winid endwin)
 		makeknown(otmp->otyp);
 		otmp->known = otmp->dknown = otmp->bknown = otmp->rknown = 1;
 		/* assumes artifacts don't have quan > 1 */
-		Sprintf(pbuf, "%s%s (worth %ld %s and %ld points)",
+		sprintf(pbuf, "%s%s (worth %ld %s and %ld points)",
 			the_unique_obj(otmp) ? "The " : "",
 			otmp->oartifact ? artifact_name(xname(otmp), &dummy) :
 				OBJ_NAME(objects[otmp->otyp]),
@@ -637,7 +637,7 @@ void done(int how) {
 	/* kilbuf: used to copy killer in case it comes from something like
 	 *	xname(), which would otherwise get overwritten when we call
 	 *	xname() when listing possessions
-	 * pbuf: holds Sprintf'd output for raw_print and putstr
+	 * pbuf: holds sprintf'd output for raw_print and putstr
 	 */
 	if (how == ASCENDED || (!killer && how == GENOCIDED))
 		killer_format = NO_KILLER_PREFIX;
@@ -696,7 +696,7 @@ die:
 	/* D: Grab screen dump right here */
 	if (dump_fn[0]) {
 	  dump_init();
-	  Sprintf(pbuf, "%s, %s %s %s %s", plname,
+	  sprintf(pbuf, "%s, %s %s %s %s", plname,
 		  aligns[1 - u.ualign.type].adj,
 		  genders[flags.female].adj,
 		  urace.adj,
@@ -773,7 +773,7 @@ die:
 		}
 		corpse = mk_named_object(CORPSE, &mons[mnum],
 				       u.ux, u.uy, plname);
-		Sprintf(pbuf, "%s, %s%s", plname,
+		sprintf(pbuf, "%s, %s%s", plname,
 			killer_format == NO_KILLER_PREFIX ? "" :
 			killed_by_prefix[how],
 			killer_format == KILLED_BY_AN ? an(killer) : killer);
@@ -893,7 +893,7 @@ die:
 		/* don't bother counting to see whether it should be plural */
 	}
 
-	    Sprintf(pbuf, "%s %s the %s...", Goodbye(), plname,
+	    sprintf(pbuf, "%s %s the %s...", Goodbye(), plname,
 		   how != ASCENDED ?
 		      (const char *) ((flags.female && urole.name.f) ?
 		         urole.name.f : urole.name.m) :
@@ -934,7 +934,7 @@ die:
 	    Strcpy(pbuf, "You");
 	    if (mtmp) {
 		while (mtmp) {
-			Sprintf(eos(pbuf), " and %s", mon_nam(mtmp));
+			sprintf(eos(pbuf), " and %s", mon_nam(mtmp));
 		    if (mtmp->mtame)
 			u.urexp += mtmp->mhp;
 		    mtmp = mtmp->nmon;
@@ -947,7 +947,7 @@ die:
 	    } else {
 		if (!done_stopprint) Strcat(pbuf, " ");
 	    }
-		Sprintf(eos(pbuf), "%s with %ld point%s,",
+		sprintf(eos(pbuf), "%s with %ld point%s,",
 			how==ASCENDED ? "went to your reward" :
 					"escaped from the dungeon",
 			u.urexp, plur(u.urexp));
@@ -979,12 +979,12 @@ die:
 			otmp->dknown = 1;	/* seen it (blindness fix) */
 			otmp->onamelth = 0;
 			otmp->quan = count;
-			Sprintf(pbuf, "%8ld %s (worth %ld %s),",
+			sprintf(pbuf, "%8ld %s (worth %ld %s),",
 				count, xname(otmp),
 				count * (long)objects[typ].oc_cost, currency(2L));
 			obfree(otmp, nullptr);
 		    } else {
-			Sprintf(pbuf,
+			sprintf(pbuf,
 				"%8ld worthless piece%s of colored glass,",
 				count, plur(count));
 		    }
@@ -1000,20 +1000,20 @@ die:
 	    if (u.uz.dnum == 0 && u.uz.dlevel <= 0) {
 		/* level teleported out of the dungeon; `how' is DIED,
 		   due to falling or to "arriving at heaven prematurely" */
-		Sprintf(pbuf, "You %s beyond the confines of the dungeon",
+		sprintf(pbuf, "You %s beyond the confines of the dungeon",
 			(u.uz.dlevel < 0) ? "passed away" : ends[how]);
 	    } else {
 		/* more conventional demise */
 		const char *where = dungeons[u.uz.dnum].dname;
 
 		if (Is_astralevel(&u.uz)) where = "The Astral Plane";
-		Sprintf(pbuf, "You %s in %s", ends[how], where);
+		sprintf(pbuf, "You %s in %s", ends[how], where);
 		if (!In_endgame(&u.uz) && !Is_knox(&u.uz))
-		    Sprintf(eos(pbuf), " on dungeon level %d",
+		    sprintf(eos(pbuf), " on dungeon level %d",
 			    In_quest(&u.uz) ? dunlev(&u.uz) : depth(&u.uz));
 	    }
 
-	    Sprintf(eos(pbuf), " with %ld point%s,",
+	    sprintf(eos(pbuf), " with %ld point%s,",
 		    u.urexp, plur(u.urexp));
 	    if (!done_stopprint) putstr(endwin, 0, pbuf);
 #ifdef DUMP_LOG
@@ -1021,17 +1021,17 @@ die:
 #endif
 	}
 
-	    Sprintf(pbuf, "and %ld piece%s of gold, after %ld move%s.",
+	    sprintf(pbuf, "and %ld piece%s of gold, after %ld move%s.",
 		    umoney, plur(umoney), moves, plur(moves));
 	if (!done_stopprint)  putstr(endwin, 0, pbuf);
 #ifdef DUMP_LOG
 	if (dump_fp) {
 	  dump("", pbuf);
-	  Sprintf(pbuf, "Killer: %s", killer);
+	  sprintf(pbuf, "Killer: %s", killer);
 	  dump("", pbuf);
 	}
 #endif
-	    Sprintf(pbuf,
+	    sprintf(pbuf,
 	     "You were level %d with a maximum of %d hit point%s when you %s.",
 		    u.ulevel, u.uhpmax, plur(u.uhpmax), ends[how]);
 	if (!done_stopprint) {
@@ -1131,7 +1131,7 @@ void do_containerconts(
 		      if (*++invlet) goto nextclass;
 		    }
 #endif /* SORTLOOT */
-		    Sprintf(buf, "Contents of %s:", the(xname(box)));
+		    sprintf(buf, "Contents of %s:", the(xname(box)));
 #ifdef DUMP_LOG
 		    if (want_disp) {
 #endif
@@ -1257,14 +1257,14 @@ void do_vanquished(int defquery, bool ask, bool want_dump)
 	      for (i = LOW_PM; i < NUMMONS; i++)
 		if (mons[i].mlevel == lev && (nkilled = mvitals[i].died) > 0) {
 		    if ((mons[i].geno & G_UNIQ) && i != PM_HIGH_PRIEST) {
-			Sprintf(buf, "%s%s",
+			sprintf(buf, "%s%s",
 				!type_is_pname(&mons[i]) ? "The " : "",
 				mons[i].mname);
 			if (nkilled > 1) {
 			    switch (nkilled) {
-				case 2:  Sprintf(eos(buf)," (twice)");  break;
-				case 3:  Sprintf(eos(buf)," (thrice)");  break;
-				default: Sprintf(eos(buf)," (%d time%s)",
+				case 2:  sprintf(eos(buf)," (twice)");  break;
+				case 3:  sprintf(eos(buf)," (thrice)");  break;
+				default: sprintf(eos(buf)," (%d time%s)",
 						 nkilled, plur(nkilled));
 					 break;
 			    }
@@ -1275,11 +1275,11 @@ void do_vanquished(int defquery, bool ask, bool want_dump)
 			if (nkilled == 1)
 			    Strcpy(buf, an(mons[i].mname));
 			else
-			    Sprintf(buf, "%d %s",
+			    sprintf(buf, "%d %s",
 				    nkilled, makeplural(mons[i].mname));
 #ifdef SHOW_BORN
 			if (iflags.show_born && nkilled != mvitals[i].born)
-			    Sprintf(buf + strlen(buf), " (%d created)",
+			    sprintf(buf + strlen(buf), " (%d created)",
 				    (int) mvitals[i].born);
 #endif
 		    }
@@ -1294,7 +1294,7 @@ void do_vanquished(int defquery, bool ask, bool want_dump)
 	     */
 	    if (ntypes > 1) {
 		if (c == 'y') putstr(klwin, 0, "");
-		Sprintf(buf, "%ld creatures vanquished.", total_killed);
+		sprintf(buf, "%ld creatures vanquished.", total_killed);
 		if (c == 'y') putstr(klwin, 0, buf);
 #ifdef DUMP_LOG
 		if (want_dump)  dump("  ", buf);
@@ -1365,9 +1365,9 @@ STATIC_OVL void list_genocided(char defquery, bool ask)
 			      ynqchars, defquery) : defquery;
 	if (c == 'q') done_stopprint++;
 #ifdef SHOW_EXTINCT
-	Sprintf(buf, "Genocided or extinct species:");
+	sprintf(buf, "Genocided or extinct species:");
 #else
-	Sprintf(buf, "Genocided species:");
+	sprintf(buf, "Genocided species:");
 #endif
 	if (c == 'y') {
 	    klwin = create_nhwindow(NHW_MENU);
@@ -1386,7 +1386,7 @@ STATIC_OVL void list_genocided(char defquery, bool ask)
 		if (mvitals[i].mvflags & G_GENOD) {
 #endif
 		    if ((mons[i].geno & G_UNIQ) && i != PM_HIGH_PRIEST)
-			Sprintf(buf, "%s%s",
+			sprintf(buf, "%s%s",
 				!type_is_pname(&mons[i]) ? "" : "the ",
 				mons[i].mname);
 		    else
@@ -1405,7 +1405,7 @@ STATIC_OVL void list_genocided(char defquery, bool ask)
 #ifdef SHOW_EXTINCT
 	if (ngenocided>0) {
 #endif
-	    Sprintf(buf, "%d species genocided.", ngenocided);
+	    sprintf(buf, "%d species genocided.", ngenocided);
 	    if (c == 'y') putstr(klwin, 0, buf);
 #ifdef DUMP_LOG
 	    if (want_dump)  dump("  ", buf);
@@ -1413,7 +1413,7 @@ STATIC_OVL void list_genocided(char defquery, bool ask)
 #ifdef SHOW_EXTINCT
 	}
 	if (nextincted>0) {
-	    Sprintf(buf, "%d species extinct.", nextincted);
+	    sprintf(buf, "%d species extinct.", nextincted);
 #ifdef DUMP_LOG
 	    if (want_dump) dump("  ", buf);
 #endif

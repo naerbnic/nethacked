@@ -103,7 +103,7 @@ int dowrite(struct Object *pen) {
 	}
 
 	/* what to write */
-	Sprintf(qbuf, "What type of %s do you want to write?", typeword);
+	sprintf(qbuf, "What type of %s do you want to write?", typeword);
 	getlin(qbuf, namebuf);
 	(void)mungspaces(namebuf);	/* remove any excess whitespace */
 	if(namebuf[0] == '\033' || !namebuf[0])
@@ -206,7 +206,7 @@ found:
 			    Strcpy(namebuf, OBJ_DESCR(objects[new_obj->otyp]));
 			    wipeout_text(namebuf, (6+MAXULEV - u.ulevel)/6, 0);
 			} else
-			    Sprintf(namebuf, "%s was here!", plname);
+			    sprintf(namebuf, "%s was here!", plname);
 			You("write \"%s\" and the scroll disappears.", namebuf);
 			useup(paper);
 		}

@@ -913,7 +913,7 @@ void potionhit(struct Monster *mon, struct Object *obj, bool your_fault) {
 		    char buf[BUFSZ];
 
 		    if(has_head(mon->data)) {
-			Sprintf(buf, "%s %s",
+			sprintf(buf, "%s %s",
 				s_suffix(mnam),
 				(notonhead ? "body" : "head"));
 		    } else {
@@ -1465,7 +1465,7 @@ int dodip() {
 	/* Is there a fountain to dip into here? */
 	if (IS_FOUNTAIN(here)) {
 #ifdef PARANOID
-		Sprintf(qbuf, "Dip %s into the fountain?", the(xname(obj)));
+		sprintf(qbuf, "Dip %s into the fountain?", the(xname(obj)));
 		if(yn(qbuf) == 'y') {
 #else
 		if(yn("Dip it into the fountain?") == 'y') {
@@ -1476,9 +1476,9 @@ int dodip() {
 	} else if (is_pool(u.ux,u.uy)) {
 		tmp = waterbody_name(u.ux,u.uy);
 #ifdef PARANOID
-		Sprintf(qbuf, "Dip %s into the %s?", the(xname(obj)), tmp);
+		sprintf(qbuf, "Dip %s into the %s?", the(xname(obj)), tmp);
 #else
-		Sprintf(qbuf, "Dip it into the %s?", tmp);
+		sprintf(qbuf, "Dip it into the %s?", tmp);
 #endif
 		if (yn(qbuf) == 'y') {
 		    if (Levitation) {
@@ -1497,7 +1497,7 @@ int dodip() {
 	}
 
 #ifdef PARANOID
-	Sprintf(qbuf, "dip %s into", the(xname(obj)));
+	sprintf(qbuf, "dip %s into", the(xname(obj)));
 	if(!(potion = getobj(beverages, qbuf)))
 #else
 	if(!(potion = getobj(beverages, "dip into")))
@@ -1682,7 +1682,7 @@ int dodip() {
 	    if(potion->otyp == POT_SICKNESS && !obj->opoisoned) {
 		char buf[BUFSZ];
 		if (potion->quan > 1L)
-		    Sprintf(buf, "One of %s", the(xname(potion)));
+		    sprintf(buf, "One of %s", the(xname(potion)));
 		else
 		    Strcpy(buf, The(xname(potion)));
 		pline("%s forms a coating on %s.",
@@ -1805,7 +1805,7 @@ int dodip() {
 		oldbuf[0] = '\0';
 		if (potion->dknown) {
 		    old_dknown = TRUE;
-		    Sprintf(oldbuf, "%s ",
+		    sprintf(oldbuf, "%s ",
 			    hcolor(OBJ_DESCR(objects[potion->otyp])));
 		}
 		/* with multiple merged potions, split off one and
@@ -1830,9 +1830,9 @@ int dodip() {
 		} else {
 		    singlepotion->dknown = !Hallucination;
 		    if (mixture == POT_WATER && singlepotion->dknown)
-			Sprintf(newbuf, "clears");
+			sprintf(newbuf, "clears");
 		    else
-			Sprintf(newbuf, "turns %s",
+			sprintf(newbuf, "turns %s",
 				hcolor(OBJ_DESCR(objects[mixture])));
 		    pline_The("%spotion%s %s.", oldbuf,
 			      more_than_one ? " that you dipped into" : "",
@@ -1923,7 +1923,7 @@ split_mon(
 	char reason[BUFSZ];
 
 	reason[0] = '\0';
-	if (mtmp) Sprintf(reason, " from %s heat",
+	if (mtmp) sprintf(reason, " from %s heat",
 			  (mtmp == &youmonst) ? (const char *)"your" :
 			      (const char *)s_suffix(mon_nam(mtmp)));
 

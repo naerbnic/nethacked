@@ -82,7 +82,7 @@ char * getrumor(int truth, char *rumor_buf, bool exclude_cookie) {
 		if (true_rumor_size == 0L) {	/* if this is 1st outrumor() */
 		    init_rumors(rumors);
 		    if (true_rumor_size < 0L) {	/* init failed */
-			Sprintf(rumor_buf, "Error reading \"%.80s\".",
+			sprintf(rumor_buf, "Error reading \"%.80s\".",
 				RUMORFILE);
 			return rumor_buf;
 		    }
@@ -285,7 +285,7 @@ int doconsult(struct Monster *oracl) {
 		return 0;
 	}
 
-	Sprintf(qbuf,
+	sprintf(qbuf,
 		"\"Wilt thou settle for a minor consultation?\" (%d %s)",
 		minor_cost, currency((long)minor_cost));
 	switch (ynq(qbuf)) {
@@ -310,7 +310,7 @@ int doconsult(struct Monster *oracl) {
 		if (umoney <= (long)minor_cost ||	/* don't even ask */
 #endif
 		    (oracle_cnt == 1 || oracle_flg < 0)) return 0;
-		Sprintf(qbuf,
+		sprintf(qbuf,
 			"\"Then dost thou desire a major one?\" (%d %s)",
 			major_cost, currency((long)major_cost));
 		if (yn(qbuf) != 'y') return 0;

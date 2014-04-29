@@ -115,9 +115,9 @@ typedef schar	xchar;
 # define EXIT_FAILURE 1
 #endif
 
-#define Sprintf  (void) sprintf
-#define Strcat   (void) strcat
-#define Strcpy   (void) strcpy
+#define sprintf  sprintf
+#define Strcat   strcat
+#define Strcpy   strcpy
 #ifdef NEED_VARARGS
 #define Vprintf  (void) vprintf
 #define Vfprintf (void) vfprintf

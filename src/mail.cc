@@ -480,7 +480,7 @@ void readmail(struct Object *otmp) {
     cmd = (len + 1 < otmp->onamelth) ? txt + len + 1 : (char *) 0;
     if (!cmd || !*cmd) cmd = "SPAWN";
 
-    Sprintf(qbuf, "System command (%s)", cmd);
+    sprintf(qbuf, "System command (%s)", cmd);
     getlin(qbuf, buf);
     if (*buf != '\033') {
 	for (p = eos(buf); p > buf; *p = '\0')

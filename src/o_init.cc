@@ -351,7 +351,7 @@ int dodiscovered() {
 	if (objects[uniq_objs[i]].oc_name_known) {
 	    if (!dis++)
 		putstr(tmpwin, iflags.menu_headings, "Unique Items");
-		Sprintf(buf, "  %s", OBJ_NAME(objects[uniq_objs[i]]));
+		sprintf(buf, "  %s", OBJ_NAME(objects[uniq_objs[i]]));
 	    putstr(tmpwin, 0, buf);
 	    ++ct;
 	}
@@ -377,7 +377,7 @@ int dodiscovered() {
 		    putstr(tmpwin, iflags.menu_headings, let_to_name(oclass, FALSE));
 		    prev_class = oclass;
 		}
-		Sprintf(buf, "%s %s",(objects[dis].oc_pre_discovered ? "*" : " "),
+		sprintf(buf, "%s %s",(objects[dis].oc_pre_discovered ? "*" : " "),
 				obj_typename(dis));
 		putstr(tmpwin, 0, buf);
 	    }

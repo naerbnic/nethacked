@@ -202,11 +202,11 @@ int main(int argc, char *argv[]) {
 		(void) signal(SIGQUIT,SIG_IGN);
 		(void) signal(SIGINT,SIG_IGN);
 		if(!locknum)
-			Sprintf(lock, "%d%s", (int)getuid(), plname);
+			sprintf(lock, "%d%s", (int)getuid(), plname);
 		getlock();
 #ifdef WIZARD
 	} else {
-		Sprintf(lock, "%d%s", (int)getuid(), plname);
+		sprintf(lock, "%d%s", (int)getuid(), plname);
 		getlock();
 	}
 #endif /* WIZARD */

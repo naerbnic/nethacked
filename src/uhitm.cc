@@ -197,7 +197,7 @@ bool attack_checks(struct Monster *mtmp, struct Object *wep) {
 		}
 		if (canspotmon(mtmp)) {
 #ifdef PARANOID
-			Sprintf(qbuf, "Really attack %s? [no/yes]",
+			sprintf(qbuf, "Really attack %s? [no/yes]",
 				mon_nam(mtmp));
 			if (iflags.paranoid_hit) {
 				getlin (qbuf, buf);
@@ -208,7 +208,7 @@ bool attack_checks(struct Monster *mtmp, struct Object *wep) {
 				}
 			} else {
 #endif
-			Sprintf(qbuf, "Really attack %s?", mon_nam(mtmp));
+			sprintf(qbuf, "Really attack %s?", mon_nam(mtmp));
 			if (yn(qbuf) != 'y') {
 				flags.move = 0;
 				return(TRUE);
@@ -1012,7 +1012,7 @@ STATIC_OVL bool hmon_hitmon(struct Monster *mon, struct Object *obj, int thrown)
 		    else if (barehand_silver_rings == 2)
 			fmt = "Your silver rings sear %s!";
 		    else if (silverobj && saved_oname[0]) {
-		    	Sprintf(silverobjbuf, "Your %s%s %s %%s!",
+		    	sprintf(silverobjbuf, "Your %s%s %s %%s!",
 		    		strstri(saved_oname, "silver") ?
 					"" : "silver ",
 				saved_oname, vtense(saved_oname, "sear"));
@@ -1223,7 +1223,7 @@ STATIC_OVL void steal_it(struct Monster *mdef, struct Attack *mattk) {
 		    touch_petrifies(&mons[otmp->corpsenm]) && !uarmg) {
 		char kbuf[BUFSZ];
 
-		Sprintf(kbuf, "stolen %s corpse", mons[otmp->corpsenm].mname);
+		sprintf(kbuf, "stolen %s corpse", mons[otmp->corpsenm].mname);
 		instapetrify(kbuf);
 		break;		/* stop the theft even if hero survives */
 	    }
@@ -1719,7 +1719,7 @@ STATIC_OVL int gulpum(struct Monster *mdef, struct Attack *mattk) {
 			if (is_rider(mdef->data)) {
 			 pline("Unfortunately, digesting any of it is fatal.");
 			    end_engulf();
-			    Sprintf(msgbuf, "unwisely tried to eat %s",
+			    sprintf(msgbuf, "unwisely tried to eat %s",
 				    mdef->data->mname);
 			    killer = msgbuf;
 			    killer_format = NO_KILLER_PREFIX;
@@ -1755,7 +1755,7 @@ STATIC_OVL int gulpum(struct Monster *mdef, struct Attack *mattk) {
 				/* nutrition only if there can be a corpse */
 				u.uhunger += (mdef->data->cnutrit+1) / 2;
 			    } else tmp = 0;
-			    Sprintf(msgbuf, "You totally digest %s.",
+			    sprintf(msgbuf, "You totally digest %s.",
 					    mon_nam(mdef));
 			    if (tmp != 0) {
 				/* setting afternmv = end_engulf is tempting,
@@ -1769,7 +1769,7 @@ STATIC_OVL int gulpum(struct Monster *mdef, struct Attack *mattk) {
 				nomovemsg = msgbuf;
 			    } else pline("%s", msgbuf);
 			    if (mdef->data == &mons[PM_GREEN_SLIME]) {
-				Sprintf(msgbuf, "%s isn't sitting well with you.",
+				sprintf(msgbuf, "%s isn't sitting well with you.",
 					The(mdef->data->mname));
 				if (!Unchanging) {
 					Slimed = 5L;
@@ -1858,7 +1858,7 @@ STATIC_OVL int gulpum(struct Monster *mdef, struct Attack *mattk) {
 		char kbuf[BUFSZ];
 
 		You("bite into %s.", mon_nam(mdef));
-		Sprintf(kbuf, "swallowing %s whole", an(mdef->data->mname));
+		sprintf(kbuf, "swallowing %s whole", an(mdef->data->mname));
 		instapetrify(kbuf);
 	    }
 	}
