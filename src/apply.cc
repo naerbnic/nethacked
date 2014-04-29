@@ -3,14 +3,9 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 #include <string.h>
-#include <string>
-
-#include "cxxutil.h"
 
 #include "hack.h"
 #include "edog.h"
-
-using std::string;
 
 #ifdef OVLB
 
@@ -1517,78 +1512,88 @@ void use_unicorn_horn(struct Object *obj) {
  * Timer callback routine: turn figurine into monster
  */
 void fig_transform(genericptr_t arg, long timeout) {
-  struct Object *figurine = (struct Object *) arg;
-  struct Monster *mtmp;
-  coord cc;
-  bool cansee_spot, silent, okay_spot;
-  bool redraw = FALSE;
-  string monnambuf, carriedby;
+	struct Object *figurine = (struct Object *)arg;
+	struct Monster *mtmp;
+	coord cc;
+	bool cansee_spot, silent, okay_spot;
+	bool redraw = FALSE;
+	char monnambuf[BUFSZ], carriedby[BUFSZ];
 
-  if (!figurine) {
+	if (!figurine) {
 #ifdef DEBUG
-    pline("null figurine in fig_transform()");
+	    pline("null figurine in fig_transform()");
 #endif
-    return;
-  }
-  silent = (timeout != monstermoves); /* happened while away */
-  okay_spot = get_obj_location(figurine, &cc.x, &cc.y, 0);
-  if (figurine->where == OBJ_INVENT || figurine->where == OBJ_MINVENT)
-    okay_spot = enexto(&cc, cc.x, cc.y, &mons[figurine->corpsenm]);
-  if (!okay_spot || !figurine_location_checks(figurine, &cc, TRUE)) {
-    /* reset the timer to try again later */
-    (void) start_timer((long) rnd(5000), TIMER_OBJECT,
-    FIG_TRANSFORM, (genericptr_t) figurine);
-    return;
-  }
+	    return;
+	}
+	silent = (timeout != monstermoves); /* happened while away */
+	okay_spot = get_obj_location(figurine, &cc.x, &cc.y, 0);
+	if (figurine->where == OBJ_INVENT ||
+	    figurine->where == OBJ_MINVENT)
+		okay_spot = enexto(&cc, cc.x, cc.y,
+				   &mons[figurine->corpsenm]);
+	if (!okay_spot ||
+	    !figurine_location_checks(figurine,&cc, TRUE)) {
+		/* reset the timer to try again later */
+		(void) start_timer((long)rnd(5000), TIMER_OBJECT,
+				FIG_TRANSFORM, (genericptr_t)figurine);
+		return;
+	}
 
-  cansee_spot = cansee(cc.x, cc.y);
-  mtmp = make_familiar(figurine, cc.x, cc.y, TRUE);
-  if (mtmp) {
-    monnambuf = an(m_monnam(mtmp));
-    switch (figurine->where) {
-    case OBJ_INVENT:
-      if (Blind)
-        You_feel("%s %s from your pack!", something,
-            locomotion(mtmp->data, "drop"));
-      else
-        You("see %s %s out of your pack!", monnambuf.c_str(),
-            locomotion(mtmp->data, "drop"));
-      break;
+	cansee_spot = cansee(cc.x, cc.y);
+	mtmp = make_familiar(figurine, cc.x, cc.y, TRUE);
+	if (mtmp) {
+	    sprintf(monnambuf, "%s",an(m_monnam(mtmp)));
+	    switch (figurine->where) {
+		case OBJ_INVENT:
+		    if (Blind)
+			You_feel("%s %s from your pack!", something,
+			    locomotion(mtmp->data,"drop"));
+		    else
+			You("see %s %s out of your pack!",
+			    monnambuf,
+			    locomotion(mtmp->data,"drop"));
+		    break;
 
-    case OBJ_FLOOR:
-      if (cansee_spot && !silent) {
-        You("suddenly see a figurine transform into %s!", monnambuf.c_str());
-        redraw = TRUE; /* update figurine's map location */
-      }
-      break;
+		case OBJ_FLOOR:
+		    if (cansee_spot && !silent) {
+			You("suddenly see a figurine transform into %s!",
+				monnambuf);
+			redraw = TRUE;	/* update figurine's map location */
+		    }
+		    break;
 
-    case OBJ_MINVENT:
-      if (cansee_spot && !silent) {
-        struct Monster *mon;
-        mon = figurine->ocarry;
-        /* figurine carring monster might be invisible */
-        if (canseemon(figurine->ocarry)) {
-          carriedby = StrPrintf("%s pack", s_suffix(a_monnam(mon)));
-        } else if (is_pool(mon->mx, mon->my)) {
-          carriedby = "empty water";
-        } else {
-          carriedby = "thin air";
-        }
-        You("see %s %s out of %s!", monnambuf.c_str(), locomotion(mtmp->data, "drop"),
-            carriedby.c_str());
-      }
-      break;
+		case OBJ_MINVENT:
+		    if (cansee_spot && !silent) {
+			struct Monster *mon;
+			mon = figurine->ocarry;
+			/* figurine carring monster might be invisible */
+			if (canseemon(figurine->ocarry)) {
+			    sprintf(carriedby, "%s pack",
+				     s_suffix(a_monnam(mon)));
+			}
+			else if (is_pool(mon->mx, mon->my))
+			    strcpy(carriedby, "empty water");
+			else
+			    strcpy(carriedby, "thin air");
+			You("see %s %s out of %s!", monnambuf,
+			    locomotion(mtmp->data, "drop"), carriedby);
+		    }
+		    break;
+#if 0
+		case OBJ_MIGRATING:
+		    break;
+#endif
 
-    default:
-      impossible("figurine came to life where? (%d)", (int) figurine->where);
-      break;
-    }
-  }
-  /* free figurine now */
-  obj_extract_self(figurine);
-  obfree(figurine, nullptr);
-  if (redraw)
-    newsym(cc.x, cc.y);
+		default:
+		    impossible("figurine came to life where? (%d)",
+				(int)figurine->where);
+		break;
+	    }
+	}
+	/* free figurine now */
+	obj_extract_self(figurine);
+	obfree(figurine, nullptr);
+	if (redraw) newsym(cc.x, cc.y);
 }
 
 STATIC_OVL bool figurine_location_checks(struct Object *obj, coord *cc, bool quietly) {
