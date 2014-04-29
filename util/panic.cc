@@ -7,40 +7,25 @@
  *	mode for the makedefs / drg code.
  */
 
-#define NEED_VARARGS
+//#define NEED_VARARGS
 #include "config.h"
-
-#ifdef AZTEC
-#define abort() exit()
-#endif
-#ifdef VMS
-extern void NDECL(vms_abort);
-#endif
+#include <stdarg.h>
 
 /*VARARGS1*/
 bool panicking;
 void VDECL(panic, (char const*,...));
 
-void
-panic VA_DECL(char const*,str)
-	VA_START(str);
-	VA_INIT(str, char *);
-	if(panicking++)
-#ifdef SYSV
-	    (void)
-#endif
+void panic(char const* str, ...) {
+  va_list args;
+  va_start(args, str);
+	if(panicking)
 		abort();    /* avoid loops - this should never happen*/
-
-	(void) fputs(" ERROR:  ", stderr);
-	Vfprintf(stderr, str, VA_ARGS);
-	(void) fflush(stderr);
-#if defined(UNIX) || defined(VMS)
-# ifdef SYSV
-		(void)
-# endif
-		    abort();	/* generate core dump */
-#endif
-	VA_END();
+	panicking = true;
+	fputs(" ERROR:  ", stderr);
+	vfprintf(stderr, str, args);
+	fflush(stderr);
+	abort();	/* generate core dump */
+	va_end(args);
 	exit(EXIT_FAILURE);		/* redundant */
 	return;
 }
