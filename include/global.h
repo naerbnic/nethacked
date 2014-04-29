@@ -156,10 +156,10 @@ constexpr int QBUFSZ = 128;  /* for building question text */
 constexpr int TBUFSZ = 300;	 /* toplines[] buffer max msg: 3 81char names */
 				/* plus longest prefix plus a few extra words */
 
-#define PL_NSIZ		32	/* name of player, ghost, shopkeeper */
-#define PL_CSIZ		32	/* sizeof pl_character */
-#define PL_FSIZ		32	/* fruit name */
-#define PL_PSIZ		63	/* player-given names for pets, other
+constexpr int PL_NSIZ = 32;	/* name of player, ghost, shopkeeper */
+constexpr int PL_CSIZ	= 32;	/* sizeof pl_character */
+constexpr int PL_FSIZ	= 32;	/* fruit name */
+constexpr int PL_PSIZ	= 63;	/* player-given names for pets, other
 				 * monsters, objects */
 
 #define MAXDUNGEON	16	/* current maximum number of dungeons */
