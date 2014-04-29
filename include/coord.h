@@ -5,8 +5,8 @@
 #ifndef COORD_H
 #define COORD_H
 
-typedef struct nhcoord {
+struct coord {
 	xchar x,y;
-} coord;
+};
 
 #endif /* COORD_H */
