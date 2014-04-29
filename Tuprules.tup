@@ -1,4 +1,5 @@
 CCFLAGS += -I$(TUP_CWD)/include
+CCFLAGS += -I$(TUP_CWD)/cxx
 CCFLAGS += -std=c++11
 
 !cc = |> g++ $(CCFLAGS) -c %f -o %o |> %B.o
