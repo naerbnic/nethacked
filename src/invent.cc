@@ -873,7 +873,7 @@ struct Object * getobj(const char *let, const char *word) {
 	}
 	bp[foo] = 0;
 	if(foo == 0 && bp > buf && bp[-1] == ' ') *--bp = 0;
-	Strcpy(lets, bp);	/* necessary since we destroy buf */
+	strcpy(lets, bp);	/* necessary since we destroy buf */
 	if(foo > 5)			/* compactify string */
 		compactify(bp);
 	*ap = '\0';
@@ -1336,7 +1336,7 @@ nextclass:
 		if (ident && !not_fully_identified(otmp)) continue;
 		if (ckfn && !(*ckfn)(otmp)) continue;
 		if (!allflag) {
-			Strcpy(qbuf, !ininv ? doname(otmp) :
+			strcpy(qbuf, !ininv ? doname(otmp) :
 				xprname(otmp, (char *)0, ilet, !nodot, 0L, 0L));
 			strcat(qbuf, "?");
 			sym = (takeoff || ident || otmp->quan < 2L) ?
@@ -2166,7 +2166,7 @@ const char * dfeature_at(int x, int y, char *buf) {
 	    dfeature = "set of iron bars";
 
 	if (cmap >= 0) dfeature = defsyms[cmap].explanation;
-	if (dfeature) Strcpy(buf, dfeature);
+	if (dfeature) strcpy(buf, dfeature);
 	return dfeature;
 }
 
@@ -2194,7 +2194,7 @@ int look_here(int obj_cnt, bool picked_some) {
 			/* If swallower is an animal, it should have become stone but... */
 			if (otmp->otyp == CORPSE) feel_cockatrice(otmp, FALSE);
 		}
-		if (Blind) Strcpy(fbuf, "You feel");
+		if (Blind) strcpy(fbuf, "You feel");
 		strcat(fbuf,":");
 	    	(void) display_minventory(mtmp, MINV_ALL, fbuf);
 	    } else {
@@ -2269,7 +2269,7 @@ int look_here(int obj_cnt, bool picked_some) {
 		if (otmp->otyp == CORPSE && will_feel_cockatrice(otmp, FALSE)) {
 			char buf[BUFSZ];
 			felt_cockatrice = TRUE;
-			Strcpy(buf, doname(otmp));
+			strcpy(buf, doname(otmp));
 			strcat(buf, "...");
 			putstr(tmpwin, 0, buf);
 			break;
@@ -2593,7 +2593,7 @@ char * let_to_name(char let, bool unpaid) {
 	if (unpaid)
 	    strcat(strcpy(invbuf, "Unpaid "), class_name);
 	else
-	    Strcpy(invbuf, class_name);
+	    strcpy(invbuf, class_name);
 	return invbuf;
 }
 

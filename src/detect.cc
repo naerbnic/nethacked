@@ -196,10 +196,10 @@ int gold_detect(struct Object *sobj) {
 #else
 			        money_cnt(invent))
 #endif
-			Strcpy(buf,
+			strcpy(buf,
 				"You feel worried about your future financial situation.");
 		else
-			Strcpy(buf, "You feel materially poor.");
+			strcpy(buf, "You feel materially poor.");
 		strange_feeling(sobj, buf);
         }
 	return(1);
@@ -401,9 +401,9 @@ int object_detect(struct Object *detector, int class_id) {
     	boulder = ROCK_CLASS;
 
     if (Hallucination || (Confusion && class_id == SCROLL_CLASS))
-	Strcpy(stuff, something);
+	strcpy(stuff, something);
     else
-    	Strcpy(stuff, class_id ? oclass_names[class_id] : "objects");
+    	strcpy(stuff, class_id ? oclass_names[class_id] : "objects");
     if (boulder && class_id != ROCK_CLASS) strcat(stuff, " and/or large stones");
 
     if (do_dknown) for(obj = invent; obj; obj = obj->nobj) do_dknown_of(obj);

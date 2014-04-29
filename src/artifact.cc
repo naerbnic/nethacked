@@ -846,7 +846,7 @@ bool artifact_hit(struct Monster *magr, struct Monster *mdef, struct Object *otm
 	static const char you[] = "you";
 	char hittee[BUFSZ];
 
-	Strcpy(hittee, youdefend ? you : mon_nam(mdef));
+	strcpy(hittee, youdefend ? you : mon_nam(mdef));
 
 	/* The following takes care of most of the damage, but not all--
 	 * the exception being for level draining, which is specially

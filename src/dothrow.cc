@@ -1365,7 +1365,7 @@ STATIC_OVL int gem_accept(struct Monster *mon, struct Object *obj) {
 	static const char noluck[] = " graciously";
 	static const char addluck[] = " gratefully";
 
-	Strcpy(buf,Monnam(mon));
+	strcpy(buf,Monnam(mon));
 	mon->mpeaceful = 1;
 	mon->mavenge = 0;
 

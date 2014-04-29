@@ -130,7 +130,7 @@ char * strkitten(char* s, char c) {
 char * s_suffix(const char *s) {
     Static char buf[BUFSZ];
 
-    Strcpy(buf, s);
+    strcpy(buf, s);
     if(!strcmpi(buf, "it"))
 	strcat(buf, "s");
     else if(*(eos(buf)-1) == 's')

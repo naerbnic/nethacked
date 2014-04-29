@@ -174,7 +174,7 @@ STATIC_OVL void mreadmsg(struct Monster *mtmp, struct Object *otmp) {
 	    otmp->bknown = 0;
 	    if (Role_if(PM_PRIEST)) Role_switch = 0;
 	}
-	Strcpy(onambuf, singular(otmp, doname));
+	strcpy(onambuf, singular(otmp, doname));
 	Role_switch = saverole;
 	otmp->bknown = savebknown;
 
@@ -1711,7 +1711,7 @@ skipmsg:
 		} else
 		    mquaffmsg(mtmp, otmp);
 		/* format monster's name before altering its visibility */
-		Strcpy(nambuf, See_invisible ? Monnam(mtmp) : mon_nam(mtmp));
+		strcpy(nambuf, See_invisible ? Monnam(mtmp) : mon_nam(mtmp));
 		mon_set_minvis(mtmp);
 		if (vismon && mtmp->minvis) {	/* was seen, now invisible */
 		    if (See_invisible)
@@ -1779,7 +1779,7 @@ skipmsg:
 		    const char *hand;
 		    char the_weapon[BUFSZ];
 
-		    Strcpy(the_weapon, the(xname(obj)));
+		    strcpy(the_weapon, the(xname(obj)));
 		    hand = body_part(HAND);
 		    if (bimanual(obj)) hand = makeplural(hand);
 

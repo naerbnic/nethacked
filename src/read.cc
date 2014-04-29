@@ -84,7 +84,7 @@ int doread() {
 	    u.uconduct.literate++;
 	    if(flags.verbose)
 		pline("It reads:");
-	    Strcpy(buf, shirt_msgs[scroll->o_id % SIZE(shirt_msgs)]);
+	    strcpy(buf, shirt_msgs[scroll->o_id % SIZE(shirt_msgs)]);
 	    erosion = greatest_erosion(scroll);
 	    if (erosion)
 		wipeout_text(buf,
@@ -1392,8 +1392,8 @@ static void do_class_genocide() {
 		    char buf2[BUFSZ];
 
 		    class_id = 0;
-		    Strcpy(buf2, makesingular(buf));
-		    Strcpy(buf, buf2);
+		    strcpy(buf2, makesingular(buf));
+		    strcpy(buf, buf2);
 		}
 		immunecnt = gonecnt = goodcnt = 0;
 		for (i = LOW_PM; i < NUMMONS; i++) {
@@ -1441,7 +1441,7 @@ static void do_class_genocide() {
 		    if(mons[i].mlet == class_id) {
 			char nam[BUFSZ];
 
-			Strcpy(nam, makeplural(mons[i].mname));
+			strcpy(nam, makeplural(mons[i].mname));
 			/* Although "genus" is Latin for race, the hero benefits
 			 * from both race and role; thus genocide affects either.
 			 */
@@ -1533,7 +1533,7 @@ void do_genocide(int how) {
 	if (how & PLAYER) {
 		mndx = u.umonster;	/* non-polymorphed mon num */
 		ptr = &mons[mndx];
-		Strcpy(buf, ptr->mname);
+		strcpy(buf, ptr->mname);
 		killplayer++;
 	} else {
 	    for(i = 0; ; i++) {
@@ -1591,14 +1591,14 @@ void do_genocide(int how) {
 	which = "all ";
 	if (Hallucination) {
 	    if (Upolyd)
-		Strcpy(buf,youmonst.data->mname);
+		strcpy(buf,youmonst.data->mname);
 	    else {
-		Strcpy(buf, (flags.female && urole.name.f) ?
+		strcpy(buf, (flags.female && urole.name.f) ?
 				urole.name.f : urole.name.m);
 		buf[0] = lowc(buf[0]);
 	    }
 	} else {
-	    Strcpy(buf, ptr->mname); /* make sure we have standard singular */
+	    strcpy(buf, ptr->mname); /* make sure we have standard singular */
 	    if ((ptr->geno & G_UNIQ) && ptr != &mons[PM_HIGH_PRIEST])
 		which = !type_is_pname(ptr) ? "the " : "";
 	}

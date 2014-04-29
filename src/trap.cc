@@ -387,7 +387,7 @@ struct Monster * animate_statue(struct Object *statue, xchar x, xchar y, int cau
 	bool historic = (Role_if(PM_ARCHEOLOGIST) && !flags.mon_moving && (statue->spe & STATUE_HISTORIC));
 	char statuename[BUFSZ];
 
-	Strcpy(statuename,the(xname(statue)));
+	strcpy(statuename,the(xname(statue)));
 
 	if (statue->oxlth && statue->oattached == OATTACHED_MONST) {
 	    cc.x = x,  cc.y = y;
@@ -853,7 +853,7 @@ glovecheck:		(void) rust_dmg(uarmg, "gauntlets", 1, TRUE, &youmonst);
 				 	 "poor", SUPPRESS_SADDLE, FALSE));
 		    } else
 #endif
-		    Strcpy(verbbuf,"fall");
+		    strcpy(verbbuf,"fall");
 		    You("%s into %s pit!", verbbuf, a_your[trap->madeby_u]);
 		}
 		/* wumpus reference */
@@ -3272,7 +3272,7 @@ int untrap(bool force) {
 
 	if ((ttmp = t_at(x,y)) && ttmp->tseen) {
 		deal_with_floor_trap = TRUE;
-		Strcpy(the_trap, the(defsyms[trap_to_defsym(ttmp->ttyp)].explanation));
+		strcpy(the_trap, the(defsyms[trap_to_defsym(ttmp->ttyp)].explanation));
 		if (box_here) {
 			if (ttmp->ttyp == PIT || ttmp->ttyp == SPIKED_PIT) {
 			    You_cant("do much about %s%s.",

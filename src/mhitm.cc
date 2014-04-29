@@ -40,12 +40,12 @@ static int dieroll;
 /* returns mon_nam(mon) relative to other_mon; normal name unless they're
    the same, in which case the reference is to {him|her|it} self */
 STATIC_OVL char * mon_nam_too(char *outbuf, struct Monster *mon, struct Monster *other_mon) {
-	Strcpy(outbuf, mon_nam(mon));
+	strcpy(outbuf, mon_nam(mon));
 	if (mon == other_mon)
 	    switch (pronoun_gender(mon)) {
-	    case 0:	Strcpy(outbuf, "himself");  break;
-	    case 1:	Strcpy(outbuf, "herself");  break;
-	    default:	Strcpy(outbuf, "itself"); break;
+	    case 0:	strcpy(outbuf, "himself");  break;
+	    case 1:	strcpy(outbuf, "herself");  break;
+	    default:	strcpy(outbuf, "itself"); break;
 	    }
 	return outbuf;
 }
@@ -285,7 +285,7 @@ int mattackm(struct Monster *magr, struct Monster *mdef) {
 			    if (vis) {
 				char buf[BUFSZ];
 
-				Strcpy(buf, Monnam(mdef));
+				strcpy(buf, Monnam(mdef));
 				pline("%s divides as %s hits it!", buf, mon_nam(magr));
 			    }
 			}
@@ -383,7 +383,7 @@ STATIC_OVL int hitmm(struct Monster *magr, struct Monster *mdef, struct Attack *
 		} else {
 		    char magr_name[BUFSZ];
 
-		    Strcpy(magr_name, Monnam(magr));
+		    strcpy(magr_name, Monnam(magr));
 		    switch (mattk->aatyp) {
 			case AT_BITE:
 				sprintf(buf,"%s bites", magr_name);
@@ -818,7 +818,7 @@ STATIC_OVL int mdamagem(struct Monster *magr, struct Monster *mdef, struct Attac
 		    char mdef_Monnam[BUFSZ];
 		    /* save the name before monster teleports, otherwise
 		       we'll get "it" in the suddenly disappears message */
-		    if (vis) Strcpy(mdef_Monnam, Monnam(mdef));
+		    if (vis) strcpy(mdef_Monnam, Monnam(mdef));
 		    mdef->mstrategy &= ~STRAT_WAITFORU;
 		    (void) rloc(mdef, FALSE);
 		    if (vis && !canspotmon(mdef)
@@ -833,7 +833,7 @@ STATIC_OVL int mdamagem(struct Monster *magr, struct Monster *mdef, struct Attac
 		if (!cancelled && !mdef->msleeping &&
 			sleep_monst(mdef, rnd(10), -1)) {
 		    if (vis) {
-			Strcpy(buf, Monnam(mdef));
+			strcpy(buf, Monnam(mdef));
 			pline("%s is put to sleep by %s.", buf, mon_nam(magr));
 		    }
 		    mdef->mstrategy &= ~STRAT_WAITFORU;
@@ -843,7 +843,7 @@ STATIC_OVL int mdamagem(struct Monster *magr, struct Monster *mdef, struct Attac
 	    case AD_PLYS:
 		if(!cancelled && mdef->mcanmove) {
 		    if (vis) {
-			Strcpy(buf, Monnam(mdef));
+			strcpy(buf, Monnam(mdef));
 			pline("%s is frozen by %s.", buf, mon_nam(magr));
 		    }
 		    mdef->mcanmove = 0;
@@ -944,7 +944,7 @@ STATIC_OVL int mdamagem(struct Monster *magr, struct Monster *mdef, struct Attac
 #endif
 		mdef->mstrategy &= ~STRAT_WAITFORU;
 		if (vis) {
-		    Strcpy(buf, Monnam(magr));
+		    strcpy(buf, Monnam(magr));
 		    pline("%s steals some gold from %s.", buf, mon_nam(mdef));
 		}
 		if (!tele_restrict(magr)) {
@@ -981,7 +981,7 @@ STATIC_OVL int mdamagem(struct Monster *magr, struct Monster *mdef, struct Attac
 
 			/* make a special x_monnam() call that never omits
 			   the saddle, and save it for later messages */
-			Strcpy(mdefnambuf, x_monnam(mdef, ARTICLE_THE, (char *)0, 0, FALSE));
+			strcpy(mdefnambuf, x_monnam(mdef, ARTICLE_THE, (char *)0, 0, FALSE));
 
 			otmp = obj;
 #ifdef STEED
@@ -1000,10 +1000,10 @@ STATIC_OVL int mdamagem(struct Monster *magr, struct Monster *mdef, struct Attac
 			}
 			/* add_to_minv() might free otmp [if it merges] */
 			if (vis)
-				Strcpy(onambuf, doname(otmp));
+				strcpy(onambuf, doname(otmp));
 			(void) add_to_minv(magr, otmp);
 			if (vis) {
-				Strcpy(buf, Monnam(magr));
+				strcpy(buf, Monnam(magr));
 				pline("%s steals %s from %s!", buf,
 				    onambuf, mdefnambuf);
 			}
@@ -1051,7 +1051,7 @@ STATIC_OVL int mdamagem(struct Monster *magr, struct Monster *mdef, struct Attac
 		}
 		if ((mdef->misc_worn_check & W_ARMH) && rn2(8)) {
 		    if (vis) {
-			Strcpy(buf, s_suffix(Monnam(mdef)));
+			strcpy(buf, s_suffix(Monnam(mdef)));
 			pline("%s helmet blocks %s attack to %s head.",
 				buf, s_suffix(mon_nam(magr)),
 				mhis(mdef));
@@ -1208,7 +1208,7 @@ STATIC_OVL void mrustm(struct Monster *magr, struct Monster *mdef, struct Object
 STATIC_OVL void mswingsm(struct Monster *magr, struct Monster *mdef, struct Object *otemp) {
 	char buf[BUFSZ];
 	if (!flags.verbose || Blind || !mon_visible(magr)) return;
-	Strcpy(buf, mon_nam(mdef));
+	strcpy(buf, mon_nam(mdef));
 	pline("%s %s %s %s at %s.", Monnam(magr),
 	      (objects[otemp->otyp].oc_dir & PIERCE) ? "thrusts" : "swings",
 	      mhis(magr), singular(otemp, xname), buf);
@@ -1240,7 +1240,7 @@ STATIC_OVL int passivemm(struct Monster *magr, struct Monster *mdef, bool mhit, 
 	switch(mddat->mattk[i].adtyp) {
 	    case AD_ACID:
 		if (mhit && !rn2(2)) {
-		    Strcpy(buf, Monnam(magr));
+		    strcpy(buf, Monnam(magr));
 		    if(canseemon(magr))
 			pline("%s is splashed by %s acid!",
 			      buf, s_suffix(mon_nam(mdef)));
@@ -1275,7 +1275,7 @@ STATIC_OVL int passivemm(struct Monster *magr, struct Monster *mdef, bool mhit, 
 			if (mon_reflects(magr,
 					 canseemon(magr) ? buf : (char *)0))
 				return(mdead|mhit);
-			Strcpy(buf, Monnam(magr));
+			strcpy(buf, Monnam(magr));
 			if(canseemon(magr))
 			    pline("%s is frozen by %s gaze!",
 				  buf, s_suffix(mon_nam(mdef)));
@@ -1284,7 +1284,7 @@ STATIC_OVL int passivemm(struct Monster *magr, struct Monster *mdef, bool mhit, 
 			return (mdead|mhit);
 		    }
 		} else { /* gelatinous cube */
-		    Strcpy(buf, Monnam(magr));
+		    strcpy(buf, Monnam(magr));
 		    if(canseemon(magr))
 			pline("%s is frozen by %s.", buf, mon_nam(mdef));
 		    magr->mcanmove = 0;

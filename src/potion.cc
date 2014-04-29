@@ -158,7 +158,7 @@ void make_blinded(long xtime, bool talk) {
 		if (!haseyes(youmonst.data)) {
 		    strange_feeling(nullptr, (char *)0);
 		} else if (Blindfolded) {
-		    Strcpy(buf, body_part(EYE));
+		    strcpy(buf, body_part(EYE));
 		    eyecnt = eyecount(youmonst.data);
 		    Your(eyemsg, (eyecnt == 1) ? buf : makeplural(buf),
 			 (eyecnt == 1) ? "itches" : "itch");
@@ -184,7 +184,7 @@ void make_blinded(long xtime, bool talk) {
 		if (!haseyes(youmonst.data)) {
 		    strange_feeling(nullptr, (char *)0);
 		} else if (Blindfolded) {
-		    Strcpy(buf, body_part(EYE));
+		    strcpy(buf, body_part(EYE));
 		    eyecnt = eyecount(youmonst.data);
 		    Your(eyemsg, (eyecnt == 1) ? buf : makeplural(buf),
 			 (eyecnt == 1) ? "twitches" : "twitch");
@@ -231,7 +231,7 @@ bool make_hallucinated(long xtime, bool talk, long mask) {
 		    char buf[BUFSZ];
 		    int eyecnt = eyecount(youmonst.data);
 
-		    Strcpy(buf, body_part(EYE));
+		    strcpy(buf, body_part(EYE));
 		    Your(eyemsg, (eyecnt == 1) ? buf : makeplural(buf),
 			 (eyecnt == 1) ? "itches" : "itch");
 		} else {	/* Grayswandir */
@@ -917,7 +917,7 @@ void potionhit(struct Monster *mon, struct Object *obj, bool your_fault) {
 				s_suffix(mnam),
 				(notonhead ? "body" : "head"));
 		    } else {
-			Strcpy(buf, mnam);
+			strcpy(buf, mnam);
 		    }
 		    pline_The("%s crashes on %s and breaks into shards.",
 			   botlnam, buf);
@@ -1684,7 +1684,7 @@ int dodip() {
 		if (potion->quan > 1L)
 		    sprintf(buf, "One of %s", the(xname(potion)));
 		else
-		    Strcpy(buf, The(xname(potion)));
+		    strcpy(buf, The(xname(potion)));
 		pline("%s forms a coating on %s.",
 		      buf, the(xname(obj)));
 		obj->opoisoned = TRUE;

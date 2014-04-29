@@ -43,7 +43,7 @@ char * random_engraving(char *outbuf) {
 	/* a random engraving may come from the "rumors" file,
 	   or from the list above */
 	if (!rn2(4) || !(rumor = getrumor(0, outbuf, TRUE)) || !*rumor)
-	    Strcpy(outbuf, random_mesg[rn2(SIZE(random_mesg))]);
+	    strcpy(outbuf, random_mesg[rn2(SIZE(random_mesg))]);
 
 	wipeout_text(outbuf, (int)(strlen(outbuf) / 4), 0);
 	return outbuf;
@@ -332,7 +332,7 @@ void make_engr_at(int x, int y, const char *s, long e_time, xchar e_type) {
 	ep->engr_x = x;
 	ep->engr_y = y;
 	ep->engr_txt = (char *)(ep + 1);
-	Strcpy(ep->engr_txt, s);
+	strcpy(ep->engr_txt, s);
 	/* engraving Elbereth shows wisdom */
 	if (!in_mklev && !strcmp(s, "Elbereth")) exercise(A_WIS, TRUE);
 	ep->engr_time = e_time;
@@ -577,7 +577,7 @@ int doengrave() {
 			 * previous engraving even if turning to dust.
 			 */
 		    case WAN_STRIKING:
-			Strcpy(post_engr_text,
+			strcpy(post_engr_text,
 			"The wand unsuccessfully fights your attempt to write!"
 			);
 			break;
@@ -633,7 +633,7 @@ int doengrave() {
 
 		    case WAN_COLD:
 			if (!Blind)
-			    Strcpy(post_engr_text,
+			    strcpy(post_engr_text,
 				"A few ice cubes drop from the wand.");
 			if(!oep || (oep->engr_type != BURN))
 			    break;
@@ -666,14 +666,14 @@ int doengrave() {
 			    doknown = TRUE;
 			}
 			if (!Blind)
-			    Strcpy(post_engr_text,
+			    strcpy(post_engr_text,
 				IS_GRAVE(levl[u.ux][u.uy].typ) ?
 				"Chips fly out from the headstone." :
 				is_ice(u.ux,u.uy) ?
 				"Ice chips fly up from the ice surface!" :
 				"Gravel flies up from the floor.");
 			else
-			    Strcpy(post_engr_text, "You hear drilling!");
+			    strcpy(post_engr_text, "You hear drilling!");
 			break;
 
 		    /* type = BURN wands */
@@ -685,7 +685,7 @@ int doengrave() {
 			    pline("This %s is a wand of fire!", xname(otmp));
 			    doknown = TRUE;
 			}
-			Strcpy(post_engr_text,
+			strcpy(post_engr_text,
 				Blind ? "You feel the wand heat up." :
 					"Flames fly from the wand.");
 			break;
@@ -699,11 +699,11 @@ int doengrave() {
 			    doknown = TRUE;
 			}
 			if (!Blind) {
-			    Strcpy(post_engr_text,
+			    strcpy(post_engr_text,
 				    "Lightning arcs from the wand.");
 			    doblind = TRUE;
 			} else
-			    Strcpy(post_engr_text, "You hear crackling!");
+			    strcpy(post_engr_text, "You hear crackling!");
 			break;
 
 		    /* type = MARK wands */
@@ -1051,7 +1051,7 @@ int doengrave() {
 	}
 
 	/* Add to existing engraving */
-	if (oep) Strcpy(buf, oep->engr_txt);
+	if (oep) strcpy(buf, oep->engr_txt);
 
 	(void) strncat(buf, ebuf, (BUFSZ - (int)strlen(buf) - 1));
 

@@ -545,7 +545,7 @@ void level_tele() {
 	    char qbuf[BUFSZ];
 	    int trycnt = 0;
 
-	    Strcpy(qbuf, "To what level do you want to teleport?");
+	    strcpy(qbuf, "To what level do you want to teleport?");
 	    do {
 		if (++trycnt == 2) {
 #ifdef WIZARD

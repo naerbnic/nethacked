@@ -415,7 +415,7 @@ STATIC_OVL void disclose(int how, bool taken) {
 		sprintf(qbuf,"Do you want to see what you had when you %s?",
 			(how == QUIT) ? "quit" : "died");
 	    else
-		Strcpy(qbuf,"Do you want your possessions identified?");
+		strcpy(qbuf,"Do you want your possessions identified?");
 
 	    ask = should_query_disclose_option('i', &defquery);
 	    if (!done_stopprint) {
@@ -644,7 +644,7 @@ void done(int how) {
 	/* Avoid killed by "a" burning or "a" starvation */
 	if (!killer && (how == STARVING || how == BURNING))
 		killer_format = KILLED_BY;
-	Strcpy(kilbuf, (!killer || how >= PANICKED ? deaths[how] : killer));
+	strcpy(kilbuf, (!killer || how >= PANICKED ? deaths[how] : killer));
 	killer = kilbuf;
 
 	if (how < PANICKED) u.umortality++;
@@ -787,7 +787,7 @@ die:
 			how = DIED;
 			u.umortality++;	/* skipped above when how==QUIT */
 			/* note that killer is pointing at kilbuf */
-			Strcpy(kilbuf, "quit while already on Charon's boat");
+			strcpy(kilbuf, "quit while already on Charon's boat");
 		}
 	}
 	if (how == ESCAPED || how == PANICKED)
@@ -931,7 +931,7 @@ die:
 	    keepdogs(TRUE);
 	    viz_array[0][0] |= IN_SIGHT; /* need visibility for naming */
 	    mtmp = mydogs;
-	    Strcpy(pbuf, "You");
+	    strcpy(pbuf, "You");
 	    if (mtmp) {
 		while (mtmp) {
 			sprintf(eos(pbuf), " and %s", mon_nam(mtmp));
@@ -1273,7 +1273,7 @@ void do_vanquished(int defquery, bool ask, bool want_dump)
 			/* trolls or undead might have come back,
 			   but we don't keep track of that */
 			if (nkilled == 1)
-			    Strcpy(buf, an(mons[i].mname));
+			    strcpy(buf, an(mons[i].mname));
 			else
 			    sprintf(buf, "%d %s",
 				    nkilled, makeplural(mons[i].mname));
@@ -1390,7 +1390,7 @@ STATIC_OVL void list_genocided(char defquery, bool ask)
 				!type_is_pname(&mons[i]) ? "" : "the ",
 				mons[i].mname);
 		    else
-			Strcpy(buf, makeplural(mons[i].mname));
+			strcpy(buf, makeplural(mons[i].mname));
 #ifdef SHOW_EXTINCT
 		if( !(mvitals[i].mvflags & G_GENOD) )
 		    strcat(buf, " (extinct)");

@@ -376,8 +376,8 @@ void m_throw(struct Monster *mon, int x, int y, int dx, int dy, int range, struc
 			is_poisonable(singleobj)) {
 			char onmbuf[BUFSZ], knmbuf[BUFSZ];
 
-			Strcpy(onmbuf, xname(singleobj));
-			Strcpy(knmbuf, killer_xname(singleobj));
+			strcpy(onmbuf, xname(singleobj));
+			strcpy(knmbuf, killer_xname(singleobj));
 			poisoned(onmbuf, A_STR, knmbuf, -10);
 		    }
 		    if(hitu &&

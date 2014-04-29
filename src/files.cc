@@ -262,7 +262,7 @@ const char * fqname(const char *basename, int whichprefix, int buffnum) {
 						basename);
 		return basename;	/* XXX */
 	}
-	Strcpy(fqn_filename_buffer[buffnum], fqn_prefix[whichprefix]);
+	strcpy(fqn_filename_buffer[buffnum], fqn_prefix[whichprefix]);
 	return strcat(fqn_filename_buffer[buffnum], basename);
 #endif
 }
@@ -334,8 +334,8 @@ FILE * fopen_datafile(const char *filename, const char *mode, int prefix) {
 /* Set names for bones[] and lock[] */
 void set_lock_and_bones() {
 	if (!ramdisk) {
-		Strcpy(levels, permbones);
-		Strcpy(bones, permbones);
+		strcpy(levels, permbones);
+		strcpy(bones, permbones);
 	}
 	append_slash(permbones);
 	append_slash(levels);
@@ -344,7 +344,7 @@ void set_lock_and_bones() {
 #endif
 	append_slash(bones);
 	strcat(bones, "bonesnn.*");
-	Strcpy(lock, levels);
+	strcpy(lock, levels);
 #ifndef AMIGA
 	strcat(lock, alllevels);
 #endif
@@ -678,7 +678,7 @@ void set_savefile_name() {
 	strcat(SAVEF, ";1");
 #else
 # if defined(MICRO)
-	Strcpy(SAVEF, SAVEP);
+	strcpy(SAVEF, SAVEP);
 #  ifdef AMIGA
 	strncat(SAVEF, bbs_id, PATHLEN);
 #  endif
@@ -806,7 +806,7 @@ static char* plname_from_file(const char* filename) {
     int fd;
     char* result = 0;
 
-    Strcpy(SAVEF,filename);
+    strcpy(SAVEF,filename);
 #ifdef COMPRESS_EXTENSION
     SAVEF[strlen(SAVEF)-strlen(COMPRESS_EXTENSION)] = '\0';
 #endif
@@ -926,7 +926,7 @@ STATIC_OVL void docompress_file(const char *filename, bool uncomp) {
 	bool istty = !strncmpi(windowprocs.name, "tty", 3);
 # endif
 
-	Strcpy(cfn, filename);
+	strcpy(cfn, filename);
 # ifdef COMPRESS_EXTENSION
 	strcat(cfn, COMPRESS_EXTENSION);
 # endif
@@ -945,7 +945,7 @@ STATIC_OVL void docompress_file(const char *filename, bool uncomp) {
 	    char *opt;
 	    bool inword = FALSE;
 
-	    Strcpy(opts, COMPRESS_OPTIONS);
+	    strcpy(opts, COMPRESS_OPTIONS);
 	    opt = opts;
 	    while (*opt) {
 		if ((*opt == ' ') || (*opt == '\t')) {
@@ -1093,11 +1093,11 @@ STATIC_OVL char * make_lockname(const char *filename, char *lockname) {
 	return (char*)0;
 #else
 #  ifdef NO_FILE_LINKS
-	Strcpy(lockname, LOCKDIR);
+	strcpy(lockname, LOCKDIR);
 	strcat(lockname, "/");
 	strcat(lockname, filename);
 #  else
-	Strcpy(lockname, filename);
+	strcpy(lockname, filename);
 #  endif
 #  ifdef VMS
       {
@@ -1318,7 +1318,7 @@ STATIC_OVL FILE * fopen_config_file(const char *filename) {
 
 	envp = nh_getenv("HOME");
 	if (!envp)
-		Strcpy(tmp_config, "NetHack.cnf");
+		strcpy(tmp_config, "NetHack.cnf");
 	else
 		sprintf(tmp_config, "%s%s", envp, "NetHack.cnf");
 	if ((fp = fopenp(tmp_config, "r")) != (FILE *)0)
@@ -1326,7 +1326,7 @@ STATIC_OVL FILE * fopen_config_file(const char *filename) {
 # else	/* should be only UNIX left */
 	envp = nh_getenv("HOME");
 	if (!envp)
-		Strcpy(tmp_config, configfile);
+		strcpy(tmp_config, configfile);
 	else
 		sprintf(tmp_config, "%s/%s", envp, configfile);
 	if ((fp = fopenp(tmp_config, "r")) != (FILE *)0)
@@ -1425,7 +1425,7 @@ STATIC_OVL void adjust_prefix(char *bufp, int prefixid) {
 	if ((ptr = index(bufp, ';')) != 0) *ptr = '\0';
 	if (strlen(bufp) > 0) {
 		fqn_prefix[prefixid] = (char *)alloc(strlen(bufp)+2);
-		Strcpy(fqn_prefix[prefixid], bufp);
+		strcpy(fqn_prefix[prefixid], bufp);
 		append_slash(fqn_prefix[prefixid]);
 	}
 }
@@ -1790,17 +1790,17 @@ void read_config_file(const char *filename) {
 #if defined(MICRO) && !defined(NOCWD_ASSUMPTIONS)
 	/* should be superseded by fqn_prefix[] */
 # ifdef MFLOPPY
-	Strcpy(permbones, tmp_levels);
+	strcpy(permbones, tmp_levels);
 #  ifndef AMIGA
 	if (tmp_ramdisk[0]) {
-		Strcpy(levels, tmp_ramdisk);
+		strcpy(levels, tmp_ramdisk);
 		if (strcmp(permbones, levels))		/* if not identical */
 			ramdisk = TRUE;
 	} else
 #  endif /* AMIGA */
-		Strcpy(levels, tmp_levels);
+		strcpy(levels, tmp_levels);
 
-	Strcpy(bones, levels);
+	strcpy(bones, levels);
 # endif /* MFLOPPY */
 #endif /* MICRO */
 	return;
@@ -1854,7 +1854,7 @@ STATIC_OVL FILE * fopen_wizkit_file() {
 	envp = nh_getenv("HOME");
 	if (envp)
 		sprintf(tmp_wizkit, "%s/%s", envp, wizkit);
-	else 	Strcpy(tmp_wizkit, wizkit);
+	else 	strcpy(tmp_wizkit, wizkit);
 	if ((fp = fopenp(tmp_wizkit, "r")) != (FILE *)0)
 		return(fp);
 	else if (errno != ENOENT) {
@@ -1954,7 +1954,7 @@ void check_recordfile(const char *dir) {
 	}
 	fq_record = tmp;
 # else
-	Strcpy(tmp, RECORD);
+	strcpy(tmp, RECORD);
 	fq_record = fqname(RECORD, SCOREPREFIX, 0);
 # endif
 

@@ -175,7 +175,7 @@ int main(int argc, char *argv[]) {
 #endif
 #ifdef WIZARD
 	if (wizard)
-		Strcpy(plname, "wizard");
+		strcpy(plname, "wizard");
 	else
 #endif
 	if(!*plname || !strncmp(plname, "player", 4)
@@ -417,7 +417,7 @@ static void chdirx(const char *dir, bool wr) {
 	    int len = strlen(VAR_PLAYGROUND);
 
 	    fqn_prefix[SCOREPREFIX] = (char *)alloc(len+2);
-	    Strcpy(fqn_prefix[SCOREPREFIX], VAR_PLAYGROUND);
+	    strcpy(fqn_prefix[SCOREPREFIX], VAR_PLAYGROUND);
 	    if (fqn_prefix[SCOREPREFIX][len-1] != '/') {
 		fqn_prefix[SCOREPREFIX][len] = '/';
 		fqn_prefix[SCOREPREFIX][len+1] = '\0';

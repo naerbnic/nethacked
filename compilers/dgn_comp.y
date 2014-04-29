@@ -100,7 +100,7 @@ dungeon	: dungeonline
 dungeonline	: A_DUNGEON ':' STRING bones_tag rcouple optional_int
 		  {
 			init_dungeon();
-			Strcpy(tmpdungeon[n_dgns].name, $3);
+			strcpy(tmpdungeon[n_dgns].name, $3);
 			tmpdungeon[n_dgns].boneschar = (char)$4;
 			tmpdungeon[n_dgns].lev.base = couple.base;
 			tmpdungeon[n_dgns].lev.rand = couple.rand;
@@ -151,7 +151,7 @@ desc		: DESCRIPTION ':' DESCRIPTOR
 
 prototype	: PROTOFILE ':' STRING
 		  {
-			Strcpy(tmpdungeon[n_dgns].protoname, $3);
+			strcpy(tmpdungeon[n_dgns].protoname, $3);
 			Free($3);
 		  }
 		;
@@ -166,7 +166,7 @@ levels		: level1
 level1		: LEVEL ':' STRING bones_tag '@' acouple
 		  {
 			init_level();
-			Strcpy(tmplevel[n_levs].name, $3);
+			strcpy(tmplevel[n_levs].name, $3);
 			tmplevel[n_levs].boneschar = (char)$4;
 			tmplevel[n_levs].lev.base = couple.base;
 			tmplevel[n_levs].lev.rand = couple.rand;
@@ -176,7 +176,7 @@ level1		: LEVEL ':' STRING bones_tag '@' acouple
 		| RNDLEVEL ':' STRING bones_tag '@' acouple INTEGER
 		  {
 			init_level();
-			Strcpy(tmplevel[n_levs].name, $3);
+			strcpy(tmplevel[n_levs].name, $3);
 			tmplevel[n_levs].boneschar = (char)$4;
 			tmplevel[n_levs].lev.base = couple.base;
 			tmplevel[n_levs].lev.rand = couple.rand;
@@ -189,7 +189,7 @@ level1		: LEVEL ':' STRING bones_tag '@' acouple
 level2		: LEVEL ':' STRING bones_tag '@' acouple INTEGER
 		  {
 			init_level();
-			Strcpy(tmplevel[n_levs].name, $3);
+			strcpy(tmplevel[n_levs].name, $3);
 			tmplevel[n_levs].boneschar = (char)$4;
 			tmplevel[n_levs].lev.base = couple.base;
 			tmplevel[n_levs].lev.rand = couple.rand;
@@ -200,7 +200,7 @@ level2		: LEVEL ':' STRING bones_tag '@' acouple INTEGER
 		| RNDLEVEL ':' STRING bones_tag '@' acouple INTEGER INTEGER
 		  {
 			init_level();
-			Strcpy(tmplevel[n_levs].name, $3);
+			strcpy(tmplevel[n_levs].name, $3);
 			tmplevel[n_levs].boneschar = (char)$4;
 			tmplevel[n_levs].lev.base = couple.base;
 			tmplevel[n_levs].lev.rand = couple.rand;
@@ -230,7 +230,7 @@ levdesc		: LEVELDESC ':' DESCRIPTOR
 chlevel1	: CHLEVEL ':' STRING bones_tag STRING '+' rcouple
 		  {
 			init_level();
-			Strcpy(tmplevel[n_levs].name, $3);
+			strcpy(tmplevel[n_levs].name, $3);
 			tmplevel[n_levs].boneschar = (char)$4;
 			tmplevel[n_levs].chain = getchain($5);
 			tmplevel[n_levs].lev.base = couple.base;
@@ -243,7 +243,7 @@ chlevel1	: CHLEVEL ':' STRING bones_tag STRING '+' rcouple
 		| RNDCHLEVEL ':' STRING bones_tag STRING '+' rcouple INTEGER
 		  {
 			init_level();
-			Strcpy(tmplevel[n_levs].name, $3);
+			strcpy(tmplevel[n_levs].name, $3);
 			tmplevel[n_levs].boneschar = (char)$4;
 			tmplevel[n_levs].chain = getchain($5);
 			tmplevel[n_levs].lev.base = couple.base;
@@ -259,7 +259,7 @@ chlevel1	: CHLEVEL ':' STRING bones_tag STRING '+' rcouple
 chlevel2	: CHLEVEL ':' STRING bones_tag STRING '+' rcouple INTEGER
 		  {
 			init_level();
-			Strcpy(tmplevel[n_levs].name, $3);
+			strcpy(tmplevel[n_levs].name, $3);
 			tmplevel[n_levs].boneschar = (char)$4;
 			tmplevel[n_levs].chain = getchain($5);
 			tmplevel[n_levs].lev.base = couple.base;
@@ -273,7 +273,7 @@ chlevel2	: CHLEVEL ':' STRING bones_tag STRING '+' rcouple INTEGER
 		| RNDCHLEVEL ':' STRING bones_tag STRING '+' rcouple INTEGER INTEGER
 		  {
 			init_level();
-			Strcpy(tmplevel[n_levs].name, $3);
+			strcpy(tmplevel[n_levs].name, $3);
 			tmplevel[n_levs].boneschar = (char)$4;
 			tmplevel[n_levs].chain = getchain($5);
 			tmplevel[n_levs].lev.base = couple.base;
@@ -294,7 +294,7 @@ branches	: branch
 branch		: BRANCH ':' STRING '@' acouple branch_type direction
 		  {
 			init_branch();
-			Strcpy(tmpbranch[n_brs].name, $3);
+			strcpy(tmpbranch[n_brs].name, $3);
 			tmpbranch[n_brs].lev.base = couple.base;
 			tmpbranch[n_brs].lev.rand = couple.rand;
 			tmpbranch[n_brs].type = $6;
@@ -308,7 +308,7 @@ branch		: BRANCH ':' STRING '@' acouple branch_type direction
 chbranch	: CHBRANCH ':' STRING STRING '+' rcouple branch_type direction
 		  {
 			init_branch();
-			Strcpy(tmpbranch[n_brs].name, $3);
+			strcpy(tmpbranch[n_brs].name, $3);
 			tmpbranch[n_brs].chain = getchain($4);
 			tmpbranch[n_brs].lev.base = couple.base;
 			tmpbranch[n_brs].lev.rand = couple.rand;
@@ -447,8 +447,8 @@ init_dungeon()
 	tmpdungeon[n_dgns].lev.base = 0;
 	tmpdungeon[n_dgns].lev.rand = 0;
 	tmpdungeon[n_dgns].chance = 100;
-	Strcpy(tmpdungeon[n_dgns].name, "");
-	Strcpy(tmpdungeon[n_dgns].protoname, "");
+	strcpy(tmpdungeon[n_dgns].name, "");
+	strcpy(tmpdungeon[n_dgns].protoname, "");
 	tmpdungeon[n_dgns].flags = 0;
 	tmpdungeon[n_dgns].levels = 0;
 	tmpdungeon[n_dgns].branches = 0;
@@ -468,7 +468,7 @@ init_level()
 	tmplevel[n_levs].chance = 100;
 	tmplevel[n_levs].rndlevs = 0;
 	tmplevel[n_levs].flags = 0;
-	Strcpy(tmplevel[n_levs].name, "");
+	strcpy(tmplevel[n_levs].name, "");
 	tmplevel[n_levs].chain = -1;
 }
 
@@ -481,7 +481,7 @@ void init_branch()
 	}
 	tmpbranch[n_brs].lev.base = 0;
 	tmpbranch[n_brs].lev.rand = 0;
-	Strcpy(tmpbranch[n_brs].name, "");
+	strcpy(tmpbranch[n_brs].name, "");
 	tmpbranch[n_brs].chain = -1;
 }
 

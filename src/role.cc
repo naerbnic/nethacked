@@ -1149,7 +1149,7 @@ char * root_plselection_prompt(char *suppliedbuf, int buflen, int rolenum, int r
 	 *    || <your lawful female character>
 	 */
 	if (buflen > (int) (strlen(buf) + 1)) {
-		Strcpy(suppliedbuf, buf);
+		strcpy(suppliedbuf, buf);
 		return suppliedbuf;
 	} else
 		return err_ret;
@@ -1163,7 +1163,7 @@ char * build_plselection_prompt(char *buf, int buflen, int rolenum, int racenum,
 	if (buflen < QBUFSZ)
 		return (char *)defprompt;
 
-	Strcpy(tmpbuf, "Shall I pick ");
+	strcpy(tmpbuf, "Shall I pick ");
 	if (racenum != ROLE_NONE || validrole(rolenum))
 		strcat(tmpbuf, "your ");
 	else {
@@ -1280,7 +1280,7 @@ void role_init() {
 
 	/* We now have a valid role index.  Copy the role name back. */
 	/* This should become OBSOLETE */
-	Strcpy(pl_character, roles[flags.initrole].name.m);
+	strcpy(pl_character, roles[flags.initrole].name.m);
 	pl_character[PL_CSIZ-1] = '\0';
 
 	/* Check for a valid race */

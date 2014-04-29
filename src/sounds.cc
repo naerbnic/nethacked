@@ -947,7 +947,7 @@ int add_sound_mapping(const char *mapping) {
 		new_map->regex.regs_allocated = REGS_FIXED;
 #else
 		new_map->pattern = (char *)alloc(strlen(text) + 1);
-		Strcpy(new_map->pattern, text);
+		strcpy(new_map->pattern, text);
 #endif
 		new_map->filename = strdup(filespec);
 		new_map->volume = volume;

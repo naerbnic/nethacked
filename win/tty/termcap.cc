@@ -314,10 +314,10 @@ void tty_startup(int *wid, int *hgt) {
 	nh_HE = (char *) alloc((unsigned)(strlen(ME)+1));
 	i = 0;
 	while (digit(SO[i])) i++;
-	Strcpy(nh_HI, &SO[i]);
+	strcpy(nh_HI, &SO[i]);
 	i = 0;
 	while (digit(ME[i])) i++;
-	Strcpy(nh_HE, &ME[i]);
+	strcpy(nh_HE, &ME[i]);
 	AS = Tgetstr("as");
 	AE = Tgetstr("ae");
 	nh_CD = Tgetstr("cd");
@@ -862,16 +862,16 @@ static void init_hilite() {
 
 	    scratch = tparm(setf,ti_map[c].ti_color);
 	    work = (char *) alloc(strlen(scratch) + length_md + 1);
-	    Strcpy(work,MD);
+	    strcpy(work,MD);
 	    hilites[ti_map[c].nh_bright_color] = work;
 	    work += length_md;
-	    Strcpy(work,scratch);
+	    strcpy(work,scratch);
 	    hilites[ti_map[c].nh_color] = work;
 	}
 
 	scratch = tparm(setf,COLOR_WHITE);
 	hilites[CLR_WHITE] = (char *) alloc(strlen(scratch) + length_md + 1);
-	Strcpy(hilites[CLR_WHITE],MD);
+	strcpy(hilites[CLR_WHITE],MD);
 	strcat(hilites[CLR_WHITE],scratch);
 
 	hilites[CLR_GRAY] = "";
@@ -886,7 +886,7 @@ static void init_hilite() {
 	     */
 	    scratch = tparm(setf,COLOR_BLACK);
 	    hilites[CLR_BLACK] = (char *) alloc(strlen(scratch) + length_md + 1);
-	    Strcpy(hilites[CLR_BLACK],MD);
+	    strcpy(hilites[CLR_BLACK],MD);
 	    strcat(hilites[CLR_BLACK],scratch);
 	}
 	else
@@ -1005,7 +1005,7 @@ static void init_hilite() {
 		if (tos_numcolors > 4)
 			sprintf(foo, "\033b%c", (c&~BRIGHT)+'0');
 		else
-			Strcpy(foo, "\033b0");
+			strcpy(foo, "\033b0");
 		hilites[c] = foo;
 	}
 

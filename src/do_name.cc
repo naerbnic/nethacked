@@ -210,7 +210,7 @@ struct Monster * christen_monst(struct Monster *mtmp, const char *name) {
 	}
 	if (lth == mtmp->mnamelth) {
 		/* don't need to allocate a new monst struct */
-		if (lth) Strcpy(NAME(mtmp), name);
+		if (lth) strcpy(NAME(mtmp), name);
 		return mtmp;
 	}
 	mtmp2 = newmonst(mtmp->mxlth + lth);
@@ -218,7 +218,7 @@ struct Monster * christen_monst(struct Monster *mtmp, const char *name) {
 	(void) memcpy((genericptr_t)mtmp2->mextra,
 		      (genericptr_t)mtmp->mextra, mtmp->mxlth);
 	mtmp2->mnamelth = lth;
-	if (lth) Strcpy(NAME(mtmp2), name);
+	if (lth) strcpy(NAME(mtmp2), name);
 	replmon(mtmp,mtmp2);
 	return(mtmp2);
 }
@@ -306,7 +306,7 @@ void do_oname(struct Object *obj) {
 
 	/* relax restrictions over proper capitalization for artifacts */
 	if ((aname = artifact_name(buf, &objtyp)) != 0 && objtyp == obj->otyp)
-		Strcpy(buf, aname);
+		strcpy(buf, aname);
 
 	if (obj->oartifact) {
 		pline_The("artifact seems to resist the attempt.");
@@ -352,7 +352,7 @@ struct Object * realloc_obj(struct Object *obj, int oextra_size, genericptr_t oe
 	   gcc-2.7.2.1 finally fixed this. */
 	if (oname_size) {
 	    if (name)
-		Strcpy(ONAME(otmp), name);
+		strcpy(ONAME(otmp), name);
 	}
 
 	if (obj->owornmask) {
@@ -410,7 +410,7 @@ struct Object * oname(struct Object *obj, const char *name) {
 
 	if (lth == obj->onamelth) {
 		/* no need to replace entire object */
-		if (lth) Strcpy(ONAME(obj), name);
+		if (lth) strcpy(ONAME(obj), name);
 	} else {
 		obj = realloc_obj(obj, obj->oxlth,
 			      (genericptr_t)obj->oextra, lth, name);
@@ -596,7 +596,7 @@ char* x_monnam(
 
 	/* unseen monsters, etc.  Use "it" */
 	if (do_it) {
-	    Strcpy(buf, "it");
+	    strcpy(buf, "it");
 	    return buf;
 	}
 
@@ -627,7 +627,7 @@ char* x_monnam(
 	    if (adjective && article == ARTICLE_THE) {
 		/* pathological case: "the angry Asidonhopo the blue dragon"
 		   sounds silly */
-		Strcpy(buf, "the ");
+		strcpy(buf, "the ");
 		strcat(strcat(buf, adjective), " ");
 		strcat(buf, shkname(mtmp));
 		return buf;
@@ -675,12 +675,12 @@ char* x_monnam(
 		/* <name> the <adjective> <invisible> <saddled> <rank> */
 		char pbuf[BUFSZ];
 
-		Strcpy(pbuf, name);
+		strcpy(pbuf, name);
 		pbuf[bp - name + 5] = '\0'; /* adjectives right after " the " */
 		if (has_adjectives)
 		    strcat(pbuf, buf);
 		strcat(pbuf, bp + 5);	/* append the rest of the name */
-		Strcpy(buf, pbuf);
+		strcpy(buf, pbuf);
 		article = ARTICLE_NONE;
 		name_at_start = TRUE;
 	    } else {
@@ -689,7 +689,7 @@ char* x_monnam(
 	    }
 	} else if (is_mplayer(mdat) && !In_endgame(&u.uz)) {
 	    char pbuf[BUFSZ];
-	    Strcpy(pbuf, rank_of((int)mtmp->m_lev,
+	    strcpy(pbuf, rank_of((int)mtmp->m_lev,
 				 monsndx(mdat),
 				 (bool)mtmp->female));
 	    strcat(buf, lcase(pbuf));
@@ -713,14 +713,14 @@ char* x_monnam(
 
 	    switch(article) {
 		case ARTICLE_YOUR:
-		    Strcpy(buf2, "your ");
+		    strcpy(buf2, "your ");
 		    strcat(buf2, buf);
-		    Strcpy(buf, buf2);
+		    strcpy(buf, buf2);
 		    return buf;
 		case ARTICLE_THE:
-		    Strcpy(buf2, "the ");
+		    strcpy(buf2, "the ");
 		    strcat(buf2, buf);
-		    Strcpy(buf, buf2);
+		    strcpy(buf, buf2);
 		    return buf;
 		case ARTICLE_A:
 		    return(an(buf));
@@ -822,10 +822,10 @@ char * distant_monnam(struct Monster *mon, int article, char *outbuf) {
        its own obfuscation) */
     if (mon->data == &mons[PM_HIGH_PRIEST] && !Hallucination &&
 	    Is_astralevel(&u.uz) && distu(mon->mx, mon->my) > 2) {
-	Strcpy(outbuf, article == ARTICLE_THE ? "the " : "");
+	strcpy(outbuf, article == ARTICLE_THE ? "the " : "");
 	strcat(outbuf, mon->female ? "high priestess" : "high priest");
     } else {
-	Strcpy(outbuf, x_monnam(mon, article, (char *)0, 0, TRUE));
+	strcpy(outbuf, x_monnam(mon, article, (char *)0, 0, TRUE));
     }
     return outbuf;
 }

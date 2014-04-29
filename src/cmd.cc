@@ -882,7 +882,7 @@ void enlightenment(int final) {
 	}
 #if defined(WIZARD) && defined(STEED)
 	if (Wounded_legs && u.usteed && wizard) {
-	    Strcpy(buf, x_monnam(u.usteed, ARTICLE_YOUR, (char *)0, 
+	    strcpy(buf, x_monnam(u.usteed, ARTICLE_YOUR, (char *)0, 
 		    SUPPRESS_SADDLE | SUPPRESS_HALLUCINATION, FALSE));
 	    *buf = highc(*buf);
 	    enl_msg(buf, " has", " had", " wounded legs");
@@ -990,11 +990,11 @@ void enlightenment(int final) {
 	if (Polymorph) you_are("polymorphing");
 	if (Polymorph_control) you_have("polymorph control");
 	if (u.ulycn >= LOW_PM) {
-		Strcpy(buf, an(mons[u.ulycn].mname));
+		strcpy(buf, an(mons[u.ulycn].mname));
 		you_are(buf);
 	}
 	if (Upolyd) {
-	    if (u.umonnum == u.ulycn) Strcpy(buf, "in beast form");
+	    if (u.umonnum == u.ulycn) strcpy(buf, "in beast form");
 	    else sprintf(buf, "polymorphed into %s", an(youmonst.data->mname));
 #ifdef WIZARD
 	    if (wizard) sprintf(eos(buf), " (%d)", u.mtimedone);
@@ -1069,9 +1069,9 @@ void enlightenment(int final) {
 	    p = "survived after being killed ";
 	    switch (u.umortality) {
 	    case 0:  p = !final ? (char *)0 : "survived";  break;
-	    case 1:  Strcpy(buf, "once");  break;
-	    case 2:  Strcpy(buf, "twice");  break;
-	    case 3:  Strcpy(buf, "thrice");  break;
+	    case 1:  strcpy(buf, "once");  break;
+	    case 2:  strcpy(buf, "twice");  break;
+	    case 3:  strcpy(buf, "thrice");  break;
 	    default: sprintf(buf, "%d times", u.umortality);
 		     break;
 	    }
@@ -1192,7 +1192,7 @@ void dump_enlightenment(int final) {
 	}
 #ifdef STEED
 	if (Wounded_legs && u.usteed) {
-	    Strcpy(buf, x_monnam(u.usteed, ARTICLE_YOUR, (char *)0, 
+	    strcpy(buf, x_monnam(u.usteed, ARTICLE_YOUR, (char *)0, 
 		    SUPPRESS_SADDLE | SUPPRESS_HALLUCINATION, FALSE));
 	    *buf = highc(*buf);
 	    strcat(buf, " had wounded legs");
@@ -1301,11 +1301,11 @@ void dump_enlightenment(int final) {
 	if (Polymorph) dump(youwere, "polymorphing");
 	if (Polymorph_control) dump(youhad, "polymorph control");
 	if (u.ulycn >= LOW_PM) {
-		Strcpy(buf, an(mons[u.ulycn].mname));
+		strcpy(buf, an(mons[u.ulycn].mname));
 		dump(youwere, buf);
 	}
 	if (Upolyd) {
-	    if (u.umonnum == u.ulycn) Strcpy(buf, "in beast form");
+	    if (u.umonnum == u.ulycn) strcpy(buf, "in beast form");
 	    else sprintf(buf, "polymorphed into %s",
 			 an(youmonst.data->mname));
 #ifdef WIZARD
@@ -1362,9 +1362,9 @@ void dump_enlightenment(int final) {
 	    p = "survived after being killed ";
 	    switch (u.umortality) {
 	    case 0:  p = "survived";  break;
-	    case 1:  Strcpy(buf, "once");  break;
-	    case 2:  Strcpy(buf, "twice");  break;
-	    case 3:  Strcpy(buf, "thrice");  break;
+	    case 1:  strcpy(buf, "once");  break;
+	    case 2:  strcpy(buf, "twice");  break;
+	    case 3:  strcpy(buf, "thrice");  break;
 	    default: sprintf(buf, "%d times", u.umortality);
 		     break;
 	    }

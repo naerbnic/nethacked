@@ -469,7 +469,7 @@ static char * version_id_string(char* outbuf, char const* build_date) {
     subbuf[0] = '\0';
 #ifdef PORT_SUB_ID
     subbuf[0] = ' ';
-    Strcpy(&subbuf[1], PORT_SUB_ID);
+    strcpy(&subbuf[1], PORT_SUB_ID);
 #endif
 #ifdef BETA
     strcat(subbuf, " Beta");
@@ -499,10 +499,10 @@ void do_date() {
 
 #ifdef KR1ED
 	(void) time(&clocktim);
-	Strcpy(cbuf, ctime(&clocktim));
+	strcpy(cbuf, ctime(&clocktim));
 #else
 	(void) time((time_t *)&clocktim);
-	Strcpy(cbuf, ctime((time_t *)&clocktim));
+	strcpy(cbuf, ctime((time_t *)&clocktim));
 #endif
 	for (c = cbuf; *c; c++) if (*c == '\n') break;
 	*c = '\0';	/* strip off the '\n' */
@@ -550,7 +550,7 @@ static void build_savebones_compat_string() {
 #ifdef VERSION_COMPATIBILITY
 	unsigned long uver = VERSION_COMPATIBILITY;
 #endif
-	Strcpy(save_bones_compat_buf,
+	strcpy(save_bones_compat_buf,
 		"save and bones files accepted from version");
 #ifdef VERSION_COMPATIBILITY
 	sprintf(eos(save_bones_compat_buf), "s %lu.%lu.%lu through %d.%d.%d",
@@ -1726,7 +1726,7 @@ void do_vision_header(string const& path) {
      * create the include file, "vis_tab.h"
      */
     filename[0]='\0';
-    Strcpy(filename, path.c_str());
+    strcpy(filename, path.c_str());
     if (!(ofp = fopen(filename, WRTMODE))) {
 	perror(filename);
 	exit(EXIT_FAILURE);
@@ -1761,7 +1761,7 @@ void do_vision_source(string const& path) {
      * create the source file, "vis_tab.c"
      */
     filename[0]='\0';
-    Strcpy(filename, path.c_str());
+    strcpy(filename, path.c_str());
     if (!(ofp = fopen(filename, WRTMODE))) {
   perror(filename);
   sprintf(filename, INCLUDE_TEMPLATE, VIS_TAB_H);

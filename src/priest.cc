@@ -224,7 +224,7 @@ void priestini(d_level *lvl, struct mkroom *sroom, int sx, int sy, bool sanctum)
 char * priestname(struct Monster *mon, char *pname) {
 	const char *what = Hallucination ? rndmonnam() : mon->data->mname;
 
-	Strcpy(pname, "the ");
+	strcpy(pname, "the ");
 	if (mon->minvis) strcat(pname, "invisible ");
 	if (mon->ispriest || mon->data == &mons[PM_ALIGNED_PRIEST] ||
 					mon->data == &mons[PM_ANGEL]) {
