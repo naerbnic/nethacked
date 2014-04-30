@@ -236,7 +236,7 @@ typedef std::uint8_t	uchar;
  * bugs left here.
  */
 
-#if defined(TTY_GRAPHICS) || defined(MSWIN_GRAPHICS)
+#if defined(TTY_GRAPHICS)
 # define MENU_COLOR
 # define MENU_COLOR_REGEX 
 # define MENU_COLOR_REGEX_POSIX 

@@ -667,7 +667,7 @@ void assign_rogue_graphics(bool is_rlevel) {
 	/* Use a loop: char != uchar on some machines. */
 	for (i = 0; i < MAXMCLASSES; i++)
 	    monsyms[i] = def_monsyms[i];
-# if defined(ASCIIGRAPH) && !defined(MSWIN_GRAPHICS)
+# if defined(ASCIIGRAPH)
 	if (iflags.IBMgraphics)
 	    monsyms[S_HUMAN] = 0x01; /* smiley face */
 # endif
@@ -707,7 +707,6 @@ void assign_rogue_graphics(bool is_rlevel) {
 	    showsyms[S_litcorr] = 0xb2;
 	    showsyms[S_upstair] = 0xf0; /* Greek Xi */
 	    showsyms[S_dnstair] = 0xf0;
-#ifndef MSWIN_GRAPHICS
 	    showsyms[S_arrow_trap] = 0x04; /* diamond (cards) */
 	    showsyms[S_dart_trap] = 0x04;
 	    showsyms[S_falling_rock_trap] = 0x04;
@@ -730,7 +729,6 @@ void assign_rogue_graphics(bool is_rlevel) {
 	    showsyms[S_magic_trap] = 0x04;
 	    showsyms[S_anti_magic_trap] = 0x04;
 	    showsyms[S_polymorph_trap] = 0x04;
-#endif
 	}
 #endif /* ASCIIGRAPH */
 

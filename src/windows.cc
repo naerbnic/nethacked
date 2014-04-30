@@ -18,12 +18,6 @@ extern struct window_procs amii_procs;
 extern struct window_procs amiv_procs;
 extern void ami_wininit_data();
 #endif
-#ifdef WIN32_GRAPHICS
-extern struct window_procs win32_procs;
-#endif
-#ifdef MSWIN_GRAPHICS
-extern struct window_procs mswin_procs;
-#endif
 
 STATIC_DCL void def_raw_print(const char *s);
 
@@ -46,12 +40,6 @@ struct win_choices {
 #ifdef AMIGA_INTUITION
     { &amii_procs, ami_wininit_data },		/* Old font version of the game */
     { &amiv_procs, ami_wininit_data },		/* Tile version of the game */
-#endif
-#ifdef WIN32_GRAPHICS
-    { &win32_procs, 0 },
-#endif
-#ifdef MSWIN_GRAPHICS
-    { &mswin_procs, 0 },
 #endif
     { 0, 0 }		/* must be last */
 };
