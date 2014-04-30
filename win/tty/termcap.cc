@@ -1065,15 +1065,6 @@ void term_start_color(int color) {
 
 
 int has_color(int color) {
-#ifdef GEM_GRAPHICS
-	/* XXX has_color() should be added to windowprocs */
-	if (windowprocs.name != NULL &&
-	    !strcmpi(windowprocs.name, "Gem")) return TRUE;
-#endif
-#ifdef AMII_GRAPHICS
-	/* hilites[] not used */
-	return iflags.use_color;
-#endif
 	return hilites[color] != (char *)0;
 }
 

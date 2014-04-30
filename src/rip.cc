@@ -10,7 +10,7 @@ STATIC_DCL void center(int, char *);
 
 extern const char * const killed_by_prefix[];	/* from topten.c */
 
-#if defined(TTY_GRAPHICS) || defined(GEM_GRAPHICS)
+#if defined(TTY_GRAPHICS)
 # define TEXT_TOMBSTONE
 #endif
 

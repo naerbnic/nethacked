@@ -6,18 +6,6 @@
 #ifdef TTY_GRAPHICS
 #include "wintty.h"
 #endif
-#ifdef GEM_GRAPHICS
-#include "wingem.h"
-#endif
-#ifdef BEOS_GRAPHICS
-extern struct window_procs beos_procs;
-extern void be_win_init();
-#endif
-#ifdef AMIGA_INTUITION
-extern struct window_procs amii_procs;
-extern struct window_procs amiv_procs;
-extern void ami_wininit_data();
-#endif
 
 STATIC_DCL void def_raw_print(const char *s);
 
@@ -30,16 +18,6 @@ struct win_choices {
 } winchoices[] = {
 #ifdef TTY_GRAPHICS
     { &tty_procs, win_tty_init },
-#endif
-#ifdef GEM_GRAPHICS
-    { &Gem_procs, win_Gem_init },
-#endif
-#ifdef BEOS_GRAPHICS
-    { &beos_procs, be_win_init },
-#endif
-#ifdef AMIGA_INTUITION
-    { &amii_procs, ami_wininit_data },		/* Old font version of the game */
-    { &amiv_procs, ami_wininit_data },		/* Tile version of the game */
 #endif
     { 0, 0 }		/* must be last */
 };

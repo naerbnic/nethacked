@@ -48,11 +48,6 @@ static int n_ids_mapped = 0;
 static struct bucket *id_map = 0;
 
 
-#ifdef AMII_GRAPHICS
-void  amii_setpens(int);	/* use colors from save file */
-extern int amii_numcolors;
-#endif
-
 #include "quest.h"
 
 bool restoring = FALSE;
@@ -343,9 +338,6 @@ bool restgamestate(int fd, unsigned int *stuckid, unsigned int *steedid) {
 	if (remember_discover) discover = remember_discover;
 
 	role_init();	/* Reset the initial role, race, gender, and alignment */
-#ifdef AMII_GRAPHICS
-	amii_setpens(amii_numcolors);	/* use colors from save file */
-#endif
 	mread(fd, (genericptr_t) &u, sizeof(struct You));
 	set_uasmon();
 #ifdef CLIPPING
