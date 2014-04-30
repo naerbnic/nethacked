@@ -76,13 +76,6 @@ long yn_number = 0L;
 
 const char disclosure_options[] = "iavgc";
 
-#if defined(MICRO)
-char hackdir[PATHLEN];		/* where rumors, help, record are */
-# ifdef MICRO
-char levels[PATHLEN];		/* where levels are */
-# endif
-#endif /* MICRO */
-
 
 #ifdef MFLOPPY
 char permbones[PATHLEN];	/* where permanent copy of bones go */

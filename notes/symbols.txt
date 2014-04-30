@@ -1,5 +1,4 @@
 To Be Removed:
-NOTIFY_NETHACK_BUGS
 MICRO
 VMS
 AMIGA
@@ -8,3 +7,10 @@ MSDOS
 
 To be set:
 UNIX
+
+Unknown:
+TERMLIB
+MFLOPPY
+
+Partially Removed:
+MICRO

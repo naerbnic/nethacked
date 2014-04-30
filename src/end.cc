@@ -321,13 +321,6 @@ void panic(const char *str, ...) {
 		  "Program initialization has failed." :
 		  "Suddenly, the dungeon collapses.");
 #if defined(WIZARD) && !defined(MICRO)
-# if defined(NOTIFY_NETHACK_BUGS)
-	if (!wizard)
-	    raw_printf("Report the following error to \"%s\".",
-			"nethack-bugs@nethack.org");
-	else if (program_state.something_worth_saving)
-	    raw_print("\nError save file being written.\n");
-# else
 	if (!wizard)
 	    raw_printf("Report error to \"%s\"%s.",
 #  ifdef WIZARD_NAME	/*(KR1ED)*/
@@ -337,7 +330,6 @@ void panic(const char *str, ...) {
 #  endif
 			!program_state.something_worth_saving ? "" :
 			" and it may be possible to rebuild.");
-# endif
 	if (program_state.something_worth_saving) {
 	    set_error_savefile();
 	    (void) dosave0();

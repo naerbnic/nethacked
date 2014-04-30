@@ -647,7 +647,7 @@ E void set_savefile_name();
 #ifdef INSURANCE
 E void save_savefile_name(int);
 #endif
-#if defined(WIZARD) && !defined(MICRO)
+#if defined(WIZARD)
 E void set_error_savefile();
 #endif
 E int create_savefile();
@@ -1235,43 +1235,6 @@ E struct Monster *mk_mplayer(struct permonst *,xchar,
 E void create_mplayers(int,bool);
 E void mplayer_talk(struct Monster *);
 
-#if defined(MICRO)
-
-/* ### msdos.c,os2.c,tos.c,winnt.c ### */
-
-E int tgetch();
-#  ifndef TOS
-E char switchar();
-#  endif
-# ifndef __GO32__
-E long freediskspace(char *);
-E int findfirst(char *);
-E int findnext();
-E long filesize(char *);
-E char *foundfile_buffer();
-# endif /* __GO32__ */
-E void chdrive(char *);
-# ifndef TOS
-E void disable_ctrlP();
-E void enable_ctrlP();
-# endif
-# if defined(MICRO) && !defined(WINNT)
-E void get_scr_size();
-#  ifndef TOS
-E void gotoxy(int,int);
-#  endif
-# endif
-# ifdef TOS
-E int _copyfile(char *,char *);
-E int kbhit();
-E void set_colors();
-E void restore_colors();
-#  ifdef SUSPEND
-E int dosuspend();
-#  endif
-# endif /* TOS */
-#endif /* MICRO */
-
 /* ### mthrowu.c ### */
 
 E int thitu(int,int,struct Object *,const char *);
@@ -1426,55 +1389,6 @@ E int dowhatdoes();
 E char *dowhatdoes_core(char, char *);
 E int dohelp();
 E int dohistory();
-
-/* ### pcmain.c ### */
-
-#if defined(MICRO)
-# ifdef CHDIR
-E void chdirx(char *,bool);
-# endif /* CHDIR */
-#endif /* MICRO || WIN32 */
-
-/* ### pcsys.c ### */
-
-#if defined(MICRO)
-E void flushout();
-E int dosh();
-# ifdef MFLOPPY
-E void eraseall(const char *,const char *);
-E void copybones(int);
-E void playwoRAMdisk();
-E int saveDiskPrompt(int);
-E void gameDiskPrompt();
-# endif
-E void append_slash(char *);
-E void getreturn(const char *);
-# ifndef AMIGA
-E void msmsg(const char *,...);
-# endif
-E FILE *fopenp(const char *,const char *);
-#endif /* MICRO */
-
-/* ### pctty.c ### */
-
-#if defined(MICRO)
-E void gettty();
-E void settty(const char *);
-E void setftty();
-E void error(const char *,...);
-#if defined(TIMED_DELAY) && defined(_MSC_VER)
-E void msleep(unsigned);
-#endif
-#endif /* MICRO */
-
-/* ### pcunix.c ### */
-
-#if defined(MICRO)
-E void regularize(char *);
-#endif /* MICRO */
-#if defined(PC_LOCKING)
-E void getlock();
-#endif
 
 /* ### pickup.c ### */
 
@@ -2116,9 +2030,6 @@ E char *version_string(char *);
 E char *getversionstring(char *);
 E int doversion();
 E int doextversion();
-#ifdef MICRO
-E bool comp_times(long);
-#endif
 E bool check_version(struct version_info *, const char *,bool);
 E unsigned long get_feature_notice_ver(char *);
 E unsigned long get_current_feature_ver();

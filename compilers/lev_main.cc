@@ -34,11 +34,7 @@ using std::vector;
 # define O_BINARY 0
 #endif
 
-#if defined(MICRO)
-# define OMASK FCMASK
-#else
-# define OMASK 0644
-#endif
+#define OMASK 0644
 
 #define ERR		(-1)
 
@@ -1393,9 +1389,6 @@ struct attribs attrmax, attrmin;
 const char *configfile;
 char lock[ARBITRARY_SIZE];
 char SAVEF[ARBITRARY_SIZE];
-# ifdef MICRO
-char SAVEP[ARBITRARY_SIZE];
-# endif
 /* termcap.c */
 struct tc_lcl_data tc_lcl_data;
 # ifdef TEXTCOLOR
