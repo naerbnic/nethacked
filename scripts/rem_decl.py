@@ -22,17 +22,27 @@ def find_matching_close(s, index):
 argdecl_re = re.compile(r'\b(F|V)DECL\(')
 ndecl_re = re.compile(r'\bNDECL\s*\(')
 
+def until_unchanged(line, fn):
+    while True:
+        new_line = fn(line)
+        if new_line == line:
+            return new_line
+        line = new_line
+
+def fix_ndecl(line):
+   m = ndecl_re.search(line);
+   if !m:
+       return line
+   actual_start = m.start(0)
+   actual_end = find_matching_close(line, m.end(0))
+   contents = line[m.end(0):actual_end - 1]
+   return line[:actual_start] + contents + '()' + line[actual_end:]
+
 def process_lines(lines_arg):
     lines = lines_arg[:]
     out_lines = []
     for line in lines:
-        m = ndecl_re.search(line);
-        if m:
-            actual_start = m.start(0)
-            actual_end = find_matching_close(line, m.end(0))
-            contents = line[m.end(0):actual_end - 1]
-            line = line[:actual_start] + contents + '()' + line[actual_end:]
-        out_lines.append(line);
+        out_lines.append(until_unchanged(line, fix_ndecl));
         
     return out_lines
 
