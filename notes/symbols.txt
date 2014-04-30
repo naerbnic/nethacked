@@ -1,7 +1,4 @@
 To Be Removed:
-MAC
-mac
-OS2
 THINK_C
 __MWERKS__
 QT_GRAPHICS
@@ -47,3 +44,5 @@ VMS - Ancient VMS OS
 AMIGA - Amiga machine
 MSDOS - MSDOS machine
 __BEOS__ - BeOS machine
+MAC - Macintosh
+OS2 - OS/2 machine

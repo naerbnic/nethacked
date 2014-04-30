@@ -11,7 +11,7 @@
 
 /* might display need graphics code? */
 #if !defined(TOS)
-# if defined(TERMLIB) || defined(OS2)
+# if defined(TERMLIB)
 #  define ASCIIGRAPH
 # endif
 #endif

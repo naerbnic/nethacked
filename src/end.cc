@@ -50,11 +50,7 @@ STATIC_DCL void list_genocided(char,bool);
 #endif /* DUMP_LOG */
 STATIC_DCL bool should_query_disclose_option(int,char *);
 
-#if defined(OS2)
-extern void nethack_exit(int);
-#else
 #define nethack_exit exit
-#endif
 
 #define done_stopprint program_state.stopprint
 
