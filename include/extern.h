@@ -9,9 +9,6 @@
 
 /* ### alloc.c ### */
 
-#if 0
-E long *FDECL(alloc, (unsigned int));
-#endif
 E char *FDECL(fmt_ptr, (const void*,char *));
 
 /* This next pre-processor directive covers almost the entire file,
