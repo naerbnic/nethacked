@@ -199,9 +199,7 @@ typedef std::uint8_t	uchar;
 #define ELBERETH	/* Engraving the E-word repels monsters */
 /* I/O */
 #define REDO		/* support for redoing last command - DGK */
-#if !defined(MAC)
 # define CLIPPING	/* allow smaller screens -- ERS */
-#endif
 
 #ifdef REDO
 # define DOAGAIN '\001' /* ^A, the "redo" key used in cmd.c and getline.c */

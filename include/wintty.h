@@ -200,10 +200,6 @@ E void tty_number_pad(int);
 E void tty_delay_output();
 #ifdef CHANGE_COLOR
 E void tty_change_color(int color,long rgb,int reverse);
-#ifdef MAC
-E void tty_change_background(int white_or_black);
-E short set_tty_font_name(winid, char *);
-#endif
 E char * tty_get_color_string();
 #endif
 

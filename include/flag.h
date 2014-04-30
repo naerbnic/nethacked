@@ -58,9 +58,6 @@ struct flag {
 	bool  nap;		/* `timed_delay' option for display effects */
 	bool  nopick;	/* do not pickup objects (as when running) */
 	bool  null;		/* OK to send nulls to the terminal */
-#ifdef MAC
-	bool  page_wait;	/* put up a --More-- after a page of messages */
-#endif
 	bool  perm_invent;	/* keep full inventories up until dismissed */
 	bool  pickup;	/* whether you pickup or move and look */
 
@@ -281,9 +278,6 @@ struct instance_flags {
 #define use_inverse wc_inverse
 #ifdef MAC_GRAPHICS_ENV
 #define large_font obsolete
-#endif
-#ifdef MAC
-#define popup_dialog wc_popup_dialog
 #endif
 #define preload_tiles wc_preload_tiles
 

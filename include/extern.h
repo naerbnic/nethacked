@@ -885,46 +885,6 @@ E bool doorlock(struct Object *,int,int);
 E int doopen();
 E int doclose();
 
-#ifdef MAC
-/* These declarations are here because the main code calls them. */
-
-/* ### macfile.c ### */
-
-E int maccreat(const char *,long);
-E int macopen(const char *,int,long);
-E int macclose(int);
-E int macread(int,void *,unsigned);
-E int macwrite(int,void *,unsigned);
-E long macseek(int,long,short);
-E int macunlink(const char *);
-
-/* ### macsnd.c ### */
-
-E void mac_speaker(struct Object *,char *);
-
-/* ### macunix.c ### */
-
-E void regularize(char *);
-E void getlock();
-
-/* ### macwin.c ### */
-
-E void lock_mouse_cursor(Boolean);
-E int SanePositions();
-
-/* ### mttymain.c ### */
-
-E void getreturn(char *);
-E void msmsg(const char *,...);
-E void gettty();
-E void setftty();
-E void settty(const char *);
-E int tgetch();
-E void cmov(int x, int y);
-E void nocmov(int x, int y);
-
-#endif /* MAC */
-
 /* ### mail.c ### */
 
 #ifdef MAIL

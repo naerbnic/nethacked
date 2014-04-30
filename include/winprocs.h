@@ -52,10 +52,6 @@ struct window_procs {
     void (*win_delay_output)();
 #ifdef CHANGE_COLOR
     void (*win_change_color)(int,long,int);
-#ifdef MAC
-    void (*win_change_background)(int);
-    short (*win_set_font_name)(winid, char *);
-#endif
     char * (*win_get_color_string)();
 #endif
 
@@ -115,10 +111,6 @@ extern struct window_procs windowprocs;
 #define delay_output (*windowprocs.win_delay_output)
 #ifdef CHANGE_COLOR
 #define change_color (*windowprocs.win_change_color)
-#ifdef MAC
-#define change_background (*windowprocs.win_change_background)
-#define set_font_name (*windowprocs.win_set_font_name)
-#endif
 #define get_color_string (*windowprocs.win_get_color_string)
 #endif
 
