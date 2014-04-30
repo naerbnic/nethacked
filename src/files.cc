@@ -263,21 +263,6 @@ int create_levelfile(int lev, char errbuf[]) {
 	set_levelfile_name(lock, lev);
 	fq_lock = fqname(lock, LEVELPREFIX, 0);
 
-#if defined(MICRO)
-	/* Use O_TRUNC to force the file to be shortened if it already
-	 * exists and is currently longer.
-	 */
-# ifdef HOLD_LOCKFILE_OPEN
-	if (lev == 0)
-		fd = open_levelfile_exclusively(fq_lock, lev,
-				O_WRONLY |O_CREAT | O_TRUNC | O_BINARY);
-	else
-	fd = open(fq_lock, O_WRONLY |O_CREAT | O_TRUNC | O_BINARY, FCMASK);
-#else
-	fd = creat(fq_lock, FCMASK);
-# endif
-#endif /* MICRO */
-
 	if (fd >= 0)
 	    level_info[lev].flags |= LFILE_EXISTS;
 	else if (errbuf)	/* failure explanation */
@@ -455,14 +440,7 @@ int create_bonesfile(d_level *lev, char **bonesid, char errbuf[]) {
 	file = set_bonestemp_name();
 	file = fqname(file, BONESPREFIX, 0);
 
-#if defined(MICRO)
-	/* Use O_TRUNC to force the file to be shortened if it already
-	 * exists and is currently longer.
-	 */
-	fd = open(file, O_WRONLY |O_CREAT | O_TRUNC | O_BINARY, FCMASK);
-#else
 	fd = creat(file, FCMASK);
-#endif
 	if (fd < 0 && errbuf) /* failure explanation */
 	    sprintf(errbuf,
 		    "Cannot create bones \"%s\", id %s (errno %d).",
@@ -558,26 +536,8 @@ void set_savefile_name() {
 	regularize(SAVEF+7);
 	strcat(SAVEF, ";1");
 #else
-# if defined(MICRO)
-	strcpy(SAVEF, SAVEP);
-#  ifdef AMIGA
-	strncat(SAVEF, bbs_id, PATHLEN);
-#  endif
-	{
-		int i = strlen(SAVEP);
-#  ifdef AMIGA
-		/* plname has to share space with SAVEP and ".sav" */
-		(void)strncat(SAVEF, plname, FILENAME - i - 4);
-#  else
-		(void)strncat(SAVEF, plname, 8);
-#  endif
-		regularize(SAVEF+i);
-	}
-	strcat(SAVEF, ".sav");
-# else
 	sprintf(SAVEF, "save/%d%s", (int)getuid(), plname);
 	regularize(SAVEF+5);	/* avoid . or / in name */
-# endif	/* MICRO */
 #endif /* VMS   */
 }
 
@@ -588,7 +548,7 @@ void save_savefile_name(int fd) {
 #endif
 
 
-#if defined(WIZARD) && !defined(MICRO)
+#if defined(WIZARD)
 /* change pre-existing savefile name to indicate an error savefile */
 void set_error_savefile() {
 # ifdef VMS
@@ -610,9 +570,6 @@ int create_savefile() {
 	int fd;
 
 	fq_save = fqname(SAVEF, SAVEPREFIX, 0);
-#if defined(MICRO)
-	fd = open(fq_save, O_WRONLY | O_BINARY | O_CREAT | O_TRUNC, FCMASK);
-#else
 	fd = creat(fq_save, FCMASK);
 # if defined(VMS) && !defined(SECURE)
 	/*
@@ -625,7 +582,6 @@ int create_savefile() {
 #  endif
 	(void) chown(fq_save, getuid(), getgid());
 # endif /* VMS && !SECURE */
-#endif	/* MICRO */
 
 	return fd;
 }
@@ -1164,7 +1120,7 @@ STATIC_OVL FILE * fopen_config_file(const char *filename) {
 		}
 	}
 
-#if defined(MICRO) || defined(__BEOS__)
+#if defined(__BEOS__)
 	if ((fp = fopenp(fqname(configfile, CONFIGPREFIX, 0), "r"))
 								!= (FILE *)0)
 		return(fp);
@@ -1360,42 +1316,6 @@ int parse_config_line(FILE *fp, char *buf, char *tmp_ramdisk, char *tmp_levels) 
 	} else if (match_varname(buf, "TROUBLEDIR", 4)) {
 		adjust_prefix(bufp, TROUBLEPREFIX);
 #else /*NOCWD_ASSUMPTIONS*/
-# ifdef MICRO
-	} else if (match_varname(buf, "HACKDIR", 4)) {
-		(void) strncpy(hackdir, bufp, PATHLEN-1);
-#  ifdef MFLOPPY
-	} else if (match_varname(buf, "RAMDISK", 3)) {
-				/* The following ifdef is NOT in the wrong
-				 * place.  For now, we accept and silently
-				 * ignore RAMDISK */
-#   ifndef AMIGA
-		(void) strncpy(tmp_ramdisk, bufp, PATHLEN-1);
-#   endif
-#  endif
-	} else if (match_varname(buf, "LEVELS", 4)) {
-		(void) strncpy(tmp_levels, bufp, PATHLEN-1);
-
-	} else if (match_varname(buf, "SAVE", 4)) {
-#  ifdef MFLOPPY
-		extern	int saveprompt;
-#  endif
-		char *ptr;
-		if ((ptr = index(bufp, ';')) != 0) {
-			*ptr = '\0';
-#  ifdef MFLOPPY
-			if (*(ptr+1) == 'n' || *(ptr+1) == 'N') {
-				saveprompt = FALSE;
-			}
-#  endif
-		}
-# ifdef	MFLOPPY
-		else
-		    saveprompt = flags.asksavedisk;
-# endif
-
-		(void) strncpy(SAVEP, bufp, SAVESIZE-1);
-		append_slash(SAVEP);
-# endif /* MICRO */
 #endif /*NOCWD_ASSUMPTIONS*/
 
 	} else if (match_varname(buf, "NAME", 4)) {
@@ -1613,29 +1533,11 @@ void read_config_file(const char *filename) {
 #define tmp_levels	(char *)0
 #define tmp_ramdisk	(char *)0
 
-#if defined(MICRO)
-#undef tmp_levels
-	char	tmp_levels[PATHLEN];
-# ifdef MFLOPPY
-#  ifndef AMIGA
-#undef tmp_ramdisk
-	char	tmp_ramdisk[PATHLEN];
-#  endif
-# endif
-#endif
 	char	buf[4*BUFSZ];
 	FILE	*fp;
 
 	if (!(fp = fopen_config_file(filename))) return;
 
-#if defined(MICRO)
-# ifdef MFLOPPY
-#  ifndef AMIGA
-	tmp_ramdisk[0] = 0;
-#  endif
-# endif
-	tmp_levels[0] = 0;
-#endif
 	/* begin detection of duplicate configfile options */
 	set_duplicate_opt_detection(1);
 
@@ -1650,22 +1552,6 @@ void read_config_file(const char *filename) {
 	/* turn off detection of duplicate configfile options */
 	set_duplicate_opt_detection(0);
 
-#if defined(MICRO) && !defined(NOCWD_ASSUMPTIONS)
-	/* should be superseded by fqn_prefix[] */
-# ifdef MFLOPPY
-	strcpy(permbones, tmp_levels);
-#  ifndef AMIGA
-	if (tmp_ramdisk[0]) {
-		strcpy(levels, tmp_ramdisk);
-		if (strcmp(permbones, levels))		/* if not identical */
-			ramdisk = TRUE;
-	} else
-#  endif /* AMIGA */
-		strcpy(levels, tmp_levels);
-
-	strcpy(bones, levels);
-# endif /* MFLOPPY */
-#endif /* MICRO */
 	return;
 }
 
@@ -1700,7 +1586,7 @@ STATIC_OVL FILE * fopen_wizkit_file() {
 	    wait_synch();
 	}
 
-#if defined(MICRO) || defined(__BEOS__)
+#if defined(__BEOS__)
 	if ((fp = fopenp(fqname(wizkit, CONFIGPREFIX, 0), "r"))
 								!= (FILE *)0)
 		return(fp);
@@ -1803,42 +1689,6 @@ void check_recordfile(const char *dir) {
 	    raw_printf("Warning: cannot write scoreboard file %s", fq_record);
 	    wait_synch();
 	}
-#if defined(MICRO) || defined(WIN32)
-	char tmp[PATHLEN];
-
-# ifdef OS2_CODEVIEW   /* explicit path on opening for OS/2 */
-	/* how does this work when there isn't an explicit path or fopenp
-	 * for later access to the file via fopen_datafile? ? */
-	(void) strncpy(tmp, dir, PATHLEN - 1);
-	tmp[PATHLEN-1] = '\0';
-	if ((strlen(tmp) + 1 + strlen(RECORD)) < (PATHLEN - 1)) {
-		append_slash(tmp);
-		strcat(tmp, RECORD);
-	}
-	fq_record = tmp;
-# else
-	strcpy(tmp, RECORD);
-	fq_record = fqname(RECORD, SCOREPREFIX, 0);
-# endif
-
-	if ((fd = open(fq_record, O_RDWR)) < 0) {
-	    /* try to create empty record */
-# if defined(AZTEC_C) || defined(_DCC) || (defined(__GNUC__) && defined(__AMIGA__))
-	    /* Aztec doesn't use the third argument */
-	    /* DICE doesn't like it */
-	    if ((fd = open(fq_record, O_CREAT|O_RDWR)) < 0) {
-# else
-	    if ((fd = open(fq_record, O_CREAT|O_RDWR, S_IREAD|S_IWRITE)) < 0) {
-# endif
-	raw_printf("Warning: cannot write record %s", tmp);
-		wait_synch();
-	    } else
-		(void) close(fd);
-	} else		/* open succeeded */
-	    (void) close(fd);
-#else /* MICRO*/
-
-#endif /* MICRO*/
 }
 
 /* ----------  END SCOREBOARD CREATION ----------- */

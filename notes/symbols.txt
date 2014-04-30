@@ -4,6 +4,7 @@ VMS
 AMIGA
 OVL[0123AB]
 MSDOS
+__BEOS__
 
 To be set:
 UNIX

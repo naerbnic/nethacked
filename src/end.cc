@@ -50,7 +50,7 @@ STATIC_DCL void list_genocided(char,bool);
 #endif /* DUMP_LOG */
 STATIC_DCL bool should_query_disclose_option(int,char *);
 
-#if defined(__BEOS__) || defined(MICRO) || defined(OS2)
+#if defined(__BEOS__) || defined(OS2)
 extern void nethack_exit(int);
 #else
 #define nethack_exit exit
@@ -320,7 +320,7 @@ void panic(const char *str, ...) {
 		  !program_state.something_worth_saving ?
 		  "Program initialization has failed." :
 		  "Suddenly, the dungeon collapses.");
-#if defined(WIZARD) && !defined(MICRO)
+#if defined(WIZARD)
 	if (!wizard)
 	    raw_printf("Report error to \"%s\"%s.",
 #  ifdef WIZARD_NAME	/*(KR1ED)*/
