@@ -1076,7 +1076,7 @@ bool lock_file(const char *filename, int whichprefix, int retryct) {
     lockptr = -1;
 # endif
     while (--retryct && OPENFAILURE(lockptr)) {
-# if defined(WIN32) && !defined(WIN_CE)
+# if defined(WIN32)
 	lockptr = sopen(lockname, O_RDWR|O_CREAT, SH_DENYRW, S_IWRITE);
 # else
 	(void)DeleteFile(lockname); /* in case dead process was here first */

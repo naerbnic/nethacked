@@ -139,6 +139,7 @@ E void bot2str(char *);
 /* ### cmd.c ### */
 
 #ifdef USE_TRAMPOLI
+#error TRAMPOLIIIII!!!!
 E int doextcmd();
 E int domonability();
 E int doprev_message();

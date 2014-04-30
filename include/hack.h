@@ -280,22 +280,6 @@ extern coord bhitpos;	/* place where throw or zap hits or stops */
 /* negative armor class is randomly weakened to prevent invulnerability */
 #define AC_VALUE(AC)	((AC) >= 0 ? (AC) : -rnd(-(AC)))
 
-#if defined(MICRO) && !defined(__DJGPP__)
-#define getuid() 1
-#define getlogin() ((char *)0)
-#endif /* MICRO */
-
-#if defined(OVERLAY)&&(defined(OVL0)||defined(OVL1)||defined(OVL2)||defined(OVL3)||defined(OVLB))
-# define USE_OVLx
-# define STATIC_DCL extern
-# define STATIC_OVL
-# ifdef OVLB
-#  define STATIC_VAR
-# else
-#  define STATIC_VAR extern
-# endif
-
-#else	/* !OVERLAY || (!OVL0 && !OVL1 && !OVL2 && !OVL3 && !OVLB) */
 # define STATIC_DCL static
 # define STATIC_OVL static
 # define STATIC_VAR static
@@ -306,23 +290,13 @@ extern coord bhitpos;	/* place where throw or zap hits or stops */
 # define OVL2
 # define OVL3	/* lowest specified priority */
 # define OVLB	/* the base overlay segment */
-#endif	/* OVERLAY && (OVL0 || OVL1 || OVL2 || OVL3 || OVLB) */
 
-/* Macro for a few items that are only static if we're not overlaid.... */
-#if defined(USE_TRAMPOLI) || defined(USE_OVLx)
-# define STATIC_PTR
-#else
-# define STATIC_PTR static
-#endif
+#define STATIC_PTR static
 
 /* The function argument to qsort() requires a particular
  * calling convention under WINCE which is not the default
  * in that environment.
  */
-#if defined(WIN_CE)
-# define CFDECLSPEC __cdecl
-#else
-# define CFDECLSPEC
-#endif
+#define CFDECLSPEC
  
 #endif /* HACK_H */
