@@ -1,6 +1,5 @@
 To Be Removed:
 PCMUSIC - PC Speaker
-MAC_GRAPHICS_ENV
 X11_GRAPHICS
 GNOME_GRAPHICS
 GEM_GRAPHICS
@@ -49,3 +48,4 @@ MAC - Macintosh
 OS2 - OS/2 machine
 QT_GRAPHICS
 MFLOPPY - For floppy-based machines
+MAC_GRAPHICS_ENV
