@@ -5,6 +5,8 @@ AMIGA
 OVL[0123AB]
 MSDOS
 __BEOS__
+MAC
+WIN32CON
 
 To be set:
 UNIX
@@ -12,6 +14,12 @@ UNIX
 Unknown:
 TERMLIB
 MFLOPPY
+ZEROCOMP
+TOS
 
 Partially Removed:
 MICRO
+
+Graveyard:
+WIN32 - Windows32
+OVERLAY - Separately loadable binary overlays

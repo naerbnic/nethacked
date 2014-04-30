@@ -129,7 +129,7 @@ bool GFlag = FALSE;
 bool HE_resets_AS;	/* see termcap.c */
 #endif
 
-#if defined(MICRO) || defined(WIN32CON)
+#if defined(WIN32CON)
 static const char to_continue[] = "to continue";
 #define getret() getreturn(to_continue)
 #else

@@ -13,13 +13,6 @@ const char * tilename(int, int);
 void init_tilemap();
 void process_substitutions(FILE *);
 
-#if defined(MICRO)
-#undef exit
-#if !defined(MSDOS)
-extern void exit(int);
-#endif
-#endif
-
 #define MON_GLYPH 1
 #define OBJ_GLYPH 2
 #define OTH_GLYPH 3	/* fortunately unnecessary */

@@ -18,10 +18,6 @@ long bytes_counted;
 static int count_only;
 #endif
 
-#ifdef MICRO
-int dotcnt, dotrow;	/* also used in restore */
-#endif
-
 #ifdef ZEROCOMP
 STATIC_DCL void bputc(int);
 #endif
@@ -117,10 +113,6 @@ int dosave0() {
 	(void) signal(SIGINT, SIG_IGN);
 #endif
 
-#if defined(MICRO) && defined(MFLOPPY)
-	if (!saveDiskPrompt(0)) return 0;
-#endif
-
 	HUP if (iflags.window_inited) {
 	    uncompress(fq_save);
 	    fd = open_savefile();
@@ -155,13 +147,6 @@ int dosave0() {
 	if(iflags.window_inited)
 	    HUP clear_nhwindow(WIN_MESSAGE);
 
-#ifdef MICRO
-	dotcnt = 0;
-	dotrow = 2;
-	curs(WIN_MAP, 1, 1);
-	if (strncmpi("X11", windowprocs.name, 3))
-	  putstr(WIN_MAP, 0, "Saving:");
-#endif
 #ifdef MFLOPPY
 	/* make sure there is enough disk space */
 	if (iflags.checkspace) {
@@ -220,17 +205,6 @@ int dosave0() {
 	for(ltmp = (xchar)1; ltmp <= maxledgerno(); ltmp++) {
 		if (ltmp == ledger_no(&uz_save)) continue;
 		if (!(level_info[ltmp].flags & LFILE_EXISTS)) continue;
-#ifdef MICRO
-		curs(WIN_MAP, 1 + dotcnt++, dotrow);
-		if (dotcnt >= (COLNO - 1)) {
-			dotrow++;
-			dotcnt = 0;
-		}
-		if (strncmpi("X11", windowprocs.name, 3)){
-		  putstr(WIN_MAP, 0, ".");
-		}
-		mark_synch();
-#endif
 		ofd = open_levelfile(ltmp, whynot);
 		if (ofd < 0) {
 		    HUP pline("%s", whynot);

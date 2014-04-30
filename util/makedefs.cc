@@ -687,7 +687,7 @@ static const char *build_opts[] = {
 #ifdef TERMINFO
 		"terminal info library",
 #else
-# if defined(TERMLIB) || (!defined(MICRO) && defined(TTY_GRAPHICS))
+# if defined(TERMLIB) || defined(TTY_GRAPHICS)
 		"terminal capability library",
 # endif
 #endif
