@@ -6,7 +6,7 @@
 class LibraryFile {
 public:
   virtual ~LibraryFile() = default;
-  virtual int Read(char* buf, int len, int size) = 0;
+  virtual int Read(void* buf, int len, int size) = 0;
   virtual int Seek(long, int) = 0;
   virtual char* GetString(char* buffer, int size) = 0;
   virtual int GetChar() = 0;

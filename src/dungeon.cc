@@ -174,10 +174,10 @@ void restore_dungeon(int fd) {
     mread(fd, (genericptr_t) &inv_pos, sizeof inv_pos);
 }
 
-static void Fread(genericptr_t ptr, int size, int nitems, dlb *stream) {
+static void Fread(genericptr_t ptr, int size, int nitems, LibraryFile *stream) {
 	int cnt;
 
-	if((cnt = dlb_fread(ptr, size, nitems, stream)) != nitems) {
+	if((cnt = stream->Read(ptr, size, nitems)) != nitems) {
 	    panic(
  "Premature EOF on dungeon description file!\r\nExpected %d bytes - got %d.",
 		  (size * nitems), (size * cnt));
@@ -573,7 +573,7 @@ struct level_map {
 
 /* initialize the "dungeon" structs */
 void init_dungeons() {
-	dlb	*dgn_file;
+	std::unique_ptr<LibraryFile> dgn_file;
 	int i, cl = 0, cb = 0;
 	s_level *x;
 	struct proto_dungeon pd;
@@ -582,8 +582,8 @@ void init_dungeons() {
 
 	pd.n_levs = pd.n_brs = 0;
 
-	dgn_file = dlb_fopen(DUNGEON_FILE, RDBMODE);
-	if (!dgn_file) {
+	dgn_file = library->Open(DUNGEON_FILE, RDBMODE);
+	if (!dgn_file.get()) {
 	    char tbuf[BUFSZ];
 	    sprintf(tbuf, "Cannot open dungeon description - \"%s",
 		DUNGEON_FILE);
@@ -610,7 +610,7 @@ void init_dungeons() {
 	}
 
 	/* validate the data's version against the program's version */
-	Fread((genericptr_t) &vers_info, sizeof vers_info, 1, dgn_file);
+	Fread((genericptr_t) &vers_info, sizeof vers_info, 1, dgn_file.get());
 	/* we'd better clear the screen now, since when error messages come from
 	 * check_version() they will be printed using pline(), which doesn't
 	 * mix with the raw messages that might be already on the screen
@@ -624,13 +624,13 @@ void init_dungeons() {
 	 * dungeon arrays.
 	 */
 	sp_levchn = (s_level *) 0;
-	Fread((genericptr_t)&n_dgns, sizeof(int), 1, dgn_file);
+	Fread((genericptr_t)&n_dgns, sizeof(int), 1, dgn_file.get());
 	if (n_dgns >= MAXDUNGEON)
 	    panic("init_dungeons: too many dungeons");
 
 	for (i = 0; i < n_dgns; i++) {
 	    Fread((genericptr_t)&pd.tmpdungeon[i],
-				    sizeof(struct tmpdungeon), 1, dgn_file);
+				    sizeof(struct tmpdungeon), 1, dgn_file.get());
 #ifdef WIZARD
 	    if(!wizard)
 #endif
@@ -640,11 +640,11 @@ void init_dungeons() {
 		/* skip over any levels or branches */
 		for(j = 0; j < pd.tmpdungeon[i].levels; j++)
 		    Fread((genericptr_t)&pd.tmplevel[cl], sizeof(struct tmplevel),
-							1, dgn_file);
+							1, dgn_file.get());
 
 		for(j = 0; j < pd.tmpdungeon[i].branches; j++)
 		    Fread((genericptr_t)&pd.tmpbranch[cb],
-					sizeof(struct tmpbranch), 1, dgn_file);
+					sizeof(struct tmpbranch), 1, dgn_file.get());
 		n_dgns--; i--;
 		continue;
 	      }
@@ -744,7 +744,7 @@ void init_dungeons() {
 	     */
 	    for(; cl < pd.n_levs; cl++) {
 		Fread((genericptr_t)&pd.tmplevel[cl],
-					sizeof(struct tmplevel), 1, dgn_file);
+					sizeof(struct tmplevel), 1, dgn_file.get());
 		init_level(i, cl, &pd);
 	    }
 	    /*
@@ -768,9 +768,9 @@ void init_dungeons() {
 		panic("init_dungeon: too many branches");
 	    for(; cb < pd.n_brs; cb++)
 		Fread((genericptr_t)&pd.tmpbranch[cb],
-					sizeof(struct tmpbranch), 1, dgn_file);
+					sizeof(struct tmpbranch), 1, dgn_file.get());
 	}
-	(void) dlb_fclose(dgn_file);
+	dgn_file->Close();
 
 	for (i = 0; i < 5; i++) tune[i] = 'A' + rn2(7);
 	tune[5] = 0;

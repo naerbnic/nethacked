@@ -26,7 +26,7 @@ public:
     }
   }
 
-  int Read(char* buf, int len, int size) override {
+  int Read(void* buf, int len, int size) override {
     return fread(buf, len, size, file_);
   }
 

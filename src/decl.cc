@@ -2,10 +2,15 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include <memory>
+
 #include "hack.h"
+#include "decl.h"
 
 int NDECL((*afternmv));
 int NDECL((*occupation));
+
+std::unique_ptr<Library> library;
 
 /* from xxxmain.c */
 const char *hname = 0;		/* name of the game (argv[0] of main) */

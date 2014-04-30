@@ -5,7 +5,13 @@
 #ifndef DECL_H
 #define DECL_H
 
+#include <memory>
+
+#include "library.h"
+
 #define E extern
+
+E std::unique_ptr<Library> library;
 
 E int NDECL((*occupation));
 E int NDECL((*afternmv));

@@ -289,146 +289,151 @@ STATIC_OVL struct permonst * lookat(int x, int y, char *buf, char *monbuf) {
  *	 lcase() for data.base lookup so that we can have a clean key.
  *	 Therefore, we create a copy of inp _just_ for data.base lookup.
  */
-STATIC_OVL void checkfile(char *inp, struct permonst *pm, bool user_typed_name, bool without_asking) {
-    dlb *fp;
-    char buf[BUFSZ], newstr[BUFSZ];
-    char *ep, *dbase_str;
-    long txt_offset;
-    int chk_skip;
-    bool found_in_file = FALSE, skipping_entry = FALSE;
+STATIC_OVL void checkfile(char *inp, struct permonst *pm, bool user_typed_name,
+    bool without_asking) {
+  std::unique_ptr<LibraryFile> fp;
+  char buf[BUFSZ], newstr[BUFSZ];
+  char *ep, *dbase_str;
+  long txt_offset;
+  int chk_skip;
+  bool found_in_file = FALSE, skipping_entry = FALSE;
 
-    fp = dlb_fopen(DATAFILE, "r");
-    if (!fp) {
-	pline("Cannot open data file!");
-	return;
-    }
+  fp = library->Open(DATAFILE, "r");
+  if (!fp.get()) {
+    pline("Cannot open data file!");
+    return;
+  }
 
-    /* To prevent the need for entries in data.base like *ngel to account
-     * for Angel and angel, make the lookup string the same for both
-     * user_typed_name and picked name.
+  /* To prevent the need for entries in data.base like *ngel to account
+   * for Angel and angel, make the lookup string the same for both
+   * user_typed_name and picked name.
+   */
+  if (pm != (struct permonst *) 0 && !user_typed_name)
+    dbase_str = strcpy(newstr, pm->mname);
+  else
+    dbase_str = strcpy(newstr, inp);
+  (void) lcase(dbase_str);
+
+  if (!strncmp(dbase_str, "interior of ", 12))
+    dbase_str += 12;
+  if (!strncmp(dbase_str, "a ", 2))
+    dbase_str += 2;
+  else if (!strncmp(dbase_str, "an ", 3))
+    dbase_str += 3;
+  else if (!strncmp(dbase_str, "the ", 4))
+    dbase_str += 4;
+  if (!strncmp(dbase_str, "tame ", 5))
+    dbase_str += 5;
+  else if (!strncmp(dbase_str, "peaceful ", 9))
+    dbase_str += 9;
+  if (!strncmp(dbase_str, "invisible ", 10))
+    dbase_str += 10;
+  if (!strncmp(dbase_str, "statue of ", 10))
+    dbase_str[6] = '\0';
+  else if (!strncmp(dbase_str, "figurine of ", 12))
+    dbase_str[8] = '\0';
+
+  /* Make sure the name is non-empty. */
+  if (*dbase_str) {
+    /* adjust the input to remove "named " and convert to lower case */
+    char *alt = 0; /* alternate description */
+
+    if ((ep = strstri(dbase_str, " named ")) != 0)
+      alt = ep + 7;
+    else
+      ep = strstri(dbase_str, " called ");
+    if (!ep)
+      ep = strstri(dbase_str, ", ");
+    if (ep && ep > dbase_str)
+      *ep = '\0';
+
+    /*
+     * If the object is named, then the name is the alternate description;
+     * otherwise, the result of makesingular() applied to the name is. This
+     * isn't strictly optimal, but named objects of interest to the user
+     * will usually be found under their name, rather than under their
+     * object type, so looking for a singular form is pointless.
      */
-    if (pm != (struct permonst *) 0 && !user_typed_name)
-	dbase_str = strcpy(newstr, pm->mname);
-    else dbase_str = strcpy(newstr, inp);
-    (void) lcase(dbase_str);
 
-    if (!strncmp(dbase_str, "interior of ", 12))
-	dbase_str += 12;
-    if (!strncmp(dbase_str, "a ", 2))
-	dbase_str += 2;
-    else if (!strncmp(dbase_str, "an ", 3))
-	dbase_str += 3;
-    else if (!strncmp(dbase_str, "the ", 4))
-	dbase_str += 4;
-    if (!strncmp(dbase_str, "tame ", 5))
-	dbase_str += 5;
-    else if (!strncmp(dbase_str, "peaceful ", 9))
-	dbase_str += 9;
-    if (!strncmp(dbase_str, "invisible ", 10))
-	dbase_str += 10;
-    if (!strncmp(dbase_str, "statue of ", 10))
-	dbase_str[6] = '\0';
-    else if (!strncmp(dbase_str, "figurine of ", 12))
-	dbase_str[8] = '\0';
+    if (!alt)
+      alt = makesingular(dbase_str);
+    else if (user_typed_name)
+      (void) lcase(alt);
 
-    /* Make sure the name is non-empty. */
-    if (*dbase_str) {
-	/* adjust the input to remove "named " and convert to lower case */
-	char *alt = 0;	/* alternate description */
+    /* skip first record; read second */
+    txt_offset = 0L;
+    if (!fp->GetString(buf, BUFSZ) || !fp->GetString(buf, BUFSZ)) {
+      impossible("can't read 'data' file");
+      return;
+    } else if (sscanf(buf, "%8lx\n", &txt_offset) < 1 || txt_offset <= 0)
+      goto bad_data_file;
 
-	if ((ep = strstri(dbase_str, " named ")) != 0)
-	    alt = ep + 7;
-	else
-	    ep = strstri(dbase_str, " called ");
-	if (!ep) ep = strstri(dbase_str, ", ");
-	if (ep && ep > dbase_str) *ep = '\0';
+    /* look for the appropriate entry */
+    while (fp->GetString(buf, BUFSZ)) {
+      if (*buf == '.')
+        break; /* we passed last entry without success */
 
-	/*
-	 * If the object is named, then the name is the alternate description;
-	 * otherwise, the result of makesingular() applied to the name is. This
-	 * isn't strictly optimal, but named objects of interest to the user
-	 * will usually be found under their name, rather than under their
-	 * object type, so looking for a singular form is pointless.
-	 */
+      if (digit(*buf)) {
+        /* a number indicates the end of current entry */
+        skipping_entry = FALSE;
+      } else if (!skipping_entry) {
+        if (!(ep = index(buf, '\n')))
+          goto bad_data_file;
+        *ep = 0;
+        /* if we match a key that begins with "~", skip this entry */
+        chk_skip = (*buf == '~') ? 1 : 0;
+        if (pmatch(&buf[chk_skip], dbase_str)
+            || (alt && pmatch(&buf[chk_skip], alt))) {
+          if (chk_skip) {
+            skipping_entry = TRUE;
+            continue;
+          } else {
+            found_in_file = TRUE;
+            break;
+          }
+        }
+      }
+    }
+  }
 
-	if (!alt)
-	    alt = makesingular(dbase_str);
-	else
-	    if (user_typed_name)
-		(void) lcase(alt);
+  if (found_in_file) {
+    long entry_offset;
+    int entry_count;
+    int i;
 
-	/* skip first record; read second */
-	txt_offset = 0L;
-	if (!dlb_fgets(buf, BUFSZ, fp) || !dlb_fgets(buf, BUFSZ, fp)) {
-	    impossible("can't read 'data' file");
-	    (void) dlb_fclose(fp);
-	    return;
-	} else if (sscanf(buf, "%8lx\n", &txt_offset) < 1 || txt_offset <= 0)
-	    goto bad_data_file;
-
-	/* look for the appropriate entry */
-	while (dlb_fgets(buf,BUFSZ,fp)) {
-	    if (*buf == '.') break;  /* we passed last entry without success */
-
-	    if (digit(*buf)) {
-		/* a number indicates the end of current entry */
-		skipping_entry = FALSE;
-	    } else if (!skipping_entry) {
-		if (!(ep = index(buf, '\n'))) goto bad_data_file;
-		*ep = 0;
-		/* if we match a key that begins with "~", skip this entry */
-		chk_skip = (*buf == '~') ? 1 : 0;
-		if (pmatch(&buf[chk_skip], dbase_str) ||
-			(alt && pmatch(&buf[chk_skip], alt))) {
-		    if (chk_skip) {
-			skipping_entry = TRUE;
-			continue;
-		    } else {
-			found_in_file = TRUE;
-			break;
-		    }
-		}
-	    }
-	}
+    /* skip over other possible matches for the info */
+    do {
+      if (!fp->GetString(buf, BUFSZ))
+        goto bad_data_file;
+    } while (!digit(*buf));
+    if (sscanf(buf, "%ld,%d\n", &entry_offset, &entry_count) < 2) {
+      bad_data_file: impossible("'data' file in wrong format");
+      return;
     }
 
-    if(found_in_file) {
-	long entry_offset;
-	int  entry_count;
-	int  i;
+    if (user_typed_name || without_asking || yn("More info?") == 'y') {
+      winid datawin;
 
-	/* skip over other possible matches for the info */
-	do {
-	    if (!dlb_fgets(buf, BUFSZ, fp)) goto bad_data_file;
-	} while (!digit(*buf));
-	if (sscanf(buf, "%ld,%d\n", &entry_offset, &entry_count) < 2) {
-bad_data_file:	impossible("'data' file in wrong format");
-		(void) dlb_fclose(fp);
-		return;
-	}
-
-	if (user_typed_name || without_asking || yn("More info?") == 'y') {
-	    winid datawin;
-
-	    if (dlb_fseek(fp, txt_offset + entry_offset, SEEK_SET) < 0) {
-		pline("? Seek error on 'data' file!");
-		(void) dlb_fclose(fp);
-		return;
-	    }
-	    datawin = create_nhwindow(NHW_MENU);
-	    for (i = 0; i < entry_count; i++) {
-		if (!dlb_fgets(buf, BUFSZ, fp)) goto bad_data_file;
-		if ((ep = index(buf, '\n')) != 0) *ep = 0;
-		if (index(buf+1, '\t') != 0) (void) tabexpand(buf+1);
-		putstr(datawin, 0, buf+1);
-	    }
-	    display_nhwindow(datawin, FALSE);
-	    destroy_nhwindow(datawin);
-	}
-    } else if (user_typed_name)
-	pline("I don't have any information on those things.");
-
-    (void) dlb_fclose(fp);
+      if (fp->Seek(txt_offset + entry_offset, SEEK_SET) < 0) {
+        pline("? Seek error on 'data' file!");
+        return;
+      }
+      datawin = create_nhwindow(NHW_MENU);
+      for (i = 0; i < entry_count; i++) {
+        if (!fp->GetString(buf, BUFSZ))
+          goto bad_data_file;
+        if ((ep = index(buf, '\n')) != 0)
+          *ep = 0;
+        if (index(buf + 1, '\t') != 0)
+          (void) tabexpand(buf + 1);
+        putstr(datawin, 0, buf + 1);
+      }
+      display_nhwindow(datawin, FALSE);
+      destroy_nhwindow(datawin);
+    }
+  } else if (user_typed_name) {
+    pline("I don't have any information on those things.");
+  }
 }
 
 /* getpos() return values */
@@ -771,44 +776,43 @@ int doidtrap() {
 }
 
 char * dowhatdoes_core(char q, char *cbuf) {
-	dlb *fp;
-	char bufr[BUFSZ];
-	char *buf = &bufr[6], *ep, ctrl, meta;
+  std::unique_ptr<LibraryFile> fp;
+  char bufr[BUFSZ];
+  char *buf = &bufr[6], *ep, ctrl, meta;
 
-	fp = dlb_fopen(CMDHELPFILE, "r");
-	if (!fp) {
-		pline("Cannot open data file!");
-		return 0;
-	}
+  fp = library->Open(CMDHELPFILE, "r");
+  if (!fp) {
+    pline("Cannot open data file!");
+    return 0;
+  }
 
-  	ctrl = ((q <= '\033') ? (q - 1 + 'A') : 0);
-	meta = ((0x80 & q) ? (0x7f & q) : 0);
-	while(dlb_fgets(buf,BUFSZ-6,fp)) {
-	    if ((ctrl && *buf=='^' && *(buf+1)==ctrl) ||
-		(meta && *buf=='M' && *(buf+1)=='-' && *(buf+2)==meta) ||
-		*buf==q) {
-		ep = index(buf, '\n');
-		if(ep) *ep = 0;
-		if (ctrl && buf[2] == '\t'){
-			buf = bufr + 1;
-			(void) strncpy(buf, "^?      ", 8);
-			buf[1] = ctrl;
-		} else if (meta && buf[3] == '\t'){
-			buf = bufr + 2;
-			(void) strncpy(buf, "M-?     ", 8);
-			buf[2] = meta;
-		} else if(buf[1] == '\t'){
-			buf = bufr;
-			buf[0] = q;
-			(void) strncpy(buf+1, "       ", 7);
-		}
-		(void) dlb_fclose(fp);
-		strcpy(cbuf, buf);
-		return cbuf;
-	    }
-	}
-	(void) dlb_fclose(fp);
-	return (char *)0;
+  ctrl = ((q <= '\033') ? (q - 1 + 'A') : 0);
+  meta = ((0x80 & q) ? (0x7f & q) : 0);
+  while (fp->GetString(buf, BUFSZ - 6)) {
+    if ((ctrl && *buf == '^' && *(buf + 1) == ctrl)
+        || (meta && *buf == 'M' && *(buf + 1) == '-' && *(buf + 2) == meta)
+        || *buf == q) {
+      ep = index(buf, '\n');
+      if (ep)
+        *ep = 0;
+      if (ctrl && buf[2] == '\t') {
+        buf = bufr + 1;
+        (void) strncpy(buf, "^?      ", 8);
+        buf[1] = ctrl;
+      } else if (meta && buf[3] == '\t') {
+        buf = bufr + 2;
+        (void) strncpy(buf, "M-?     ", 8);
+        buf[2] = meta;
+      } else if (buf[1] == '\t') {
+        buf = bufr;
+        buf[0] = q;
+        (void) strncpy(buf + 1, "       ", 7);
+      }
+      strcpy(cbuf, buf);
+      return cbuf;
+    }
+  }
+  return (char *) 0;
 }
 
 int dowhatdoes() {

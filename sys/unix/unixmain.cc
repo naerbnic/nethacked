@@ -211,7 +211,7 @@ int main(int argc, char *argv[]) {
 	}
 #endif /* WIZARD */
 
-	dlb_init();	/* must be before newgame() */
+	library = Library::OfFileSystem(".");
 
 	/*
 	 * Initialization of the boundaries of the mazes

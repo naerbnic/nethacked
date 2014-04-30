@@ -39,18 +39,18 @@ static int oracle_flg = 0;  /* -1=>don't use, 0=>need init, 1=>init done */
 static unsigned oracle_cnt = 0;
 static long *oracle_loc = 0;
 
-STATIC_OVL void init_rumors(dlb *fp) {
+STATIC_OVL void init_rumors(LibraryFile* fp) {
 	char line[BUFSZ];
 
-	(void) dlb_fgets(line, sizeof line, fp); /* skip "don't edit" comment */
-	(void) dlb_fgets(line, sizeof line, fp);
+	fp->GetString(line, sizeof line); /* skip "don't edit" comment */
+	fp->GetString(line, sizeof line);
 	if (sscanf(line, "%6lx\n", &true_rumor_size) == 1 &&
 	    true_rumor_size > 0L) {
-	    (void) dlb_fseek(fp, 0L, SEEK_CUR);
-	    true_rumor_start  = dlb_ftell(fp);
+	    fp->Seek(0L, SEEK_CUR);
+	    true_rumor_start  = fp->Tell();
 	    true_rumor_end    = true_rumor_start + true_rumor_size;
-	    (void) dlb_fseek(fp, 0L, SEEK_END);
-	    false_rumor_end   = dlb_ftell(fp);
+	    fp->Seek(0L, SEEK_END);
+	    false_rumor_end   = fp->Tell();
 	    false_rumor_start = true_rumor_end;	/* ok, so it's redundant... */
 	    false_rumor_size  = false_rumor_end - false_rumor_start;
 	} else
@@ -63,69 +63,73 @@ STATIC_OVL void init_rumors(dlb *fp) {
  * of them contain such references anyway.
  */
 char * getrumor(int truth, char *rumor_buf, bool exclude_cookie) {
-	dlb	*rumors;
-	long tidbit, beginning;
-	char	*endp, line[BUFSZ], xbuf[BUFSZ];
+  std::unique_ptr<LibraryFile> rumors;
+  long tidbit, beginning;
+  char *endp, line[BUFSZ], xbuf[BUFSZ];
 
-	rumor_buf[0] = '\0';
-	if (true_rumor_size < 0L)	/* we couldn't open RUMORFILE */
-		return rumor_buf;
+  rumor_buf[0] = '\0';
+  if (true_rumor_size < 0L) /* we couldn't open RUMORFILE */
+    return rumor_buf;
 
-	rumors = dlb_fopen(RUMORFILE, "r");
+  rumors = library->Open(RUMORFILE, "r");
 
-	if (rumors) {
-	    int count = 0;
-	    int adjtruth;
+  if (rumors) {
+    int count = 0;
+    int adjtruth;
 
-	    do {
-		rumor_buf[0] = '\0';
-		if (true_rumor_size == 0L) {	/* if this is 1st outrumor() */
-		    init_rumors(rumors);
-		    if (true_rumor_size < 0L) {	/* init failed */
-			sprintf(rumor_buf, "Error reading \"%.80s\".",
-				RUMORFILE);
-			return rumor_buf;
-		    }
-		}
-		/*
-		 *	input:      1    0   -1
-		 *	 rn2 \ +1  2=T  1=T  0=F
-		 *	 adj./ +0  1=T  0=F -1=F
-		 */
-		switch (adjtruth = truth + rn2(2)) {
-		  case  2:	/*(might let a bogus input arg sneak thru)*/
-		  case  1:  beginning = true_rumor_start;
-			    tidbit = Rand() % true_rumor_size;
-			break;
-		  case  0:	/* once here, 0 => false rather than "either"*/
-		  case -1:  beginning = false_rumor_start;
-			    tidbit = Rand() % false_rumor_size;
-			break;
-		  default:
-			    impossible("strange truth value for rumor");
-			return strcpy(rumor_buf, "Oops...");
-		}
-		(void) dlb_fseek(rumors, beginning + tidbit, SEEK_SET);
-		(void) dlb_fgets(line, sizeof line, rumors);
-		if (!dlb_fgets(line, sizeof line, rumors) ||
-		    (adjtruth > 0 && dlb_ftell(rumors) > true_rumor_end)) {
-			/* reached end of rumors -- go back to beginning */
-			(void) dlb_fseek(rumors, beginning, SEEK_SET);
-			(void) dlb_fgets(line, sizeof line, rumors);
-		}
-		if ((endp = index(line, '\n')) != 0) *endp = 0;
-		strcat(rumor_buf, xcrypt(line, xbuf));
-	    } while(count++ < 50 && exclude_cookie && (strstri(rumor_buf, "fortune") || strstri(rumor_buf, "pity")));
-	    (void) dlb_fclose(rumors);
-	    if (count >= 50)
-		impossible("Can't find non-cookie rumor?");
-	    else
-		exercise(A_WIS, (adjtruth > 0));
-	} else {
-		pline("Can't open rumors file!");
-		true_rumor_size = -1;	/* don't try to open it again */
-	}
-	return rumor_buf;
+    do {
+      rumor_buf[0] = '\0';
+      if (true_rumor_size == 0L) { /* if this is 1st outrumor() */
+        init_rumors(rumors.get());
+        if (true_rumor_size < 0L) { /* init failed */
+          sprintf(rumor_buf, "Error reading \"%.80s\".",
+          RUMORFILE);
+          return rumor_buf;
+        }
+      }
+      /*
+       *	input:      1    0   -1
+       *	 rn2 \ +1  2=T  1=T  0=F
+       *	 adj./ +0  1=T  0=F -1=F
+       */
+      switch (adjtruth = truth + rn2(2)) {
+      case 2: /*(might let a bogus input arg sneak thru)*/
+      case 1:
+        beginning = true_rumor_start;
+        tidbit = Rand() % true_rumor_size;
+        break;
+      case 0: /* once here, 0 => false rather than "either"*/
+      case -1:
+        beginning = false_rumor_start;
+        tidbit = Rand() % false_rumor_size;
+        break;
+      default:
+        impossible("strange truth value for rumor");
+        return strcpy(rumor_buf, "Oops...");
+      }
+      rumors->Seek(beginning + tidbit, SEEK_SET);
+      rumors->GetString(line, sizeof line);
+      if (!rumors->GetString(line, sizeof line)
+          || (adjtruth > 0 && rumors->Tell() > true_rumor_end)) {
+        /* reached end of rumors -- go back to beginning */
+        rumors->Seek(beginning, SEEK_SET);
+        rumors->GetString(line, sizeof line);
+      }
+      if ((endp = index(line, '\n')) != 0)
+        *endp = 0;
+      strcat(rumor_buf, xcrypt(line, xbuf));
+    } while (count++ < 50 && exclude_cookie
+        && (strstri(rumor_buf, "fortune") || strstri(rumor_buf, "pity")));
+    rumors->Close();
+    if (count >= 50)
+      impossible("Can't find non-cookie rumor?");
+    else
+      exercise(A_WIS, (adjtruth > 0));
+  } else {
+    pline("Can't open rumors file!");
+    true_rumor_size = -1; /* don't try to open it again */
+  }
+  return rumor_buf;
 }
 
 void outrumor(int truth, int mechanism) {

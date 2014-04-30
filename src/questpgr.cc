@@ -29,7 +29,7 @@ STATIC_DCL void FDECL(deliver_by_window, (struct qtmsg *,int));
 
 static char	in_line[80], cvt_buf[64], out_line[128];
 static struct	qtlists	qt_list;
-static dlb	*msg_file;
+static std::unique_ptr<LibraryFile> msg_file;
 /* used by ldrname() and neminame(), then copied into cvt_buf */
 static char	nambuf[sizeof cvt_buf];
 
@@ -51,10 +51,10 @@ static void dump_qtlist() {
 }
 #endif /* DEBUG */
 
-static void Fread(genericptr_t ptr, int size, int nitems, dlb *stream) {
+static void Fread(genericptr_t ptr, int size, int nitems, LibraryFile* stream) {
 	int cnt;
 
-	if ((cnt = dlb_fread(ptr, size, nitems, stream)) != nitems) {
+	if ((cnt = stream->Read(ptr, size, nitems)) != nitems) {
 
 	    panic("PREMATURE EOF ON QUEST TEXT FILE! Expected %d bytes, got %d",
 		    (size * nitems), (size * cnt));
@@ -65,15 +65,15 @@ STATIC_OVL struct qtmsg * construct_qtlist(long hdr_offset) {
 	struct qtmsg *msg_list;
 	int	n_msgs;
 
-	(void) dlb_fseek(msg_file, hdr_offset, SEEK_SET);
-	Fread(&n_msgs, sizeof(int), 1, msg_file);
+	msg_file->Seek(hdr_offset, SEEK_SET);
+	Fread(&n_msgs, sizeof(int), 1, msg_file.get());
 	msg_list = (struct qtmsg *)
 		alloc((unsigned)(n_msgs+1)*sizeof(struct qtmsg));
 
 	/*
 	 * Load up the list.
 	 */
-	Fread((genericptr_t)msg_list, n_msgs*sizeof(struct qtmsg), 1, msg_file);
+	Fread((genericptr_t)msg_list, n_msgs*sizeof(struct qtmsg), 1, msg_file.get());
 
 	msg_list[n_msgs].msgnum = -1;
 	return(msg_list);
@@ -85,8 +85,8 @@ void load_qtlist() {
 	char	qt_classes[N_HDR][LEN_HDR];
 	long	qt_offsets[N_HDR];
 
-	msg_file = dlb_fopen(QTEXT_FILE, RDBMODE);
-	if (!msg_file)
+	msg_file = library->Open(QTEXT_FILE, RDBMODE);
+	if (!msg_file.get())
 	    panic("CANNOT OPEN QUEST TEXT FILE %s.", QTEXT_FILE);
 
 	/*
@@ -94,9 +94,9 @@ void load_qtlist() {
 	 * each header.
 	 */
 
-	Fread(&n_classes, sizeof(int), 1, msg_file);
-	Fread(&qt_classes[0][0], sizeof(char)*LEN_HDR, n_classes, msg_file);
-	Fread(qt_offsets, sizeof(long), n_classes, msg_file);
+	Fread(&n_classes, sizeof(int), 1, msg_file.get());
+	Fread(&qt_classes[0][0], sizeof(char)*LEN_HDR, n_classes, msg_file.get());
+	Fread(qt_offsets, sizeof(long), n_classes, msg_file.get());
 
 	/*
 	 * Now construct the message lists for quick reference later
@@ -126,12 +126,15 @@ void load_qtlist() {
 
 /* called at program exit */
 void unload_qtlist() {
-	if (msg_file)
-	    (void) dlb_fclose(msg_file),  msg_file = 0;
-	if (qt_list.common)
+	if (msg_file.get()) {
+	  msg_file.reset();
+	}
+	if (qt_list.common) {
 	    free((genericptr_t) qt_list.common),  qt_list.common = 0;
-	if (qt_list.chrole)
+	}
+	if (qt_list.chrole) {
 	    free((genericptr_t) qt_list.chrole),  qt_list.chrole = 0;
+	}
 	return;
 }
 
@@ -328,7 +331,7 @@ STATIC_OVL void deliver_by_pline(struct qtmsg *qt_msg) {
 	long	size;
 
 	for (size = 0; size < qt_msg->size; size += (long)strlen(in_line)) {
-	    (void) dlb_fgets(in_line, 80, msg_file);
+	    msg_file->GetString(in_line, 80);
 	    convert_line();
 	    pline(out_line);
 	}
@@ -340,7 +343,7 @@ STATIC_OVL void deliver_by_window(struct qtmsg *qt_msg, int how) {
 	winid datawin = create_nhwindow(how);
 
 	for (size = 0; size < qt_msg->size; size += (long)strlen(in_line)) {
-	    (void) dlb_fgets(in_line, 80, msg_file);
+	    msg_file->GetString(in_line, 80);
 	    convert_line();
 	    putstr(datawin, 0, out_line);
 	}
@@ -356,7 +359,7 @@ void com_pager(int msgnum) {
 		return;
 	}
 
-	(void) dlb_fseek(msg_file, qt_msg->offset, SEEK_SET);
+	(void) msg_file->Seek(qt_msg->offset, SEEK_SET);
 	if (qt_msg->delivery == 'p') deliver_by_pline(qt_msg);
 	else if (msgnum == 1) deliver_by_window(qt_msg, NHW_MENU);
 	else		     deliver_by_window(qt_msg, NHW_TEXT);
@@ -371,7 +374,7 @@ void qt_pager(int msgnum) {
 		return;
 	}
 
-	(void) dlb_fseek(msg_file, qt_msg->offset, SEEK_SET);
+	(void) msg_file->Seek(qt_msg->offset, SEEK_SET);
 	if (qt_msg->delivery == 'p' && strcmp(windowprocs.name, "X11"))
 		deliver_by_pline(qt_msg);
 	else	deliver_by_window(qt_msg, NHW_TEXT);

@@ -61,8 +61,6 @@ STATIC_DCL bool FDECL(create_subroom, (struct mkroom *, xchar, xchar,
 #define XLIM	4
 #define YLIM	3
 
-#define Fread	(void)dlb_fread
-#define Fgetc	(schar)dlb_fgetc
 #define New(type)		(type *) alloc(sizeof(type))
 #define NewTab(type, size)	(type **) alloc(sizeof(type *) * (unsigned)size)
 #define Free(ptr)		if(ptr) free((genericptr_t) (ptr))
@@ -82,13 +80,13 @@ STATIC_DCL int NDECL(rndtrap);
 STATIC_DCL void FDECL(get_location, (schar *,schar *,int));
 STATIC_DCL void FDECL(sp_lev_shuffle, (char *,char *,int));
 STATIC_DCL void FDECL(light_region, (region *));
-STATIC_DCL void FDECL(load_common_data, (dlb *,int));
-STATIC_DCL void FDECL(load_one_monster, (dlb *,monster *));
-STATIC_DCL void FDECL(load_one_object, (dlb *,object *));
-STATIC_DCL void FDECL(load_one_engraving, (dlb *,engraving *));
-STATIC_DCL bool FDECL(load_rooms, (dlb *));
+STATIC_DCL void FDECL(load_common_data, (LibraryFile* ,int));
+STATIC_DCL void FDECL(load_one_monster, (LibraryFile* ,monster *));
+STATIC_DCL void FDECL(load_one_object, (LibraryFile* ,object *));
+STATIC_DCL void FDECL(load_one_engraving, (LibraryFile* ,engraving *));
+STATIC_DCL bool FDECL(load_rooms, (LibraryFile* ));
 STATIC_DCL void FDECL(maze1xy, (coord *,int));
-STATIC_DCL bool FDECL(load_maze, (dlb *));
+STATIC_DCL bool FDECL(load_maze, (LibraryFile* ));
 STATIC_DCL void FDECL(create_door, (room_door *, struct mkroom *));
 STATIC_DCL void FDECL(free_rooms,(room **, int));
 STATIC_DCL void FDECL(build_room, (room *, room*));
@@ -1599,7 +1597,7 @@ STATIC_OVL void light_region(region *tmpregion) {
 }
 
 /* initialization common to all special levels */
-STATIC_OVL void load_common_data(dlb *fd, int typ) {
+STATIC_OVL void load_common_data(LibraryFile* fd, int typ) {
 	uchar	n;
 	long	lev_flags;
 	int	i;
@@ -1614,7 +1612,7 @@ STATIC_OVL void load_common_data(dlb *fd, int typ) {
 	level.flags.is_maze_lev = typ == SP_LEV_MAZE;
 
 	/* Read the level initialization data */
-	Fread((genericptr_t) &init_lev, 1, sizeof(lev_init), fd);
+	fd->Read((genericptr_t) &init_lev, 1, sizeof(lev_init));
 	if(init_lev.init_present) {
 	    if(init_lev.lit < 0)
 		init_lev.lit = rn2(2);
@@ -1622,7 +1620,7 @@ STATIC_OVL void load_common_data(dlb *fd, int typ) {
 	}
 
 	/* Read the per level flags */
-	Fread((genericptr_t) &lev_flags, 1, sizeof(lev_flags), fd);
+	fd->Read((genericptr_t) &lev_flags, 1, sizeof(lev_flags));
 	if (lev_flags & NOTELEPORT)
 	    level.flags.noteleport = 1;
 	if (lev_flags & HARDFLOOR)
@@ -1635,55 +1633,55 @@ STATIC_OVL void load_common_data(dlb *fd, int typ) {
 	    level.flags.arboreal = 1;
 
 	/* Read message */
-	Fread((genericptr_t) &n, 1, sizeof(n), fd);
+	fd->Read((genericptr_t) &n, 1, sizeof(n));
 	if (n) {
 	    lev_message = (char *) alloc(n + 1);
-	    Fread((genericptr_t) lev_message, 1, (int) n, fd);
+	    fd->Read((genericptr_t) lev_message, 1, (int) n);
 	    lev_message[n] = 0;
 	}
 }
 
-STATIC_OVL void load_one_monster(dlb *fd, monster *m) {
+STATIC_OVL void load_one_monster(LibraryFile* fd, monster *m) {
 	int size;
 
-	Fread((genericptr_t) m, 1, sizeof *m, fd);
+	fd->Read((genericptr_t) m, 1, sizeof *m);
 	if ((size = m->name.len) != 0) {
 	    m->name.str = (char *) alloc((unsigned)size + 1);
-	    Fread((genericptr_t) m->name.str, 1, size, fd);
+	    fd->Read((genericptr_t) m->name.str, 1, size);
 	    m->name.str[size] = '\0';
 	} else
 	    m->name.str = (char *) 0;
 	if ((size = m->appear_as.len) != 0) {
 	    m->appear_as.str = (char *) alloc((unsigned)size + 1);
-	    Fread((genericptr_t) m->appear_as.str, 1, size, fd);
+	    fd->Read((genericptr_t) m->appear_as.str, 1, size);
 	    m->appear_as.str[size] = '\0';
 	} else
 	    m->appear_as.str = (char *) 0;
 }
 
-STATIC_OVL void load_one_object(dlb *fd, object *o) {
+STATIC_OVL void load_one_object(LibraryFile* fd, object *o) {
 	int size;
 
-	Fread((genericptr_t) o, 1, sizeof *o, fd);
+	fd->Read((genericptr_t) o, 1, sizeof *o);
 	if ((size = o->name.len) != 0) {
 	    o->name.str = (char *) alloc((unsigned)size + 1);
-	    Fread((genericptr_t) o->name.str, 1, size, fd);
+	    fd->Read((genericptr_t) o->name.str, 1, size);
 	    o->name.str[size] = '\0';
 	} else
 	    o->name.str = (char *) 0;
 }
 
-STATIC_OVL void load_one_engraving(dlb *fd, engraving *e) {
+STATIC_OVL void load_one_engraving(LibraryFile* fd, engraving *e) {
 	int size;
 
-	Fread((genericptr_t) e, 1, sizeof *e, fd);
+	fd->Read((genericptr_t) e, 1, sizeof *e);
 	size = e->engr.len;
 	e->engr.str = (char *) alloc((unsigned)size+1);
-	Fread((genericptr_t) e->engr.str, 1, size, fd);
+	fd->Read((genericptr_t) e->engr.str, 1, size);
 	e->engr.str[size] = '\0';
 }
 
-STATIC_OVL bool load_rooms(dlb *fd) {
+STATIC_OVL bool load_rooms(LibraryFile* fd) {
 	xchar		nrooms, ncorr;
 	char		n;
 	short		size;
@@ -1693,19 +1691,19 @@ STATIC_OVL bool load_rooms(dlb *fd) {
 
 	load_common_data(fd, SP_LEV_ROOMS);
 
-	Fread((genericptr_t) &n, 1, sizeof(n), fd); /* nrobjects */
+	fd->Read((genericptr_t) &n, 1, sizeof(n)); /* nrobjects */
 	if (n) {
-		Fread((genericptr_t)robjects, sizeof(*robjects), n, fd);
+		fd->Read((genericptr_t)robjects, sizeof(*robjects), n);
 		sp_lev_shuffle(robjects, (char *)0, (int)n);
 	}
 
-	Fread((genericptr_t) &n, 1, sizeof(n), fd); /* nrmonst */
+	fd->Read((genericptr_t) &n, 1, sizeof(n)); /* nrmonst */
 	if (n) {
-		Fread((genericptr_t)rmonst, sizeof(*rmonst), n, fd);
+		fd->Read((genericptr_t)rmonst, sizeof(*rmonst), n);
 		sp_lev_shuffle(rmonst, (char *)0, (int)n);
 	}
 
-	Fread((genericptr_t) &nrooms, 1, sizeof(nrooms), fd);
+	fd->Read((genericptr_t) &nrooms, 1, sizeof(nrooms));
 						/* Number of rooms to read */
 	tmproom = NewTab(room,nrooms);
 	for (i=0;i<nrooms;i++) {
@@ -1714,115 +1712,115 @@ STATIC_OVL bool load_rooms(dlb *fd) {
 		r = tmproom[i] = New(room);
 
 		/* Let's see if this room has a name */
-		Fread((genericptr_t) &size, 1, sizeof(size), fd);
+		fd->Read((genericptr_t) &size, 1, sizeof(size));
 		if (size > 0) {	/* Yup, it does! */
 			r->name = (char *) alloc((unsigned)size + 1);
-			Fread((genericptr_t) r->name, 1, size, fd);
+			fd->Read((genericptr_t) r->name, 1, size);
 			r->name[size] = 0;
 		} else
 		    r->name = (char *) 0;
 
 		/* Let's see if this room has a parent */
-		Fread((genericptr_t) &size, 1, sizeof(size), fd);
+		fd->Read((genericptr_t) &size, 1, sizeof(size));
 		if (size > 0) {	/* Yup, it does! */
 			r->parent = (char *) alloc((unsigned)size + 1);
-			Fread((genericptr_t) r->parent, 1, size, fd);
+			fd->Read((genericptr_t) r->parent, 1, size);
 			r->parent[size] = 0;
 		} else
 		    r->parent = (char *) 0;
 
-		Fread((genericptr_t) &r->x, 1, sizeof(r->x), fd);
+		fd->Read((genericptr_t) &r->x, 1, sizeof(r->x));
 					/* x pos on the grid (1-5) */
-		Fread((genericptr_t) &r->y, 1, sizeof(r->y), fd);
+		fd->Read((genericptr_t) &r->y, 1, sizeof(r->y));
 					 /* y pos on the grid (1-5) */
-		Fread((genericptr_t) &r->w, 1, sizeof(r->w), fd);
+		fd->Read((genericptr_t) &r->w, 1, sizeof(r->w));
 					 /* width of the room */
-		Fread((genericptr_t) &r->h, 1, sizeof(r->h), fd);
+		fd->Read((genericptr_t) &r->h, 1, sizeof(r->h));
 					 /* height of the room */
-		Fread((genericptr_t) &r->xalign, 1, sizeof(r->xalign), fd);
+		fd->Read((genericptr_t) &r->xalign, 1, sizeof(r->xalign));
 					 /* horizontal alignment */
-		Fread((genericptr_t) &r->yalign, 1, sizeof(r->yalign), fd);
+		fd->Read((genericptr_t) &r->yalign, 1, sizeof(r->yalign));
 					 /* vertical alignment */
-		Fread((genericptr_t) &r->rtype, 1, sizeof(r->rtype), fd);
+		fd->Read((genericptr_t) &r->rtype, 1, sizeof(r->rtype));
 					 /* type of room (zoo, shop, etc.) */
-		Fread((genericptr_t) &r->chance, 1, sizeof(r->chance), fd);
+		fd->Read((genericptr_t) &r->chance, 1, sizeof(r->chance));
 					 /* chance of room being special. */
-		Fread((genericptr_t) &r->rlit, 1, sizeof(r->rlit), fd);
+		fd->Read((genericptr_t) &r->rlit, 1, sizeof(r->rlit));
 					 /* lit or not ? */
-		Fread((genericptr_t) &r->filled, 1, sizeof(r->filled), fd);
+		fd->Read((genericptr_t) &r->filled, 1, sizeof(r->filled));
 					 /* to be filled? */
 		r->nsubroom= 0;
 
 		/* read the doors */
-		Fread((genericptr_t) &r->ndoor, 1, sizeof(r->ndoor), fd);
+		fd->Read((genericptr_t) &r->ndoor, 1, sizeof(r->ndoor));
 		if ((n = r->ndoor) != 0)
 		    r->doors = NewTab(room_door, n);
 		while(n--) {
 			r->doors[(int)n] = New(room_door);
-			Fread((genericptr_t) r->doors[(int)n], 1,
-				sizeof(room_door), fd);
+			fd->Read((genericptr_t) r->doors[(int)n], 1,
+				sizeof(room_door));
 		}
 
 		/* read the stairs */
-		Fread((genericptr_t) &r->nstair, 1, sizeof(r->nstair), fd);
+		fd->Read((genericptr_t) &r->nstair, 1, sizeof(r->nstair));
 		if ((n = r->nstair) != 0)
 		    r->stairs = NewTab(stair, n);
 		while (n--) {
 			r->stairs[(int)n] = New(stair);
-			Fread((genericptr_t) r->stairs[(int)n], 1,
-				sizeof(stair), fd);
+			fd->Read((genericptr_t) r->stairs[(int)n], 1,
+				sizeof(stair));
 		}
 
 		/* read the altars */
-		Fread((genericptr_t) &r->naltar, 1, sizeof(r->naltar), fd);
+		fd->Read((genericptr_t) &r->naltar, 1, sizeof(r->naltar));
 		if ((n = r->naltar) != 0)
 		    r->altars = NewTab(altar, n);
 		while (n--) {
 			r->altars[(int)n] = New(altar);
-			Fread((genericptr_t) r->altars[(int)n], 1,
-				sizeof(altar), fd);
+			fd->Read((genericptr_t) r->altars[(int)n], 1,
+				sizeof(altar));
 		}
 
 		/* read the fountains */
-		Fread((genericptr_t) &r->nfountain, 1,
-			sizeof(r->nfountain), fd);
+		fd->Read((genericptr_t) &r->nfountain, 1,
+			sizeof(r->nfountain));
 		if ((n = r->nfountain) != 0)
 		    r->fountains = NewTab(fountain, n);
 		while (n--) {
 			r->fountains[(int)n] = New(fountain);
-			Fread((genericptr_t) r->fountains[(int)n], 1,
-				sizeof(fountain), fd);
+			fd->Read((genericptr_t) r->fountains[(int)n], 1,
+				sizeof(fountain));
 		}
 
 		/* read the sinks */
-		Fread((genericptr_t) &r->nsink, 1, sizeof(r->nsink), fd);
+		fd->Read((genericptr_t) &r->nsink, 1, sizeof(r->nsink));
 		if ((n = r->nsink) != 0)
 		    r->sinks = NewTab(sink, n);
 		while (n--) {
 			r->sinks[(int)n] = New(sink);
-			Fread((genericptr_t) r->sinks[(int)n], 1, sizeof(sink), fd);
+			fd->Read((genericptr_t) r->sinks[(int)n], 1, sizeof(sink));
 		}
 
 		/* read the pools */
-		Fread((genericptr_t) &r->npool, 1, sizeof(r->npool), fd);
+		fd->Read((genericptr_t) &r->npool, 1, sizeof(r->npool));
 		if ((n = r->npool) != 0)
 		    r->pools = NewTab(pool,n);
 		while (n--) {
 			r->pools[(int)n] = New(pool);
-			Fread((genericptr_t) r->pools[(int)n], 1, sizeof(pool), fd);
+			fd->Read((genericptr_t) r->pools[(int)n], 1, sizeof(pool));
 		}
 
 		/* read the traps */
-		Fread((genericptr_t) &r->ntrap, 1, sizeof(r->ntrap), fd);
+		fd->Read((genericptr_t) &r->ntrap, 1, sizeof(r->ntrap));
 		if ((n = r->ntrap) != 0)
 		    r->traps = NewTab(trap_info, n);
 		while(n--) {
 			r->traps[(int)n] = New(trap_info);
-			Fread((genericptr_t) r->traps[(int)n], 1, sizeof(trap), fd);
+			fd->Read((genericptr_t) r->traps[(int)n], 1, sizeof(trap));
 		}
 
 		/* read the monsters */
-		Fread((genericptr_t) &r->nmonster, 1, sizeof(r->nmonster), fd);
+		fd->Read((genericptr_t) &r->nmonster, 1, sizeof(r->nmonster));
 		if ((n = r->nmonster) != 0) {
 		    r->monsters = NewTab(monster, n);
 		    while(n--) {
@@ -1833,7 +1831,7 @@ STATIC_OVL bool load_rooms(dlb *fd) {
 		    r->monsters = 0;
 
 		/* read the objects, in same order as mazes */
-		Fread((genericptr_t) &r->nobject, 1, sizeof(r->nobject), fd);
+		fd->Read((genericptr_t) &r->nobject, 1, sizeof(r->nobject));
 		if ((n = r->nobject) != 0) {
 		    r->objects = NewTab(object, n);
 		    for (j = 0; j < n; ++j) {
@@ -1844,17 +1842,17 @@ STATIC_OVL bool load_rooms(dlb *fd) {
 		    r->objects = 0;
 
 		/* read the gold piles */
-		Fread((genericptr_t) &r->ngold, 1, sizeof(r->ngold), fd);
+		fd->Read((genericptr_t) &r->ngold, 1, sizeof(r->ngold));
 		if ((n = r->ngold) != 0)
 		    r->golds = NewTab(gold, n);
 		while (n--) {
 			r->golds[(int)n] = New(gold);
-			Fread((genericptr_t) r->golds[(int)n], 1, sizeof(gold), fd);
+			fd->Read((genericptr_t) r->golds[(int)n], 1, sizeof(gold));
 		}
 
 		/* read the engravings */
-		Fread((genericptr_t) &r->nengraving, 1,
-			sizeof(r->nengraving), fd);
+		fd->Read((genericptr_t) &r->nengraving, 1,
+			sizeof(r->nengraving));
 		if ((n = r->nengraving) != 0) {
 		    r->engravings = NewTab(engraving,n);
 		    while (n--) {
@@ -1894,9 +1892,9 @@ STATIC_OVL bool load_rooms(dlb *fd) {
 
 	/* read the corridors */
 
-	Fread((genericptr_t) &ncorr, sizeof(ncorr), 1, fd);
+	fd->Read((genericptr_t) &ncorr, sizeof(ncorr), 1);
 	for (i=0; i<ncorr; i++) {
-		Fread((genericptr_t) &tmpcor, 1, sizeof(tmpcor), fd);
+		fd->Read((genericptr_t) &tmpcor, 1, sizeof(tmpcor));
 		create_corridor(&tmpcor);
 	}
 
@@ -1932,7 +1930,7 @@ STATIC_OVL void maze1xy(coord *m, int humidity) {
  * Could be cleaner, but it works.
  */
 
-STATIC_OVL bool load_maze(dlb *fd) {
+STATIC_OVL bool load_maze(LibraryFile* fd) {
     xchar   x, y, typ;
     bool prefilled, room_not_needed;
 
@@ -1968,7 +1966,7 @@ STATIC_OVL bool load_maze(dlb *fd) {
     load_common_data(fd, SP_LEV_MAZE);
 
     /* Initialize map */
-    Fread((genericptr_t) &filling, 1, sizeof(filling), fd);
+    fd->Read((genericptr_t) &filling, 1, sizeof(filling));
     if (!init_lev.init_present) { /* don't init if mkmap() has been called */
       for(x = 2; x <= x_maze_max; x++)
 	for(y = 0; y <= y_maze_max; y++)
@@ -1985,19 +1983,19 @@ STATIC_OVL bool load_maze(dlb *fd) {
     }
 
     /* Start reading the file */
-    Fread((genericptr_t) &numpart, 1, sizeof(numpart), fd);
+    fd->Read((genericptr_t) &numpart, 1, sizeof(numpart));
 						/* Number of parts */
     if (!numpart || numpart > 9)
 	panic("load_maze error: numpart = %d", (int) numpart);
 
     while (numpart--) {
-	Fread((genericptr_t) &halign, 1, sizeof(halign), fd);
+	fd->Read((genericptr_t) &halign, 1, sizeof(halign));
 					/* Horizontal alignment */
-	Fread((genericptr_t) &valign, 1, sizeof(valign), fd);
+	fd->Read((genericptr_t) &valign, 1, sizeof(valign));
 					/* Vertical alignment */
-	Fread((genericptr_t) &xsize, 1, sizeof(xsize), fd);
+	fd->Read((genericptr_t) &xsize, 1, sizeof(xsize));
 					/* size in X */
-	Fread((genericptr_t) &ysize, 1, sizeof(ysize), fd);
+	fd->Read((genericptr_t) &ysize, 1, sizeof(ysize));
 					/* size in Y */
 	switch((int) halign) {
 	    case LEFT:	    xstart = 3;					break;
@@ -2037,7 +2035,7 @@ STATIC_OVL bool load_maze(dlb *fd) {
 	    /* Load the map */
 	    for(y = ystart; y < ystart+ysize; y++)
 		for(x = xstart; x < xstart+xsize; x++) {
-		    levl[x][y].typ = Fgetc(fd);
+		    levl[x][y].typ = fd->GetChar();
 		    levl[x][y].lit = FALSE;
 		    /* clear out levl: load_common_data may set them */
 		    levl[x][y].flags = 0;
@@ -2079,7 +2077,7 @@ STATIC_OVL bool load_maze(dlb *fd) {
 		remove_rooms(xstart, ystart, xstart+xsize, ystart+ysize);
 	}
 
-	Fread((genericptr_t) &n, 1, sizeof(n), fd);
+	fd->Read((genericptr_t) &n, 1, sizeof(n));
 						/* Number of level regions */
 	if(n) {
 	    if(num_lregions) {
@@ -2100,10 +2098,10 @@ STATIC_OVL bool load_maze(dlb *fd) {
 	}
 
 	while(n--) {
-	    Fread((genericptr_t) &tmplregion, sizeof(tmplregion), 1, fd);
+	    fd->Read((genericptr_t) &tmplregion, sizeof(tmplregion), 1);
 	    if ((size = tmplregion.rname.len) != 0) {
 		tmplregion.rname.str = (char *) alloc((unsigned)size + 1);
-		Fread((genericptr_t) tmplregion.rname.str, size, 1, fd);
+		fd->Read((genericptr_t) tmplregion.rname.str, size, 1);
 		tmplregion.rname.str[size] = '\0';
 	    } else
 		tmplregion.rname.str = (char *) 0;
@@ -2122,35 +2120,35 @@ STATIC_OVL bool load_maze(dlb *fd) {
 	    lregions[(int)n] = tmplregion;
 	}
 
-	Fread((genericptr_t) &n, 1, sizeof(n), fd);
+	fd->Read((genericptr_t) &n, 1, sizeof(n));
 						/* Random objects */
 	if(n) {
-		Fread((genericptr_t)robjects, sizeof(*robjects), (int) n, fd);
+		fd->Read((genericptr_t)robjects, sizeof(*robjects), (int) n);
 		sp_lev_shuffle(robjects, (char *)0, (int)n);
 	}
 
-	Fread((genericptr_t) &n, 1, sizeof(n), fd);
+	fd->Read((genericptr_t) &n, 1, sizeof(n));
 						/* Random locations */
 	if(n) {
-		Fread((genericptr_t)rloc_x, sizeof(*rloc_x), (int) n, fd);
-		Fread((genericptr_t)rloc_y, sizeof(*rloc_y), (int) n, fd);
+		fd->Read((genericptr_t)rloc_x, sizeof(*rloc_x), (int) n);
+		fd->Read((genericptr_t)rloc_y, sizeof(*rloc_y), (int) n);
 		sp_lev_shuffle(rloc_x, rloc_y, (int)n);
 	}
 
-	Fread((genericptr_t) &n, 1, sizeof(n), fd);
+	fd->Read((genericptr_t) &n, 1, sizeof(n));
 						/* Random monsters */
 	if(n) {
-		Fread((genericptr_t)rmonst, sizeof(*rmonst), (int) n, fd);
+		fd->Read((genericptr_t)rmonst, sizeof(*rmonst), (int) n);
 		sp_lev_shuffle(rmonst, (char *)0, (int)n);
 	}
 
 	(void) memset((genericptr_t)mustfill, 0, sizeof(mustfill));
-	Fread((genericptr_t) &n, 1, sizeof(n), fd);
+	fd->Read((genericptr_t) &n, 1, sizeof(n));
 						/* Number of subrooms */
 	while(n--) {
 		struct mkroom *troom;
 
-		Fread((genericptr_t)&tmpregion, 1, sizeof(tmpregion), fd);
+		fd->Read((genericptr_t)&tmpregion, 1, sizeof(tmpregion));
 
 		if(tmpregion.rtype > MAXRTYPE) {
 		    tmpregion.rtype -= MAXRTYPE+1;
@@ -2204,12 +2202,12 @@ STATIC_OVL bool load_maze(dlb *fd) {
 		}
 	}
 
-	Fread((genericptr_t) &n, 1, sizeof(n), fd);
+	fd->Read((genericptr_t) &n, 1, sizeof(n));
 						/* Number of doors */
 	while(n--) {
 		struct mkroom *croom = &rooms[0];
 
-		Fread((genericptr_t)&tmpdoor, 1, sizeof(tmpdoor), fd);
+		fd->Read((genericptr_t)&tmpdoor, 1, sizeof(tmpdoor));
 
 		x = tmpdoor.x;	y = tmpdoor.y;
 		typ = tmpdoor.mask == -1 ? rnddoor() : tmpdoor.mask;
@@ -2248,10 +2246,10 @@ STATIC_OVL bool load_maze(dlb *fd) {
 			levl[x][y].typ = ROOM;
 	}
 
-	Fread((genericptr_t) &n, 1, sizeof(n), fd);
+	fd->Read((genericptr_t) &n, 1, sizeof(n));
 						/* Number of drawbridges */
 	while(n--) {
-		Fread((genericptr_t)&tmpdb, 1, sizeof(tmpdb), fd);
+		fd->Read((genericptr_t)&tmpdb, 1, sizeof(tmpdb));
 
 		x = tmpdb.x;  y = tmpdb.y;
 		get_location(&x, &y, DRY|WET);
@@ -2260,20 +2258,20 @@ STATIC_OVL bool load_maze(dlb *fd) {
 		    impossible("Cannot create drawbridge.");
 	}
 
-	Fread((genericptr_t) &n, 1, sizeof(n), fd);
+	fd->Read((genericptr_t) &n, 1, sizeof(n));
 						/* Number of mazewalks */
 	while(n--) {
-		Fread((genericptr_t)&tmpwalk, 1, sizeof(tmpwalk), fd);
+		fd->Read((genericptr_t)&tmpwalk, 1, sizeof(tmpwalk));
 
 		get_location(&tmpwalk.x, &tmpwalk.y, DRY|WET);
 
 		walklist[nwalk++] = tmpwalk;
 	}
 
-	Fread((genericptr_t) &n, 1, sizeof(n), fd);
+	fd->Read((genericptr_t) &n, 1, sizeof(n));
 						/* Number of non_diggables */
 	while(n--) {
-		Fread((genericptr_t)&tmpdig, 1, sizeof(tmpdig), fd);
+		fd->Read((genericptr_t)&tmpdig, 1, sizeof(tmpdig));
 
 		get_location(&tmpdig.x1, &tmpdig.y1, DRY|WET);
 		get_location(&tmpdig.x2, &tmpdig.y2, DRY|WET);
@@ -2282,10 +2280,10 @@ STATIC_OVL bool load_maze(dlb *fd) {
 				  tmpdig.x2, tmpdig.y2, W_NONDIGGABLE);
 	}
 
-	Fread((genericptr_t) &n, 1, sizeof(n), fd);
+	fd->Read((genericptr_t) &n, 1, sizeof(n));
 						/* Number of non_passables */
 	while(n--) {
-		Fread((genericptr_t)&tmpdig, 1, sizeof(tmpdig), fd);
+		fd->Read((genericptr_t)&tmpdig, 1, sizeof(tmpdig));
 
 		get_location(&tmpdig.x1, &tmpdig.y1, DRY|WET);
 		get_location(&tmpdig.x2, &tmpdig.y2, DRY|WET);
@@ -2294,10 +2292,10 @@ STATIC_OVL bool load_maze(dlb *fd) {
 				  tmpdig.x2, tmpdig.y2, W_NONPASSWALL);
 	}
 
-	Fread((genericptr_t) &n, 1, sizeof(n), fd);
+	fd->Read((genericptr_t) &n, 1, sizeof(n));
 						/* Number of ladders */
 	while(n--) {
-		Fread((genericptr_t)&tmplad, 1, sizeof(tmplad), fd);
+		fd->Read((genericptr_t)&tmplad, 1, sizeof(tmplad));
 
 		x = tmplad.x;  y = tmplad.y;
 		get_location(&x, &y, DRY);
@@ -2313,10 +2311,10 @@ STATIC_OVL bool load_maze(dlb *fd) {
 	}
 
 	prevstair.x = prevstair.y = 0;
-	Fread((genericptr_t) &n, 1, sizeof(n), fd);
+	fd->Read((genericptr_t) &n, 1, sizeof(n));
 						/* Number of stairs */
 	while(n--) {
-		Fread((genericptr_t)&tmpstair, 1, sizeof(tmpstair), fd);
+		fd->Read((genericptr_t)&tmpstair, 1, sizeof(tmpstair));
 
 		xi = 0;
 		do {
@@ -2330,32 +2328,32 @@ STATIC_OVL bool load_maze(dlb *fd) {
 		prevstair.y = y;
 	}
 
-	Fread((genericptr_t) &n, 1, sizeof(n), fd);
+	fd->Read((genericptr_t) &n, 1, sizeof(n));
 						/* Number of altars */
 	while(n--) {
-		Fread((genericptr_t)&tmpaltar, 1, sizeof(tmpaltar), fd);
+		fd->Read((genericptr_t)&tmpaltar, 1, sizeof(tmpaltar));
 
 		create_altar(&tmpaltar, (struct mkroom *)0);
 	}
 
-	Fread((genericptr_t) &n, 1, sizeof(n), fd);
+	fd->Read((genericptr_t) &n, 1, sizeof(n));
 						/* Number of fountains */
 	while (n--) {
-		Fread((genericptr_t)&tmpfountain, 1, sizeof(tmpfountain), fd);
+		fd->Read((genericptr_t)&tmpfountain, 1, sizeof(tmpfountain));
 
 		create_feature(tmpfountain.x, tmpfountain.y,
 			       (struct mkroom *)0, FOUNTAIN);
 	}
 
-	Fread((genericptr_t) &n, 1, sizeof(n), fd);
+	fd->Read((genericptr_t) &n, 1, sizeof(n));
 						/* Number of traps */
 	while(n--) {
-		Fread((genericptr_t)&tmptrap, 1, sizeof(tmptrap), fd);
+		fd->Read((genericptr_t)&tmptrap, 1, sizeof(tmptrap));
 
 		create_trap(&tmptrap, (struct mkroom *)0);
 	}
 
-	Fread((genericptr_t) &n, 1, sizeof(n), fd);
+	fd->Read((genericptr_t) &n, 1, sizeof(n));
 						/* Number of monsters */
 	while(n--) {
 		load_one_monster(fd, &tmpmons);
@@ -2363,7 +2361,7 @@ STATIC_OVL bool load_maze(dlb *fd) {
 		create_monster(&tmpmons, (struct mkroom *)0);
 	}
 
-	Fread((genericptr_t) &n, 1, sizeof(n), fd);
+	fd->Read((genericptr_t) &n, 1, sizeof(n));
 						/* Number of objects */
 	while(n--) {
 		load_one_object(fd, &tmpobj);
@@ -2371,15 +2369,15 @@ STATIC_OVL bool load_maze(dlb *fd) {
 		create_object(&tmpobj, (struct mkroom *)0);
 	}
 
-	Fread((genericptr_t) &n, 1, sizeof(n), fd);
+	fd->Read((genericptr_t) &n, 1, sizeof(n));
 						/* Number of gold piles */
 	while (n--) {
-		Fread((genericptr_t)&tmpgold, 1, sizeof(tmpgold), fd);
+		fd->Read((genericptr_t)&tmpgold, 1, sizeof(tmpgold));
 
 		create_gold(&tmpgold, (struct mkroom *)0);
 	}
 
-	Fread((genericptr_t) &n, 1, sizeof(n), fd);
+	fd->Read((genericptr_t) &n, 1, sizeof(n));
 						/* Number of engravings */
 	while(n--) {
 		load_one_engraving(fd, &tmpengraving);
@@ -2500,33 +2498,30 @@ STATIC_OVL bool load_maze(dlb *fd) {
  */
 
 bool load_special(const char *name) {
-	dlb *fd;
-	bool result = FALSE;
-	char c;
-	struct version_info vers_info;
+	std::unique_ptr<LibraryFile> fd;
 
-	fd = dlb_fopen(name, RDBMODE);
+	fd = library->Open(name, RDBMODE);
 	if (!fd) return FALSE;
 
-	Fread((genericptr_t) &vers_info, sizeof vers_info, 1, fd);
-	if (!check_version(&vers_info, name, TRUE))
-	    goto give_up;
+  struct version_info vers_info;
+	fd->Read((genericptr_t) &vers_info, sizeof vers_info, 1);
+	if (!check_version(&vers_info, name, TRUE)) {
+	  return false;
+	}
 
-	Fread((genericptr_t) &c, sizeof c, 1, fd); /* c Header */
+  char c;
+	fd->Read((genericptr_t) &c, sizeof c, 1); /* c Header */
 
 	switch (c) {
 		case SP_LEV_ROOMS:
-		    result = load_rooms(fd);
+		    return load_rooms(fd.get());
 		    break;
 		case SP_LEV_MAZE:
-		    result = load_maze(fd);
+		    return load_maze(fd.get());
 		    break;
 		default:	/* ??? */
-		    result = FALSE;
+		    return false;
 	}
- give_up:
-	(void)dlb_fclose(fd);
-	return result;
 }
 
 /*sp_lev.c*/

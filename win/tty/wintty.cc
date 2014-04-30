@@ -1802,72 +1802,78 @@ void tty_putstr(winid window, int attr, const char *str) {
 
 void tty_display_file(const char *fname, bool complain) {
 #ifdef DEF_PAGER			/* this implies that UNIX is defined */
-    {
-	/* use external pager; this may give security problems */
-	int fd = open(fname, 0);
+  {
+    /* use external pager; this may give security problems */
+    int fd = open(fname, 0);
 
-	if(fd < 0) {
-	    if(complain) pline("Cannot open %s.", fname);
-	    else docrt();
-	    return;
-	}
-	if(child(1)) {
-	    /* Now that child() does a setuid(getuid()) and a chdir(),
-	       we may not be able to open file fname anymore, so make
-	       it stdin. */
-	    (void) close(0);
-	    if(dup(fd)) {
-		if(complain) raw_printf("Cannot open %s as stdin.", fname);
-	    } else {
-		(void) execlp(catmore, "page", (char *)0);
-		if(complain) raw_printf("Cannot exec %s.", catmore);
-	    }
-	    if(complain) sleep(10); /* want to wait_synch() but stdin is gone */
-	    terminate(EXIT_FAILURE);
-	}
-	(void) close(fd);
+    if(fd < 0) {
+      if(complain) pline("Cannot open %s.", fname);
+      else docrt();
+      return;
     }
+    if(child(1)) {
+      /* Now that child() does a setuid(getuid()) and a chdir(),
+       we may not be able to open file fname anymore, so make
+       it stdin. */
+      (void) close(0);
+      if(dup(fd)) {
+        if(complain) raw_printf("Cannot open %s as stdin.", fname);
+      } else {
+        (void) execlp(catmore, "page", (char *)0);
+        if(complain) raw_printf("Cannot exec %s.", catmore);
+      }
+      if(complain) sleep(10); /* want to wait_synch() but stdin is gone */
+      terminate(EXIT_FAILURE);
+    }
+    (void) close(fd);
+  }
 #else	/* DEF_PAGER */
-    {
-	dlb *f;
-	char buf[BUFSZ];
-	char *cr;
+  {
+    std::unique_ptr<LibraryFile> f;
+    char buf[BUFSZ];
+    char *cr;
 
-	tty_clear_nhwindow(WIN_MESSAGE);
-	f = dlb_fopen(fname, "r");
-	if (!f) {
-	    if(complain) {
-		home();  tty_mark_synch();  tty_raw_print("");
-		perror(fname);  tty_wait_synch();
-		pline("Cannot open \"%s\".", fname);
-	    } else if(u.ux) docrt();
-	} else {
-	    winid datawin = tty_create_nhwindow(NHW_TEXT);
-	    bool empty = TRUE;
+    tty_clear_nhwindow(WIN_MESSAGE);
+    f = library->Open(fname, "r");
+    if (!f.get()) {
+      if (complain) {
+        home();
+        tty_mark_synch();
+        tty_raw_print("");
+        perror(fname);
+        tty_wait_synch();
+        pline("Cannot open \"%s\".", fname);
+      } else if (u.ux)
+        docrt();
+    } else {
+      winid datawin = tty_create_nhwindow(NHW_TEXT);
+      bool empty = TRUE;
 
-	    if(complain
+      if (complain
 #ifndef NO_TERMS
-		&& nh_CD
+          && nh_CD
 #endif
-	    ) {
-		/* attempt to scroll text below map window if there's room */
-		wins[datawin]->offy = wins[WIN_STATUS]->offy+3;
-		if((int) wins[datawin]->offy + 12 > (int) ttyDisplay->rows)
-		    wins[datawin]->offy = 0;
-	    }
-	    while (dlb_fgets(buf, BUFSZ, f)) {
-		if ((cr = index(buf, '\n')) != 0) *cr = 0;
-		if (index(buf, '\t') != 0) (void) tabexpand(buf);
-		empty = FALSE;
-		tty_putstr(datawin, 0, buf);
-		if(wins[datawin]->flags & WIN_CANCELLED)
-		    break;
-	    }
-	    if (!empty) tty_display_nhwindow(datawin, FALSE);
-	    tty_destroy_nhwindow(datawin);
-	    (void) dlb_fclose(f);
-	}
+      ) {
+        /* attempt to scroll text below map window if there's room */
+        wins[datawin]->offy = wins[WIN_STATUS]->offy + 3;
+        if ((int) wins[datawin]->offy + 12 > (int) ttyDisplay->rows)
+          wins[datawin]->offy = 0;
+      }
+      while (f->GetString(buf, BUFSZ)) {
+        if ((cr = index(buf, '\n')) != 0)
+          *cr = 0;
+        if (index(buf, '\t') != 0)
+          (void) tabexpand(buf);
+        empty = FALSE;
+        tty_putstr(datawin, 0, buf);
+        if (wins[datawin]->flags & WIN_CANCELLED)
+          break;
+      }
+      if (!empty)
+        tty_display_nhwindow(datawin, FALSE);
+      tty_destroy_nhwindow(datawin);
     }
+  }
 #endif /* DEF_PAGER */
 }
 
