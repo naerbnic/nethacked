@@ -20,7 +20,7 @@ public:
 
   virtual ~Library() = default;
   virtual std::unique_ptr<LibraryFile> Open(
-      char const* filename, char const* mode) = 0;
+      char const* filename, char const* mode) const = 0;
 };
 
 #endif
