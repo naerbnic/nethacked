@@ -5,20 +5,6 @@
 #ifndef TRADSTDC_H
 #define TRADSTDC_H
 
-
-/*
- * Used for robust ANSI parameter forward declarations:
- * int sprintf(char *, const char *, ...);
- *
- * () is used for functions with zero arguments;
- * FDECL() is used for functions with a fixed number of arguments;
- * VDECL() is used for functions with a variable number of arguments.
- * Separate macros are needed because ANSI will mix old-style declarations
- * with prototypes, except in the case of varargs, and the OVERLAY-specific
- * trampoli.* mechanism conflicts with the ANSI <<f(void)>> syntax.
- */
-
-//#define FDECL(f,p)	f p
 typedef void* genericptr_t;
 
 /*
