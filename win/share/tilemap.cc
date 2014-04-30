@@ -13,9 +13,9 @@ const char * tilename(int, int);
 void init_tilemap();
 void process_substitutions(FILE *);
 
-#if defined(MICRO) || defined(WIN32)
+#if defined(MICRO)
 #undef exit
-#if !defined(MSDOS) && !defined(WIN32)
+#if !defined(MSDOS)
 extern void exit(int);
 #endif
 #endif

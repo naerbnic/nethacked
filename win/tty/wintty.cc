@@ -2175,7 +2175,6 @@ void end_glyphout() {
 #endif
 }
 
-#ifndef WIN32
 void g_putch(int in_ch) {
     char ch = (char)in_ch;
 
@@ -2204,7 +2203,6 @@ void g_putch(int in_ch) {
 
     return;
 }
-#endif /* !WIN32 */
 
 #ifdef CLIPPING
 void setclipped() {

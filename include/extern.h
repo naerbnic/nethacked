@@ -1235,13 +1235,11 @@ E struct Monster *mk_mplayer(struct permonst *,xchar,
 E void create_mplayers(int,bool);
 E void mplayer_talk(struct Monster *);
 
-#if defined(MICRO) || defined(WIN32)
+#if defined(MICRO)
 
 /* ### msdos.c,os2.c,tos.c,winnt.c ### */
 
-#  ifndef WIN32
 E int tgetch();
-#  endif
 #  ifndef TOS
 E char switchar();
 #  endif
@@ -1272,13 +1270,7 @@ E void restore_colors();
 E int dosuspend();
 #  endif
 # endif /* TOS */
-# ifdef WIN32
-E char *get_username(int *);
-E void nt_regularize(char *);
-E int (*nt_kbhit)();
-E void Delay(int);
-# endif /* WIN32 */
-#endif /* MICRO || WIN32 */
+#endif /* MICRO */
 
 /* ### mthrowu.c ### */
 
@@ -1437,7 +1429,7 @@ E int dohistory();
 
 /* ### pcmain.c ### */
 
-#if defined(MICRO) || defined(WIN32)
+#if defined(MICRO)
 # ifdef CHDIR
 E void chdirx(char *,bool);
 # endif /* CHDIR */
@@ -1445,7 +1437,7 @@ E void chdirx(char *,bool);
 
 /* ### pcsys.c ### */
 
-#if defined(MICRO) || defined(WIN32)
+#if defined(MICRO)
 E void flushout();
 E int dosh();
 # ifdef MFLOPPY
@@ -1461,11 +1453,11 @@ E void getreturn(const char *);
 E void msmsg(const char *,...);
 # endif
 E FILE *fopenp(const char *,const char *);
-#endif /* MICRO || WIN32 */
+#endif /* MICRO */
 
 /* ### pctty.c ### */
 
-#if defined(MICRO) || defined(WIN32)
+#if defined(MICRO)
 E void gettty();
 E void settty(const char *);
 E void setftty();
@@ -1473,7 +1465,7 @@ E void error(const char *,...);
 #if defined(TIMED_DELAY) && defined(_MSC_VER)
 E void msleep(unsigned);
 #endif
-#endif /* MICRO || WIN32 */
+#endif /* MICRO */
 
 /* ### pcunix.c ### */
 
@@ -1768,7 +1760,7 @@ E int doconsult(struct Monster *);
 /* ### save.c ### */
 
 E int dosave();
-#if defined(UNIX) || defined(VMS) || defined(__EMX__) || defined(WIN32)
+#if defined(UNIX) || defined(VMS) || defined(__EMX__)
 E void hangup(int);
 #endif
 E int dosave0();

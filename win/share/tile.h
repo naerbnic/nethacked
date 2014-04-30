@@ -38,9 +38,9 @@ extern int fclose_text_file();
 extern void init_colormap();
 extern void merge_colormap();
 
-#if defined(MICRO) || defined(WIN32)
+#if defined(MICRO)
 #undef exit
-# if !defined(MSDOS) && !defined(WIN32)
+# if !defined(MSDOS)
 extern void exit(int);
 # endif
 #endif

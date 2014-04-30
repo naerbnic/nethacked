@@ -11,10 +11,6 @@
 #if !defined(O_WRONLY) && !defined(LSC) && !defined(AZTEC_C)
 #include <fcntl.h>
 #endif
-#ifdef WIN32
-#include <errno.h>
-#include "win32api.h"
-#endif
 
 #ifdef VMS
 extern int vms_creat(const char *,unsigned);
@@ -37,11 +33,7 @@ void copy_bytes(int,int);
 # ifdef VMS
 #define SAVESIZE	(PL_NSIZ + 22)	/* [.save]<uid>player.e;1 */
 # else
-#  ifdef WIN32
-#define SAVESIZE	(PL_NSIZ + 40)  /* username-player.NetHack-saved-game */
-#  else
 #define SAVESIZE	FILENAME	/* from macconf.h or pcconf.h */
-#  endif
 # endif
 #endif
 
@@ -71,12 +63,6 @@ int main(int argc, char *argv[]) {
 	if (argc == 1 || (argc == 2 && !strcmp(argv[1], "-"))) {
 	    Fprintf(stderr,
 		"Usage: %s [ -d directory ] base1 [ base2 ... ]\n", argv[0]);
-#if defined(WIN32)
-	    if (dir) {
-	    	Fprintf(stderr, "\t(Unless you override it with -d, recover will look \n");
-	    	Fprintf(stderr, "\t in the %s directory on your system)\n", dir);
-	    }
-#endif
 	    exit(EXIT_FAILURE);
 	}
 
@@ -150,7 +136,7 @@ int open_levelfile(int lev) {
 	int fd;
 
 	set_levelfile_name(lev);
-#if defined(MICRO) || defined(WIN32)
+#if defined(MICRO)
 	fd = open(lock, O_RDONLY | O_BINARY);
 #else
 	fd = open(lock, O_RDONLY, 0);
@@ -161,7 +147,7 @@ int open_levelfile(int lev) {
 int create_savefile() {
 	int fd;
 
-#if defined(MICRO) || defined(WIN32)
+#if defined(MICRO)
 	fd = open(savename, O_WRONLY | O_BINARY | O_CREAT | O_TRUNC, FCMASK);
 #else
 	fd = creat(savename, FCMASK);
@@ -198,16 +184,6 @@ int restore_savefile(char *basename) {
 	(void) strcpy(lock, basename);
 	gfd = open_levelfile(0);
 	if (gfd < 0) {
-#if defined(WIN32)
- 	    if(errno == EACCES) {
-	  	Fprintf(stderr,
-			"\nThere are files from a game in progress under your name.");
-		Fprintf(stderr,"\nThe files are locked or inaccessible.");
-		Fprintf(stderr,"\nPerhaps the other game is still running?\n");
-	    } else
-	  	Fprintf(stderr,
-			"\nTrouble accessing level 0 (errno = %d).\n", errno);
-#endif
 	    Fprintf(stderr, "Cannot open level 0 for %s.\n", basename);
 	    return(-1);
 	}
@@ -334,11 +310,7 @@ char *str;
 	if (!str) return (char *)0;
 	bsize = EXEPATHBUFSZ;
 	tmp = exepathbuf;
-#if !defined(WIN32)
 	strcpy (tmp, str);
-#else
-	*(tmp + GetModuleFileName((HANDLE)0, tmp, bsize)) = '\0';
-#endif
 	tmp2 = strrchr(tmp, PATH_SEPARATOR);
 	if (tmp2) *tmp2 = '\0';
 	return tmp;
