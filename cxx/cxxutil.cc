@@ -12,6 +12,7 @@
 #include <memory>
 
 #include "cxxutil.h"
+#include "str_format.h"
 
 using std::string;
 
