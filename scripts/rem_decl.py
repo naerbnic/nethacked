@@ -19,8 +19,6 @@ def find_matching_close(s, index):
     else:
         return -1
 
-argdecl_re = re.compile(r'\b(F|V)DECL\(')
-ndecl_re = re.compile(r'\bNDECL\s*\(')
 
 def until_unchanged(line, fn):
     while True:
@@ -28,6 +26,23 @@ def until_unchanged(line, fn):
         if new_line == line:
             return new_line
         line = new_line
+
+argdecl_re = re.compile(r'\b(F|V)DECL\s*\(')
+contents_re = re.compile(r'(?P<name>\w+),\s*\((?P<args>.*)\)\s*'
+
+def fix_fvdecl(line):
+    m = argdecl_re.search(line);
+    if not m:
+        return line
+    actual_start = m.start(0)
+    actual_end = find_matching_close(line, m.end(0))
+    contents = line[m.end(0):actual_end - 1]
+    m2 = contents_re.match(contents)
+    assert m2
+    return (line[:actual_start] + m2.group('name') +
+        '(' + m2.group('args') + ')' + line[actual_end:])
+
+ndecl_re = re.compile(r'\bNDECL\s*\(')
 
 def fix_ndecl(line):
    m = ndecl_re.search(line);
