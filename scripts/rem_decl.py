@@ -27,7 +27,7 @@ def process_lines(lines_arg):
     lines = lines_arg[:]
     out_lines = []
     for line in lines:
-        out_lines.append(ndecl_re.sub(line, r'\g<name>()'))
+        out_lines.append(ndecl_re.sub(r'\g<name>()', line))
     return out_lines
 
 def process_file(file_name):
