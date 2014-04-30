@@ -21,16 +21,16 @@ bool m_using = FALSE;
  * don't know not to read scrolls, etc....
  */
 
-STATIC_DCL struct permonst *FDECL(muse_newcham_mon, (struct Monster *));
-STATIC_DCL int FDECL(precheck, (struct Monster *,struct Object *));
-STATIC_DCL void FDECL(mzapmsg, (struct Monster *,struct Object *,bool));
-STATIC_DCL void FDECL(mreadmsg, (struct Monster *,struct Object *));
-STATIC_DCL void FDECL(mquaffmsg, (struct Monster *,struct Object *));
-STATIC_PTR int FDECL(mbhitm, (struct Monster *,struct Object *));
+STATIC_DCL struct permonst *muse_newcham_mon(struct Monster *);
+STATIC_DCL int precheck(struct Monster *,struct Object *);
+STATIC_DCL void mzapmsg(struct Monster *,struct Object *,bool);
+STATIC_DCL void mreadmsg(struct Monster *,struct Object *);
+STATIC_DCL void mquaffmsg(struct Monster *,struct Object *);
+STATIC_PTR int mbhitm(struct Monster *,struct Object *);
 STATIC_DCL void FDECL(mbhit,
-	(struct Monster *,int,int FDECL((*),(Monster*,Object*)),
-	int FDECL((*),(Object*,Object*)),struct Object *));
-STATIC_DCL void FDECL(you_aggravate, (struct Monster *));
+	(struct Monster *,int,int (*)(Monster*,Object*),
+	int (*)(Object*,Object*),struct Object *));
+STATIC_DCL void you_aggravate(struct Monster *);
 STATIC_DCL void FDECL(mon_consume_unstone, (struct Monster *,struct Object *,
 	bool,bool));
 

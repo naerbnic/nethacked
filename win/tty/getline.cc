@@ -14,11 +14,11 @@
 #ifdef OVL1
 char morc = 0;	/* tell the outside world what char you chose */
 #endif /* OVL1 */
-STATIC_DCL bool FDECL(ext_cmd_getlin_hook, (char *));
+STATIC_DCL bool ext_cmd_getlin_hook(char *);
 
-typedef bool FDECL((*getlin_hook_proc), (char *));
+typedef bool (*getlin_hook_proc)(char *);
 
-STATIC_DCL void FDECL(hooked_tty_getlin, (const char*,char*,getlin_hook_proc));
+STATIC_DCL void hooked_tty_getlin(const char*,char*,getlin_hook_proc);
 extern int extcmd_via_menu();	/* cmd.c */
 
 extern char erase_char, kill_char;	/* from appropriate tty.c file */

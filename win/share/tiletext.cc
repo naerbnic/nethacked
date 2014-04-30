@@ -25,11 +25,11 @@ static const char *text_sets[] = { "monthin.txt", "objthin.txt", "oththin.txt" }
 static const char *text_sets[] = { "monsters.txt", "objects.txt", "other.txt" };
 #endif
 
-extern const char *FDECL(tilename, (int, int));
-static void FDECL(read_text_colormap, (FILE *));
-static bool FDECL(write_text_colormap, (FILE *));
-static bool FDECL(read_txttile, (FILE *, pixel(*)[TILE_X]));
-static void FDECL(write_txttile, (FILE *, pixel(*)[TILE_X]));
+extern const char *tilename(int, int);
+static void read_text_colormap(FILE *);
+static bool write_text_colormap(FILE *);
+static bool read_txttile(FILE *, pixel(*)[TILE_X]);
+static void write_txttile(FILE *, pixel(*)[TILE_X]);
 
 /* Ugh.  DICE doesn't like %[A-Z], so we have to spell it out... */
 #define FORMAT_STRING \

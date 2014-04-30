@@ -14,14 +14,14 @@
 
 #ifdef OVLB
 
-static int FDECL(domonnoise,(struct Monster *));
+static int domonnoise(struct Monster *);
 static int dochat();
 
 #endif /* OVLB */
 
 #ifdef OVL0
 
-static int FDECL(mon_in_room, (struct Monster *,int));
+static int mon_in_room(struct Monster *,int);
 
 /* this easily could be a macro, but it might overtax dumb compilers */
 static int mon_in_room(struct Monster *mon, int rmtyp) {
@@ -902,7 +902,7 @@ static int dochat() {
 
 #ifdef USER_SOUNDS
 
-extern void FDECL(play_usersound, (const char*, int));
+extern void play_usersound(const char*, int);
 
 typedef struct audio_mapping_rec {
 #ifdef USER_SOUNDS_REGEX

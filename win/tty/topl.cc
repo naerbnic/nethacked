@@ -14,10 +14,10 @@
 #define C(c)	(0x1f & (c))
 #endif
 
-STATIC_DCL void FDECL(redotoplin, (const char*));
-STATIC_DCL void FDECL(topl_putsym, (char));
+STATIC_DCL void redotoplin(const char*);
+STATIC_DCL void topl_putsym(char);
 STATIC_DCL void remember_topl();
-STATIC_DCL void FDECL(removetopl, (int));
+STATIC_DCL void removetopl(int);
 
 #ifdef OVLB
 

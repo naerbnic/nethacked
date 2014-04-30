@@ -25,16 +25,16 @@
 #define Tgetstr(key) (tgetstr(key,&tbufptr))
 #endif /* MICROPORT_286_BUG **/
 
-static char * FDECL(s_atr2str, (int));
-static char * FDECL(e_atr2str, (int));
+static char * s_atr2str(int);
+static char * e_atr2str(int);
 
-void FDECL(cmov, (int, int));
-void FDECL(nocmov, (int, int));
+void cmov(int, int);
+void nocmov(int, int);
 #if defined(TEXTCOLOR) && defined(TERMLIB)
 # ifdef OVLB
 #  if !defined(UNIX) || !defined(TERMINFO)
 #   ifndef TOS
-static void FDECL(analyze_seq, (char *, int *, int *));
+static void analyze_seq(char *, int *, int *);
 #   endif
 #  endif
 static void init_hilite();

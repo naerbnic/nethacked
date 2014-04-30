@@ -38,7 +38,7 @@ extern struct window_procs Gnome_procs;
 extern struct window_procs mswin_procs;
 #endif
 
-STATIC_DCL void FDECL(def_raw_print, (const char *s));
+STATIC_DCL void def_raw_print(const char *s);
 
 struct window_procs windowprocs;
 

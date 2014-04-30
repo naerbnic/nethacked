@@ -9,28 +9,28 @@
 
 STATIC_VAR struct Object *otmp;
 
-STATIC_DCL void FDECL(urustm, (struct Monster *, struct Object *));
+STATIC_DCL void urustm(struct Monster *, struct Object *);
 # ifdef OVL1
-STATIC_DCL bool FDECL(u_slip_free, (struct Monster *,struct Attack *));
-STATIC_DCL int FDECL(passiveum, (struct permonst *,struct Monster *,struct Attack *));
+STATIC_DCL bool u_slip_free(struct Monster *,struct Attack *);
+STATIC_DCL int passiveum(struct permonst *,struct Monster *,struct Attack *);
 # endif /* OVL1 */
 
 #ifdef OVLB
 # ifdef SEDUCE
-STATIC_DCL void FDECL(mayberem, (struct Object *, const char *));
+STATIC_DCL void mayberem(struct Object *, const char *);
 # endif
 #endif /* OVLB */
 
-STATIC_DCL bool FDECL(diseasemu, (struct permonst *));
-STATIC_DCL int FDECL(hitmu, (struct Monster *,struct Attack *));
-STATIC_DCL int FDECL(gulpmu, (struct Monster *,struct Attack *));
-STATIC_DCL int FDECL(explmu, (struct Monster *,struct Attack *,bool));
-STATIC_DCL void FDECL(missmu,(struct Monster *,bool,struct Attack *));
-STATIC_DCL void FDECL(mswings,(struct Monster *,struct Object *));
-STATIC_DCL void FDECL(wildmiss, (struct Monster *,struct Attack *));
+STATIC_DCL bool diseasemu(struct permonst *);
+STATIC_DCL int hitmu(struct Monster *,struct Attack *);
+STATIC_DCL int gulpmu(struct Monster *,struct Attack *);
+STATIC_DCL int explmu(struct Monster *,struct Attack *,bool);
+STATIC_DCL void missmu(struct Monster *,bool,struct Attack *);
+STATIC_DCL void mswings(struct Monster *,struct Object *);
+STATIC_DCL void wildmiss(struct Monster *,struct Attack *);
 
-STATIC_DCL void FDECL(hurtarmor,(int));
-STATIC_DCL void FDECL(hitmsg,(struct Monster *,struct Attack *));
+STATIC_DCL void hurtarmor(int);
+STATIC_DCL void hitmsg(struct Monster *,struct Attack *);
 
 /* See comment in mhitm.c.  If we use this a lot it probably should be */
 /* changed to a parameter to mhitu. */

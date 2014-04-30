@@ -15,22 +15,22 @@
 #include "hack.h"
 
 #ifdef OVLB
-STATIC_DCL void FDECL(get_wall_for_db, (int *, int *));
-STATIC_DCL struct entity *FDECL(e_at, (int, int));
-STATIC_DCL void FDECL(m_to_e, (struct Monster *, int, int, struct entity *));
-STATIC_DCL void FDECL(u_to_e, (struct entity *));
-STATIC_DCL void FDECL(set_entity, (int, int, struct entity *));
-STATIC_DCL const char *FDECL(e_nam, (struct entity *));
+STATIC_DCL void get_wall_for_db(int *, int *);
+STATIC_DCL struct entity *e_at(int, int);
+STATIC_DCL void m_to_e(struct Monster *, int, int, struct entity *);
+STATIC_DCL void u_to_e(struct entity *);
+STATIC_DCL void set_entity(int, int, struct entity *);
+STATIC_DCL const char *e_nam(struct entity *);
 #ifdef D_DEBUG
-static const char *FDECL(Enam, (struct entity *)); /* unused */
+static const char *Enam(struct entity *); /* unused */
 #endif
-STATIC_DCL const char *FDECL(E_phrase, (struct entity *, const char *));
-STATIC_DCL bool FDECL(e_survives_at, (struct entity *, int, int));
-STATIC_DCL void FDECL(e_died, (struct entity *, int, int));
-STATIC_DCL bool FDECL(automiss, (struct entity *));
-STATIC_DCL bool FDECL(e_missed, (struct entity *, bool));
-STATIC_DCL bool FDECL(e_jumps, (struct entity *));
-STATIC_DCL void FDECL(do_entity, (struct entity *));
+STATIC_DCL const char *E_phrase(struct entity *, const char *);
+STATIC_DCL bool e_survives_at(struct entity *, int, int);
+STATIC_DCL void e_died(struct entity *, int, int);
+STATIC_DCL bool automiss(struct entity *);
+STATIC_DCL bool e_missed(struct entity *, bool);
+STATIC_DCL bool e_jumps(struct entity *);
+STATIC_DCL void do_entity(struct entity *);
 #endif /* OVLB */
 
 #ifdef OVL0

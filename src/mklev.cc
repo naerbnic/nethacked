@@ -20,33 +20,33 @@
 /* conversion of result to int is reasonable */
 
 
-STATIC_DCL void FDECL(mkfount,(int,struct mkroom *));
+STATIC_DCL void mkfount(int,struct mkroom *);
 #ifdef SINKS
-STATIC_DCL void FDECL(mksink,(struct mkroom *));
+STATIC_DCL void mksink(struct mkroom *);
 #endif
-STATIC_DCL void FDECL(mkaltar,(struct mkroom *));
-STATIC_DCL void FDECL(mkgrave,(struct mkroom *));
+STATIC_DCL void mkaltar(struct mkroom *);
+STATIC_DCL void mkgrave(struct mkroom *);
 STATIC_DCL void makevtele();
 STATIC_DCL void clear_level_structures();
 STATIC_DCL void makelevel();
 STATIC_DCL void mineralize();
-STATIC_DCL bool FDECL(bydoor,(xchar,xchar));
-STATIC_DCL struct mkroom *FDECL(find_branch_room, (coord *));
-STATIC_DCL struct mkroom *FDECL(pos_to_room, (xchar, xchar));
-STATIC_DCL bool FDECL(place_niche,(struct mkroom *,int*,int*,int*));
-STATIC_DCL void FDECL(makeniche,(int));
+STATIC_DCL bool bydoor(xchar,xchar);
+STATIC_DCL struct mkroom *find_branch_room(coord *);
+STATIC_DCL struct mkroom *pos_to_room(xchar, xchar);
+STATIC_DCL bool place_niche(struct mkroom *,int*,int*,int*);
+STATIC_DCL void makeniche(int);
 STATIC_DCL void make_niches();
 
-STATIC_PTR int FDECL( CFDECLSPEC do_comp,(const void*,const void*));
+STATIC_PTR int  CFDECLSPEC do_comp(const void*,const void*);
 
-STATIC_DCL void FDECL(dosdoor,(xchar,xchar,struct mkroom *,int));
-STATIC_DCL void FDECL(join,(int,int,bool));
+STATIC_DCL void dosdoor(xchar,xchar,struct mkroom *,int);
+STATIC_DCL void join(int,int,bool);
 STATIC_DCL void FDECL(do_room_or_subroom, (struct mkroom *,int,int,int,int,
 				       bool,schar,bool,bool));
 STATIC_DCL void makerooms();
-STATIC_DCL void FDECL(finddpos,(coord *,xchar,xchar,xchar,xchar));
-STATIC_DCL void FDECL(mkinvpos, (xchar,xchar,int));
-STATIC_DCL void FDECL(mk_knox_portal, (xchar,xchar));
+STATIC_DCL void finddpos(coord *,xchar,xchar,xchar,xchar);
+STATIC_DCL void mkinvpos(xchar,xchar,int);
+STATIC_DCL void mk_knox_portal(xchar,xchar);
 
 #define create_vault()	create_room(-1, -1, 2, 2, -1, -1, VAULT, TRUE)
 #define init_vault()	vault_x = -1

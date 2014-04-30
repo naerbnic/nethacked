@@ -9,18 +9,18 @@
 #include "hack.h"
 #include "edog.h"
 
-STATIC_DCL int FDECL(throw_obj, (struct Object *,int));
+STATIC_DCL int throw_obj(struct Object *,int);
 STATIC_DCL void autoquiver();
-STATIC_DCL int FDECL(gem_accept, (struct Monster *, struct Object *));
-STATIC_DCL void FDECL(tmiss, (struct Object *, struct Monster *));
-STATIC_DCL int FDECL(throw_gold, (struct Object *));
-STATIC_DCL void FDECL(check_shop_obj, (struct Object *,xchar,xchar,bool));
-STATIC_DCL void FDECL(breakobj, (struct Object *,xchar,xchar,bool,bool));
-STATIC_DCL void FDECL(breakmsg, (struct Object *,bool));
-STATIC_DCL bool FDECL(toss_up,(struct Object *, bool));
-STATIC_DCL bool FDECL(throwing_weapon, (struct Object *));
-STATIC_DCL void FDECL(sho_obj_return_to_u, (struct Object *obj));
-STATIC_DCL bool FDECL(mhurtle_step, (genericptr_t,int,int));
+STATIC_DCL int gem_accept(struct Monster *, struct Object *);
+STATIC_DCL void tmiss(struct Object *, struct Monster *);
+STATIC_DCL int throw_gold(struct Object *);
+STATIC_DCL void check_shop_obj(struct Object *,xchar,xchar,bool);
+STATIC_DCL void breakobj(struct Object *,xchar,xchar,bool,bool);
+STATIC_DCL void breakmsg(struct Object *,bool);
+STATIC_DCL bool toss_up(struct Object *, bool);
+STATIC_DCL bool throwing_weapon(struct Object *);
+STATIC_DCL void sho_obj_return_to_u(struct Object *obj);
+STATIC_DCL bool mhurtle_step(genericptr_t,int,int);
 
 
 static const char toss_objs[] =
@@ -935,8 +935,8 @@ void throwit(struct Object *obj, long wep_mask, bool twoweap) {
 
 		bool obj_destroyed = FALSE;
 		mon = bhit(u.dx, u.dy, range, THROWN_WEAPON,
-			   (int FDECL((*),(Monster*,Object*)))0,
-			   (int FDECL((*),(Object*,Object*)))0,
+			   (int (*)(Monster*,Object*))0,
+			   (int (*)(Object*,Object*))0,
 			   obj, &obj_destroyed);
 
 		/* have to do this after bhit() so u.ux & u.uy are correct */
@@ -1660,8 +1660,8 @@ STATIC_OVL int throw_gold(struct Object *obj) {
 			bhitpos.y = u.uy;
 		} else {
 			mon = bhit(u.dx, u.dy, range, THROWN_WEAPON,
-				   (int FDECL((*),(Monster*,Object*)))0,
-				   (int FDECL((*),(Object*,Object*)))0,
+				   (int (*)(Monster*,Object*))0,
+				   (int (*)(Object*,Object*))0,
 				   obj, NULL);
 			if(mon) {
 			    if (ghitm(mon, obj))	/* was it caught? */

@@ -12,7 +12,7 @@
 #include "hack.h"
 
 #ifdef DUMP_LOG
-STATIC_DCL int FDECL(enhance_skill, (bool));
+STATIC_DCL int enhance_skill(bool);
 #endif
 
 /* Categories whose names don't come from OBJ_NAME(objects[type])
@@ -32,7 +32,7 @@ STATIC_DCL int FDECL(enhance_skill, (bool));
 #define PN_ESCAPE_SPELL			(-13)
 #define PN_MATTER_SPELL			(-14)
 
-STATIC_DCL void FDECL(give_may_advance_msg, (int));
+STATIC_DCL void give_may_advance_msg(int);
 
 #ifndef OVLB
 
@@ -97,15 +97,15 @@ STATIC_OVL void give_may_advance_msg(int skill) {
 
 #endif	/* OVLB */
 
-STATIC_DCL bool FDECL(can_advance, (int, bool));
-STATIC_DCL bool FDECL(could_advance, (int));
-STATIC_DCL bool FDECL(peaked_skill, (int));
-STATIC_DCL int FDECL(slots_required, (int));
+STATIC_DCL bool can_advance(int, bool);
+STATIC_DCL bool could_advance(int);
+STATIC_DCL bool peaked_skill(int);
+STATIC_DCL int slots_required(int);
 
 #ifdef OVL1
 
-STATIC_DCL char *FDECL(skill_level_name, (int,char *));
-STATIC_DCL void FDECL(skill_advance, (int));
+STATIC_DCL char *skill_level_name(int,char *);
+STATIC_DCL void skill_advance(int);
 
 #endif	/* OVL1 */
 
@@ -312,7 +312,7 @@ int dmgval(struct Object *otmp, struct Monster *mon) {
 #endif /* OVLB */
 #ifdef OVL0
 
-STATIC_DCL struct Object *FDECL(oselect, (struct Monster *,int));
+STATIC_DCL struct Object *oselect(struct Monster *,int);
 #define Oselect(x)	if ((otmp = oselect(mtmp, x)) != 0) return(otmp);
 
 STATIC_OVL struct Object * oselect(struct Monster *mtmp, int x) {

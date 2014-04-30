@@ -15,13 +15,13 @@ extern const int monstr[];
 
 #ifdef OVLB
 
-STATIC_DCL short FDECL(which_arti, (int));
-STATIC_DCL bool FDECL(mon_has_arti, (struct Monster *,short));
-STATIC_DCL struct Monster *FDECL(other_mon_has_arti, (struct Monster *,short));
-STATIC_DCL struct Object *FDECL(on_ground, (short));
-STATIC_DCL bool FDECL(you_have, (int));
-STATIC_DCL long FDECL(target_on, (int,struct Monster *));
-STATIC_DCL long FDECL(strategy, (struct Monster *));
+STATIC_DCL short which_arti(int);
+STATIC_DCL bool mon_has_arti(struct Monster *,short);
+STATIC_DCL struct Monster *other_mon_has_arti(struct Monster *,short);
+STATIC_DCL struct Object *on_ground(short);
+STATIC_DCL bool you_have(int);
+STATIC_DCL long target_on(int,struct Monster *);
+STATIC_DCL long strategy(struct Monster *);
 
 static const int nasties[] = {
 	PM_COCKATRICE, PM_ETTIN, PM_STALKER, PM_MINOTAUR, PM_RED_DRAGON,

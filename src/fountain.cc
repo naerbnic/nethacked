@@ -9,7 +9,7 @@
 STATIC_DCL void dowatersnakes();
 STATIC_DCL void dowaterdemon();
 STATIC_DCL void dowaternymph();
-STATIC_PTR void FDECL(gush, (int,int,genericptr_t));
+STATIC_PTR void gush(int,int,genericptr_t);
 STATIC_DCL void dofindgem();
 
 void floating_above(const char *what) {

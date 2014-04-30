@@ -43,7 +43,7 @@ static const long takeoff_order[] = { WORN_BLINDF, W_WEP,
 #endif
 	WORN_BOOTS, W_SWAPWEP, W_QUIVER, 0L };
 
-STATIC_DCL void FDECL(on_msg, (struct Object *));
+STATIC_DCL void on_msg(struct Object *);
 STATIC_PTR int Armor_on();
 STATIC_PTR int Boots_on();
 STATIC_DCL int Cloak_on();
@@ -54,13 +54,13 @@ STATIC_PTR int Shield_on();
 STATIC_PTR int Shirt_on();
 #endif
 STATIC_DCL void Amulet_on();
-STATIC_DCL void FDECL(Ring_off_or_gone, (struct Object *, bool));
-STATIC_PTR int FDECL(select_off, (struct Object *));
+STATIC_DCL void Ring_off_or_gone(struct Object *, bool);
+STATIC_PTR int select_off(struct Object *);
 STATIC_DCL struct Object *do_takeoff();
 STATIC_PTR int take_off();
-STATIC_DCL int FDECL(menu_remarm, (int));
-STATIC_DCL void FDECL(already_wearing, (const char*));
-STATIC_DCL void FDECL(already_wearing2, (const char*, const char*));
+STATIC_DCL int menu_remarm(int);
+STATIC_DCL void already_wearing(const char*);
+STATIC_DCL void already_wearing2(const char*, const char*);
 
 void off_msg(struct Object *otmp) {
 	if(flags.verbose)

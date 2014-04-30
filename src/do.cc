@@ -11,21 +11,21 @@
 
 #ifdef SINKS
 # ifdef OVLB
-STATIC_DCL void FDECL(trycall, (struct Object *));
+STATIC_DCL void trycall(struct Object *);
 # endif /* OVLB */
-STATIC_DCL void FDECL(dosinkring, (struct Object *));
+STATIC_DCL void dosinkring(struct Object *);
 #endif /* SINKS */
 
-STATIC_PTR int FDECL(drop, (struct Object *));
+STATIC_PTR int drop(struct Object *);
 STATIC_PTR int wipeoff();
 
 #ifdef OVL0
-STATIC_DCL int FDECL(menu_drop, (int));
+STATIC_DCL int menu_drop(int);
 #endif
 #ifdef OVL2
 STATIC_DCL int currentlevel_rewrite();
 STATIC_DCL void final_level();
-/* static bool FDECL(badspot, (xchar,xchar)); */
+/* static bool badspot(xchar,xchar); */
 #endif
 
 #ifdef OVLB

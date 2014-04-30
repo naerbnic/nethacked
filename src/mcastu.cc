@@ -30,13 +30,13 @@
 #define CLC_FIRE_PILLAR	 8
 #define CLC_GEYSER	 9
 
-STATIC_DCL void FDECL(cursetxt,(struct Monster *,bool));
-STATIC_DCL int FDECL(choose_magic_spell, (int));
-STATIC_DCL int FDECL(choose_clerical_spell, (int));
-STATIC_DCL void FDECL(cast_wizard_spell,(struct Monster *, int,int));
-STATIC_DCL void FDECL(cast_cleric_spell,(struct Monster *, int,int));
-STATIC_DCL bool FDECL(is_undirected_spell,(unsigned int,int));
-STATIC_DCL bool FDECL(spell_would_be_useless,(struct Monster *,unsigned int,int));
+STATIC_DCL void cursetxt(struct Monster *,bool);
+STATIC_DCL int choose_magic_spell(int);
+STATIC_DCL int choose_clerical_spell(int);
+STATIC_DCL void cast_wizard_spell(struct Monster *, int,int);
+STATIC_DCL void cast_cleric_spell(struct Monster *, int,int);
+STATIC_DCL bool is_undirected_spell(unsigned int,int);
+STATIC_DCL bool spell_would_be_useless(struct Monster *,unsigned int,int);
 
 #ifdef OVL0
 

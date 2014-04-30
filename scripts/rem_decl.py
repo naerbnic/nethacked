@@ -61,9 +61,9 @@ def process_lines(lines_arg):
     lines = lines_arg[:]
     out_lines = []
     for line in lines:
-        out_lines.append(line);
         line = until_unchanged(line, fix_ndecl);
         line = until_unchanged(line, fix_fvdecl);
+        out_lines.append(line);
         
     return out_lines
 

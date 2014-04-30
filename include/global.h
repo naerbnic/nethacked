@@ -108,7 +108,7 @@ typedef schar	xchar;
 
 
 /* primitive memory leak debugging; see alloc.c */
-extern long *FDECL(alloc, (unsigned int));		/* alloc.c */
+extern long *alloc(unsigned int);		/* alloc.c */
 
 /* Used for consistency checks of various data files; declare it here so
    that utility programs which include config.h but not hack.h can see it. */

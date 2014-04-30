@@ -52,40 +52,40 @@ extern unsigned _stklen = STKSIZ;
 #define MAX_ERRORS	25
 
 extern int  yyparse();
-extern void FDECL (init_yyin, (FILE *));
-extern void FDECL (init_yyout, (FILE *));
+extern void init_yyin(FILE *);
+extern void init_yyout(FILE *);
 
-int  FDECL (main, (int, char **));
-void FDECL (yyerror, (const char *));
-void FDECL (yywarning, (const char *));
+int  main(int, char **);
+void yyerror(const char *);
+void yywarning(const char *);
 extern "C" int  yywrap();
-int FDECL(get_floor_type, (char));
-int FDECL(get_room_type, (char *));
-int FDECL(get_trap_type, (char *));
-int FDECL(get_monster_id, (char *,char));
-int FDECL(get_object_id, (char *,char));
-bool FDECL(check_monster_char, (char));
-bool FDECL(check_object_char, (char));
-char FDECL(what_map_char, (char));
-void FDECL(scan_map, (char *));
+int get_floor_type(char);
+int get_room_type(char *);
+int get_trap_type(char *);
+int get_monster_id(char *,char);
+int get_object_id(char *,char);
+bool check_monster_char(char);
+bool check_object_char(char);
+char what_map_char(char);
+void scan_map(char *);
 void wallify_map();
 bool check_subrooms();
-void FDECL(check_coord, (int,int,const char *));
+void check_coord(int,int,const char *);
 void store_part();
 void store_room();
-bool FDECL(write_level_file, (char *,splev *,specialmaze *));
-void FDECL(free_rooms, (splev *));
+bool write_level_file(char *,splev *,specialmaze *);
+void free_rooms(splev *);
 
 extern void monst_init();
 extern void objects_init();
 extern void decl_init();
 
-static bool FDECL(write_common_data, (int,int,lev_init *,long));
-static bool FDECL(write_monsters, (int,char *,monster ***));
-static bool FDECL(write_objects, (int,char *,object ***));
-static bool FDECL(write_engravings, (int,char *,engraving ***));
-static bool FDECL(write_maze, (int,specialmaze *));
-static bool FDECL(write_rooms, (int,splev *));
+static bool write_common_data(int,int,lev_init *,long);
+static bool write_monsters(int,char *,monster ***);
+static bool write_objects(int,char *,object ***);
+static bool write_engravings(int,char *,engraving ***);
+static bool write_maze(int,specialmaze *);
+static bool write_rooms(int,splev *);
 static void init_obj_classes();
 
 struct NameMapping {

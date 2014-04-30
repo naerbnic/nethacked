@@ -16,12 +16,12 @@ static const char *gate_str;
 
 extern bool notonhead;	/* for long worms */
 
-STATIC_DCL void FDECL(kickdmg, (struct Monster *, bool));
-STATIC_DCL void FDECL(kick_monster, (xchar, xchar));
-STATIC_DCL int FDECL(kick_object, (xchar, xchar));
-STATIC_DCL char *FDECL(kickstr, (char *));
-STATIC_DCL void FDECL(otransit_msg, (struct Object *, bool, long));
-STATIC_DCL void FDECL(drop_to, (coord *,schar));
+STATIC_DCL void kickdmg(struct Monster *, bool);
+STATIC_DCL void kick_monster(xchar, xchar);
+STATIC_DCL int kick_object(xchar, xchar);
+STATIC_DCL char *kickstr(char *);
+STATIC_DCL void otransit_msg(struct Object *, bool, long);
+STATIC_DCL void drop_to(coord *,schar);
 
 static struct Object *kickobj;
 
@@ -536,8 +536,8 @@ STATIC_OVL int kick_object(xchar x, xchar y) {
 	(void) snuff_candle(kickobj);
 	newsym(x, y);
 	mon = bhit(u.dx, u.dy, range, KICKED_WEAPON,
-		   (int FDECL((*),(Monster*,Object*)))0,
-		   (int FDECL((*),(Object*,Object*)))0,
+		   (int (*)(Monster*,Object*))0,
+		   (int (*)(Object*,Object*))0,
 		   kickobj, NULL);
 
 	if(mon) {

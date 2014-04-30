@@ -7,14 +7,14 @@
 #include "hack.h"
 #include "prop.h"
 
-STATIC_DCL void FDECL(mkbox_cnts,(struct Object *));
-STATIC_DCL void FDECL(obj_timer_checks,(struct Object *, xchar, xchar, int));
+STATIC_DCL void mkbox_cnts(struct Object *);
+STATIC_DCL void obj_timer_checks(struct Object *, xchar, xchar, int);
 #ifdef OVL1
-STATIC_DCL void FDECL(container_weight, (struct Object *));
-STATIC_DCL struct Object *FDECL(save_mtraits, (struct Object *, struct Monster *));
+STATIC_DCL void container_weight(struct Object *);
+STATIC_DCL struct Object *save_mtraits(struct Object *, struct Monster *);
 #ifdef WIZARD
-STATIC_DCL const char *FDECL(where_name, (int));
-STATIC_DCL void FDECL(check_contained, (struct Object *,const char *));
+STATIC_DCL const char *where_name(int);
+STATIC_DCL void check_contained(struct Object *,const char *);
 #endif
 #endif /* OVL1 */
 

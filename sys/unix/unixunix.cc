@@ -280,10 +280,10 @@ int child(int wt) {
 
 #ifdef GETRES_SUPPORT
 
-extern int FDECL(nh_getresuid, (uid_t *, uid_t *, uid_t *));
+extern int nh_getresuid(uid_t *, uid_t *, uid_t *);
 extern uid_t nh_getuid();
 extern uid_t nh_geteuid();
-extern int FDECL(nh_getresgid, (gid_t *, gid_t *, gid_t *));
+extern int nh_getresgid(gid_t *, gid_t *, gid_t *);
 extern gid_t nh_getgid();
 extern gid_t nh_getegid();
 

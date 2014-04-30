@@ -17,7 +17,7 @@
 #include "config.h"
 #include "tile.h"
 
-extern long *FDECL(alloc, (unsigned int));
+extern long *alloc(unsigned int);
 
 #define PPM_ASSIGN(p,red,grn,blu) do { (p).r = (red); (p).g = (grn); (p).b = (blu); } while ( 0 )
 
@@ -55,18 +55,18 @@ static int tiles_across, tiles_down, curr_tiles_across, curr_tiles_down;
 static pixel **image;
 static unsigned char input_code_size;
 
-static int FDECL(GetDataBlock, (FILE *fd, unsigned char *buf));
-static void FDECL(DoExtension, (FILE *fd, int label));
-static bool FDECL(ReadColorMap, (FILE *fd, int number));
-static void FDECL(read_header, (FILE *fd));
-static int FDECL(GetCode, (FILE *fd, int code_size, int flag));
-static int FDECL(LWZReadByte, (FILE *fd, int flag, int input_code_size));
-static void FDECL(ReadInterleavedImage, (FILE *fd, int len, int height));
-static void FDECL(ReadTileStrip, (FILE *fd, int len));
+static int GetDataBlock(FILE *fd, unsigned char *buf);
+static void DoExtension(FILE *fd, int label);
+static bool ReadColorMap(FILE *fd, int number);
+static void read_header(FILE *fd);
+static int GetCode(FILE *fd, int code_size, int flag);
+static int LWZReadByte(FILE *fd, int flag, int input_code_size);
+static void ReadInterleavedImage(FILE *fd, int len, int height);
+static void ReadTileStrip(FILE *fd, int len);
 
 /* These should be in gif.h, but there isn't one. */
-bool FDECL(fopen_gif_file, (const char *, const char *));
-bool FDECL(read_gif_tile, (pixel(*)[]));
+bool fopen_gif_file(const char *, const char *);
+bool read_gif_tile(pixel(*)[]);
 int fclose_gif_file();
 
 static int GetDataBlock(FILE *fd, unsigned char *buf) {

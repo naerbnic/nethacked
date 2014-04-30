@@ -10,14 +10,14 @@
 STATIC_DCL void maybe_wail();
 #endif /*OVL1*/
 STATIC_DCL int moverock();
-STATIC_DCL int FDECL(still_chewing,(xchar,xchar));
+STATIC_DCL int still_chewing(xchar,xchar);
 #ifdef SINKS
 STATIC_DCL void dosinkfall();
 #endif
-STATIC_DCL bool FDECL(findtravelpath, (bool));
-STATIC_DCL bool FDECL(monstinroom, (struct permonst *,int));
+STATIC_DCL bool findtravelpath(bool);
+STATIC_DCL bool monstinroom(struct permonst *,int);
 
-STATIC_DCL void FDECL(move_update, (bool));
+STATIC_DCL void move_update(bool);
 
 #define IS_SHOP(x)	(rooms[x].rtype >= SHOPBASE)
 

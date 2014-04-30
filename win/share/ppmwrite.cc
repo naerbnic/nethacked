@@ -7,7 +7,7 @@
 #include "config.h"
 #include "tile.h"
 
-extern long *FDECL(alloc, (unsigned int));
+extern long *alloc(unsigned int);
 
 FILE *ppm_file;
 

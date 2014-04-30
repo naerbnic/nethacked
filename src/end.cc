@@ -30,28 +30,28 @@ static struct val_list { struct valuable_data *list; int size; } valuables[] = {
 };
 
 #ifndef NO_SIGNAL
-STATIC_PTR void FDECL(done_intr, (int));
-static void FDECL(done_hangup, (int));
+STATIC_PTR void done_intr(int);
+static void done_hangup(int);
 #endif
-STATIC_DCL void FDECL(disclose,(int,bool));
-STATIC_DCL void FDECL(get_valuables, (struct Object *));
-STATIC_DCL void FDECL(sort_valuables, (struct valuable_data *,int));
-STATIC_DCL void FDECL(artifact_score, (struct Object *,bool,winid));
-STATIC_DCL void FDECL(savelife, (int));
-void FDECL(list_vanquished, (char,bool));
+STATIC_DCL void disclose(int,bool);
+STATIC_DCL void get_valuables(struct Object *);
+STATIC_DCL void sort_valuables(struct valuable_data *,int);
+STATIC_DCL void artifact_score(struct Object *,bool,winid);
+STATIC_DCL void savelife(int);
+void list_vanquished(char,bool);
 #ifdef DUMP_LOG
 extern char msgs[][BUFSZ];
 extern int lastmsg;
 extern void dump_spells();
-void FDECL(do_vanquished, (int, bool, bool));
-STATIC_DCL void FDECL(list_genocided, (int, bool, bool));
+void do_vanquished(int, bool, bool);
+STATIC_DCL void list_genocided(int, bool, bool);
 #else
-STATIC_DCL void FDECL(list_genocided, (char,bool));
+STATIC_DCL void list_genocided(char,bool);
 #endif /* DUMP_LOG */
-STATIC_DCL bool FDECL(should_query_disclose_option, (int,char *));
+STATIC_DCL bool should_query_disclose_option(int,char *);
 
 #if defined(__BEOS__) || defined(MICRO) || defined(WIN32) || defined(OS2)
-extern void FDECL(nethack_exit,(int));
+extern void nethack_exit(int);
 #else
 #define nethack_exit exit
 #endif

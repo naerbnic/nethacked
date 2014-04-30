@@ -12,7 +12,7 @@
 
 /*VARARGS1*/
 bool panicking;
-void VDECL(panic, (char const*,...));
+void panic(char const*,...);
 
 void panic(char const* str, ...) {
   va_list args;

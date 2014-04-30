@@ -52,7 +52,7 @@
  */
 
 
-STATIC_DCL int FDECL(ready_weapon, (struct Object *));
+STATIC_DCL int ready_weapon(struct Object *);
 
 /* used by will_weld() */
 /* probably should be renamed */

@@ -23,23 +23,23 @@ extern bool notonhead;	/* for long worms */
 /* kludge to use mondied instead of killed */
 extern bool m_using;
 
-STATIC_DCL void FDECL(costly_cancel, (struct Object *));
-STATIC_DCL void FDECL(polyuse, (struct Object*, int, int));
-STATIC_DCL void FDECL(create_polymon, (struct Object *, int));
-STATIC_DCL bool FDECL(zap_updown, (struct Object *));
-STATIC_DCL int FDECL(zhitm, (struct Monster *,int,int,struct Object **));
-STATIC_DCL void FDECL(zhitu, (int,int,const char *,xchar,xchar));
-STATIC_DCL void FDECL(revive_egg, (struct Object *));
+STATIC_DCL void costly_cancel(struct Object *);
+STATIC_DCL void polyuse(struct Object*, int, int);
+STATIC_DCL void create_polymon(struct Object *, int);
+STATIC_DCL bool zap_updown(struct Object *);
+STATIC_DCL int zhitm(struct Monster *,int,int,struct Object **);
+STATIC_DCL void zhitu(int,int,const char *,xchar,xchar);
+STATIC_DCL void revive_egg(struct Object *);
 #ifdef STEED
-STATIC_DCL bool FDECL(zap_steed, (struct Object *));
+STATIC_DCL bool zap_steed(struct Object *);
 #endif
 
 #ifdef OVLB
-STATIC_DCL int FDECL(zap_hit, (int,int));
+STATIC_DCL int zap_hit(int,int);
 #endif
 #ifdef OVL0
-STATIC_DCL void FDECL(backfire, (struct Object *));
-STATIC_DCL int FDECL(spell_hit_bonus, (int));
+STATIC_DCL void backfire(struct Object *);
+STATIC_DCL int spell_hit_bonus(int);
 #endif
 
 #define ZT_MAGIC_MISSILE	(AD_MAGM-1)

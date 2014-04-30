@@ -127,19 +127,19 @@ STATIC_PTR int wiz_mon_polycontrol();
 STATIC_PTR int wiz_show_wmodes();
 STATIC_PTR int wiz_showkills();	/* showborn patch */
 #ifdef SHOW_BORN
-extern void FDECL(list_vanquished, (char, bool)); /* showborn patch */
+extern void list_vanquished(char, bool); /* showborn patch */
 #endif /* SHOW_BORN */
 #if defined(__BORLANDC__) && !defined(_WIN32)
-extern void FDECL(show_borlandc_stats, (winid));
+extern void show_borlandc_stats(winid);
 #endif
 #ifdef DEBUG_MIGRATING_MONS
 STATIC_PTR int wiz_migrate_mons();
 #endif
-STATIC_DCL void FDECL(count_obj, (struct Object *, long *, long *, bool, bool));
-STATIC_DCL void FDECL(obj_chain, (winid, const char *, struct Object *, long *, long *));
-STATIC_DCL void FDECL(mon_invent_chain, (winid, const char *, struct Monster *, long *, long *));
-STATIC_DCL void FDECL(mon_chain, (winid, const char *, struct Monster *, long *, long *));
-STATIC_DCL void FDECL(contained, (winid, const char *, long *, long *));
+STATIC_DCL void count_obj(struct Object *, long *, long *, bool, bool);
+STATIC_DCL void obj_chain(winid, const char *, struct Object *, long *, long *);
+STATIC_DCL void mon_invent_chain(winid, const char *, struct Monster *, long *, long *);
+STATIC_DCL void mon_chain(winid, const char *, struct Monster *, long *, long *);
+STATIC_DCL void contained(winid, const char *, long *, long *);
 STATIC_PTR int wiz_show_stats();
 #  ifdef PORT_DEBUG
 STATIC_DCL int wiz_port_debug();
@@ -151,15 +151,15 @@ STATIC_PTR int doconduct(); /**/
 STATIC_PTR bool minimal_enlightenment();
 
 #ifdef OVLB
-STATIC_DCL void FDECL(enlght_line, (const char *,const char *,const char *));
-STATIC_DCL char *FDECL(enlght_combatinc, (const char *,int,int,char *));
+STATIC_DCL void enlght_line(const char *,const char *,const char *);
+STATIC_DCL char *enlght_combatinc(const char *,int,int,char *);
 static void end_of_input();
 #endif /* OVLB */
 
 static const char* readchar_queue="";
 
 STATIC_DCL char *parse();
-STATIC_DCL bool FDECL(help_dir, (char,const char *));
+STATIC_DCL bool help_dir(char,const char *);
 
 #ifdef OVL1
 

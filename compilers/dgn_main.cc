@@ -24,12 +24,12 @@ extern int line_number;
 string fname = "(stdin)";
 int fatal_error = 0;
 
-int  FDECL (main, (int,char **));
-void FDECL (yyerror, (const char *));
-void FDECL (yywarning, (const char *));
+int  main(int,char **);
+void yyerror(const char *);
+void yywarning(const char *);
 extern "C" int  yywrap();
-void FDECL (init_yyin, (FILE *));
-void FDECL (init_yyout, (FILE *));
+void init_yyin(FILE *);
+void init_yyout(FILE *);
 
 #define Fprintf (void)fprintf
 

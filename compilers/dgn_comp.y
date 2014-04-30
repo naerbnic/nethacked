@@ -28,11 +28,11 @@
 #include "date.h"
 #include "dgn_file.h"
 
-void FDECL(yyerror, (const char *));
-void FDECL(yywarning, (const char *));
+void yyerror(const char *);
+void yywarning(const char *);
 int yylex();
 int yyparse();
-int FDECL(getchain, (char *));
+int getchain(char *);
 int check_dungeon();
 int check_branch();
 int check_level();

@@ -12,10 +12,10 @@ extern char bones[];	/* from files.c */
 extern long bytes_counted;
 #endif
 
-STATIC_DCL bool FDECL(no_bones_level, (d_level *));
-STATIC_DCL void FDECL(goodfruit, (int));
-STATIC_DCL void FDECL(resetobjs,(struct Object *,bool));
-STATIC_DCL void FDECL(drop_upon_death, (struct Monster *, struct Object *));
+STATIC_DCL bool no_bones_level(d_level *);
+STATIC_DCL void goodfruit(int);
+STATIC_DCL void resetobjs(struct Object *,bool);
+STATIC_DCL void drop_upon_death(struct Monster *, struct Object *);
 
 STATIC_OVL bool no_bones_level(d_level *lev) {
 	extern d_level save_dlevel;		/* in do.c */

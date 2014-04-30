@@ -8,8 +8,8 @@
 
 #ifdef OVLB
 
-STATIC_DCL void FDECL(do_oname, (struct Object *));
-static void FDECL(getpos_help, (bool,const char *));
+STATIC_DCL void do_oname(struct Object *);
+static void getpos_help(bool,const char *);
 
 extern const char what_is_an_unknown_object[];		/* from pager.c */
 

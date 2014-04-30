@@ -15,9 +15,9 @@ STATIC_DCL void vomiting_dialogue();
 STATIC_DCL void choke_dialogue();
 STATIC_DCL void slime_dialogue();
 STATIC_DCL void slip_or_trip();
-STATIC_DCL void FDECL(see_lamp_flicker, (struct Object *, const char *));
-STATIC_DCL void FDECL(lantern_message, (struct Object *));
-STATIC_DCL void FDECL(cleanup_burn, (genericptr_t,long));
+STATIC_DCL void see_lamp_flicker(struct Object *, const char *);
+STATIC_DCL void lantern_message(struct Object *);
+STATIC_DCL void cleanup_burn(genericptr_t,long);
 
 #ifdef OVLB
 
@@ -1229,16 +1229,16 @@ void do_storms() {
  */
 
 #ifdef WIZARD
-STATIC_DCL const char *FDECL(kind_name, (short));
-STATIC_DCL void FDECL(print_queue, (winid, TimerElement *));
+STATIC_DCL const char *kind_name(short);
+STATIC_DCL void print_queue(winid, TimerElement *);
 #endif
-STATIC_DCL void FDECL(insert_timer, (TimerElement *));
+STATIC_DCL void insert_timer(TimerElement *);
 STATIC_DCL TimerElement *FDECL(remove_timer, (TimerElement **, short,
 								genericptr_t));
-STATIC_DCL void FDECL(write_timer, (int, TimerElement *));
-STATIC_DCL bool FDECL(mon_is_local, (struct Monster *));
-STATIC_DCL bool FDECL(timer_is_local, (TimerElement *));
-STATIC_DCL int FDECL(maybe_write_timer, (int, int, bool));
+STATIC_DCL void write_timer(int, TimerElement *);
+STATIC_DCL bool mon_is_local(struct Monster *);
+STATIC_DCL bool timer_is_local(TimerElement *);
+STATIC_DCL int maybe_write_timer(int, int, bool);
 
 /* ordered timer list */
 static TimerElement *timer_base;		/* "active" */

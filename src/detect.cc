@@ -14,13 +14,13 @@
 
 extern bool known;	/* from read.c */
 
-STATIC_DCL void FDECL(do_dknown_of, (struct Object *));
-STATIC_DCL bool FDECL(check_map_spot, (int,int,char,unsigned));
-STATIC_DCL bool FDECL(clear_stale_map, (char,unsigned));
-STATIC_DCL void FDECL(sense_trap, (struct trap *,xchar,xchar,int));
-STATIC_DCL void FDECL(show_map_spot, (int,int));
-STATIC_PTR void FDECL(findone,(int,int,genericptr_t));
-STATIC_PTR void FDECL(openone,(int,int,genericptr_t));
+STATIC_DCL void do_dknown_of(struct Object *);
+STATIC_DCL bool check_map_spot(int,int,char,unsigned);
+STATIC_DCL bool clear_stale_map(char,unsigned);
+STATIC_DCL void sense_trap(struct trap *,xchar,xchar,int);
+STATIC_DCL void show_map_spot(int,int);
+STATIC_PTR void findone(int,int,genericptr_t);
+STATIC_PTR void openone(int,int,genericptr_t);
 
 /* Recursively search obj for an object in class_id oclass and return 1st found */
 struct Object * o_in(struct Object* obj, char oclass) {

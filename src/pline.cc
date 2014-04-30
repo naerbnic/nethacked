@@ -15,7 +15,7 @@
 
 static bool no_repeat = FALSE;
 
-static char *FDECL(You_buf, (int));
+static char *You_buf(int);
 
 #if defined(DUMP_LOG) && defined(DUMPMSGS)
 char msgs[DUMPMSGS][BUFSZ];
@@ -57,7 +57,7 @@ int msgpline_type(char const* msg) {
  * of the variable argument handling stuff in "tradstdc.h"
  */
 
-static void FDECL(vpline, (const char *, va_list));
+static void vpline(const char *, va_list);
 
 void pline(const char *line, ...) {
   va_list args;
@@ -232,7 +232,7 @@ verbalize(const char *line, ...) {
  * of the variable argument handling stuff in "tradstdc.h"
  */
 
-static void FDECL(vraw_printf,(const char *,va_list));
+static void vraw_printf(const char *,va_list);
 
 void
 raw_printf(const char *line, ...) {

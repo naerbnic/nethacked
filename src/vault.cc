@@ -14,11 +14,11 @@ STATIC_DCL struct Monster *findgd();
 
 #ifdef OVLB
 
-STATIC_DCL bool FDECL(clear_fcorr, (struct Monster *,bool));
-STATIC_DCL void FDECL(restfakecorr,(struct Monster *));
-STATIC_DCL bool FDECL(in_fcorridor, (struct Monster *,int,int));
-STATIC_DCL void FDECL(move_gold,(struct Object *,int));
-STATIC_DCL void FDECL(wallify_vault,(struct Monster *));
+STATIC_DCL bool clear_fcorr(struct Monster *,bool);
+STATIC_DCL void restfakecorr(struct Monster *);
+STATIC_DCL bool in_fcorridor(struct Monster *,int,int);
+STATIC_DCL void move_gold(struct Object *,int);
+STATIC_DCL void wallify_vault(struct Monster *);
 
 STATIC_OVL bool clear_fcorr(struct Monster *grd, bool forceshow) {
 	int fcx, fcy, fcbeg;

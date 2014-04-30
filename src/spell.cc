@@ -22,19 +22,19 @@ static struct Object *book;	/* last/current book being xscribed */
 #define spellet(spell)	\
 	((char)((spell < 26) ? ('a' + spell) : ('A' + spell - 26)))
 
-STATIC_DCL int FDECL(spell_let_to_idx, (char));
-STATIC_DCL bool FDECL(cursed_book, (struct Object *bp));
-STATIC_DCL bool FDECL(confused_book, (struct Object *));
-STATIC_DCL void FDECL(deadbook, (struct Object *));
+STATIC_DCL int spell_let_to_idx(char);
+STATIC_DCL bool cursed_book(struct Object *bp);
+STATIC_DCL bool confused_book(struct Object *);
+STATIC_DCL void deadbook(struct Object *);
 STATIC_PTR int learn();
-STATIC_DCL bool FDECL(getspell, (int *));
-STATIC_DCL bool FDECL(dospellmenu, (const char *,int,int *));
-STATIC_DCL int FDECL(percent_success, (int));
+STATIC_DCL bool getspell(int *);
+STATIC_DCL bool dospellmenu(const char *,int,int *);
+STATIC_DCL int percent_success(int);
 STATIC_DCL int throwspell();
 STATIC_DCL void cast_protection();
-STATIC_DCL void FDECL(spell_backfire, (int));
-STATIC_DCL const char *FDECL(spelltypemnemonic, (int));
-STATIC_DCL int FDECL(isqrt, (int));
+STATIC_DCL void spell_backfire(int);
+STATIC_DCL const char *spelltypemnemonic(int);
+STATIC_DCL int isqrt(int);
 
 /* The roles[] table lists the role-specific values for tuning
  * percent_success().

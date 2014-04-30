@@ -39,22 +39,22 @@ struct lchoice {
 	char menuletter;
 };
 
-static void FDECL(Fread, (genericptr_t, int, int, dlb *));
-STATIC_DCL xchar FDECL(dname_to_dnum, (const char *));
-STATIC_DCL int FDECL(find_branch, (const char *, struct proto_dungeon *));
-STATIC_DCL xchar FDECL(parent_dnum, (const char *, struct proto_dungeon *));
-STATIC_DCL int FDECL(level_range, (xchar,int,int,int,struct proto_dungeon *,int *));
-STATIC_DCL xchar FDECL(parent_dlevel, (const char *, struct proto_dungeon *));
-STATIC_DCL int FDECL(correct_branch_type, (struct tmpbranch *));
-STATIC_DCL branch *FDECL(add_branch, (int, int, struct proto_dungeon *));
-STATIC_DCL void FDECL(add_level, (s_level *));
-STATIC_DCL void FDECL(init_level, (int,int,struct proto_dungeon *));
-STATIC_DCL int FDECL(possible_places, (int, bool *, struct proto_dungeon *));
-STATIC_DCL xchar FDECL(pick_level, (bool *, int));
-STATIC_DCL bool FDECL(place_level, (int, struct proto_dungeon *));
+static void Fread(genericptr_t, int, int, dlb *);
+STATIC_DCL xchar dname_to_dnum(const char *);
+STATIC_DCL int find_branch(const char *, struct proto_dungeon *);
+STATIC_DCL xchar parent_dnum(const char *, struct proto_dungeon *);
+STATIC_DCL int level_range(xchar,int,int,int,struct proto_dungeon *,int *);
+STATIC_DCL xchar parent_dlevel(const char *, struct proto_dungeon *);
+STATIC_DCL int correct_branch_type(struct tmpbranch *);
+STATIC_DCL branch *add_branch(int, int, struct proto_dungeon *);
+STATIC_DCL void add_level(s_level *);
+STATIC_DCL void init_level(int,int,struct proto_dungeon *);
+STATIC_DCL int possible_places(int, bool *, struct proto_dungeon *);
+STATIC_DCL xchar pick_level(bool *, int);
+STATIC_DCL bool place_level(int, struct proto_dungeon *);
 #ifdef WIZARD
-STATIC_DCL const char *FDECL(br_string, (int));
-STATIC_DCL void FDECL(print_branch, (winid, int, int, int, bool, struct lchoice *));
+STATIC_DCL const char *br_string(int);
+STATIC_DCL void print_branch(winid, int, int, int, bool, struct lchoice *);
 #endif
 
 #ifdef DEBUG
@@ -483,7 +483,7 @@ STATIC_OVL xchar pick_level(bool *map, int nth) {
 }
 
 #ifdef DDEBUG
-static void FDECL(indent,(int));
+static void indent(int);
 
 static void indent(int d) {
     while (d-- > 0) fputs("    ", stderr);

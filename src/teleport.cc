@@ -6,11 +6,11 @@
 
 #include "hack.h"
 
-STATIC_DCL bool FDECL(tele_jump_ok, (int,int,int,int));
-STATIC_DCL bool FDECL(teleok, (int,int,bool));
+STATIC_DCL bool tele_jump_ok(int,int,int,int);
+STATIC_DCL bool teleok(int,int,bool);
 STATIC_DCL void vault_tele();
-STATIC_DCL bool FDECL(rloc_pos_ok, (int,int,struct Monster *));
-STATIC_DCL void FDECL(mvault_tele, (struct Monster *));
+STATIC_DCL bool rloc_pos_ok(int,int,struct Monster *);
+STATIC_DCL void mvault_tele(struct Monster *);
 
 /*
  * Is (x,y) a good position of mtmp?  If mtmp is NULL, then is (x,y) good

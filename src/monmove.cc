@@ -13,10 +13,10 @@ extern bool notonhead;
 
 #ifdef OVL0
 
-STATIC_DCL int FDECL(disturb,(struct Monster *));
-STATIC_DCL void FDECL(distfleeck,(struct Monster *,int *,int *,int *));
-STATIC_DCL int FDECL(m_arrival, (struct Monster *));
-STATIC_DCL void FDECL(watch_on_duty,(struct Monster *));
+STATIC_DCL int disturb(struct Monster *);
+STATIC_DCL void distfleeck(struct Monster *,int *,int *,int *);
+STATIC_DCL int m_arrival(struct Monster *);
+STATIC_DCL void watch_on_duty(struct Monster *);
 
 #endif /* OVL0 */
 #ifdef OVLB

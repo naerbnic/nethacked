@@ -13,14 +13,14 @@ extern bool notonhead;
 
 #ifdef OVL0
 
-STATIC_DCL bool FDECL(dog_hunger,(struct Monster *,struct edog *));
-STATIC_DCL int FDECL(dog_invent,(struct Monster *,struct edog *,int));
-STATIC_DCL int FDECL(dog_goal,(struct Monster *,struct edog *,int,int,int));
+STATIC_DCL bool dog_hunger(struct Monster *,struct edog *);
+STATIC_DCL int dog_invent(struct Monster *,struct edog *,int);
+STATIC_DCL int dog_goal(struct Monster *,struct edog *,int,int,int);
 
-STATIC_DCL struct Object *FDECL(DROPPABLES, (struct Monster *));
+STATIC_DCL struct Object *DROPPABLES(struct Monster *);
 STATIC_DCL bool FDECL(can_reach_location,(struct Monster *,xchar,xchar,
     xchar,xchar));
-STATIC_DCL bool FDECL(could_reach_item,(struct Monster *, xchar,xchar));
+STATIC_DCL bool could_reach_item(struct Monster *, xchar,xchar);
 
 STATIC_OVL struct Object * DROPPABLES(struct Monster *mon) {
 	struct Object *obj;
@@ -50,11 +50,11 @@ static const char nofetch[] = { BALL_CLASS, CHAIN_CLASS, ROCK_CLASS, 0 };
 
 #endif /* OVL0 */
 
-STATIC_OVL bool FDECL(cursed_object_at, (int, int));
+STATIC_OVL bool cursed_object_at(int, int);
 
 STATIC_VAR xchar gtyp, gx, gy;	/* type and position of dog's current goal */
 
-STATIC_PTR void FDECL(wantdoor, (int, int, genericptr_t));
+STATIC_PTR void wantdoor(int, int, genericptr_t);
 
 #ifdef OVLB
 STATIC_OVL bool cursed_object_at(int x, int y) {

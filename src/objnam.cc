@@ -11,14 +11,14 @@
 #define SCHAR_LIM 127
 #define NUMOBUF 12
 
-STATIC_DCL char *FDECL(strprepend,(char *,const char *));
+STATIC_DCL char *strprepend(char *,const char *);
 #ifdef OVLB
-static bool FDECL(wishymatch, (const char *,const char *,bool));
+static bool wishymatch(const char *,const char *,bool);
 #endif
 static char *nextobuf();
-static void FDECL(add_erosion_words, (struct Object *, char *));
+static void add_erosion_words(struct Object *, char *);
 #ifdef SORTLOOT
-char * FDECL(xname2, (struct Object *, bool));
+char * xname2(struct Object *, bool);
 #endif
 
 struct Jitem {
@@ -58,7 +58,7 @@ STATIC_OVL struct Jitem Japanese_items[] = {
 
 #endif /* OVLB */
 
-STATIC_DCL const char *FDECL(Japanese_item_name,(int i));
+STATIC_DCL const char *Japanese_item_name(int i);
 
 #ifdef OVL1
 

@@ -6,22 +6,22 @@
 
 #include "hack.h"
 
-STATIC_DCL bool FDECL(known_hitum, (struct Monster *,int *,struct Attack *));
-STATIC_DCL void FDECL(steal_it, (struct Monster *, struct Attack *));
-STATIC_DCL bool FDECL(hitum, (struct Monster *,int,struct Attack *));
-STATIC_DCL bool FDECL(hmon_hitmon, (struct Monster *,struct Object *,int));
+STATIC_DCL bool known_hitum(struct Monster *,int *,struct Attack *);
+STATIC_DCL void steal_it(struct Monster *, struct Attack *);
+STATIC_DCL bool hitum(struct Monster *,int,struct Attack *);
+STATIC_DCL bool hmon_hitmon(struct Monster *,struct Object *,int);
 #ifdef STEED
-STATIC_DCL int FDECL(joust, (struct Monster *,struct Object *));
+STATIC_DCL int joust(struct Monster *,struct Object *);
 #endif
 STATIC_DCL void demonpet();
-STATIC_DCL bool FDECL(m_slips_free, (struct Monster *mtmp,struct Attack *mattk));
-STATIC_DCL int FDECL(explum, (struct Monster *,struct Attack *));
-STATIC_DCL void FDECL(start_engulf, (struct Monster *));
+STATIC_DCL bool m_slips_free(struct Monster *mtmp,struct Attack *mattk);
+STATIC_DCL int explum(struct Monster *,struct Attack *);
+STATIC_DCL void start_engulf(struct Monster *);
 STATIC_DCL void end_engulf();
-STATIC_DCL int FDECL(gulpum, (struct Monster *,struct Attack *));
-STATIC_DCL bool FDECL(hmonas, (struct Monster *,int));
-STATIC_DCL void FDECL(nohandglow, (struct Monster *));
-STATIC_DCL bool FDECL(shade_aware, (struct Object *));
+STATIC_DCL int gulpum(struct Monster *,struct Attack *);
+STATIC_DCL bool hmonas(struct Monster *,int);
+STATIC_DCL void nohandglow(struct Monster *);
+STATIC_DCL bool shade_aware(struct Object *);
 
 extern bool notonhead;	/* for long worms */
 /* The below might become a parameter instead if we use it a lot */

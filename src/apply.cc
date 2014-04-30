@@ -14,38 +14,38 @@ static const char tools_too[] = { ALL_CLASSES, TOOL_CLASS, POTION_CLASS,
 				  WEAPON_CLASS, WAND_CLASS, GEM_CLASS, 0 };
 
 #ifdef TOURIST
-STATIC_DCL int FDECL(use_camera, (struct Object *));
+STATIC_DCL int use_camera(struct Object *);
 #endif
-STATIC_DCL int FDECL(use_towel, (struct Object *));
-STATIC_DCL bool FDECL(its_dead, (int,int,int *));
-STATIC_DCL int FDECL(use_stethoscope, (struct Object *));
-STATIC_DCL void FDECL(use_whistle, (struct Object *));
-STATIC_DCL void FDECL(use_magic_whistle, (struct Object *));
-STATIC_DCL void FDECL(use_leash, (struct Object *));
-STATIC_DCL int FDECL(use_mirror, (struct Object *));
-STATIC_DCL void FDECL(use_bell, (struct Object **));
-STATIC_DCL void FDECL(use_candelabrum, (struct Object *));
-STATIC_DCL void FDECL(use_candle, (struct Object **));
-STATIC_DCL void FDECL(use_lamp, (struct Object *));
-STATIC_DCL void FDECL(light_cocktail, (struct Object *));
-STATIC_DCL void FDECL(use_tinning_kit, (struct Object *));
-STATIC_DCL void FDECL(use_figurine, (struct Object **));
-STATIC_DCL void FDECL(use_grease, (struct Object *));
-STATIC_DCL void FDECL(use_trap, (struct Object *));
-STATIC_DCL void FDECL(use_stone, (struct Object *));
+STATIC_DCL int use_towel(struct Object *);
+STATIC_DCL bool its_dead(int,int,int *);
+STATIC_DCL int use_stethoscope(struct Object *);
+STATIC_DCL void use_whistle(struct Object *);
+STATIC_DCL void use_magic_whistle(struct Object *);
+STATIC_DCL void use_leash(struct Object *);
+STATIC_DCL int use_mirror(struct Object *);
+STATIC_DCL void use_bell(struct Object **);
+STATIC_DCL void use_candelabrum(struct Object *);
+STATIC_DCL void use_candle(struct Object **);
+STATIC_DCL void use_lamp(struct Object *);
+STATIC_DCL void light_cocktail(struct Object *);
+STATIC_DCL void use_tinning_kit(struct Object *);
+STATIC_DCL void use_figurine(struct Object **);
+STATIC_DCL void use_grease(struct Object *);
+STATIC_DCL void use_trap(struct Object *);
+STATIC_DCL void use_stone(struct Object *);
 STATIC_PTR int set_trap();		/* occupation callback */
-STATIC_DCL int FDECL(use_whip, (struct Object *));
-STATIC_DCL int FDECL(use_pole, (struct Object *));
-STATIC_DCL int FDECL(use_cream_pie, (struct Object *));
-STATIC_DCL int FDECL(use_grapple, (struct Object *));
-STATIC_DCL int FDECL(do_break_wand, (struct Object *));
+STATIC_DCL int use_whip(struct Object *);
+STATIC_DCL int use_pole(struct Object *);
+STATIC_DCL int use_cream_pie(struct Object *);
+STATIC_DCL int use_grapple(struct Object *);
+STATIC_DCL int do_break_wand(struct Object *);
 STATIC_DCL bool FDECL(figurine_location_checks,
 				(struct Object *, coord *, bool));
 STATIC_DCL bool uhave_graystone();
-STATIC_DCL void FDECL(add_class, (char *, char));
+STATIC_DCL void add_class(char *, char);
 
 #ifdef	AMIGA
-void FDECL( amii_speaker, ( struct Object *, char *, int ) );
+void  amii_speaker( struct Object *, char *, int );
 #endif
 
 static const char no_elbow_room[] = "don't have enough elbow-room to maneuver.";
@@ -77,8 +77,8 @@ STATIC_OVL int use_camera(struct Object *obj) {
 	} else if (!u.dx && !u.dy) {
 		(void) zapyourself(obj, TRUE);
 	} else if ((mtmp = bhit(u.dx, u.dy, COLNO, FLASHED_LIGHT,
-				(int FDECL((*),(Monster*,Object*)))0,
-				(int FDECL((*),(Object*,Object*)))0,
+				(int (*)(Monster*,Object*))0,
+				(int (*)(Object*,Object*))0,
 				obj, NULL)) != 0) {
 		obj->ox = u.ux,  obj->oy = u.uy;
 		(void) flash_hits_mon(mtmp, obj);
@@ -628,8 +628,8 @@ STATIC_OVL int use_mirror(struct Object *obj) {
 		return 1;
 	}
 	mtmp = bhit(u.dx, u.dy, COLNO, INVIS_BEAM,
-		    (int FDECL((*),(Monster*,Object*)))0,
-		    (int FDECL((*),(Object*,Object*)))0,
+		    (int (*)(Monster*,Object*))0,
+		    (int (*)(Object*,Object*))0,
 		    obj, NULL);
 	if (!mtmp || !haseyes(mtmp->data))
 		return 1;

@@ -19,33 +19,33 @@ static int max_regions = 0;
 
 #define NO_CALLBACK (-1)
 
-bool FDECL(inside_gas_cloud, (void*,void*));
-bool FDECL(expire_gas_cloud, (void*,void*));
-bool FDECL(inside_rect, (NhRect *,int,int));
-bool FDECL(inside_region, (NhRegion *,int,int));
-NhRegion *FDECL(create_region, (NhRect *,int));
-void FDECL(add_rect_to_reg, (NhRegion *,NhRect *));
-void FDECL(add_mon_to_reg, (NhRegion *,struct Monster *));
-void FDECL(remove_mon_from_reg, (NhRegion *,struct Monster *));
-bool FDECL(mon_in_region, (NhRegion *,struct Monster *));
+bool inside_gas_cloud(void*,void*);
+bool expire_gas_cloud(void*,void*);
+bool inside_rect(NhRect *,int,int);
+bool inside_region(NhRegion *,int,int);
+NhRegion *create_region(NhRect *,int);
+void add_rect_to_reg(NhRegion *,NhRect *);
+void add_mon_to_reg(NhRegion *,struct Monster *);
+void remove_mon_from_reg(NhRegion *,struct Monster *);
+bool mon_in_region(NhRegion *,struct Monster *);
 
 #if 0
-NhRegion *FDECL(clone_region, (NhRegion *));
+NhRegion *clone_region(NhRegion *);
 #endif
-void FDECL(free_region, (NhRegion *));
-void FDECL(add_region, (NhRegion *));
-void FDECL(remove_region, (NhRegion *));
+void free_region(NhRegion *);
+void add_region(NhRegion *);
+void remove_region(NhRegion *);
 
 #if 0
-void FDECL(replace_mon_regions, (struct Monster *,struct Monster *));
-void FDECL(remove_mon_from_regions, (struct Monster *));
+void replace_mon_regions(struct Monster *,struct Monster *);
+void remove_mon_from_regions(struct Monster *);
 NhRegion *FDECL(create_msg_region, (xchar,xchar,xchar,xchar,
 				    const char *,const char *));
-bool FDECL(enter_force_field, (void*,void*));
-NhRegion *FDECL(create_force_field, (xchar,xchar,int,int));
+bool enter_force_field(void*,void*);
+NhRegion *create_force_field(xchar,xchar,int,int);
 #endif
 
-static void FDECL(reset_region_mids, (NhRegion *));
+static void reset_region_mids(NhRegion *);
 
 static callback_proc callbacks[] = {
 #define INSIDE_GAS_CLOUD 0

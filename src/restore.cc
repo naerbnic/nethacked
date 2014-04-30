@@ -14,24 +14,24 @@ extern int dotrow;	/* shared with save */
 #endif
 
 #ifdef USE_TILES
-extern void FDECL(substitute_tiles, (d_level *));       /* from tile.c */
+extern void substitute_tiles(d_level *);       /* from tile.c */
 #endif
 
 #ifdef ZEROCOMP
 static int mgetc();
 #endif
 STATIC_DCL void find_lev_obj();
-STATIC_DCL void FDECL(restlevchn, (int));
-STATIC_DCL void FDECL(restdamage, (int,bool));
-STATIC_DCL struct Object *FDECL(restobjchn, (int,bool,bool));
-STATIC_DCL struct Monster *FDECL(restmonchn, (int,bool));
-STATIC_DCL struct fruit *FDECL(loadfruitchn, (int));
-STATIC_DCL void FDECL(freefruitchn, (struct fruit *));
-STATIC_DCL void FDECL(ghostfruit, (struct Object *));
-STATIC_DCL bool FDECL(restgamestate, (int, unsigned int *, unsigned int *));
-STATIC_DCL void FDECL(restlevelstate, (unsigned int, unsigned int));
-STATIC_DCL int FDECL(restlevelfile, (int,xchar));
-STATIC_DCL void FDECL(reset_oattached_mids, (bool));
+STATIC_DCL void restlevchn(int);
+STATIC_DCL void restdamage(int,bool);
+STATIC_DCL struct Object *restobjchn(int,bool,bool);
+STATIC_DCL struct Monster *restmonchn(int,bool);
+STATIC_DCL struct fruit *loadfruitchn(int);
+STATIC_DCL void freefruitchn(struct fruit *);
+STATIC_DCL void ghostfruit(struct Object *);
+STATIC_DCL bool restgamestate(int, unsigned int *, unsigned int *);
+STATIC_DCL void restlevelstate(unsigned int, unsigned int);
+STATIC_DCL int restlevelfile(int,xchar);
+STATIC_DCL void reset_oattached_mids(bool);
 
 /*
  * Save a mapping of IDs from ghost levels to the current level.  This
@@ -47,14 +47,14 @@ struct bucket {
 };
 
 STATIC_DCL void clear_id_mapping();
-STATIC_DCL void FDECL(add_id_mapping, (unsigned, unsigned));
+STATIC_DCL void add_id_mapping(unsigned, unsigned);
 
 static int n_ids_mapped = 0;
 static struct bucket *id_map = 0;
 
 
 #ifdef AMII_GRAPHICS
-void FDECL( amii_setpens, (int) );	/* use colors from save file */
+void  amii_setpens(int);	/* use colors from save file */
 extern int amii_numcolors;
 #endif
 

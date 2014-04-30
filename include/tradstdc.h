@@ -8,7 +8,7 @@
 
 /*
  * Used for robust ANSI parameter forward declarations:
- * int VDECL(sprintf, (char *, const char *, ...));
+ * int sprintf(char *, const char *, ...);
  *
  * () is used for functions with zero arguments;
  * FDECL() is used for functions with a fixed number of arguments;

@@ -30,9 +30,9 @@ extern int colorsinmainmap;
 #define Fprintf (void) fprintf
 
 
-extern bool FDECL(fopen_text_file, (const char *, const char *));
-extern bool FDECL(read_text_tile, (pixel (*)[TILE_X]));
-extern bool FDECL(write_text_tile, (pixel (*)[TILE_X]));
+extern bool fopen_text_file(const char *, const char *);
+extern bool read_text_tile(pixel (*)[TILE_X]);
+extern bool write_text_tile(pixel (*)[TILE_X]);
 extern int fclose_text_file();
 
 extern void init_colormap();
@@ -41,6 +41,6 @@ extern void merge_colormap();
 #if defined(MICRO) || defined(WIN32)
 #undef exit
 # if !defined(MSDOS) && !defined(WIN32)
-extern void FDECL(exit, (int));
+extern void exit(int);
 # endif
 #endif

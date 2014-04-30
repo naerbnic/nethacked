@@ -16,12 +16,12 @@ STATIC_DCL void on_start();
 STATIC_DCL void on_locate();
 STATIC_DCL void on_goal();
 STATIC_DCL bool not_capable();
-STATIC_DCL int FDECL(is_pure, (bool));
-STATIC_DCL void FDECL(expulsion, (bool));
+STATIC_DCL int is_pure(bool);
+STATIC_DCL void expulsion(bool);
 STATIC_DCL void chat_with_leader();
 STATIC_DCL void chat_with_nemesis();
 STATIC_DCL void chat_with_guardian();
-STATIC_DCL void FDECL(prisoner_speaks, (struct Monster *));
+STATIC_DCL void prisoner_speaks(struct Monster *);
 
 
 STATIC_OVL void on_start() {

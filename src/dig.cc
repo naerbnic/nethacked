@@ -13,11 +13,11 @@
 static bool did_dig_msg;
 
 STATIC_DCL bool rm_waslit();
-STATIC_DCL void FDECL(mkcavepos, (xchar,xchar,int,bool,bool));
-STATIC_DCL void FDECL(mkcavearea, (bool));
-STATIC_DCL int FDECL(dig_typ, (struct Object *,xchar,xchar));
+STATIC_DCL void mkcavepos(xchar,xchar,int,bool,bool);
+STATIC_DCL void mkcavearea(bool);
+STATIC_DCL int dig_typ(struct Object *,xchar,xchar);
 STATIC_DCL int dig();
-STATIC_DCL schar FDECL(fillholetyp, (int, int));
+STATIC_DCL schar fillholetyp(int, int);
 STATIC_DCL void dig_up_grave();
 
 /* Indices returned by dig_typ() */

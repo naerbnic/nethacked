@@ -15,8 +15,8 @@
 
 #ifdef OVLB
 
-STATIC_DCL bool FDECL(histemple_at,(struct Monster *,xchar,xchar));
-STATIC_DCL bool FDECL(has_shrine,(struct Monster *));
+STATIC_DCL bool histemple_at(struct Monster *,xchar,xchar);
+STATIC_DCL bool has_shrine(struct Monster *);
 
 /*
  * Move for priests and shopkeepers.  Called from shk_move() and pri_move().

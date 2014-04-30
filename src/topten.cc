@@ -61,30 +61,30 @@ struct toptenentry {
 	char death[DTHSZ+1];
 } *tt_head;
 
-STATIC_DCL void FDECL(topten_print, (const char *));
-STATIC_DCL void FDECL(topten_print_bold, (const char *));
-STATIC_DCL xchar FDECL(observable_depth, (d_level *));
+STATIC_DCL void topten_print(const char *);
+STATIC_DCL void topten_print_bold(const char *);
+STATIC_DCL xchar observable_depth(d_level *);
 STATIC_DCL void outheader();
-STATIC_DCL void FDECL(outentry, (int,struct toptenentry *,bool));
-STATIC_DCL void FDECL(readentry, (FILE *,struct toptenentry *));
-STATIC_DCL void FDECL(writeentry, (FILE *,struct toptenentry *));
+STATIC_DCL void outentry(int,struct toptenentry *,bool);
+STATIC_DCL void readentry(FILE *,struct toptenentry *);
+STATIC_DCL void writeentry(FILE *,struct toptenentry *);
 #ifdef XLOGFILE
-STATIC_DCL void FDECL(munge_xlstring, (char *dest, char *src, int n));
-STATIC_DCL void FDECL(write_xlentry, (FILE *,struct toptenentry *));
+STATIC_DCL void munge_xlstring(char *dest, char *src, int n);
+STATIC_DCL void write_xlentry(FILE *,struct toptenentry *);
 #endif
-STATIC_DCL void FDECL(free_ttlist, (struct toptenentry *));
-STATIC_DCL int FDECL(classmon, (char *,bool));
+STATIC_DCL void free_ttlist(struct toptenentry *);
+STATIC_DCL int classmon(char *,bool);
 STATIC_DCL int FDECL(score_wanted,
 		(bool, int,struct toptenentry *,int,const char **,int));
 #ifdef RECORD_CONDUCT
-STATIC_DCL long FDECL(encodeconduct, (void));
+STATIC_DCL long encodeconduct(void);
 #endif
 #ifdef RECORD_ACHIEVE
-STATIC_DCL long FDECL(encodeachieve, (void));
+STATIC_DCL long encodeachieve(void);
 #endif
 #ifdef NO_SCAN_BRACK
-STATIC_DCL void FDECL(nsb_mung_line,(char*));
-STATIC_DCL void FDECL(nsb_unmung_line,(char*));
+STATIC_DCL void nsb_mung_line(char*);
+STATIC_DCL void nsb_unmung_line(char*);
 #endif
 
 extern const char* const killed_by_prefix[];

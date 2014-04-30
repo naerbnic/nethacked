@@ -23,8 +23,8 @@ extern bool notonhead;	/* for long worms */
 #define get_artifact(o) \
 		(((o)&&(o)->oartifact) ? &artilist[(int) (o)->oartifact] : 0)
 
-STATIC_DCL int FDECL(spec_applies, (const struct Artifact *,struct Monster *));
-STATIC_DCL int FDECL(arti_invoke, (struct Object*));
+STATIC_DCL int spec_applies(const struct Artifact *,struct Monster *);
+STATIC_DCL int arti_invoke(struct Object*);
 STATIC_DCL bool FDECL(Mb_hit, (struct Monster *magr,struct Monster *mdef,
 				  struct Object *,int *,int,bool,char *));
 
@@ -51,7 +51,7 @@ static bool artiexist[1+NROFARTIFACTS+1];
 STATIC_OVL xchar artidisco[NROFARTIFACTS];
 
 STATIC_DCL void hack_artifacts();
-STATIC_DCL bool FDECL(attacks, (int,struct Object *));
+STATIC_DCL bool attacks(int,struct Object *);
 
 /* handle some special cases; must be called after u_init() */
 STATIC_OVL void hack_artifacts() {

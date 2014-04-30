@@ -22,15 +22,15 @@ STATIC_VAR struct Monster zeromonst;
 		  (mptr->msound == MS_LEADER || mptr->msound == MS_NEMESIS))
 
 #ifdef OVL0
-STATIC_DCL bool FDECL(uncommon, (int));
-STATIC_DCL int FDECL(align_shift, (struct permonst *));
+STATIC_DCL bool uncommon(int);
+STATIC_DCL int align_shift(struct permonst *);
 #endif /* OVL0 */
-STATIC_DCL bool FDECL(wrong_elem_type, (struct permonst *));
-STATIC_DCL void FDECL(m_initgrp,(struct Monster *,int,int,int));
-STATIC_DCL void FDECL(m_initthrow,(struct Monster *,int,int));
-STATIC_DCL void FDECL(m_initweap,(struct Monster *));
+STATIC_DCL bool wrong_elem_type(struct permonst *);
+STATIC_DCL void m_initgrp(struct Monster *,int,int,int);
+STATIC_DCL void m_initthrow(struct Monster *,int,int);
+STATIC_DCL void m_initweap(struct Monster *);
 #ifdef OVL1
-STATIC_DCL void FDECL(m_initinv,(struct Monster *));
+STATIC_DCL void m_initinv(struct Monster *);
 #endif /* OVL1 */
 
 extern const int monstr[];

@@ -11,30 +11,30 @@
 
 #ifdef OVL1
 STATIC_DCL void reorder_invent();
-STATIC_DCL bool FDECL(mergable,(struct Object *,struct Object *));
-STATIC_DCL void FDECL(invdisp_nothing, (const char *,const char *));
-STATIC_DCL bool FDECL(worn_wield_only, (struct Object *));
-STATIC_DCL bool FDECL(only_here, (struct Object *));
+STATIC_DCL bool mergable(struct Object *,struct Object *);
+STATIC_DCL void invdisp_nothing(const char *,const char *);
+STATIC_DCL bool worn_wield_only(struct Object *);
+STATIC_DCL bool only_here(struct Object *);
 #endif /* OVL1 */
-STATIC_DCL void FDECL(compactify,(char *));
-STATIC_DCL bool FDECL(taking_off, (const char *));
-STATIC_DCL bool FDECL(putting_on, (const char *));
-STATIC_PTR int FDECL(ckunpaid,(struct Object *));
-STATIC_PTR int FDECL(ckvalidcat,(struct Object *));
+STATIC_DCL void compactify(char *);
+STATIC_DCL bool taking_off(const char *);
+STATIC_DCL bool putting_on(const char *);
+STATIC_PTR int ckunpaid(struct Object *);
+STATIC_PTR int ckvalidcat(struct Object *);
 #ifdef DUMP_LOG
 static char FDECL(display_pickinv,
 		 (const char *,bool, long *, bool, bool));
 #else
-static char FDECL(display_pickinv, (const char *,bool, long *));
+static char display_pickinv(const char *,bool, long *);
 #endif /* DUMP_LOG */
 #ifdef OVLB
-STATIC_DCL bool FDECL(this_type_only, (struct Object *));
+STATIC_DCL bool this_type_only(struct Object *);
 STATIC_DCL void dounpaid();
-STATIC_DCL struct Object *FDECL(find_unpaid,(struct Object *,struct Object **));
-STATIC_DCL void FDECL(menu_identify, (int));
-STATIC_DCL bool FDECL(tool_in_use, (struct Object *));
+STATIC_DCL struct Object *find_unpaid(struct Object *,struct Object **);
+STATIC_DCL void menu_identify(int);
+STATIC_DCL bool tool_in_use(struct Object *);
 #endif /* OVLB */
-STATIC_DCL char FDECL(obj_to_let,(struct Object *));
+STATIC_DCL char obj_to_let(struct Object *);
 
 #ifdef OVLB
 
@@ -1113,8 +1113,8 @@ int ggetobj(
     int mx, 
     bool combo, /* combination menu flag */
     unsigned int* resultflags) {
-	int FDECL((*ckfn),(Object*)) = (int FDECL((*),(Object*))) 0;
-	bool FDECL((*filter),(Object*)) = (bool FDECL((*),(Object*))) 0;
+	int (*ckfn)(Object*) = (int (*)(Object*)) 0;
+	bool (*filter)(Object*) = (bool (*)(Object*)) 0;
 	bool takeoff, ident, allflag, m_seen;
 	int itemcount;
 #ifndef GOLDOBJ
@@ -2037,7 +2037,7 @@ int dotypeinv() {
 #ifndef GOLDOBJ
 					      (u.ugold != 0),
 #endif
-					      (bool FDECL((*),(Object*))) 0, &itemcount);
+					      (bool (*)(Object*)) 0, &itemcount);
 	    if (unpaid_count) {
 		strcat(types, "u");
 		class_count++;

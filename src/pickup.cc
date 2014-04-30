@@ -10,7 +10,7 @@
 
 #include "hack.h"
 
-STATIC_DCL void FDECL(simple_look, (struct Object *,bool));
+STATIC_DCL void simple_look(struct Object *,bool);
 #ifndef GOLDOBJ
 STATIC_DCL bool FDECL(query_classes, (char *,bool *,bool *,
 		const char *,struct Object *,bool,bool,int *));
@@ -18,28 +18,28 @@ STATIC_DCL bool FDECL(query_classes, (char *,bool *,bool *,
 STATIC_DCL bool FDECL(query_classes, (char *,bool *,bool *,
 		const char *,struct Object *,bool,int *));
 #endif
-STATIC_DCL void FDECL(check_here, (bool));
-STATIC_DCL bool FDECL(n_or_more, (struct Object *));
-STATIC_DCL bool FDECL(all_but_uchain, (struct Object *));
+STATIC_DCL void check_here(bool);
+STATIC_DCL bool n_or_more(struct Object *);
+STATIC_DCL bool all_but_uchain(struct Object *);
 #if 0 /* not used */
-STATIC_DCL bool FDECL(allow_cat_no_uchain, (struct Object *));
+STATIC_DCL bool allow_cat_no_uchain(struct Object *);
 #endif
-STATIC_DCL int FDECL(autopick, (struct Object*, int, menu_item **));
-STATIC_DCL int FDECL(count_categories, (struct Object *,int));
+STATIC_DCL int autopick(struct Object*, int, menu_item **);
+STATIC_DCL int count_categories(struct Object *,int);
 STATIC_DCL long FDECL(carry_count,
 		      (struct Object *,struct Object *,long,bool,int *,int *));
-STATIC_DCL int FDECL(lift_object, (struct Object *,struct Object *,long *,bool));
-STATIC_DCL bool FDECL(mbag_explodes, (struct Object *,int));
-STATIC_PTR int FDECL(in_container,(struct Object *));
-STATIC_PTR int FDECL(ck_bag,(struct Object *));
-STATIC_PTR int FDECL(out_container,(struct Object *));
-STATIC_DCL long FDECL(mbag_item_gone, (int,struct Object *));
-STATIC_DCL void FDECL(observe_quantum_cat, (struct Object *));
-STATIC_DCL int FDECL(menu_loot, (int, struct Object *, bool));
-STATIC_DCL int FDECL(in_or_out_menu, (const char *,struct Object *, bool, bool));
-STATIC_DCL int FDECL(container_at, (int, int, bool));
-STATIC_DCL bool FDECL(able_to_loot, (int, int));
-STATIC_DCL bool FDECL(mon_beside, (int, int));
+STATIC_DCL int lift_object(struct Object *,struct Object *,long *,bool);
+STATIC_DCL bool mbag_explodes(struct Object *,int);
+STATIC_PTR int in_container(struct Object *);
+STATIC_PTR int ck_bag(struct Object *);
+STATIC_PTR int out_container(struct Object *);
+STATIC_DCL long mbag_item_gone(int,struct Object *);
+STATIC_DCL void observe_quantum_cat(struct Object *);
+STATIC_DCL int menu_loot(int, struct Object *, bool);
+STATIC_DCL int in_or_out_menu(const char *,struct Object *, bool, bool);
+STATIC_DCL int container_at(int, int, bool);
+STATIC_DCL bool able_to_loot(int, int);
+STATIC_DCL bool mon_beside(int, int);
 
 /* define for query_objlist() and autopickup() */
 #define FOLLOW(curr, flags) \
@@ -168,7 +168,7 @@ STATIC_OVL bool query_classes(
 #ifndef GOLDOBJ
 				     incl_gold,
 #endif
-				     (bool FDECL((*),(Object*))) 0, &itemcount);
+				     (bool (*)(Object*)) 0, &itemcount);
 	if (iletct == 0) {
 		return FALSE;
 	} else if (iletct == 1) {
@@ -2119,7 +2119,7 @@ ask_again2:
 			if (askchain((struct Object **)&current_container->cobj,
 				     (one_by_one ? (char *)0 : select),
 				     allflag, out_container,
-				     (int FDECL((*),(Object*)))0,
+				     (int (*)(Object*))0,
 				     0, "nodot"))
 			    used = 1;
 		    } else if (menu_on_request < 0) {

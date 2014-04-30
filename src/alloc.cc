@@ -11,11 +11,11 @@
 #include "config.h"
 
 #if defined(WIZARD)
-char *FDECL(fmt_ptr, (const void*,char *));
+char *fmt_ptr(const void*,char *);
 #endif
 
-long *FDECL(alloc,(unsigned int));
-extern void VDECL(panic, (const char *,...)) PRINTF_F(1,2);
+long *alloc(unsigned int);
+extern void panic(const char *,...) PRINTF_F(1,2);
 
 
 long* alloc(unsigned int lth)

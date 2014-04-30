@@ -17,8 +17,8 @@ STATIC_VAR struct xlock_s {
 #ifdef OVLB
 
 STATIC_DCL const char *lock_action();
-STATIC_DCL bool FDECL(obstructed,(int,int));
-STATIC_DCL void FDECL(chest_shatter_msg, (struct Object *));
+STATIC_DCL bool obstructed(int,int);
+STATIC_DCL void chest_shatter_msg(struct Object *);
 
 bool picking_lock(int *x, int *y) {
 	if (occupation == picklock) {

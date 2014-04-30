@@ -14,12 +14,12 @@
 #include "edog.h"
 #include <ctype.h>
 
-STATIC_DCL bool FDECL(restrap,(struct Monster *));
-STATIC_DCL long FDECL(mm_aggression, (struct Monster *,struct Monster *));
+STATIC_DCL bool restrap(struct Monster *);
+STATIC_DCL long mm_aggression(struct Monster *,struct Monster *);
 #ifdef OVL2
 STATIC_DCL int pick_animal();
-STATIC_DCL int FDECL(select_newcham_form, (struct Monster *));
-STATIC_DCL void FDECL(kill_eggs, (struct Object *));
+STATIC_DCL int select_newcham_form(struct Monster *);
+STATIC_DCL void kill_eggs(struct Object *);
 #endif
 
 #ifdef REINCARNATION
@@ -50,9 +50,9 @@ STATIC_DCL void warn_effects();
 #ifndef OVLB
 STATIC_VAR short cham_to_pm[];
 #else
-STATIC_DCL struct Object *FDECL(make_corpse,(struct Monster *));
-STATIC_DCL void FDECL(m_detach, (struct Monster *, struct permonst *));
-STATIC_DCL void FDECL(lifesaved_monster, (struct Monster *));
+STATIC_DCL struct Object *make_corpse(struct Monster *);
+STATIC_DCL void m_detach(struct Monster *, struct permonst *);
+STATIC_DCL void lifesaved_monster(struct Monster *);
 
 /* convert the monster index of an undead to its living counterpart */
 int undead_to_corpse(int mndx) {

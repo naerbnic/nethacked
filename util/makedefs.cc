@@ -114,8 +114,8 @@ static char	in_line[256], filename[60];
 char *file_prefix="";
 #endif
 
-int FDECL(main, (int, const char **));
-void FDECL(do_makedefs, (string, vector<string> const&));
+int main(int, const char **);
+void do_makedefs(string, vector<string> const&);
 void do_objs();
 void do_data();
 void do_dungeon();
@@ -126,32 +126,32 @@ void do_permonst();
 void do_questtxt();
 void do_rumors();
 void do_oracles();
-void FDECL(do_vision_header, (string const&));
-void FDECL(do_vision_source, (string const&));
+void do_vision_header(string const&);
+void do_vision_source(string const&);
 
 extern void monst_init();		/* monst.c */
 extern void objects_init();	/* objects.c */
 
 static void make_version();
-static char *FDECL(version_string, (char *));
-static char *FDECL(version_id_string, (char *,const char *));
-static char *FDECL(xcrypt, (const char *));
-static int FDECL(check_control, (char *));
-static char *FDECL(without_control, (char *));
-static bool FDECL(d_filter, (char *));
-static bool FDECL(h_filter, (char *));
-static bool FDECL(ranged_attk,(struct permonst*));
-static int FDECL(mstrength,(struct permonst *));
+static char *version_string(char *);
+static char *version_id_string(char *,const char *);
+static char *xcrypt(const char *);
+static int check_control(char *);
+static char *without_control(char *);
+static bool d_filter(char *);
+static bool h_filter(char *);
+static bool ranged_attk(struct permonst*);
+static int mstrength(struct permonst *);
 static void build_savebones_compat_string();
 
-static bool FDECL(qt_comment, (char *));
-static bool FDECL(qt_control, (char *));
-static int FDECL(get_hdr, (char *));
-static bool FDECL(new_id, (char *));
-static bool FDECL(known_msg, (int,int));
-static void FDECL(new_msg, (char *,int,int));
-static void FDECL(do_qt_control, (char *));
-static void FDECL(do_qt_text, (char *));
+static bool qt_comment(char *);
+static bool qt_control(char *);
+static int get_hdr(char *);
+static bool new_id(char *);
+static bool known_msg(int,int);
+static void new_msg(char *,int,int);
+static void do_qt_control(char *);
+static void do_qt_text(char *);
 static void adjust_qt_hdrs();
 static void put_qt_hdrs();
 
@@ -160,12 +160,12 @@ static void H_close_gen();
 static void H_far_gen();
 static void C_close_gen();
 static void C_far_gen();
-static int FDECL(clear_path, (int,int,int,int));
+static int clear_path(int,int,int,int);
 #endif
 
-static char *FDECL(tmpdup, (const char *));
-static char *FDECL(limit, (char *,int));
-static char *FDECL(eos, (char *));
+static char *tmpdup(const char *);
+static char *limit(char *,int);
+static char *eos(char *);
 
 /* input, output, tmp */
 static FILE *ifp, *ofp, *tfp;

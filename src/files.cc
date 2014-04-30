@@ -43,24 +43,24 @@ STATIC_DCL FILE *fopen_wizkit_file();
 
 extern int n_dgns;		/* from dungeon.c */
 
-STATIC_DCL char *FDECL(set_bonesfile_name, (char *,d_level*));
+STATIC_DCL char *set_bonesfile_name(char *,d_level*);
 STATIC_DCL char *set_bonestemp_name();
 #ifdef COMPRESS
-STATIC_DCL void FDECL(redirect, (const char *,const char *,FILE *,bool));
-STATIC_DCL void FDECL(docompress_file, (const char *,bool));
+STATIC_DCL void redirect(const char *,const char *,FILE *,bool);
+STATIC_DCL void docompress_file(const char *,bool);
 #endif
-STATIC_DCL char *FDECL(make_lockname, (const char *,char *));
-STATIC_DCL FILE *FDECL(fopen_config_file, (const char *));
-STATIC_DCL int FDECL(get_uchars, (FILE *,char *,char *,uchar *,bool,int,const char *));
-int FDECL(parse_config_line, (FILE *,char *,char *,char *));
+STATIC_DCL char *make_lockname(const char *,char *);
+STATIC_DCL FILE *fopen_config_file(const char *);
+STATIC_DCL int get_uchars(FILE *,char *,char *,uchar *,bool,int,const char *);
+int parse_config_line(FILE *,char *,char *,char *);
 #ifdef NOCWD_ASSUMPTIONS
-STATIC_DCL void FDECL(adjust_prefix, (char *, int));
+STATIC_DCL void adjust_prefix(char *, int);
 #endif
 #ifdef SELF_RECOVER
-STATIC_DCL bool FDECL(copy_bytes, (int, int));
+STATIC_DCL bool copy_bytes(int, int);
 #endif
 #ifdef HOLD_LOCKFILE_OPEN
-STATIC_DCL int FDECL(open_levelfile_exclusively, (const char *, int, int));
+STATIC_DCL int open_levelfile_exclusively(const char *, int, int);
 #endif
 
 /*

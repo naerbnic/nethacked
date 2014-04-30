@@ -16,10 +16,10 @@
 #define PAY_BROKE (-2)
 
 #ifdef KOPS
-STATIC_DCL void FDECL(makekops, (coord *));
-STATIC_DCL void FDECL(call_kops, (struct Monster *,bool));
+STATIC_DCL void makekops(coord *);
+STATIC_DCL void call_kops(struct Monster *,bool);
 # ifdef OVLB
-STATIC_DCL void FDECL(kops_gone, (bool));
+STATIC_DCL void kops_gone(bool);
 # endif /* OVLB */
 #endif /* KOPS */
 
@@ -30,45 +30,45 @@ extern struct Object *thrownobj;		/* defined in dothrow.c */
 
 STATIC_VAR long int followmsg;	/* last time of follow message */
 
-STATIC_DCL void FDECL(setpaid, (struct Monster *));
-STATIC_DCL long FDECL(addupbill, (struct Monster *));
-STATIC_DCL void FDECL(pacify_shk, (struct Monster *));
-STATIC_DCL struct bill_x *FDECL(onbill, (struct Object *, struct Monster *, bool));
-STATIC_DCL struct Monster *FDECL(next_shkp, (struct Monster *, bool));
-STATIC_DCL long FDECL(shop_debt, (struct eshk *));
-STATIC_DCL char *FDECL(shk_owns, (char *,struct Object *));
-STATIC_DCL char *FDECL(mon_owns, (char *,struct Object *));
-STATIC_DCL void FDECL(clear_unpaid,(struct Object *));
-STATIC_DCL long FDECL(check_credit, (long, struct Monster *));
-STATIC_DCL void FDECL(pay, (long, struct Monster *));
-STATIC_DCL long FDECL(get_cost, (struct Object *, struct Monster *));
-STATIC_DCL long FDECL(set_cost, (struct Object *, struct Monster *));
-STATIC_DCL const char *FDECL(shk_embellish, (struct Object *, long));
-STATIC_DCL long FDECL(cost_per_charge, (struct Monster *,struct Object *,bool));
-STATIC_DCL long FDECL(cheapest_item, (struct Monster *));
+STATIC_DCL void setpaid(struct Monster *);
+STATIC_DCL long addupbill(struct Monster *);
+STATIC_DCL void pacify_shk(struct Monster *);
+STATIC_DCL struct bill_x *onbill(struct Object *, struct Monster *, bool);
+STATIC_DCL struct Monster *next_shkp(struct Monster *, bool);
+STATIC_DCL long shop_debt(struct eshk *);
+STATIC_DCL char *shk_owns(char *,struct Object *);
+STATIC_DCL char *mon_owns(char *,struct Object *);
+STATIC_DCL void clear_unpaid(struct Object *);
+STATIC_DCL long check_credit(long, struct Monster *);
+STATIC_DCL void pay(long, struct Monster *);
+STATIC_DCL long get_cost(struct Object *, struct Monster *);
+STATIC_DCL long set_cost(struct Object *, struct Monster *);
+STATIC_DCL const char *shk_embellish(struct Object *, long);
+STATIC_DCL long cost_per_charge(struct Monster *,struct Object *,bool);
+STATIC_DCL long cheapest_item(struct Monster *);
 STATIC_DCL int FDECL(dopayobj, (struct Monster *, struct bill_x *,
 			    struct Object **, int, bool));
 STATIC_DCL long FDECL(stolen_container, (struct Object *, struct Monster *, long,
 				     bool));
-STATIC_DCL long FDECL(getprice, (struct Object *,bool));
+STATIC_DCL long getprice(struct Object *,bool);
 STATIC_DCL void FDECL(shk_names_obj,
 		 (struct Monster *,struct Object *,const char *,long,const char *));
-STATIC_DCL struct Object *FDECL(bp_to_obj, (struct bill_x *));
-STATIC_DCL bool FDECL(inherits, (struct Monster *,int,int));
-STATIC_DCL void FDECL(set_repo_loc, (struct eshk *));
+STATIC_DCL struct Object *bp_to_obj(struct bill_x *);
+STATIC_DCL bool inherits(struct Monster *,int,int);
+STATIC_DCL void set_repo_loc(struct eshk *);
 STATIC_DCL bool angry_shk_exists();
-STATIC_DCL void FDECL(rile_shk, (struct Monster *));
-STATIC_DCL void FDECL(rouse_shk, (struct Monster *,bool));
-STATIC_DCL void FDECL(remove_damage, (struct Monster *, bool));
-STATIC_DCL void FDECL(sub_one_frombill, (struct Object *, struct Monster *));
-STATIC_DCL void FDECL(add_one_tobill, (struct Object *, bool));
+STATIC_DCL void rile_shk(struct Monster *);
+STATIC_DCL void rouse_shk(struct Monster *,bool);
+STATIC_DCL void remove_damage(struct Monster *, bool);
+STATIC_DCL void sub_one_frombill(struct Object *, struct Monster *);
+STATIC_DCL void add_one_tobill(struct Object *, bool);
 STATIC_DCL void FDECL(dropped_container, (struct Object *, struct Monster *,
 				      bool));
-STATIC_DCL void FDECL(add_to_billobjs, (struct Object *));
+STATIC_DCL void add_to_billobjs(struct Object *);
 STATIC_DCL void FDECL(bill_box_content, (struct Object *, bool, bool,
 				     struct Monster *));
 #ifdef OVL1
-static bool FDECL(rob_shop, (struct Monster *));
+static bool rob_shop(struct Monster *);
 #endif
 
 #ifdef OVLB

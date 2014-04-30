@@ -4,9 +4,9 @@
 
 #include "hack.h"
 
-int FDECL(get_rect_ind, (NhRect *));
+int get_rect_ind(NhRect *);
 
-static bool FDECL(intersect, (NhRect *,NhRect *,NhRect *));
+static bool intersect(NhRect *,NhRect *,NhRect *);
 
     /*
      * In this file, we will handle the various rectangle functions we

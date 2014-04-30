@@ -5,7 +5,7 @@
 
 #include "hack.h"
 
-STATIC_DCL int FDECL(cost,(struct Object *));
+STATIC_DCL int cost(struct Object *);
 
 /*
  * returns basecost of a scroll or a spellbook
