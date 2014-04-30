@@ -12,12 +12,6 @@
 #include "patchlevel.h"
 #endif
 
-#ifdef VMS
- /* We don't want to rewrite the whole file, because that entails	 */
- /* creating a new version which requires that the old one be deletable. */
-# define UPDATE_RECORD_IN_PLACE
-#endif
-
 /*
  * Updating in place can leave junk at the end of the file in some
  * circumstances (if it shrinks and the O.S. doesn't have a straightforward

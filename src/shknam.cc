@@ -129,9 +129,8 @@ static const char * const shktools[] = {
 #ifdef TOS
     "Nivram",
 #endif
-#ifdef VMS
+    // Previously VMS specific
     "Lez-tneg", "Ytnu-haled", "Niknar",
-#endif
     0
 };
 

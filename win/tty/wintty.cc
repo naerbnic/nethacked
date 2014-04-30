@@ -100,7 +100,7 @@ struct DisplayDesc *ttyDisplay;	/* the tty display descriptor */
 
 extern void cmov(int,int); /* from termcap.c */
 extern void nocmov(int,int); /* from termcap.c */
-#if defined(UNIX) || defined(VMS)
+#if defined(UNIX)
 static char obuf[BUFSIZ];	/* BUFSIZ is defined in stdio.h */
 #endif
 
@@ -232,7 +232,7 @@ void tty_init_nhwindows(int* argcp, char** argv) {
      *  tty_startup() must be called before initoptions()
      *    due to ordering of graphics settings
      */
-#if defined(UNIX) || defined(VMS)
+#if defined(UNIX)
     setbuf(stdout,obuf);
 #endif
     gettty();

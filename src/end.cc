@@ -192,15 +192,11 @@ int done2() {
 #if defined(WIZARD)
 	if(wizard) {
 	    int c;
-# ifdef VMS
-	    const char *tmp = "Enter debugger?";
-# else
 #  ifdef LATTICE
 	    const char *tmp = "Create SnapShot?";
 #  else
 	    const char *tmp = "Dump core?";
 #  endif
-# endif
 	    if ((c = ynq(tmp)) == 'y') {
 		(void) signal(SIGINT, (SIG_RET_TYPE) done1);
 		exit_nhwindows((char *)0);

@@ -75,18 +75,11 @@ void hangup(int sig_unused) {
 # ifdef NOSAVEONHANGUP
 	(void) signal(SIGINT, SIG_IGN);
 	clearlocks();
-#  ifndef VMS
 	terminate(EXIT_FAILURE);
-#  endif
 # else	/* SAVEONHANGUP */
 	if (!program_state.done_hup++) {
 	    if (program_state.something_worth_saving)
 		(void) dosave0();
-#  ifdef VMS
-	    /* don't call exit when already within an exit handler;
-	       that would cancel any other pending user-mode handlers */
-	    if (!program_state.exiting)
-#  endif
 	    {
 		clearlocks();
 		terminate(EXIT_FAILURE);

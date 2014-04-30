@@ -1661,7 +1661,7 @@ E int doconsult(struct Monster *);
 /* ### save.c ### */
 
 E int dosave();
-#if defined(UNIX) || defined(VMS) || defined(__EMX__)
+#if defined(UNIX) || defined(__EMX__)
 E void hangup(int);
 #endif
 E int dosave0();
@@ -2047,78 +2047,6 @@ E void block_point(int,int);
 E void unblock_point(int,int);
 E bool clear_path(int,int,int,int);
 E void do_clear_area(int,int,int, void (*)(int,int,genericptr_t),genericptr_t);
-
-#ifdef VMS
-
-/* ### vmsfiles.c ### */
-
-E int vms_link(const char *,const char *);
-E int vms_unlink(const char *);
-E int vms_creat(const char *,unsigned int);
-E int vms_open(const char *,int,unsigned int);
-E bool same_dir(const char *,const char *);
-E int c__translate(int);
-E char *vms_basename(const char *);
-
-/* ### vmsmail.c ### */
-
-E unsigned long init_broadcast_trapping();
-E unsigned long enable_broadcast_trapping();
-E unsigned long disable_broadcast_trapping();
-# if 0
-E struct mail_info *parse_next_broadcast();
-# endif /*0*/
-
-/* ### vmsmain.c ### */
-
-E int main(int, char **);
-# ifdef CHDIR
-E void chdirx(const char *,bool);
-# endif /* CHDIR */
-
-/* ### vmsmisc.c ### */
-
-E void vms_abort();
-E void vms_exit(int);
-
-/* ### vmstty.c ### */
-
-E int vms_getchar();
-E void gettty();
-E void settty(const char *);
-E void shuttty(const char *);
-E void setftty();
-E void intron();
-E void introff();
-E void error(const char *,...) PRINTF_F(1,2);
-#ifdef TIMED_DELAY
-E void msleep(unsigned);
-#endif
-
-/* ### vmsunix.c ### */
-
-E void getlock();
-E void regularize(char *);
-E int vms_getuid();
-E bool file_is_stmlf(int);
-E int vms_define(const char *,const char *,int);
-E int vms_putenv(const char *);
-E char *verify_termcap();
-# if defined(CHDIR) || defined(SHELL) || defined(SECURE)
-E void privoff();
-E void privon();
-# endif
-# ifdef SHELL
-E int dosh();
-# endif
-# if defined(SHELL) || defined(MAIL)
-E int vms_doshell(const char *,bool);
-# endif
-# ifdef SUSPEND
-E int dosuspend();
-# endif
-
-#endif /* VMS */
 
 /* ### weapon.c ### */
 

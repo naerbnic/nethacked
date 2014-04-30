@@ -1,14 +1,12 @@
 To Be Removed:
-VMS
-AMIGA
-OVL[0123AB]
+AMIGA - Amiga machine
 MSDOS
 __BEOS__
 MAC
-WIN32CON
 
 To be set:
 UNIX
+OVL[0123AB] - Overlays
 
 Unknown:
 TERMLIB
@@ -19,11 +17,21 @@ AUTOPICKUP_EXCEPTIONS
 NOTERMS
 PORT_DEBUG
 POSITIONBAR
+_M_UNIX
+HISX
+BOS
+POSIX_TYPES
+__EMX__
+ULTRIX
+SYSV
+OSAVEONHANGUP
+UPDATE_RECORD_IN_PLACE
 
 Partially Removed:
-WIN32CON
 
 Graveyard:
 WIN32 - Windows32
 OVERLAY - Separately loadable binary overlays
 MICRO - Microsoftesque OSes
+WIN32CON - Win32 Console
+VMS - Ancient VMS OS

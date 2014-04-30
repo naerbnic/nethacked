@@ -3265,9 +3265,6 @@ static const char *opt_intro[] = {
 	(char *)0,
 	"or use `NETHACKOPTIONS=\"<options>\"' in your environment",
 	"(<options> is a list of options separated by commas)",
-#ifdef VMS
-	"-- for example, $ DEFINE NETHACKOPTIONS \"noautopickup,fruit:kumquat\"",
-#endif
 	"or press \"O\" while playing and use the menu.",
 	"",
  "Boolean options (which can be negated by prefixing them with '!' or \"no\"):",
