@@ -50,7 +50,7 @@ STATIC_DCL void list_genocided(char,bool);
 #endif /* DUMP_LOG */
 STATIC_DCL bool should_query_disclose_option(int,char *);
 
-#if defined(__BEOS__) || defined(MICRO) || defined(WIN32) || defined(OS2)
+#if defined(__BEOS__) || defined(MICRO) || defined(OS2)
 extern void nethack_exit(int);
 #else
 #define nethack_exit exit
@@ -64,11 +64,7 @@ extern void nethack_exit(int);
 # ifdef SYSV
 # define NH_abort()	(void) abort()
 # else
-#  ifdef WIN32
-# define NH_abort()	win32_abort()
-#  else
 # define NH_abort()	abort()
-#  endif
 # endif
 #endif
 
@@ -305,10 +301,6 @@ void done_in_by(struct Monster *mtmp) {
 	return;
 }
 
-#if defined(WIN32)
-#define NOTIFY_NETHACK_BUGS
-#endif
-
 /*VARARGS1*/
 void panic(const char *str, ...) {
   va_list args;
@@ -357,9 +349,6 @@ void panic(const char *str, ...) {
 	    raw_print(buf);
 	    paniclog("panic", buf);
 	}
-#ifdef WIN32
-	interject(INTERJECT_PANIC);
-#endif
 #if defined(WIZARD)
 	if (wizard)
 	    NH_abort();	/* generate core dump */

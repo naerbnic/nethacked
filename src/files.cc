@@ -263,7 +263,7 @@ int create_levelfile(int lev, char errbuf[]) {
 	set_levelfile_name(lock, lev);
 	fq_lock = fqname(lock, LEVELPREFIX, 0);
 
-#if defined(MICRO) || defined(WIN32)
+#if defined(MICRO)
 	/* Use O_TRUNC to force the file to be shortened if it already
 	 * exists and is currently longer.
 	 */
@@ -276,7 +276,7 @@ int create_levelfile(int lev, char errbuf[]) {
 #else
 	fd = creat(fq_lock, FCMASK);
 # endif
-#endif /* MICRO || WIN32 */
+#endif /* MICRO */
 
 	if (fd >= 0)
 	    level_info[lev].flags |= LFILE_EXISTS;
@@ -455,7 +455,7 @@ int create_bonesfile(d_level *lev, char **bonesid, char errbuf[]) {
 	file = set_bonestemp_name();
 	file = fqname(file, BONESPREFIX, 0);
 
-#if defined(MICRO) || defined(WIN32)
+#if defined(MICRO)
 	/* Use O_TRUNC to force the file to be shortened if it already
 	 * exists and is currently longer.
 	 */
@@ -553,9 +553,6 @@ void compress_bonesfile() {
 /* set savefile name in OS-dependent manner from pre-existing plname,
  * avoiding troublesome characters */
 void set_savefile_name() {
-#if defined(WIN32)
-	char fnamebuf[BUFSZ], encodedfnamebuf[BUFSZ];
-#endif
 #ifdef VMS
 	sprintf(SAVEF, "[.save]%d%s", getuid(), plname);
 	regularize(SAVEF+7);
@@ -578,17 +575,8 @@ void set_savefile_name() {
 	}
 	strcat(SAVEF, ".sav");
 # else
-#  if defined(WIN32)
-	/* Obtain the name of the logged on user and incorporate
-	 * it into the name. */
-	sprintf(fnamebuf, "%s-%s", get_username(0), plname);
-	(void)fname_encode("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_-.",
-				'%', fnamebuf, encodedfnamebuf, BUFSZ);
-	sprintf(SAVEF, "%s.NetHack-saved-game", encodedfnamebuf);
-#  else
 	sprintf(SAVEF, "save/%d%s", (int)getuid(), plname);
 	regularize(SAVEF+5);	/* avoid . or / in name */
-#  endif /* WIN32 */
 # endif	/* MICRO */
 #endif /* VMS   */
 }
@@ -622,7 +610,7 @@ int create_savefile() {
 	int fd;
 
 	fq_save = fqname(SAVEF, SAVEPREFIX, 0);
-#if defined(MICRO) || defined(WIN32)
+#if defined(MICRO)
 	fd = open(fq_save, O_WRONLY | O_BINARY | O_CREAT | O_TRUNC, FCMASK);
 #else
 	fd = creat(fq_save, FCMASK);
@@ -1067,7 +1055,7 @@ bool lock_file(const char *filename, int whichprefix, int retryct) {
 
 	}
 
-#if defined(AMIGA) || defined(WIN32)
+#if defined(AMIGA)
 # ifdef AMIGA
 #define OPENFAILURE(fd) (!fd)
     lockptr = 0;
@@ -1076,16 +1064,12 @@ bool lock_file(const char *filename, int whichprefix, int retryct) {
     lockptr = -1;
 # endif
     while (--retryct && OPENFAILURE(lockptr)) {
-# if defined(WIN32)
-	lockptr = sopen(lockname, O_RDWR|O_CREAT, SH_DENYRW, S_IWRITE);
-# else
 	(void)DeleteFile(lockname); /* in case dead process was here first */
 #  ifdef AMIGA
 	lockptr = Open(lockname,MODE_NEWFILE);
 #  else
 	lockptr = open(lockname, O_RDWR|O_CREAT|O_EXCL, S_IWRITE);
 #  endif
-# endif
 	if (OPENFAILURE(lockptr)) {
 	    raw_printf("Waiting for access to %s.  (%d retries left).",
 			filename, retryct);
@@ -1126,7 +1110,7 @@ void unlock_file(char const* filename) {
 		(void) close(lockfd);
 # endif
 
-#if defined(AMIGA) || defined(WIN32)
+#if defined(AMIGA)
 		if (lockptr) Close(lockptr);
 		DeleteFile(lockname);
 		lockptr = 0;
@@ -1180,7 +1164,7 @@ STATIC_OVL FILE * fopen_config_file(const char *filename) {
 		}
 	}
 
-#if defined(MICRO) || defined(__BEOS__) || defined(WIN32)
+#if defined(MICRO) || defined(__BEOS__)
 	if ((fp = fopenp(fqname(configfile, CONFIGPREFIX, 0), "r"))
 								!= (FILE *)0)
 		return(fp);
@@ -1629,7 +1613,7 @@ void read_config_file(const char *filename) {
 #define tmp_levels	(char *)0
 #define tmp_ramdisk	(char *)0
 
-#if defined(MICRO) || defined(WIN32)
+#if defined(MICRO)
 #undef tmp_levels
 	char	tmp_levels[PATHLEN];
 # ifdef MFLOPPY
@@ -1644,7 +1628,7 @@ void read_config_file(const char *filename) {
 
 	if (!(fp = fopen_config_file(filename))) return;
 
-#if defined(MICRO) || defined(WIN32)
+#if defined(MICRO)
 # ifdef MFLOPPY
 #  ifndef AMIGA
 	tmp_ramdisk[0] = 0;
@@ -1716,7 +1700,7 @@ STATIC_OVL FILE * fopen_wizkit_file() {
 	    wait_synch();
 	}
 
-#if defined(MICRO) || defined(__BEOS__) || defined(WIN32)
+#if defined(MICRO) || defined(__BEOS__)
 	if ((fp = fopenp(fqname(wizkit, CONFIGPREFIX, 0), "r"))
 								!= (FILE *)0)
 		return(fp);
@@ -1852,9 +1836,9 @@ void check_recordfile(const char *dir) {
 		(void) close(fd);
 	} else		/* open succeeded */
 	    (void) close(fd);
-#else /* MICRO || WIN32*/
+#else /* MICRO*/
 
-#endif /* MICRO || WIN32*/
+#endif /* MICRO*/
 }
 
 /* ----------  END SCOREBOARD CREATION ----------- */

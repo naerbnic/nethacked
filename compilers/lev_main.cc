@@ -34,7 +34,7 @@ using std::vector;
 # define O_BINARY 0
 #endif
 
-#if defined(MICRO) || defined(WIN32)
+#if defined(MICRO)
 # define OMASK FCMASK
 #else
 # define OMASK 0644

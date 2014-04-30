@@ -71,7 +71,7 @@ static struct Bool_Opt
 	{"checkspace", (bool *)0, FALSE, SET_IN_FILE},
 #endif
 	{"cmdassist", &iflags.cmdassist, TRUE, SET_IN_GAME},
-# if defined(MICRO) || defined(WIN32)
+# if defined(MICRO)
 	{"color",         &iflags.wc_color,TRUE, SET_IN_GAME},		/*WC*/
 # else	/* systems that support multiple terminals, many monochrome */
 	{"color",         &iflags.wc_color, FALSE, SET_IN_GAME},	/*WC*/
@@ -2357,7 +2357,7 @@ char map_menu_cmd(char ch) {
 }
 
 
-#if defined(MICRO) || defined(WIN32)
+#if defined(MICRO)
 # define OPTIONS_HEADING "OPTIONS"
 #else
 # define OPTIONS_HEADING "NETHACKOPTIONS"
