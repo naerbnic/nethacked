@@ -29,7 +29,7 @@ def until_unchanged(line, fn):
         line = new_line
 
 argdecl_re = re.compile(r'\b(F|V)DECL\s*\(')
-contents_re = re.compile(r'(?P<name>\w+),\s*\((?P<args>.*)\)\s*')
+contents_re = re.compile(r'(?P<name>[^,]+),\s*\((?P<args>.*)\)\s*')
 
 def fix_fvdecl(line):
     m = argdecl_re.search(line);
@@ -37,9 +37,12 @@ def fix_fvdecl(line):
         return line
     actual_start = m.start(0)
     actual_end = find_matching_close(line, m.end(0))
+    if actual_end < 0:
+        return line
     contents = line[m.end(0):actual_end - 1]
     m2 = contents_re.match(contents)
-    assert m2
+    if not m2:
+        return line
     return (line[:actual_start] + m2.group('name') +
         '(' + m2.group('args') + ')' + line[actual_end:])
 
