@@ -1,0 +1,12 @@
+GAMEDIR = /usr/games/lib/nethackeddir
+VARDIR = /usr/games/lib/nethackeddir
+SHELLDIR = /usr/games
+
+Tree
+nethackeddir/
++ save/
++ *perm
++ *record
++ *logfile
++ *xlogfile
++ nethacked
