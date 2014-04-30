@@ -22,8 +22,7 @@ STATIC_DCL bool putting_on(const char *);
 STATIC_PTR int ckunpaid(struct Object *);
 STATIC_PTR int ckvalidcat(struct Object *);
 #ifdef DUMP_LOG
-static char FDECL(display_pickinv,
-		 (const char *,bool, long *, bool, bool));
+static char display_pickinv(const char *,bool, long *, bool, bool);
 #else
 static char display_pickinv(const char *,bool, long *);
 #endif /* DUMP_LOG */

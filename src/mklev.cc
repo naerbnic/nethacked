@@ -41,8 +41,8 @@ STATIC_PTR int  CFDECLSPEC do_comp(const void*,const void*);
 
 STATIC_DCL void dosdoor(xchar,xchar,struct mkroom *,int);
 STATIC_DCL void join(int,int,bool);
-STATIC_DCL void FDECL(do_room_or_subroom, (struct mkroom *,int,int,int,int,
-				       bool,schar,bool,bool));
+STATIC_DCL void do_room_or_subroom(struct mkroom *,int,int,int,int,
+				       bool,schar,bool,bool);
 STATIC_DCL void makerooms();
 STATIC_DCL void finddpos(coord *,xchar,xchar,xchar,xchar);
 STATIC_DCL void mkinvpos(xchar,xchar,int);

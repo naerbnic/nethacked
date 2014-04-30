@@ -172,8 +172,8 @@ E void tty_curs(winid,int,int);
 E void tty_putstr(winid, int, const char *);
 E void tty_display_file(const char *, bool);
 E void tty_start_menu(winid);
-E void FDECL(tty_add_menu, (winid,int,const ANY_P *,
-			char,char,int,const char *, bool));
+E void tty_add_menu(winid,int,const ANY_P *,
+			char,char,int,const char *, bool);
 E void tty_end_menu(winid, const char *);
 E int tty_select_menu(winid, int, MENU_ITEM_P **);
 E char tty_message_menu(char,int,const char *);

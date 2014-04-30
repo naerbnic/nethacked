@@ -24,8 +24,8 @@ struct window_procs {
     void (*win_putstr)(winid, int, const char *);
     void (*win_display_file)(const char *, bool);
     void (*win_start_menu)(winid);
-    void FDECL((*win_add_menu), (winid,int,const ANY_P *,
-		char,char,int,const char *, bool));
+    void (*win_add_menu)(winid,int,const ANY_P *,
+        char,char,int,const char *, bool);
     void (*win_end_menu)(winid, const char *);
     int (*win_select_menu)(winid, int, MENU_ITEM_P **);
     char (*win_message_menu)(char,int,const char *);

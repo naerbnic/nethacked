@@ -39,8 +39,7 @@ STATIC_DCL int use_pole(struct Object *);
 STATIC_DCL int use_cream_pie(struct Object *);
 STATIC_DCL int use_grapple(struct Object *);
 STATIC_DCL int do_break_wand(struct Object *);
-STATIC_DCL bool FDECL(figurine_location_checks,
-				(struct Object *, coord *, bool));
+STATIC_DCL bool figurine_location_checks(struct Object *, coord *, bool);
 STATIC_DCL bool uhave_graystone();
 STATIC_DCL void add_class(char *, char);
 

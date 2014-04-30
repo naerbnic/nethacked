@@ -25,8 +25,8 @@ extern bool notonhead;	/* for long worms */
 
 STATIC_DCL int spec_applies(const struct Artifact *,struct Monster *);
 STATIC_DCL int arti_invoke(struct Object*);
-STATIC_DCL bool FDECL(Mb_hit, (struct Monster *magr,struct Monster *mdef,
-				  struct Object *,int *,int,bool,char *));
+STATIC_DCL bool Mb_hit(struct Monster *magr,struct Monster *mdef,
+				  struct Object *,int *,int,bool,char *);
 
 /* The amount added to the victim's total hit points to insure that the
    victim will be killed even after damage bonus/penalty adjustments.

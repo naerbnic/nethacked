@@ -19,8 +19,8 @@ STATIC_DCL bool is_solid(int,int);
 STATIC_DCL int extend_spine(int [3][3], int, int, int);
 STATIC_DCL bool okay(int,int,int);
 STATIC_DCL void maze0xy(coord *);
-STATIC_DCL bool FDECL(put_lregion_here,(xchar,xchar,xchar,
-	xchar,xchar,xchar,xchar,bool,d_level *));
+STATIC_DCL bool put_lregion_here(xchar,xchar,xchar,
+	xchar,xchar,xchar,xchar,bool,d_level *);
 STATIC_DCL void fixup_special();
 STATIC_DCL void move(int *,int *,int);
 STATIC_DCL void setup_waterlevel();

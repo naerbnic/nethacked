@@ -13,8 +13,7 @@
 STATIC_DCL bool is_swallow_sym(int);
 STATIC_DCL int append_str(char *, const char *);
 STATIC_DCL struct permonst * lookat(int, int, char *, char *);
-STATIC_DCL void FDECL(checkfile,
-		      (char *,struct permonst *,bool,bool));
+STATIC_DCL void checkfile(char *,struct permonst *,bool,bool);
 STATIC_DCL int do_look(bool);
 STATIC_DCL bool help_menu(int *);
 #ifdef PORT_HELP
