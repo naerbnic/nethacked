@@ -46,13 +46,13 @@ STATIC_DCL long set_cost(struct Object *, struct Monster *);
 STATIC_DCL const char *shk_embellish(struct Object *, long);
 STATIC_DCL long cost_per_charge(struct Monster *,struct Object *,bool);
 STATIC_DCL long cheapest_item(struct Monster *);
-STATIC_DCL int FDECL(dopayobj, (struct Monster *, struct bill_x *,
-			    struct Object **, int, bool));
-STATIC_DCL long FDECL(stolen_container, (struct Object *, struct Monster *, long,
-				     bool));
+STATIC_DCL int dopayobj(struct Monster *, struct bill_x *,
+			    struct Object **, int, bool);
+STATIC_DCL long stolen_container(struct Object *, struct Monster *, long,
+				     bool);
 STATIC_DCL long getprice(struct Object *,bool);
-STATIC_DCL void FDECL(shk_names_obj,
-		 (struct Monster *,struct Object *,const char *,long,const char *));
+STATIC_DCL void shk_names_obj(
+    struct Monster *,struct Object *,const char *,long,const char *);
 STATIC_DCL struct Object *bp_to_obj(struct bill_x *);
 STATIC_DCL bool inherits(struct Monster *,int,int);
 STATIC_DCL void set_repo_loc(struct eshk *);
@@ -62,11 +62,11 @@ STATIC_DCL void rouse_shk(struct Monster *,bool);
 STATIC_DCL void remove_damage(struct Monster *, bool);
 STATIC_DCL void sub_one_frombill(struct Object *, struct Monster *);
 STATIC_DCL void add_one_tobill(struct Object *, bool);
-STATIC_DCL void FDECL(dropped_container, (struct Object *, struct Monster *,
-				      bool));
+STATIC_DCL void dropped_container(
+    struct Object *, struct Monster *, bool);
 STATIC_DCL void add_to_billobjs(struct Object *);
-STATIC_DCL void FDECL(bill_box_content, (struct Object *, bool, bool,
-				     struct Monster *));
+STATIC_DCL void bill_box_content(struct Object *, bool, bool,
+				     struct Monster *);
 #ifdef OVL1
 static bool rob_shop(struct Monster *);
 #endif

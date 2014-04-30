@@ -74,8 +74,8 @@ STATIC_DCL void write_xlentry(FILE *,struct toptenentry *);
 #endif
 STATIC_DCL void free_ttlist(struct toptenentry *);
 STATIC_DCL int classmon(char *,bool);
-STATIC_DCL int FDECL(score_wanted,
-		(bool, int,struct toptenentry *,int,const char **,int));
+STATIC_DCL int score_wanted(
+		bool, int,struct toptenentry *,int,const char **,int);
 #ifdef RECORD_CONDUCT
 STATIC_DCL long encodeconduct(void);
 #endif

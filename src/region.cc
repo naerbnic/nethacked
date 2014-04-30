@@ -39,8 +39,8 @@ void remove_region(NhRegion *);
 #if 0
 void replace_mon_regions(struct Monster *,struct Monster *);
 void remove_mon_from_regions(struct Monster *);
-NhRegion *FDECL(create_msg_region, (xchar,xchar,xchar,xchar,
-				    const char *,const char *));
+NhRegion *create_msg_region(xchar,xchar,xchar,xchar,
+				    const char *,const char *);
 bool enter_force_field(void*,void*);
 NhRegion *create_force_field(xchar,xchar,int,int);
 #endif

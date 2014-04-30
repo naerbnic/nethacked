@@ -1233,8 +1233,8 @@ STATIC_DCL const char *kind_name(short);
 STATIC_DCL void print_queue(winid, TimerElement *);
 #endif
 STATIC_DCL void insert_timer(TimerElement *);
-STATIC_DCL TimerElement *FDECL(remove_timer, (TimerElement **, short,
-								genericptr_t));
+STATIC_DCL TimerElement *remove_timer(TimerElement **, short,
+								genericptr_t);
 STATIC_DCL void write_timer(int, TimerElement *);
 STATIC_DCL bool mon_is_local(struct Monster *);
 STATIC_DCL bool timer_is_local(TimerElement *);

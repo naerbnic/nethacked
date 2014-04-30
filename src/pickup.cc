@@ -12,11 +12,11 @@
 
 STATIC_DCL void simple_look(struct Object *,bool);
 #ifndef GOLDOBJ
-STATIC_DCL bool FDECL(query_classes, (char *,bool *,bool *,
-		const char *,struct Object *,bool,bool,int *));
+STATIC_DCL bool query_classes(char *,bool *,bool *,
+		const char *,struct Object *,bool,bool,int *);
 #else
-STATIC_DCL bool FDECL(query_classes, (char *,bool *,bool *,
-		const char *,struct Object *,bool,int *));
+STATIC_DCL bool query_classes(char *,bool *,bool *,
+		const char *,struct Object *,bool,int *);
 #endif
 STATIC_DCL void check_here(bool);
 STATIC_DCL bool n_or_more(struct Object *);
@@ -26,8 +26,8 @@ STATIC_DCL bool allow_cat_no_uchain(struct Object *);
 #endif
 STATIC_DCL int autopick(struct Object*, int, menu_item **);
 STATIC_DCL int count_categories(struct Object *,int);
-STATIC_DCL long FDECL(carry_count,
-		      (struct Object *,struct Object *,long,bool,int *,int *));
+STATIC_DCL long carry_count(
+    struct Object *,struct Object *,long,bool,int *,int *);
 STATIC_DCL int lift_object(struct Object *,struct Object *,long *,bool);
 STATIC_DCL bool mbag_explodes(struct Object *,int);
 STATIC_PTR int in_container(struct Object *);

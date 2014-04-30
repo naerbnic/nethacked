@@ -23,13 +23,12 @@ STATIC_DCL int disarm_shooting_trap(struct trap *, int);
 STATIC_DCL int try_lift(struct Monster *, struct trap *, int, bool);
 STATIC_DCL int help_monster_out(struct Monster *, struct trap *);
 STATIC_DCL bool thitm(int,struct Monster *,struct Object *,int,bool);
-STATIC_DCL int FDECL(mkroll_launch,
-			(struct trap *,xchar,xchar,short,long));
+STATIC_DCL int mkroll_launch(struct trap *,xchar,xchar,short,long);
 STATIC_DCL bool isclearpath(coord *, int, schar, schar);
 #ifdef STEED
 STATIC_OVL int steedintrap(struct trap *, struct Object *);
-STATIC_OVL bool FDECL(keep_saddle_with_steedcorpse,
-			(unsigned, struct Object *, struct Object *));
+STATIC_OVL bool keep_saddle_with_steedcorpse(
+    unsigned, struct Object *, struct Object *);
 #endif
 
 #ifndef OVLB

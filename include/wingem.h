@@ -70,8 +70,8 @@ E void Gem_curs(winid,int,int);
 E void Gem_putstr(winid, int, const char *);
 E void Gem_display_file(const char *, bool);
 E void Gem_start_menu(winid);
-E void FDECL(Gem_add_menu, (winid,int,const ANY_P *,
-			char,char,int,const char *, bool));
+E void Gem_add_menu(winid,int,const ANY_P *,
+			char,char,int,const char *, bool);
 E void Gem_end_menu(winid, const char *);
 E int Gem_select_menu(winid, int, MENU_ITEM_P **);
 E char Gem_message_menu(char,int,const char *);

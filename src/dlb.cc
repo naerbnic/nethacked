@@ -54,8 +54,8 @@ extern FILE *fopen_datafile(const char *,const char *,int);
 static library dlb_libs[MAX_LIBS];
 
 static bool readlibdir(library *lp);
-static bool FDECL(find_file,(const char *name, library **lib, long *startp,
-								long *sizep));
+static bool find_file(const char *name, library **lib, long *startp,
+								long *sizep);
 static bool lib_dlb_init();
 static void lib_dlb_cleanup();
 static bool lib_dlb_fopen(dlb *, const char *, const char *);

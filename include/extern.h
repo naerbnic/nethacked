@@ -1486,8 +1486,7 @@ E void getlock();
 /* ### pickup.c ### */
 
 #ifdef GOLDOBJ
-E int FDECL(collect_obj_classes,
-	(char *,struct Object *,bool,bool (*)(Object*), int *));
+E int collect_obj_classes(char *,struct Object *,bool,bool (*)(Object*), int *);
 #else
 E int collect_obj_classes(
     char *,struct Object *,bool,bool,bool (*)(Object*), int *);

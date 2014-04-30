@@ -39,13 +39,13 @@ STATIC_DCL void create_stairs(stair *, struct mkroom *);
 STATIC_DCL void create_altar(altar *, struct mkroom *);
 STATIC_DCL void create_gold(gold *, struct mkroom *);
 STATIC_DCL void create_feature(int,int,struct mkroom *,int);
-STATIC_DCL bool FDECL(search_door, (struct mkroom *, xchar *, xchar *,
-					xchar, int));
+STATIC_DCL bool search_door(struct mkroom *, xchar *, xchar *,
+					xchar, int);
 STATIC_DCL void fix_stair_rooms();
 STATIC_DCL void create_corridor(corridor *);
 
-STATIC_DCL bool FDECL(create_subroom, (struct mkroom *, xchar, xchar,
-					xchar, xchar, xchar, xchar));
+STATIC_DCL bool create_subroom(struct mkroom *, xchar, xchar,
+					xchar, xchar, xchar, xchar);
 
 #define LEFT	1
 #define H_LEFT	2

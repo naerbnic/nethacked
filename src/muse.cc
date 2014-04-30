@@ -27,12 +27,12 @@ STATIC_DCL void mzapmsg(struct Monster *,struct Object *,bool);
 STATIC_DCL void mreadmsg(struct Monster *,struct Object *);
 STATIC_DCL void mquaffmsg(struct Monster *,struct Object *);
 STATIC_PTR int mbhitm(struct Monster *,struct Object *);
-STATIC_DCL void FDECL(mbhit,
-	(struct Monster *,int,int (*)(Monster*,Object*),
-	int (*)(Object*,Object*),struct Object *));
+STATIC_DCL void mbhit(
+    struct Monster *,int,int (*)(Monster*,Object*),
+	int (*)(Object*,Object*),struct Object *);
 STATIC_DCL void you_aggravate(struct Monster *);
-STATIC_DCL void FDECL(mon_consume_unstone, (struct Monster *,struct Object *,
-	bool,bool));
+STATIC_DCL void mon_consume_unstone(struct Monster *,struct Object *,
+	bool,bool);
 
 static struct musable {
 	struct Object *offensive;
