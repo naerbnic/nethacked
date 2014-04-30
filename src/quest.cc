@@ -12,15 +12,15 @@
 #define Not_firsttime	(on_level(&u.uz0, &u.uz))
 #define Qstat(x)	(quest_status.x)
 
-STATIC_DCL void NDECL(on_start);
-STATIC_DCL void NDECL(on_locate);
-STATIC_DCL void NDECL(on_goal);
-STATIC_DCL bool NDECL(not_capable);
+STATIC_DCL void on_start();
+STATIC_DCL void on_locate();
+STATIC_DCL void on_goal();
+STATIC_DCL bool not_capable();
 STATIC_DCL int FDECL(is_pure, (bool));
 STATIC_DCL void FDECL(expulsion, (bool));
-STATIC_DCL void NDECL(chat_with_leader);
-STATIC_DCL void NDECL(chat_with_nemesis);
-STATIC_DCL void NDECL(chat_with_guardian);
+STATIC_DCL void chat_with_leader();
+STATIC_DCL void chat_with_nemesis();
+STATIC_DCL void chat_with_guardian();
 STATIC_DCL void FDECL(prisoner_speaks, (struct Monster *));
 
 

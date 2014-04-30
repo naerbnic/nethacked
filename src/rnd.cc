@@ -5,7 +5,7 @@
 
 /* "Rand()"s definition is determined by [OS]conf.h */
 #if defined(LINT)	/* rand() is long... */
-extern int NDECL(rand);
+extern int rand();
 #define RND(x)	(rand() % x)
 #else /* LINT */
 #define RND(x)	(int)(Rand() % (long)(x))

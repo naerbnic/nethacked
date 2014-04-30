@@ -18,9 +18,9 @@ extern void FDECL(substitute_tiles, (d_level *));       /* from tile.c */
 #endif
 
 #ifdef ZEROCOMP
-static int NDECL(mgetc);
+static int mgetc();
 #endif
-STATIC_DCL void NDECL(find_lev_obj);
+STATIC_DCL void find_lev_obj();
 STATIC_DCL void FDECL(restlevchn, (int));
 STATIC_DCL void FDECL(restdamage, (int,bool));
 STATIC_DCL struct Object *FDECL(restobjchn, (int,bool,bool));
@@ -46,7 +46,7 @@ struct bucket {
     } map[N_PER_BUCKET];
 };
 
-STATIC_DCL void NDECL(clear_id_mapping);
+STATIC_DCL void clear_id_mapping();
 STATIC_DCL void FDECL(add_id_mapping, (unsigned, unsigned));
 
 static int n_ids_mapped = 0;

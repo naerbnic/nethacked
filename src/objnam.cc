@@ -15,7 +15,7 @@ STATIC_DCL char *FDECL(strprepend,(char *,const char *));
 #ifdef OVLB
 static bool FDECL(wishymatch, (const char *,const char *,bool));
 #endif
-static char *NDECL(nextobuf);
+static char *nextobuf();
 static void FDECL(add_erosion_words, (struct Object *, char *));
 #ifdef SORTLOOT
 char * FDECL(xname2, (struct Object *, bool));

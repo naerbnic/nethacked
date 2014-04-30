@@ -18,7 +18,7 @@ STATIC_DCL void FDECL(checkfile,
 STATIC_DCL int FDECL(do_look, (bool));
 STATIC_DCL bool FDECL(help_menu, (int *));
 #ifdef PORT_HELP
-extern void NDECL(port_help);
+extern void port_help();
 #endif
 
 /* Returns "true" for characters that could represent a monster's stomach. */

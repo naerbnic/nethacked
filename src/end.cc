@@ -42,7 +42,7 @@ void FDECL(list_vanquished, (char,bool));
 #ifdef DUMP_LOG
 extern char msgs[][BUFSZ];
 extern int lastmsg;
-extern void NDECL(dump_spells);
+extern void dump_spells();
 void FDECL(do_vanquished, (int, bool, bool));
 STATIC_DCL void FDECL(list_genocided, (int, bool, bool));
 #else

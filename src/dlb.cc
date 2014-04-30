@@ -19,8 +19,8 @@
  */
 
 typedef struct dlb_procs {
-    bool NDECL((*dlb_init_proc));
-    void NDECL((*dlb_cleanup_proc));
+    bool (*dlb_init_proc)();
+    void (*dlb_cleanup_proc)();
     bool FDECL((*dlb_fopen_proc), (DLB_P,const char *,const char *));
     int FDECL((*dlb_fclose_proc), (DLB_P));
     int FDECL((*dlb_fread_proc), (char *,int,int,DLB_P));
@@ -56,8 +56,8 @@ static library dlb_libs[MAX_LIBS];
 static bool FDECL(readlibdir,(library *lp));
 static bool FDECL(find_file,(const char *name, library **lib, long *startp,
 								long *sizep));
-static bool NDECL(lib_dlb_init);
-static void NDECL(lib_dlb_cleanup);
+static bool lib_dlb_init();
+static void lib_dlb_cleanup();
 static bool FDECL(lib_dlb_fopen,(dlb *, const char *, const char *));
 static int FDECL(lib_dlb_fclose,(dlb *));
 static int FDECL(lib_dlb_fread,(char *, int, int, dlb *));

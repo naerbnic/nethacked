@@ -10,7 +10,7 @@
 #define CONTAINED_SYM	'>'	/* designator for inside a container */
 
 #ifdef OVL1
-STATIC_DCL void NDECL(reorder_invent);
+STATIC_DCL void reorder_invent();
 STATIC_DCL bool FDECL(mergable,(struct Object *,struct Object *));
 STATIC_DCL void FDECL(invdisp_nothing, (const char *,const char *));
 STATIC_DCL bool FDECL(worn_wield_only, (struct Object *));
@@ -29,7 +29,7 @@ static char FDECL(display_pickinv, (const char *,bool, long *));
 #endif /* DUMP_LOG */
 #ifdef OVLB
 STATIC_DCL bool FDECL(this_type_only, (struct Object *));
-STATIC_DCL void NDECL(dounpaid);
+STATIC_DCL void dounpaid();
 STATIC_DCL struct Object *FDECL(find_unpaid,(struct Object *,struct Object **));
 STATIC_DCL void FDECL(menu_identify, (int));
 STATIC_DCL bool FDECL(tool_in_use, (struct Object *));

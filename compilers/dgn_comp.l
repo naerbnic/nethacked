@@ -16,10 +16,10 @@
  */
 #if !defined(FLEX_SCANNER) && !defined(FLEXHACK_SCANNER)
 int FDECL(yyback, (int *,int));
-int NDECL(yylook);
-int NDECL(yyinput);
-extern "C" int NDECL(yywrap);
-int NDECL(yylex);
+int yylook();
+int yyinput();
+extern "C" int yywrap();
+int yylex();
 	/* Traditional lexes let yyunput() and yyoutput() default to int;
 	 * newer ones may declare them as void since they don't return
 	 * values.  For even more fun, the lex supplied as part of the

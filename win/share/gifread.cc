@@ -67,7 +67,7 @@ static void FDECL(ReadTileStrip, (FILE *fd, int len));
 /* These should be in gif.h, but there isn't one. */
 bool FDECL(fopen_gif_file, (const char *, const char *));
 bool FDECL(read_gif_tile, (pixel(*)[]));
-int NDECL(fclose_gif_file);
+int fclose_gif_file();
 
 static int GetDataBlock(FILE *fd, unsigned char *buf) {
 	unsigned char	count;

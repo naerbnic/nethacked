@@ -977,7 +977,7 @@ OBJECT(OBJ("acid venom", "splash of venom"),
 #  define OBJECTS_PASS_2_
 #include "objects.cc"
 
-void NDECL(objects_init);
+void objects_init();
 
 /* dummy routine used to force linkage */
 void objects_init() {

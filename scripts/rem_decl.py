@@ -31,7 +31,7 @@ def until_unchanged(line, fn):
 
 def fix_ndecl(line):
    m = ndecl_re.search(line);
-   if !m:
+   if not m:
        return line
    actual_start = m.start(0)
    actual_end = find_matching_close(line, m.end(0))

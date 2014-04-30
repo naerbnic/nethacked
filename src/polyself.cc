@@ -16,11 +16,11 @@
 
 #ifdef OVLB
 STATIC_DCL void FDECL(polyman, (const char *,const char *));
-STATIC_DCL void NDECL(break_armor);
+STATIC_DCL void break_armor();
 STATIC_DCL void FDECL(drop_weapon,(int));
-STATIC_DCL void NDECL(uunstick);
+STATIC_DCL void uunstick();
 STATIC_DCL int FDECL(armor_to_dragon,(int));
-STATIC_DCL void NDECL(newman);
+STATIC_DCL void newman();
 
 /* update the youmonst.data structure pointer */
 void set_uasmon() {

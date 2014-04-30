@@ -398,7 +398,7 @@ bool fuzzymatch(const char *s1, const char *s2, const char *ignore_chars, bool c
 #if defined(AMIGA) && !defined(AZTEC_C) && !defined(__SASC_60) && !defined(_DCC) && !defined(__GNUC__)
 extern struct tm *FDECL(localtime,(time_t *));
 #endif
-static struct tm *NDECL(getlt);
+static struct tm *getlt();
 
 void setrandom() {
 	/* the types are different enough here that sweeping the different

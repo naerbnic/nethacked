@@ -27,19 +27,19 @@ extern struct passwd *FDECL(getpwnam,(const char *));
 #ifdef CHDIR
 static void FDECL(chdirx, (const char *,bool));
 #endif /* CHDIR */
-static bool NDECL(whoami);
+static bool whoami();
 static void FDECL(process_options, (int, char **));
 
 #ifdef _M_UNIX
-extern void NDECL(check_sco_console);
-extern void NDECL(init_sco_cons);
+extern void check_sco_console();
+extern void init_sco_cons();
 #endif
 #ifdef __linux__
-extern void NDECL(check_linux_console);
-extern void NDECL(init_linux_cons);
+extern void check_linux_console();
+extern void init_linux_cons();
 #endif
 
-static void NDECL(wd_message);
+static void wd_message();
 #ifdef WIZARD
 static bool wiz_error_flag = FALSE;
 #endif

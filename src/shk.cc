@@ -56,7 +56,7 @@ STATIC_DCL void FDECL(shk_names_obj,
 STATIC_DCL struct Object *FDECL(bp_to_obj, (struct bill_x *));
 STATIC_DCL bool FDECL(inherits, (struct Monster *,int,int));
 STATIC_DCL void FDECL(set_repo_loc, (struct eshk *));
-STATIC_DCL bool NDECL(angry_shk_exists);
+STATIC_DCL bool angry_shk_exists();
 STATIC_DCL void FDECL(rile_shk, (struct Monster *));
 STATIC_DCL void FDECL(rouse_shk, (struct Monster *,bool));
 STATIC_DCL void FDECL(remove_damage, (struct Monster *, bool));

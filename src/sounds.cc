@@ -15,7 +15,7 @@
 #ifdef OVLB
 
 static int FDECL(domonnoise,(struct Monster *));
-static int NDECL(dochat);
+static int dochat();
 
 #endif /* OVLB */
 

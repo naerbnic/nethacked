@@ -13,11 +13,11 @@ STATIC_DCL bool FDECL(hmon_hitmon, (struct Monster *,struct Object *,int));
 #ifdef STEED
 STATIC_DCL int FDECL(joust, (struct Monster *,struct Object *));
 #endif
-STATIC_DCL void NDECL(demonpet);
+STATIC_DCL void demonpet();
 STATIC_DCL bool FDECL(m_slips_free, (struct Monster *mtmp,struct Attack *mattk));
 STATIC_DCL int FDECL(explum, (struct Monster *,struct Attack *));
 STATIC_DCL void FDECL(start_engulf, (struct Monster *));
-STATIC_DCL void NDECL(end_engulf);
+STATIC_DCL void end_engulf();
 STATIC_DCL int FDECL(gulpum, (struct Monster *,struct Attack *));
 STATIC_DCL bool FDECL(hmonas, (struct Monster *,int));
 STATIC_DCL void FDECL(nohandglow, (struct Monster *));

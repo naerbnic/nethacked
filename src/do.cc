@@ -17,14 +17,14 @@ STATIC_DCL void FDECL(dosinkring, (struct Object *));
 #endif /* SINKS */
 
 STATIC_PTR int FDECL(drop, (struct Object *));
-STATIC_PTR int NDECL(wipeoff);
+STATIC_PTR int wipeoff();
 
 #ifdef OVL0
 STATIC_DCL int FDECL(menu_drop, (int));
 #endif
 #ifdef OVL2
-STATIC_DCL int NDECL(currentlevel_rewrite);
-STATIC_DCL void NDECL(final_level);
+STATIC_DCL int currentlevel_rewrite();
+STATIC_DCL void final_level();
 /* static bool FDECL(badspot, (xchar,xchar)); */
 #endif
 

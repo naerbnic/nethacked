@@ -16,7 +16,7 @@ STATIC_DCL schar FDECL(get_map,(int,int,schar));
 STATIC_DCL void FDECL(pass_one,(schar,schar));
 STATIC_DCL void FDECL(pass_two,(schar,schar));
 STATIC_DCL void FDECL(pass_three,(schar,schar));
-STATIC_DCL void NDECL(wallify_map);
+STATIC_DCL void wallify_map();
 STATIC_DCL void FDECL(join_map,(schar,schar));
 STATIC_DCL void FDECL(finish_map,(schar,schar,xchar,xchar));
 STATIC_DCL void FDECL(remove_room,(unsigned));

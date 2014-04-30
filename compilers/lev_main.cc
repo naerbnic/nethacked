@@ -51,14 +51,14 @@ extern unsigned _stklen = STKSIZ;
 #endif
 #define MAX_ERRORS	25
 
-extern int  NDECL (yyparse);
+extern int  yyparse();
 extern void FDECL (init_yyin, (FILE *));
 extern void FDECL (init_yyout, (FILE *));
 
 int  FDECL (main, (int, char **));
 void FDECL (yyerror, (const char *));
 void FDECL (yywarning, (const char *));
-extern "C" int  NDECL (yywrap);
+extern "C" int  yywrap();
 int FDECL(get_floor_type, (char));
 int FDECL(get_room_type, (char *));
 int FDECL(get_trap_type, (char *));
@@ -68,17 +68,17 @@ bool FDECL(check_monster_char, (char));
 bool FDECL(check_object_char, (char));
 char FDECL(what_map_char, (char));
 void FDECL(scan_map, (char *));
-void NDECL(wallify_map);
-bool NDECL(check_subrooms);
+void wallify_map();
+bool check_subrooms();
 void FDECL(check_coord, (int,int,const char *));
-void NDECL(store_part);
-void NDECL(store_room);
+void store_part();
+void store_room();
 bool FDECL(write_level_file, (char *,splev *,specialmaze *));
 void FDECL(free_rooms, (splev *));
 
-extern void NDECL(monst_init);
-extern void NDECL(objects_init);
-extern void NDECL(decl_init);
+extern void monst_init();
+extern void objects_init();
+extern void decl_init();
 
 static bool FDECL(write_common_data, (int,int,lev_init *,long));
 static bool FDECL(write_monsters, (int,char *,monster ***));
@@ -86,7 +86,7 @@ static bool FDECL(write_objects, (int,char *,object ***));
 static bool FDECL(write_engravings, (int,char *,engraving ***));
 static bool FDECL(write_maze, (int,specialmaze *));
 static bool FDECL(write_rooms, (int,splev *));
-static void NDECL(init_obj_classes);
+static void init_obj_classes();
 
 struct NameMapping {
   NameMapping(string const& name, int type) : name(name), type(type) {}

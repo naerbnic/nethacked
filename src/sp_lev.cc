@@ -41,7 +41,7 @@ STATIC_DCL void FDECL(create_gold, (gold *, struct mkroom *));
 STATIC_DCL void FDECL(create_feature, (int,int,struct mkroom *,int));
 STATIC_DCL bool FDECL(search_door, (struct mkroom *, xchar *, xchar *,
 					xchar, int));
-STATIC_DCL void NDECL(fix_stair_rooms);
+STATIC_DCL void fix_stair_rooms();
 STATIC_DCL void FDECL(create_corridor, (corridor *));
 
 STATIC_DCL bool FDECL(create_subroom, (struct mkroom *, xchar, xchar,
@@ -77,8 +77,8 @@ static xchar xstart, ystart;
 static char xsize, ysize;
 
 STATIC_DCL void FDECL(set_wall_property, (xchar,xchar,xchar,xchar,int));
-STATIC_DCL int NDECL(rnddoor);
-STATIC_DCL int NDECL(rndtrap);
+STATIC_DCL int rnddoor();
+STATIC_DCL int rndtrap();
 STATIC_DCL void FDECL(get_location, (schar *,schar *,int));
 STATIC_DCL void FDECL(sp_lev_shuffle, (char *,char *,int));
 STATIC_DCL void FDECL(light_region, (region *));

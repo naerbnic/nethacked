@@ -39,12 +39,12 @@ STATIC_DCL void FDECL(do_earthquake,(int));
 STATIC_DCL int FDECL(do_improvisation,(struct Object *));
 
 #ifdef UNIX386MUSIC
-STATIC_DCL int NDECL(atconsole);
+STATIC_DCL int atconsole();
 STATIC_DCL void FDECL(speaker,(struct Object *,char *));
 #endif
 #ifdef VPIX_MUSIC
 extern int sco_flag_console;	/* will need changing if not _M_UNIX */
-STATIC_DCL void NDECL(playinit);
+STATIC_DCL void playinit();
 STATIC_DCL void FDECL(playstring, (char *,size_t));
 STATIC_DCL void FDECL(speaker,(struct Object *,char *));
 #endif

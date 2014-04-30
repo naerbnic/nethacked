@@ -6,7 +6,7 @@
 
 #include "hack.h"
 
-STATIC_PTR int NDECL(stealarm);
+STATIC_PTR int stealarm();
 
 #ifdef OVLB
 STATIC_DCL const char *FDECL(equipname, (struct Object *));

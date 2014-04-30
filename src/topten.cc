@@ -64,7 +64,7 @@ struct toptenentry {
 STATIC_DCL void FDECL(topten_print, (const char *));
 STATIC_DCL void FDECL(topten_print_bold, (const char *));
 STATIC_DCL xchar FDECL(observable_depth, (d_level *));
-STATIC_DCL void NDECL(outheader);
+STATIC_DCL void outheader();
 STATIC_DCL void FDECL(outentry, (int,struct toptenentry *,bool));
 STATIC_DCL void FDECL(readentry, (FILE *,struct toptenentry *));
 STATIC_DCL void FDECL(writeentry, (FILE *,struct toptenentry *));

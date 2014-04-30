@@ -116,23 +116,23 @@ char *file_prefix="";
 
 int FDECL(main, (int, const char **));
 void FDECL(do_makedefs, (string, vector<string> const&));
-void NDECL(do_objs);
-void NDECL(do_data);
-void NDECL(do_dungeon);
-void NDECL(do_date);
-void NDECL(do_options);
-void NDECL(do_monstr);
-void NDECL(do_permonst);
-void NDECL(do_questtxt);
-void NDECL(do_rumors);
-void NDECL(do_oracles);
+void do_objs();
+void do_data();
+void do_dungeon();
+void do_date();
+void do_options();
+void do_monstr();
+void do_permonst();
+void do_questtxt();
+void do_rumors();
+void do_oracles();
 void FDECL(do_vision_header, (string const&));
 void FDECL(do_vision_source, (string const&));
 
-extern void NDECL(monst_init);		/* monst.c */
-extern void NDECL(objects_init);	/* objects.c */
+extern void monst_init();		/* monst.c */
+extern void objects_init();	/* objects.c */
 
-static void NDECL(make_version);
+static void make_version();
 static char *FDECL(version_string, (char *));
 static char *FDECL(version_id_string, (char *,const char *));
 static char *FDECL(xcrypt, (const char *));
@@ -142,7 +142,7 @@ static bool FDECL(d_filter, (char *));
 static bool FDECL(h_filter, (char *));
 static bool FDECL(ranged_attk,(struct permonst*));
 static int FDECL(mstrength,(struct permonst *));
-static void NDECL(build_savebones_compat_string);
+static void build_savebones_compat_string();
 
 static bool FDECL(qt_comment, (char *));
 static bool FDECL(qt_control, (char *));
@@ -152,14 +152,14 @@ static bool FDECL(known_msg, (int,int));
 static void FDECL(new_msg, (char *,int,int));
 static void FDECL(do_qt_control, (char *));
 static void FDECL(do_qt_text, (char *));
-static void NDECL(adjust_qt_hdrs);
-static void NDECL(put_qt_hdrs);
+static void adjust_qt_hdrs();
+static void put_qt_hdrs();
 
 #ifdef VISION_TABLES
-static void NDECL(H_close_gen);
-static void NDECL(H_far_gen);
-static void NDECL(C_close_gen);
-static void NDECL(C_far_gen);
+static void H_close_gen();
+static void H_far_gen();
+static void C_close_gen();
+static void C_far_gen();
 static int FDECL(clear_path, (int,int,int,int));
 #endif
 
@@ -1287,7 +1287,7 @@ void do_monstr() {
     /* might want to insert a final 0 entry here instead of just newline */
     Fprintf(ofp,"%s};\n", (j & 15) ? "\n" : "");
 
-    Fprintf(ofp,"\nvoid NDECL(monstr_init);\n");
+    Fprintf(ofp,"\nvoid monstr_init();\n");
     Fprintf(ofp,"\nvoid\n");
     Fprintf(ofp,"monstr_init()\n");
     Fprintf(ofp,"{\n");

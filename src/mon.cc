@@ -17,7 +17,7 @@
 STATIC_DCL bool FDECL(restrap,(struct Monster *));
 STATIC_DCL long FDECL(mm_aggression, (struct Monster *,struct Monster *));
 #ifdef OVL2
-STATIC_DCL int NDECL(pick_animal);
+STATIC_DCL int pick_animal();
 STATIC_DCL int FDECL(select_newcham_form, (struct Monster *));
 STATIC_DCL void FDECL(kill_eggs, (struct Object *));
 #endif
@@ -43,7 +43,7 @@ const char *warnings[] = {
 	"white", "pink", "red", "ruby", "purple", "black"
 };
 
-STATIC_DCL void NDECL(warn_effects);
+STATIC_DCL void warn_effects();
 #endif /* OVL1 */
 #endif /* 0 */
 

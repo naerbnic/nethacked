@@ -7,12 +7,12 @@
 #include "hack.h"
 
 #ifdef OVL1
-STATIC_DCL void NDECL(maybe_wail);
+STATIC_DCL void maybe_wail();
 #endif /*OVL1*/
-STATIC_DCL int NDECL(moverock);
+STATIC_DCL int moverock();
 STATIC_DCL int FDECL(still_chewing,(xchar,xchar));
 #ifdef SINKS
-STATIC_DCL void NDECL(dosinkfall);
+STATIC_DCL void dosinkfall();
 #endif
 STATIC_DCL bool FDECL(findtravelpath, (bool));
 STATIC_DCL bool FDECL(monstinroom, (struct permonst *,int));

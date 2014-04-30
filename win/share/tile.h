@@ -33,10 +33,10 @@ extern int colorsinmainmap;
 extern bool FDECL(fopen_text_file, (const char *, const char *));
 extern bool FDECL(read_text_tile, (pixel (*)[TILE_X]));
 extern bool FDECL(write_text_tile, (pixel (*)[TILE_X]));
-extern int NDECL(fclose_text_file);
+extern int fclose_text_file();
 
-extern void NDECL(init_colormap);
-extern void NDECL(merge_colormap);
+extern void init_colormap();
+extern void merge_colormap();
 
 #if defined(MICRO) || defined(WIN32)
 #undef exit

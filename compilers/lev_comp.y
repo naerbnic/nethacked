@@ -43,8 +43,8 @@
 
 extern void FDECL(yyerror, (const char *));
 extern void FDECL(yywarning, (const char *));
-extern int NDECL(yylex);
-int NDECL(yyparse);
+extern int yylex();
+int yyparse();
 
 extern int FDECL(get_floor_type, (char));
 extern int FDECL(get_room_type, (std::string const&));
@@ -55,11 +55,11 @@ extern bool FDECL(check_monster_char, (char));
 extern bool FDECL(check_object_char, (char));
 extern char FDECL(what_map_char, (char));
 extern void FDECL(scan_map, (char *));
-extern void NDECL(wallify_map);
-extern bool NDECL(check_subrooms);
+extern void wallify_map();
+extern bool check_subrooms();
 extern void FDECL(check_coord, (int,int,const char *));
-extern void NDECL(store_part);
-extern void NDECL(store_room);
+extern void store_part();
+extern void store_room();
 extern bool FDECL(write_level_file, (char *,splev *,specialmaze *));
 extern void FDECL(free_rooms, (splev *));
 

@@ -7,8 +7,8 @@
 
 #define E extern
 
-E int NDECL((*occupation));
-E int NDECL((*afternmv));
+E int (*occupation)();
+E int (*afternmv)();
 
 E const char *hname;
 E int hackpid;

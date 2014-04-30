@@ -6,11 +6,11 @@
 
 #include "hack.h"
 
-STATIC_DCL void NDECL(dowatersnakes);
-STATIC_DCL void NDECL(dowaterdemon);
-STATIC_DCL void NDECL(dowaternymph);
+STATIC_DCL void dowatersnakes();
+STATIC_DCL void dowaterdemon();
+STATIC_DCL void dowaternymph();
 STATIC_PTR void FDECL(gush, (int,int,genericptr_t));
-STATIC_DCL void NDECL(dofindgem);
+STATIC_DCL void dofindgem();
 
 void floating_above(const char *what) {
     You("are floating high above the %s.", what);

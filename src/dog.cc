@@ -9,7 +9,7 @@
 
 #ifdef OVLB
 
-STATIC_DCL int NDECL(pet_type);
+STATIC_DCL int pet_type();
 
 void initedog(struct Monster *mtmp) {
 	mtmp->mtame = is_domestic(mtmp->data) ? 10 : 5;

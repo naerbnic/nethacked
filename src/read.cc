@@ -26,7 +26,7 @@ static const char readable[] =
 static const char all_count[] = { ALLOW_COUNT, ALL_CLASSES, 0 };
 
 static void FDECL(wand_explode, (struct Object *));
-static void NDECL(do_class_genocide);
+static void do_class_genocide();
 static void FDECL(stripspe,(struct Object *));
 static void FDECL(p_glow1,(struct Object *));
 static void FDECL(p_glow2,(struct Object *,const char *));

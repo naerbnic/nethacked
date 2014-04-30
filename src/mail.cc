@@ -450,7 +450,7 @@ void readmail(struct Object *otmp) {
 
 # ifdef VMS
 
-extern NDECL(struct mail_info *parse_next_broadcast);
+extern struct mail_info *parse_next_broadcast();
 
 volatile int broadcasts = 0;
 

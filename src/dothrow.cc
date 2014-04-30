@@ -10,7 +10,7 @@
 #include "edog.h"
 
 STATIC_DCL int FDECL(throw_obj, (struct Object *,int));
-STATIC_DCL void NDECL(autoquiver);
+STATIC_DCL void autoquiver();
 STATIC_DCL int FDECL(gem_accept, (struct Monster *, struct Object *));
 STATIC_DCL void FDECL(tmiss, (struct Object *, struct Monster *));
 STATIC_DCL int FDECL(throw_gold, (struct Object *));

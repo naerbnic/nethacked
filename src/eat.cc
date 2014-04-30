@@ -15,18 +15,18 @@
 # endif
 #endif
 
-STATIC_PTR int NDECL(eatmdone);
-STATIC_PTR int NDECL(eatfood);
+STATIC_PTR int eatmdone();
+STATIC_PTR int eatfood();
 STATIC_PTR void FDECL(costly_tin, (const char*));
-STATIC_PTR int NDECL(opentin);
-STATIC_PTR int NDECL(unfaint);
+STATIC_PTR int opentin();
+STATIC_PTR int unfaint();
 
 #ifdef OVLB
 STATIC_DCL const char *FDECL(food_xname, (struct Object *,bool));
 STATIC_DCL void FDECL(choke, (struct Object *));
-STATIC_DCL void NDECL(recalc_wt);
+STATIC_DCL void recalc_wt();
 STATIC_DCL struct Object *FDECL(touchfood, (struct Object *));
-STATIC_DCL void NDECL(do_reset_eat);
+STATIC_DCL void do_reset_eat();
 STATIC_DCL void FDECL(done_eating, (bool));
 STATIC_DCL void FDECL(cprefx, (int));
 STATIC_DCL int FDECL(intrinsic_possible, (int,struct permonst *));
@@ -38,10 +38,10 @@ STATIC_DCL void FDECL(start_eating, (struct Object *));
 STATIC_DCL void FDECL(fprefx, (struct Object *));
 STATIC_DCL void FDECL(accessory_has_effect, (struct Object *));
 STATIC_DCL void FDECL(fpostfx, (struct Object *));
-STATIC_DCL int NDECL(bite);
+STATIC_DCL int bite();
 STATIC_DCL int FDECL(edibility_prompts, (struct Object *));
 STATIC_DCL int FDECL(rottenfood, (struct Object *));
-STATIC_DCL void NDECL(eatspecial);
+STATIC_DCL void eatspecial();
 STATIC_DCL void FDECL(eataccessory, (struct Object *));
 STATIC_DCL const char *FDECL(foodword, (struct Object *));
 STATIC_DCL bool FDECL(maybe_cannibal, (int,bool));

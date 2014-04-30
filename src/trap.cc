@@ -9,7 +9,7 @@
 extern const char * const destroy_strings[];	/* from zap.c */
 
 STATIC_DCL void FDECL(dofiretrap, (struct Object *));
-STATIC_DCL void NDECL(domagictrap);
+STATIC_DCL void domagictrap();
 STATIC_DCL bool FDECL(emergency_disrobe,(bool *));
 STATIC_DCL int FDECL(untrap_prob, (struct trap *ttmp));
 STATIC_DCL void FDECL(cnv_trap_obj, (int, int, struct trap *));

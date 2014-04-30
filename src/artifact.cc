@@ -50,7 +50,7 @@ static bool artiexist[1+NROFARTIFACTS+1];
 /* and a discovery list for them (no dummy first entry here) */
 STATIC_OVL xchar artidisco[NROFARTIFACTS];
 
-STATIC_DCL void NDECL(hack_artifacts);
+STATIC_DCL void hack_artifacts();
 STATIC_DCL bool FDECL(attacks, (int,struct Object *));
 
 /* handle some special cases; must be called after u_init() */

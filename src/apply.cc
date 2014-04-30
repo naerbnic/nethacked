@@ -33,7 +33,7 @@ STATIC_DCL void FDECL(use_figurine, (struct Object **));
 STATIC_DCL void FDECL(use_grease, (struct Object *));
 STATIC_DCL void FDECL(use_trap, (struct Object *));
 STATIC_DCL void FDECL(use_stone, (struct Object *));
-STATIC_PTR int NDECL(set_trap);		/* occupation callback */
+STATIC_PTR int set_trap();		/* occupation callback */
 STATIC_DCL int FDECL(use_whip, (struct Object *));
 STATIC_DCL int FDECL(use_pole, (struct Object *));
 STATIC_DCL int FDECL(use_cream_pie, (struct Object *));
@@ -41,7 +41,7 @@ STATIC_DCL int FDECL(use_grapple, (struct Object *));
 STATIC_DCL int FDECL(do_break_wand, (struct Object *));
 STATIC_DCL bool FDECL(figurine_location_checks,
 				(struct Object *, coord *, bool));
-STATIC_DCL bool NDECL(uhave_graystone);
+STATIC_DCL bool uhave_graystone();
 STATIC_DCL void FDECL(add_class, (char *, char));
 
 #ifdef	AMIGA

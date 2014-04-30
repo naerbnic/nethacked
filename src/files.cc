@@ -38,13 +38,13 @@ char SAVEF[SAVESIZE];	/* holds relative path of save file from playground */
 #ifdef WIZARD
 #define WIZKIT_MAX 128
 static char wizkit[WIZKIT_MAX];
-STATIC_DCL FILE *NDECL(fopen_wizkit_file);
+STATIC_DCL FILE *fopen_wizkit_file();
 #endif
 
 extern int n_dgns;		/* from dungeon.c */
 
 STATIC_DCL char *FDECL(set_bonesfile_name, (char *,d_level*));
-STATIC_DCL char *NDECL(set_bonestemp_name);
+STATIC_DCL char *set_bonestemp_name();
 #ifdef COMPRESS
 STATIC_DCL void FDECL(redirect, (const char *,const char *,FILE *,bool));
 STATIC_DCL void FDECL(docompress_file, (const char *,bool));

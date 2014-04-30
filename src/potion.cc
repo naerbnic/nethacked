@@ -14,7 +14,7 @@ static const char beverages[] = { POTION_CLASS, 0 };
 
 STATIC_DCL long FDECL(itimeout, (long));
 STATIC_DCL long FDECL(itimeout_incr, (long,int));
-STATIC_DCL void NDECL(ghost_from_bottle);
+STATIC_DCL void ghost_from_bottle();
 STATIC_DCL short FDECL(mixtype, (struct Object *,struct Object *));
 
 /* force `val' to be within valid range for intrinsic timeout value */

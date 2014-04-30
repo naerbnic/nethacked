@@ -59,7 +59,7 @@ STATIC_DCL void FDECL(print_branch, (winid, int, int, int, bool, struct lchoice 
 
 #ifdef DEBUG
 #define DD	dungeons[i]
-STATIC_DCL void NDECL(dumpit);
+STATIC_DCL void dumpit();
 
 STATIC_OVL void dumpit() {
 	int	i;

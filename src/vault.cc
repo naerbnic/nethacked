@@ -7,7 +7,7 @@
 #include "hack.h"
 #include "vault.h"
 
-STATIC_DCL struct Monster *NDECL(findgd);
+STATIC_DCL struct Monster *findgd();
 
 #define g_monnam(mtmp) \
 	x_monnam(mtmp, ARTICLE_NONE, (char *)0, SUPPRESS_IT, FALSE)

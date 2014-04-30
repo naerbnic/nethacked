@@ -8,7 +8,7 @@
 
 STATIC_DCL bool FDECL(tele_jump_ok, (int,int,int,int));
 STATIC_DCL bool FDECL(teleok, (int,int,bool));
-STATIC_DCL void NDECL(vault_tele);
+STATIC_DCL void vault_tele();
 STATIC_DCL bool FDECL(rloc_pos_ok, (int,int,struct Monster *));
 STATIC_DCL void FDECL(mvault_tele, (struct Monster *));
 

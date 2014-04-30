@@ -6,7 +6,7 @@
 
 #include "hack.h"
 
-STATIC_DCL const char *NDECL(dev_name);
+STATIC_DCL const char *dev_name();
 STATIC_DCL void FDECL(get_mplname, (struct Monster *, char *));
 STATIC_DCL void FDECL(mk_mplayer_armor, (struct Monster *, short));
 
