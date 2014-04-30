@@ -73,8 +73,8 @@ E int spec_dbon(struct Object *,struct Monster *,int);
 E void discover_artifact(xchar);
 E bool undiscovered_artifact(xchar);
 E int disp_artifact_discoveries(winid);
-E bool FDECL(artifact_hit, (struct Monster *,struct Monster *,
-				struct Object *,int *,int));
+E bool artifact_hit(struct Monster *,struct Monster *,
+				struct Object *,int *,int);
 E int doinvoke();
 E void arti_speak(struct Object *);
 E bool artifact_light(struct Object *);
@@ -109,8 +109,8 @@ E void placebc();
 E void unplacebc();
 E void set_bc(int);
 E void move_bc(int,int,xchar,xchar,xchar,xchar);
-E bool FDECL(drag_ball, (xchar,xchar,
-		int *,xchar *,xchar *,xchar *,xchar *, bool *,bool));
+E bool drag_ball(xchar,xchar,
+		int *,xchar *,xchar *,xchar *,xchar *, bool *,bool);
 E void drop_ball(xchar,xchar);
 E void drag_down();
 
@@ -318,8 +318,8 @@ E int doup();
 E void save_currentstate();
 #endif
 E void goto_level(d_level *,bool,bool,bool);
-E void FDECL(schedule_goto, (d_level *,bool,bool,int,
-			     const char *,const char *));
+E void schedule_goto(d_level *,bool,bool,int,
+			     const char *,const char *);
 E void deferred_goto();
 E bool revive_corpse(struct Object *);
 E void revive_mon(genericptr_t, long);
@@ -355,8 +355,8 @@ E const char *rndcolor();
 #ifdef REINCARNATION
 E const char *roguename();
 #endif
-E struct Object *FDECL(realloc_obj,
-		(struct Object *, int, genericptr_t, int, const char *));
+E struct Object *realloc_obj(
+    struct Object *, int, genericptr_t, int, const char *);
 E char *coyotename(struct Monster *,char *);
 
 /* ### do_wear.c ### */
@@ -776,8 +776,8 @@ E int ckunpaid(struct Object *);
 E void addinv_core1(struct Object *);
 E void addinv_core2(struct Object *);
 E struct Object *addinv(struct Object *);
-E struct Object *FDECL(hold_another_object,
-			(struct Object *,const char *,const char *,const char *));
+E struct Object *hold_another_object(
+    struct Object *,const char *,const char *,const char *);
 E void useupall(struct Object *);
 E void useup(struct Object *);
 E void consume_obj_charge(struct Object *,bool);
@@ -799,8 +799,8 @@ E int ggetobj(const char *,int (*)(Object*),int,bool,unsigned *);
 E void fully_identify_obj(struct Object *);
 E int identify(struct Object *);
 E void identify_pack(int);
-E int FDECL(askchain, (struct Object **,const char *,int,int (*)(Object*),
-			int (*)(Object*),int,const char *));
+E int askchain(struct Object **,const char *,int,int (*)(Object*),
+			int (*)(Object*),int,const char *);
 E void prinv(const char *,struct Object *,long);
 E char *xprname(struct Object *,const char *,char,bool,long,long);
 E int ddoinv();
@@ -1011,8 +1011,8 @@ E int do_comp(genericptr_t,genericptr_t);
 #endif
 E void sort_rooms();
 E void add_room(int,int,int,int,bool,schar,bool);
-E void FDECL(add_subroom, (struct mkroom *,int,int,int,int,
-			   bool,schar,bool));
+E void add_subroom(struct mkroom *,int,int,int,int,
+			   bool,schar,bool);
 E void makecorridors();
 E void add_door(int,int,struct mkroom *);
 E void mklev();
@@ -1043,9 +1043,9 @@ E void mazexy(coord *);
 E void bound_digging();
 E void mkportal(xchar,xchar,xchar,xchar);
 E bool bad_location(xchar,xchar,xchar,xchar,xchar,xchar);
-E void FDECL(place_lregion, (xchar,xchar,xchar,xchar,
+E void place_lregion(xchar,xchar,xchar,xchar,
 			     xchar,xchar,xchar,xchar,
-			     xchar,d_level *));
+			     xchar,d_level *);
 E void movebubbles();
 E void water_friction();
 E void save_waterlevel(int,int);
@@ -1065,13 +1065,13 @@ E struct Object *mksobj(int,bool,bool);
 E int bcsign(struct Object *);
 E int weight(struct Object *);
 E struct Object *mkgold(long,int,int);
-E struct Object *FDECL(mkcorpstat,
-		(int,struct Monster *,struct permonst *,int,int,bool));
+E struct Object *mkcorpstat(
+    int,struct Monster *,struct permonst *,int,int,bool);
 E struct Object *obj_attach_mid(struct Object *, unsigned);
 E struct Monster *get_mtraits(struct Object *, bool);
 E struct Object *mk_tt_object(int,int,int);
-E struct Object *FDECL(mk_named_object,
-			(int,struct permonst *,int,int,const char *));
+E struct Object *mk_named_object(
+    int,struct permonst *,int,int,const char *);
 E struct Object *rnd_treefruit_at(int, int);
 E void start_corpse_timeout(struct Object *);
 E void bless(struct Object *);
@@ -1229,8 +1229,8 @@ E void monstr_init();
 
 /* ### mplayer.c ### */
 
-E struct Monster *FDECL(mk_mplayer, (struct permonst *,xchar,
-				   xchar,bool));
+E struct Monster *mk_mplayer(struct permonst *,xchar,
+				   xchar,bool);
 E void create_mplayers(int,bool);
 E void mplayer_talk(struct Monster *);
 
@@ -1489,8 +1489,8 @@ E void getlock();
 E int FDECL(collect_obj_classes,
 	(char *,struct Object *,bool,bool (*)(Object*), int *));
 #else
-E int FDECL(collect_obj_classes,
-	(char *,struct Object *,bool,bool,bool (*)(Object*), int *));
+E int collect_obj_classes(
+    char *,struct Object *,bool,bool,bool (*)(Object*), int *);
 #endif
 E void add_valid_menu_class(int);
 E bool allow_all(struct Object *);
@@ -1503,17 +1503,17 @@ E int out_container(struct Object *);
 #endif
 E int pickup(int);
 E int pickup_object(struct Object *, long, bool);
-E int FDECL(query_category, (const char *, struct Object *, int,
-				menu_item **, int));
-E int FDECL(query_objlist, (const char *, struct Object *, int,
-				menu_item **, int, bool (*)(Object*)));
+E int query_category(const char *, struct Object *, int,
+				menu_item **, int);
+E int query_objlist(const char *, struct Object *, int,
+				menu_item **, int, bool (*)(Object*));
 E struct Object *pick_obj(struct Object *);
 E int encumber_msg();
 E int doloot();
 E int use_container(struct Object *,int);
 E int loot_mon(struct Monster *,int *,bool *);
-E const char *FDECL(safe_qbuf, (const char *,unsigned,
-				const char *,const char *,const char *));
+E const char *safe_qbuf(const char *,unsigned,
+				const char *,const char *,const char *);
 E bool is_autopickup_exception(struct Object *, bool);
 
 /* ### pline.c ### */
@@ -1602,8 +1602,8 @@ E void altar_wrath(int,int);
 
 /* ### priest.c ### */
 
-E int FDECL(move_special, (struct Monster *,bool,schar,bool,bool,
-			   xchar,xchar,xchar,xchar));
+E int move_special(struct Monster *,bool,schar,bool,bool,
+			   xchar,xchar,xchar,xchar);
 E char temple_occupied(char *);
 E int pri_move(struct Monster *);
 E void priestini(d_level *,struct mkroom *,int,int,bool);
@@ -1612,8 +1612,8 @@ E bool p_coaligned(struct Monster *);
 E struct Monster *findpriest(char);
 E void intemple(int);
 E void priest_talk(struct Monster *);
-E struct Monster *FDECL(mk_roamer, (struct permonst *,ALIGNTYP_P,
-				  xchar,xchar,bool));
+E struct Monster *mk_roamer(struct permonst *,ALIGNTYP_P,
+				  xchar,xchar,bool);
 E void reset_hostility(struct Monster *);
 E bool in_your_sanctuary(struct Monster *,xchar,xchar);
 E void ghod_hitsu(struct Monster *);
@@ -1882,8 +1882,8 @@ E void play_sound_for_message(const char *);
 /* ### sp_lev.c ### */
 
 E bool check_room(xchar *,xchar *,xchar *,xchar *,bool);
-E bool FDECL(create_room, (xchar,xchar,xchar,xchar,
-			      xchar,xchar,xchar,xchar));
+E bool create_room(xchar,xchar,xchar,xchar,
+			      xchar,xchar,xchar,xchar);
 E void create_secret_door(struct mkroom *,xchar);
 E bool dig_corridor(coord *,coord *,bool,schar,schar);
 E void fill_room(struct mkroom *,bool);
@@ -2018,8 +2018,7 @@ E void grease_protect(struct Object *,const char *,struct Monster *);
 E struct trap *maketrap(int,int,int);
 E void fall_through(bool);
 E struct Monster *animate_statue(struct Object *,xchar,xchar,int,int *);
-E struct Monster *FDECL(activate_statue_trap,
-			(struct trap *,xchar,xchar,bool));
+E struct Monster *activate_statue_trap(struct trap *,xchar,xchar,bool);
 E void dotrap(struct trap *, unsigned);
 E void seetrap(struct trap *);
 E int mintrap(struct Monster *);
@@ -2128,8 +2127,7 @@ E int doextversion();
 #ifdef MICRO
 E bool comp_times(long);
 #endif
-E bool FDECL(check_version, (struct version_info *,
-				const char *,bool));
+E bool check_version(struct version_info *, const char *,bool);
 E unsigned long get_feature_notice_ver(char *);
 E unsigned long get_current_feature_ver();
 #ifdef RUNTIME_PORT_ID
@@ -2158,8 +2156,7 @@ E void vision_recalc(int);
 E void block_point(int,int);
 E void unblock_point(int,int);
 E bool clear_path(int,int,int,int);
-E void FDECL(do_clear_area, (int,int,int,
-			     void (*)(int,int,genericptr_t),genericptr_t));
+E void do_clear_area(int,int,int, void (*)(int,int,genericptr_t),genericptr_t);
 
 #ifdef VMS
 
@@ -2333,8 +2330,7 @@ E void setworn(struct Object *,long);
 E void setnotworn(struct Object *);
 E void mon_set_minvis(struct Monster *);
 E void mon_adjust_speed(struct Monster *,int,struct Object *);
-E void FDECL(update_mon_intrinsics,
-		(struct Monster *,struct Object *,bool,bool));
+E void update_mon_intrinsics(struct Monster *,struct Object *,bool,bool);
 E int find_mac(struct Monster *);
 E void m_dowear(struct Monster *,bool);
 E struct Object *which_armor(struct Monster *,long);
@@ -2369,15 +2365,14 @@ E int zappable(struct Object *);
 E void zapnodir(struct Object *);
 E int dozap();
 E int zapyourself(struct Object *,bool);
-E bool FDECL(cancel_monst, (struct Monster *,struct Object *,
-			       bool,bool,bool));
+E bool cancel_monst(struct Monster *,struct Object *, bool,bool,bool);
 E void weffects(struct Object *);
 E int spell_damage_bonus();
 E const char *exclam(int force);
 E void hit(const char *,struct Monster *,const char *);
 E void miss(const char *,struct Monster *);
-E struct Monster *FDECL(bhit, (int,int,int,int,int (*)(Monster*,Object*),
-			     int (*)(Object*,Object*),struct Object *, bool *));
+E struct Monster *bhit(int,int,int,int,int (*)(Monster*,Object*),
+			     int (*)(Object*,Object*),struct Object *, bool *);
 E struct Monster *boomhit(int,int);
 E int burn_floor_paper(int,int,bool,bool);
 E void buzz(int,int,xchar,xchar,int,int);

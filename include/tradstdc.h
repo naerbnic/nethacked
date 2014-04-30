@@ -18,8 +18,7 @@
  * trampoli.* mechanism conflicts with the ANSI <<f(void)>> syntax.
  */
 
-#define FDECL(f,p)	f p
-#define VDECL(f,p)	f p
+//#define FDECL(f,p)	f p
 typedef void* genericptr_t;
 
 /*
