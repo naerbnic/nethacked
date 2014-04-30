@@ -21,10 +21,6 @@ extern void ami_wininit_data();
 #ifdef WIN32_GRAPHICS
 extern struct window_procs win32_procs;
 #endif
-#ifdef GNOME_GRAPHICS
-#include "winGnome.h"
-extern struct window_procs Gnome_procs;
-#endif
 #ifdef MSWIN_GRAPHICS
 extern struct window_procs mswin_procs;
 #endif
@@ -53,9 +49,6 @@ struct win_choices {
 #endif
 #ifdef WIN32_GRAPHICS
     { &win32_procs, 0 },
-#endif
-#ifdef GNOME_GRAPHICS
-    { &Gnome_procs, 0 },
 #endif
 #ifdef MSWIN_GRAPHICS
     { &mswin_procs, 0 },

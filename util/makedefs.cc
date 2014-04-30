@@ -710,9 +710,6 @@ static const char *window_opts[] = {
 #ifdef TTY_GRAPHICS
 		"traditional tty-based graphics",
 #endif
-#ifdef GNOME_GRAPHICS
-		"Gnome",
-#endif
 #ifdef AMIGA_INTUITION
 		"Amiga Intuition",
 #endif

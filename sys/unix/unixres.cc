@@ -162,10 +162,4 @@ gid_t nh_getegid() {
 
 #else	/* GETRES_SUPPORT */
 
-# ifdef GNOME_GRAPHICS 
-int hide_privileges(bool flag) {
-    return 0;
-}
-# endif
-
 #endif	/* GETRES_SUPPORT */

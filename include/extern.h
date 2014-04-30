@@ -1941,14 +1941,6 @@ E int child(int);
 # endif
 #endif /* UNIX */
 
-/* ### unixres.c ### */
-
-#ifdef UNIX
-# ifdef GNOME_GRAPHICS 
-E int hide_privileges(bool);
-# endif
-#endif /* UNIX */
-
 /* ### vault.c ### */
 
 E bool grddead(struct Monster *);
