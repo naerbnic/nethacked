@@ -1017,11 +1017,6 @@ STATIC_OVL FILE * fopen_config_file(const char *filename) {
 		}
 	}
 
-#if defined(__BEOS__)
-	if ((fp = fopenp(fqname(configfile, CONFIGPREFIX, 0), "r"))
-								!= (FILE *)0)
-		return(fp);
-#else
 	/* constructed full path names don't need fqname() */
 	envp = nh_getenv("HOME");
 	if (!envp)
@@ -1053,7 +1048,6 @@ STATIC_OVL FILE * fopen_config_file(const char *filename) {
 	    wait_synch();
 	}
 # endif
-#endif
 	return (FILE *)0;
 
 }
@@ -1353,11 +1347,6 @@ STATIC_OVL FILE * fopen_wizkit_file() {
 	    wait_synch();
 	}
 
-#if defined(__BEOS__)
-	if ((fp = fopenp(fqname(wizkit, CONFIGPREFIX, 0), "r"))
-								!= (FILE *)0)
-		return(fp);
-#else
 	envp = nh_getenv("HOME");
 	if (envp)
 		sprintf(tmp_wizkit, "%s/%s", envp, wizkit);
@@ -1371,7 +1360,6 @@ STATIC_OVL FILE * fopen_wizkit_file() {
 					tmp_wizkit, errno);
 		wait_synch();
 	}
-#endif
 	return (FILE *)0;
 }
 

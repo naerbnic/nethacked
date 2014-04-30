@@ -839,14 +839,14 @@ E void silly_thing(const char *,struct Object *);
 
 /* ### ioctl.c ### */
 
-#if defined(UNIX) || defined(__BEOS__)
+#if defined(UNIX)
 E void getwindowsz();
 E void getioctls();
 E void setioctls();
 # ifdef SUSPEND
 E int dosuspend();
 # endif /* SUSPEND */
-#endif /* UNIX || __BEOS__ */
+#endif /* UNIX */
 
 /* ### light.c ### */
 
@@ -1968,14 +1968,14 @@ E void port_help();
 
 /* ### unixtty.c ### */
 
-#if defined(UNIX) || defined(__BEOS__)
+#if defined(UNIX)
 E void gettty();
 E void settty(const char *);
 E void setftty();
 E void intron();
 E void introff();
 E void error(const char *,...) PRINTF_F(1,2);
-#endif /* UNIX || __BEOS__ */
+#endif /* UNIX */
 
 /* ### unixunix.c ### */
 

@@ -1,7 +1,6 @@
 To Be Removed:
-MSDOS
-__BEOS__
 MAC
+mac
 OS2
 THINK_C
 __MWERKS__
@@ -45,3 +44,5 @@ MICRO - Microsoftesque OSes
 WIN32CON - Win32 Console
 VMS - Ancient VMS OS
 AMIGA - Amiga machine
+MSDOS - MSDOS machine
+__BEOS__ - BeOS machine
