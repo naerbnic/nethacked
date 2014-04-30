@@ -1,8 +1,8 @@
 To Be Removed:
-AMIGA - Amiga machine
 MSDOS
 __BEOS__
 MAC
+OS2
 THINK_C
 __MWERKS__
 QT_GRAPHICS
@@ -44,3 +44,4 @@ OVERLAY - Separately loadable binary overlays
 MICRO - Microsoftesque OSes
 WIN32CON - Win32 Console
 VMS - Ancient VMS OS
+AMIGA - Amiga machine
