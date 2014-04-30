@@ -6,5 +6,5 @@ include_rules
 : foreach *.cc | ../include/pm.h ../include/onames.h ../include/date.h |> !cc |>
 : foreach *.c |> !cc |>
 
-: *.o ../entitylib/monst.o ../entitylib/objects.o ../sys/unix/unixmain.o ../win/tty/tty.a ../sys/share/sysshare.a ../sys/unix/sysunix.a ../cxx/cxx.a |> g++ -o %o -lcurses %f |> nethacked
+: *.o ../entitylib/monst.o ../entitylib/objects.o ../sys/unix/unixmain.o ../win/tty/tty.a ../sys/share/sysshare.a ../sys/unix/sysunix.a |> g++ -o %o -lcurses %f |> nethacked
 : alloc.o decl.o drawing.o |> ar rcs %o %f |> base.a

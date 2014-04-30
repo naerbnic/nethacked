@@ -17,11 +17,28 @@ namespace str_format_internal {
   using std::string;
 
   char const* FindNextFmtStart(char const* curr, char const* end) {
-    return nullptr;
+    // TODO: Add formatting for "%%"
+    while (curr < end) {
+      if (*curr == '%') {
+        return curr;
+      }
+      curr++;
+    }
+    return end;
   }
 
   char const* ParseFmt(char const* curr, char const* end) {
-    return nullptr;
+    if (end - curr < 2) {
+      return nullptr;
+    }
+
+    switch (curr[1]) {
+    case 's':
+      return curr + 2;
+
+    default:
+      return nullptr;
+    }
   }
 
   template <typename Type, typename = void>
@@ -31,6 +48,17 @@ namespace str_format_internal {
   template <>
   struct TypeFormatter<string> {
     static void WriteFormat(string* output, string const& arg, string const& fmt) {
+      if (fmt != "%s") {
+        panic("Bad string format directive: %s", fmt.c_str());
+      }
+
+      output->append(arg);
+    }
+  };
+
+  template <>
+  struct TypeFormatter<char const*> {
+    static void WriteFormat(string* output, char const* arg, string const& fmt) {
       if (fmt != "%s") {
         panic("Bad string format directive: %s", fmt.c_str());
       }
@@ -51,15 +79,12 @@ namespace str_format_internal {
         Head head, Rest... rest) {
       char const* start_fmt_ptr = FindNextFmtStart(curr_ptr, end_ptr);
       if (start_fmt_ptr == end_ptr) {
-        panic("Too many arguments to StrFormat");
+        panic("Too many arguments");
       }
 
-      while (curr_ptr < start_fmt_ptr) {
-        output->push_back(*curr_ptr);
-        ++curr_ptr;
-      }
+      output->append(curr_ptr, start_fmt_ptr);
 
-      char const* end_fmt_ptr = ParseFmt(curr_ptr, end_ptr);
+      char const* end_fmt_ptr = ParseFmt(start_fmt_ptr, end_ptr);
 
       if (end_fmt_ptr == nullptr) {
         panic("Badly formatted directive");
@@ -80,13 +105,10 @@ namespace str_format_internal {
       // We shouldn't have any more formatting terms
       char const* start_fmt_ptr = FindNextFmtStart(curr_ptr, end_ptr);
       if (start_fmt_ptr != end_ptr) {
-        panic("Too many format directives");
+        panic("Too few arguments");
       }
 
-      while (curr_ptr < end_ptr) {
-        output->push_back(*curr_ptr);
-        ++curr_ptr;
-      }
+      output->append(curr_ptr, end_ptr);
     }
   };
 }
