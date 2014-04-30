@@ -273,9 +273,6 @@ struct instance_flags {
 #endif
 #define hilite_pet wc_hilite_pet
 #define use_inverse wc_inverse
-#ifdef MAC_GRAPHICS_ENV
-#define large_font obsolete
-#endif
 #define preload_tiles wc_preload_tiles
 
 extern struct flag flags;

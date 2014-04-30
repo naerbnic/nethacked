@@ -1,5 +1,4 @@
 To Be Removed:
-MFLOPPY
 PCMUSIC - PC Speaker
 MAC_GRAPHICS_ENV
 X11_GRAPHICS
@@ -49,3 +48,4 @@ __BEOS__ - BeOS machine
 MAC - Macintosh
 OS2 - OS/2 machine
 QT_GRAPHICS
+MFLOPPY - For floppy-based machines
