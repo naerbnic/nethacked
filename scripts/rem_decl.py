@@ -20,7 +20,7 @@ def find_matching_close(s, index):
         return -1
 
 argdecl_re = re.compile(r'\b(F|V)DECL\(')
-ndecl_re = re.compile(r'\bNDECL\(')
+ndecl_re = re.compile(r'\bNDECL\s*\(')
 
 def process_lines(lines_arg):
     lines = lines_arg[:]
