@@ -12,9 +12,6 @@
 extern struct window_procs X11_procs;
 extern void win_X11_init();
 #endif
-#ifdef QT_GRAPHICS
-extern struct window_procs Qt_procs;
-#endif
 #ifdef GEM_GRAPHICS
 #include "wingem.h"
 #endif
@@ -52,9 +49,6 @@ struct win_choices {
 #endif
 #ifdef X11_GRAPHICS
     { &X11_procs, win_X11_init },
-#endif
-#ifdef QT_GRAPHICS
-    { &Qt_procs, 0 },
 #endif
 #ifdef GEM_GRAPHICS
     { &Gem_procs, win_Gem_init },

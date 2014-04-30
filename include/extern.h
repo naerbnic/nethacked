@@ -627,18 +627,12 @@ E const char *fqname(const char *, int, int);
 E FILE *fopen_datafile(const char *,const char *,int);
 E bool uptodate(int,const char *);
 E void store_version(int);
-#ifdef MFLOPPY
-E void set_lock_and_bones();
-#endif
 E void set_levelfile_name(char *,int);
 E int create_levelfile(int,char *);
 E int open_levelfile(int,char *);
 E void delete_levelfile(int);
 E void clearlocks();
 E int create_bonesfile(d_level*,char **, char *);
-#ifdef MFLOPPY
-E void cancel_bonesfile();
-#endif
 E void commit_bonesfile(d_level *);
 E int open_bonesfile(d_level*,char **);
 E int delete_bonesfile(d_level*);
@@ -1628,13 +1622,7 @@ E int dosave0();
 #ifdef INSURANCE
 E void savestateinlock();
 #endif
-#ifdef MFLOPPY
-E bool savelev(int,xchar,int);
-E bool swapin_file(int);
-E void co_false();
-#else
 E void savelev(int,xchar,int);
-#endif
 E void bufon(int);
 E void bufoff(int);
 E void bflush(int);

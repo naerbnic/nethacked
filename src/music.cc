@@ -48,9 +48,6 @@ STATIC_DCL void playinit();
 STATIC_DCL void playstring(char *,size_t);
 STATIC_DCL void speaker(struct Object *,char *);
 #endif
-#ifdef PCMUSIC
-void  pc_speaker( struct Object *, char * );
-#endif
 
 /*
  * Wake every monster in range...
@@ -330,7 +327,7 @@ do_pit:		    chasm = maketrap(x,y,PIT);
 
 STATIC_OVL int do_improvisation(struct Object *instr) {
 	int damage, do_spec = !Confusion;
-#if defined(VPIX_MUSIC) || defined (PCMUSIC)
+#if defined(VPIX_MUSIC)
 	struct Object itmp;
 
 	itmp = *instr;
@@ -341,10 +338,7 @@ STATIC_OVL int do_improvisation(struct Object *instr) {
 	if (sco_flag_console)
 	    speaker(&itmp, "C");
 # endif
-#ifdef PCMUSIC
-	  pc_speaker ( &itmp, "C");
-#endif
-#endif /* VPIX_MUSIC || PCMUSIC */
+#endif /* VPIX_MUSIC */
 
 	if (!do_spec)
 	    pline("What you produce is quite far from music...");
@@ -476,9 +470,6 @@ int do_play_instrument(struct Object *instr) {
 #ifdef VPIX_MUSIC
 	if (sco_flag_console)
 	    speaker(instr, buf);
-#endif
-#ifdef PCMUSIC
-	pc_speaker ( instr, buf );
 #endif
 	/* Check if there was the Stronghold drawbridge near
 	 * and if the tune conforms to what we're waiting for.

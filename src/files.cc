@@ -278,11 +278,6 @@ int open_levelfile(int lev, char errbuf[]) {
 	if (errbuf) *errbuf = '\0';
 	set_levelfile_name(lock, lev);
 	fq_lock = fqname(lock, LEVELPREFIX, 0);
-#ifdef MFLOPPY
-	/* If not currently accessible, swap it in. */
-	if (level_info[lev].where != ACTIVE)
-		swapin_file(lev);
-#endif
 # ifdef HOLD_LOCKFILE_OPEN
 	if (lev == 0)
 		fd = open_levelfile_exclusively(fq_lock, lev, O_RDONLY | O_BINARY );
@@ -319,18 +314,12 @@ void delete_levelfile(int lev) {
 
 
 void clearlocks() {
-#if !defined(PC_LOCKING) && defined(MFLOPPY)
-	eraseall(levels, alllevels);
-	if (ramdisk)
-		eraseall(permbones, alllevels);
-#else
 	int x;
 
 	(void) signal(SIGHUP, SIG_IGN);
 	/* can't access maxledgerno() before dungeons are created -dlc */
 	for (x = (n_dgns ? maxledgerno() : 0); x >= 0; x--)
 		delete_levelfile(x);	/* not all levels need be present */
-#endif
 }
 
 #ifdef HOLD_LOCKFILE_OPEN
@@ -439,17 +428,6 @@ int create_bonesfile(d_level *lev, char **bonesid, char errbuf[]) {
 
 	return fd;
 }
-
-#ifdef MFLOPPY
-/* remove partial bonesfile in process of creation */
-void cancel_bonesfile() {
-	const char *tempname;
-
-	tempname = set_bonestemp_name();
-	tempname = fqname(tempname, BONESPREFIX, 0);
-	(void) unlink(tempname);
-}
-#endif /* MFLOPPY */
 
 /* move completed bones file to proper name */
 void commit_bonesfile(d_level *lev) {
@@ -565,10 +543,6 @@ int restore_saved_game() {
 	int fd;
 
 	set_savefile_name();
-#ifdef MFLOPPY
-	if (!saveDiskPrompt(1))
-	    return -1;
-#endif /* MFLOPPY */
 	fq_save = fqname(SAVEF, SAVEPREFIX, 0);
 
 	uncompress(fq_save);
@@ -581,84 +555,8 @@ int restore_saved_game() {
 	return fd;
 }
 
-#if defined(QT_GRAPHICS)
-/*ARGSUSED*/
-static char* plname_from_file(const char* filename) {
-#ifdef STORE_PLNAME_IN_FILE
-    int fd;
-    char* result = 0;
-
-    strcpy(SAVEF,filename);
-#ifdef COMPRESS_EXTENSION
-    SAVEF[strlen(SAVEF)-strlen(COMPRESS_EXTENSION)] = '\0';
-#endif
-    uncompress(SAVEF);
-    if ((fd = open_savefile()) >= 0) {
-	if (uptodate(fd, filename)) {
-	    char tplname[PL_NSIZ];
-	    mread(fd, (genericptr_t) tplname, PL_NSIZ);
-	    result = strdup(tplname);
-	}
-	(void) close(fd);
-    }
-    compress(SAVEF);
-
-    return result;
-#else
-# if defined(QT_GRAPHICS)
-    /* Name not stored in save file, so we have to extract it from
-       the filename, which loses information
-       (eg. "/", "_", and "." characters are lost. */
-    int k;
-    int uid;
-    char name[64]; /* more than PL_NSIZ */
-#ifdef COMPRESS_EXTENSION
-#define EXTSTR COMPRESS_EXTENSION
-#else
-#define EXTSTR ""
-#endif
-    if ( sscanf( filename, "%*[^/]/%d%63[^.]" EXTSTR, &uid, name ) == 2 ) {
-#undef EXTSTR
-    /* "_" most likely means " ", which certainly looks nicer */
-	for (k=0; name[k]; k++)
-	    if ( name[k]=='_' )
-		name[k]=' ';
-	return strdup(name);
-    } else
-# endif
-    {
-	return 0;
-    }
-#endif
-}
-#endif /* defined(QT_GRAPHICS) */
 
 char** get_saved_games() {
-#if defined(QT_GRAPHICS)
-    int myuid=getuid();
-    struct dirent **namelist;
-    int n = scandir("save", &namelist, 0, alphasort);;
-    if ( n > 0 ) {
-	int i,j=0;
-	char** result = (char**)alloc((n+1)*sizeof(char*)); /* at most */
-	for (i=0; i<n; i++) {
-	    int uid;
-	    char name[64]; /* more than PL_NSIZ */
-	    if ( sscanf( namelist[i]->d_name, "%d%63s", &uid, name ) == 2 ) {
-		if ( uid == myuid ) {
-		    char filename[BUFSZ];
-		    char* r;
-		    sprintf(filename,"save/%d%s",uid,name);
-		    r = plname_from_file(filename);
-		    if ( r )
-			result[j++] = r;
-		}
-	    }
-	}
-	result[j++] = 0;
-	return result;
-    } else
-#endif
     {
 	return 0;
     }
@@ -970,9 +868,7 @@ void unlock_file(char const* filename) {
 const char *configfile =
 			".nethackrc";
 
-#ifndef MFLOPPY
 #define fopenp fopen
-#endif
 
 STATIC_OVL FILE * fopen_config_file(const char *filename) {
 	FILE *fp;
@@ -1246,24 +1142,6 @@ int parse_config_line(FILE *fp, char *buf, char *tmp_ramdisk, char *tmp_levels) 
 		sounddir = (char *)strdup(bufp);
 	} else if (match_varname(buf, "SOUND", 5)) {
 		add_sound_mapping(bufp);
-#endif
-#ifdef QT_GRAPHICS
-	/* These should move to wc_ options */
-	} else if (match_varname(buf, "QT_TILEWIDTH", 12)) {
-		extern char *qt_tilewidth;
-		if (qt_tilewidth == NULL)	
-			qt_tilewidth=(char *)strdup(bufp);
-	} else if (match_varname(buf, "QT_TILEHEIGHT", 13)) {
-		extern char *qt_tileheight;
-		if (qt_tileheight == NULL)	
-			qt_tileheight=(char *)strdup(bufp);
-	} else if (match_varname(buf, "QT_FONTSIZE", 11)) {
-		extern char *qt_fontsize;
-		if (qt_fontsize == NULL)
-			qt_fontsize=(char *)strdup(bufp);
-	} else if (match_varname(buf, "QT_COMPACT", 10)) {
-		extern int qt_compact_mode;
-		qt_compact_mode = atoi(bufp);
 #endif
 	} else
 		return 0;

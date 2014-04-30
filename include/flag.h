@@ -19,9 +19,6 @@ struct flag {
 	bool  altmeta;	/* use ALT keys as META */
 	bool  amiflush;	/* kill typeahead */
 #endif
-#ifdef	MFLOPPY
-	bool  asksavedisk;
-#endif
 	bool  autodig;       /* MRKR: Automatically dig */
 	bool  autoquiver;	/* Automatically fill quiver */
 	bool  beginner;

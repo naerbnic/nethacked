@@ -13,11 +13,6 @@
 #include <fcntl.h>
 #endif
 
-#ifdef MFLOPPY
-long bytes_counted;
-static int count_only;
-#endif
-
 #ifdef ZEROCOMP
 STATIC_DCL void bputc(int);
 #endif
@@ -27,11 +22,6 @@ STATIC_DCL void saveobjchn(int,struct Object *,int);
 STATIC_DCL void savemonchn(int,struct Monster *,int);
 STATIC_DCL void savetrapchn(int,struct trap *,int);
 STATIC_DCL void savegamestate(int,int);
-#ifdef MFLOPPY
-STATIC_DCL void savelev0(int,xchar,int);
-STATIC_DCL bool swapout_oldest();
-STATIC_DCL void copyfile(char *,char *);
-#endif /* MFLOPPY */
 #ifdef GCC_WARN
 static long nulls[10];
 #else
@@ -140,34 +130,6 @@ int dosave0() {
 	if(iflags.window_inited)
 	    HUP clear_nhwindow(WIN_MESSAGE);
 
-#ifdef MFLOPPY
-	/* make sure there is enough disk space */
-	if (iflags.checkspace) {
-	    long fds, needed;
-
-	    savelev(fd, ledger_no(&u.uz), COUNT_SAVE);
-	    savegamestate(fd, COUNT_SAVE);
-	    needed = bytes_counted;
-
-	    for (ltmp = 1; ltmp <= maxledgerno(); ltmp++)
-		if (ltmp != ledger_no(&u.uz) && level_info[ltmp].where)
-		    needed += level_info[ltmp].size + (sizeof ltmp);
-	    fds = freediskspace(fq_save);
-	    if (needed > fds) {
-		HUP {
-		    There("is insufficient space on SAVE disk.");
-		    pline("Require %ld bytes but only have %ld.", needed, fds);
-		}
-		flushout();
-		(void) close(fd);
-		(void) delete_savefile();
-		return 0;
-	    }
-
-	    co_false();
-	}
-#endif /* MFLOPPY */
-
 	store_version(fd);
 #ifdef STORE_PLNAME_IN_FILE
 	bwrite(fd, (genericptr_t) plname, PL_NSIZ);
@@ -231,10 +193,6 @@ STATIC_OVL void savegamestate(int fd, int mode) {
         time_t realtime;
 #endif
 
-
-#ifdef MFLOPPY
-	count_only = (mode & COUNT_SAVE);
-#endif
 	uid = getuid();
 	bwrite(fd, (genericptr_t) &uid, sizeof uid);
 	bwrite(fd, (genericptr_t) &flags, sizeof(struct flag));
@@ -361,36 +319,7 @@ void savestateinlock() {
 }
 #endif
 
-#ifdef MFLOPPY
-bool savelev(int fd, xchar lev, int mode) {
-	if (mode & COUNT_SAVE) {
-		bytes_counted = 0;
-		savelev0(fd, lev, COUNT_SAVE);
-		/* probably bytes_counted will be filled in again by an
-		 * immediately following WRITE_SAVE anyway, but we'll
-		 * leave it out of checkspace just in case */
-		if (iflags.checkspace) {
-			while (bytes_counted > freediskspace(levels))
-				if (!swapout_oldest())
-					return FALSE;
-		}
-	}
-	if (mode & (WRITE_SAVE | FREE_SAVE)) {
-		bytes_counted = 0;
-		savelev0(fd, lev, mode);
-	}
-	if (mode != FREE_SAVE) {
-		level_info[lev].where = ACTIVE;
-		level_info[lev].time = moves;
-		level_info[lev].size = bytes_counted;
-	}
-	return TRUE;
-}
-
-STATIC_OVL void savelev0(int fd, xchar lev, int mode)
-#else
 void savelev(int fd, xchar lev, int mode)
-#endif
 {
 #ifdef TOS
 	short tlev;
@@ -409,9 +338,6 @@ void savelev(int fd, xchar lev, int mode)
 	}
 
 	if(fd < 0) panic("Save on bad file!");	/* impossible */
-#ifdef MFLOPPY
-	count_only = (mode & COUNT_SAVE);
-#endif
 	if (lev >= 0 && lev <= maxledgerno())
 	    level_info[lev].flags |= VISITED;
 	bwrite(fd,(genericptr_t) &hackpid,sizeof(hackpid));
@@ -534,11 +460,6 @@ static bool compressing = FALSE;
 }*/
 
 STATIC_OVL void bputc(int c) {
-#ifdef MFLOPPY
-    bytes_counted++;
-    if (count_only)
-      return;
-#endif
     if (outbufp >= sizeof outbuf) {
 	(void) write(bwritefd, outbuf, sizeof outbuf);
 	outbufp = 0;
@@ -569,9 +490,6 @@ void bflush(int fd) {
     if (outrunlength >= 0) {	/* flush run */
 	flushoutrun(outrunlength);
     }
-#ifdef MFLOPPY
-    if (count_only) outbufp = 0;
-#endif
 
     if (outbufp) {
 	if (write(fd, outbuf, outbufp) != outbufp) {
@@ -588,10 +506,6 @@ void bwrite(int fd, genericptr_t loc, unsigned num) {
     unsigned char *bp = (unsigned char *)loc;
 
     if (!compressing) {
-#ifdef MFLOPPY
-	bytes_counted += num;
-	if (count_only) return;
-#endif
 	if ((unsigned) write(fd, loc, num) != num) {
 	    if (program_state.done_hup)
 		terminate(EXIT_FAILURE);
@@ -652,10 +566,6 @@ void bflush(int fd) {
 void bwrite(int fd, genericptr_t loc, unsigned num) {
 	bool failed;
 
-#ifdef MFLOPPY
-	bytes_counted += num;
-	if (count_only) return;
-#endif
 
 	if (buffering) {
 	    if(fd != bw_fd)
@@ -919,95 +829,5 @@ void freedynamicdata() {
 #endif	/* FREE_ALL_MEMORY */
 	return;
 }
-
-#ifdef MFLOPPY
-bool swapin_file(int lev) {
-	char to[PATHLEN], from[PATHLEN];
-
-	sprintf(from, "%s%s", permbones, alllevels);
-	sprintf(to, "%s%s", levels, alllevels);
-	set_levelfile_name(from, lev);
-	set_levelfile_name(to, lev);
-	if (iflags.checkspace) {
-		while (level_info[lev].size > freediskspace(to))
-			if (!swapout_oldest())
-				return FALSE;
-	}
-# ifdef WIZARD
-	if (wizard) {
-		pline("Swapping in `%s'.", from);
-		wait_synch();
-	}
-# endif
-	copyfile(from, to);
-	(void) unlink(from);
-	level_info[lev].where = ACTIVE;
-	return TRUE;
-}
-
-STATIC_OVL bool
-swapout_oldest() {
-	char to[PATHLEN], from[PATHLEN];
-	int i, oldest;
-	long oldtime;
-
-	if (!ramdisk)
-		return FALSE;
-	for (i = 1, oldtime = 0, oldest = 0; i <= maxledgerno(); i++)
-		if (level_info[i].where == ACTIVE
-		&& (!oldtime || level_info[i].time < oldtime)) {
-			oldest = i;
-			oldtime = level_info[i].time;
-		}
-	if (!oldest)
-		return FALSE;
-	sprintf(from, "%s%s", levels, alllevels);
-	sprintf(to, "%s%s", permbones, alllevels);
-	set_levelfile_name(from, oldest);
-	set_levelfile_name(to, oldest);
-# ifdef WIZARD
-	if (wizard) {
-		pline("Swapping out `%s'.", from);
-		wait_synch();
-	}
-# endif
-	copyfile(from, to);
-	(void) unlink(from);
-	level_info[oldest].where = SWAPPED;
-	return TRUE;
-}
-
-STATIC_OVL void copyfile(char *from, char *to) {
-# ifdef TOS
-
-	if (_copyfile(from, to))
-		panic("Can't copy %s to %s", from, to);
-# else
-	char buf[BUFSIZ];	/* this is system interaction, therefore
-				 * BUFSIZ instead of NetHack's BUFSZ */
-	int nfrom, nto, fdfrom, fdto;
-
-	if ((fdfrom = open(from, O_RDONLY | O_BINARY, FCMASK)) < 0)
-		panic("Can't copy from %s !?", from);
-	if ((fdto = open(to, O_WRONLY | O_BINARY | O_CREAT | O_TRUNC, FCMASK)) < 0)
-		panic("Can't copy to %s", to);
-	do {
-		nfrom = read(fdfrom, buf, BUFSIZ);
-		nto = write(fdto, buf, nfrom);
-		if (nto != nfrom)
-			panic("Copyfile failed!");
-	} while (nfrom == BUFSIZ);
-	(void) close(fdfrom);
-	(void) close(fdto);
-# endif /* TOS */
-}
-
-/* see comment in bones.c */
-void co_false() {
-    count_only = FALSE;
-    return;
-}
-
-#endif /* MFLOPPY */
 
 /*save.c*/
