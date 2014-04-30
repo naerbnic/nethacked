@@ -1,5 +1,4 @@
 To Be Removed:
-MICRO
 VMS
 AMIGA
 OVL[0123AB]
@@ -16,10 +15,15 @@ TERMLIB
 MFLOPPY
 ZEROCOMP
 TOS
+AUTOPICKUP_EXCEPTIONS
+NOTERMS
+PORT_DEBUG
+POSITIONBAR
 
 Partially Removed:
-MICRO
+WIN32CON
 
 Graveyard:
 WIN32 - Windows32
 OVERLAY - Separately loadable binary overlays
+MICRO - Microsoftesque OSes

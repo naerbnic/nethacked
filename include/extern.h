@@ -1286,19 +1286,6 @@ E void lan_mail_terminate();
 # endif
 #endif
 
-/* ### nttty.c ### */
-
-#ifdef WIN32CON
-E void get_scr_size();
-E int nttty_kbhit();
-E void nttty_open();
-E void nttty_rubout();
-E int tgetch();
-E int ntposkey(int *, int *, int *);
-E void set_output_mode(int);
-E void synch_cursor();
-#endif
-
 /* ### o_init.c ### */
 
 E void init_objects();

@@ -213,22 +213,6 @@ E void tty_end_screen();
 
 E void genl_outrip(winid,int);
 
-#ifdef NO_TERMS
-# if defined(WIN32CON)
-#  if defined(SCREEN_BIOS) || defined(SCREEN_DJGPPFAST) || defined(WIN32CON)
-#   undef putchar
-#   undef putc
-#   undef puts
-#   define putchar(x) xputc(x)	/* these are in video.c, nttty.c */
-#   define putc(x) xputc(x)
-#   define puts(x) xputs(x)
-#  endif/*SCREEN_BIOS || SCREEN_DJGPPFAST || WIN32CON */
-#  ifdef POSITIONBAR
-E void video_update_positionbar(char *);
-#  endif
-# endif/*MSDOS*/
-#endif/*NO_TERMS*/
-
 #undef E
 
 #endif /* WINTTY_H */

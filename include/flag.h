@@ -263,10 +263,6 @@ struct instance_flags {
 #define AP_LEAVE 0
 #define AP_GRAB	 1
 #endif
-#ifdef WIN32CON
-#define MAX_ALTKEYHANDLER 25
-	char	 altkeyhandler[MAX_ALTKEYHANDLER];
-#endif
 #ifdef REALTIME_ON_BOTL
   bool  showrealtime; /* show actual elapsed time */
 #endif

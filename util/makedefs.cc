@@ -666,11 +666,6 @@ static const char *build_opts[] = {
 # ifdef SCREEN_VGA
 		"screen control via VGA graphics",
 # endif
-# ifndef MSWIN_GRAPHICS
-#  ifdef WIN32CON
-		"screen control via WIN32 console I/O",
-#  endif
-# endif
 #endif
 #ifdef SEDUCE
 		"seduction",
