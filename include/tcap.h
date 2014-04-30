@@ -10,7 +10,7 @@
 #define TERMLIB	/* include termcap code */
 
 /* might display need graphics code? */
-#if !defined(AMIGA) && !defined(TOS)
+#if !defined(TOS)
 # if defined(TERMLIB) || defined(OS2)
 #  define ASCIIGRAPH
 # endif

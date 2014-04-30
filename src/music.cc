@@ -51,9 +51,6 @@ STATIC_DCL void speaker(struct Object *,char *);
 #ifdef PCMUSIC
 void  pc_speaker( struct Object *, char * );
 #endif
-#ifdef AMIGA
-void  amii_speaker( struct Object *, char *, int );
-#endif
 
 /*
  * Wake every monster in range...
@@ -333,16 +330,13 @@ do_pit:		    chasm = maketrap(x,y,PIT);
 
 STATIC_OVL int do_improvisation(struct Object *instr) {
 	int damage, do_spec = !Confusion;
-#if defined(AMIGA) || defined(VPIX_MUSIC) || defined (PCMUSIC)
+#if defined(VPIX_MUSIC) || defined (PCMUSIC)
 	struct Object itmp;
 
 	itmp = *instr;
 	/* if won't yield special effect, make sound of mundane counterpart */
 	if (!do_spec || instr->spe <= 0)
 	    while (objects[itmp.otyp].oc_magic) itmp.otyp -= 1;
-# ifdef AMIGA
-	amii_speaker(&itmp, "Cw", AMII_OKAY_VOLUME);
-# endif
 # ifdef VPIX_MUSIC
 	if (sco_flag_console)
 	    speaker(&itmp, "C");
@@ -350,7 +344,7 @@ STATIC_OVL int do_improvisation(struct Object *instr) {
 #ifdef PCMUSIC
 	  pc_speaker ( &itmp, "C");
 #endif
-#endif /* AMIGA || VPIX_MUSIC || PCMUSIC */
+#endif /* VPIX_MUSIC || PCMUSIC */
 
 	if (!do_spec)
 	    pline("What you produce is quite far from music...");
@@ -469,12 +463,7 @@ int do_play_instrument(struct Object *instr) {
 	    (void)mungspaces(buf);
 	    /* convert to uppercase and change any "H" to the expected "B" */
 	    for (s = buf; *s; s++) {
-#ifndef AMIGA
 		*s = highc(*s);
-#else
-		/* The AMIGA supports two octaves of notes */
-		if (*s == 'h') *s = 'b';
-#endif
 		if (*s == 'H') *s = 'B';
 	    }
 	}
@@ -490,19 +479,6 @@ int do_play_instrument(struct Object *instr) {
 #endif
 #ifdef PCMUSIC
 	pc_speaker ( instr, buf );
-#endif
-#ifdef AMIGA
-	{
-		char nbuf[ 20 ];
-		int i;
-		for( i = 0; buf[i] && i < 5; ++i )
-		{
-			nbuf[ i*2 ] = buf[ i ];
-			nbuf[ (i*2)+1 ] = 'h';
-		}
-		nbuf[ i*2 ] = 0;
-		amii_speaker ( instr , nbuf, AMII_OKAY_VOLUME ) ;
-	}
 #endif
 	/* Check if there was the Stronghold drawbridge near
 	 * and if the tune conforms to what we're waiting for.

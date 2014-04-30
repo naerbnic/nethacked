@@ -33,9 +33,6 @@ static int mon_in_room(struct Monster *mon, int rmtyp) {
 void dosounds() {
     struct mkroom *sroom;
     int hallu, vx, vy;
-#if defined(AMIGA) && defined(AZTEC_C_WORKAROUND)
-    int xx;
-#endif
     struct Monster *mtmp;
 
     if (!flags.soundok || u.uswallow || Underwater) return;
@@ -107,15 +104,8 @@ void dosounds() {
 			for (vy = sroom->ly; vy <= sroom->hy; vy++)
 			    if (g_at(vx, vy))
 				gold_in_vault = TRUE;
-#if defined(AMIGA) && defined(AZTEC_C_WORKAROUND)
-		    /* Bug in aztec assembler here. Workaround below */
-		    xx = ROOM_INDEX(sroom) + ROOMOFFSET;
-		    xx = (xx != vault_occupied(u.urooms));
-		    if(xx)
-#else
 		    if (vault_occupied(u.urooms) !=
 			 (ROOM_INDEX(sroom) + ROOMOFFSET))
-#endif /* AZTEC_C_WORKAROUND */
 		    {
 			if (gold_in_vault)
 			    You_hear(!hallu ? "someone counting money." :

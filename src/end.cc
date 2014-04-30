@@ -58,15 +58,11 @@ extern void nethack_exit(int);
 
 #define done_stopprint program_state.stopprint
 
-#ifdef AMIGA
-# define NH_abort()	Abort(0)
-#else
 # ifdef SYSV
 # define NH_abort()	(void) abort()
 # else
 # define NH_abort()	abort()
 # endif
-#endif
 
 /*
  * The order of these needs to match the macros in hack.h.

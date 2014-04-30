@@ -120,12 +120,11 @@ static const char * const shktools[] = {
 #ifdef OVERLAY
     "Erreip", "Nehpets", "Mron", "Snivek", "Lapu", "Kahztiy",
 #endif
-    // Previously WIN32 specific
+    // Previously Win32 specific
     "Lechaim", "Lexa", "Niod",
-#ifdef AMIGA
+    // Previously Amiga specific
     "Falo", "Nosid-da\'r", "Ekim-p", "Rebrol-nek", "Noslo", "Yl-rednow",
     "Mured-oog", "Ivrajimsal",
-#endif
 #ifdef TOS
     "Nivram",
 #endif

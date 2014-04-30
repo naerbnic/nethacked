@@ -319,7 +319,7 @@ void delete_levelfile(int lev) {
 
 
 void clearlocks() {
-#if !defined(PC_LOCKING) && defined(MFLOPPY) && !defined(AMIGA)
+#if !defined(PC_LOCKING) && defined(MFLOPPY)
 	eraseall(levels, alllevels);
 	if (ramdisk)
 		eraseall(permbones, alllevels);
@@ -949,33 +949,6 @@ bool lock_file(const char *filename, int whichprefix, int retryct) {
 
 	}
 
-#if defined(AMIGA)
-# ifdef AMIGA
-#define OPENFAILURE(fd) (!fd)
-    lockptr = 0;
-# else
-#define OPENFAILURE(fd) (fd < 0)
-    lockptr = -1;
-# endif
-    while (--retryct && OPENFAILURE(lockptr)) {
-	(void)DeleteFile(lockname); /* in case dead process was here first */
-#  ifdef AMIGA
-	lockptr = Open(lockname,MODE_NEWFILE);
-#  else
-	lockptr = open(lockname, O_RDWR|O_CREAT|O_EXCL, S_IWRITE);
-#  endif
-	if (OPENFAILURE(lockptr)) {
-	    raw_printf("Waiting for access to %s.  (%d retries left).",
-			filename, retryct);
-	    Delay(50);
-	}
-    }
-    if (!retryct) {
-	raw_printf("I give up.  Sorry.");
-	nesting--;
-	return FALSE;
-    }
-#endif /* AMIGA || WIN32 */
 	return TRUE;
 }
 
@@ -995,12 +968,6 @@ void unlock_file(char const* filename) {
 # ifdef NO_FILE_LINKS
 		(void) close(lockfd);
 # endif
-
-#if defined(AMIGA)
-		if (lockptr) Close(lockptr);
-		DeleteFile(lockname);
-		lockptr = 0;
-#endif /* AMIGA || WIN32*/
 	}
 
 	nesting--;
@@ -1293,116 +1260,6 @@ int parse_config_line(FILE *fp, char *buf, char *tmp_ramdisk, char *tmp_levels) 
 #ifdef WIZARD
 	} else if (match_varname(buf, "WIZKIT", 6)) {
 	    (void) strncpy(wizkit, bufp, WIZKIT_MAX-1);
-#endif
-#ifdef AMIGA
-	} else if (match_varname(buf, "FONT", 4)) {
-		char *t;
-
-		if( t = strchr( buf+5, ':' ) )
-		{
-		    *t = 0;
-		    amii_set_text_font( buf+5, atoi( t + 1 ) );
-		    *t = ':';
-		}
-	} else if (match_varname(buf, "PATH", 4)) {
-		(void) strncpy(PATH, bufp, PATHLEN-1);
-	} else if (match_varname(buf, "DEPTH", 5)) {
-		extern int amii_numcolors;
-		int val = atoi( bufp );
-		amii_numcolors = 1L << min( DEPTH, val );
-	} else if (match_varname(buf, "DRIPENS", 7)) {
-		int i, val;
-		char *t;
-		for (i = 0, t = strtok(bufp, ",/"); t != (char *)0;
-				i < 20 && (t = strtok((char*)0, ",/")), ++i) {
-			sscanf(t, "%d", &val );
-			flags.amii_dripens[i] = val;
-		}
-	} else if (match_varname(buf, "SCREENMODE", 10 )) {
-		extern long amii_scrnmode;
-		if (!stricmp(bufp,"req"))
-		    amii_scrnmode = 0xffffffff; /* Requester */
-		else if( sscanf(bufp, "%x", &amii_scrnmode) != 1 )
-		    amii_scrnmode = 0;
-	} else if (match_varname(buf, "MSGPENS", 7)) {
-		extern int amii_msgAPen, amii_msgBPen;
-		char *t = strtok(bufp, ",/");
-		if( t )
-		{
-		    sscanf(t, "%d", &amii_msgAPen);
-		    if( t = strtok((char*)0, ",/") )
-				sscanf(t, "%d", &amii_msgBPen);
-		}
-	} else if (match_varname(buf, "TEXTPENS", 8)) {
-		extern int amii_textAPen, amii_textBPen;
-		char *t = strtok(bufp, ",/");
-		if( t )
-		{
-		    sscanf(t, "%d", &amii_textAPen);
-		    if( t = strtok((char*)0, ",/") )
-				sscanf(t, "%d", &amii_textBPen);
-		}
-	} else if (match_varname(buf, "MENUPENS", 8)) {
-		extern int amii_menuAPen, amii_menuBPen;
-		char *t = strtok(bufp, ",/");
-		if( t )
-		{
-		    sscanf(t, "%d", &amii_menuAPen);
-		    if( t = strtok((char*)0, ",/") )
-				sscanf(t, "%d", &amii_menuBPen);
-		}
-	} else if (match_varname(buf, "STATUSPENS", 10)) {
-		extern int amii_statAPen, amii_statBPen;
-		char *t = strtok(bufp, ",/");
-		if( t )
-		{
-		    sscanf(t, "%d", &amii_statAPen);
-		    if( t = strtok((char*)0, ",/") )
-				sscanf(t, "%d", &amii_statBPen);
-		}
-	} else if (match_varname(buf, "OTHERPENS", 9)) {
-		extern int amii_otherAPen, amii_otherBPen;
-		char *t = strtok(bufp, ",/");
-		if( t )
-		{
-		    sscanf(t, "%d", &amii_otherAPen);
-		    if( t = strtok((char*)0, ",/") )
-				sscanf(t, "%d", &amii_otherBPen);
-		}
-	} else if (match_varname(buf, "PENS", 4)) {
-		extern unsigned short amii_init_map[ AMII_MAXCOLORS ];
-		int i;
-		char *t;
-
-		for (i = 0, t = strtok(bufp, ",/");
-			i < AMII_MAXCOLORS && t != (char *)0;
-			t = strtok((char *)0, ",/"), ++i)
-		{
-			sscanf(t, "%hx", &amii_init_map[i]);
-		}
-		amii_setpens( amii_numcolors = i );
-	} else if (match_varname(buf, "FGPENS", 6)) {
-		extern int foreg[ AMII_MAXCOLORS ];
-		int i;
-		char *t;
-
-		for (i = 0, t = strtok(bufp, ",/");
-			i < AMII_MAXCOLORS && t != (char *)0;
-			t = strtok((char *)0, ",/"), ++i)
-		{
-			sscanf(t, "%d", &foreg[i]);
-		}
-	} else if (match_varname(buf, "BGPENS", 6)) {
-		extern int backg[ AMII_MAXCOLORS ];
-		int i;
-		char *t;
-
-		for (i = 0, t = strtok(bufp, ",/");
-			i < AMII_MAXCOLORS && t != (char *)0;
-			t = strtok((char *)0, ",/"), ++i)
-		{
-			sscanf(t, "%d", &backg[i]);
-		}
 #endif
 #ifdef USER_SOUNDS
 	} else if (match_varname(buf, "SOUNDDIR", 8)) {

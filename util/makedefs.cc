@@ -65,20 +65,11 @@ static	const char	SCCS_Id[] = "@(#)makedefs.cc\t3.4\t2002/02/03";
 #define VIS_TAB_H	"vis_tab.h"
 #define VIS_TAB_C	"vis_tab.c"
 	/* locations for those files */
-#ifdef AMIGA
-# define FILE_PREFIX
-# define INCLUDE_TEMPLATE	"NH:include/t.%s"
-# define SOURCE_TEMPLATE	"NH:src/%s"
-# define DGN_TEMPLATE		"NH:dat/%s"  /* where dungeon.pdf file goes */
-# define DATA_TEMPLATE		"NH:slib/%s"
-# define DATA_IN_TEMPLATE	"NH:dat/%s"
-#else /* not AMIGA */
 #   define INCLUDE_TEMPLATE	"../include/%s"
 #   define SOURCE_TEMPLATE	"../src/%s"
 #   define DGN_TEMPLATE		"../dat/%s"  /* where dungeon.pdf file goes */
 #   define DATA_TEMPLATE	"../dat/%s"
 #   define DATA_IN_TEMPLATE	"../dat/%s"
-#endif	/* else !AMIGA */
 
 static const char
     *Dont_Edit_Code =
@@ -518,15 +509,6 @@ void do_date() {
 	Fprintf(ofp,"#define VERSION_ID \\\n \"%s\"\n",
 		version_id_string(buf, cbuf));
 	Fprintf(ofp,"\n");
-#ifdef AMIGA
-	{
-	struct tm *tm = localtime((time_t *) &clocktim);
-	Fprintf(ofp,"#define AMIGA_VERSION_STRING ");
-	Fprintf(ofp,"\"\\0$VER: NetHack %d.%d.%d (%d.%d.%d)\"\n",
-		VERSION_MAJOR, VERSION_MINOR, PATCHLEVEL,
-		tm->tm_mday, tm->tm_mon+1, tm->tm_year+1900);
-	}
-#endif
 	Fclose(ofp);
 	return;
 }

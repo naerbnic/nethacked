@@ -41,11 +41,7 @@ static struct Bool_Opt
 	bool	*addr, initvalue;
 	int optflags;
 } boolopt[] = {
-#ifdef AMIGA
-	{"altmeta", &flags.altmeta, TRUE, DISP_IN_GAME},
-#else
 	{"altmeta", (bool *)0, TRUE, DISP_IN_GAME},
-#endif
 	{"ascii_map",     &iflags.wc_ascii_map, !PREFER_TILED, SET_IN_GAME},	/*WC*/
 #ifdef MFLOPPY
 	{"asksavedisk", &flags.asksavedisk, FALSE, SET_IN_GAME},
@@ -1320,21 +1316,15 @@ void parseoptions(char *opts, bool tinitial, bool tfrom_file) {
 		    }
 		    while (cnt-- > 0) {
 			if (*pt && *pt != '/') {
-# ifdef AMIGA
-			    rgb <<= 4;
-# else
 			    rgb <<= 8;
-# endif
 			    tmp = *(pt++);
 			    if (isalpha(tmp)) {
 				tmp = (tmp + 9) & 0xf;	/* Assumes ASCII... */
 			    } else {
 				tmp &= 0xf;	/* Digits in ASCII too... */
 			    }
-# ifndef AMIGA
 			    /* Add an extra so we fill f -> ff and 0 -> 00 */
 			    rgb += tmp << 4;
-# endif
 			    rgb += tmp;
 			}
 		    }

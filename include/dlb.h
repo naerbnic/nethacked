@@ -130,12 +130,7 @@ long dlb_ftell(DLB_P);
 #else
 #define WRTMODE "w+"
 #endif
-#if (!defined(AMIGA)) || defined(THINK_C) || defined(__MWERKS__)
 # define RDBMODE "rb"
 # define WRBMODE "w+b"
-#else
-# define RDBMODE "r"
-# define WRBMODE "w+"
-#endif
 
 #endif	/* DLB_H */

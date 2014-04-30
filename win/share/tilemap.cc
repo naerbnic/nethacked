@@ -255,11 +255,7 @@ const char * tilename(int set, int entry) {
 
 #define TILE_FILE	"tile.c"
 
-#ifdef AMIGA
-# define SOURCE_TEMPLATE	"NH:src/%s"
-#else
-#   define SOURCE_TEMPLATE	"../src/%s"
-#endif
+#define SOURCE_TEMPLATE	"../src/%s"
 
 short tilemap[MAX_GLYPH];
 int lastmontile, lastobjtile, lastothtile;
