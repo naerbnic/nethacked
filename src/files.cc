@@ -836,9 +836,6 @@ STATIC_OVL void docompress_file(const char *filename, bool uncomp) {
 /* compress file */
 void compress(const char *filename) {
 #ifndef COMPRESS
-#if (defined(macintosh) && (defined(__SC__) || defined(__MRC__))) || defined(__MWERKS__)
-# pragma unused(filename)
-#endif
 #else
 	docompress_file(filename, FALSE);
 #endif
@@ -848,9 +845,6 @@ void compress(const char *filename) {
 /* uncompress file if it exists */
 void uncompress(const char *filename) {
 #ifndef COMPRESS
-#if (defined(macintosh) && (defined(__SC__) || defined(__MRC__))) || defined(__MWERKS__)
-# pragma unused(filename)
-#endif
 #else
 	docompress_file(filename, TRUE);
 #endif
@@ -870,10 +864,6 @@ static int lockfd;	/* for lock_file() to pass to unlock_file() */
 #define HUP	if (!program_state.done_hup)
 
 STATIC_OVL char * make_lockname(const char *filename, char *lockname) {
-#if (defined(macintosh) && (defined(__SC__) || defined(__MRC__))) || defined(__MWERKS__)
-# pragma unused(filename,lockname)
-	return (char*)0;
-#else
 #  ifdef NO_FILE_LINKS
 	strcpy(lockname, LOCKDIR);
 	strcat(lockname, "/");
@@ -883,7 +873,6 @@ STATIC_OVL char * make_lockname(const char *filename, char *lockname) {
 #  endif
 	strcat(lockname, "_lock");
 	return lockname;
-#endif
 }
 
 
@@ -1125,9 +1114,6 @@ STATIC_OVL void adjust_prefix(char *bufp, int prefixid) {
 
 /*ARGSUSED*/
 int parse_config_line(FILE *fp, char *buf, char *tmp_ramdisk, char *tmp_levels) {
-#if (defined(macintosh) && (defined(__SC__) || defined(__MRC__))) || defined(__MWERKS__)
-# pragma unused(tmp_ramdisk,tmp_levels)
-#endif
 	char		*bufp, *altp;
 	uchar   translate[MAXPCHARS];
 	int   len;
@@ -1406,9 +1392,6 @@ void read_wizkit() {
 
 /* verify that we can write to the scoreboard file; if not, try to create one */
 void check_recordfile(const char *dir) {
-#if (defined(macintosh) && (defined(__SC__) || defined(__MRC__))) || defined(__MWERKS__)
-# pragma unused(dir)
-#endif
 	const char *fq_record;
 	int fd;
 
