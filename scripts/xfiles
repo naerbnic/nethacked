@@ -1,0 +1,2 @@
+#!/bin/sh
+find . -name *.cc -or -name *.h -or -name *.y -or -name *.l | xargs "$@"
