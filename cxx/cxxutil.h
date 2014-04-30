@@ -4,6 +4,10 @@
 #include <string>
 #include "tradstdc.h"
 
+#define NO_COPY_OR_ASSIGN(ClassName) \
+  ClassName& operator=(ClassName const& other) = delete; \
+  ClassName(ClassName const& other) = delete
+
 template <typename T, T... args>
 struct Sequence {
 };
