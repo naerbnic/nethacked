@@ -25,10 +25,11 @@ def until_unchanged(line, fn):
         new_line = fn(line)
         if new_line == line:
             return new_line
+        print(new_line)
         line = new_line
 
 argdecl_re = re.compile(r'\b(F|V)DECL\s*\(')
-contents_re = re.compile(r'(?P<name>\w+),\s*\((?P<args>.*)\)\s*'
+contents_re = re.compile(r'(?P<name>\w+),\s*\((?P<args>.*)\)\s*')
 
 def fix_fvdecl(line):
     m = argdecl_re.search(line);
@@ -57,7 +58,9 @@ def process_lines(lines_arg):
     lines = lines_arg[:]
     out_lines = []
     for line in lines:
-        out_lines.append(until_unchanged(line, fix_ndecl));
+        out_lines.append(line);
+        line = until_unchanged(line, fix_ndecl);
+        line = until_unchanged(line, fix_fvdecl);
         
     return out_lines
 
