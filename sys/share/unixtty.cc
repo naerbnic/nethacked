@@ -333,11 +333,24 @@ void init_linux_cons() {
 }
 #endif	/* __linux__ */
 
+#include <execinfo.h>
 
-#ifndef __begui__	/* the Be GUI will define its own error proc */
+void ErrMsg(const char*s, ...) {
+  va_list args;
+  va_start(args, s);
+  if(settty_needed)
+    settty((char *)0);
+  vfprintf(stderr, s, args);
+  fputc('\n', stderr);
+  va_end(args);
+}
+
 /* fatal error */
 /*VARARGS1*/
 void error(const char *s, ...) {
+  void* trace[30];
+  int numlevels = backtrace(trace, 30);
+  backtrace_symbols_fd(trace, numlevels, 2);
   va_list args;
 	va_start(args, s);
 	if(settty_needed)
@@ -347,4 +360,3 @@ void error(const char *s, ...) {
 	va_end(args);
 	exit(EXIT_FAILURE);
 }
-#endif /* !__begui__ */

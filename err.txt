@@ -1,0 +1,114 @@
+NetHack (settty): Bad file descriptor
+==STARTING==
+NetHack (settty): Bad file descriptor
+==STARTING==
+NetHack (settty): Bad file descriptor
+Finished newgame!NetHack (settty): Bad file descriptor
+==STARTING==
+Finished player selection!NetHack (settty): Bad file descriptor
+==STARTING==
+Finished player selection!
+Finished artifacts!
+NetHack (settty): Bad file descriptor
+==STARTING==
+Finished player selection!
+Finished artifacts!
+Finished u_init!
+NetHack (settty): Bad file descriptor
+==STARTING==
+Finished player selection!
+Finished artifacts!
+Finished u_init!
+NetHack (settty): Bad file descriptor
+==STARTING==
+Finished player selection!
+Finished artifacts!
+Finished u_init!
+loaded quest!
+NetHack (settty): Bad file descriptor
+==STARTING==
+Finished player selection!
+Finished artifacts!
+Finished u_init!
+loaded quest!
+NetHack (settty): Bad file descriptor
+Welcomed!
+NetHack (settty): Bad file descriptor
+==STARTING==
+Finished player selection!
+Finished artifacts!
+Finished u_init!
+loaded quest!
+NetHack (settty): Bad file descriptor
+Welcomed!
+NetHack (settty): Bad file descriptor
+==STARTING==
+Finished player selection!
+Finished artifacts!
+Finished u_init!
+loaded quest!
+Before DoCRT
+NetHack (settty): Bad file descriptor
+Welcomed!
+NetHack (settty): Bad file descriptor
+==STARTING==
+Finished player selection!
+Finished artifacts!
+Finished u_init!
+loaded quest!
+Before DoCRT
+After DoCRT
+NetHack (settty): Bad file descriptor
+Welcomed!
+NetHack (settty): Bad file descriptor
+==STARTING==
+Finished player selection!
+Finished artifacts!
+Finished u_init!
+loaded quest!
+NetHack (settty): Bad file descriptor
+Before Welcome
+NetHack (settty): Bad file descriptor
+Welcomed!
+NetHack (settty): Bad file descriptor
+==STARTING==
+Finished player selection!
+Finished artifacts!
+Finished u_init!
+loaded quest!
+NetHack (settty): Bad file descriptor
+Before Welcome
+NetHack (settty): Bad file descriptor
+Welcomed!
+NetHack (settty): Bad file descriptor
+==STARTING==
+Finished player selection!
+Finished artifacts!
+Finished u_init!
+loaded quest!
+After pager
+NetHack (settty): Bad file descriptor
+Welcomed!
+NetHack (settty): Bad file descriptor
+==STARTING==
+Finished player selection!
+Finished artifacts!
+Finished u_init!
+loaded quest!
+After pager
+NetHack (settty): Bad file descriptor
+After save state
+NetHack (settty): Bad file descriptor
+Welcomed!
+NetHack (settty): Bad file descriptor
+==STARTING==
+Finished player selection!
+Finished artifacts!
+Finished u_init!
+loaded quest!
+After pager
+NetHack (settty): Bad file descriptor
+After save state
+NetHack (settty): Bad file descriptor
+Welcomed!
+NetHack (settty): Bad file descriptor

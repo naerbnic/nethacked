@@ -460,7 +460,9 @@ void newgame() {
 				 * in hero's initial inventory */
 	init_artifacts();	/* before u_init() in case $WIZKIT specifies
 				 * any artifacts */
+  ErrMsg("Finished artifacts!");
 	u_init();
+  ErrMsg("Finished u_init!");
 
 #ifndef NO_SIGNAL
 	(void) signal(SIGINT, (SIG_RET_TYPE) done1);
@@ -469,6 +471,7 @@ void newgame() {
 	if(iflags.news) display_file(NEWS, FALSE);
 #endif
 	load_qtlist();	/* load up the quest text info */
+  ErrMsg("loaded quest!");
 /*	quest_init();*/	/* Now part of role_init() */
 
 	mklev();
@@ -490,10 +493,14 @@ void newgame() {
 		flush_screen(1);
 		com_pager(1);
 	}
+  ErrMsg("After pager");
+  usleep(1000000);
 
 #ifdef INSURANCE
 	save_currentstate();
 #endif
+  ErrMsg("After save state");
+  usleep(1000000);
 	program_state.something_worth_saving++;	/* useful data now exists */
 
 #if defined(RECORD_REALTIME) || defined(REALTIME_ON_BOTL)
@@ -501,11 +508,7 @@ void newgame() {
         /* Start the timer here */
         realtime_data.realtime = (time_t)0L;
 
-#if defined(BSD) && !defined(POSIX_TYPES)
-        (void) time((long *)&realtime_data.restoretime);
-#else
         (void) time(&realtime_data.restoretime);
-#endif
 
 #endif /* RECORD_REALTIME || REALTIME_ON_BOTL */
 

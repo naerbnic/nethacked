@@ -600,6 +600,7 @@ void tty_player_selection() {
 	}
 	/* Success! */
 	tty_display_nhwindow(BASE_WINDOW, FALSE);
+	return;
 give_up:	/* Quit */
 		if (selected) free((genericptr_t) selected);
 		bail((char *)0);

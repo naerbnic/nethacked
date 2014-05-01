@@ -12,7 +12,7 @@ struct Monster { struct Monster *dummy; };	/* lint: struct obj's union */
 
 /* second pass */
 #include "color.h"
-#  define COLOR_FIELD(X) X,
+#define COLOR_FIELD(X) X,
 
 
 /* objects have symbols: ) [ = " ( % ! ? + / $ * ` 0 _ . */
