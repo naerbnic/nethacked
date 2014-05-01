@@ -12,6 +12,7 @@ cp src/nethacked bin/nethack
 cp dat/*.lev dat/dungeon bin
 cp sys/unix/nethack.sh bin
 cp dat/quest.dat bin
+cp dat/rumors bin
 
 touch bin/perm bin/record bin/logfile bin/xlogfile
 (
