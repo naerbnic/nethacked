@@ -461,13 +461,7 @@ E bool hurtle_step(genericptr_t, int, int);
 #endif /* !MAKEDEFS_C && !LEV_LEX_C */
 
 /* ### drawing.c ### */
-E int def_char_to_objclass(char);
-E int def_char_to_monclass(char);
-E void assign_graphics(uchar *,int,int,int);
-E void switch_graphics(int);
-#ifdef REINCARNATION
-E void assign_rogue_graphics(bool);
-#endif
+#include "drawing.h"
 
 #if !defined(MAKEDEFS_C) && !defined(LEV_LEX_C)
 /* ### dungeon.c ### */
@@ -552,6 +546,7 @@ E void fix_petrification();
 E void consume_oeaten(struct Object *,int);
 E bool maybe_finished_meal(bool);
 
+#endif /* !MAKEDEFS_C && !LEV_LEX_C */
 /* ### end.c ### */
 
 E void done1(int);
@@ -560,9 +555,7 @@ E int done2();
 E void done_intr(int);
 #endif
 E void done_in_by(struct Monster *);
-#endif /* !MAKEDEFS_C && !LEV_LEX_C */
 E void panic(const char *,...) PRINTF_F(1,2);
-#if !defined(MAKEDEFS_C) && !defined(LEV_LEX_C)
 E void done(int);
 E void container_contents(struct Object *,bool,bool);
 #ifdef DUMP_LOG
@@ -572,6 +565,7 @@ E void do_containerconts(struct Object *,bool,bool,bool,bool);
 E void terminate(int);
 E int num_genocides();
 
+#if !defined(MAKEDEFS_C) && !defined(LEV_LEX_C)
 /* ### engrave.c ### */
 
 E char *random_engraving(char *);
