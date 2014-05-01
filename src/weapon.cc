@@ -1292,15 +1292,16 @@ void skill_init(const struct def_skill *class_skill) {
 }
 
 void setmnotwielded(struct Monster *mon, struct Object *obj) {
-    if (!obj) return;
-    if (artifact_light(obj) && obj->lamplit) {
-	end_burn(obj, FALSE);
-	if (canseemon(mon))
-	    pline("%s in %s %s %s glowing.", The(xname(obj)),
-		  s_suffix(mon_nam(mon)), mbodypart(mon,HAND),
-		  otense(obj, "stop"));
-    }
-    obj->owornmask &= ~W_WEP;
+  if (!obj) {
+    return;
+  }
+  if (artifact_light(obj) && obj->lamplit) {
+    end_burn(obj, FALSE);
+    if (canseemon(mon))
+      pline("%s in %s %s %s glowing.", The(xname(obj)), s_suffix(mon_nam(mon)),
+          mbodypart(mon, HAND), otense(obj, "stop"));
+  }
+  obj->owornmask &= ~W_WEP;
 }
 
 #endif /* OVLB */

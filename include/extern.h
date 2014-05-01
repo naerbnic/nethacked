@@ -458,18 +458,18 @@ E int breaks(struct Object *,xchar,xchar);
 E bool breaktest(struct Object *);
 E bool walk_path(coord *, coord *, bool (*)(genericptr_t,int,int), genericptr_t);
 E bool hurtle_step(genericptr_t, int, int);
+#endif /* !MAKEDEFS_C && !LEV_LEX_C */
 
 /* ### drawing.c ### */
-#endif /* !MAKEDEFS_C && !LEV_LEX_C */
 E int def_char_to_objclass(char);
 E int def_char_to_monclass(char);
-#if !defined(MAKEDEFS_C) && !defined(LEV_LEX_C)
 E void assign_graphics(uchar *,int,int,int);
 E void switch_graphics(int);
 #ifdef REINCARNATION
 E void assign_rogue_graphics(bool);
 #endif
 
+#if !defined(MAKEDEFS_C) && !defined(LEV_LEX_C)
 /* ### dungeon.c ### */
 
 E void save_dungeon(int,bool,bool);
