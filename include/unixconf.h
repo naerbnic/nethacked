@@ -308,12 +308,4 @@
 # define msleep(k) usleep((k)*1000)
 #endif
 
-#ifdef hc	/* older versions of the MetaWare High-C compiler define this */
-# ifdef __HC__
-#  undef __HC__
-# endif
-# define __HC__ hc
-# undef hc
-#endif
-
 #endif /* UNIXCONF_H */
