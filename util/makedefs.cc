@@ -652,9 +652,7 @@ static const char *build_opts[] = {
 #ifdef TERMINFO
 		"terminal info library",
 #else
-# if defined(TERMLIB) || defined(TTY_GRAPHICS)
 		"terminal capability library",
-# endif
 #endif
 #ifdef TIMED_DELAY
 		"timed wait for display effects",
@@ -707,9 +705,7 @@ static const char *build_opts[] = {
 	};
 
 static const char *window_opts[] = {
-#ifdef TTY_GRAPHICS
 		"traditional tty-based graphics",
-#endif
 		0
 	};
 

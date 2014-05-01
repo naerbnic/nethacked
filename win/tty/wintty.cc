@@ -16,8 +16,6 @@
 #include "patchlevel.h"
 #endif
 
-#ifdef TTY_GRAPHICS
-
 #ifndef NO_TERMS
 #include "tcap.h"
 #endif
@@ -2336,7 +2334,5 @@ static char * copy_of(const char *s) {
     if (!s) s = "";
     return strcpy((char *) alloc((unsigned) (strlen(s) + 1)), s);
 }
-
-#endif /* TTY_GRAPHICS */
 
 /*wintty.c*/

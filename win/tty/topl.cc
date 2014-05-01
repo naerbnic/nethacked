@@ -4,8 +4,6 @@
 
 #include "hack.h"
 
-#ifdef TTY_GRAPHICS
-
 #include "tcap.h"
 #include "wintty.h"
 #include <ctype.h>
@@ -424,7 +422,5 @@ char tty_yn_function(const char* query, const char* resp, char def) {
 }
 
 #endif /* OVL2 */
-
-#endif /* TTY_GRAPHICS */
 
 /*topl.c*/

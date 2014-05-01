@@ -12,7 +12,7 @@
 
 #include "hack.h"
 
-#if defined (TTY_GRAPHICS) && !defined(NO_TERMS)
+#if !defined(NO_TERMS)
 
 #include "wintty.h"
 

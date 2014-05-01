@@ -81,7 +81,6 @@ void getlock() {
 	int i = 0, fd, c;
 	const char *fq_lock;
 
-#ifdef TTY_GRAPHICS
 	/* idea from rpick%ucqais@uccba.uc.edu
 	 * prevent automated rerolling of characters
 	 * test input (fd0) so that tee'ing output to get a screen dump still
@@ -92,7 +91,6 @@ void getlock() {
 	if (!strcmp(windowprocs.name, "tty"))
 	    if (!isatty(0))
 		error("You must play from a terminal.");
-#endif
 
 	/* we ignore QUIT and INT at this point */
 	if (!lock_file(HLOCK, LOCKPREFIX, 10)) {

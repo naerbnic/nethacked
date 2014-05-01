@@ -3,9 +3,7 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 #include "hack.h"
-#ifdef TTY_GRAPHICS
 #include "wintty.h"
-#endif
 
 STATIC_DCL void def_raw_print(const char *s);
 
@@ -16,9 +14,7 @@ struct win_choices {
     struct window_procs *procs;
     void (*ini_routine)();		/* optional (can be 0) */
 } winchoices[] = {
-#ifdef TTY_GRAPHICS
     { &tty_procs, win_tty_init },
-#endif
     { 0, 0 }		/* must be last */
 };
 

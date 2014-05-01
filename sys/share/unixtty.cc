@@ -122,7 +122,7 @@ struct tchars inittyb2, curttyb2;
 
 #endif	/* V7 */
 
-#if defined(TTY_GRAPHICS) && ((!defined(SYSV) && !defined(HPUX)) || defined(UNIXPC) || defined(SVR4))
+#if ((!defined(SYSV) && !defined(HPUX)) || defined(UNIXPC) || defined(SVR4))
 # ifndef LINT
 extern			/* it is defined in libtermlib (libtermcap) */
 # endif
@@ -272,26 +272,22 @@ int change = 0;
 
 /* enable kbd interupts if enabled when game started */
 void intron() {
-#ifdef TTY_GRAPHICS
 	/* Ugly hack to keep from changing tty modes for non-tty games -dlc */
 	if (!strcmp(windowprocs.name, "tty") &&
 	    intr_char != nonesuch && curttyb2.intr_sym != '\003') {
 	    curttyb2.intr_sym = '\003';
 	    setctty();
 	}
-#endif
 }
 
 /* disable kbd interrupts if required*/
 void introff() {
-#ifdef TTY_GRAPHICS
 	/* Ugly hack to keep from changing tty modes for non-tty games -dlc */
 	if (!strcmp(windowprocs.name, "tty") &&
 	   curttyb2.intr_sym != nonesuch) {
 	    curttyb2.intr_sym = nonesuch;
 	    setctty();
 	}
-#endif
 }
 
 #ifdef _M_UNIX		/* SCO UNIX (3.2.4), from Andreas Arens */
@@ -312,25 +308,21 @@ void check_sco_console();
 void init_sco_cons();
 
 void sco_mapon() {
-# ifdef TTY_GRAPHICS
 	if (!strcmp(windowprocs.name, "tty") && sco_flag_console) {
 		if (sco_map_valid != -1) {
 			ioctl(0,LDSMAP,sco_chanmap_buf);
 		}
 		sco_map_valid = -1;
 	}
-# endif
 }
 
 void sco_mapoff() {
-# ifdef TTY_GRAPHICS
 	if (!strcmp(windowprocs.name, "tty") && sco_flag_console) {
 		sco_map_valid = ioctl(0,LDGMAP,sco_chanmap_buf);
 		if (sco_map_valid != -1) {
 			ioctl(0,LDNMAP,(char *)0);
 		}
 	}
-# endif
 }
 
 void check_sco_console() {
@@ -340,7 +332,6 @@ void check_sco_console() {
 }
 
 void init_sco_cons() {
-# ifdef TTY_GRAPHICS
 	if (!strcmp(windowprocs.name, "tty") && sco_flag_console) {
 		atexit(sco_mapon);
 		sco_mapoff();
@@ -350,7 +341,6 @@ void init_sco_cons() {
 			iflags.use_color = TRUE;
 #  endif
 	}
-# endif
 }
 #endif	/* _M_UNIX */
 
@@ -366,19 +356,15 @@ void check_linux_console();
 void init_linux_cons();
 
 void linux_mapon() {
-# ifdef TTY_GRAPHICS
 	if (!strcmp(windowprocs.name, "tty") && linux_flag_console) {
 		write(1, "\033(B", 3);
 	}
-# endif
 }
 
 void linux_mapoff() {
-# ifdef TTY_GRAPHICS
 	if (!strcmp(windowprocs.name, "tty") && linux_flag_console) {
 		write(1, "\033(U", 3);
 	}
-# endif
 }
 
 void check_linux_console() {
@@ -390,7 +376,6 @@ void check_linux_console() {
 }
 
 void init_linux_cons() {
-# ifdef TTY_GRAPHICS
 	if (!strcmp(windowprocs.name, "tty") && linux_flag_console) {
 		atexit(linux_mapon);
 		linux_mapoff();
@@ -399,7 +384,6 @@ void init_linux_cons() {
 			iflags.use_color = TRUE;
 #  endif
 	}
-# endif
 }
 #endif	/* __linux__ */
 

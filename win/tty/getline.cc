@@ -4,8 +4,6 @@
 
 #include "hack.h"
 
-#ifdef TTY_GRAPHICS
-
 #define NEWAUTOCOMP
 
 #include "wintty.h"
@@ -259,7 +257,5 @@ int tty_get_ext_cmd() {
 }
 
 #endif /* OVL2 */
-
-#endif /* TTY_GRAPHICS */
 
 /*getline.c*/
