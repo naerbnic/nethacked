@@ -126,6 +126,7 @@ STATIC_OVL void redotoplin(const char *str) {
 		ttyDisplay->curx++;
 	}
 	end_glyphout();	/* in case message printed during graphics output */
+	ErrMsg("Redoing Topline: %s", str);
 	putsyms(str);
 	cl_end();
 	ttyDisplay->toplin = 1;
@@ -197,7 +198,7 @@ void more() {
 }
 
 void update_topl(const char *bp) {
-  ErrMsg("Update Topl: %s", bp);
+  ErrMsg("Update Topl (C0 = %d): %s", CO, bp);
 	char *tl, *otl;
 	int n0;
 	int notdied = 1;
@@ -269,6 +270,7 @@ void topl_putsym(char c) {
     }
     cw->curx = ttyDisplay->curx;
     if(cw->curx == 0) cl_end();
+  putchar(c);
 }
 
 void putsyms(const char *str) {
