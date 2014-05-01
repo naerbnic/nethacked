@@ -89,7 +89,7 @@ static int GetDataBlock(FILE *fd, unsigned char *buf) {
 
 static void DoExtension(FILE *fd, int label) {
 	static char	buf[256];
-	char		*str;
+	char const* str;
 
 	switch (label) {
 	case 0x01:		/* Plain Text Extension */

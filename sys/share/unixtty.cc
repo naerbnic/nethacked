@@ -338,11 +338,12 @@ void init_linux_cons() {
 void ErrMsg(const char*s, ...) {
   va_list args;
   va_start(args, s);
-  if(settty_needed)
-    settty((char *)0);
-  vfprintf(stderr, s, args);
-  fputc('\n', stderr);
+  VErrMsg(s, args);
   va_end(args);
+}
+void VErrMsg(const char*s, va_list lst) {
+  vfprintf(stderr, s, lst);
+  fputc('\n', stderr);
 }
 
 /* fatal error */

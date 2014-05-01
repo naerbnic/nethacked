@@ -140,7 +140,7 @@ static void build_bmfh(BITMAPFILEHEADER *);
 static void build_bmih(BITMAPINFOHEADER *);
 static void build_bmptile(pixel (*)[TILE_X]);
 
-char *tilefiles[] = {
+char const* tilefiles[] = {
 #if (TILE_X == 32)
 		"../win/share/mon32.txt",
 		"../win/share/obj32.txt",

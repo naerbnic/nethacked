@@ -1908,6 +1908,7 @@ E void setftty();
 E void intron();
 E void introff();
 E void ErrMsg(const char *,...) PRINTF_F(1,2);
+E void VErrMsg(const char *, va_list);
 E void error(const char *,...) PRINTF_F(1,2);
 
 /* ### unixunix.c ### */

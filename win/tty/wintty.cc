@@ -2047,11 +2047,7 @@ void tty_update_inventory() {
 }
 
 void tty_mark_synch() {
-  ErrMsg("Before flush");
-  usleep(1000000);
     (void) fflush(stdout);
-    ErrMsg("After flush");
-    usleep(1000000);
 }
 
 void tty_wait_synch() {

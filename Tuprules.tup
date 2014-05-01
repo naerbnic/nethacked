@@ -2,6 +2,9 @@ CCFLAGS += -I$(TUP_CWD)/include
 CCFLAGS += -I$(TUP_CWD)/cxx
 CCFLAGS += -std=c++11
 CCFLAGS += -Werror
+CCFLAGS += -Winit-self
+CCFLAGS += -Wpointer-arith
+CCFLAGS += -pipe
 
 # Should really fix this one
 CCFLAGS += -Wno-deprecated-writable-strings
