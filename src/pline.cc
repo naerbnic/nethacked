@@ -60,10 +60,8 @@ int msgpline_type(char const* msg) {
 static void vpline(const char *, va_list);
 
 void pline(const char *line, ...) {
-  va_list args, copy;
+  va_list args;
 	va_start(args, line);
-	va_copy(copy, args);
-	VErrMsg(line, copy);
 	vpline(line, args);
 	va_end(args);
 }
