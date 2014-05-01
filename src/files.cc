@@ -7,9 +7,7 @@
 #include "hack.h"
 #include "dlb.h"
 
-#ifdef TTY_GRAPHICS
 #include "wintty.h" /* more() */
-#endif
 
 #include <ctype.h>
 
@@ -602,9 +600,7 @@ STATIC_OVL void docompress_file(const char *filename, bool uncomp) {
 # endif
 	int i = 0;
 	int f;
-# ifdef TTY_GRAPHICS
 	bool istty = !strncmpi(windowprocs.name, "tty", 3);
-# endif
 
 	strcpy(cfn, filename);
 # ifdef COMPRESS_EXTENSION
@@ -643,17 +639,14 @@ STATIC_OVL void docompress_file(const char *filename, bool uncomp) {
 # endif
 	args[++i] = (char *)0;
 
-# ifdef TTY_GRAPHICS
 	/* If we don't do this and we are right after a y/n question *and*
 	 * there is an error message from the compression, the 'y' or 'n' can
 	 * end up being displayed after the error message.
 	 */
 	if (istty)
 	    mark_synch();
-# endif
 	f = fork();
 	if (f == 0) {	/* child */
-# ifdef TTY_GRAPHICS
 		/* any error messages from the compression must come out after
 		 * the first line, because the more() to let the user read
 		 * them will have to clear the first line.  This should be
@@ -661,7 +654,6 @@ STATIC_OVL void docompress_file(const char *filename, bool uncomp) {
 		 */
 		if (istty)
 		    raw_print("");
-# endif
 		/* run compressor without privileges, in case other programs
 		 * have surprises along the line of gzip once taking filenames
 		 * in GZIP.
@@ -712,7 +704,6 @@ STATIC_OVL void docompress_file(const char *filename, bool uncomp) {
 		/* no message needed for compress case; life will go on */
 		(void) unlink(cfn);
 	    }
-#ifdef TTY_GRAPHICS
 	    /* Give them a chance to read any error messages from the
 	     * compression--these would go to stdout or stderr and would get
 	     * overwritten only in tty mode.  It's still ugly, since the
@@ -726,7 +717,6 @@ STATIC_OVL void docompress_file(const char *filename, bool uncomp) {
 		/* No way to know if this is feasible */
 		/* doredraw(); */
 	    }
-#endif
 	}
 }
 #endif	/* COMPRESS */

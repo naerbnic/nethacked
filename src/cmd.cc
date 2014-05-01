@@ -308,7 +308,6 @@ int doextlist() {
 	return 0;
 }
 
-#ifdef TTY_GRAPHICS
 #define MAX_EXT_CMD 40		/* Change if we ever have > 40 ext cmds */
 /*
  * This is currently used only by the tty port and is
@@ -427,7 +426,6 @@ int extcmd_via_menu() {
     }
     return ret;
 }
-#endif
 
 /* #monster command - use special monster ability while polymorphed */
 STATIC_PTR int domonability() {

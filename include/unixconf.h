@@ -123,7 +123,6 @@
  */
 /* #define PORT_HELP "Unixhelp" */
 
-#ifdef TTY_GRAPHICS
 /*
  * To enable the `timed_delay' option for using a timer rather than extra
  * screen output when pausing for display effect.  Requires that `msleep'
@@ -133,7 +132,6 @@
  * a fine-grained timer.
  */
 /* #define TIMED_DELAY */	/* usleep() */
-#endif
 
 /*
  * If you define MAIL, then the player will be notified of new mail

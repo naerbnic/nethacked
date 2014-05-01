@@ -65,11 +65,7 @@ static struct Bool_Opt
 	{"DECgraphics", (bool *)0, FALSE, SET_IN_FILE},
 #endif
 	{"eight_bit_tty", &iflags.wc_eight_bit_input, FALSE, SET_IN_GAME},	/*WC*/
-#ifdef TTY_GRAPHICS
 	{"extmenu", &iflags.extmenu, FALSE, SET_IN_GAME},
-#else
-	{"extmenu", (bool *)0, FALSE, SET_IN_FILE},
-#endif
 #ifdef OPT_DISPMAP
 	{"fast_map", &flags.fast_map, TRUE, SET_IN_GAME},
 #else
@@ -259,11 +255,7 @@ static struct Comp_Opt
 						MAXMCLASSES, SET_IN_FILE },
 	{ "msghistory", "number of top line messages to save",
 						5, DISP_IN_GAME },
-# ifdef TTY_GRAPHICS
 	{"msg_window", "the type of message window required",1, SET_IN_GAME},
-# else
-	{"msg_window", "the type of message window required", 1, SET_IN_FILE},
-# endif
 	{ "name",     "your character's name (e.g., name:Merlin-W)",
 						PL_NSIZ, DISP_IN_GAME },
 	{ "number_pad", "use the number pad", 1, SET_IN_GAME},
@@ -477,9 +469,7 @@ void initoptions() {
 	flags.end_around = 2;
 	iflags.runmode = RUN_LEAP;
 	iflags.msg_history = 20;
-#ifdef TTY_GRAPHICS
 	iflags.prevmsg_window = 's';
-#endif
 	iflags.menu_headings = ATR_INVERSE;
 
 	/* Use negative indices to indicate not yet selected */
@@ -514,7 +504,6 @@ void initoptions() {
 	for (i = 0; i < NUM_DISCLOSURE_OPTIONS; i++)
 		flags.end_disclose[i] = DISCLOSE_PROMPT_DEFAULT_NO;
 	switch_graphics(ASCII_GRAPHICS);	/* set default characters */
-#if defined(TTY_GRAPHICS)
 	/*
 	 * Set defaults for some options depending on what we can
 	 * detect about the environment's capabilities.
@@ -529,15 +518,12 @@ void initoptions() {
 		iflags.use_color = TRUE;
 # endif
 	}
-#endif /* TTY_GRAPHICS */
-# ifdef TTY_GRAPHICS
 	/* detect whether a "vt" terminal can handle alternate charsets */
 	if ((opts = nh_getenv("TERM")) &&
 	    !strncmpi(opts, "vt", 2) && AS && AE &&
 	    index(AS, '\016') && index(AE, '\017')) {
 		switch_graphics(DEC_GRAPHICS);
 	}
-# endif
 
 	flags.menu_style = MENU_FULL;
 
@@ -1181,7 +1167,6 @@ void parseoptions(char *opts, bool tinitial, bool tfrom_file) {
 	/* msg_window:single, combo, full or reversed */
 	if (match_optname(opts, fullname, 4, TRUE)) {
 	/* allow option to be silently ignored by non-tty ports */
-#ifdef TTY_GRAPHICS
 		int tmp;
 		if (!(op = string_for_opt(opts, TRUE))) {
 		    tmp = negated ? 's' : 'f';
@@ -1208,7 +1193,6 @@ void parseoptions(char *opts, bool tinitial, bool tfrom_file) {
 			default:
 				badoption(opts);
 		}
-#endif
 		return;
 	}
 
@@ -2641,7 +2625,6 @@ STATIC_OVL bool special_handling(const char *optname, bool setinitial, bool setf
 	destroy_nhwindow(tmpwin);
 	retval = TRUE;
     } 
-#ifdef TTY_GRAPHICS
       else if (!strcmp("msg_window", optname)) {
 	/* by Christian W. Cooper */
 	menu_item *window_pick = (menu_item *)0;
@@ -2667,7 +2650,6 @@ STATIC_OVL bool special_handling(const char *optname, bool setinitial, bool setf
 	destroy_nhwindow(tmpwin);
         retval = TRUE;
     }
-#endif
      else if (!strcmp("align_message", optname) ||
 		!strcmp("align_status", optname)) {
 	menu_item *window_pick = (menu_item *)0;
@@ -3008,12 +2990,10 @@ STATIC_OVL const char * get_compopt_value(const char *optname, char *buf) {
 		sprintf(buf, "%s", to_be_done);
 	else if (!strcmp(optname, "msghistory"))
 		sprintf(buf, "%u", iflags.msg_history);
-#ifdef TTY_GRAPHICS
 	else if (!strcmp(optname, "msg_window"))
 		sprintf(buf, "%s", (iflags.prevmsg_window=='s') ? "single" :
 					(iflags.prevmsg_window=='c') ? "combination" :
 					(iflags.prevmsg_window=='f') ? "full" : "reversed");
-#endif
 	else if (!strcmp(optname, "name"))
 		sprintf(buf, "%s", plname);
 	else if (!strcmp(optname, "number_pad"))

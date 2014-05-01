@@ -171,10 +171,8 @@ struct instance_flags {
 	bool  sanity_check;	/* run sanity checks */
 	bool  mon_polycontrol;	/* debug: control monster polymorphs */
 #endif
-#ifdef TTY_GRAPHICS
 	char prevmsg_window;	/* type of old message window to use */
 	bool  extmenu;	/* extended commands use menu interface */
-#endif
 #ifdef MENU_COLOR
 	bool use_menu_color;	/* use color in menus; only if wc_color */
 #endif
@@ -260,9 +258,7 @@ struct instance_flags {
 /*
  * Old deprecated names
  */
-#ifdef TTY_GRAPHICS
 #define eight_bit_tty wc_eight_bit_input
-#endif
 #ifdef TEXTCOLOR
 #define use_color wc_color
 #endif

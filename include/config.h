@@ -236,7 +236,6 @@ typedef std::uint8_t	uchar;
  * bugs left here.
  */
 
-#if defined(TTY_GRAPHICS)
 # define MENU_COLOR
 # define MENU_COLOR_REGEX 
 # define MENU_COLOR_REGEX_POSIX 
@@ -246,7 +245,6 @@ typedef std::uint8_t	uchar;
  * otherwise use pmatch() to match menu color lines.
  * pmatch() provides basic globbing: '*' and '?' wildcards.
  */
-#endif
 
 /*#define GOLDOBJ */	/* Gold is kept on obj chains - Helge Hafting */
 /*#define AUTOPICKUP_EXCEPTIONS */ /* exceptions to autopickup */
