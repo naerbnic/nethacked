@@ -305,12 +305,7 @@
 #endif
 
 #ifdef TIMED_DELAY
-# if defined(SUNOS4) || defined(LINUX) || (defined(BSD) && !defined(ULTRIX))
 # define msleep(k) usleep((k)*1000)
-# endif
-# ifdef ULTRIX
-# define msleep(k) napms(k)
-# endif
 #endif
 
 #ifdef hc	/* older versions of the MetaWare High-C compiler define this */
