@@ -905,7 +905,7 @@ int enhance_skill(bool want_dump)
 		 i <= skill_ranges[pass].last; i++) {
 		/* Print headings for skill types */
 		any.a_void = 0;
-		if (i == skill_ranges[pass].first)
+		if (i == skill_ranges[pass].first) {
 #ifdef DUMP_LOG
 		if (want_dump) {
 		    dump("  ",(char *)skill_ranges[pass].name);
@@ -915,6 +915,7 @@ int enhance_skill(bool want_dump)
 		    add_menu(win, NO_GLYPH, &any, 0, 0, iflags.menu_headings,
 			     skill_ranges[pass].name, MENU_UNSELECTED);
 #ifdef DUMP_LOG
+		}
 		if (want_dump) {
 		    if (P_SKILL(i) > P_UNSKILLED) {
 		 	sprintf(buf2,"%-*s [%s]",

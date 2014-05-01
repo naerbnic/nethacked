@@ -57,7 +57,7 @@ STATIC_DCL void topten_print(const char *);
 STATIC_DCL void topten_print_bold(const char *);
 STATIC_DCL xchar observable_depth(d_level *);
 STATIC_DCL void outheader();
-STATIC_DCL void outentry(int,struct toptenentry *,bool);
+STATIC_DCL void outentry(int,struct toptenentry *,int);
 STATIC_DCL void readentry(FILE *,struct toptenentry *);
 STATIC_DCL void writeentry(FILE *,struct toptenentry *);
 #ifdef XLOGFILE
@@ -254,8 +254,8 @@ STATIC_OVL void write_xlentry(FILE *rfile, struct toptenentry *tt) {
                 SEP "hp=%d"
                 SEP "maxhp=%d"
                 SEP "deaths=%d"
-                SEP "deathdate=%d"
-                SEP "birthdate=%d"
+                SEP "deathdate=%ld"
+                SEP "birthdate=%ld"
                 SEP "uid=%d",
                 tt->ver_major, tt->ver_minor, tt->patchlevel,
                 tt->points, tt->deathdnum, tt->deathlev,
@@ -696,7 +696,7 @@ STATIC_OVL void outheader() {
 }
 
 /* so>0: standout line; so=0: ordinary line */
-STATIC_OVL void outentry(int rank, struct toptenentry *t1, bool so) {
+STATIC_OVL void outentry(int rank, struct toptenentry *t1, int so) {
 	bool second_line = TRUE;
 	char linebuf[BUFSZ];
 	char *bp, hpbuf[24], linebuf3[BUFSZ];

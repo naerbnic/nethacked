@@ -535,236 +535,233 @@ static void add_erosion_words(struct Object *obj, char *prefix) {
 }
 
 char * doname(struct Object *obj) {
-	bool ispoisoned = FALSE;
-	char prefix[PREFIX];
-	char tmpbuf[PREFIX+1];
-	/* when we have to add something at the start of prefix instead of the
-	 * end (strcat is used on the end)
-	 */
-	char *bp = xname(obj);
+  bool ispoisoned = FALSE;
+  char prefix[PREFIX];
+  char tmpbuf[PREFIX + 1];
+  /* when we have to add something at the start of prefix instead of the
+   * end (strcat is used on the end)
+   */
+  char *bp = xname(obj);
 
-	/* When using xname, we want "poisoned arrow", and when using
-	 * doname, we want "poisoned +0 arrow".  This kludge is about the only
-	 * way to do it, at least until someone overhauls xname() and doname(),
-	 * combining both into one function taking a parameter.
-	 */
-	/* must check opoisoned--someone can have a weirdly-named fruit */
-	if (!strncmp(bp, "poisoned ", 9) && obj->opoisoned) {
-		bp += 9;
-		ispoisoned = TRUE;
-	}
+  /* When using xname, we want "poisoned arrow", and when using
+   * doname, we want "poisoned +0 arrow".  This kludge is about the only
+   * way to do it, at least until someone overhauls xname() and doname(),
+   * combining both into one function taking a parameter.
+   */
+  /* must check opoisoned--someone can have a weirdly-named fruit */
+  if (!strncmp(bp, "poisoned ", 9) && obj->opoisoned) {
+    bp += 9;
+    ispoisoned = TRUE;
+  }
 
-	if(obj->quan != 1L)
-		sprintf(prefix, "%ld ", obj->quan);
-	else if (obj_is_pname(obj) || the_unique_obj(obj)) {
-		if (!strncmpi(bp, "the ", 4))
-		    bp += 4;
-		strcpy(prefix, "the ");
-	} else
-		strcpy(prefix, "a ");
+  if (obj->quan != 1L)
+    sprintf(prefix, "%ld ", obj->quan);
+  else if (obj_is_pname(obj) || the_unique_obj(obj)) {
+    if (!strncmpi(bp, "the ", 4))
+      bp += 4;
+    strcpy(prefix, "the ");
+  } else
+    strcpy(prefix, "a ");
 
 #ifdef INVISIBLE_OBJECTS
-	if (Object->oinvis) strcat(prefix,"invisible ");
+  if (Object->oinvis) strcat(prefix,"invisible ");
 #endif
 
-	if (obj->bknown &&
-	    obj->oclass != COIN_CLASS &&
-	    (obj->otyp != POT_WATER || !objects[POT_WATER].oc_name_known
-		|| (!obj->cursed && !obj->blessed))) {
-	    /* allow 'blessed clear potion' if we don't know it's holy water;
-	     * always allow "uncursed potion of water"
-	     */
-	    if (obj->cursed)
-		strcat(prefix, "cursed ");
-	    else if (obj->blessed)
-		strcat(prefix, "blessed ");
-	    else if (iflags.show_buc || (!obj->known || !objects[obj->otyp].oc_charged ||
-		      (obj->oclass == ARMOR_CLASS ||
-		       obj->oclass == RING_CLASS))
-		/* For most items with charges or +/-, if you know how many
-		 * charges are left or what the +/- is, then you must have
-		 * totally identified the item, so "uncursed" is unneccesary,
-		 * because an identified object not described as "blessed" or
-		 * "cursed" must be uncursed.
-		 *
-		 * If the charges or +/- is not known, "uncursed" must be
-		 * printed to avoid ambiguity between an item whose curse
-		 * status is unknown, and an item known to be uncursed.
-		 */
+  if (obj->bknown && obj->oclass != COIN_CLASS
+      && (obj->otyp != POT_WATER || !objects[POT_WATER].oc_name_known
+          || (!obj->cursed && !obj->blessed))) {
+    /* allow 'blessed clear potion' if we don't know it's holy water;
+     * always allow "uncursed potion of water"
+     */
+    if (obj->cursed)
+      strcat(prefix, "cursed ");
+    else if (obj->blessed)
+      strcat(prefix, "blessed ");
+    else if (iflags.show_buc
+        || ((!obj->known || !objects[obj->otyp].oc_charged
+            || (obj->oclass == ARMOR_CLASS || obj->oclass == RING_CLASS))
+        /* For most items with charges or +/-, if you know how many
+         * charges are left or what the +/- is, then you must have
+         * totally identified the item, so "uncursed" is unneccesary,
+         * because an identified object not described as "blessed" or
+         * "cursed" must be uncursed.
+         *
+         * If the charges or +/- is not known, "uncursed" must be
+         * printed to avoid ambiguity between an item whose curse
+         * status is unknown, and an item known to be uncursed.
+         */
 #ifdef MAIL
-			&& obj->otyp != SCR_MAIL
+            && obj->otyp != SCR_MAIL
 #endif
-			&& obj->otyp != FAKE_AMULET_OF_YENDOR
-			&& obj->otyp != AMULET_OF_YENDOR
-			&& !Role_if(PM_PRIEST))
-		strcat(prefix, "uncursed ");
-	}
+            && obj->otyp != FAKE_AMULET_OF_YENDOR
+            && obj->otyp != AMULET_OF_YENDOR && !Role_if(PM_PRIEST)))
+      strcat(prefix, "uncursed ");
+  }
 
-	if (obj->greased) strcat(prefix, "greased ");
+  if (obj->greased)
+    strcat(prefix, "greased ");
 
-	switch(obj->oclass) {
-	case AMULET_CLASS:
-		if(obj->owornmask & W_AMUL)
-			strcat(bp, " (being worn)");
-		break;
-	case WEAPON_CLASS:
-		if(ispoisoned)
-			strcat(prefix, "poisoned ");
-plus:
-		add_erosion_words(obj, prefix);
-		if(obj->known) {
-			strcat(prefix, sitoa(obj->spe));
-			strcat(prefix, " ");
-		}
-		break;
-	case ARMOR_CLASS:
-		if(obj->owornmask & W_ARMOR)
-			strcat(bp, (obj == uskin) ? " (embedded in your skin)" :
-				" (being worn)");
-		goto plus;
-	case TOOL_CLASS:
-		/* weptools already get this done when we go to the +n code */
-		if (!is_weptool(obj))
-		    add_erosion_words(obj, prefix);
-		if(obj->owornmask & (W_TOOL /* blindfold */
+  switch (obj->oclass) {
+    case AMULET_CLASS:
+      if (obj->owornmask & W_AMUL)
+        strcat(bp, " (being worn)");
+      break;
+    case WEAPON_CLASS:
+      if (ispoisoned)
+        strcat(prefix, "poisoned ");
+      plus: add_erosion_words(obj, prefix);
+      if (obj->known) {
+        strcat(prefix, sitoa(obj->spe));
+        strcat(prefix, " ");
+      }
+      break;
+    case ARMOR_CLASS:
+      if (obj->owornmask & W_ARMOR)
+        strcat(bp,
+            (obj == uskin) ? " (embedded in your skin)" : " (being worn)");
+      goto plus;
+    case TOOL_CLASS:
+      /* weptools already get this done when we go to the +n code */
+      if (!is_weptool(obj))
+        add_erosion_words(obj, prefix);
+      if (obj->owornmask & (W_TOOL /* blindfold */
 #ifdef STEED
-				| W_SADDLE
+          | W_SADDLE
 #endif
-				)) {
-			strcat(bp, " (being worn)");
-			break;
-		}
-		if (obj->otyp == LEASH && obj->leashmon != 0) {
-			strcat(bp, " (in use)");
-			break;
-		}
-		if (is_weptool(obj))
-			goto plus;
-		if (obj->otyp == CANDELABRUM_OF_INVOCATION) {
-			if (!obj->spe)
-			    strcpy(tmpbuf, "no");
-			else
-			    sprintf(tmpbuf, "%d", obj->spe);
-			sprintf(eos(bp), " (%s candle%s%s)",
-				tmpbuf, plur(obj->spe),
-				!obj->lamplit ? " attached" : ", lit");
-			break;
-		} else if (obj->otyp == OIL_LAMP || obj->otyp == MAGIC_LAMP ||
-			obj->otyp == BRASS_LANTERN || Is_candle(obj)) {
-			if (Is_candle(obj) &&
-			    obj->age < 20L * (long)objects[obj->otyp].oc_cost)
-				strcat(prefix, "partly used ");
-			if(obj->lamplit)
-				strcat(bp, " (lit)");
-			break;
-		}
-		if(objects[obj->otyp].oc_charged)
-		    goto charges;
-		break;
-	case WAND_CLASS:
-		add_erosion_words(obj, prefix);
-charges:
-		if(obj->known)
-		    sprintf(eos(bp), " (%d:%d)", (int)obj->recharged, obj->spe);
-		break;
-	case POTION_CLASS:
-		if (obj->otyp == POT_OIL && obj->lamplit)
-		    strcat(bp, " (lit)");
-		break;
-	case RING_CLASS:
-		add_erosion_words(obj, prefix);
-ring:
-		if(obj->owornmask & W_RINGR) strcat(bp, " (on right ");
-		if(obj->owornmask & W_RINGL) strcat(bp, " (on left ");
-		if(obj->owornmask & W_RING) {
-		    strcat(bp, body_part(HAND));
-		    strcat(bp, ")");
-		}
-		if(obj->known && objects[obj->otyp].oc_charged) {
-			strcat(prefix, sitoa(obj->spe));
-			strcat(prefix, " ");
-		}
-		break;
-	case FOOD_CLASS:
-		if (obj->oeaten)
-		    strcat(prefix, "partly eaten ");
-		if (obj->otyp == CORPSE) {
-		    if (mons[obj->corpsenm].geno & G_UNIQ) {
-			sprintf(prefix, "%s%s ",
-				(type_is_pname(&mons[obj->corpsenm]) ?
-					"" : "the "),
-				s_suffix(mons[obj->corpsenm].mname));
-			if (obj->oeaten) strcat(prefix, "partly eaten ");
-		    } else {
-			strcat(prefix, mons[obj->corpsenm].mname);
-			strcat(prefix, " ");
-		    }
-		} else if (obj->otyp == EGG) {
+          )) {
+        strcat(bp, " (being worn)");
+        break;
+      }
+      if (obj->otyp == LEASH && obj->leashmon != 0) {
+        strcat(bp, " (in use)");
+        break;
+      }
+      if (is_weptool(obj))
+        goto plus;
+      if (obj->otyp == CANDELABRUM_OF_INVOCATION) {
+        if (!obj->spe)
+          strcpy(tmpbuf, "no");
+        else
+          sprintf(tmpbuf, "%d", obj->spe);
+        sprintf(eos(bp), " (%s candle%s%s)", tmpbuf, plur(obj->spe),
+            !obj->lamplit ? " attached" : ", lit");
+        break;
+      } else if (obj->otyp == OIL_LAMP || obj->otyp == MAGIC_LAMP
+          || obj->otyp == BRASS_LANTERN || Is_candle(obj)) {
+        if (Is_candle(obj)
+            && obj->age < 20L * (long) objects[obj->otyp].oc_cost)
+          strcat(prefix, "partly used ");
+        if (obj->lamplit)
+          strcat(bp, " (lit)");
+        break;
+      }
+      if (objects[obj->otyp].oc_charged)
+        goto charges;
+      break;
+    case WAND_CLASS:
+      add_erosion_words(obj, prefix);
+      charges: if (obj->known)
+        sprintf(eos(bp), " (%d:%d)", (int) obj->recharged, obj->spe);
+      break;
+    case POTION_CLASS:
+      if (obj->otyp == POT_OIL && obj->lamplit)
+        strcat(bp, " (lit)");
+      break;
+    case RING_CLASS:
+      add_erosion_words(obj, prefix);
+      ring: if (obj->owornmask & W_RINGR)
+        strcat(bp, " (on right ");
+      if (obj->owornmask & W_RINGL)
+        strcat(bp, " (on left ");
+      if (obj->owornmask & W_RING) {
+        strcat(bp, body_part(HAND));
+        strcat(bp, ")");
+      }
+      if (obj->known && objects[obj->otyp].oc_charged) {
+        strcat(prefix, sitoa(obj->spe));
+        strcat(prefix, " ");
+      }
+      break;
+    case FOOD_CLASS:
+      if (obj->oeaten)
+        strcat(prefix, "partly eaten ");
+      if (obj->otyp == CORPSE) {
+        if (mons[obj->corpsenm].geno & G_UNIQ) {
+          sprintf(prefix, "%s%s ",
+              (type_is_pname(&mons[obj->corpsenm]) ? "" : "the "),
+              s_suffix(mons[obj->corpsenm].mname));
+          if (obj->oeaten)
+            strcat(prefix, "partly eaten ");
+        } else {
+          strcat(prefix, mons[obj->corpsenm].mname);
+          strcat(prefix, " ");
+        }
+      } else if (obj->otyp == EGG) {
 #if 0	/* corpses don't tell if they're stale either */
-		    if (Object->known && stale_egg(Object))
-			strcat(prefix, "stale ");
+        if (Object->known && stale_egg(Object))
+        strcat(prefix, "stale ");
 #endif
-		    if (obj->corpsenm >= LOW_PM &&
-			    (obj->known ||
-			    mvitals[obj->corpsenm].mvflags & MV_KNOWS_EGG)) {
-			strcat(prefix, mons[obj->corpsenm].mname);
-			strcat(prefix, " ");
-			if (obj->spe)
-			    strcat(bp, " (laid by you)");
-		    }
-		}
-		if (obj->otyp == MEAT_RING) goto ring;
-		break;
-	case BALL_CLASS:
-	case CHAIN_CLASS:
-		add_erosion_words(obj, prefix);
-		if(obj->owornmask & W_BALL)
-			strcat(bp, " (chained to you)");
-			break;
-	}
+        if (obj->corpsenm >= LOW_PM
+            && (obj->known || mvitals[obj->corpsenm].mvflags & MV_KNOWS_EGG)) {
+          strcat(prefix, mons[obj->corpsenm].mname);
+          strcat(prefix, " ");
+          if (obj->spe)
+            strcat(bp, " (laid by you)");
+        }
+      }
+      if (obj->otyp == MEAT_RING)
+        goto ring;
+      break;
+    case BALL_CLASS:
+    case CHAIN_CLASS:
+      add_erosion_words(obj, prefix);
+      if (obj->owornmask & W_BALL)
+        strcat(bp, " (chained to you)");
+      break;
+  }
 
-	if((obj->owornmask & W_WEP) && !mrg_to_wielded) {
-		if (obj->quan != 1L) {
-			strcat(bp, " (wielded)");
-		} else {
-			const char *hand_s = body_part(HAND);
+  if ((obj->owornmask & W_WEP) && !mrg_to_wielded) {
+    if (obj->quan != 1L) {
+      strcat(bp, " (wielded)");
+    } else {
+      const char *hand_s = body_part(HAND);
 
-			if (bimanual(obj)) hand_s = makeplural(hand_s);
-			sprintf(eos(bp), " (weapon in %s)", hand_s);
-		}
-	}
-	if(obj->owornmask & W_SWAPWEP) {
-		if (u.twoweap)
-			sprintf(eos(bp), " (wielded in other %s)",
-				body_part(HAND));
-		else
-			strcat(bp, " (alternate weapon; not wielded)");
-	}
-	if(obj->owornmask & W_QUIVER) strcat(bp, " (in quiver)");
-	if(obj->unpaid) {
-		xchar ox, oy; 
-		long quotedprice = unpaid_cost(obj);
-		struct Monster *shkp = (struct Monster *)0;
+      if (bimanual(obj))
+        hand_s = makeplural(hand_s);
+      sprintf(eos(bp), " (weapon in %s)", hand_s);
+    }
+  }
+  if (obj->owornmask & W_SWAPWEP) {
+    if (u.twoweap)
+      sprintf(eos(bp), " (wielded in other %s)", body_part(HAND));
+    else
+      strcat(bp, " (alternate weapon; not wielded)");
+  }
+  if (obj->owornmask & W_QUIVER)
+    strcat(bp, " (in quiver)");
+  if (obj->unpaid) {
+    xchar ox, oy;
+    long quotedprice = unpaid_cost(obj);
+    struct Monster *shkp = (struct Monster *) 0;
 
-		if (Has_contents(obj) &&
-		    get_obj_location(obj, &ox, &oy, BURIED_TOO|CONTAINED_TOO) &&
-		    costly_spot(ox, oy) &&
-		    (shkp = shop_keeper(*in_rooms(ox, oy, SHOPBASE))))
-			quotedprice += contained_cost(obj, shkp, 0L, FALSE, TRUE);
-		sprintf(eos(bp), " (unpaid, %ld %s)",
-			quotedprice, currency(quotedprice));
-	}
-	if (!strncmp(prefix, "a ", 2) &&
-			index(vowels, *(prefix+2) ? *(prefix+2) : *bp)
-			&& (*(prefix+2) || (strncmp(bp, "uranium", 7)
-				&& strncmp(bp, "unicorn", 7)
-				&& strncmp(bp, "eucalyptus", 10)))) {
-		strcpy(tmpbuf, prefix);
-		strcpy(prefix, "an ");
-		strcpy(prefix+3, tmpbuf+2);
-	}
-	bp = strprepend(bp, prefix);
-	return(bp);
+    if (Has_contents(obj)
+        && get_obj_location(obj, &ox, &oy, BURIED_TOO | CONTAINED_TOO)
+        && costly_spot(ox, oy)
+        && (shkp = shop_keeper(*in_rooms(ox, oy, SHOPBASE))))
+      quotedprice += contained_cost(obj, shkp, 0L, FALSE, TRUE);
+    sprintf(eos(bp), " (unpaid, %ld %s)", quotedprice, currency(quotedprice));
+  }
+  if (!strncmp(prefix, "a ", 2) &&
+  index(vowels, *(prefix + 2) ? *(prefix + 2) : *bp)
+      && (*(prefix + 2)
+          || (strncmp(bp, "uranium", 7) && strncmp(bp, "unicorn", 7)
+              && strncmp(bp, "eucalyptus", 10)))) {
+    strcpy(tmpbuf, prefix);
+    strcpy(prefix, "an ");
+    strcpy(prefix + 3, tmpbuf + 2);
+  }
+  bp = strprepend(bp, prefix);
+  return (bp);
 }
 
 #endif /* OVL0 */

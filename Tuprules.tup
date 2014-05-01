@@ -7,6 +7,8 @@ CCFLAGS += -Werror
 CCFLAGS += -Wno-deprecated-writable-strings
 CCFLAGS += -Wno-deprecated-register
 CCFLAGS += -Wno-comment
+CCFLAGS += -Wno-format-security
+CCFLAGS += -Wno-int-to-void-pointer-cast
 
 !cc = |> g++ $(CCFLAGS) -c %f -o %o |> %B.o
 
