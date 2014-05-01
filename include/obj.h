@@ -5,9 +5,6 @@
 #ifndef OBJ_H
 #define OBJ_H
 
-/* #define obj obj_nh */ /* uncomment for SCO UNIX, which has a conflicting
-			  * typedef for "obj" in <sys/types.h> */
-
 struct Object;
 
 union vptrs {

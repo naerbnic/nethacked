@@ -95,9 +95,7 @@ typedef schar	xchar;
 #include "unixconf.h"
 
 /* Displayable name of this port; don't redefine if defined in *conf.h */
-# ifdef UNIX
-#  define PORT_ID	"Unix"
-# endif
+#define PORT_ID	"Unix"
 
 #ifndef EXIT_SUCCESS
 # define EXIT_SUCCESS 0

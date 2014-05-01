@@ -833,14 +833,12 @@ E void silly_thing(const char *,struct Object *);
 
 /* ### ioctl.c ### */
 
-#if defined(UNIX)
 E void getwindowsz();
 E void getioctls();
 E void setioctls();
 # ifdef SUSPEND
 E int dosuspend();
 # endif /* SUSPEND */
-#endif /* UNIX */
 
 /* ### light.c ### */
 
@@ -882,9 +880,7 @@ E int doclose();
 /* ### mail.c ### */
 
 #ifdef MAIL
-# ifdef UNIX
 E void getmailstatus();
-# endif
 E void ckmailstatus();
 E void readmail(struct Object *);
 #endif /* MAIL */
@@ -1615,9 +1611,7 @@ E int doconsult(struct Monster *);
 /* ### save.c ### */
 
 E int dosave();
-#if defined(UNIX) || defined(__EMX__)
 E void hangup(int);
-#endif
 E int dosave0();
 #ifdef INSURANCE
 E void savestateinlock();
@@ -1907,27 +1901,22 @@ E int flash_hits_mon(struct Monster *,struct Object *);
 
 /* ### unixmain.c ### */
 
-#ifdef UNIX
 # ifdef PORT_HELP
 E void port_help();
 # endif
-#endif /* UNIX */
 
 
 /* ### unixtty.c ### */
 
-#if defined(UNIX)
 E void gettty();
 E void settty(const char *);
 E void setftty();
 E void intron();
 E void introff();
 E void error(const char *,...) PRINTF_F(1,2);
-#endif /* UNIX */
 
 /* ### unixunix.c ### */
 
-#ifdef UNIX
 E void getlock();
 E void regularize(char *);
 # if defined(TIMED_DELAY) && !defined(msleep) && defined(SYSV)
@@ -1939,7 +1928,6 @@ E int dosh();
 # if defined(SHELL) || defined(DEF_PAGER) || defined(DEF_MAILREADER)
 E int child(int);
 # endif
-#endif /* UNIX */
 
 /* ### vault.c ### */
 

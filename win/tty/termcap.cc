@@ -32,7 +32,7 @@ void cmov(int, int);
 void nocmov(int, int);
 #if defined(TEXTCOLOR) && defined(TERMLIB)
 # ifdef OVLB
-#  if !defined(UNIX) || !defined(TERMINFO)
+#  if !defined(TERMINFO)
 #   ifndef TOS
 static void analyze_seq(char *, int *, int *);
 #   endif
@@ -680,7 +680,7 @@ void cl_eos() {
 }
 
 #if defined(TEXTCOLOR) && defined(TERMLIB)
-# if defined(UNIX) && defined(TERMINFO)
+# if defined(TERMINFO)
 /*
  * Sets up color highlighting, using terminfo(4) escape sequences.
  *

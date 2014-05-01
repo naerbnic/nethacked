@@ -98,9 +98,7 @@ struct DisplayDesc *ttyDisplay;	/* the tty display descriptor */
 
 extern void cmov(int,int); /* from termcap.c */
 extern void nocmov(int,int); /* from termcap.c */
-#if defined(UNIX)
 static char obuf[BUFSIZ];	/* BUFSIZ is defined in stdio.h */
-#endif
 
 static char winpanicstr[] = "Bad window id %d";
 char defmorestr[] = "--More--";
@@ -230,9 +228,7 @@ void tty_init_nhwindows(int* argcp, char** argv) {
      *  tty_startup() must be called before initoptions()
      *    due to ordering of graphics settings
      */
-#if defined(UNIX)
     setbuf(stdout,obuf);
-#endif
     gettty();
 
     /* to port dependant tty setup */
@@ -2273,7 +2269,6 @@ void tty_raw_print_bold(const char *str) {
 
 int tty_nhgetch() {
     int i;
-#ifdef UNIX
     /* kludge alert: Some Unix variants return funny values if getc()
      * is called, interrupted, and then called again.  There
      * is non-reentrant code in the internal _filbuf() routine, called by
@@ -2281,7 +2276,6 @@ int tty_nhgetch() {
      */
     static volatile int nesting = 0;
     char nestbuf;
-#endif
 
     (void) fflush(stdout);
     /* Note: if raw_print() and wait_synch() get called to report terminal
@@ -2291,14 +2285,10 @@ int tty_nhgetch() {
      */
     if (WIN_MESSAGE != WIN_ERR && wins[WIN_MESSAGE])
 	    wins[WIN_MESSAGE]->flags &= ~WIN_STOP;
-#ifdef UNIX
     i = ((++nesting == 1) ? tgetch() :
 	 (read(fileno(stdin), (genericptr_t)&nestbuf,1) == 1 ? (int)nestbuf :
 								EOF));
     --nesting;
-#else
-    i = tgetch();
-#endif
     if (!i) i = '\033'; /* map NUL to ESC since nethack doesn't expect NUL */
     if (ttyDisplay && ttyDisplay->toplin == 1)
 	ttyDisplay->toplin = 2;

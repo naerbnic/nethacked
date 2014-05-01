@@ -22,11 +22,7 @@ void copy_bytes(int,int);
 
 #define Close	(void)close
 
-#ifdef UNIX
 #define SAVESIZE	(PL_NSIZ + 13)	/* save/99999player.e */
-#else
-#define SAVESIZE	FILENAME	/* from macconf.h or pcconf.h */
-#endif
 
 #if defined(EXEPATH)
 char *exepath(char *);

@@ -1,4 +1,5 @@
 To Be Removed:
+_M_UNIX
 
 To be set:
 UNIX
@@ -28,6 +29,7 @@ OPTION_LISTS_ONLY
 EXEPATH
 TIMED_DELAY
 TEXT_TOMBSTONE
+DEF_PAGER
 
 Partially Removed:
 

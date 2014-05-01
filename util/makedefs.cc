@@ -43,7 +43,7 @@ using std::string;
 #define Fclose	(void) fclose
 #define Unlink	(void) unlink
 
-#if defined(UNIX) && !defined(LINT) && !defined(GCC_WARN)
+#if !defined(LINT) && !defined(GCC_WARN)
 static	const char	SCCS_Id[] = "@(#)makedefs.cc\t3.4\t2002/02/03";
 #endif
 
