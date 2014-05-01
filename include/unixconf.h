@@ -130,7 +130,7 @@
  * "extra output" method is used, but not all systems provide access to
  * a fine-grained timer.
  */
-/* #define TIMED_DELAY */	/* usleep() */
+#define TIMED_DELAY	/* usleep() */
 
 /*
  * If you define MAIL, then the player will be notified of new mail
