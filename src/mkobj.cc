@@ -93,30 +93,29 @@ struct Object * mksobj_at(int otyp, int x, int y, bool init, bool artif) {
 }
 
 struct Object * mkobj(char oclass, bool artif) {
-	int tprob, i, prob = rnd(1000);
+  int tprob, prob = rnd(1000);
 
-	if(oclass == RANDOM_CLASS) {
-		const struct icp *iprobs =
+  if (oclass == RANDOM_CLASS) {
+    const struct icp *iprobs =
 #ifdef REINCARNATION
-				    (Is_rogue_level(&u.uz)) ?
-				    (const struct icp *)rogueprobs :
+        (Is_rogue_level(&u.uz)) ? (const struct icp *) rogueprobs :
 #endif
-				    Inhell ? (const struct icp *)hellprobs :
-				    (const struct icp *)mkobjprobs;
+        Inhell ?
+            (const struct icp *) hellprobs : (const struct icp *) mkobjprobs;
 
-		for(tprob = rnd(100);
-		    (tprob -= iprobs->iprob) > 0;
-		    iprobs++);
-		oclass = iprobs->iclass;
-	}
+    for (tprob = rnd(100); (tprob -= iprobs->iprob) > 0; iprobs++)
+      ;
+    oclass = iprobs->iclass;
+  }
 
-	i = bases[(int)oclass];
-	while((prob -= objects[i].oc_prob) > 0) i++;
+  int i = bases[(int) oclass];
+  while ((prob -= objects[i].oc_prob) > 0)
+    i++;
 
-	if(objects[i].oc_class != oclass || !OBJ_NAME(objects[i]))
-		panic("probtype error, oclass=%d i=%d", (int) oclass, i);
+  if (objects[i].oc_class != oclass || !OBJ_NAME(objects[i]))
+    panic("probtype error, oclass=%d i=%d", (int) oclass, i);
 
-	return(mksobj(i, TRUE, artif));
+  return (mksobj(i, TRUE, artif));
 }
 
 STATIC_OVL void mkbox_cnts(struct Object *box) {
