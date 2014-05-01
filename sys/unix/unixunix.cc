@@ -13,10 +13,6 @@
 #endif
 #include <signal.h>
 
-#ifdef _M_UNIX
-extern void sco_mapon();
-extern void sco_mapoff();
-#endif
 #ifdef __linux__
 extern void linux_mapon();
 extern void linux_mapoff();
@@ -235,9 +231,6 @@ int dosh() {
 int child(int wt) {
 	int f;
 	suspend_nhwindows((char *)0);	/* also calls end_screen() */
-#ifdef _M_UNIX
-	sco_mapon();
-#endif
 #ifdef __linux__
 	linux_mapon();
 #endif
@@ -257,9 +250,6 @@ int child(int wt) {
 	(void) signal(SIGINT,SIG_IGN);
 	(void) signal(SIGQUIT,SIG_IGN);
 	(void) wait( (int *) 0);
-#ifdef _M_UNIX
-	sco_mapoff();
-#endif
 #ifdef __linux__
 	linux_mapoff();
 #endif

@@ -45,7 +45,7 @@ extern char *viz_rmin, *viz_rmax;	/* line-of-sight limits (vision.c) */
 #include <sys/stat.h>
 #include <pwd.h>
 /* DON'T trust all Unices to declare getpwuid() in <pwd.h> */
-#  if !defined(_BULL_SOURCE) && !defined(__sgi) && !defined(_M_UNIX)
+#  if !defined(_BULL_SOURCE) && !defined(__sgi)
 #   if !defined(SUNOS4) && !(defined(ULTRIX) && defined(__GNUC__))
 /* DO trust all SVR4 to typedef uid_t in <sys/types.h> (probably to a long) */
 #    if defined(POSIX_TYPES) || defined(SVR4) || defined(HPUX)

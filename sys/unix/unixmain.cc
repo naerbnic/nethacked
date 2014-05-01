@@ -14,7 +14,7 @@
 #include <fcntl.h>
 #endif
 
-#if !defined(_BULL_SOURCE) && !defined(__sgi) && !defined(_M_UNIX)
+#if !defined(_BULL_SOURCE) && !defined(__sgi)
 # if !defined(SUNOS4) && !(defined(ULTRIX) && defined(__GNUC__))
 #  if defined(POSIX_TYPES) || defined(SVR4) || defined(HPUX)
 extern struct passwd *getpwuid(uid_t);
@@ -30,10 +30,6 @@ static void chdirx(const char *,bool);
 static bool whoami();
 static void process_options(int, char **);
 
-#ifdef _M_UNIX
-extern void check_sco_console();
-extern void init_sco_cons();
-#endif
 #ifdef __linux__
 extern void check_linux_console();
 extern void init_linux_cons();
@@ -139,18 +135,12 @@ int main(int argc, char *argv[]) {
 	chdirx(dir,1);
 #endif
 
-#ifdef _M_UNIX
-	check_sco_console();
-#endif
 #ifdef __linux__
 	check_linux_console();
 #endif
 	initoptions();
 	init_nhwindows(&argc,argv);
 	exact_username = whoami();
-#ifdef _M_UNIX
-	init_sco_cons();
-#endif
 #ifdef __linux__
 	init_linux_cons();
 #endif
