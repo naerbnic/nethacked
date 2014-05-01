@@ -9,14 +9,12 @@
 
 STATIC_DCL void mkbox_cnts(struct Object *);
 STATIC_DCL void obj_timer_checks(struct Object *, xchar, xchar, int);
-#ifdef OVL1
 STATIC_DCL void container_weight(struct Object *);
 STATIC_DCL struct Object *save_mtraits(struct Object *, struct Monster *);
 #ifdef WIZARD
 STATIC_DCL const char *where_name(int);
 STATIC_DCL void check_contained(struct Object *,const char *);
 #endif
-#endif /* OVL1 */
 
 extern struct Object *thrownobj;		/* defined in dothrow.c */
 
@@ -26,8 +24,6 @@ struct icp {
     int  iprob;		/* probability of an item type */
     char iclass;	/* item class */
 };
-
-#ifdef OVL1
 
 const struct icp mkobjprobs[] = {
 {10, WEAPON_CLASS},
@@ -324,9 +320,6 @@ void bill_dummy_object(struct Object *otmp) {
 	otmp->unpaid = 0;
 	return;
 }
-
-#endif /* OVL1 */
-#ifdef OVLB
 
 static const char dknowns[] = {
 		WAND_CLASS, RING_CLASS, POTION_CLASS, SCROLL_CLASS,
@@ -710,9 +703,6 @@ void uncurse(struct Object *otmp) {
 	return;
 }
 
-#endif /* OVLB */
-#ifdef OVL1
-
 void blessorcurse(struct Object *otmp, int chance) {
 	if(otmp->blessed || otmp->cursed) return;
 
@@ -726,15 +716,9 @@ void blessorcurse(struct Object *otmp, int chance) {
 	return;
 }
 
-#endif /* OVL1 */
-#ifdef OVLB
-
 int bcsign(struct Object *otmp) {
 	return(!!otmp->blessed - !!otmp->cursed);
 }
-
-#endif /* OVLB */
-#ifdef OVL0
 
 /*
  *  Calculate the weight of the given object.  This will recursively follow
@@ -804,8 +788,6 @@ static int treefruits[] = {APPLE,ORANGE,PEAR,BANANA,EUCALYPTUS_LEAF};
 struct Object * rnd_treefruit_at(int x, int y) {
 	return mksobj_at(treefruits[rn2(SIZE(treefruits))], x, y, TRUE, FALSE);
 }
-#endif /* OVL0 */
-#ifdef OVLB
 
 struct Object * mkgold(long amount, int x, int y) {
     struct Object *gold = g_at(x,y);
@@ -821,9 +803,6 @@ struct Object * mkgold(long amount, int x, int y) {
     gold->owt = weight(gold);
     return (gold);
 }
-
-#endif /* OVLB */
-#ifdef OVL1
 
 /* return TRUE if the corpse has special timing */
 #define special_corpse(num)  (((num) == PM_LIZARD)		\
@@ -945,9 +924,6 @@ struct Monster * get_mtraits(struct Object *obj, bool copyof) {
 	return mnew;
 }
 
-#endif /* OVL1 */
-#ifdef OVLB
-
 /* make an object named after someone listed in the scoreboard file */
 struct Object * mk_tt_object(int objtype, int x, int y) {
 	struct Object *otmp, *otmp2;
@@ -989,9 +965,6 @@ bool is_rottable(struct Object *otmp) {
 	return((bool)(objects[otyp].oc_material <= WOOD &&
 			objects[otyp].oc_material != LIQUID));
 }
-
-#endif /* OVLB */
-#ifdef OVL1
 
 /*
  * These routines maintain the single-linked lists headed in level.objects[][]
@@ -1476,7 +1449,5 @@ STATIC_OVL void check_contained(struct Object *container, const char *mesg) {
     }
 }
 #endif /* WIZARD */
-
-#endif /* OVL1 */
 
 /*mkobj.c*/
