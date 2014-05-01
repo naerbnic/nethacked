@@ -197,6 +197,7 @@ void more() {
 }
 
 void update_topl(const char *bp) {
+  ErrMsg("Update Topl: %s", bp);
 	char *tl, *otl;
 	int n0;
 	int notdied = 1;
