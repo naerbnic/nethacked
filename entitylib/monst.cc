@@ -89,7 +89,6 @@ void monst_init();
  * unconsciously. Use your common sense.
  */
 
-#ifndef SPLITMON_2
 struct permonst mons[] = {
 /*
  * ants
@@ -1475,10 +1474,6 @@ struct permonst mons[] = {
 	SIZ(750, 150, 0, MS_ORC, MZ_SMALL), 0, 0,
 	M1_HUMANOID|M1_OMNIVORE, M2_GNOME|M2_PRINCE|M2_MALE|M2_COLLECT,
 	M3_INFRAVISIBLE|M3_INFRAVISION, HI_LORD),
-#ifdef SPLITMON_1
-};
-#endif
-#endif /* !SPLITMON_2 */
 
 /* horrible kludge alert:
  * This is a compiler-specific kludge to allow the compilation of monst.o in
@@ -1490,10 +1485,6 @@ struct permonst mons[] = {
  * way.  --ERS
  */
 
-#ifndef SPLITMON_1
-#ifdef SPLITMON_2
-struct permonst _mons2[] = {
-#endif
 /*
  * giant Humanoids
  */
@@ -3463,13 +3454,10 @@ struct permonst _mons2[] = {
 	A(NO_ATTK, NO_ATTK, NO_ATTK, NO_ATTK, NO_ATTK, NO_ATTK),
 	SIZ(0, 0, 0, 0, 0), 0, 0, 0L, 0L, 0, 0)
 };
-#endif /* !SPLITMON_1 */
 
-#ifndef SPLITMON_1
 /* dummy routine used to force linkage */
 void monst_init() {
     return;
 }
-#endif
 
 /*monst.c*/
