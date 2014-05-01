@@ -521,7 +521,7 @@ struct Object * mksobj(int otyp, bool init, bool artif) {
 			otmp->blessed = rn2(2);
 			otmp->spe = rne(3);
 		} else	blessorcurse(otmp, 10);
-		if (artif && !rn2(40))                
+		if (artif && !rn2(40))
 		    otmp = mk_artifact(otmp, (aligntyp)A_NONE);
 		/* simulate lacquered armor for samurai */
 		if (Role_if(PM_SAMURAI) && otmp->otyp == SPLINT_MAIL &&
@@ -638,7 +638,7 @@ void start_corpse_timeout(struct Object *body) {
 			break;
 		    }
 	}
-	
+
 	if (body->norevive) body->norevive = 0;
 	(void) start_timer(when, TIMER_OBJECT, action, (genericptr_t)body);
 }
@@ -867,7 +867,7 @@ struct Object * obj_attach_mid(struct Object *obj, unsigned mid) {
     if (!mid || !obj) return nullptr;
     lth = sizeof(mid);
     namelth = obj->onamelth ? strlen(ONAME(obj)) + 1 : 0;
-    if (namelth) 
+    if (namelth)
 	otmp = realloc_obj(obj, lth, (genericptr_t) &mid, namelth, ONAME(obj));
     else {
 	otmp = obj;
@@ -1032,7 +1032,7 @@ void obj_ice_effects(int x, int y, bool do_buried) {
  */
 long peek_at_iced_corpse_age(struct Object *otmp) {
     long age, retval = otmp->age;
-    
+
     if (otmp->otyp == CORPSE && ON_ICE(otmp)) {
 	/* Adjust the age; must be same as obj_timer_checks() for off ice*/
 	age = monstermoves - otmp->age;
@@ -1060,10 +1060,10 @@ STATIC_OVL void obj_timer_checks(struct Object *otmp, xchar x, xchar y, int forc
 	if (tleft == 0L) {
 		action = REVIVE_MON;
 		tleft = stop_timer(action, (genericptr_t)otmp);
-	} 
+	}
 	if (tleft != 0L) {
 	    long age;
-	    
+
 	    tleft = tleft - monstermoves;
 	    /* mark the corpse as being on ice */
 	    ON_ICE(otmp) = 1;
@@ -1103,7 +1103,7 @@ STATIC_OVL void obj_timer_checks(struct Object *otmp, xchar x, xchar y, int forc
 		otmp->age = otmp->age + (age / ROT_ICE_ADJUSTMENT);
 	}
     }
-    /* now re-start the timer with the appropriate modifications */ 
+    /* now re-start the timer with the appropriate modifications */
     if (restart_timer)
 	(void) start_timer(tleft, TIMER_OBJECT, action, (genericptr_t)otmp);
 }

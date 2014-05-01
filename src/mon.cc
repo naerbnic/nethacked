@@ -292,7 +292,7 @@ STATIC_OVL struct Object * make_corpse(struct Monster *mtmp) {
 	if (mtmp->mnamelth)
 	    obj = oname(obj, NAME(mtmp));
 
-	/* Avoid "It was hidden under a green mold corpse!" 
+	/* Avoid "It was hidden under a green mold corpse!"
 	 *  during Blind combat. An unseen monster referred to as "it"
 	 *  could be killed and leave a corpse.  If a hider then hid
 	 *  underneath it, you could be told the corpse type of a
@@ -1404,7 +1404,7 @@ void mondead(struct Monster *mtmp) {
 #endif
 	if(mtmp->iswiz) wizdead();
 	if(mtmp->data->msound == MS_NEMESIS) nemdead();
-        
+
 #ifdef RECORD_ACHIEVE
         if(mtmp->data == &mons[PM_MEDUSA])
             achieve.killed_medusa = 1;
@@ -1461,7 +1461,7 @@ bool corpse_chance(struct Monster *mon, struct Monster *magr, bool was_swallowed
 	    	sprintf(killer_buf, "%s explosion", s_suffix(mdat->mname));
 	    	killer = killer_buf;
 	    	killer_format = KILLED_BY_AN;
-	    	explode(mon->mx, mon->my, -1, tmp, MON_EXPLODE, EXPL_NOXIOUS); 
+	    	explode(mon->mx, mon->my, -1, tmp, MON_EXPLODE, EXPL_NOXIOUS);
 	    	return (FALSE);
 	    }
   	}
@@ -1639,7 +1639,7 @@ void killed(struct Monster *mtmp) {
 
 /* the player has killed the monster mtmp */
 void xkilled(
-    struct Monster* mtmp, 
+    struct Monster* mtmp,
 /*
  * Dest=1, normal; dest=0, don't print message; dest=2, don't drop corpse
  * either; dest=3, message but no corpse
@@ -2613,7 +2613,7 @@ void mimic_hit_msg(struct Monster *mtmp, short otyp) {
 	short ap = mtmp->mappearance;
 
 	switch(mtmp->m_ap_type) {
-	    case M_AP_NOTHING:			
+	    case M_AP_NOTHING:
 	    case M_AP_FURNITURE:
 	    case M_AP_MONSTER:
 		break;
