@@ -2,7 +2,6 @@
 /* Copyright (c) Mike Threepoint, 1989.				  */
 /* NetHack may be freely redistributed.  See license for details. */
 
-#ifndef OBJECTS_PASS_2_
 /* first pass */
 struct Monster { struct Monster *dummy; };	/* lint: struct obj's union */
 #include "config.h"
@@ -11,11 +10,9 @@ struct Monster { struct Monster *dummy; };	/* lint: struct obj's union */
 #include "prop.h"
 #include "skills.h"
 
-#else	/* !OBJECTS_PASS_2_ */
 /* second pass */
 #include "color.h"
 #  define COLOR_FIELD(X) X,
-#endif	/* !OBJECTS_PASS_2_ */
 
 
 /* objects have symbols: ) [ = " ( % ! ? + / $ * ` 0 _ . */
@@ -28,20 +25,13 @@ struct Monster { struct Monster *dummy; };	/* lint: struct obj's union */
  *	set at run-time during role-specific character initialization.
  */
 
-#ifndef OBJECTS_PASS_2_
-/* first pass -- object descriptive text */
-# define OBJ(name,desc) name,desc
-# define OBJECT(obj,bits,prp,sym,prob,dly,wt,cost,sdam,ldam,oc1,oc2,nut,color) \
-	{obj}
-
-struct objdescr obj_descr[] = {
-#else
 /* second pass -- object definitions */
 
+# define OBJ(name,desc) name,desc
 # define BITS(nmkn,mrg,uskn,ctnr,mgc,chrg,uniq,nwsh,big,tuf,dir,sub,mtrl) \
 	nmkn,mrg,uskn,0,mgc,chrg,uniq,nwsh,big,tuf,dir,mtrl,sub /* SCO ODT 1.1 cpp fodder */
 # define OBJECT(obj,bits,prp,sym,prob,dly,wt,cost,sdam,ldam,oc1,oc2,nut,color) \
-	{0, 0, (char *)0, bits, prp, sym, dly, COLOR_FIELD(color) \
+	{obj, 0, 0, (char *)0, bits, prp, sym, dly, COLOR_FIELD(color) \
 	 prob, wt, cost, sdam, ldam, oc1, oc2, nut}
 # ifndef lint
 #  define HARDGEM(n) (n >= 8)
@@ -50,7 +40,6 @@ struct objdescr obj_descr[] = {
 # endif
 
 struct objclass objects[] = {
-#endif
 /* dummy object[0] -- description [2nd arg] *must* be NULL */
 	OBJECT(OBJ("strange object",(char *)0), BITS(1,0,0,0,0,0,0,0,0,0,0,P_NONE,0),
 			0, ILLOBJ_CLASS, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
@@ -969,21 +958,11 @@ OBJECT(OBJ("acid venom", "splash of venom"),
 		ILLOBJ_CLASS, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 }; /* objects[] */
 
-#ifndef OBJECTS_PASS_2_
-
-/* perform recursive compilation for second structure */
-#  undef OBJ
-#  undef OBJECT
-#  define OBJECTS_PASS_2_
-#include "objects.cc"
-
 void objects_init();
 
 /* dummy routine used to force linkage */
 void objects_init() {
     return;
 }
-
-#endif	/* !OBJECTS_PASS_2_ */
 
 /*objects.c*/

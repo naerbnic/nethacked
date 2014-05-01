@@ -8,6 +8,8 @@
 /* definition of a class of objects */
 
 struct objclass {
+  const char *oc_name;    /* actual name */
+  const char *oc_descr;   /* description when name unknown */
 	short	oc_name_idx;		/* index of actual name */
 	short	oc_descr_idx;		/* description when name unknown */
 	char *	oc_uname;		/* called by user */
@@ -109,13 +111,7 @@ struct objclass {
 	unsigned short	oc_nutrition;	/* food value */
 };
 
-struct objdescr {
-	const char *oc_name;		/* actual name */
-	const char *oc_descr;		/* description when name unknown */
-};
-
 extern struct objclass objects[];
-extern struct objdescr obj_descr[];
 
 /*
  * All objects have a class. Make sure that all classes have a corresponding
@@ -181,6 +177,6 @@ struct fruit {
 #define newfruit() (struct fruit *)alloc(sizeof(struct fruit))
 #define dealloc_fruit(rind) free((genericptr_t) (rind))
 
-#define OBJ_NAME(obj)  (obj_descr[(obj).oc_name_idx].oc_name)
-#define OBJ_DESCR(obj) (obj_descr[(obj).oc_descr_idx].oc_descr)
+#define OBJ_NAME(obj)  ((obj).oc_name)
+#define OBJ_DESCR(obj) ((obj).oc_descr)
 #endif /* OBJCLASS_H */

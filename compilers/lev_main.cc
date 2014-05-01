@@ -333,7 +333,7 @@ int get_object_id(char *s, char c) {
 
 	for (i = class_id ? bases[class_id] : 0; i < NUM_OBJECTS; i++) {
 	    if (class_id && objects[i].oc_class != class_id) break;
-	    objname = obj_descr[i].oc_name;
+	    objname = objects[i].oc_name;
 	    if (objname && !strcmp(s, objname))
 		return i;
 	}
