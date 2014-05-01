@@ -1212,15 +1212,15 @@ void show_glyph(int x, int y, int glyph) {
  * Reset the changed glyph borders so that none of the 3rd screen has
  * changed.
  */
-#define reset_glyph_bbox()			\
-    {						\
-	int i;					\
-						\
-	for (i = 0; i < ROWNO; i++) {		\
-	    gbuf_start[i] = COLNO-1;		\
-	    gbuf_stop[i]  = 0;			\
-	}					\
-    }
+
+void reset_glyph_bbox() {
+  int i;
+
+  for (i = 0; i < ROWNO; i++) {
+    gbuf_start[i] = COLNO - 1;
+    gbuf_stop[i] = 0;
+  }
+}
 
 
 static gbuf_entry nul_gbuf = { 0, cmap_to_glyph(S_stone) };

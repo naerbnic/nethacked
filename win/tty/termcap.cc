@@ -5,6 +5,8 @@
 #include <curses.h>
 #include <term.h>
 
+extern char* tparam();
+
 // Undef some things that interfere with compilation
 #undef bell
 #undef hangup
@@ -221,6 +223,8 @@ void tty_startup(int *wid, int *hgt) {
 	 * the kernel has values for either we should use them rather than
 	 * the values from TERMCAP ...
 	 */
+	if (!CO) CO = tgetnum("co");
+	if (!LI) LI = tgetnum("li");
 # ifdef CLIPPING
 	if(CO < COLNO || LI < ROWNO+3)
 		setclipped();
