@@ -5,6 +5,10 @@
 #ifndef PERMONST_H
 #define PERMONST_H
 
+#include "align.h"
+#include "monattk.h"
+#include "monflag.h"
+
 /*	This structure covers all attack forms.
  *	aatyp is the gross attack type (eg. claw, bite, breath, ...)
  *	adtyp is the damage type (eg. physical, fire, cold, spell, ...)
@@ -25,16 +29,12 @@ struct Attack {
 /*	Max # of attacks for any given monster.
  */
 
-#define NATTK		6
+constexpr int NATTK = 6;
 
 /*	Weight of a human body
  */
 
-#define WT_HUMAN	1450
-
-#include "align.h"
-#include "monattk.h"
-#include "monflag.h"
+constexpr int WT_HUMAN = 1450;
 
 struct permonst {
 	const char	*mname;			/* full name */
