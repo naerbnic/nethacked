@@ -261,7 +261,6 @@ int main(int argc, char *argv[]) {
 	} else {
 not_recovered:
 		player_selection();
-    ErrMsg("Finished player selection!");
 		newgame();
 
 

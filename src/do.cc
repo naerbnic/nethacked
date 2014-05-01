@@ -868,22 +868,22 @@ STATIC_OVL int currentlevel_rewrite() {
 
 #ifdef INSURANCE
 void save_currentstate() {
-  ErrMsg("Before save state");
-  usleep(1000000);
 
 	if (flags.ins_chkpt) {
 		/* write out just-attained level, with pets and everything */
 		int fd = currentlevel_rewrite();
 		if(fd < 0) return;
 		bufon(fd);
+	  ErrMsg("Before save state (%d)", fd);
+	  usleep(1000000);
 		savelev(fd,ledger_no(&u.uz), WRITE_SAVE);
+	  ErrMsg("After save state");
+	  usleep(1000000);
 		bclose(fd);
 	}
 
 	/* write out non-level state */
 	savestateinlock();
-  ErrMsg("After save state");
-  usleep(1000000);
 }
 #endif
 

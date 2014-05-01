@@ -258,6 +258,8 @@ int create_levelfile(int lev, char errbuf[]) {
 	set_levelfile_name(lock, lev);
 	fq_lock = fqname(lock, LEVELPREFIX, 0);
 
+  fd = creat(fq_lock, FCMASK);
+
 	if (fd >= 0)
 	    level_info[lev].flags |= LFILE_EXISTS;
 	else if (errbuf)	/* failure explanation */

@@ -493,14 +493,10 @@ void newgame() {
 		flush_screen(1);
 		com_pager(1);
 	}
-  ErrMsg("After pager");
-  usleep(1000000);
 
 #ifdef INSURANCE
 	save_currentstate();
 #endif
-  ErrMsg("After save state");
-  usleep(1000000);
 	program_state.something_worth_saving++;	/* useful data now exists */
 
 #if defined(RECORD_REALTIME) || defined(REALTIME_ON_BOTL)
