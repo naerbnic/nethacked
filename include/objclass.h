@@ -176,7 +176,6 @@ struct fruit {
 };
 #define newfruit() (struct fruit *)alloc(sizeof(struct fruit))
 #define dealloc_fruit(rind) free((genericptr_t) (rind))
-
-#define OBJ_NAME(obj)  ((obj).oc_name)
-#define OBJ_DESCR(obj) ((obj).oc_descr)
+#define OBJ_NAME(obj)  (objects[(obj).oc_name_idx].oc_name)
+#define OBJ_DESCR(obj) (objects[(obj).oc_descr_idx].oc_descr)
 #endif /* OBJCLASS_H */
