@@ -3583,7 +3583,7 @@ STATIC_OVL long cost_per_charge(Monster *shkp, Object *otmp, bool altusage) {
 
 /* Charge the player for partial use of an unpaid object.
  *
- * Note that bill_dummy_object() should be used instead
+ * Note that CreateBillDummyObject() should be used instead
  * when an object is completely used.
  */
 void check_unpaid_usage(Object *otmp, bool altusage) {

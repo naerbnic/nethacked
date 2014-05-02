@@ -973,7 +973,7 @@ bool catch_lit(Object *obj) {
 		check_unpaid(obj);
 	        verbalize("That's in addition to the cost of %s %s, of course.",
 				Yname2(obj), obj->quan == 1 ? "itself" : "themselves");
-		bill_dummy_object(obj);
+		CreateBillDummyObject(obj);
 	    }
 	    begin_burn(obj, FALSE);
 	    return TRUE;
@@ -1022,7 +1022,7 @@ STATIC_OVL void use_lamp(Object *obj) {
 			  obj->age == 20L * (long)objects[obj->otyp].oc_cost) {
 			const char *ithem = obj->quan > 1L ? "them" : "it";
 			verbalize("You burn %s, you bought %s!", ithem, ithem);
-			bill_dummy_object(obj);
+			CreateBillDummyObject(obj);
 		    }
 		}
 		begin_burn(obj, FALSE);
@@ -1061,7 +1061,7 @@ STATIC_OVL void light_cocktail(Object *obj) {
 	     */
 	    check_unpaid(obj);
 	    verbalize("That's in addition to the cost of the potion, of course.");
-	    bill_dummy_object(obj);
+	    CreateBillDummyObject(obj);
 	}
 	makeknown(obj->otyp);
 
@@ -2329,7 +2329,7 @@ STATIC_OVL int use_cream_pie(Object *obj) {
 	}
 	if (obj->unpaid) {
 		verbalize("You used it, you bought it!");
-		bill_dummy_object(obj);
+		CreateBillDummyObject(obj);
 	}
 	obj_extract_self(obj);
 	delobj(obj);
@@ -2491,7 +2491,7 @@ STATIC_OVL int do_break_wand(Object *obj) {
      */
     if (obj->unpaid) {
 	check_unpaid(obj);		/* Extra charge for use */
-	bill_dummy_object(obj);
+	CreateBillDummyObject(obj);
     }
 
     current_wand = obj;		/* destroy_item might reset this */

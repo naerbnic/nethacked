@@ -1374,7 +1374,7 @@ bool get_wet(Object* obj) {
 		      obj->odiluted ? " further" : "");
 		if(obj->unpaid && costly_spot(player.ux, player.uy)) {
 		    You("dilute it, you pay for it.");
-		    bill_dummy_object(obj);
+		    CreateBillDummyObject(obj);
 		}
 		if (obj->odiluted) {
 			obj->odiluted = 0;
@@ -1401,7 +1401,7 @@ bool get_wet(Object* obj) {
 			}
 			if(obj->unpaid && costly_spot(player.ux, player.uy)) {
 			    You("erase it, you pay for it.");
-			    bill_dummy_object(obj);
+			    CreateBillDummyObject(obj);
 			}
 			obj->otyp = SCR_BLANK_PAPER;
 			obj->spe = 0;
@@ -1422,7 +1422,7 @@ bool get_wet(Object* obj) {
 			    }
 			    if(obj->unpaid && costly_spot(player.ux, player.uy)) {
 			        You("erase it, you pay for it.");
-			        bill_dummy_object(obj);
+			        CreateBillDummyObject(obj);
 			    }
 			    obj->otyp = SPE_BLANK_PAPER;
 			    update_inventory();
@@ -1529,7 +1529,7 @@ int dodip() {
 					  aobjnam(obj, "softly glow"),
 					  index(vowels, *tmp) ? "n" : "", tmp);
 				}
-				bless(obj);
+				Bless(obj);
 				obj->bknown=1;
 				goto poof;
 			}
@@ -1725,7 +1725,7 @@ int dodip() {
 			if (obj->unpaid) {
 			    /* create a dummy duplicate to put on bill */
 			    verbalize("You burnt it, you bought it!");
-			    bill_dummy_object(obj);
+			    CreateBillDummyObject(obj);
 			}
 			obj->oeroded++;
 		    }
@@ -1816,7 +1816,7 @@ int dodip() {
 		
 		if(singlepotion->unpaid && costly_spot(player.ux, player.uy)) {
 		    You("use it, you pay for it.");
-		    bill_dummy_object(singlepotion);
+		    CreateBillDummyObject(singlepotion);
 		}
 		singlepotion->otyp = mixture;
 		singlepotion->blessed = 0;

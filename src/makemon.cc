@@ -254,7 +254,7 @@ STATIC_OVL void m_initweap(Monster *mtmp) {
 		    if (!rn2(20) || is_lord(ptr))
 			otmp = oname(otmp, artiname(
 				rn2(2) ? ART_DEMONBANE : ART_SUNSWORD));
-		    bless(otmp);
+		    Bless(otmp);
 		    otmp->oerodeproof = TRUE;
 		    spe2 = rn2(4);
 		    otmp->spe = max(otmp->spe, spe2);

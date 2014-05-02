@@ -1124,7 +1124,7 @@ pickentry:
 		otmp->corpsenm = classmon(tt->plrole, (tt->plgend[0] == 'F'));
 		otmp->owt = weight(otmp);
 		otmp = oname(otmp, tt->name);
-		if (otmp->otyp == CORPSE) start_corpse_timeout(otmp);
+		if (otmp->otyp == CORPSE) StartCorpseTimeout(otmp);
 	}
 
 	(void) fclose(rfile);

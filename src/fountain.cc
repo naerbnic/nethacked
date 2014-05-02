@@ -356,7 +356,7 @@ void dipfountain(Object *obj) {
 			pline("As the hand retreats, the fountain disappears!");
 			obj = oname(obj, artiname(ART_EXCALIBUR));
 			discover_artifact(ART_EXCALIBUR);
-			bless(obj);
+			Bless(obj);
 			obj->oeroded = obj->oeroded2 = 0;
 			obj->oerodeproof = TRUE;
 			exercise(A_WIS, TRUE);

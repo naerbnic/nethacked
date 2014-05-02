@@ -215,35 +215,39 @@ int PickRandomMonsterTypeIndex() {
  * in the nobj chain (and nexthere chain when on the floor).
  */
 Object * SplitObject(Object *obj, long num) {
-	Object *otmp;
+  Object *otmp;
 
-	if (obj->cobj || num <= 0L || obj->quan <= num)
-	    panic("splitobj");	/* can't split containers */
-	otmp = newobj(obj->oxlth + obj->onamelth);
-	*otmp = *obj;		/* copies whole structure */
-	otmp->o_id = flags.ident++;
-	if (!otmp->o_id) otmp->o_id = flags.ident++;	/* ident overflowed */
-	otmp->timed = 0;	/* not timed, yet */
-	otmp->lamplit = 0;	/* ditto */
-	otmp->owornmask = 0L;	/* new object isn't worn */
-	obj->quan -= num;
-	obj->owt = weight(obj);
-	otmp->quan = num;
-	otmp->owt = weight(otmp);	/* -= obj->owt ? */
-	obj->nobj = otmp;
-	/* Only set nexthere when on the floor, nexthere is also used */
-	/* as a back pointer to the container object when contained. */
-	if (obj->where == OBJ_FLOOR)
-	    obj->nexthere = otmp;
-	if (obj->oxlth)
-	    (void)memcpy((genericptr_t)otmp->oextra, (genericptr_t)obj->oextra,
-			obj->oxlth);
-	if (obj->onamelth)
-	    (void)strncpy(ONAME(otmp), ONAME(obj), (int)obj->onamelth);
-	if (obj->unpaid) splitbill(obj,otmp);
-	if (obj->timed) obj_split_timers(obj, otmp);
-	if (obj_sheds_light(obj)) obj_split_light_source(obj, otmp);
-	return otmp;
+  if (obj->cobj || num <= 0L || obj->quan <= num)
+    panic("splitobj"); /* can't split containers */
+  otmp = newobj(obj->oxlth + obj->onamelth);
+  *otmp = *obj; /* copies whole structure */
+  otmp->o_id = flags.ident++;
+  if (!otmp->o_id)
+    otmp->o_id = flags.ident++; /* ident overflowed */
+  otmp->timed = 0; /* not timed, yet */
+  otmp->lamplit = 0; /* ditto */
+  otmp->owornmask = 0L; /* new object isn't worn */
+  obj->quan -= num;
+  obj->owt = weight(obj);
+  otmp->quan = num;
+  otmp->owt = weight(otmp); /* -= obj->owt ? */
+  obj->nobj = otmp;
+  /* Only set nexthere when on the floor, nexthere is also used */
+  /* as a back pointer to the container object when contained. */
+  if (obj->where == OBJ_FLOOR)
+    obj->nexthere = otmp;
+  if (obj->oxlth)
+    (void) memcpy((genericptr_t) otmp->oextra, (genericptr_t) obj->oextra,
+        obj->oxlth);
+  if (obj->onamelth)
+    (void) strncpy(ONAME(otmp), ONAME(obj), (int) obj->onamelth);
+  if (obj->unpaid)
+    splitbill(obj, otmp);
+  if (obj->timed)
+    obj_split_timers(obj, otmp);
+  if (obj_sheds_light(obj))
+    obj_split_light_source(obj, otmp);
+  return otmp;
 }
 
 /*
@@ -255,43 +259,43 @@ Object * SplitObject(Object *obj, long num) {
  * Note:  Don't use use obj_extract_self() -- we are doing an in-place swap,
  * not actually moving something.
  */
-void replace_object(Object *obj, Object *otmp) {
-    otmp->where = obj->where;
-    switch (obj->where) {
+void ReplaceObject(Object *obj, Object *otmp) {
+  otmp->where = obj->where;
+  switch (obj->where) {
     case OBJ_FREE:
-	/* do nothing */
-	break;
+      /* do nothing */
+      break;
     case OBJ_INVENT:
-	otmp->nobj = obj->nobj;
-	obj->nobj = otmp;
-	extract_nobj(obj, &invent);
-	break;
+      otmp->nobj = obj->nobj;
+      obj->nobj = otmp;
+      extract_nobj(obj, &invent);
+      break;
     case OBJ_CONTAINED:
-	otmp->nobj = obj->nobj;
-	otmp->ocontainer = obj->ocontainer;
-	obj->nobj = otmp;
-	extract_nobj(obj, &obj->ocontainer->cobj);
-	break;
+      otmp->nobj = obj->nobj;
+      otmp->ocontainer = obj->ocontainer;
+      obj->nobj = otmp;
+      extract_nobj(obj, &obj->ocontainer->cobj);
+      break;
     case OBJ_MINVENT:
-	otmp->nobj = obj->nobj;
-	otmp->ocarry =  obj->ocarry;
-	obj->nobj = otmp;
-	extract_nobj(obj, &obj->ocarry->minvent);
-	break;
+      otmp->nobj = obj->nobj;
+      otmp->ocarry = obj->ocarry;
+      obj->nobj = otmp;
+      extract_nobj(obj, &obj->ocarry->minvent);
+      break;
     case OBJ_FLOOR:
-	otmp->nobj = obj->nobj;
-	otmp->nexthere = obj->nexthere;
-	otmp->ox = obj->ox;
-	otmp->oy = obj->oy;
-	obj->nobj = otmp;
-	obj->nexthere = otmp;
-	extract_nobj(obj, &fobj);
-	extract_nexthere(obj, &level.objects[obj->ox][obj->oy]);
-	break;
+      otmp->nobj = obj->nobj;
+      otmp->nexthere = obj->nexthere;
+      otmp->ox = obj->ox;
+      otmp->oy = obj->oy;
+      obj->nobj = otmp;
+      obj->nexthere = otmp;
+      extract_nobj(obj, &fobj);
+      extract_nexthere(obj, &level.objects[obj->ox][obj->oy]);
+      break;
     default:
-	panic("replace_object: obj position");
-	break;
-    }
+      panic("replace_object: obj position");
+      break;
+  }
 }
 
 /*
@@ -308,7 +312,7 @@ void replace_object(Object *obj, Object *otmp) {
  * Note that check_unpaid_usage() should be used instead for partial
  * usage of an object.
  */
-void bill_dummy_object(Object *otmp) {
+void CreateBillDummyObject(Object *otmp) {
 	Object *dummy;
 
 	if (otmp->unpaid)
@@ -593,7 +597,7 @@ Object * MakeSpecificObject(int otyp, bool init, bool artif) {
 	/* Some things must get done (timers) even if init = 0 */
 	switch (otmp->otyp) {
 	    case CORPSE:
-		start_corpse_timeout(otmp);
+		StartCorpseTimeout(otmp);
 		break;
 	}
 
@@ -608,7 +612,7 @@ Object * MakeSpecificObject(int otyp, bool init, bool artif) {
  * Start a corpse decay or revive timer.
  * This takes the age of the corpse into consideration as of 3.4.0.
  */
-void start_corpse_timeout(Object *body) {
+void StartCorpseTimeout(Object *body) {
 	long when; 		/* rot away when this old */
 	long corpse_age;	/* age of corpse          */
 	int rot_adjust;
@@ -653,7 +657,7 @@ void start_corpse_timeout(Object *body) {
 	start_timer(when, TIMER_OBJECT, action, (genericptr_t)body);
 }
 
-void bless(Object *otmp) {
+void Bless(Object *otmp) {
 #ifdef GOLDOBJ
 	if (otmp->oclass == COIN_CLASS) return;
 #endif
@@ -720,7 +724,7 @@ void blessorcurse(Object *otmp, int chance) {
 	    if(!rn2(2)) {
 		curse(otmp);
 	    } else {
-		bless(otmp);
+		Bless(otmp);
 	    }
 	}
 	return;
@@ -859,7 +863,7 @@ Object * mkcorpstat(int objtype, Monster *mtmp, MonsterType *ptr, int x, int y, 
 			(special_corpse(old_corpsenm) ||
 				special_corpse(otmp->corpsenm))) {
 		    obj_stop_timers(otmp);
-		    start_corpse_timeout(otmp);
+		    StartCorpseTimeout(otmp);
 		}
 	    }
 	}

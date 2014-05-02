@@ -996,7 +996,7 @@ int doengrave() {
 			Monster *shkp = shop_keeper(*player.ushops);
 			if (shkp) {
 			    You("damage it, you pay for it!");
-			    bill_dummy_object(otmp);
+			    CreateBillDummyObject(otmp);
 			}
 		    }
 		    if (len > maxelen) {

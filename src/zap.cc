@@ -753,7 +753,7 @@ STATIC_OVL void costly_cancel(Object *obj) {
 		    shkp = shop_keeper(*player.ushops);
 		    if (!shkp) return;
 		    Norep("You cancel an unpaid object, you pay for it!");
-		    bill_dummy_object(obj);
+		    CreateBillDummyObject(obj);
 		}
 		break;
 	case OBJ_FLOOR:
@@ -762,7 +762,7 @@ STATIC_OVL void costly_cancel(Object *obj) {
 		if (!shkp || !inhishop(shkp)) return;
 		if (costly_spot(player.ux, player.uy) && objroom == *player.ushops) {
 		    Norep("You cancel it, you pay for it!");
-		    bill_dummy_object(obj);
+		    CreateBillDummyObject(obj);
 		} else
 		    (void) stolen_value(obj, obj->ox, obj->oy, FALSE, FALSE);
 		break;
@@ -1335,7 +1335,7 @@ no_unwear:
 
 
 	/* swap otmp for obj */
-	replace_object(obj, otmp);
+	ReplaceObject(obj, otmp);
 	if (obj_location == OBJ_INVENT) {
 	    /*
 	     * We may need to do extra adjustments for the hero if we're

@@ -365,7 +365,7 @@ Object * realloc_obj(Object *obj, int oextra_size, genericptr_t oextra_src, int 
 	}
 
 	/* replace obj with otmp */
-	replace_object(obj, otmp);
+	ReplaceObject(obj, otmp);
 
 	/* fix ocontainer pointers */
 	if (Has_contents(obj)) {

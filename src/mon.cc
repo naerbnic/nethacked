@@ -763,7 +763,7 @@ int meatobj(Monster *mtmp) {
 			obj_extract_self(otmp3);
 			if (otmp->otyp == ICE_BOX && otmp3->otyp == CORPSE) {
 			    otmp3->age = monstermoves - otmp3->age;
-			    start_corpse_timeout(otmp3);
+			    StartCorpseTimeout(otmp3);
 			}
 			(void) mpickobj(mtmp, otmp3);
 		    }

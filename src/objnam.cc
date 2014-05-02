@@ -2468,7 +2468,7 @@ typfnd:
 			    	otmp->corpsenm = genus(mntmp,1);
 			    else
 				otmp->corpsenm = mntmp;
-			    start_corpse_timeout(otmp);
+			    StartCorpseTimeout(otmp);
 			}
 			break;
 		case FIGURINE:

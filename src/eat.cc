@@ -311,7 +311,7 @@ STATIC_OVL Object * touchfood(Object *otmp) {
 		 || otmp->unpaid)) {
 		/* create a dummy duplicate to put on bill */
 		verbalize("You bit it, you bought it!");
-		bill_dummy_object(otmp);
+		CreateBillDummyObject(otmp);
 	    }
 	    otmp->oeaten = (otmp->otyp == CORPSE ?
 				mons[otmp->corpsenm].cnutrit :
@@ -955,7 +955,7 @@ void costly_tin(const char* verb) {
 	    || tin.tin->unpaid)) {
 	    verbalize("You %s it, you bought it!", verb ? verb : "open");
 	    if(tin.tin->quan > 1L) tin.tin = SplitObject(tin.tin, 1L);
-	    bill_dummy_object(tin.tin);
+	    CreateBillDummyObject(tin.tin);
 	}
 }
 

@@ -182,7 +182,7 @@ int forcelock() {
 		}
 		if (xlock.box->otyp == ICE_BOX && otmp->otyp == CORPSE) {
 		    otmp->age = monstermoves - otmp->age; /* actual age */
-		    start_corpse_timeout(otmp);
+		    StartCorpseTimeout(otmp);
 		}
 		place_object(otmp, player.ux, player.uy);
 		stackobj(otmp);

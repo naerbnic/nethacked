@@ -1912,7 +1912,7 @@ STATIC_PTR int out_container(Object *obj) {
 	if (Icebox && !age_is_relative(obj)) {
 		obj->age = monstermoves - obj->age; /* actual age */
 		if (obj->otyp == CORPSE)
-			start_corpse_timeout(obj);
+			StartCorpseTimeout(obj);
 	}
 	/* simulated point of time */
 

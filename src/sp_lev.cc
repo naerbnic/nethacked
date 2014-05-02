@@ -890,7 +890,7 @@ STATIC_OVL void create_object(object *o, struct mkroom *croom) {
 	    otmp->spe = (schar)o->spe;
 
 	switch (o->curse_state) {
-	      case 1:	bless(otmp); break; /* BLESSED */
+	      case 1:	Bless(otmp); break; /* BLESSED */
 	      case 2:	unbless(otmp); uncurse(otmp); break; /* uncursed */
 	      case 3:	curse(otmp); break; /* CURSED */
 	      default:	break;	/* Otherwise it's random and we're happy

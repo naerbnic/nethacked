@@ -664,7 +664,7 @@ STATIC_OVL void gcrownu() {
 	class_gift = SPE_FINGER_OF_DEATH;
  make_splbk:
 	obj = MakeSpecificObject(class_gift, TRUE, FALSE);
-	bless(obj);
+	Bless(obj);
 	obj->bknown = TRUE;
 	at_your_feet("A spellbook");
 	dropy(obj);
@@ -748,7 +748,7 @@ STATIC_OVL void gcrownu() {
 
     /* enhance weapon regardless of alignment or artifact status */
     if (ok_wep(obj)) {
-	bless(obj);
+	Bless(obj);
 	obj->oeroded = obj->oeroded2 = 0;
 	obj->oerodeproof = TRUE;
 	obj->bknown = obj->rknown = TRUE;
@@ -847,7 +847,7 @@ STATIC_OVL void pleased(aligntyp g_align) {
 			u_gname(), xname(uwep));
 		    *repair_buf = '\0';
 		} else if (!uwep->blessed) {
-		    bless(uwep);
+		    Bless(uwep);
 		    uwep->bknown = TRUE;
 		    if (!Blind)
 			Your("%s with %s aura%s.",
@@ -985,7 +985,7 @@ STATIC_OVL void pleased(aligntyp g_align) {
 		}
 		otmp->otyp = rnd_class(bases[SPBOOK_CLASS], SPE_BLANK_PAPER);
 	    }
-	    bless(otmp);
+	    Bless(otmp);
 	    place_object(otmp, player.ux, player.uy);
 	    break;
 	}
