@@ -112,7 +112,7 @@ void stealgold(Monster *mtmp) {
             const int gold_price = objects[GOLD_PIECE].oc_cost;
 	    tmp = (somegold(money_cnt(invent)) + gold_price - 1) / gold_price;
 	    tmp = min(tmp, ygold->quan);
-            if (tmp < ygold->quan) ygold = splitobj(ygold, tmp);
+            if (tmp < ygold->quan) ygold = SplitObject(ygold, tmp);
             freeinv(ygold);
             add_to_minv(mtmp, ygold);
 	    Your("purse feels lighter.");

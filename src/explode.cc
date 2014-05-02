@@ -414,7 +414,7 @@ long scatter(int sx, int sy, int blastforce, unsigned int scflags, Object *obj) 
 		qtmp = otmp->quan - 1;
 		if (qtmp > LARGEST_INT) qtmp = LARGEST_INT;
 		qtmp = (long)rnd((int)qtmp);
-		otmp = splitobj(otmp, qtmp);
+		otmp = SplitObject(otmp, qtmp);
 	    } else {
 		obj = nullptr; /* all used */
 	    }

@@ -268,7 +268,7 @@ void m_throw(Monster *mon, int x, int y, int dx, int dy, int range, Object *obj)
 	    singleobj = obj;
 	    obj = (Object *) 0;
 	} else {
-	    singleobj = splitobj(obj, 1L);
+	    singleobj = SplitObject(obj, 1L);
 	    obj_extract_self(singleobj);
 	}
 

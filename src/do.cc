@@ -677,10 +677,10 @@ STATIC_OVL int menu_drop(int retry) {
 		    } else {
 #ifndef GOLDOBJ
 			if (otmp->oclass == COIN_CLASS)
-			    (void) splitobj(otmp, otmp->quan - cnt);
+			    (void) SplitObject(otmp, otmp->quan - cnt);
 			else
 #endif
-			    otmp = splitobj(otmp, cnt);
+			    otmp = SplitObject(otmp, cnt);
 		    }
 		}
 		n_dropped += drop(otmp);

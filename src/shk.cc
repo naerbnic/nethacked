@@ -105,7 +105,7 @@ long money2mon(Monster *mon, long amount) {
     }
 
     if (ygold->quan > amount)
-	ygold = splitobj(ygold, amount);
+	ygold = SplitObject(ygold, amount);
     else if (ygold->owornmask)
 	remove_worn_item(ygold, FALSE);		/* quiver */
     freeinv(ygold);
@@ -133,7 +133,7 @@ void money2u(Monster *mon, long amount) {
 	return;
     }
 
-    if (mongold->quan > amount) mongold = splitobj(mongold, amount);
+    if (mongold->quan > amount) mongold = SplitObject(mongold, amount);
     obj_extract_self(mongold);
 
     if (!merge_choice(invent, mongold) && inv_cnt() >= 52) {

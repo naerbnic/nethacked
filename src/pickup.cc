@@ -1324,7 +1324,7 @@ int pickup_object(Object *obj, long count, bool telekinesis) {
 	if (Object->oclass == COIN_CLASS) flags.botl = 1;
 #endif
 	if (obj->quan != count && obj->otyp != LOADSTONE)
-	    obj = splitobj(obj, count);
+	    obj = SplitObject(obj, count);
 
 	obj = pick_obj(obj);
 
@@ -1540,7 +1540,7 @@ lootcont:
 	if (goldob){
 	    long contribution = rnd((int)min(LARGEST_INT, goldob->quan));
 	    if (contribution < goldob->quan)
-		goldob = splitobj(goldob, contribution);
+		goldob = SplitObject(goldob, contribution);
 	    freeinv(goldob);
 #endif
 	    if (IS_THRONE(levl[player.ux][player.uy].typ)){
@@ -1903,7 +1903,7 @@ STATIC_PTR int out_container(Object *obj) {
 	    return res;
 
 	if (obj->quan != count && obj->otyp != LOADSTONE)
-	    obj = splitobj(obj, count);
+	    obj = SplitObject(obj, count);
 
 	/* Remove the object from the list. */
 	obj_extract_self(obj);
@@ -2277,7 +2277,7 @@ STATIC_OVL int menu_loot(int retry, Object *container, bool put_in) {
 		    otmp = pick_list[i].item.a_obj;
 		    count = pick_list[i].count;
 		    if (count > 0 && count < otmp->quan) {
-			otmp = splitobj(otmp, count);
+			otmp = SplitObject(otmp, count);
 			/* special split case also handled by askchain() */
 		    }
 		    res = put_in ? in_container(otmp) : out_container(otmp);

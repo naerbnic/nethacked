@@ -898,7 +898,7 @@ STATIC_OVL void create_object(object *o, struct mkroom *croom) {
 	}
 
 	/*	corpsenm is "empty" if -1, random if -2, otherwise specific */
-	if (o->corpsenm == NON_PM - 1) otmp->corpsenm = rndmonnum();
+	if (o->corpsenm == NON_PM - 1) otmp->corpsenm = PickRandomMonsterTypeIndex();
 	else if (o->corpsenm != NON_PM) otmp->corpsenm = o->corpsenm;
 
 	/* assume we wouldn't be given an egg corpsenm unless it was
@@ -950,7 +950,7 @@ STATIC_OVL void create_object(object *o, struct mkroom *croom) {
 	     * resistant (if they were, we'd have to reset the name as well as
 	     * setting corpsenm).
 	     */
-	    for (wastyp = otmp->corpsenm; ; wastyp = rndmonnum()) {
+	    for (wastyp = otmp->corpsenm; ; wastyp = PickRandomMonsterTypeIndex()) {
 		/* makemon without rndmonst() might create a group */
 		was = makemon(&mons[wastyp], 0, 0, NO_MM_FLAGS);
 		if (!resists_ston(was)) break;

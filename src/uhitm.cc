@@ -662,7 +662,7 @@ STATIC_OVL bool hmon_hitmon(Monster *mon, Object *obj, int thrown) {
 		}
 	    } else if(obj->oclass == POTION_CLASS) {
 		if (obj->quan > 1L)
-		    obj = splitobj(obj, 1L);
+		    obj = SplitObject(obj, 1L);
 		else
 		    setuwep(nullptr);
 		freeinv(obj);

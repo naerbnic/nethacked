@@ -1811,7 +1811,7 @@ int dodip() {
 		/* with multiple merged potions, split off one and
 		   just clear it */
 		if (potion->quan > 1L) {
-		    singlepotion = splitobj(potion, 1L);
+		    singlepotion = SplitObject(potion, 1L);
 		} else singlepotion = potion;
 		
 		if(singlepotion->unpaid && costly_spot(player.ux, player.uy)) {

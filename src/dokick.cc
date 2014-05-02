@@ -526,7 +526,7 @@ STATIC_OVL int kick_object(xchar x, xchar y) {
 	    return(!rn2(3) || martial());
 	}
 
-	if (kickobj->quan > 1L && !isgold) kickobj = splitobj(kickobj, 1L);
+	if (kickobj->quan > 1L && !isgold) kickobj = SplitObject(kickobj, 1L);
 
 	if (slide && !Blind)
 	    pline("Whee!  %s %s across the %s.", Doname2(kickobj),

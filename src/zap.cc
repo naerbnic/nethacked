@@ -675,7 +675,7 @@ Monster * revive(Object *obj) {
 				x = obj->ox,  y = obj->oy;
 				/* not useupf(), which charges */
 				if (obj->quan > 1L)
-				    obj = splitobj(obj, 1L);
+				    obj = SplitObject(obj, 1L);
 				delobj(obj);
 				newsym(x, y);
 				break;
@@ -1110,9 +1110,9 @@ void do_osshock(Object *obj) {
 	/* if quan > 1 then some will survive intact */
 	if (obj->quan > 1L) {
 	    if (obj->quan > LARGEST_INT)
-		obj = splitobj(obj, (long)rnd(30000));
+		obj = SplitObject(obj, (long)rnd(30000));
 	    else
-		obj = splitobj(obj, (long)rnd((int)obj->quan - 1));
+		obj = SplitObject(obj, (long)rnd((int)obj->quan - 1));
 	}
 
 	/* appropriately add damage to bill */

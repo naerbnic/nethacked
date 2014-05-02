@@ -297,9 +297,9 @@ void reset_eat() {
 STATIC_OVL Object * touchfood(Object *otmp) {
 	if (otmp->quan > 1L) {
 	    if(!carried(otmp))
-		(void) splitobj(otmp, otmp->quan - 1L);
+		(void) SplitObject(otmp, otmp->quan - 1L);
 	    else
-		otmp = splitobj(otmp, 1L);
+		otmp = SplitObject(otmp, 1L);
 #ifdef DEBUG
 	    debugpline("split object,");
 #endif
@@ -954,7 +954,7 @@ void costly_tin(const char* verb) {
 	     !tin.tin->no_charge)
 	    || tin.tin->unpaid)) {
 	    verbalize("You %s it, you bought it!", verb ? verb : "open");
-	    if(tin.tin->quan > 1L) tin.tin = splitobj(tin.tin, 1L);
+	    if(tin.tin->quan > 1L) tin.tin = SplitObject(tin.tin, 1L);
 	    bill_dummy_object(tin.tin);
 	}
 }
@@ -1118,7 +1118,7 @@ no_opener:
 			pline_The("tin slips from your %s.",
 			      makeplural(body_part(FINGER)));
 			if(otmp->quan > 1L) {
-			    otmp = splitobj(otmp, 1L);
+			    otmp = SplitObject(otmp, 1L);
 			}
 			if (carried(otmp)) dropx(otmp);
 			else stackobj(otmp);
@@ -1822,9 +1822,9 @@ doeat()		/* generic "eat" command funtion (see cmd.c) */
 	    	otmp->rknown = TRUE;
 		if (otmp->quan > 1L) {
 		    if(!carried(otmp))
-			(void) splitobj(otmp, otmp->quan - 1L);
+			(void) SplitObject(otmp, otmp->quan - 1L);
 		    else
-			otmp = splitobj(otmp, 1L);
+			otmp = SplitObject(otmp, 1L);
 		}
 		pline("Ulch - That %s was rustproofed!", xname(otmp));
 		/* The regurgitated object's rustproofing is gone now */

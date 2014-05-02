@@ -192,21 +192,20 @@ STATIC_OVL void AddRandomBoxContents(Object *box) {
 }
 
 /* select a random, common monster type */
-int rndmonnum() {
-	MonsterType *ptr;
-	int	i;
+int PickRandomMonsterTypeIndex() {
+  /* Plan A: get a level-appropriate common monster */
+  MonsterType* ptr = rndmonst();
+  if (ptr)
+    return (monsndx(ptr));
 
-	/* Plan A: get a level-appropriate common monster */
-	ptr = rndmonst();
-	if (ptr) return(monsndx(ptr));
+  /* Plan B: get any common monster */
+  int i;
+  do {
+    i = rn1(SPECIAL_PM - LOW_PM, LOW_PM);
+    ptr = &mons[i];
+  } while ((ptr->geno & G_NOGEN) || (!Inhell && (ptr->geno & G_HELL)));
 
-	/* Plan B: get any common monster */
-	do {
-	    i = rn1(SPECIAL_PM - LOW_PM, LOW_PM);
-	    ptr = &mons[i];
-	} while((ptr->geno & G_NOGEN) || (!Inhell && (ptr->geno & G_HELL)));
-
-	return(i);
+  return (i);
 }
 
 /*
@@ -215,7 +214,7 @@ int rndmonnum() {
  * has its wornmask cleared and is positioned just following the original
  * in the nobj chain (and nexthere chain when on the floor).
  */
-Object * splitobj(Object *obj, long num) {
+Object * SplitObject(Object *obj, long num) {
 	Object *otmp;
 
 	if (obj->cobj || num <= 0L || obj->quan <= num)
@@ -382,7 +381,7 @@ Object * MakeSpecificObject(int otyp, bool init, bool artif) {
 	    case CORPSE:
 		/* possibly overridden by mkcorpstat() */
 		tryct = 50;
-		do otmp->corpsenm = undead_to_corpse(rndmonnum());
+		do otmp->corpsenm = undead_to_corpse(PickRandomMonsterTypeIndex());
 		while ((mvitals[otmp->corpsenm].mvflags & G_NOCORPSE) && (--tryct > 0));
 		if (tryct == 0) {
 		/* perhaps rndmonnum() only wants to make G_NOCORPSE monsters on
@@ -394,7 +393,7 @@ Object * MakeSpecificObject(int otyp, bool init, bool artif) {
 	    case EGG:
 		otmp->corpsenm = NON_PM;	/* generic egg */
 		if (!rn2(3)) for (tryct = 200; tryct > 0; --tryct) {
-		    mndx = can_be_hatched(rndmonnum());
+		    mndx = can_be_hatched(PickRandomMonsterTypeIndex());
 		    if (mndx != NON_PM && !dead_species(mndx, TRUE)) {
 			otmp->corpsenm = mndx;		/* typed egg */
 			attach_egg_hatch_timeout(otmp);
@@ -407,7 +406,7 @@ Object * MakeSpecificObject(int otyp, bool init, bool artif) {
 		if (!rn2(6))
 		    otmp->spe = 1;		/* spinach */
 		else for (tryct = 200; tryct > 0; --tryct) {
-		    mndx = undead_to_corpse(rndmonnum());
+		    mndx = undead_to_corpse(PickRandomMonsterTypeIndex());
 		    if (mons[mndx].cnutrit &&
 			    !(mvitals[mndx].mvflags & G_NOCORPSE)) {
 			otmp->corpsenm = mndx;
@@ -479,7 +478,7 @@ Object * MakeSpecificObject(int otyp, bool init, bool artif) {
 					break;
 		case FIGURINE:	{	int tryct2 = 0;
 					do
-					    otmp->corpsenm = rndmonnum();
+					    otmp->corpsenm = PickRandomMonsterTypeIndex();
 					while(is_human(&mons[otmp->corpsenm])
 						&& tryct2++ < 30);
 					blessorcurse(otmp, 4);
@@ -576,7 +575,7 @@ Object * MakeSpecificObject(int otyp, bool init, bool artif) {
 		switch (otmp->otyp) {
 		    case STATUE:
 			/* possibly overridden by mkcorpstat() */
-			otmp->corpsenm = rndmonnum();
+			otmp->corpsenm = PickRandomMonsterTypeIndex();
 			if (!verysmall(&mons[otmp->corpsenm]) &&
 				rn2(level_difficulty()/2 + 10) > 10)
 			    add_to_container(otmp,

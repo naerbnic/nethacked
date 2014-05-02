@@ -165,7 +165,7 @@ STATIC_OVL int throw_obj(Object *obj, int shotlimit) {
 	    twoweap = player.twoweap;
 	    /* split this object off from its slot if necessary */
 	    if (obj->quan > 1L) {
-		otmp = splitobj(obj, 1L);
+		otmp = SplitObject(obj, 1L);
 	    } else {
 		otmp = obj;
 		if (otmp->owornmask)

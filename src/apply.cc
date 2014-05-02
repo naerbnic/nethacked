@@ -875,7 +875,7 @@ STATIC_OVL void use_candle(Object **optr) {
 		return;
 	} else {
 		if ((long)otmp->spe + obj->quan > 7L)
-		    obj = splitobj(obj, 7L - (long)otmp->spe);
+		    obj = SplitObject(obj, 7L - (long)otmp->spe);
 		else *optr = 0;
 		You("attach %ld%s %s to %s.",
 		    obj->quan, !otmp->spe ? "" : " more",
@@ -1066,7 +1066,7 @@ STATIC_OVL void light_cocktail(Object *obj) {
 	makeknown(obj->otyp);
 
 	if (obj->quan > 1L) {
-	    obj = splitobj(obj, 1L);
+	    obj = SplitObject(obj, 1L);
 	    begin_burn(obj, FALSE);	/* burn before free to get position */
 	    obj_extract_self(obj);	/* free from inv */
 
@@ -2307,7 +2307,7 @@ STATIC_OVL int use_cream_pie(Object *obj) {
 
 	if (obj->quan > 1L) {
 		several = TRUE;
-		obj = splitobj(obj, 1L);
+		obj = SplitObject(obj, 1L);
 	}
 	if (Hallucination)
 		You("give yourself a facial.");

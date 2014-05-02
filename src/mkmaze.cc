@@ -383,7 +383,7 @@ STATIC_OVL void fixup_special() {
 		otmp = mk_tt_object(STATUE, x, y);
 		while (otmp && (poly_when_stoned(&mons[otmp->corpsenm]) ||
 				pm_resistance(&mons[otmp->corpsenm],MR_STONE))) {
-		    otmp->corpsenm = rndmonnum();
+		    otmp->corpsenm = PickRandomMonsterTypeIndex();
 		    otmp->owt = weight(otmp);
 		}
 	    }
@@ -397,7 +397,7 @@ STATIC_OVL void fixup_special() {
 	if (otmp) {
 	    while (pm_resistance(&mons[otmp->corpsenm],MR_STONE)
 		   || poly_when_stoned(&mons[otmp->corpsenm])) {
-		otmp->corpsenm = rndmonnum();
+		otmp->corpsenm = PickRandomMonsterTypeIndex();
 		otmp->owt = weight(otmp);
 	    }
 	}

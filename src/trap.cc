@@ -244,7 +244,7 @@ Trap * maketrap(int x, int y, int typ) {
 		Object *otmp, *statue;
 
 		statue = mkcorpstat(STATUE, (Monster *)0,
-					&mons[rndmonnum()], x, y, FALSE);
+					&mons[PickRandomMonsterTypeIndex()], x, y, FALSE);
 		mtmp = makemon(&mons[statue->corpsenm], 0, 0, NO_MM_FLAGS);
 		if (!mtmp) break; /* should never happen */
 		while(mtmp->minvent) {
@@ -1292,7 +1292,7 @@ int launch_obj(short otyp, int x1, int y1, int x2, int y2, int style) {
 	    singleobj = otmp;
 	    otmp = (Object *) 0;
 	} else {
-	    singleobj = splitobj(otmp, 1L);
+	    singleobj = SplitObject(otmp, 1L);
 	    obj_extract_self(singleobj);
 	}
 	newsym(x1,y1);

@@ -428,7 +428,7 @@ Object * hold_another_object(Object *obj, const char *drop_fmt, const char *drop
 			&& near_capacity() > prev_encumbr)) {
 		if (drop_fmt) pline(drop_fmt, drop_arg);
 		/* undo any merge which took place */
-		if (obj->quan > oquan) obj = splitobj(obj, oquan);
+		if (obj->quan > oquan) obj = SplitObject(obj, oquan);
 		dropx(obj);
 	    } else {
 		if (flags.autoquiver && !uquiver && !obj->owornmask &&
@@ -1034,7 +1034,7 @@ Object * getobj(const char *let, const char *word) {
 		    /* kludge for canletgo()'s can't-drop-this message */
 		    otmp->corpsenm = (int) cnt;
 		else
-		    otmp = splitobj(otmp, cnt);
+		    otmp = SplitObject(otmp, cnt);
 	    }
 	}
 	return(otmp);
@@ -1357,7 +1357,7 @@ nextclass:
 			sym = 'y';
 			if (yn_number < otmp->quan && !welded(otmp) &&
 			    (!otmp->cursed || otmp->otyp != LOADSTONE)) {
-			    otmp = splitobj(otmp, yn_number);
+			    otmp = SplitObject(otmp, yn_number);
 			}
 		    }
 		}
@@ -2529,7 +2529,7 @@ void useupf(Object *obj, long numused) {
 	/* burn_floor_paper() keeps an object pointer that it tries to
 	 * useupf() multiple times, so obj must survive if plural */
 	if (obj->quan > numused)
-		otmp = splitobj(obj, numused);
+		otmp = SplitObject(obj, numused);
 	else
 		otmp = obj;
 	if(costly_spot(otmp->ox, otmp->oy)) {
