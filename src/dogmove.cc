@@ -175,7 +175,7 @@ int dog_eat(Monster *mtmp, Object * obj, int x, int y, bool devour) {
 	    unpunish();
 	else if (obj->quan > 1L && obj->oclass == FOOD_CLASS) {
 	    obj->quan--;
-	    obj->owt = weight(obj);
+	    obj->owt = GetWeight(obj);
 	} else
 	    delobj(obj);
 

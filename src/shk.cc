@@ -1646,7 +1646,7 @@ void finish_paybill() {
 	while ((otmp = invent) != 0) {
 	    otmp->owornmask = 0L;	/* perhaps we should call setnotworn? */
 	    otmp->lamplit = 0;		/* avoid "goes out" msg from freeinv */
-	    if (rn2(5)) curse(otmp);	/* normal bones treatment for invent */
+	    if (rn2(5)) Curse(otmp);	/* normal bones treatment for invent */
 	    obj_extract_self(otmp);
 	    place_object(otmp, ox, oy);
 	}
@@ -2842,7 +2842,7 @@ int repair_damage(Monster *shkp, struct damage *tmp_dam, bool catchup) {
 		otmp = MakeSpecificObject((ttmp->ttyp == LANDMINE) ? LAND_MINE :
 				BEARTRAP, TRUE, FALSE);
 		otmp->quan= 1;
-		otmp->owt = weight(otmp);
+		otmp->owt = GetWeight(otmp);
 		(void) mpickobj(shkp, otmp);
 	    }
 	    deltrap(ttmp);

@@ -2010,7 +2010,7 @@ Object * readobjnam(char *bp, Object *no_wish, bool from_user) {
 #else
                 otmp = MakeSpecificObject(GOLD_PIECE, FALSE, FALSE);
 		otmp->quan = cnt;
-                otmp->owt = weight(otmp);
+                otmp->owt = GetWeight(otmp);
 		flags.botl=1;
 		return (otmp);
 #endif
@@ -2507,10 +2507,10 @@ typfnd:
 	}
 
 	/* set blessed/cursed -- setting the fields directly is safe
-	 * since weight() is called below and addinv() will take care
+	 * since GetWeight() is called below and addinv() will take care
 	 * of luck */
 	if (iscursed) {
-		curse(otmp);
+		Curse(otmp);
 	} else if (uncursed) {
 		otmp->blessed = 0;
 		otmp->cursed = (Luck < 0
@@ -2530,7 +2530,7 @@ typfnd:
 #endif
 							);
 	} else if (spesgn < 0) {
-		curse(otmp);
+		Curse(otmp);
 	}
 
 #ifdef INVISIBLE_OBJECTS
@@ -2619,7 +2619,7 @@ typfnd:
 		/* (do this adjustment before setting up object's weight) */
 		consume_oeaten(otmp, 1);
 	}
-	otmp->owt = weight(otmp);
+	otmp->owt = GetWeight(otmp);
 	if (very && otmp->otyp == HEAVY_IRON_BALL) otmp->owt += 160;
 
 	return(otmp);

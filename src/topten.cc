@@ -1122,7 +1122,7 @@ pickentry:
 		/* reset timer in case corpse started out as lizard or troll */
 		if (otmp->otyp == CORPSE) obj_stop_timers(otmp);
 		otmp->corpsenm = classmon(tt->plrole, (tt->plgend[0] == 'F'));
-		otmp->owt = weight(otmp);
+		otmp->owt = GetWeight(otmp);
 		otmp = oname(otmp, tt->name);
 		if (otmp->otyp == CORPSE) StartCorpseTimeout(otmp);
 	}

@@ -1328,7 +1328,7 @@ STATIC_OVL void use_tinning_kit(Object *obj) {
 	    can->corpsenm = corpse->corpsenm;
 	    can->cursed = obj->cursed;
 	    can->blessed = obj->blessed;
-	    can->owt = weight(can);
+	    can->owt = GetWeight(can);
 	    can->known = 1;
 	    can->spe = -1;  /* Mark tinned tins. No spinach allowed... */
 	    if (carried(corpse)) {
@@ -2733,7 +2733,7 @@ int doapply() {
 				  aobjnam(obj, "glow"), hcolor("brown"));
 			    obj->bknown = 1;
 			}
-			unbless(obj);
+			Unbless(obj);
 		    }
 		} else {
 		    use_whistle(obj);
@@ -2829,7 +2829,7 @@ int doapply() {
 		    pline("%s spills out.", what);
 		    otmp->blessed = obj->blessed;
 		    otmp->cursed = obj->cursed;
-		    otmp->owt = weight(otmp);
+		    otmp->owt = GetWeight(otmp);
 		    otmp = hold_another_object(otmp, player.uswallow ?
 				       "Oops!  %s out of your reach!" :
 					(Is_airlevel(&player.uz) ||

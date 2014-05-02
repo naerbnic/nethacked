@@ -386,7 +386,7 @@ decurse:
 			impossible("fix_worst_trouble: nothing to uncurse.");
 			return;
 		    }
-		    uncurse(otmp);
+		    Uncurse(otmp);
 		    if (!Blind) {
 			Your("%s %s.", what ? what :
 				(const char *)aobjnam(otmp, "softly glow"),
@@ -436,7 +436,7 @@ decurse:
 #ifdef STEED
 	    case TROUBLE_SADDLE:
 		    otmp = which_armor(player.usteed, W_SADDLE);
-		    uncurse(otmp);
+		    Uncurse(otmp);
 		    if (!Blind) {
 			pline("%s %s %s.",
 			      s_suffix(upstart(y_monnam(player.usteed))),
@@ -838,7 +838,7 @@ STATIC_OVL void pleased(aligntyp g_align) {
 			    otense(uwep, "are"));
 
 		if (uwep->cursed) {
-		    uncurse(uwep);
+		    Uncurse(uwep);
 		    uwep->bknown = TRUE;
 		    if (!Blind)
 			Your("%s %s%s.", aobjnam(uwep, "softly glow"),
@@ -920,7 +920,7 @@ STATIC_OVL void pleased(aligntyp g_align) {
 		     an(hcolor(NH_LIGHT_BLUE)));
 	    for(otmp=invent; otmp; otmp=otmp->nobj) {
 		if (otmp->cursed) {
-		    uncurse(otmp);
+		    Uncurse(otmp);
 		    if (!Blind) {
 			Your("%s %s.", aobjnam(otmp, "softly glow"),
 			     hcolor(NH_AMBER));
@@ -1436,7 +1436,7 @@ verbalize("In return for thy service, I grant thee the gift of Immortality!");
 		otmp = mk_artifact(nullptr, a_align(player.ux,player.uy));
 		if (otmp) {
 		    if (otmp->spe < 0) otmp->spe = 0;
-		    if (otmp->cursed) uncurse(otmp);
+		    if (otmp->cursed) Uncurse(otmp);
 		    otmp->oerodeproof = TRUE;
 		    dropy(otmp);
 		    at_your_feet("An object");

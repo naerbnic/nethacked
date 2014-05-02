@@ -384,7 +384,7 @@ STATIC_OVL void fixup_special() {
 		while (otmp && (poly_when_stoned(&mons[otmp->corpsenm]) ||
 				pm_resistance(&mons[otmp->corpsenm],MR_STONE))) {
 		    otmp->corpsenm = PickRandomMonsterTypeIndex();
-		    otmp->owt = weight(otmp);
+		    otmp->owt = GetWeight(otmp);
 		}
 	    }
 	}
@@ -392,13 +392,13 @@ STATIC_OVL void fixup_special() {
 	if (rn2(2))
 	    otmp = mk_tt_object(STATUE, somex(croom), somey(croom));
 	else /* Medusa statues don't contain books */
-	    otmp = mkcorpstat(STATUE, (Monster *)0, (MonsterType *)0,
+	    otmp = MakeCorpseOrStatue(STATUE, (Monster *)0, (MonsterType *)0,
 			      somex(croom), somey(croom), FALSE);
 	if (otmp) {
 	    while (pm_resistance(&mons[otmp->corpsenm],MR_STONE)
 		   || poly_when_stoned(&mons[otmp->corpsenm])) {
 		otmp->corpsenm = PickRandomMonsterTypeIndex();
-		otmp->owt = weight(otmp);
+		otmp->owt = GetWeight(otmp);
 	    }
 	}
     } else if(Is_wiz1_level(&player.uz)) {
@@ -414,7 +414,7 @@ STATIC_OVL void fixup_special() {
 	/* stock the main vault */
 	for(x = croom->lx; x <= croom->hx; x++)
 	    for(y = croom->ly; y <= croom->hy; y++) {
-		(void) mkgold((long) rn1(300, 600), x, y);
+		(void) MakeGold((long) rn1(300, 600), x, y);
 		if (!rn2(3) && !is_pool(x,y))
 		    (void)maketrap(x, y, rn2(3) ? LANDMINE : SPIKED_PIT);
 	    }
@@ -605,7 +605,7 @@ void makemaz(const char *s) {
 	}
 	for(x = rn1(6,7); x; x--) {
 		mazexy(&mm);
-		(void) mkgold(0L,mm.x,mm.y);
+		(void) MakeGold(0L,mm.x,mm.y);
 	}
 	for(x = rn1(6,7); x; x--)
 		mktrap(0,1,(struct mkroom *) 0, (coord*) 0);

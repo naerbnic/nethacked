@@ -573,7 +573,7 @@ void relobj(Monster *mtmp, int show, bool is_pet) {
 #ifndef GOLDOBJ
 	if (mtmp->mgold) {
 		long g = mtmp->mgold;
-		(void) mkgold(g, omx, omy);
+		(void) MakeGold(g, omx, omy);
 		if (is_pet && cansee(omx, omy) && flags.verbose)
 			pline("%s drops %ld gold piece%s.", Monnam(mtmp),
 				g, plur(g));

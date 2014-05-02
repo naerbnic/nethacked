@@ -890,8 +890,8 @@ int seffects(Object *sobj) {
 			if (sobj->blessed || wornmask ||
 			     obj->otyp == LOADSTONE ||
 			     (obj->otyp == LEASH && obj->leashmon)) {
-			    if(confused) blessorcurse(obj, 2);
-			    else uncurse(obj);
+			    if(confused) BlessOrCurse(obj, 2);
+			    else Uncurse(obj);
 			}
 		    }
 		}
@@ -1136,7 +1136,7 @@ int seffects(Object *sobj) {
 	    	    	    		FALSE, FALSE);
 	    	    	    if (!otmp2) continue;  /* Shouldn't happen */
 	    	    	    otmp2->quan = confused ? rn1(5,2) : 1;
-	    	    	    otmp2->owt = weight(otmp2);
+	    	    	    otmp2->owt = GetWeight(otmp2);
 
 	    	    	    /* Find the monster here (won't be player) */
 	    	    	    mtmp = m_at(x, y);
@@ -1191,7 +1191,7 @@ int seffects(Object *sobj) {
 				FALSE, FALSE);
 		    if (!otmp2) break;
 		    otmp2->quan = confused ? rn1(5,2) : 1;
-		    otmp2->owt = weight(otmp2);
+		    otmp2->owt = GetWeight(otmp2);
 		    if (!amorphous(youmonst.data) &&
 				!Passes_walls &&
 				!noncorporeal(youmonst.data) &&

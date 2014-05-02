@@ -243,7 +243,7 @@ Trap * maketrap(int x, int y, int typ) {
 	      { Monster *mtmp;
 		Object *otmp, *statue;
 
-		statue = mkcorpstat(STATUE, (Monster *)0,
+		statue = MakeCorpseOrStatue(STATUE, (Monster *)0,
 					&mons[PickRandomMonsterTypeIndex()], x, y, FALSE);
 		mtmp = makemon(&mons[statue->corpsenm], 0, 0, NO_MM_FLAGS);
 		if (!mtmp) break; /* should never happen */
@@ -253,7 +253,7 @@ Trap * maketrap(int x, int y, int typ) {
 		    obj_extract_self(otmp);
 		    (void) add_to_container(statue, otmp);
 		}
-		statue->owt = weight(statue);
+		statue->owt = GetWeight(statue);
 		mongone(mtmp);
 		break;
 	      }
@@ -606,7 +606,7 @@ void dotrap(Trap *trap, unsigned trflags) {
 		pline("An arrow shoots out at you!");
 		otmp = MakeSpecificObject(ARROW, TRUE, FALSE);
 		otmp->quan = 1L;
-		otmp->owt = weight(otmp);
+		otmp->owt = GetWeight(otmp);
 		otmp->opoisoned = 0;
 #ifdef STEED
 		if (player.usteed && !rn2(2) && steedintrap(trap, otmp)) /* nothing */;
@@ -633,7 +633,7 @@ void dotrap(Trap *trap, unsigned trflags) {
 		pline("A little dart shoots out at you!");
 		otmp = MakeSpecificObject(DART, TRUE, FALSE);
 		otmp->quan = 1L;
-		otmp->owt = weight(otmp);
+		otmp->owt = GetWeight(otmp);
 		if (!rn2(6)) otmp->opoisoned = 1;
 #ifdef STEED
 		if (player.usteed && !rn2(2) && steedintrap(trap, otmp)) /* nothing */;
@@ -663,7 +663,7 @@ void dotrap(Trap *trap, unsigned trflags) {
 		    seetrap(trap);
 		    otmp = MakeSpecificObjectAt(ROCK, player.ux, player.uy, TRUE, FALSE);
 		    otmp->quan = 1L;
-		    otmp->owt = weight(otmp);
+		    otmp->owt = GetWeight(otmp);
 
 		    pline("A trap door in %s opens and %s falls on your %s!",
 			  the(ceiling(player.ux,player.uy)),
@@ -1542,7 +1542,7 @@ STATIC_OVL int mkroll_launch(Trap *ttmp, xchar x, xchar y, short otyp, long ocou
 	} else {
 		otmp = MakeSpecificObject(otyp, TRUE, FALSE);
 		otmp->quan = ocount;
-		otmp->owt = weight(otmp);
+		otmp->owt = GetWeight(otmp);
 		place_object(otmp, cc.x, cc.y);
 		stackobj(otmp);
 	}
@@ -1666,7 +1666,7 @@ int mintrap(Monster *mtmp) {
 			trap->once = 1;
 			otmp = MakeSpecificObject(ARROW, TRUE, FALSE);
 			otmp->quan = 1L;
-			otmp->owt = weight(otmp);
+			otmp->owt = GetWeight(otmp);
 			otmp->opoisoned = 0;
 			if (in_sight) seetrap(trap);
 			if (thitm(8, mtmp, otmp, 0, FALSE)) trapkilled = TRUE;
@@ -1683,7 +1683,7 @@ int mintrap(Monster *mtmp) {
 			trap->once = 1;
 			otmp = MakeSpecificObject(DART, TRUE, FALSE);
 			otmp->quan = 1L;
-			otmp->owt = weight(otmp);
+			otmp->owt = GetWeight(otmp);
 			if (!rn2(6)) otmp->opoisoned = 1;
 			if (in_sight) seetrap(trap);
 			if (thitm(7, mtmp, otmp, 0, FALSE)) trapkilled = TRUE;
@@ -1700,7 +1700,7 @@ int mintrap(Monster *mtmp) {
 			trap->once = 1;
 			otmp = MakeSpecificObject(ROCK, TRUE, FALSE);
 			otmp->quan = 1L;
-			otmp->owt = weight(otmp);
+			otmp->owt = GetWeight(otmp);
 			if (in_sight) seetrap(trap);
 			if (thitm(0, mtmp, otmp, d(2, 6), FALSE))
 			    trapkilled = TRUE;
@@ -2915,7 +2915,7 @@ STATIC_OVL int untrap_prob(Trap *ttmp) {
 STATIC_OVL void cnv_trap_obj(int otyp, int cnt, Trap *ttmp) {
 	Object *otmp = MakeSpecificObject(otyp, TRUE, FALSE);
 	otmp->quan=cnt;
-	otmp->owt = weight(otmp);
+	otmp->owt = GetWeight(otmp);
 	/* Only dart traps are capable of being poisonous */
 	if (otyp != DART)
 	    otmp->opoisoned = 0;

@@ -289,7 +289,7 @@ int dosit() {
 		uegg = MakeSpecificObject(EGG, FALSE, FALSE);
 		uegg->spe = 1;
 		uegg->quan = 1;
-		uegg->owt = weight(uegg);
+		uegg->owt = GetWeight(uegg);
 		uegg->corpsenm = egg_type_from_parent(player.umonnum, FALSE);
 		uegg->known = uegg->dknown = 1;
 		attach_egg_hatch_timeout(uegg);
@@ -350,9 +350,9 @@ void rndcurse() {
 		}
 
 		if(otmp->blessed)
-			unbless(otmp);
+			Unbless(otmp);
 		else
-			curse(otmp);
+			Curse(otmp);
 	    }
 	    update_inventory();
 	}
@@ -363,9 +363,9 @@ void rndcurse() {
 		(otmp = which_armor(player.usteed, W_SADDLE)) != 0 &&
 		!otmp->cursed) {	/* skip if already cursed */
 	    if (otmp->blessed)
-		unbless(otmp);
+		Unbless(otmp);
 	    else
-		curse(otmp);
+		Curse(otmp);
 	    if (!Blind) {
 		pline("%s %s %s.",
 		      s_suffix(upstart(y_monnam(player.usteed))),

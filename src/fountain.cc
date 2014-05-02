@@ -264,7 +264,7 @@ void drinkfountain() {
 			morehungry(rn1(20, 11));
 			exercise(A_CON, FALSE);
 			for(obj = invent; obj ; obj = obj->nobj)
-				if (!rn2(5))	curse(obj);
+				if (!rn2(5))	Curse(obj);
 			break;
 			}
 
@@ -345,7 +345,7 @@ void dipfountain(Object *obj) {
 			/* Ha!  Trying to cheat her. */
 			pline("A freezing mist rises from the water and envelopes the sword.");
 			pline_The("fountain disappears!");
-			curse(obj);
+			Curse(obj);
 			if (obj->spe > -6 && !rn2(3)) obj->spe--;
 			obj->oerodeproof = FALSE;
 			exercise(A_WIS, FALSE);
@@ -380,7 +380,7 @@ void dipfountain(Object *obj) {
 
 	switch (rnd(30)) {
 		case 16: /* Curse the item */
-			curse(obj);
+			Curse(obj);
 			break;
 		case 17:
 		case 18:
@@ -389,7 +389,7 @@ void dipfountain(Object *obj) {
 			if(obj->cursed) {
 			    if (!Blind)
 				pline_The("water glows for a moment.");
-			    uncurse(obj);
+			    Uncurse(obj);
 			} else {
 			    pline("A feeling of loss comes over you.");
 			}
@@ -457,7 +457,7 @@ void dipfountain(Object *obj) {
 
 		    if (FOUNTAIN_IS_LOOTED(player.ux,player.uy)) break;
 		    SET_FOUNTAIN_LOOTED(player.ux,player.uy);
-		    (void) mkgold((long)
+		    (void) MakeGold((long)
 			(rnd((dunlevs_in_dungeon(&player.uz)-dunlev(&player.uz)+1)*2)+5),
 			player.ux, player.uy);
 		    if (!Blind)

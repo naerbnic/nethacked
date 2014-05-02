@@ -274,7 +274,7 @@ STATIC_OVL void recalc_wt() {
 	debugpline("Used time = %d, Req'd time = %d",
 		victual.usedtime, victual.reqtime);
 #endif
-	piece->owt = weight(piece);
+	piece->owt = GetWeight(piece);
 #ifdef DEBUG
 	debugpline("New weight = %d", piece->owt);
 #endif
@@ -1861,7 +1861,7 @@ doeat()		/* generic "eat" command funtion (see cmd.c) */
 		basenutrit = ((otmp->quan > 200000L) ? 2000
 			: (int)(otmp->quan/100L));
 	    else if(otmp->oclass == BALL_CLASS || otmp->oclass == CHAIN_CLASS)
-		basenutrit = weight(otmp);
+		basenutrit = GetWeight(otmp);
 	    /* oc_nutrition is usually weight anyway */
 	    else basenutrit = objects[otmp->otyp].oc_nutrition;
 	    victual.nmod = basenutrit;

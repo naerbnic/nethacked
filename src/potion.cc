@@ -1518,7 +1518,7 @@ int dodip() {
 					  Your_buf,
 					  aobjnam(obj, "softly glow"),
 					  hcolor(NH_AMBER));
-				uncurse(obj);
+				Uncurse(obj);
 				obj->bknown=1;
                                 goto poof;
 			} else if(!obj->blessed) {
@@ -1540,7 +1540,7 @@ int dodip() {
 					  Your_buf,
 					  aobjnam(obj, "glow"),
 					  hcolor((const char *)"brown"));
-				unbless(obj);
+				Unbless(obj);
 				obj->bknown=1;
 				goto poof;
 			} else if(!obj->cursed) {
@@ -1551,7 +1551,7 @@ int dodip() {
 					  aobjnam(obj, "glow"),
 					  index(vowels, *tmp) ? "n" : "", tmp);
 				}
-				curse(obj);
+				Curse(obj);
 				obj->bknown=1;
 				goto poof;
 			}

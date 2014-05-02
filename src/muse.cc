@@ -852,7 +852,7 @@ mon_tele:
 		return 2;
 	case MUSE_POT_FULL_HEALING:
 		mquaffmsg(mtmp, otmp);
-		if (otmp->otyp == POT_SICKNESS) unbless(otmp); /* Pestilence */
+		if (otmp->otyp == POT_SICKNESS) Unbless(otmp); /* Pestilence */
 		mtmp->mhp = (mtmp->mhpmax += (otmp->blessed ? 8 : 4));
 		if (!mtmp->mcansee && otmp->otyp != POT_SICKNESS) {
 			mtmp->mcansee = 1;
@@ -1327,7 +1327,7 @@ int use_offensive(Monster *mtmp) {
 	    	    	    		FALSE, FALSE);
 	    	    	    if (!otmp2) continue;  /* Shouldn't happen */
 	    	    	    otmp2->quan = confused ? rn1(5,2) : 1;
-	    	    	    otmp2->owt = weight(otmp2);
+	    	    	    otmp2->owt = GetWeight(otmp2);
 
 	    	    	    /* Find the monster here (might be same as mtmp) */
 	    	    	    mtmp2 = m_at(x, y);
@@ -1385,7 +1385,7 @@ int use_offensive(Monster *mtmp) {
 				FALSE, FALSE);
 		    if (!otmp2) goto xxx_noobj;  /* Shouldn't happen */
 		    otmp2->quan = confused ? rn1(5,2) : 1;
-		    otmp2->owt = weight(otmp2);
+		    otmp2->owt = GetWeight(otmp2);
 		    if (!amorphous(youmonst.data) &&
 			    !Passes_walls &&
 			    !noncorporeal(youmonst.data) &&

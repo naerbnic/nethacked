@@ -85,7 +85,7 @@ STATIC_OVL void resetobjs(Object *ochain, bool restore) {
 			} else if (otmp->otyp == AMULET_OF_YENDOR) {
 			    /* no longer the real Amulet */
 			    otmp->otyp = FAKE_AMULET_OF_YENDOR;
-			    curse(otmp);
+			    Curse(otmp);
 			} else if (otmp->otyp == CANDELABRUM_OF_INVOCATION) {
 			    if (otmp->lamplit)
 				end_burn(otmp, TRUE);
@@ -94,14 +94,14 @@ STATIC_OVL void resetobjs(Object *ochain, bool restore) {
 			    if (otmp->spe > 0)
 				otmp->quan = (long)otmp->spe;
 			    otmp->spe = 0;
-			    otmp->owt = weight(otmp);
-			    curse(otmp);
+			    otmp->owt = GetWeight(otmp);
+			    Curse(otmp);
 			} else if (otmp->otyp == BELL_OF_OPENING) {
 			    otmp->otyp = BELL;
-			    curse(otmp);
+			    Curse(otmp);
 			} else if (otmp->otyp == SPE_BOOK_OF_THE_DEAD) {
 			    otmp->otyp = SPE_BLANK_PAPER;
-			    curse(otmp);
+			    Curse(otmp);
 			}
 		}
 	}
@@ -110,7 +110,7 @@ STATIC_OVL void resetobjs(Object *ochain, bool restore) {
 STATIC_OVL void drop_upon_death(Monster *mtmp, Object *cont) {
 	Object *otmp;
 
-	uswapwep = 0; /* ensure curse() won't cause swapwep to drop twice */
+	uswapwep = 0; /* ensure Curse() won't cause swapwep to drop twice */
 	while ((otmp = invent) != 0) {
 		obj_extract_self(otmp);
 		obj_no_longer_held(otmp);
@@ -122,7 +122,7 @@ STATIC_OVL void drop_upon_death(Monster *mtmp, Object *cont) {
 
 		if(otmp->otyp == SLIME_MOLD) goodfruit(otmp->spe);
 
-		if(rn2(5)) curse(otmp);
+		if(rn2(5)) Curse(otmp);
 		if (mtmp)
 			(void) add_to_minv(mtmp, otmp);
 		else if (cont)
@@ -135,11 +135,11 @@ STATIC_OVL void drop_upon_death(Monster *mtmp, Object *cont) {
 		long ugold = player.ugold;
 		if (mtmp) mtmp->mgold = ugold;
 		else if (cont) (void) add_to_container(cont, mkgoldobj(ugold));
-		else (void)mkgold(ugold, player.ux, player.uy);
+		else (void)MakeGold(ugold, player.ux, player.uy);
 		player.ugold = ugold;	/* undo mkgoldobj()'s removal */
 	}
 #endif
-	if (cont) cont->owt = weight(cont);
+	if (cont) cont->owt = GetWeight(cont);
 }
 
 /* check whether bones are feasible */

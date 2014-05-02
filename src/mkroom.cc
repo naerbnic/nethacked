@@ -301,7 +301,7 @@ void fill_zoo(struct mkroom *sroom) {
 			    i = goldlim;
 			if(i >= goldlim) i = 5*level_difficulty();
 			goldlim -= i;
-			(void) mkgold((long) rn1(i, 10), sx, sy);
+			(void) MakeGold((long) rn1(i, 10), sx, sy);
 			break;
 		    case MORGUE:
 			if(!rn2(5))
@@ -330,7 +330,7 @@ void fill_zoo(struct mkroom *sroom) {
 				for (i = rn2(5); i; i--)
 				    (void) add_to_container(sobj,
 						MakeRandomObject(RANDOM_CLASS, FALSE));
-				sobj->owt = weight(sobj);
+				sobj->owt = GetWeight(sobj);
 			    }
 			}
 			break;
@@ -346,7 +346,7 @@ void fill_zoo(struct mkroom *sroom) {
 		  Object *chest;
 		  levl[tx][ty].typ = THRONE;
 		  (void) somexy(sroom, &mm);
-		  (void) mkgold((long) rn1(50 * level_difficulty(),10), mm.x, mm.y);
+		  (void) MakeGold((long) rn1(50 * level_difficulty(),10), mm.x, mm.y);
 		  /* the royal coffers */
 		  chest = MakeSpecificObjectAt(CHEST, mm.x, mm.y, TRUE, FALSE);
 		  chest->spe = 2; /* so it can be found later */

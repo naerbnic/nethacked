@@ -946,9 +946,9 @@ E void ReplaceObject(Object *,Object *);
 E void CreateBillDummyObject(Object *);
 E Object *MakeSpecificObject(int,bool,bool);
 E int bcsign(Object *);
-E int weight(Object *);
-E Object *mkgold(long,int,int);
-E Object *mkcorpstat(
+E int GetWeight(Object *);
+E Object *MakeGold(long,int,int);
+E Object *MakeCorpseOrStatue(
     int,Monster *,MonsterType *,int,int,bool);
 E Object *obj_attach_mid(Object *, unsigned);
 E Monster *get_mtraits(Object *, bool);
@@ -958,10 +958,10 @@ E Object *mk_named_object(
 E Object *rnd_treefruit_at(int, int);
 E void StartCorpseTimeout(Object *);
 E void Bless(Object *);
-E void unbless(Object *);
-E void curse(Object *);
-E void uncurse(Object *);
-E void blessorcurse(Object *,int);
+E void Unbless(Object *);
+E void Curse(Object *);
+E void Uncurse(Object *);
+E void BlessOrCurse(Object *,int);
 E bool is_flammable(Object *);
 E bool is_rottable(Object *);
 E void place_object(Object *,int,int);

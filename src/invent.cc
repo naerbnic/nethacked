@@ -173,7 +173,7 @@ int merged(Object **potmp, Object **pobj) {
 #ifdef GOLDOBJ
                 /* temporary special case for gold objects!!!! */
 #endif
-		if (otmp->oclass == COIN_CLASS) otmp->owt = weight(otmp);
+		if (otmp->oclass == COIN_CLASS) otmp->owt = GetWeight(otmp);
 		else otmp->owt += obj->owt;
 		if(!otmp->onamelth && obj->onamelth)
 			otmp = *potmp = oname(otmp, ONAME(obj));
@@ -455,7 +455,7 @@ void useup(Object *obj) {
 	if (obj->quan > 1L) {
 		obj->in_use = FALSE;	/* no longer in use */
 		obj->quan--;
-		obj->owt = weight(obj);
+		obj->owt = GetWeight(obj);
 		update_inventory();
 	} else {
 		useupall(obj);
@@ -509,7 +509,7 @@ void freeinv_core(Object *obj) {
 	}
 
 	if (obj->otyp == LOADSTONE) {
-		curse(obj);
+		Curse(obj);
 	} else if (confers_luck(obj)) {
 		set_moreluck();
 		flags.botl = 1;
@@ -643,7 +643,7 @@ Object * mkgoldobj(long q) {
 	otmp = MakeSpecificObject(GOLD_PIECE, FALSE, FALSE);
 	player.ugold -= q;
 	otmp->quan = q;
-	otmp->owt = weight(otmp);
+	otmp->owt = GetWeight(otmp);
 	flags.botl = 1;
 	return(otmp);
 }

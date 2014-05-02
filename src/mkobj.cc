@@ -169,19 +169,19 @@ STATIC_OVL void AddRandomBoxContents(Object *box) {
       if (otmp->oclass == COIN_CLASS) {
         /* 2.5 x level's usual amount; weight adjusted below */
         otmp->quan = (long) (rnd(level_difficulty() + 2) * rnd(75));
-        otmp->owt = weight(otmp);
+        otmp->owt = GetWeight(otmp);
       } else
         while (otmp->otyp == ROCK) {
           otmp->otyp = rnd_class(DILITHIUM_CRYSTAL, LOADSTONE);
           if (otmp->quan > 2L)
             otmp->quan = 1L;
-          otmp->owt = weight(otmp);
+          otmp->owt = GetWeight(otmp);
         }
       if (box->otyp == BAG_OF_HOLDING) {
         if (Is_mbag(otmp)) {
           otmp->otyp = SACK;
           otmp->spe = 0;
-          otmp->owt = weight(otmp);
+          otmp->owt = GetWeight(otmp);
         } else
           while (otmp->otyp == WAN_CANCELLATION)
             otmp->otyp = rnd_class(WAN_LIGHT, WAN_LIGHTNING);
@@ -228,9 +228,9 @@ Object * SplitObject(Object *obj, long num) {
   otmp->lamplit = 0; /* ditto */
   otmp->owornmask = 0L; /* new object isn't worn */
   obj->quan -= num;
-  obj->owt = weight(obj);
+  obj->owt = GetWeight(obj);
   otmp->quan = num;
-  otmp->owt = weight(otmp); /* -= obj->owt ? */
+  otmp->owt = GetWeight(otmp); /* -= obj->owt ? */
   obj->nobj = otmp;
   /* Only set nexthere when on the floor, nexthere is also used */
   /* as a back pointer to the container object when contained. */
@@ -370,9 +370,9 @@ Object * MakeSpecificObject(int otyp, bool init, bool artif) {
 			otmp->spe = rne(3);
 			otmp->blessed = rn2(2);
 		} else if(!rn2(10)) {
-			curse(otmp);
+			Curse(otmp);
 			otmp->spe = -rne(3);
-		} else	blessorcurse(otmp, 10);
+		} else	BlessOrCurse(otmp, 10);
 		if (is_poisonable(otmp) && !rn2(100))
 			otmp->opoisoned = 1;
 
@@ -383,7 +383,7 @@ Object * MakeSpecificObject(int otyp, bool init, bool artif) {
 	    otmp->oeaten = 0;
 	    switch(otmp->otyp) {
 	    case CORPSE:
-		/* possibly overridden by mkcorpstat() */
+		/* possibly overridden by MakeCorpseOrStatue() */
 		tryct = 50;
 		do otmp->corpsenm = undead_to_corpse(PickRandomMonsterTypeIndex());
 		while ((mvitals[otmp->corpsenm].mvflags & G_NOCORPSE) && (--tryct > 0));
@@ -417,7 +417,7 @@ Object * MakeSpecificObject(int otyp, bool init, bool artif) {
 			break;
 		    }
 		}
-		blessorcurse(otmp, 10);
+		BlessOrCurse(otmp, 10);
 		break;
 	    case SLIME_MOLD:
 		otmp->spe = current_fruit;
@@ -431,7 +431,7 @@ Object * MakeSpecificObject(int otyp, bool init, bool artif) {
 	    /* fall into next case */
 
 	case GEM_CLASS:
-		if (otmp->otyp == LOADSTONE) curse(otmp);
+		if (otmp->otyp == LOADSTONE) Curse(otmp);
 		else if (otmp->otyp == ROCK) otmp->quan = (long) rn1(6,6);
 		else if (otmp->otyp != LUCKSTONE && !rn2(6)) otmp->quan = 2L;
 		else otmp->quan = 1L;
@@ -445,17 +445,17 @@ Object * MakeSpecificObject(int otyp, bool init, bool artif) {
 					otmp->lamplit = 0;
 					otmp->quan = 1L +
 					      (long)(rn2(2) ? rn2(7) : 0);
-					blessorcurse(otmp, 5);
+					BlessOrCurse(otmp, 5);
 					break;
 		case BRASS_LANTERN:
 		case OIL_LAMP:		otmp->spe = 1;
 					otmp->age = (long) rn1(500,1000);
 					otmp->lamplit = 0;
-					blessorcurse(otmp, 5);
+					BlessOrCurse(otmp, 5);
 					break;
 		case MAGIC_LAMP:	otmp->spe = 1;
 					otmp->lamplit = 0;
-					blessorcurse(otmp, 2);
+					BlessOrCurse(otmp, 2);
 					break;
 		case CHEST:
 		case LARGE_BOX:		otmp->olocked = !!(rn2(5));
@@ -472,10 +472,10 @@ Object * MakeSpecificObject(int otyp, bool init, bool artif) {
 		case MAGIC_MARKER:	otmp->spe = rn1(70,30);
 					break;
 		case CAN_OF_GREASE:	otmp->spe = rnd(25);
-					blessorcurse(otmp, 10);
+					BlessOrCurse(otmp, 10);
 					break;
 		case CRYSTAL_BALL:	otmp->spe = rnd(5);
-					blessorcurse(otmp, 2);
+					BlessOrCurse(otmp, 2);
 					break;
 		case HORN_OF_PLENTY:
 		case BAG_OF_TRICKS:	otmp->spe = rnd(20);
@@ -485,7 +485,7 @@ Object * MakeSpecificObject(int otyp, bool init, bool artif) {
 					    otmp->corpsenm = PickRandomMonsterTypeIndex();
 					while(is_human(&mons[otmp->corpsenm])
 						&& tryct2++ < 30);
-					blessorcurse(otmp, 4);
+					BlessOrCurse(otmp, 4);
 					break;
 				}
 		case BELL_OF_OPENING:   otmp->spe = 3;
@@ -504,8 +504,8 @@ Object * MakeSpecificObject(int otyp, bool init, bool artif) {
 		if(rn2(10) && (otmp->otyp == AMULET_OF_STRANGULATION ||
 		   otmp->otyp == AMULET_OF_CHANGE ||
 		   otmp->otyp == AMULET_OF_RESTFUL_SLEEP)) {
-			curse(otmp);
-		} else	blessorcurse(otmp, 10);
+			Curse(otmp);
+		} else	BlessOrCurse(otmp, 10);
 	case VENOM_CLASS:
 	case CHAIN_CLASS:
 	case BALL_CLASS:
@@ -518,10 +518,10 @@ Object * MakeSpecificObject(int otyp, bool init, bool artif) {
 #ifdef MAIL
 		if (otmp->otyp != SCR_MAIL)
 #endif
-			blessorcurse(otmp, 4);
+			BlessOrCurse(otmp, 4);
 		break;
 	case SPBOOK_CLASS:
-		blessorcurse(otmp, 17);
+		BlessOrCurse(otmp, 17);
 		break;
 	case ARMOR_CLASS:
 		if(rn2(10) && (otmp->otyp == FUMBLE_BOOTS ||
@@ -529,12 +529,12 @@ Object * MakeSpecificObject(int otyp, bool init, bool artif) {
 		   otmp->otyp == HELM_OF_OPPOSITE_ALIGNMENT ||
 		   otmp->otyp == GAUNTLETS_OF_FUMBLING ||
 		   !rn2(11))) {
-			curse(otmp);
+			Curse(otmp);
 			otmp->spe = -rne(3);
 		} else if(!rn2(10)) {
 			otmp->blessed = rn2(2);
 			otmp->spe = rne(3);
-		} else	blessorcurse(otmp, 10);
+		} else	BlessOrCurse(otmp, 10);
 		if (artif && !rn2(40))
 		    otmp = mk_artifact(otmp, (aligntyp)A_NONE);
 		/* simulate lacquered armor for samurai */
@@ -553,12 +553,12 @@ Object * MakeSpecificObject(int otyp, bool init, bool artif) {
 		if(otmp->otyp == WAN_WISHING) otmp->spe = rnd(3); else
 		otmp->spe = rn1(5,
 			(objects[otmp->otyp].oc_dir == NODIR) ? 11 : 4);
-		blessorcurse(otmp, 17);
+		BlessOrCurse(otmp, 17);
 		otmp->recharged = 0; /* used to control recharging */
 		break;
 	case RING_CLASS:
 		if(objects[otmp->otyp].oc_charged) {
-		    blessorcurse(otmp, 3);
+		    BlessOrCurse(otmp, 3);
 		    if(rn2(10)) {
 			if(rn2(10) && bcsign(otmp))
 			    otmp->spe = bcsign(otmp) * rne(3);
@@ -567,18 +567,18 @@ Object * MakeSpecificObject(int otyp, bool init, bool artif) {
 		    /* make useless +0 rings much less common */
 		    if (otmp->spe == 0) otmp->spe = rn2(4) - rn2(3);
 		    /* negative rings are usually cursed */
-		    if (otmp->spe < 0 && rn2(5)) curse(otmp);
+		    if (otmp->spe < 0 && rn2(5)) Curse(otmp);
 		} else if(rn2(10) && (otmp->otyp == RIN_TELEPORTATION ||
 			  otmp->otyp == RIN_POLYMORPH ||
 			  otmp->otyp == RIN_AGGRAVATE_MONSTER ||
 			  otmp->otyp == RIN_HUNGER || !rn2(9))) {
-			curse(otmp);
+			Curse(otmp);
 		}
 		break;
 	case ROCK_CLASS:
 		switch (otmp->otyp) {
 		    case STATUE:
-			/* possibly overridden by mkcorpstat() */
+			/* possibly overridden by MakeCorpseOrStatue() */
 			otmp->corpsenm = PickRandomMonsterTypeIndex();
 			if (!verysmall(&mons[otmp->corpsenm]) &&
 				rn2(level_difficulty()/2 + 10) > 10)
@@ -604,7 +604,7 @@ Object * MakeSpecificObject(int otyp, bool init, bool artif) {
 	/* unique objects may have an associated artifact entry */
 	if (objects[otyp].oc_unique && !otmp->oartifact)
 	    otmp = mk_artifact(otmp, (aligntyp)A_NONE);
-	otmp->owt = weight(otmp);
+	otmp->owt = GetWeight(otmp);
 	return(otmp);
 }
 
@@ -669,21 +669,21 @@ void Bless(Object *otmp) {
   if (carried(otmp) && confers_luck(otmp))
     set_moreluck();
   else if (otmp->otyp == BAG_OF_HOLDING)
-    otmp->owt = weight(otmp);
+    otmp->owt = GetWeight(otmp);
   else if (otmp->otyp == FIGURINE && otmp->timed)
     stop_timer(FIG_TRANSFORM, (genericptr_t) otmp);
   return;
 }
 
-void unbless(Object *otmp) {
+void Unbless(Object *otmp) {
   otmp->blessed = 0;
   if (carried(otmp) && confers_luck(otmp))
     set_moreluck();
   else if (otmp->otyp == BAG_OF_HOLDING)
-    otmp->owt = weight(otmp);
+    otmp->owt = GetWeight(otmp);
 }
 
-void curse(Object *otmp) {
+void Curse(Object *otmp) {
 #ifdef GOLDOBJ
 	if (otmp->oclass == COIN_CLASS) return;
 #endif
@@ -699,7 +699,7 @@ void curse(Object *otmp) {
 	if (carried(otmp) && confers_luck(otmp))
 	    set_moreluck();
 	else if (otmp->otyp == BAG_OF_HOLDING)
-	    otmp->owt = weight(otmp);
+	    otmp->owt = GetWeight(otmp);
 	else if (otmp->otyp == FIGURINE) {
 		if (otmp->corpsenm != NON_PM
 		    && !dead_species(otmp->corpsenm,TRUE)
@@ -709,30 +709,32 @@ void curse(Object *otmp) {
 	return;
 }
 
-void uncurse(Object *otmp) {
-	otmp->cursed = 0;
-	if (carried(otmp) && confers_luck(otmp))
-	    set_moreluck();
-	else if (otmp->otyp == BAG_OF_HOLDING)
-	    otmp->owt = weight(otmp);
-	else if (otmp->otyp == FIGURINE && otmp->timed)
-	    stop_timer(FIG_TRANSFORM, (genericptr_t) otmp);
-	return;
+void Uncurse(Object *otmp) {
+  otmp->cursed = 0;
+  if (carried(otmp) && confers_luck(otmp))
+    set_moreluck();
+  else if (otmp->otyp == BAG_OF_HOLDING)
+    otmp->owt = GetWeight(otmp);
+  else if (otmp->otyp == FIGURINE && otmp->timed)
+    stop_timer(FIG_TRANSFORM, (genericptr_t) otmp);
+  return;
 }
 
-void blessorcurse(Object *otmp, int chance) {
-	if(otmp->blessed || otmp->cursed) return;
+void BlessOrCurse(Object *otmp, int chance) {
+  if (otmp->blessed || otmp->cursed)
+    return;
 
-	if(!rn2(chance)) {
-	    if(!rn2(2)) {
-		curse(otmp);
-	    } else {
-		Bless(otmp);
-	    }
-	}
-	return;
+  if (!rn2(chance)) {
+    if (!rn2(2)) {
+      Curse(otmp);
+    } else {
+      Bless(otmp);
+    }
+  }
+  return;
 }
 
+// TODO(BNC): What the hell should I call this?
 int bcsign(Object *otmp) {
 	return(!!otmp->blessed - !!otmp->cursed);
 }
@@ -745,7 +747,7 @@ int bcsign(Object *otmp) {
  *	   of the code messes with a contained object and doesn't update the
  *	   container's weight.
  */
-int weight(Object *obj) {
+int GetWeight(Object *obj) {
 	int wt = objects[obj->otyp].oc_weight;
 
 	if (obj->otyp == LARGE_BOX && obj->spe == 1) /* Schroedinger's Cat */
@@ -759,7 +761,7 @@ int weight(Object *obj) {
 			 ((int)mons[obj->corpsenm].cwt * 3 / 2);
 
 		for(contents=obj->cobj; contents; contents=contents->nobj)
-			cwt += weight(contents);
+			cwt += GetWeight(contents);
 		/*
 		 *  The weight of bags of holding is calculated as the weight
 		 *  of the bag plus the weight of the bag's contents modified
@@ -806,19 +808,19 @@ Object * rnd_treefruit_at(int x, int y) {
 	return MakeSpecificObjectAt(treefruits[rn2(SIZE(treefruits))], x, y, TRUE, FALSE);
 }
 
-Object * mkgold(long amount, int x, int y) {
-    Object *gold = g_at(x,y);
+Object * MakeGold(long amount, int x, int y) {
+  Object *gold = g_at(x, y);
 
-    if (amount <= 0L)
-	amount = (long)(1 + rnd(level_difficulty()+2) * rnd(30));
-    if (gold) {
-	gold->quan += amount;
-    } else {
-	gold = MakeSpecificObjectAt(GOLD_PIECE, x, y, TRUE, FALSE);
-	gold->quan = amount;
-    }
-    gold->owt = weight(gold);
-    return (gold);
+  if (amount <= 0L)
+    amount = (long) (1 + rnd(level_difficulty() + 2) * rnd(30));
+  if (gold) {
+    gold->quan += amount;
+  } else {
+    gold = MakeSpecificObjectAt(GOLD_PIECE, x, y, TRUE, FALSE);
+    gold->quan = amount;
+  }
+  gold->owt = GetWeight(gold);
+  return (gold);
 }
 
 /* return TRUE if the corpse has special timing */
@@ -836,41 +838,44 @@ Object * mkgold(long amount, int x, int y) {
  * yet still allow restoration of the original monster upon
  * resurrection.
  */
-Object * mkcorpstat(int objtype, Monster *mtmp, MonsterType *ptr, int x, int y, bool init) {
-	Object *otmp;
+Object * MakeCorpseOrStatue(int objtype, Monster *mtmp, MonsterType *ptr, int x,
+    int y, bool init) {
+  Object *otmp;
 
-	if (objtype != CORPSE && objtype != STATUE)
-	    impossible("making corpstat type %d", objtype);
-	if (x == 0 && y == 0) {		/* special case - random placement */
-		otmp = MakeSpecificObject(objtype, init, FALSE);
-		if (otmp) rloco(otmp);
-	} else
-		otmp = MakeSpecificObjectAt(objtype, x, y, init, FALSE);
-	if (otmp) {
-	    if (mtmp) {
-		Object *otmp2;
+  if (objtype != CORPSE && objtype != STATUE)
+    impossible("making corpstat type %d", objtype);
+  if (x == 0 && y == 0) { /* special case - random placement */
+    otmp = MakeSpecificObject(objtype, init, FALSE);
+    if (otmp)
+      rloco(otmp);
+  } else
+    otmp = MakeSpecificObjectAt(objtype, x, y, init, FALSE);
+  if (otmp) {
+    if (mtmp) {
+      Object *otmp2;
 
-		if (!ptr) ptr = mtmp->data;
-		/* save_mtraits frees original data pointed to by otmp */
-		otmp2 = save_mtraits(otmp, mtmp);
-		if (otmp2) otmp = otmp2;
-	    }
-	    /* use the corpse or statue produced by MakeSpecificObject() as-is
-	       unless `ptr' is non-null */
-	    if (ptr) {
-		int old_corpsenm = otmp->corpsenm;
+      if (!ptr)
+        ptr = mtmp->data;
+      /* save_mtraits frees original data pointed to by otmp */
+      otmp2 = save_mtraits(otmp, mtmp);
+      if (otmp2)
+        otmp = otmp2;
+    }
+    /* use the corpse or statue produced by MakeSpecificObject() as-is
+     unless `ptr' is non-null */
+    if (ptr) {
+      int old_corpsenm = otmp->corpsenm;
 
-		otmp->corpsenm = monsndx(ptr);
-		otmp->owt = weight(otmp);
-		if (otmp->otyp == CORPSE &&
-			(special_corpse(old_corpsenm) ||
-				special_corpse(otmp->corpsenm))) {
-		    obj_stop_timers(otmp);
-		    StartCorpseTimeout(otmp);
-		}
-	    }
-	}
-	return(otmp);
+      otmp->corpsenm = monsndx(ptr);
+      otmp->owt = GetWeight(otmp);
+      if (otmp->otyp == CORPSE
+          && (special_corpse(old_corpsenm) || special_corpse(otmp->corpsenm))) {
+        obj_stop_timers(otmp);
+        StartCorpseTimeout(otmp);
+      }
+    }
+  }
+  return (otmp);
 }
 
 /*
@@ -959,7 +964,7 @@ Object * mk_tt_object(int objtype, int x, int y) {
 Object * mk_named_object(int objtype, MonsterType *ptr, int x, int y, const char *nm) {
 	Object *otmp;
 
-	otmp = mkcorpstat(objtype, (Monster *)0, ptr,
+	otmp = MakeCorpseOrStatue(objtype, (Monster *)0, ptr,
 				x, y, (bool)(objtype != STATUE));
 	if (nm)
 		otmp = oname(otmp, nm);
@@ -1307,7 +1312,7 @@ void add_to_buried(Object *obj) {
 
 /* Recalculate the weight of this container and all of _its_ containers. */
 STATIC_OVL void container_weight(Object *container) {
-    container->owt = weight(container);
+    container->owt = GetWeight(container);
     if (container->where == OBJ_CONTAINED)
 	container_weight(container->ocontainer);
 /*

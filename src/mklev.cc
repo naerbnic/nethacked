@@ -713,7 +713,7 @@ skip0:
 		while (!rn2(x))
 		    mktrap(0,0,croom,(coord*)0);
 		if (!goldseen && !rn2(3))
-		    (void) mkgold(0L, somex(croom), somey(croom));
+		    (void) MakeGold(0L, somex(croom), somey(croom));
 #ifdef REINCARNATION
 		if(Is_rogue_level(&player.uz)) goto skip_nonrogue;
 #endif
@@ -728,7 +728,7 @@ skip0:
 
 		/* put statues inside */
 		if(!rn2(20))
-		    (void) mkcorpstat(STATUE, (Monster *)0,
+		    (void) MakeCorpseOrStatue(STATUE, (Monster *)0,
 				      (MonsterType *)0,
 				      somex(croom), somey(croom), TRUE);
 		/* put box/chest inside;
@@ -834,7 +834,7 @@ STATIC_OVL void mineralize() {
 		    if ((otmp = MakeSpecificObject(GOLD_PIECE, FALSE, FALSE)) != 0) {
 			otmp->ox = x,  otmp->oy = y;
 			otmp->quan = 1L + rnd(goldprob * 3);
-			otmp->owt = weight(otmp);
+			otmp->owt = GetWeight(otmp);
 			if (!rn2(3)) add_to_buried(otmp);
 			else place_object(otmp, x, y);
 		    }
@@ -1283,11 +1283,11 @@ static void mkgrave(struct mkroom *croom) {
 	make_grave(m.x, m.y, dobell ? "Saved by the bell!" : (char *) 0);
 
 	/* Possibly fill it with objects */
-	if (!rn2(3)) (void) mkgold(0L, m.x, m.y);
+	if (!rn2(3)) (void) MakeGold(0L, m.x, m.y);
 	for (tryct = rn2(5); tryct; tryct--) {
 	    otmp = MakeRandomObject(RANDOM_CLASS, TRUE);
 	    if (!otmp) return;
-	    curse(otmp);
+	    Curse(otmp);
 	    otmp->ox = m.x;
 	    otmp->oy = m.y;
 	    add_to_buried(otmp);

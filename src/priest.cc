@@ -202,9 +202,9 @@ void priestini(d_level *lvl, struct mkroom *sroom, int sx, int sy, bool sanctum)
 		/* robe [via makemon()] */
 		if (rn2(2) && (otmp = which_armor(priest, W_ARMC)) != 0) {
 		    if (p_coaligned(priest))
-			uncurse(otmp);
+			Uncurse(otmp);
 		    else
-			curse(otmp);
+			Curse(otmp);
 		}
 	}
 }

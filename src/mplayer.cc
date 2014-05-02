@@ -90,7 +90,7 @@ STATIC_OVL void mk_mplayer_armor(Monster *mon, short typ) {
 	if (typ == STRANGE_OBJECT) return;
 	obj = MakeSpecificObject(typ, FALSE, FALSE);
 	if (!rn2(3)) obj->oerodeproof = 1;
-	if (!rn2(3)) curse(obj);
+	if (!rn2(3)) Curse(obj);
 	if (!rn2(3)) Bless(obj);
 	/* Most players who get to the endgame who have cursed equipment
 	 * have it because the wizard or other monsters cursed it, so its

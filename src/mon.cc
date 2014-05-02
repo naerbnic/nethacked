@@ -203,9 +203,9 @@ STATIC_OVL Object * make_corpse(Monster *mtmp) {
 		goto default_1;
 	    case PM_VAMPIRE:
 	    case PM_VAMPIRE_LORD:
-		/* include mtmp in the mkcorpstat() call */
+		/* include mtmp in the MakeCorpseOrStatue() call */
 		num = undead_to_corpse(mndx);
-		obj = mkcorpstat(CORPSE, mtmp, &mons[num], x, y, TRUE);
+		obj = MakeCorpseOrStatue(CORPSE, mtmp, &mons[num], x, y, TRUE);
 		obj->age -= 100;		/* this is an *OLD* corpse */
 		break;
 	    case PM_KOBOLD_MUMMY:
@@ -225,7 +225,7 @@ STATIC_OVL Object * make_corpse(Monster *mtmp) {
 	    case PM_GIANT_ZOMBIE:
 	    case PM_ETTIN_ZOMBIE:
 		num = undead_to_corpse(mndx);
-		obj = mkcorpstat(CORPSE, mtmp, &mons[num], x, y, TRUE);
+		obj = MakeCorpseOrStatue(CORPSE, mtmp, &mons[num], x, y, TRUE);
 		obj->age -= 100;		/* this is an *OLD* corpse */
 		break;
 	    case PM_IRON_GOLEM:
@@ -243,11 +243,11 @@ STATIC_OVL Object * make_corpse(Monster *mtmp) {
 	    case PM_CLAY_GOLEM:
 		obj = MakeSpecificObjectAt(ROCK, x, y, FALSE, FALSE);
 		obj->quan = (long)(rn2(20) + 50);
-		obj->owt = weight(obj);
+		obj->owt = GetWeight(obj);
 		mtmp->mnamelth = 0;
 		break;
 	    case PM_STONE_GOLEM:
-		obj = mkcorpstat(STATUE, (Monster *)0,
+		obj = MakeCorpseOrStatue(STATUE, (Monster *)0,
 			mdat, x, y, FALSE);
 		break;
 	    case PM_WOOD_GOLEM:
@@ -265,7 +265,7 @@ STATIC_OVL Object * make_corpse(Monster *mtmp) {
 		break;
 	    case PM_GOLD_GOLEM:
 		/* Good luck gives more coins */
-		obj = mkgold((long)(200 - rnl(101)), x, y);
+		obj = MakeGold((long)(200 - rnl(101)), x, y);
 		mtmp->mnamelth = 0;
 		break;
 	    case PM_PAPER_GOLEM:
@@ -279,7 +279,7 @@ STATIC_OVL Object * make_corpse(Monster *mtmp) {
 		if (mvitals[mndx].mvflags & G_NOCORPSE)
 		    return nullptr;
 		else	/* preserve the unique traits of some creatures */
-		    obj = mkcorpstat(CORPSE, KEEPTRAITS(mtmp) ? mtmp : 0,
+		    obj = MakeCorpseOrStatue(CORPSE, KEEPTRAITS(mtmp) ? mtmp : 0,
 				     mdat, x, y, TRUE);
 		break;
 	}
@@ -1554,7 +1554,7 @@ void monstone(Monster *mdef) {
 		/* defer statue creation until after inventory removal
 		   so that saved monster traits won't retain any stale
 		   item-conferred attributes */
-		otmp = mkcorpstat(STATUE, KEEPTRAITS(mdef) ? mdef : 0,
+		otmp = MakeCorpseOrStatue(STATUE, KEEPTRAITS(mdef) ? mdef : 0,
 				  mdef->data, x, y, FALSE);
 		if (mdef->mnamelth) otmp = oname(otmp, mdef->name());
 		while ((obj = oldminvent) != 0) {
@@ -1566,7 +1566,7 @@ void monstone(Monster *mdef) {
 			Object *au;
 			au = MakeSpecificObject(GOLD_PIECE, FALSE, FALSE);
 			au->quan = mdef->mgold;
-			au->owt = weight(au);
+			au->owt = GetWeight(au);
 			(void) add_to_container(otmp, au);
 			mdef->mgold = 0;
 		}
@@ -1574,7 +1574,7 @@ void monstone(Monster *mdef) {
 		/* Archeologists should not break unique statues */
 		if (mdef->data->geno & G_UNIQ)
 			otmp->spe = 1;
-		otmp->owt = weight(otmp);
+		otmp->owt = GetWeight(otmp);
 	} else
 		otmp = MakeSpecificObjectAt(ROCK, x, y, TRUE, FALSE);
 

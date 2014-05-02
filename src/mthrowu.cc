@@ -453,7 +453,7 @@ void m_throw(Monster *mon, int x, int y, int dx, int dy, int range, Object *obj)
 void m_useup(Monster *mon, Object *obj) {
 	if (obj->quan > 1L) {
 		obj->quan--;
-		obj->owt = weight(obj);
+		obj->owt = GetWeight(obj);
 	} else {
 		obj_extract_self(obj);
 		possibly_unwield(mon, FALSE);

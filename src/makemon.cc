@@ -141,7 +141,7 @@ void m_initthrow(Monster *mtmp, int otyp, int oquan) {
 
 	otmp = MakeSpecificObject(otyp, TRUE, FALSE);
 	otmp->quan = (long) rn1(oquan, 3);
-	otmp->owt = weight(otmp);
+	otmp->owt = GetWeight(otmp);
 	if (otyp == ORCISH_ARROW) otmp->opoisoned = TRUE;
 	(void) mpickobj(mtmp, otmp);
 }
@@ -237,7 +237,7 @@ STATIC_OVL void m_initweap(Monster *mtmp) {
 		    otmp = MakeSpecificObject(MACE, FALSE, FALSE);
 		    if(otmp) {
 			otmp->spe = rnd(3);
-			if(!rn2(2)) curse(otmp);
+			if(!rn2(2)) Curse(otmp);
 			(void) mpickobj(mtmp, otmp);
 		    }
 		}
@@ -573,7 +573,7 @@ STATIC_OVL void m_initinv(Monster *mtmp) {
 			otmp = MakeSpecificObject(rnd_class(DILITHIUM_CRYSTAL,LUCKSTONE-1),
 				      FALSE, FALSE);
 			otmp->quan = (long) rn1(2, 3);
-			otmp->owt = weight(otmp);
+			otmp->owt = GetWeight(otmp);
 			(void) mpickobj(mtmp, otmp);
 		    }
 		}
@@ -581,7 +581,7 @@ STATIC_OVL void m_initinv(Monster *mtmp) {
 	    case S_WRAITH:
 		if (ptr == &mons[PM_NAZGUL]) {
 			otmp = MakeSpecificObject(RIN_INVISIBILITY, FALSE, FALSE);
-			curse(otmp);
+			Curse(otmp);
 			(void) mpickobj(mtmp, otmp);
 		}
 		break;
@@ -603,7 +603,7 @@ STATIC_OVL void m_initinv(Monster *mtmp) {
 		if (!rn2(20)) {
 			otmp = MakeSpecificObject(LARGE_BOX, FALSE, FALSE);
 			otmp->spe = 1; /* flag for special box */
-			otmp->owt = weight(otmp);
+			otmp->owt = GetWeight(otmp);
 			(void) mpickobj(mtmp, otmp);
 		}
 		break;
@@ -1428,7 +1428,7 @@ int mongets(Monster *mtmp, int otyp) {
 	if (otmp) {
 	    if (mtmp->data->mlet == S_DEMON) {
 		/* demons never get blessed objects */
-		if (otmp->blessed) curse(otmp);
+		if (otmp->blessed) Curse(otmp);
 	    } else if(is_lminion(mtmp)) {
 		/* lawful minions don't get cursed, bad, or rusting objects */
 		otmp->cursed = FALSE;

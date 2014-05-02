@@ -622,7 +622,7 @@ STATIC_OVL int mdamagem(Monster *magr, Monster *mdef, struct Attack *mattk) {
 		    int nutrit;
 
 		    virtualcorpse->corpsenm = num;
-		    virtualcorpse->owt = weight(virtualcorpse);
+		    virtualcorpse->owt = GetWeight(virtualcorpse);
 		    nutrit = dog_nutrition(magr, virtualcorpse);
 		    dealloc_obj(virtualcorpse);
 

@@ -313,7 +313,7 @@ int Helmet_on() {
 		    else
 			pline("%s %s for a moment.",
 			      Tobjnam(uarmh, "glow"), hcolor(NH_BLACK));
-		    curse(uarmh);
+		    Curse(uarmh);
 		}
 		flags.botl = 1;		/* reveal new alignment or INT & WIS */
 		if (Hallucination) {

@@ -858,8 +858,8 @@ void cancel_item(Object *obj) {
 	    }
 	}
 	if (holy) costly_cancel(obj);
-	unbless(obj);
-	uncurse(obj);
+	Unbless(obj);
+	Uncurse(obj);
 #ifdef INVISIBLE_OBJECTS
 	if (Object->oinvis) Object->oinvis = 0;
 #endif
@@ -1193,7 +1193,7 @@ Object * poly_obj(Object *obj, int id) {
 		    kill_egg(otmp);
 		else {
 		    otmp->otyp = EGG;
-		    otmp->owt = weight(otmp);
+		    otmp->owt = GetWeight(otmp);
 		}
 		otmp->corpsenm = NON_PM;
 		otmp->spe = 0;
@@ -1294,7 +1294,7 @@ Object * poly_obj(Object *obj, int id) {
 	}
 
 	/* update the weight */
-	otmp->owt = weight(otmp);
+	otmp->owt = GetWeight(otmp);
 
 	/* for now, take off worn items being polymorphed */
 	if (obj_location == OBJ_INVENT) {
@@ -3629,7 +3629,7 @@ void fracture_rock(Object *obj) {
 
 	obj->otyp = ROCK;
 	obj->quan = (long) rn1(60, 7);
-	obj->owt = weight(obj);
+	obj->owt = GetWeight(obj);
 	obj->oclass = GEM_CLASS;
 	obj->known = FALSE;
 	obj->onamelth = 0;		/* no names */

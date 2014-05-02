@@ -994,7 +994,7 @@ STATIC_OVL void ini_inv(struct trobj *trop) {
 		}
 #endif
 		/* defined after setting otyp+quan + blessedness */
-		obj->owt = weight(obj);
+		obj->owt = GetWeight(obj);
 		obj = addinv(obj);
 
 		/* Make the type known if necessary */

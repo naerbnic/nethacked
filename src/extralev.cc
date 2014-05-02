@@ -289,37 +289,37 @@ void makerogueghost() {
 	if (rn2(4)) {
 		ghostobj = MakeSpecificObjectAt(FOOD_RATION, x, y, FALSE, FALSE);
 		ghostobj->quan = (long) rnd(7);
-		ghostobj->owt = weight(ghostobj);
+		ghostobj->owt = GetWeight(ghostobj);
 	}
 	if (rn2(2)) {
 		ghostobj = MakeSpecificObjectAt(MACE, x, y, FALSE, FALSE);
 		ghostobj->spe = rnd(3);
-		if (rn2(4)) curse(ghostobj);
+		if (rn2(4)) Curse(ghostobj);
 	} else {
 		ghostobj = MakeSpecificObjectAt(TWO_HANDED_SWORD, x, y, FALSE, FALSE);
 		ghostobj->spe = rnd(5) - 2;
-		if (rn2(4)) curse(ghostobj);
+		if (rn2(4)) Curse(ghostobj);
 	}
 	ghostobj = MakeSpecificObjectAt(BOW, x, y, FALSE, FALSE);
 	ghostobj->spe = 1;
-	if (rn2(4)) curse(ghostobj);
+	if (rn2(4)) Curse(ghostobj);
 
 	ghostobj = MakeSpecificObjectAt(ARROW, x, y, FALSE, FALSE);
 	ghostobj->spe = 0;
 	ghostobj->quan = (long) rn1(10,25);
-	ghostobj->owt = weight(ghostobj);
-	if (rn2(4)) curse(ghostobj);
+	ghostobj->owt = GetWeight(ghostobj);
+	if (rn2(4)) Curse(ghostobj);
 
 	if (rn2(2)) {
 		ghostobj = MakeSpecificObjectAt(RING_MAIL, x, y, FALSE, FALSE);
 		ghostobj->spe = rn2(3);
 		if (!rn2(3)) ghostobj->oerodeproof = TRUE;
-		if (rn2(4)) curse(ghostobj);
+		if (rn2(4)) Curse(ghostobj);
 	} else {
 		ghostobj = MakeSpecificObjectAt(PLATE_MAIL, x, y, FALSE, FALSE);
 		ghostobj->spe = rnd(5) - 2;
 		if (!rn2(3)) ghostobj->oerodeproof = TRUE;
-		if (rn2(4)) curse(ghostobj);
+		if (rn2(4)) Curse(ghostobj);
 	}
 	if (rn2(2)) {
 		ghostobj = MakeSpecificObjectAt(FAKE_AMULET_OF_YENDOR, x, y, TRUE, FALSE);

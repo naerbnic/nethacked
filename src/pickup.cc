@@ -48,7 +48,7 @@ STATIC_DCL bool mon_beside(int, int);
 /*
  *  How much the weight of the given container will change when the given
  *  object is removed from it.  This calculation must match the one used
- *  by weight() in mkobj.c.
+ *  by GetWeight() in mkobj.c.
  */
 #define DELTA_CWT(cont,obj)		\
     ((cont)->cursed ? (obj)->owt * 2 :	\
@@ -988,7 +988,7 @@ STATIC_OVL long carry_count(Object *obj, Object *container, long count, bool tel
 
     if (count != savequan) {
 	obj->quan = count;
-	obj->owt = (unsigned)weight(obj);
+	obj->owt = (unsigned)GetWeight(obj);
     }
     wt = iw + (int)obj->owt;
     if (adjust_wt)
@@ -1063,7 +1063,7 @@ STATIC_OVL long carry_count(Object *obj, Object *container, long count, bool tel
 	 */
 	for (qq = 1L; qq <= count; qq++) {
 	    obj->quan = qq;
-	    obj->owt = (unsigned)(ow = weight(obj));
+	    obj->owt = (unsigned)(ow = GetWeight(obj));
 	    if (adjust_wt)
 		ow -= (container->otyp == BAG_OF_HOLDING) ?
 			(int)DELTA_CWT(container, obj) : (int)obj->owt;
@@ -1555,7 +1555,7 @@ gotit:
 		if (coffers) {
 	    verbalize("Thank you for your contribution to reduce the debt.");
 		    (void) add_to_container(coffers, goldob);
-		    coffers->owt = weight(coffers);
+		    coffers->owt = GetWeight(coffers);
 		} else {
 		    Monster *mon = makemon(courtmon(),
 					    player.ux, player.uy, NO_MM_FLAGS);
@@ -1851,7 +1851,7 @@ STATIC_PTR int in_container(Object *obj) {
 	    if (floor_container && obj->oclass == COIN_CLASS)
 		sellobj(obj, current_container->ox, current_container->oy);
 	    (void) add_to_container(current_container, obj);
-	    current_container->owt = weight(current_container);
+	    current_container->owt = GetWeight(current_container);
 	}
 	/* gold needs this, and freeinv() many lines above may cause
 	 * the encumbrance to disappear from the status, so just always
@@ -1877,7 +1877,7 @@ STATIC_PTR int out_container(Object *obj) {
 		impossible("<out> no current_container?");
 		return -1;
 	} else if (is_gold) {
-		obj->owt = weight(obj);
+		obj->owt = GetWeight(obj);
 	}
 
 	if(obj->oartifact && !touch_artifact(obj,&youmonst)) return 0;
@@ -1907,7 +1907,7 @@ STATIC_PTR int out_container(Object *obj) {
 
 	/* Remove the object from the list. */
 	obj_extract_self(obj);
-	current_container->owt = weight(current_container);
+	current_container->owt = GetWeight(current_container);
 
 	if (Icebox && !age_is_relative(obj)) {
 		obj->age = monstermoves - obj->age; /* actual age */
@@ -1995,7 +1995,7 @@ STATIC_OVL void observe_quantum_cat(Object *box) {
 	pline_The("%s inside the box is dead!",
 	    Hallucination ? rndmonnam() : "housecat");
     }
-    box->owt = weight(box);
+    box->owt = GetWeight(box);
     return;
 }
 
@@ -2058,7 +2058,7 @@ int use_container(Object *obj, int held) {
 
 	if (loss)	/* magic bag lost some shop goods */
 	    You("owe %ld %s for lost merchandise.", loss, currency(loss));
-	obj->owt = weight(obj);	/* in case any items were lost */
+	obj->owt = GetWeight(obj);	/* in case any items were lost */
 
 	if (!cnt)
 	    sprintf(emptymsg, "%s is %sempty.", Yname2(obj),

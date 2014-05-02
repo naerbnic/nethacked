@@ -189,7 +189,7 @@ bool flooreffects(Object *obj, int x, int y, const char *verb) {
 		if ((Blind || (Levitation || Flying)) && flags.soundok &&
 		    ((x == player.ux) && (y == player.uy))) {
 		    if (!Underwater) {
-			if (weight(obj) > 9) {
+			if (GetWeight(obj) > 9) {
 				pline("Splash!");
 		        } else if (Levitation || Flying) {
 				pline("Plop!");

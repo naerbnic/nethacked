@@ -361,13 +361,13 @@ void mon_arrive(Monster *mtmp, bool with_you) {
 			get_obj_location(obj, &xlocale, &ylocale, 0);
 		    }
 		}
-		corpse = mkcorpstat(CORPSE, (Monster *)0, mtmp->data,
+		corpse = MakeCorpseOrStatue(CORPSE, (Monster *)0, mtmp->data,
 				xlocale, ylocale, FALSE);
 #ifndef GOLDOBJ
 		if (mtmp->mgold) {
 		    if (xlocale == 0 && ylocale == 0 && corpse) {
 			(void) get_obj_location(corpse, &xlocale, &ylocale, 0);
-			(void) mkgold(mtmp->mgold, xlocale, ylocale);
+			(void) MakeGold(mtmp->mgold, xlocale, ylocale);
 		    }
 		    mtmp->mgold = 0L;
 		}

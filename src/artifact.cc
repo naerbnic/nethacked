@@ -1251,7 +1251,7 @@ STATIC_OVL int arti_invoke(Object *obj) {
 		if (otmp->spe > 0) otmp->spe = 0;
 	    } else
 		otmp->quan += rnd(5);
-	    otmp->owt = weight(otmp);
+	    otmp->owt = GetWeight(otmp);
 	    otmp = hold_another_object(otmp, "Suddenly %s out.",
 				       aobjnam(otmp, "fall"), (const char *)0);
 	    break;

@@ -881,7 +881,7 @@ STATIC_OVL void create_object(object *o, struct mkroom *croom) {
 
 	    /* KMH -- Create piles of gold properly */
 	    if (oclass == COIN_CLASS)
-		otmp = mkgold(0L, x, y);
+		otmp = MakeGold(0L, x, y);
 	    else
 		otmp = MakeRandomObjectAt(oclass, x, y, !named);
 	}
@@ -891,8 +891,8 @@ STATIC_OVL void create_object(object *o, struct mkroom *croom) {
 
 	switch (o->curse_state) {
 	      case 1:	Bless(otmp); break; /* BLESSED */
-	      case 2:	unbless(otmp); uncurse(otmp); break; /* uncursed */
-	      case 3:	curse(otmp); break; /* CURSED */
+	      case 2:	Unbless(otmp); Uncurse(otmp); break; /* uncursed */
+	      case 3:	Curse(otmp); break; /* CURSED */
 	      default:	break;	/* Otherwise it's random and we're happy
 				 * with what mkobj gave us! */
 	}
@@ -963,7 +963,7 @@ STATIC_OVL void create_object(object *o, struct mkroom *croom) {
 		obj_extract_self(obj);
 		(void) add_to_container(otmp, obj);
 	    }
-	    otmp->owt = weight(otmp);
+	    otmp->owt = GetWeight(otmp);
 	    mongone(was);
 	}
 
@@ -1098,7 +1098,7 @@ STATIC_OVL void create_gold(gold *g, struct mkroom *croom) {
 
 	if (g->amount == -1)
 	    g->amount = rnd(200);
-	(void) mkgold((long) g->amount, x, y);
+	(void) MakeGold((long) g->amount, x, y);
 }
 
 /*
@@ -1388,7 +1388,7 @@ void fill_room(struct mkroom *croom, bool prefilled) {
 		case VAULT:
 		    for (x=croom->lx;x<=croom->hx;x++)
 			for (y=croom->ly;y<=croom->hy;y++)
-			    (void) mkgold((long)rn1(abs(depth(&player.uz))*100, 51), x, y);
+			    (void) MakeGold((long)rn1(abs(depth(&player.uz))*100, 51), x, y);
 		    break;
 		case COURT:
 		case ZOO:
@@ -2478,7 +2478,7 @@ STATIC_OVL bool load_maze(dlb *fd) {
 	    }
 	    for(x = rn2((int) (15 * mapfact) / 100); x; x--) {
 		    maze1xy(&mm, DRY);
-		    (void) mkgold(0L,mm.x,mm.y);
+		    (void) MakeGold(0L,mm.x,mm.y);
 	    }
 	    for(x = rn2((int) (15 * mapfact) / 100); x; x--) {
 		    int trytrap;
