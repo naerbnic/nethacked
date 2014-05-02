@@ -152,7 +152,7 @@ found:
 	}
 
 	/* KMH, conduct */
-	u.uconduct.literate++;
+	player.uconduct.literate++;
 
 	new_obj = mksobj(i, FALSE, FALSE);
 	new_obj->bknown = (paper->bknown && pen->bknown);
@@ -204,7 +204,7 @@ found:
 		} else {
 			if (by_descr) {
 			    strcpy(namebuf, OBJ_DESCR(objects[new_obj->otyp]));
-			    wipeout_text(namebuf, (6+MAXULEV - u.ulevel)/6, 0);
+			    wipeout_text(namebuf, (6+MAXULEV - player.ulevel)/6, 0);
 			} else
 			    sprintf(namebuf, "%s was here!", plname);
 			You("write \"%s\" and the scroll disappears.", namebuf);

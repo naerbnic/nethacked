@@ -44,10 +44,10 @@ extern const int monstr[];
 bool is_home_elemental(MonsterType *ptr) {
 	if (ptr->mlet == S_ELEMENTAL)
 	    switch (monsndx(ptr)) {
-		case PM_AIR_ELEMENTAL: return Is_airlevel(&u.uz);
-		case PM_FIRE_ELEMENTAL: return Is_firelevel(&u.uz);
-		case PM_EARTH_ELEMENTAL: return Is_earthlevel(&u.uz);
-		case PM_WATER_ELEMENTAL: return Is_waterlevel(&u.uz);
+		case PM_AIR_ELEMENTAL: return Is_airlevel(&player.uz);
+		case PM_FIRE_ELEMENTAL: return Is_firelevel(&player.uz);
+		case PM_EARTH_ELEMENTAL: return Is_earthlevel(&player.uz);
+		case PM_WATER_ELEMENTAL: return Is_waterlevel(&player.uz);
 	    }
 	return FALSE;
 }
@@ -58,14 +58,14 @@ bool is_home_elemental(MonsterType *ptr) {
 STATIC_OVL bool wrong_elem_type(MonsterType *ptr) {
     if (ptr->mlet == S_ELEMENTAL) {
 	return((bool)(!is_home_elemental(ptr)));
-    } else if (Is_earthlevel(&u.uz)) {
+    } else if (Is_earthlevel(&player.uz)) {
 	/* no restrictions? */
-    } else if (Is_waterlevel(&u.uz)) {
+    } else if (Is_waterlevel(&player.uz)) {
 	/* just monsters that can swim */
 	if(!is_swimmer(ptr)) return TRUE;
-    } else if (Is_firelevel(&u.uz)) {
+    } else if (Is_firelevel(&player.uz)) {
 	if (!pm_resistance(ptr,MR_FIRE)) return TRUE;
-    } else if (Is_airlevel(&u.uz)) {
+    } else if (Is_airlevel(&player.uz)) {
 	if(!(is_flyer(ptr) && ptr->mlet != S_TRAPPER) && !is_floater(ptr)
 	   && !amorphous(ptr) && !noncorporeal(ptr) && !is_whirly(ptr))
 	    return TRUE;
@@ -96,14 +96,14 @@ STATIC_OVL void m_initgrp(Monster *mtmp, int x, int y, int n) {
 # ifdef DEBUG
 	pline("init group call x=%d,y=%d,n=%d,cnt=%d.", x, y, n, cnt);
 # endif
-	cntdiv = ((u.ulevel < 3) ? 4 : (u.ulevel < 5) ? 2 : 1);
+	cntdiv = ((player.ulevel < 3) ? 4 : (player.ulevel < 5) ? 2 : 1);
 #endif
 	/* Tuning: cut down on swarming at low character levels [mrs] */
-	cnt /= (u.ulevel < 3) ? 4 : (u.ulevel < 5) ? 2 : 1;
+	cnt /= (player.ulevel < 3) ? 4 : (player.ulevel < 5) ? 2 : 1;
 #if defined(__GNUC__) && (defined(HPUX) || defined(DGUX))
 	if (cnt != (cnttmp/cntdiv)) {
 		pline("cnt=%d using %d, cnttmp=%d, cntdiv=%d", cnt,
-			(u.ulevel < 3) ? 4 : (u.ulevel < 5) ? 2 : 1,
+			(player.ulevel < 3) ? 4 : (player.ulevel < 5) ? 2 : 1,
 			cnttmp, cntdiv);
 	}
 #endif
@@ -155,7 +155,7 @@ STATIC_OVL void m_initweap(Monster *mtmp) {
 	Object *otmp;
 
 #ifdef REINCARNATION
-	if (Is_rogue_level(&u.uz)) return;
+	if (Is_rogue_level(&player.uz)) return;
 #endif
 /*
  *	first a few special cases:
@@ -228,7 +228,7 @@ STATIC_OVL void m_initweap(Monster *mtmp) {
 			    break;
 		    }
 		    if (mm == PM_ELVENKING) {
-			if (rn2(3) || (in_mklev && Is_earthlevel(&u.uz)))
+			if (rn2(3) || (in_mklev && Is_earthlevel(&player.uz)))
 			    (void)mongets(mtmp, PICK_AXE);
 			if (!rn2(50)) (void)mongets(mtmp, CRYSTAL_BALL);
 		    }
@@ -471,7 +471,7 @@ STATIC_OVL void m_initinv(Monster *mtmp) {
 	Object *otmp;
 	MonsterType *ptr = mtmp->data;
 #ifdef REINCARNATION
-	if (Is_rogue_level(&u.uz)) return;
+	if (Is_rogue_level(&player.uz)) return;
 #endif
 /*
  *	Soldiers get armour & rations - armour approximates their ac.
@@ -566,7 +566,7 @@ STATIC_OVL void m_initinv(Monster *mtmp) {
 		break;
 	    case S_GIANT:
 		if (ptr == &mons[PM_MINOTAUR]) {
-		    if (!rn2(3) || (in_mklev && Is_earthlevel(&u.uz)))
+		    if (!rn2(3) || (in_mklev && Is_earthlevel(&player.uz)))
 			(void) mongets(mtmp, WAN_DIGGING);
 		} else if (is_giant(ptr)) {
 		    for (cnt = rn2((int)(mtmp->m_lev / 2)); cnt; cnt--) {
@@ -714,9 +714,9 @@ Monster * clone_mon(Monster *mon, xchar x, xchar y) {
 	/* not all clones caused by player are tame or peaceful */
 	if (!flags.mon_moving) {
 	    if (mon->mtame)
-		m2->mtame = rn2(max(2 + u.uluck, 2)) ? mon->mtame : 0;
+		m2->mtame = rn2(max(2 + player.uluck, 2)) ? mon->mtame : 0;
 	    else if (mon->mpeaceful)
-		m2->mpeaceful = rn2(max(2 + u.uluck, 2)) ? 1 : 0;
+		m2->mpeaceful = rn2(max(2 + player.uluck, 2)) ? 1 : 0;
 	}
 
 	newsym(m2->mx,m2->my);	/* display the new monster */
@@ -786,14 +786,14 @@ bool propagate(int mndx, bool tally, bool ghostly) {
 /*
  * called with [x,y] = coordinates;
  *	[0,0] means anyplace
- *	[u.ux,u.uy] means: near player (if !in_mklev)
+ *	[player.ux,player.uy] means: near player (if !in_mklev)
  *
  *	In case we make a monster group, only return the one at [x,y].
  */
 Monster * makemon(MonsterType *ptr, int x, int y, int mmflags) {
 	int mndx, mcham, ct, mitem;
 	bool anymon = (!ptr);
-	bool byyou = (x == u.ux && y == u.uy);
+	bool byyou = (x == player.ux && y == player.uy);
 	bool allow_minvent = ((mmflags & NO_MINVENT) == 0);
 	bool countbirth = ((mmflags & MM_NOCOUNTBIRTH) == 0);
 	unsigned gpflags = (mmflags & MM_IGNOREWATER) ? MM_IGNOREWATER : 0;
@@ -812,7 +812,7 @@ Monster * makemon(MonsterType *ptr, int x, int y, int mmflags) {
 	} else if (byyou && !in_mklev) {
 		coord bypos;
 
-		if(enexto_core(&bypos, u.ux, u.uy, ptr, gpflags)) {
+		if(enexto_core(&bypos, player.ux, player.uy, ptr, gpflags)) {
 			x = bypos.x;
 			y = bypos.y;
 		} else
@@ -893,7 +893,7 @@ Monster * makemon(MonsterType *ptr, int x, int y, int mmflags) {
 	    mtmp->m_lev = mtmp->mhp / 4;	/* approximation */
 	} else if (ptr->mlet == S_DRAGON && mndx >= PM_GRAY_DRAGON) {
 	    /* adult dragons */
-	    mtmp->mhpmax = mtmp->mhp = (int) (In_endgame(&u.uz) ?
+	    mtmp->mhpmax = mtmp->mhp = (int) (In_endgame(&player.uz) ?
 		(8 * mtmp->m_lev) : (4 * mtmp->m_lev + d((int)mtmp->m_lev, 4)));
 	} else if (!mtmp->m_lev) {
 	    mtmp->mhpmax = mtmp->mhp = rnd(4);
@@ -907,7 +907,7 @@ Monster * makemon(MonsterType *ptr, int x, int y, int mmflags) {
 	else if (is_male(ptr)) mtmp->female = FALSE;
 	else mtmp->female = rn2(2);	/* ignored for neuters */
 
-	if (In_sokoban(&u.uz) && !mindless(ptr))  /* know about traps here */
+	if (In_sokoban(&player.uz) && !mindless(ptr))  /* know about traps here */
 	    mtmp->mtrapseen = (1L << (PIT - 1)) | (1L << (HOLE - 1));
 	if (ptr->msound == MS_LEADER)		/* leader knows about portal */
 	    mtmp->mtrapseen |= (1L << (MAGIC_PORTAL-1));
@@ -944,14 +944,14 @@ Monster * makemon(MonsterType *ptr, int x, int y, int mmflags) {
 			break;
 		case S_JABBERWOCK:
 		case S_NYMPH:
-			if (rn2(5) && !u.uhave.amulet) mtmp->msleeping = 1;
+			if (rn2(5) && !player.uhave.amulet) mtmp->msleeping = 1;
 			break;
 		case S_ORC:
 			if (Race_if(PM_ELF)) mtmp->mpeaceful = FALSE;
 			break;
 		case S_UNICORN:
 			if (is_unicorn(ptr) &&
-					sgn(u.ualign.type) == sgn(ptr->maligntyp))
+					sgn(player.ualign.type) == sgn(ptr->maligntyp))
 				mtmp->mpeaceful = TRUE;
 			break;
 		case S_BAT:
@@ -977,7 +977,7 @@ Monster * makemon(MonsterType *ptr, int x, int y, int mmflags) {
 	} else if (mndx == PM_WIZARD_OF_YENDOR) {
 		mtmp->iswiz = TRUE;
 		flags.no_of_wizards++;
-		if (flags.no_of_wizards == 1 && Is_earthlevel(&u.uz))
+		if (flags.no_of_wizards == 1 && Is_earthlevel(&player.uz))
 			mitem = SPE_DIG;
 	} else if (mndx == PM_DJINNI) {
 		flags.djinni_count++;
@@ -1000,7 +1000,7 @@ Monster * makemon(MonsterType *ptr, int x, int y, int mmflags) {
 		if(((is_ndemon(ptr)) ||
 		    (mndx == PM_WUMPUS) ||
 		    (mndx == PM_LONG_WORM) ||
-		    (mndx == PM_GIANT_EEL)) && !u.uhave.amulet && rn2(5))
+		    (mndx == PM_GIANT_EEL)) && !player.uhave.amulet && rn2(5))
 			mtmp->msleeping = TRUE;
 	} else {
 		if(byyou) {
@@ -1087,10 +1087,10 @@ bool create_critters(int cnt, MonsterType *mptr) {
 		else ask = FALSE;	/* ESC will shut off prompting */
 	    }
 #endif
-	    x = u.ux,  y = u.uy;
+	    x = player.ux,  y = player.uy;
 	    /* if in water, try to encourage an aquatic monster
 	       by finding and then specifying another wet location */
-	    if (!mptr && u.uinwater && enexto(&c, x, y, &mons[PM_GIANT_EEL]))
+	    if (!mptr && player.uinwater && enexto(&c, x, y, &mons[PM_GIANT_EEL]))
 		x = c.x,  y = c.y;
 
 	    mon = makemon(mptr, x, y, NO_MM_FLAGS);
@@ -1122,10 +1122,10 @@ STATIC_OVL int align_shift(MonsterType *ptr) {
     int alshift;
 
     if(oldmoves != moves) {
-	lev = Is_special(&u.uz);
+	lev = Is_special(&player.uz);
 	oldmoves = moves;
     }
-    switch((lev) ? lev->flags.align : dungeons[u.uz.dnum].flags.align) {
+    switch((lev) ? lev->flags.align : dungeons[player.uz.dnum].flags.align) {
     default:	/* just in case */
     case AM_NONE:	alshift = 0;
 			break;
@@ -1149,7 +1149,7 @@ MonsterType * rndmonst() {
 	MonsterType *ptr;
 	int mndx, ct;
 
-	if (u.uz.dnum == quest_dnum && rn2(7) && (ptr = qt_montype()) != 0)
+	if (player.uz.dnum == quest_dnum && rn2(7) && (ptr = qt_montype()) != 0)
 	    return ptr;
 
 	if (rndmonst_state.choice_count < 0) {	/* need to recalculate */
@@ -1176,11 +1176,11 @@ MonsterType * rndmonst() {
 	    /* determine the level of the weakest monster to make. */
 	    minmlev = zlevel / 6;
 	    /* determine the level of the strongest monster to make. */
-	    maxmlev = (zlevel + u.ulevel) / 2;
+	    maxmlev = (zlevel + player.ulevel) / 2;
 #ifdef REINCARNATION
-	    upper = Is_rogue_level(&u.uz);
+	    upper = Is_rogue_level(&player.uz);
 #endif
-	    elemlevel = In_endgame(&u.uz) && !Is_astralevel(&u.uz);
+	    elemlevel = In_endgame(&player.uz) && !Is_astralevel(&player.uz);
 
 /*
  *	Find out how many monsters exist in the range we have selected.
@@ -1289,7 +1289,7 @@ MonsterType * mkclass(char class_id, int spc) {
 					&& !is_placeholder(&mons[first])) {
 		/* skew towards lower value monsters at lower exp. levels */
 		num -= mons[first].geno & G_FREQ;
-		if (num && adj_lev(&mons[first]) > (u.ulevel*2)) {
+		if (num && adj_lev(&mons[first]) > (player.ulevel*2)) {
 		    /* but not when multiple monsters are same level */
 		    if (mons[first].mlevel != mons[first+1].mlevel)
 			num--;
@@ -1300,7 +1300,7 @@ MonsterType * mkclass(char class_id, int spc) {
 	return(&mons[first]);
 }
 
-/* adjust strength of monsters based on u.uz and u.ulevel */
+/* adjust strength of monsters based on player.uz and player.ulevel */
 int adj_lev(MonsterType *ptr) {
 	int	tmp, tmp2;
 
@@ -1315,10 +1315,10 @@ int adj_lev(MonsterType *ptr) {
 
 	if((tmp = ptr->mlevel) > 49) return(50); /* "special" demons/devils */
 	tmp2 = (level_difficulty() - tmp);
-	if(tmp2 < 0) tmp--;		/* if mlevel > u.uz decrement tmp */
+	if(tmp2 < 0) tmp--;		/* if mlevel > player.uz decrement tmp */
 	else tmp += (tmp2 / 5);		/* else increment 1 per five diff */
 
-	tmp2 = (u.ulevel - ptr->mlevel);	/* adjust vs. the player */
+	tmp2 = (player.ulevel - ptr->mlevel);	/* adjust vs. the player */
 	if(tmp2 > 0) tmp += (tmp2 / 4);		/* level as well */
 
 	tmp2 = (3 * ((int) ptr->mlevel))/ 2;	/* crude upper limit */
@@ -1492,7 +1492,7 @@ int golemhp(int type) {
  *	( some "animal" types are co-aligned, but also hungry )
  */
 bool peace_minded(MonsterType *ptr) {
-	aligntyp mal = ptr->maligntyp, ual = u.ualign.type;
+	aligntyp mal = ptr->maligntyp, ual = player.ualign.type;
 
 	if (always_peaceful(ptr)) return TRUE;
 	if (always_hostile(ptr)) return FALSE;
@@ -1508,16 +1508,16 @@ bool peace_minded(MonsterType *ptr) {
 	if (sgn(mal) != sgn(ual)) return FALSE;
 
 	/* Negative monster hostile to player with Amulet. */
-	if (mal < A_NEUTRAL && u.uhave.amulet) return FALSE;
+	if (mal < A_NEUTRAL && player.uhave.amulet) return FALSE;
 
 	/* minions are hostile to players that have strayed at all */
-	if (is_minion(ptr)) return((bool)(u.ualign.record >= 0));
+	if (is_minion(ptr)) return((bool)(player.ualign.record >= 0));
 
 	/* Last case:  a chance of a co-aligned monster being
 	 * hostile.  This chance is greater if the player has strayed
-	 * (u.ualign.record negative) or the monster is not strongly aligned.
+	 * (player.ualign.record negative) or the monster is not strongly aligned.
 	 */
-	return((bool)(!!rn2(16 + (u.ualign.record < -15 ? -15 : u.ualign.record)) &&
+	return((bool)(!!rn2(16 + (player.ualign.record < -15 ? -15 : player.ualign.record)) &&
 		!!rn2(2 + abs(mal))));
 }
 
@@ -1547,7 +1547,7 @@ void set_malign(Monster *mtmp) {
 			mal *= 5;
 	}
 
-	coaligned = (sgn(mal) == sgn(u.ualign.type));
+	coaligned = (sgn(mal) == sgn(player.ualign.type));
 	if (mtmp->data->msound == MS_LEADER) {
 		mtmp->malign = -20;
 	} else if (mal == A_NONE) {
@@ -1708,7 +1708,7 @@ void bagotricks(Object *bag) {
 
 	if (!rn2(23)) cnt += rn1(7, 1);
 	while (cnt-- > 0) {
-	    if (makemon((MonsterType *)0, u.ux, u.uy, NO_MM_FLAGS))
+	    if (makemon((MonsterType *)0, player.ux, player.uy, NO_MM_FLAGS))
 		gotone = TRUE;
 	}
 	if (gotone) makeknown(BAG_OF_TRICKS);

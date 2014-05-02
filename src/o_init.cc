@@ -229,7 +229,7 @@ int find_skates() {
 
 /* level dependent initialization */
 void oinit() {
-	setgemprobs(&u.uz);
+	setgemprobs(&player.uz);
 }
 
 void savenames(int fd, int mode) {

@@ -144,7 +144,7 @@ Monster * makedog() {
 	    if(Role_if(PM_RANGER)) petname = "Sirius";     /* Orion's dog */
 	}
 
-	mtmp = makemon(&mons[pettype], u.ux, u.uy, MM_EDOG);
+	mtmp = makemon(&mons[pettype], player.ux, player.uy, MM_EDOG);
 
 	if(!mtmp) return((Monster *) 0); /* pets were genocided */
 
@@ -189,7 +189,7 @@ void losedogs() {
 
 	for(mtmp = migrating_mons; mtmp; mtmp = mtmp2) {
 		mtmp2 = mtmp->nmon;
-		if (mtmp->mux == u.uz.dnum && mtmp->muy == u.uz.dlevel) {
+		if (mtmp->mux == player.uz.dnum && mtmp->muy == player.uz.dlevel) {
 		    if(mtmp == migrating_mons)
 			migrating_mons = mtmp->nmon;
 		    else
@@ -229,7 +229,7 @@ void mon_arrive(Monster *mtmp, bool with_you) {
 	mtmp->mstrategy |= STRAT_ARRIVE;
 
 	/* make sure mnexto(rloc_to(set_apparxy())) doesn't use stale data */
-	mtmp->mux = u.ux,  mtmp->muy = u.uy;
+	mtmp->mux = player.ux,  mtmp->muy = player.uy;
 	xyloc	= mtmp->mtrack[0].x;
 	xyflags = mtmp->mtrack[0].y;
 	xlocale = mtmp->mtrack[1].x;
@@ -238,7 +238,7 @@ void mon_arrive(Monster *mtmp, bool with_you) {
 	mtmp->mtrack[1].x = mtmp->mtrack[1].y = 0;
 
 #ifdef STEED
-	if (mtmp == u.usteed)
+	if (mtmp == player.usteed)
 	    return;	/* don't place steed on the map */
 #endif
 	if (with_you) {
@@ -247,9 +247,9 @@ void mon_arrive(Monster *mtmp, bool with_you) {
 	       that spot.  This code doesn't control the final outcome;
 	       goto_level(do.c) decides who ends up at your target spot
 	       when there is a monster there too. */
-	    if (!MON_AT(u.ux, u.uy) &&
+	    if (!MON_AT(player.ux, player.uy) &&
 		    !rn2(mtmp->mtame ? 10 : mtmp->mpeaceful ? 5 : 2))
-		rloc_to(mtmp, u.ux, u.uy);
+		rloc_to(mtmp, player.ux, player.uy);
 	    else
 		mnexto(mtmp);
 	    return;
@@ -277,7 +277,7 @@ void mon_arrive(Monster *mtmp, bool with_you) {
 		break;
 	 case MIGR_EXACT_XY:	wander = 0;
 		break;
-	 case MIGR_NEAR_PLAYER:	xlocale = u.ux,  ylocale = u.uy;
+	 case MIGR_NEAR_PLAYER:	xlocale = player.ux,  ylocale = player.uy;
 		break;
 	 case MIGR_STAIRS_UP:	xlocale = xupstair,  ylocale = yupstair;
 		break;
@@ -290,7 +290,7 @@ void mon_arrive(Monster *mtmp, bool with_you) {
 	 case MIGR_SSTAIRS:	xlocale = sstairs.sx,  ylocale = sstairs.sy;
 		break;
 	 case MIGR_PORTAL:
-		if (In_endgame(&u.uz)) {
+		if (In_endgame(&player.uz)) {
 		    /* there is no arrival portal for endgame levels */
 		    /* BUG[?]: for simplicity, this code relies on the fact
 		       that we know that the current endgame levels always
@@ -468,19 +468,19 @@ void keepdogs(bool pets_only) {
 	    mtmp2 = mtmp->nmon;
 	    if (mtmp->dead()) continue;
 	    if (pets_only && !mtmp->mtame) continue;
-	    if (((monnear(mtmp, u.ux, u.uy) && levl_follower(mtmp)) ||
+	    if (((monnear(mtmp, player.ux, player.uy) && levl_follower(mtmp)) ||
 #ifdef STEED
-			(mtmp == u.usteed) ||
+			(mtmp == player.usteed) ||
 #endif
 		/* the wiz will level t-port from anywhere to chase
 		   the amulet; if you don't have it, will chase you
 		   only if in range. -3. */
-			(u.uhave.amulet && mtmp->iswiz))
+			(player.uhave.amulet && mtmp->iswiz))
 		&& ((!mtmp->msleeping && mtmp->mcanmove)
 #ifdef STEED
 		    /* eg if level teleport or new trap, steed has no control
 		       to avoid following */
-		    || (mtmp == u.usteed)
+		    || (mtmp == player.usteed)
 #endif
 		    )
 		/* monster won't follow if it hasn't noticed you yet */
@@ -501,7 +501,7 @@ void keepdogs(bool pets_only) {
 			stay_behind = TRUE;
 		}
 #ifdef STEED
-		if (mtmp == u.usteed) stay_behind = FALSE;
+		if (mtmp == player.usteed) stay_behind = FALSE;
 #endif
 		if (stay_behind) {
 			if (mtmp->mleashed) {
@@ -542,7 +542,7 @@ void keepdogs(bool pets_only) {
 		/* we want to be able to find him when his next resurrection
 		   chance comes up, but have him resume his present location
 		   if player returns to this level before that time */
-		migrate_to_level(mtmp, ledger_no(&u.uz),
+		migrate_to_level(mtmp, ledger_no(&player.uz),
 				 MIGR_EXACT_XY, (coord *)0);
 	    } else if (mtmp->mleashed) {
 		/* this can happen if your quest leader ejects you from the
@@ -593,8 +593,8 @@ void migrate_to_level(Monster *mtmp, xchar tolev, xchar xyloc, coord *cc) {
 	new_lev.dlevel = ledger_to_dlev((xchar)tolev);
 	/* overload mtmp->[mx,my], mtmp->[mux,muy], and mtmp->mtrack[] as */
 	/* destination codes (setup flag bits before altering mx or my) */
-	xyflags = (depth(&new_lev) < depth(&u.uz));	/* 1 => up */
-	if (In_W_tower(mtmp->mx, mtmp->my, &u.uz)) xyflags |= 2;
+	xyflags = (depth(&new_lev) < depth(&player.uz));	/* 1 => up */
+	if (In_W_tower(mtmp->mx, mtmp->my, &player.uz)) xyflags |= 2;
 	mtmp->wormno = num_segs;
 	mtmp->mlstmv = monstermoves;
 	mtmp->mtrack[1].x = cc ? cc->x : mtmp->mx;
@@ -726,8 +726,8 @@ Monster * tamedog(Monster *mtmp, Object *obj) {
 	mtmp->mfleetim = 0;
 
 	/* make grabber let go now, whether it becomes tame or not */
-	if (mtmp == u.ustuck) {
-	    if (u.uswallow)
+	if (mtmp == player.ustuck) {
+	    if (player.uswallow)
 		expels(mtmp, mtmp->data, TRUE);
 	    else if (!(Upolyd && sticks(youmonst.data)))
 		unstuck(mtmp);

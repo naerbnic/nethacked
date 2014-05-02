@@ -233,7 +233,7 @@ void expels(Monster *mtmp, MonsterType *mdat, bool message) {
 	}
 	unstuck(mtmp);	/* ball&chain returned in unstuck() */
 	mnexto(mtmp);
-	newsym(u.ux,u.uy);
+	newsym(player.ux,player.uy);
 	spoteffects(TRUE);
 	/* to cover for a case where mtmp is not in a next square */
 	if(um_dist(mtmp->mx,mtmp->my,1))
@@ -279,7 +279,7 @@ int mattacku(Monster *mtmp) {
 		/* Is it near you?  Affects your actions */
 	bool range2 = !monnear(mtmp, mtmp->mux, mtmp->muy);
 		/* Does it think it's near you?  Affects its actions */
-	bool foundyou = (mtmp->mux==u.ux && mtmp->muy==u.uy);
+	bool foundyou = (mtmp->mux==player.ux && mtmp->muy==player.uy);
 		/* Is it attacking you or your image? */
 	bool youseeit = canseemon(mtmp);
 		/* Might be attacking your image around the corner, or
@@ -290,57 +290,57 @@ int mattacku(Monster *mtmp) {
 	if(mtmp->mhp <= 0 || (Underwater && !is_swimmer(mtmp->data)))
 	    return(0);
 
-	/* If swallowed, can only be affected by u.ustuck */
-	if(u.uswallow) {
-	    if(mtmp != u.ustuck)
+	/* If swallowed, can only be affected by player.ustuck */
+	if(player.uswallow) {
+	    if(mtmp != player.ustuck)
 		return(0);
-	    u.ustuck->mux = u.ux;
-	    u.ustuck->muy = u.uy;
+	    player.ustuck->mux = player.ux;
+	    player.ustuck->muy = player.uy;
 	    range2 = 0;
 	    foundyou = 1;
-	    if(u.uinvulnerable) return (0); /* stomachs can't hurt you! */
+	    if(player.uinvulnerable) return (0); /* stomachs can't hurt you! */
 	}
 
 #ifdef STEED
-	else if (u.usteed) {
-		if (mtmp == u.usteed)
+	else if (player.usteed) {
+		if (mtmp == player.usteed)
 			/* Your steed won't attack you */
 			return (0);
 		/* Orcs like to steal and eat horses and the like */
 		if (!rn2(is_orc(mtmp->data) ? 2 : 4) &&
 				distu(mtmp->mx, mtmp->my) <= 2) {
 			/* Attack your steed instead */
-			i = mattackm(mtmp, u.usteed);
+			i = mattackm(mtmp, player.usteed);
 			if ((i & MM_AGR_DIED))
 				return (1);
-			if (i & MM_DEF_DIED || u.umoved)
+			if (i & MM_DEF_DIED || player.umoved)
 				return (0);
 			/* Let your steed retaliate */
-			return (!!(mattackm(u.usteed, mtmp) & MM_DEF_DIED));
+			return (!!(mattackm(player.usteed, mtmp) & MM_DEF_DIED));
 		}
 	}
 #endif
 
-	if (u.uundetected && !range2 && foundyou && !u.uswallow) {
-		u.uundetected = 0;
+	if (player.uundetected && !range2 && foundyou && !player.uswallow) {
+		player.uundetected = 0;
 		if (is_hider(youmonst.data)) {
 		    coord cc; /* maybe we need a unexto() function? */
 		    Object *obj;
 
-		    You("fall from the %s!", ceiling(u.ux,u.uy));
-		    if (enexto(&cc, u.ux, u.uy, youmonst.data)) {
+		    You("fall from the %s!", ceiling(player.ux,player.uy));
+		    if (enexto(&cc, player.ux, player.uy, youmonst.data)) {
 			remove_monster(mtmp->mx, mtmp->my);
 			newsym(mtmp->mx,mtmp->my);
-			place_monster(mtmp, u.ux, u.uy);
+			place_monster(mtmp, player.ux, player.uy);
 			if(mtmp->wormno) worm_move(mtmp);
 			teleds(cc.x, cc.y, TRUE);
 			set_apparxy(mtmp);
-			newsym(u.ux,u.uy);
+			newsym(player.ux,player.uy);
 		    } else {
 			pline("%s is killed by a falling %s (you)!",
 					Monnam(mtmp), youmonst.data->mname);
 			killed(mtmp);
-			newsym(u.ux,u.uy);
+			newsym(player.ux,player.uy);
 			if (mtmp->mhp > 0) return 0;
 			else return 1;
 		    }
@@ -371,10 +371,10 @@ int mattacku(Monster *mtmp) {
 			 * parallelism to work, we can't rephrase it, so we
 			 * zap the "laid by you" momentarily instead.
 			 */
-			Object *obj = level.objects[u.ux][u.uy];
+			Object *obj = level.objects[player.ux][player.uy];
 
 			if (obj ||
-			      (youmonst.data->mlet == S_EEL && is_pool(u.ux, u.uy))) {
+			      (youmonst.data->mlet == S_EEL && is_pool(player.ux, player.uy))) {
 			    int save_spe = 0; /* suppress warning */
 			    if (obj) {
 				save_spe = obj->spe;
@@ -386,29 +386,29 @@ int mattacku(Monster *mtmp) {
 			    else
 	     pline("Wait, %s!  There's a %s named %s hiding under %s!",
 				m_monnam(mtmp), youmonst.data->mname, plname,
-				doname(level.objects[u.ux][u.uy]));
+				doname(level.objects[player.ux][player.uy]));
 			    if (obj) obj->spe = save_spe;
 			} else
 			    impossible("hiding under nothing?");
 		    }
-		    newsym(u.ux,u.uy);
+		    newsym(player.ux,player.uy);
 		}
 		return(0);
 	}
 	if (youmonst.data->mlet == S_MIMIC && youmonst.m_ap_type &&
-		    !range2 && foundyou && !u.uswallow) {
+		    !range2 && foundyou && !player.uswallow) {
 		if (!youseeit) pline("It gets stuck on you.");
 		else pline("Wait, %s!  That's a %s named %s!",
 			   m_monnam(mtmp), youmonst.data->mname, plname);
-		u.ustuck = mtmp;
+		player.ustuck = mtmp;
 		youmonst.m_ap_type = M_AP_NOTHING;
 		youmonst.mappearance = 0;
-		newsym(u.ux,u.uy);
+		newsym(player.ux,player.uy);
 		return(0);
 	}
 
 	/* player might be mimicking an object */
-	if (youmonst.m_ap_type == M_AP_OBJECT && !range2 && foundyou && !u.uswallow) {
+	if (youmonst.m_ap_type == M_AP_OBJECT && !range2 && foundyou && !player.uswallow) {
 	    if (!youseeit)
 		 pline("%s %s!", Something,
 			(likes_gold(mtmp->data) && youmonst.mappearance == GOLD_PIECE) ?
@@ -416,7 +416,7 @@ int mattacku(Monster *mtmp) {
 	    else pline("Wait, %s!  That %s is really %s named %s!",
 			m_monnam(mtmp),
 			mimic_obj_name(&youmonst),
-			an(mons[u.umonnum].mname),
+			an(mons[player.umonnum].mname),
 			plname);
 	    if (multi < 0) {	/* this should always be the case */
 		char buf[BUFSZ];
@@ -429,7 +429,7 @@ int mattacku(Monster *mtmp) {
 	}
 
 /*	Work out the armor class differential	*/
-	tmp = AC_VALUE(u.uac) + 10;		/* tmp ~= 0 - 20 */
+	tmp = AC_VALUE(player.uac) + 10;		/* tmp ~= 0 - 20 */
 	tmp += mtmp->m_lev;
 	if(multi < 0) tmp += 4;
 	if((Invis && !perceives(mdat)) || !mtmp->mcansee)
@@ -494,9 +494,9 @@ int mattacku(Monster *mtmp) {
 	    }
 	}
 
-	if(u.uinvulnerable) {
+	if(player.uinvulnerable) {
 	    /* monsters won't attack you */
-	    if(mtmp == u.ustuck)
+	    if(mtmp == player.ustuck)
 		pline("%s loosens its grip slightly.", Monnam(mtmp));
 	    else if(!range2) {
 		if (youseeit || sensemon(mtmp))
@@ -519,7 +519,7 @@ int mattacku(Monster *mtmp) {
 
 	    sum[i] = 0;
 	    mattk = getmattk(mdat, i, sum, &alt_attk);
-	    if (u.uswallow && (mattk->aatyp != AT_ENGL))
+	    if (player.uswallow && (mattk->aatyp != AT_ENGL))
 		continue;
 	    switch(mattk->aatyp) {
 		case AT_CLAW:	/* "hand to hand" attacks */
@@ -546,7 +546,7 @@ int mattacku(Monster *mtmp) {
 		case AT_HUGS:	/* automatic if prev two attacks succeed */
 			/* Note: if displaced, prev attacks never succeeded */
 			if((!range2 && i>=2 && sum[i-1] && sum[i-2])
-							|| mtmp == u.ustuck)
+							|| mtmp == player.ustuck)
 				sum[i]= hitmu(mtmp, mattk);
 			break;
 
@@ -565,7 +565,7 @@ int mattacku(Monster *mtmp) {
 		case AT_ENGL:
 			if (!range2) {
 			    if(foundyou) {
-				if(u.uswallow || tmp > (j = rnd(20+i))) {
+				if(player.uswallow || tmp > (j = rnd(20+i))) {
 				    /* Force swallowing monster to be
 				     * displayed even when player is
 				     * moving away */
@@ -598,7 +598,7 @@ int mattacku(Monster *mtmp) {
 		case AT_WEAP:
 			if(range2) {
 #ifdef REINCARNATION
-				if (!Is_rogue_level(&u.uz))
+				if (!Is_rogue_level(&player.uz))
 #endif
 					thrwmu(mtmp);
 			} else {
@@ -650,7 +650,7 @@ int mattacku(Monster *mtmp) {
 	    if(flags.botl) bot();
 	/* give player a chance of waking up before dying -kaa */
 	    if(sum[i] == 1) {	    /* successful attack */
-		if (u.usleep && u.usleep < monstermoves && !rn2(10)) {
+		if (player.usleep && player.usleep < monstermoves && !rn2(10)) {
 		    multi = -1;
 		    nomovemsg = "The combat suddenly awakens you.";
 		}
@@ -871,14 +871,14 @@ STATIC_OVL int hitmu(Monster *mtmp, struct Attack *mattk) {
 	switch(mattk->adtyp) {
 	    case AD_PHYS:
 		if (mattk->aatyp == AT_HUGS && !sticks(youmonst.data)) {
-		    if(!u.ustuck && rn2(2)) {
+		    if(!player.ustuck && rn2(2)) {
 			if (u_slip_free(mtmp, mattk)) {
 			    dmg = 0;
 			} else {
-			    u.ustuck = mtmp;
+			    player.ustuck = mtmp;
 			    pline("%s grabs you!", Monnam(mtmp));
 			}
-		    } else if(u.ustuck == mtmp) {
+		    } else if(player.ustuck == mtmp) {
 			exercise(A_STR, FALSE);
 			You("are being %s.",
 			      (mtmp->data == &mons[PM_ROPE_GOLEM])
@@ -900,17 +900,17 @@ STATIC_OVL int hitmu(Monster *mtmp, struct Attack *mattk) {
 				artifact_hit(mtmp, &youmonst, otmp, &dmg,dieroll)))
 			     hitmsg(mtmp, mattk);
 			if (!dmg) break;
-			if (u.mh > 1 && u.mh > ((u.uac>0) ? dmg : dmg+u.uac) &&
+			if (player.mh > 1 && player.mh > ((player.uac>0) ? dmg : dmg+player.uac) &&
 				   objects[otmp->otyp].oc_material == IRON &&
-					(u.umonnum==PM_BLACK_PUDDING
-					|| u.umonnum==PM_BROWN_PUDDING)) {
+					(player.umonnum==PM_BLACK_PUDDING
+					|| player.umonnum==PM_BROWN_PUDDING)) {
 			    /* This redundancy necessary because you have to
 			     * take the damage _before_ being cloned.
 			     */
-			    if (u.uac < 0) dmg += u.uac;
+			    if (player.uac < 0) dmg += player.uac;
 			    if (dmg < 1) dmg = 1;
 			    if (dmg > 1) exercise(A_STR, FALSE);
-			    u.mh -= dmg;
+			    player.mh -= dmg;
 			    flags.botl = 1;
 			    dmg = 0;
 			    if(cloneu())
@@ -918,7 +918,7 @@ STATIC_OVL int hitmu(Monster *mtmp, struct Attack *mattk) {
 			}
 			urustm(mtmp, otmp);
 		    } else if (mattk->aatyp != AT_TUCH || dmg != 0 ||
-				mtmp != u.ustuck)
+				mtmp != player.ustuck)
 			hitmsg(mtmp, mattk);
 		}
 		break;
@@ -1096,7 +1096,7 @@ dopois:
 		 */
 		  if (
 #ifdef STEED
-			u.usteed ||
+			player.usteed ||
 #endif
 				    Levitation || Flying) {
 		    pline("%s tries to reach your %s %s!", Monnam(mtmp),
@@ -1166,27 +1166,27 @@ dopois:
 		break;
 	    case AD_STCK:
 		hitmsg(mtmp, mattk);
-		if (uncancelled && !u.ustuck && !sticks(youmonst.data))
-			u.ustuck = mtmp;
+		if (uncancelled && !player.ustuck && !sticks(youmonst.data))
+			player.ustuck = mtmp;
 		break;
 	    case AD_WRAP:
-		if ((!mtmp->mcan || u.ustuck == mtmp) && !sticks(youmonst.data)) {
-		    if (!u.ustuck && !rn2(10)) {
+		if ((!mtmp->mcan || player.ustuck == mtmp) && !sticks(youmonst.data)) {
+		    if (!player.ustuck && !rn2(10)) {
 			if (u_slip_free(mtmp, mattk)) {
 			    dmg = 0;
 			} else {
 			    pline("%s swings itself around you!",
 				  Monnam(mtmp));
-			    u.ustuck = mtmp;
+			    player.ustuck = mtmp;
 			}
-		    } else if(u.ustuck == mtmp) {
+		    } else if(player.ustuck == mtmp) {
 			if (is_pool(mtmp->mx,mtmp->my) && !Swimming
 			    && !Amphibious) {
 			    bool moat =
 				(levl[mtmp->mx][mtmp->my].typ != POOL) &&
 				(levl[mtmp->mx][mtmp->my].typ != WATER) &&
-				!Is_medusa_level(&u.uz) &&
-				!Is_waterlevel(&u.uz);
+				!Is_medusa_level(&player.uz) &&
+				!Is_waterlevel(&player.uz);
 
 			    pline("%s drowns you...", Monnam(mtmp));
 			    killer_format = KILLED_BY_AN;
@@ -1207,12 +1207,12 @@ dopois:
 		break;
 	    case AD_WERE:
 		hitmsg(mtmp, mattk);
-		if (uncancelled && !rn2(4) && u.ulycn == NON_PM &&
+		if (uncancelled && !rn2(4) && player.ulycn == NON_PM &&
 			!Protection_from_shape_changers &&
 			!defends(AD_WERE,uwep)) {
 		    You_feel("feverish.");
 		    exercise(A_CON, FALSE);
-		    u.ulycn = monsndx(mdat);
+		    player.ulycn = monsndx(mdat);
 		}
 		break;
 	    case AD_SGLD:
@@ -1281,9 +1281,9 @@ dopois:
 	    case AD_SAMU:
 		hitmsg(mtmp, mattk);
 		/* when the Wiz hits, 1/20 steals the amulet */
-		if (u.uhave.amulet ||
-		     u.uhave.bell || u.uhave.book || u.uhave.menorah
-		     || u.uhave.questart) /* carrying the Quest Artifact */
+		if (player.uhave.amulet ||
+		     player.uhave.bell || player.uhave.book || player.uhave.menorah
+		     || player.uhave.questart) /* carrying the Quest Artifact */
 		    if (!rn2(20)) stealamulet(mtmp);
 		break;
 
@@ -1298,7 +1298,7 @@ dopois:
 	    case AD_RUST:
 		hitmsg(mtmp, mattk);
 		if (mtmp->mcan) break;
-		if (u.umonnum == PM_IRON_GOLEM) {
+		if (player.umonnum == PM_IRON_GOLEM) {
 			You("rust!");
 			/* KMH -- this is okay with unchanging */
 			rehumanize();
@@ -1314,8 +1314,8 @@ dopois:
 	    case AD_DCAY:
 		hitmsg(mtmp, mattk);
 		if (mtmp->mcan) break;
-		if (u.umonnum == PM_WOOD_GOLEM ||
-		    u.umonnum == PM_LEATHER_GOLEM) {
+		if (player.umonnum == PM_WOOD_GOLEM ||
+		    player.umonnum == PM_LEATHER_GOLEM) {
 			You("rot!");
 			/* KMH -- this is okay with unchanging */
 			rehumanize();
@@ -1337,22 +1337,22 @@ dopois:
 		    bool goaway = FALSE;
 		    pline("%s hits!  (I hope you don't mind.)", Monnam(mtmp));
 		    if (Upolyd) {
-			u.mh += rnd(7);
+			player.mh += rnd(7);
 			if (!rn2(7)) {
 			    /* no upper limit necessary; effect is temporary */
-			    u.mhmax++;
+			    player.mhmax++;
 			    if (!rn2(13)) goaway = TRUE;
 			}
-			if (u.mh > u.mhmax) u.mh = u.mhmax;
+			if (player.mh > player.mhmax) player.mh = player.mhmax;
 		    } else {
-			u.uhp += rnd(7);
+			player.uhp += rnd(7);
 			if (!rn2(7)) {
 			    /* hard upper limit via nurse care: 25 * ulevel */
-			    if (u.uhpmax < 5 * u.ulevel + d(2 * u.ulevel, 10))
-				u.uhpmax++;
+			    if (player.uhpmax < 5 * player.ulevel + d(2 * player.ulevel, 10))
+				player.uhpmax++;
 			    if (!rn2(13)) goaway = TRUE;
 			}
-			if (u.uhp > u.uhpmax) u.uhp = u.uhpmax;
+			if (player.uhp > player.uhpmax) player.uhp = player.uhpmax;
 		    }
 		    if (!rn2(3)) exercise(A_STR, TRUE);
 		    if (!rn2(3)) exercise(A_CON, TRUE);
@@ -1383,7 +1383,7 @@ dopois:
 			if (Blind) You_hear("laughter.");
 			else       pline("%s chuckles.", Monnam(mtmp));
 		    }
-		    if (u.umonnum == PM_CLAY_GOLEM) {
+		    if (player.umonnum == PM_CLAY_GOLEM) {
 			pline("Some writing vanishes from your head!");
 			/* KMH -- this is okay with unchanging */
 			rehumanize();
@@ -1455,7 +1455,7 @@ dopois:
 		    permdmg = 1;	/* actual damage done below */
 		    break;
 		case 4: case 3: case 2: case 1: case 0:
-		    if (Antimagic) shieldeff(u.ux, u.uy);
+		    if (Antimagic) shieldeff(player.ux, player.uy);
 		    pline("Lucky for you, it didn't work!");
 		    dmg = 0;
 		    break;
@@ -1507,13 +1507,13 @@ dopois:
 	    default:	dmg = 0;
 			break;
 	}
-	if(u.uhp < 1) done_in_by(mtmp);
+	if(player.uhp < 1) done_in_by(mtmp);
 
 /*	Negative armor class reduces damage done instead of fully protecting
  *	against hits.
  */
-	if (dmg && u.uac < 0) {
-		dmg -= rnd(-u.uac);
+	if (dmg && player.uac < 0) {
+		dmg -= rnd(-player.uac);
 		if (dmg < 1) dmg = 1;
 	}
 
@@ -1536,17 +1536,17 @@ dopois:
 		 * Never reduces hpmax below 1 hit point per level.
 		 */
 		permdmg = rn2(dmg / 2 + 1);
-		if (Upolyd || u.uhpmax > 25 * u.ulevel) permdmg = dmg;
-		else if (u.uhpmax > 10 * u.ulevel) permdmg += dmg / 2;
-		else if (u.uhpmax > 5 * u.ulevel) permdmg += dmg / 4;
+		if (Upolyd || player.uhpmax > 25 * player.ulevel) permdmg = dmg;
+		else if (player.uhpmax > 10 * player.ulevel) permdmg += dmg / 2;
+		else if (player.uhpmax > 5 * player.ulevel) permdmg += dmg / 4;
 
 		if (Upolyd) {
-		    hpmax_p = &u.mhmax;
+		    hpmax_p = &player.mhmax;
 		    /* [can't use youmonst.m_lev] */
-		    lowerlimit = min((int)youmonst.data->mlevel, u.ulevel);
+		    lowerlimit = min((int)youmonst.data->mlevel, player.ulevel);
 		} else {
-		    hpmax_p = &u.uhpmax;
-		    lowerlimit = u.ulevel;
+		    hpmax_p = &player.uhpmax;
+		    lowerlimit = player.ulevel;
 		}
 		if (*hpmax_p - permdmg > lowerlimit)
 		    *hpmax_p -= permdmg;
@@ -1571,34 +1571,34 @@ dopois:
 #endif /* OVL1 */
 #ifdef OVLB
 
-/* monster swallows you, or damage if u.uswallow */
+/* monster swallows you, or damage if player.uswallow */
 STATIC_OVL int gulpmu(Monster *mtmp, struct Attack *mattk) {
-	Trap *t = t_at(u.ux, u.uy);
+	Trap *t = t_at(player.ux, player.uy);
 	int	tmp = d((int)mattk->damn, (int)mattk->damd);
 	int	tim_tmp;
 	Object *otmp2;
 	int	i;
 
-	if (!u.uswallow) {	/* swallows you */
+	if (!player.uswallow) {	/* swallows you */
 		if (youmonst.data->msize >= MZ_HUGE) return(0);
 		if ((t && ((t->ttyp == PIT) || (t->ttyp == SPIKED_PIT))) &&
-		    sobj_at(BOULDER, u.ux, u.uy))
+		    sobj_at(BOULDER, player.ux, player.uy))
 			return(0);
 
 		if (Punished) unplacebc();	/* ball&chain go away */
 		remove_monster(mtmp->mx, mtmp->my);
 		mtmp->mtrapped = 0;		/* no longer on old trap */
-		place_monster(mtmp, u.ux, u.uy);
-		u.ustuck = mtmp;
+		place_monster(mtmp, player.ux, player.uy);
+		player.ustuck = mtmp;
 		newsym(mtmp->mx,mtmp->my);
 #ifdef STEED
-		if (is_animal(mtmp->data) && u.usteed) {
+		if (is_animal(mtmp->data) && player.usteed) {
 			char buf[BUFSZ];
 			/* Too many quirks presently if hero and steed
 			 * are swallowed. Pretend purple worms don't
 			 * like horses for now :-)
 			 */
-			strcpy(buf, mon_nam(u.usteed));
+			strcpy(buf, mon_nam(player.usteed));
 			pline ("%s lunges forward and plucks you off %s!",
 				Monnam(mtmp), buf);
 			dismount_steed(DISMOUNT_ENGULFED);
@@ -1608,10 +1608,10 @@ STATIC_OVL int gulpmu(Monster *mtmp, struct Attack *mattk) {
 		stop_occupation();
 		reset_occupations();	/* behave as if you had moved */
 
-		if (u.utrap) {
+		if (player.utrap) {
 			You("are released from the %s!",
-				u.utraptype==TT_WEB ? "web" : "trap");
-			u.utrap = 0;
+				player.utraptype==TT_WEB ? "web" : "trap");
+			player.utrap = 0;
 		}
 
 		i = number_leashed();
@@ -1629,36 +1629,36 @@ STATIC_OVL int gulpmu(Monster *mtmp, struct Attack *mattk) {
 
 		display_nhwindow(WIN_MESSAGE, FALSE);
 		vision_recalc(2);	/* hero can't see anything */
-		u.uswallow = 1;
-		/* u.uswldtim always set > 1 */
+		player.uswallow = 1;
+		/* player.uswldtim always set > 1 */
 		tim_tmp = 25 - (int)mtmp->m_lev;
 		if (tim_tmp > 0) tim_tmp = rnd(tim_tmp) / 2;
 		else if (tim_tmp < 0) tim_tmp = -(rnd(-tim_tmp) / 2);
-		tim_tmp += -u.uac + 10;
-		u.uswldtim = (unsigned)((tim_tmp < 2) ? 2 : tim_tmp);
+		tim_tmp += -player.uac + 10;
+		player.uswldtim = (unsigned)((tim_tmp < 2) ? 2 : tim_tmp);
 		swallowed(1);
 		for (otmp2 = invent; otmp2; otmp2 = otmp2->nobj)
 		    (void) snuff_lit(otmp2);
 	}
 
-	if (mtmp != u.ustuck) return(0);
-	if (u.uswldtim > 0) u.uswldtim -= 1;
+	if (mtmp != player.ustuck) return(0);
+	if (player.uswldtim > 0) player.uswldtim -= 1;
 
 	switch(mattk->adtyp) {
 
 		case AD_DGST:
 		    if (Slow_digestion) {
 			/* Messages are handled below */
-			u.uswldtim = 0;
+			player.uswldtim = 0;
 			tmp = 0;
-		    } else if (u.uswldtim == 0) {
+		    } else if (player.uswldtim == 0) {
 			pline("%s totally digests you!", Monnam(mtmp));
-			tmp = u.uhp;
+			tmp = player.uhp;
 			if (Half_physical_damage) tmp *= 2; /* sorry */
 		    } else {
 			pline("%s%s digests you!", Monnam(mtmp),
-			      (u.uswldtim == 2) ? " thoroughly" :
-			      (u.uswldtim == 1) ? " utterly" : "");
+			      (player.uswldtim == 2) ? " thoroughly" :
+			      (player.uswldtim == 1) ? " utterly" : "");
 			exercise(A_STR, FALSE);
 		    }
 		    break;
@@ -1702,7 +1702,7 @@ STATIC_OVL int gulpmu(Monster *mtmp, struct Attack *mattk) {
 		    if(!mtmp->mcan && rn2(2)) {
 			pline_The("air around you crackles with electricity.");
 			if (Shock_resistance) {
-				shieldeff(u.ux, u.uy);
+				shieldeff(player.ux, player.uy);
 				You("seem unhurt.");
 				ugolemeffects(AD_ELEC,tmp);
 				tmp = 0;
@@ -1712,7 +1712,7 @@ STATIC_OVL int gulpmu(Monster *mtmp, struct Attack *mattk) {
 		case AD_COLD:
 		    if(!mtmp->mcan && rn2(2)) {
 			if (Cold_resistance) {
-				shieldeff(u.ux, u.uy);
+				shieldeff(player.ux, player.uy);
 				You_feel("mildly chilly.");
 				ugolemeffects(AD_COLD,tmp);
 				tmp = 0;
@@ -1722,7 +1722,7 @@ STATIC_OVL int gulpmu(Monster *mtmp, struct Attack *mattk) {
 		case AD_FIRE:
 		    if(!mtmp->mcan && rn2(2)) {
 			if (Fire_resistance) {
-				shieldeff(u.ux, u.uy);
+				shieldeff(player.ux, player.uy);
 				You_feel("mildly hot.");
 				ugolemeffects(AD_FIRE,tmp);
 				tmp = 0;
@@ -1747,7 +1747,7 @@ STATIC_OVL int gulpmu(Monster *mtmp, struct Attack *mattk) {
 	    pline("%s very hurriedly %s you!", Monnam(mtmp),
 		  is_animal(mtmp->data)? "regurgitates" : "expels");
 	    expels(mtmp, mtmp->data, FALSE);
-	} else if (!u.uswldtim || youmonst.data->msize >= MZ_HUGE) {
+	} else if (!player.uswldtim || youmonst.data->msize >= MZ_HUGE) {
 	    You("get %s!", is_animal(mtmp->data)? "regurgitated" : "expelled");
 	    if (flags.verbose && (is_animal(mtmp->data) ||
 		    (dmgtype(mtmp->data, AD_DGST) && Slow_digestion)))
@@ -1800,7 +1800,7 @@ common:
 		not_affected = resists_blnd(&youmonst);
 		if (!not_affected) {
 		    /* sometimes you're affected even if it's invisible */
-		    if (mon_visible(mtmp) || (rnd(tmp /= 2) > u.ulevel)) {
+		    if (mon_visible(mtmp) || (rnd(tmp /= 2) > player.ulevel)) {
 			You("are blinded by a blast of light!");
 			make_blinded((long)tmp, FALSE);
 			if (!Blind) Your(vision_clears);
@@ -1811,8 +1811,8 @@ common:
 
 	    case AD_HALU:
 		not_affected |= Blind ||
-			(u.umonnum == PM_BLACK_LIGHT ||
-			 u.umonnum == PM_VIOLET_FUNGUS ||
+			(player.umonnum == PM_BLACK_LIGHT ||
+			 player.umonnum == PM_VIOLET_FUNGUS ||
 			 dmgtype(youmonst.data, AD_STUN));
 		if (!not_affected) {
 		    bool chg;
@@ -1986,11 +1986,11 @@ int gazemu(Monster *mtmp, struct Attack *mattk) {
 void mdamageu(Monster *mtmp, int n) {
 	flags.botl = 1;
 	if (Upolyd) {
-		u.mh -= n;
-		if (u.mh < 1) rehumanize();
+		player.mh -= n;
+		if (player.mh < 1) rehumanize();
 	} else {
-		u.uhp -= n;
-		if(u.uhp < 1) done_in_by(mtmp);
+		player.uhp -= n;
+		if(player.uhp < 1) done_in_by(mtmp);
 	}
 }
 
@@ -2202,7 +2202,7 @@ int doseduce(Monster *mon) {
 		if (!tele_restrict(mon)) (void) rloc(mon, FALSE);
 		return 1;
 	}
-	if (u.ualign.type == A_CHAOTIC)
+	if (player.ualign.type == A_CHAOTIC)
 		adjalign(1);
 
 	/* by this point you have discovered mon's identity, blind or not... */
@@ -2214,10 +2214,10 @@ int doseduce(Monster *mon) {
 			noit_Monnam(mon));
 		switch (rn2(5)) {
 			case 0: You_feel("drained of energy.");
-				u.uen = 0;
-				u.uenmax -= rnd(Half_physical_damage ? 5 : 10);
+				player.uen = 0;
+				player.uenmax -= rnd(Half_physical_damage ? 5 : 10);
 			        exercise(A_CON, FALSE);
-				if (u.uenmax < 0) u.uenmax = 0;
+				if (player.uenmax < 0) player.uenmax = 0;
 				break;
 			case 1: You("are down in the dumps.");
 				(void) adjattrib(A_CON, -1, TRUE);
@@ -2254,7 +2254,7 @@ int doseduce(Monster *mon) {
 		switch (rn2(5)) {
 		case 0: You_feel("raised to your full potential.");
 			exercise(A_CON, TRUE);
-			u.uen = (u.uenmax += rnd(5));
+			player.uen = (player.uenmax += rnd(5));
 			break;
 		case 1: You_feel("good enough to do it again.");
 			(void) adjattrib(A_CON, 1, TRUE);
@@ -2271,8 +2271,8 @@ int doseduce(Monster *mon) {
 			exercise(A_WIS, TRUE);
 			break;
 		case 4: You_feel("restored to health!");
-			u.uhp = u.uhpmax;
-			if (Upolyd) u.mh = u.mhmax;
+			player.uhp = player.uhpmax;
+			if (Upolyd) player.mh = player.mhmax;
 			exercise(A_STR, TRUE);
 			flags.botl = 1;
 			break;
@@ -2284,27 +2284,27 @@ int doseduce(Monster *mon) {
 		pline("%s demands that you pay %s, but you refuse...",
 			noit_Monnam(mon),
 			Blind ? (fem ? "her" : "him") : mhim(mon));
-	} else if (u.umonnum == PM_LEPRECHAUN)
+	} else if (player.umonnum == PM_LEPRECHAUN)
 		pline("%s tries to take your money, but fails...",
 				noit_Monnam(mon));
 	else {
 #ifndef GOLDOBJ
 		long cost;
 
-		if (u.ugold > (long)LARGEST_INT - 10L)
+		if (player.ugold > (long)LARGEST_INT - 10L)
 			cost = (long) rnd(LARGEST_INT) + 500L;
 		else
-			cost = (long) rnd((int)u.ugold + 10) + 500L;
+			cost = (long) rnd((int)player.ugold + 10) + 500L;
 		if (mon->mpeaceful) {
 			cost /= 5L;
 			if (!cost) cost = 1L;
 		}
-		if (cost > u.ugold) cost = u.ugold;
+		if (cost > player.ugold) cost = player.ugold;
 		if (!cost) verbalize("It's on the house!");
 		else {
 		    pline("%s takes %ld %s for services rendered!",
 			    noit_Monnam(mon), cost, currency(cost));
-		    u.ugold -= cost;
+		    player.ugold -= cost;
 		    mon->mgold += cost;
 		    flags.botl = 1;
 		}
@@ -2444,7 +2444,7 @@ STATIC_OVL int passiveum(MonsterType *olduasmon, Monster *mtmp, struct Attack *m
 	    	break;
 	    case AD_PLYS: /* Floating eye */
 		if (tmp > 127) tmp = 127;
-		if (u.umonnum == PM_FLOATING_EYE) {
+		if (player.umonnum == PM_FLOATING_EYE) {
 		    if (!rn2(4)) tmp = 127;
 		    if (mtmp->mcansee && haseyes(mtmp->data) && rn2(3) &&
 				(perceives(mtmp->data) || !Invis)) {
@@ -2477,9 +2477,9 @@ STATIC_OVL int passiveum(MonsterType *olduasmon, Monster *mtmp, struct Attack *m
 		    break;
 		}
 		pline("%s is suddenly very cold!", Monnam(mtmp));
-		u.mh += tmp / 2;
-		if (u.mhmax < u.mh) u.mhmax = u.mh;
-		if (u.mhmax > ((youmonst.data->mlevel+1) * 8))
+		player.mh += tmp / 2;
+		if (player.mhmax < player.mh) player.mhmax = player.mh;
+		if (player.mhmax > ((youmonst.data->mlevel+1) * 8))
 		    (void)split_mon(&youmonst, mtmp);
 		break;
 	    case AD_STUN: /* Yellow mold */
@@ -2533,15 +2533,15 @@ Monster * cloneu() {
 	Monster *mon;
 	int mndx = monsndx(youmonst.data);
 
-	if (u.mh <= 1) return(Monster *)0;
+	if (player.mh <= 1) return(Monster *)0;
 	if (mvitals[mndx].mvflags & G_EXTINCT) return(Monster *)0;
-	mon = makemon(youmonst.data, u.ux, u.uy, NO_MINVENT|MM_EDOG);
+	mon = makemon(youmonst.data, player.ux, player.uy, NO_MINVENT|MM_EDOG);
 	mon = christen_monst(mon, plname);
 	initedog(mon);
 	mon->m_lev = youmonst.data->mlevel;
-	mon->mhpmax = u.mhmax;
-	mon->mhp = u.mh / 2;
-	u.mh -= mon->mhp;
+	mon->mhpmax = player.mhmax;
+	mon->mhp = player.mh / 2;
+	player.mh -= mon->mhp;
 	flags.botl = 1;
 	return(mon);
 }

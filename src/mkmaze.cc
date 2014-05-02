@@ -222,7 +222,7 @@ void place_lregion(xchar lx, xchar ly, xchar hx, xchar hy, xchar nlx, xchar nly,
 	 * the branch location (to avoid putting branches in corridors).
 	 */
 	if(rtype == LR_BRANCH && nroom) {
-	    place_branch(Is_branchlev(&u.uz), 0, 0);
+	    place_branch(Is_branchlev(&player.uz), 0, 0);
 	    return;
 	}
 
@@ -285,7 +285,7 @@ STATIC_OVL bool put_lregion_here(xchar x, xchar y, xchar nlx, xchar nly, xchar n
 	mkstairs(x, y, (char)rtype, (struct mkroom *)0);
 	break;
     case LR_BRANCH:
-	place_branch(Is_branchlev(&u.uz), x, y);
+	place_branch(Is_branchlev(&player.uz), x, y);
 	break;
     }
     return(TRUE);
@@ -303,9 +303,9 @@ STATIC_OVL void fixup_special() {
 
     if (was_waterlevel) {
 	was_waterlevel = FALSE;
-	u.uinwater = 0;
+	player.uinwater = 0;
 	unsetup_waterlevel();
-    } else if (Is_waterlevel(&u.uz)) {
+    } else if (Is_waterlevel(&player.uz)) {
 	level.flags.hero_memory = 0;
 	was_waterlevel = TRUE;
 	/* water level is an odd beast - it has to be set up
@@ -321,7 +321,7 @@ STATIC_OVL void fixup_special() {
 	case LR_PORTAL:
 	    if(*r->rname.str >= '0' && *r->rname.str <= '9') {
 		/* "chutes and ladders" */
-		lev = u.uz;
+		lev = player.uz;
 		lev.dlevel = atoi(r->rname.str);
 	    } else {
 		s_level *sp = find_level(r->rname.str);
@@ -363,16 +363,16 @@ STATIC_OVL void fixup_special() {
     }
 
     /* place dungeon branch if not placed above */
-    if (!added_branch && Is_branchlev(&u.uz)) {
+    if (!added_branch && Is_branchlev(&player.uz)) {
 	place_lregion(0,0,0,0,0,0,0,0,LR_BRANCH,(d_level *)0);
     }
 
 	/* KMH -- Sokoban levels */
-	if(In_sokoban(&u.uz))
+	if(In_sokoban(&player.uz))
 		sokoban_detect();
 
     /* Still need to add some stuff to level file */
-    if (Is_medusa_level(&u.uz)) {
+    if (Is_medusa_level(&player.uz)) {
 	Object *otmp;
 	int tryct;
 
@@ -401,11 +401,11 @@ STATIC_OVL void fixup_special() {
 		otmp->owt = weight(otmp);
 	    }
 	}
-    } else if(Is_wiz1_level(&u.uz)) {
+    } else if(Is_wiz1_level(&player.uz)) {
 	croom = search_special(MORGUE);
 
 	create_secret_door(croom, W_SOUTH|W_EAST|W_WEST);
-    } else if(Is_knox(&u.uz)) {
+    } else if(Is_knox(&player.uz)) {
 	/* using an unfilled morgue for rm id */
 	croom = search_special(MORGUE);
 	/* avoid inappropriate morgue-related messages */
@@ -418,16 +418,16 @@ STATIC_OVL void fixup_special() {
 		if (!rn2(3) && !is_pool(x,y))
 		    (void)maketrap(x, y, rn2(3) ? LANDMINE : SPIKED_PIT);
 	    }
-    } else if (Role_if(PM_PRIEST) && In_quest(&u.uz)) {
+    } else if (Role_if(PM_PRIEST) && In_quest(&player.uz)) {
 	/* less chance for undead corpses (lured from lower morgues) */
 	level.flags.graveyard = 1;
-    } else if (Is_stronghold(&u.uz)) {
+    } else if (Is_stronghold(&player.uz)) {
 	level.flags.graveyard = 1;
-    } else if(Is_sanctum(&u.uz)) {
+    } else if(Is_sanctum(&player.uz)) {
 	croom = search_special(TEMPLE);
 
 	create_secret_door(croom, W_ANY);
-    } else if(on_level(&u.uz, &orcus_level)) {
+    } else if(on_level(&player.uz, &orcus_level)) {
 	   Monster *mtmp, *mtmp2;
 
 	   /* it's a ghost town, get rid of shopkeepers */
@@ -457,25 +457,25 @@ STATIC_OVL void fixup_special() {
 void makemaz(const char *s) {
 	int x,y;
 	char protofile[20];
-	s_level	*sp = Is_special(&u.uz);
+	s_level	*sp = Is_special(&player.uz);
 	coord mm;
 
 	if(*s) {
 	    if(sp && sp->rndlevs) sprintf(protofile, "%s-%d", s,
 						rnd((int) sp->rndlevs));
 	    else		 strcpy(protofile, s);
-	} else if(*(dungeons[u.uz.dnum].proto)) {
-	    if(dunlevs_in_dungeon(&u.uz) > 1) {
+	} else if(*(dungeons[player.uz.dnum].proto)) {
+	    if(dunlevs_in_dungeon(&player.uz) > 1) {
 		if(sp && sp->rndlevs)
-		     sprintf(protofile, "%s%d-%d", dungeons[u.uz.dnum].proto,
-						dunlev(&u.uz),
+		     sprintf(protofile, "%s%d-%d", dungeons[player.uz.dnum].proto,
+						dunlev(&player.uz),
 						rnd((int) sp->rndlevs));
-		else sprintf(protofile, "%s%d", dungeons[u.uz.dnum].proto,
-						dunlev(&u.uz));
+		else sprintf(protofile, "%s%d", dungeons[player.uz.dnum].proto,
+						dunlev(&player.uz));
 	    } else if(sp && sp->rndlevs) {
-		     sprintf(protofile, "%s-%d", dungeons[u.uz.dnum].proto,
+		     sprintf(protofile, "%s-%d", dungeons[player.uz.dnum].proto,
 						rnd((int) sp->rndlevs));
-	    } else strcpy(protofile, dungeons[u.uz.dnum].proto);
+	    } else strcpy(protofile, dungeons[player.uz.dnum].proto);
 
 	} else strcpy(protofile, "");
 
@@ -537,7 +537,7 @@ void makemaz(const char *s) {
 #endif
 	mazexy(&mm);
 	mkstairs(mm.x, mm.y, 1, (struct mkroom *)0);		/* up */
-	if (!Invocation_lev(&u.uz)) {
+	if (!Invocation_lev(&player.uz)) {
 	    mazexy(&mm);
 	    mkstairs(mm.x, mm.y, 0, (struct mkroom *)0);	/* down */
 	} else {	/* choose "vibrating square" location */
@@ -585,7 +585,7 @@ void makemaz(const char *s) {
 	}
 
 	/* place branch stair or portal */
-	place_branch(Is_branchlev(&u.uz), 0, 0);
+	place_branch(Is_branchlev(&player.uz), 0, 0);
 
 	for(x = rn1(8,11); x; x--) {
 		mazexy(&mm);
@@ -707,7 +707,7 @@ bound_digging()
 	bool found, nonwall;
 	int xmin,xmax,ymin,ymax;
 
-	if(Is_earthlevel(&u.uz)) return; /* everything diggable here */
+	if(Is_earthlevel(&player.uz)) return; /* everything diggable here */
 
 	found = nonwall = FALSE;
 	for(xmin=0; !found; xmin++) {
@@ -893,7 +893,7 @@ void movebubbles() {
 			    newsym(x,y);	/* clean up old position */
 			    mon->mx = mon->my = 0;
 			}
-			if (!u.uswallow && x == u.ux && y == u.uy) {
+			if (!player.uswallow && x == player.ux && y == player.uy) {
 			    struct container *cons = (struct container *)
 				alloc(sizeof(struct container));
 
@@ -951,25 +951,25 @@ void water_friction() {
 	if (Swimming && rn2(4))
 		return;		/* natural swimmers have advantage */
 
-	if (u.dx && !rn2(!u.dy ? 3 : 6)) {	/* 1/3 chance or half that */
+	if (player.dx && !rn2(!player.dy ? 3 : 6)) {	/* 1/3 chance or half that */
 		/* cancel delta x and choose an arbitrary delta y value */
-		x = u.ux;
+		x = player.ux;
 		do {
 		    dy = rn2(3) - 1;		/* -1, 0, 1 */
-		    y = u.uy + dy;
+		    y = player.uy + dy;
 		} while (dy && (!isok(x,y) || !is_pool(x,y)));
-		u.dx = 0;
-		u.dy = dy;
+		player.dx = 0;
+		player.dy = dy;
 		eff = TRUE;
-	} else if (u.dy && !rn2(!u.dx ? 3 : 5)) {	/* 1/3 or 1/5*(5/6) */
+	} else if (player.dy && !rn2(!player.dx ? 3 : 5)) {	/* 1/3 or 1/5*(5/6) */
 		/* cancel delta y and choose an arbitrary delta x value */
-		y = u.uy;
+		y = player.uy;
 		do {
 		    dx = rn2(3) - 1;		/* -1 .. 1 */
-		    x = u.ux + dx;
+		    x = player.ux + dx;
 		} while (dx && (!isok(x,y) || !is_pool(x,y)));
-		u.dy = 0;
-		u.dx = dx;
+		player.dy = 0;
+		player.dx = dx;
 		eff = TRUE;
 	}
 	if (eff) pline("Water turbulence affects your movements.");
@@ -978,7 +978,7 @@ void water_friction() {
 void save_waterlevel(int fd, int mode) {
 	struct bubble *b;
 
-	if (!Is_waterlevel(&u.uz)) return;
+	if (!Is_waterlevel(&player.uz)) return;
 
 	if (perform_bwrite(mode)) {
 	    int n = 0;
@@ -1000,7 +1000,7 @@ void restore_waterlevel(int fd) {
 	int i;
 	int n;
 
-	if (!Is_waterlevel(&u.uz)) return;
+	if (!Is_waterlevel(&player.uz)) return;
 
 	set_wportal();
 	mread(fd,(genericptr_t)&n,sizeof(int));
@@ -1042,10 +1042,10 @@ const char *waterbody_name(xchar x, xchar y) {
 		  (levl[x][y].drawbridgemask & DB_UNDER) == DB_ICE))
 		return "ice";
 	else if (((ltyp != POOL) && (ltyp != WATER) &&
-	  !Is_medusa_level(&u.uz) && !Is_waterlevel(&u.uz) && !Is_juiblex_level(&u.uz)) ||
+	  !Is_medusa_level(&player.uz) && !Is_waterlevel(&player.uz) && !Is_juiblex_level(&player.uz)) ||
 	   (ltyp == DRAWBRIDGE_UP && (levl[x][y].drawbridgemask & DB_UNDER) == DB_MOAT))
 		return "moat";
-	else if ((ltyp != POOL) && (ltyp != WATER) && Is_juiblex_level(&u.uz))
+	else if ((ltyp != POOL) && (ltyp != WATER) && Is_juiblex_level(&player.uz))
 		return "swamp";
 	else if (ltyp == POOL)
 		return "pool of water";
@@ -1234,11 +1234,11 @@ STATIC_OVL void mv_bubble(struct bubble *b, int dx, int dy, bool ini) {
 		}
 
 		case CONS_HERO: {
-		    int ux0 = u.ux, uy0 = u.uy;
+		    int ux0 = player.ux, uy0 = player.uy;
 
-		    /* change u.ux0 and u.uy0? */
-		    u.ux = cons->x;
-		    u.uy = cons->y;
+		    /* change player.ux0 and player.uy0? */
+		    player.ux = cons->x;
+		    player.uy = cons->y;
 		    newsym(ux0, uy0);	/* clean up old position */
 
 		    if (MON_AT(cons->x, cons->y)) {

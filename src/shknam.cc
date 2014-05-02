@@ -246,11 +246,11 @@ STATIC_OVL void mkshobj_at(
 	int atype;
 	MonsterType *ptr;
 
-	if (rn2(100) < depth(&u.uz) &&
+	if (rn2(100) < depth(&player.uz) &&
 		!MON_AT(sx, sy) && (ptr = mkclass(S_MIMIC,0)) &&
 		(mtmp = makemon(ptr,sx,sy,NO_MM_FLAGS)) != 0) {
 	    /* note: makemon will set the mimic symbol to a shop item */
-	    if (rn2(10) >= depth(&u.uz)) {
+	    if (rn2(10) >= depth(&player.uz)) {
 		mtmp->m_ap_type = M_AP_OBJECT;
 		mtmp->mappearance = STRANGE_OBJECT;
 	    }
@@ -271,8 +271,8 @@ STATIC_OVL void nameshk(Monster *shk, const char * const *nlp) {
 	int name_wanted;
 	s_level *sptr;
 
-	if (nlp == shklight && In_mines(&u.uz)
-		&& (sptr = Is_special(&u.uz)) != 0 && sptr->flags.town) {
+	if (nlp == shklight && In_mines(&player.uz)
+		&& (sptr = Is_special(&player.uz)) != 0 && sptr->flags.town) {
 	    /* special-case minetown lighting shk */
 	    shname = "Izchak";
 	    shk->female = FALSE;
@@ -281,9 +281,9 @@ STATIC_OVL void nameshk(Monster *shk, const char * const *nlp) {
 	       and restore support which would be necessary for randomization;
 	       try not to make too many assumptions about time_t's internals;
 	       use ledger_no rather than depth to keep mine town distinct. */
-	    int nseed = (int)((long)u.ubirthday / 257L);
+	    int nseed = (int)((long)player.ubirthday / 257L);
 
-	    name_wanted = ledger_no(&u.uz) + (nseed % 13) - (nseed % 5);
+	    name_wanted = ledger_no(&player.uz) + (nseed % 13) - (nseed % 5);
 	    if (name_wanted < 0) name_wanted += (13 + 5);
 	    shk->female = name_wanted & 1;
 
@@ -384,7 +384,7 @@ STATIC_OVL int shkinit(const struct shclass *shp, struct mkroom *sroom) {
 	ESHK(shk)->shoproom = (sroom - rooms) + ROOMOFFSET;
 	sroom->resident = shk;
 	ESHK(shk)->shoptype = sroom->rtype;
-	assign_level(&(ESHK(shk)->shoplevel), &u.uz);
+	assign_level(&(ESHK(shk)->shoplevel), &player.uz);
 	ESHK(shk)->shd = doors[sh];
 	ESHK(shk)->shk.x = sx;
 	ESHK(shk)->shk.y = sy;

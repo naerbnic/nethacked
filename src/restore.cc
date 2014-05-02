@@ -147,9 +147,9 @@ STATIC_OVL void restdamage(int fd, bool ghostly) {
 		tmp_dam->when += (monstermoves - omoves);
 	    strcpy(damaged_shops,
 		   in_rooms(tmp_dam->place.x, tmp_dam->place.y, SHOPBASE));
-	    if (u.uz.dlevel) {
+	    if (player.uz.dlevel) {
 		/* when restoring, there are two passes over the current
-		 * level.  the first time, u.uz isn't set, so neither is
+		 * level.  the first time, player.uz isn't set, so neither is
 		 * shop_keeper().  just wait and process the damage on
 		 * the second pass.
 		 */
@@ -338,20 +338,20 @@ bool restgamestate(int fd, unsigned int *stuckid, unsigned int *steedid) {
 	if (remember_discover) discover = remember_discover;
 
 	role_init();	/* Reset the initial role, race, gender, and alignment */
-	mread(fd, (genericptr_t) &u, sizeof(struct Player));
+	mread(fd, (genericptr_t) &player, sizeof(struct Player));
 	set_uasmon();
 #ifdef CLIPPING
-	cliparound(u.ux, u.uy);
+	cliparound(player.ux, player.uy);
 #endif
-	if(u.uhp <= 0 && (!Upolyd || u.mh <= 0)) {
-	    u.ux = u.uy = 0;	/* affects pline() [hence You()] */
+	if(player.uhp <= 0 && (!Upolyd || player.mh <= 0)) {
+	    player.ux = player.uy = 0;	/* affects pline() [hence You()] */
 	    You("were not healthy enough to survive restoration.");
 	    /* wiz1_level.dlevel is used by mklev.c to see if lots of stuff is
 	     * uninitialized, so we only have to set it and not the other stuff.
 	     */
 	    wiz1_level.dlevel = 0;
-	    u.uz.dnum = 0;
-	    u.uz.dlevel = 1;
+	    player.uz.dnum = 0;
+	    player.uz.dlevel = 1;
 	    return(FALSE);
 	}
 
@@ -386,10 +386,10 @@ bool restgamestate(int fd, unsigned int *stuckid, unsigned int *steedid) {
 				sizeof(struct spell) * (MAXSPELL + 1));
 	restore_artifacts(fd);
 	restore_oracles(fd);
-	if (u.ustuck)
+	if (player.ustuck)
 		mread(fd, (genericptr_t) stuckid, sizeof (*stuckid));
 #ifdef STEED
-	if (u.usteed)
+	if (player.usteed)
 		mread(fd, (genericptr_t) steedid, sizeof (*steedid));
 #endif
 	mread(fd, (genericptr_t) pl_character, sizeof pl_character);
@@ -417,7 +417,7 @@ bool restgamestate(int fd, unsigned int *stuckid, unsigned int *steedid) {
 }
 
 /* update game state pointers to those valid for the current level (so we
- * don't dereference a wild u.ustuck when saving the game state, for instance)
+ * don't dereference a wild player.ustuck when saving the game state, for instance)
  */
 STATIC_OVL void restlevelstate(unsigned int stuckid, unsigned int steedid) {
 	Monster *mtmp;
@@ -426,14 +426,14 @@ STATIC_OVL void restlevelstate(unsigned int stuckid, unsigned int steedid) {
 		for (mtmp = fmon; mtmp; mtmp = mtmp->nmon)
 			if (mtmp->m_id == stuckid) break;
 		if (!mtmp) panic("Cannot find the monster ustuck.");
-		u.ustuck = mtmp;
+		player.ustuck = mtmp;
 	}
 #ifdef STEED
 	if (steedid) {
 		for (mtmp = fmon; mtmp; mtmp = mtmp->nmon)
 			if (mtmp->m_id == steedid) break;
 		if (!mtmp) panic("Cannot find the monster usteed.");
-		u.usteed = mtmp;
+		player.usteed = mtmp;
 		remove_monster(mtmp->mx, mtmp->my);
 	}
 #endif
@@ -481,17 +481,17 @@ int dorecover(int fd) {
 #ifdef INSURANCE
 	savestateinlock();
 #endif
-	rtmp = restlevelfile(fd, ledger_no(&u.uz));
+	rtmp = restlevelfile(fd, ledger_no(&player.uz));
 	if (rtmp < 2) return(rtmp);  /* dorecover called recursively */
 
 	/* these pointers won't be valid while we're processing the
 	 * other levels, but they'll be reset again by restlevelstate()
-	 * afterwards, and in the meantime at least u.usteed may mislead
+	 * afterwards, and in the meantime at least player.usteed may mislead
 	 * place_monster() on other levels
 	 */
-	u.ustuck = (Monster *)0;
+	player.ustuck = (Monster *)0;
 #ifdef STEED
-	u.usteed = (Monster *)0;
+	player.usteed = (Monster *)0;
 #endif
 
 	while(1) {
@@ -521,10 +521,10 @@ int dorecover(int fd) {
 	if (!wizard && !discover)
 		(void) delete_savefile();
 #ifdef REINCARNATION
-	if (Is_rogue_level(&u.uz)) assign_rogue_graphics(TRUE);
+	if (Is_rogue_level(&player.uz)) assign_rogue_graphics(TRUE);
 #endif
 #ifdef USE_TILES
-	substitute_tiles(&u.uz);
+	substitute_tiles(&player.uz);
 #endif
 	restlevelstate(stuckid, steedid);
 	max_rank_sz(); /* to recompute mrank_sz (botl.c) */
@@ -666,7 +666,7 @@ void getlev(int fd, int pid, xchar lev, bool ghostly) {
 	fmon = restmonchn(fd, ghostly);
 
 	/* regenerate animals while on another level */
-	if (u.uz.dlevel) {
+	if (player.uz.dlevel) {
 	    Monster *mtmp2;
 
 	    for (mtmp = fmon; mtmp; mtmp = mtmp2) {
@@ -730,11 +730,11 @@ void getlev(int fd, int pid, xchar lev, bool ghostly) {
 		levl[cc.x][cc.y].typ = STAIRS;
 	    }
 
-	    br = Is_branchlev(&u.uz);
-	    if (br && u.uz.dlevel == 1) {
+	    br = Is_branchlev(&player.uz);
+	    if (br && player.uz.dlevel == 1) {
 		d_level ltmp;
 
-		if (on_level(&u.uz, &br->end1))
+		if (on_level(&player.uz, &br->end1))
 		    assign_level(&ltmp, &br->end2);
 		else
 		    assign_level(&ltmp, &br->end1);

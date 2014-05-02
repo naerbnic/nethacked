@@ -670,7 +670,7 @@ int abon() {
 	int sbon;
 	int str = ACURR(A_STR), dex = ACURR(A_DEX);
 
-	if (Upolyd) return(adj_lev(&mons[u.umonnum]) - 3);
+	if (Upolyd) return(adj_lev(&mons[player.umonnum]) - 3);
 	if (str < 6) sbon = -2;
 	else if (str < 8) sbon = -1;
 	else if (str < 17) sbon = 0;
@@ -679,7 +679,7 @@ int abon() {
 	else sbon = 3;
 
 /* Game tuning kludge: make it a bit easier for a low level character to hit */
-	sbon += (u.ulevel < 3) ? 1 : 0;
+	sbon += (player.ulevel < 3) ? 1 : 0;
 
 	if (dex < 4) return(sbon-3);
 	else if (dex < 6) return(sbon-2);
@@ -758,8 +758,8 @@ STATIC_OVL bool can_advance(int skill, bool speedy) {
 #endif
 	    (P_ADVANCE(skill) >=
 		(unsigned) practice_needed_to_advance(P_SKILL(skill))
-	    && u.skills_advanced < P_SKILL_LIMIT
-	    && u.weapon_slots >= slots_required(skill)));
+	    && player.skills_advanced < P_SKILL_LIMIT
+	    && player.weapon_slots >= slots_required(skill)));
 }
 
 /* return true if this skill could be advanced if more slots were available */
@@ -768,7 +768,7 @@ STATIC_OVL bool could_advance(int skill) {
 	    && P_SKILL(skill) < P_MAX_SKILL(skill) && (
 	    (P_ADVANCE(skill) >=
 		(unsigned) practice_needed_to_advance(P_SKILL(skill))
-	    && u.skills_advanced < P_SKILL_LIMIT));
+	    && player.skills_advanced < P_SKILL_LIMIT));
 }
 
 /* return true if this skill has reached its maximum and there's been enough
@@ -781,9 +781,9 @@ STATIC_OVL bool peaked_skill(int skill) {
 }
 
 STATIC_OVL void skill_advance(int skill) {
-    u.weapon_slots -= slots_required(skill);
+    player.weapon_slots -= slots_required(skill);
     P_SKILL(skill)++;
-    u.skill_record[u.skills_advanced++] = skill;
+    player.skill_record[player.skills_advanced++] = skill;
     /* subtly change the advance message to indicate no more advancement */
     You("are now %s skilled in %s.",
 	P_SKILL(skill) >= P_MAX_SKILL(skill) ? "most" : "more",
@@ -876,7 +876,7 @@ int enhance_skill(bool want_dump)
 		    sprintf(buf,
 			    "(Skill%s flagged by \"*\" may be enhanced %s.)",
 			    plur(eventually_advance),
-			    (u.ulevel < MAXULEV) ?
+			    (player.ulevel < MAXULEV) ?
 				"when you're more experienced" :
 				"if skill slots become available");
 		    add_menu(win, NO_GLYPH, &any, 0, 0, ATR_NONE,
@@ -981,7 +981,7 @@ int enhance_skill(bool want_dump)
 #ifdef WIZARD
 	    if (wizard && !speedy)
 		sprintf(eos(buf), "  (%d slot%s available)",
-			u.weapon_slots, plur(u.weapon_slots));
+			player.weapon_slots, plur(player.weapon_slots));
 #endif
 #ifdef DUMP_LOG
 	    if (want_dump) {
@@ -1043,7 +1043,7 @@ void add_weapon_skill(int n) {
 
     for (i = 0, before = 0; i < P_NUM_SKILLS; i++)
 	if (can_advance(i, FALSE)) before++;
-    u.weapon_slots += n;
+    player.weapon_slots += n;
     for (i = 0, after = 0; i < P_NUM_SKILLS; i++)
 	if (can_advance(i, FALSE)) after++;
     if (before < after)
@@ -1055,15 +1055,15 @@ void lose_weapon_skill(int n) {
 
     while (--n >= 0) {
 	/* deduct first from unused slots, then from last placed slot, if any */
-	if (u.weapon_slots) {
-	    u.weapon_slots--;
-	} else if (u.skills_advanced) {
-	    skill = u.skill_record[--u.skills_advanced];
+	if (player.weapon_slots) {
+	    player.weapon_slots--;
+	} else if (player.skills_advanced) {
+	    skill = player.skill_record[--player.skills_advanced];
 	    if (P_SKILL(skill) <= P_UNSKILLED)
 		panic("lose_weapon_skill (%d)", skill);
 	    P_SKILL(skill)--;	/* drop skill one level */
 	    /* Lost skill might have taken more than one slot; refund rest. */
-	    u.weapon_slots = slots_required(skill) - 1;
+	    player.weapon_slots = slots_required(skill) - 1;
 	    /* It might now be possible to advance some other pending
 	       skill by using the refunded slots, but giving a message
 	       to that effect would seem pretty confusing.... */
@@ -1087,7 +1087,7 @@ int weapon_type(Object *obj) {
 }
 
 int uwep_skill_type() {
-	if (u.twoweap)
+	if (player.twoweap)
 		return P_TWO_WEAPON_COMBAT;
 	return weapon_type(uwep);
 }
@@ -1102,7 +1102,7 @@ int weapon_hit_bonus(Object *weapon) {
 
     wep_type = weapon_type(weapon);
     /* use two weapon skill only if attacking with one of the wielded weapons */
-    type = (u.twoweap && (weapon == uwep || weapon == uswapwep)) ?
+    type = (player.twoweap && (weapon == uwep || weapon == uswapwep)) ?
 	    P_TWO_WEAPON_COMBAT : wep_type;
     if (type == P_NONE) {
 	bonus = 0;
@@ -1143,7 +1143,7 @@ int weapon_hit_bonus(Object *weapon) {
 
 #ifdef STEED
 	/* KMH -- It's harder to hit while you are riding */
-	if (u.usteed) {
+	if (player.usteed) {
 		switch (P_SKILL(P_RIDING)) {
 		    case P_ISRESTRICTED:
 		    case P_UNSKILLED:   bonus -= 2; break;
@@ -1151,7 +1151,7 @@ int weapon_hit_bonus(Object *weapon) {
 		    case P_SKILLED:     break;
 		    case P_EXPERT:      break;
 		}
-		if (u.twoweap) bonus -= 2;
+		if (player.twoweap) bonus -= 2;
 	}
 #endif
 
@@ -1167,7 +1167,7 @@ int weapon_dam_bonus(Object *weapon) {
 
     wep_type = weapon_type(weapon);
     /* use two weapon skill only if attacking with one of the wielded weapons */
-    type = (u.twoweap && (weapon == uwep || weapon == uswapwep)) ?
+    type = (player.twoweap && (weapon == uwep || weapon == uswapwep)) ?
 	    P_TWO_WEAPON_COMBAT : wep_type;
     if (type == P_NONE) {
 	bonus = 0;
@@ -1209,7 +1209,7 @@ int weapon_dam_bonus(Object *weapon) {
 
 #ifdef STEED
 	/* KMH -- Riding gives some thrusting damage */
-	if (u.usteed && type != P_TWO_WEAPON_COMBAT) {
+	if (player.usteed && type != P_TWO_WEAPON_COMBAT) {
 		switch (P_SKILL(P_RIDING)) {
 		    case P_ISRESTRICTED:
 		    case P_UNSKILLED:   break;

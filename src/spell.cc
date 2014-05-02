@@ -155,7 +155,7 @@ STATIC_OVL bool cursed_book(Object *bp) {
 		break;
 	case 6:
 		if(Antimagic) {
-		    shieldeff(u.ux, u.uy);
+		    shieldeff(player.ux, player.uy);
 		    pline_The("book %s, but you are unharmed!", explodes);
 		} else {
 		    pline("As you read the book, it %s in your %s!",
@@ -201,7 +201,7 @@ STATIC_OVL void deadbook(Object *book2) {
     makeknown(SPE_BOOK_OF_THE_DEAD);
     /* KMH -- Need ->known to avoid "_a_ Book of the Dead" */
     book2->known = 1;
-    if(invocation_pos(u.ux, u.uy) && !On_stairs(u.ux, u.uy)) {
+    if(invocation_pos(player.ux, player.uy) && !On_stairs(player.ux, player.uy)) {
 	Object *otmp;
 	bool arti1_primed = FALSE, arti2_primed = FALSE,
 			 arti_cursed = FALSE;
@@ -211,10 +211,10 @@ STATIC_OVL void deadbook(Object *book2) {
 	    return;
 	}
 
-	if(!u.uhave.bell || !u.uhave.menorah) {
+	if(!player.uhave.bell || !player.uhave.menorah) {
 	    pline("A chill runs down your %s.", body_part(SPINE));
-	    if(!u.uhave.bell) You_hear("a faint chime...");
-	    if(!u.uhave.menorah) pline("Vlad's doppelganger is amused.");
+	    if(!player.uhave.bell) You_hear("a faint chime...");
+	    if(!player.uhave.menorah) pline("Vlad's doppelganger is amused.");
 	    return;
 	}
 
@@ -239,11 +239,11 @@ STATIC_OVL void deadbook(Object *book2) {
 
 	    /* successful invocation */
 	    mkinvokearea();
-	    u.uevent.invoked = 1;
+	    player.uevent.invoked = 1;
 	    /* in case you haven't killed the Wizard yet, behave as if
 	       you just did */
-	    u.uevent.udemigod = 1;	/* wizdead() */
-	    if (!u.udg_cnt || u.udg_cnt > soon) u.udg_cnt = soon;
+	    player.uevent.udemigod = 1;	/* wizdead() */
+	    if (!player.udg_cnt || player.udg_cnt > soon) player.udg_cnt = soon;
 	} else {	/* at least one artifact not prepared properly */
 	    You("have a feeling that %s is amiss...", something);
 	    goto raise_dead;
@@ -258,17 +258,17 @@ raise_dead:
 	You("raised the dead!");
 	/* first maybe place a dangerous adversary */
 	if (!rn2(3) && ((mtmp = makemon(&mons[PM_MASTER_LICH],
-					u.ux, u.uy, NO_MINVENT)) != 0 ||
+					player.ux, player.uy, NO_MINVENT)) != 0 ||
 			(mtmp = makemon(&mons[PM_NALFESHNEE],
-					u.ux, u.uy, NO_MINVENT)) != 0)) {
+					player.ux, player.uy, NO_MINVENT)) != 0)) {
 	    mtmp->mpeaceful = 0;
 	    set_malign(mtmp);
 	}
 	/* next handle the affect on things you're carrying */
 	(void) unturn_dead(&youmonst);
 	/* last place some monsters around you */
-	mm.x = u.ux;
-	mm.y = u.uy;
+	mm.x = player.ux;
+	mm.y = player.uy;
 	mkundead(&mm, TRUE, NO_MINVENT);
     } else if(book2->blessed) {
 	for(mtmp = fmon; mtmp; mtmp = mtmp2) {
@@ -277,7 +277,7 @@ raise_dead:
 
 	    if (is_undead(mtmp->data) && cansee(mtmp->mx, mtmp->my)) {
 		mtmp->mpeaceful = TRUE;
-		if(sgn(mtmp->data->maligntyp) == sgn(u.ualign.type)
+		if(sgn(mtmp->data->maligntyp) == sgn(player.ualign.type)
 		   && distu(mtmp->mx, mtmp->my) < 4)
 		    if (mtmp->mtame) {
 			if (mtmp->mtame < 20)
@@ -423,7 +423,7 @@ int study_book(Object *spellbook) {
 			too_hard = TRUE;
 		    } else {
 			/* uncursed - chance to fail */
-			int read_ability = ACURR(A_INT) + 4 + u.ulevel/2
+			int read_ability = ACURR(A_INT) + 4 + player.ulevel/2
 			    - 2*objects[booktype].oc_level
 			    + ((ublindf && ublindf->otyp == LENSES) ? 2 : 0);
 			/* only wizards know if a spell is too difficult */
@@ -587,17 +587,17 @@ int spell_skilltype(int booktype) {
 
 STATIC_OVL void cast_protection() {
 	int loglev = 0;
-	int l = u.ulevel;
-	int natac = u.uac - u.uspellprot;
+	int l = player.ulevel;
+	int natac = player.uac - player.uspellprot;
 	int gain;
 
-	/* loglev=log2(u.ulevel)+1 (1..5) */
+	/* loglev=log2(player.ulevel)+1 (1..5) */
 	while (l) {
 	    loglev++;
 	    l /= 2;
 	}
 
-	/* The more u.uspellprot you already have, the less you get,
+	/* The more player.uspellprot you already have, the less you get,
 	 * and the better your natural ac, the less you get.
 	 *
 	 *	LEVEL AC    SPELLPROT from sucessive SPE_PROTECTION casts
@@ -618,26 +618,26 @@ STATIC_OVL void cast_protection() {
 	 *     16-30   0    0,  5,  9, 11, 13, 14, 15
 	 *     16-30 -10    0,  5,  8,  9, 10
 	 */
-	gain = loglev - (int)u.uspellprot / (4 - min(3,(10 - natac)/10));
+	gain = loglev - (int)player.uspellprot / (4 - min(3,(10 - natac)/10));
 
 	if (gain > 0) {
 	    if (!Blind) {
 		const char *hgolden = hcolor(NH_GOLDEN);
 
-		if (u.uspellprot)
+		if (player.uspellprot)
 		    pline_The("%s haze around you becomes more dense.",
 			      hgolden);
 		else
 		    pline_The("%s around you begins to shimmer with %s haze.",
 			/*[ what about being inside solid rock while polyd? ]*/
-			(Underwater || Is_waterlevel(&u.uz)) ? "water" : "air",
+			(Underwater || Is_waterlevel(&player.uz)) ? "water" : "air",
 			      an(hgolden));
 	    }
-	    u.uspellprot += gain;
-	    u.uspmtime =
+	    player.uspellprot += gain;
+	    player.uspmtime =
 		P_SKILL(spell_skilltype(SPE_PROTECTION)) == P_EXPERT ? 20 : 10;
-	    if (!u.usptime)
-		u.usptime = u.uspmtime;
+	    if (!player.usptime)
+		player.usptime = player.uspmtime;
 	    find_ac();
 	} else {
 	    Your("skin feels warm for a moment.");
@@ -693,7 +693,7 @@ int spelleffects(int spell, bool atme) {
 	}
 	energy = (spellev(spell) * 5);    /* 5 <= energy <= 35 */
 
-	if (u.uhunger <= 10 && spellid(spell) != SPE_DETECT_FOOD) {
+	if (player.uhunger <= 10 && spellid(spell) != SPE_DETECT_FOOD) {
 		You("are too hungry to cast that spell.");
 		return(0);
 	} else if (ACURR(A_STR) < 4)  {
@@ -707,11 +707,11 @@ int spelleffects(int spell, bool atme) {
 		return (0);
 	}
 
-	if (u.uhave.amulet) {
+	if (player.uhave.amulet) {
 		You_feel("the amulet draining your energy away.");
 		energy += rnd(2*energy);
 	}
-	if(energy > u.uen)  {
+	if(energy > player.uen)  {
 		You("don't have enough energy to cast that spell.");
 		return(0);
 	} else {
@@ -746,8 +746,8 @@ int spelleffects(int spell, bool atme) {
 			 * this is low enough that they must eat before
 			 * casting anything else except detect food
 			 */
-			if (hungr > u.uhunger-3)
-				hungr = u.uhunger-3;
+			if (hungr > player.uhunger-3)
+				hungr = player.uhunger-3;
 			morehungry(hungr);
 		}
 	}
@@ -755,12 +755,12 @@ int spelleffects(int spell, bool atme) {
 	chance = percent_success(spell);
 	if (confused || (rnd(100) > chance)) {
 		You("fail to cast the spell correctly.");
-		u.uen -= energy / 2;
+		player.uen -= energy / 2;
 		flags.botl = 1;
 		return(1);
 	}
 
-	u.uen -= energy;
+	player.uen -= energy;
 	flags.botl = 1;
 	exercise(A_WIS, TRUE);
 	/* pseudo is a temporary "false" object containing the spell stats */
@@ -785,28 +785,28 @@ int spelleffects(int spell, bool atme) {
 	case SPE_FIREBALL:
 	    if (role_skill >= P_SKILLED) {
 	        if (throwspell()) {
-		    cc.x=u.dx;cc.y=u.dy;
+		    cc.x=player.dx;cc.y=player.dy;
 		    n=rnd(8)+1;
 		    while(n--) {
-			if(!u.dx && !u.dy && !u.dz) {
+			if(!player.dx && !player.dy && !player.dz) {
 			    if ((damage = zapyourself(pseudo, TRUE)) != 0) {
 				char buf[BUFSZ];
 				sprintf(buf, "zapped %sself with a spell", uhim());
 				losehp(damage, buf, NO_KILLER_PREFIX);
 			    }
 			} else {
-			    explode(u.dx, u.dy,
+			    explode(player.dx, player.dy,
 				    pseudo->otyp - SPE_MAGIC_MISSILE + 10,
-				    u.ulevel/2 + 1 + spell_damage_bonus(), 0,
+				    player.ulevel/2 + 1 + spell_damage_bonus(), 0,
 					(pseudo->otyp == SPE_CONE_OF_COLD) ?
 						EXPL_FROSTY : EXPL_FIERY);
 			}
-			u.dx = cc.x+rnd(3)-2; u.dy = cc.y+rnd(3)-2;
-			if (!isok(u.dx,u.dy) || !cansee(u.dx,u.dy) ||
-			    IS_STWALL(levl[u.dx][u.dy].typ) || u.uswallow) {
+			player.dx = cc.x+rnd(3)-2; player.dy = cc.y+rnd(3)-2;
+			if (!isok(player.dx,player.dy) || !cansee(player.dx,player.dy) ||
+			    IS_STWALL(levl[player.dx][player.dy].typ) || player.uswallow) {
 			    /* Spell is reflected back to center */
-			    u.dx = cc.x;
-			    u.dy = cc.y;
+			    player.dx = cc.x;
+			    player.dy = cc.y;
 		        }
 		    }
 		}
@@ -833,12 +833,12 @@ int spelleffects(int spell, bool atme) {
 	case SPE_DRAIN_LIFE:
 	case SPE_STONE_TO_FLESH:
 		if (!(objects[pseudo->otyp].oc_dir == NODIR)) {
-			if (atme) u.dx = u.dy = u.dz = 0;
+			if (atme) player.dx = player.dy = player.dz = 0;
 			else if (!getdir((char *)0)) {
 			    /* getdir cancelled, re-use previous direction */
 			    pline_The("magical energy is released!");
 			}
-			if(!u.dx && !u.dy && !u.dz) {
+			if(!player.dx && !player.dy && !player.dz) {
 			    if ((damage = zapyourself(pseudo, TRUE)) != 0) {
 				char buf[BUFSZ];
 				sprintf(buf, "zapped %sself with a spell", uhim());
@@ -890,7 +890,7 @@ int spelleffects(int spell, bool atme) {
 		healup(0, 0, TRUE, FALSE);
 		break;
 	case SPE_CREATE_FAMILIAR:
-		(void) make_familiar(nullptr, u.ux, u.uy, FALSE);
+		(void) make_familiar(nullptr, player.ux, player.uy, FALSE);
 		break;
 	case SPE_CLAIRVOYANCE:
 		if (!BClairvoyant)
@@ -924,33 +924,33 @@ int spelleffects(int spell, bool atme) {
 STATIC_OVL int throwspell() {
 	coord cc;
 
-	if (u.uinwater) {
+	if (player.uinwater) {
 	    pline("You're joking! In this weather?"); return 0;
-	} else if (Is_waterlevel(&u.uz)) {
+	} else if (Is_waterlevel(&player.uz)) {
 	    You("had better wait for the sun to come out."); return 0;
 	}
 
 	pline("Where do you want to cast the spell?");
-	cc.x = u.ux;
-	cc.y = u.uy;
+	cc.x = player.ux;
+	cc.y = player.uy;
 	if (getpos(&cc, TRUE, "the desired position") < 0)
 	    return 0;	/* user pressed ESC */
 	/* The number of moves from hero to where the spell drops.*/
-	if (distmin(u.ux, u.uy, cc.x, cc.y) > 10) {
+	if (distmin(player.ux, player.uy, cc.x, cc.y) > 10) {
 	    pline_The("spell dissipates over the distance!");
 	    return 0;
-	} else if (u.uswallow) {
+	} else if (player.uswallow) {
 	    pline_The("spell is cut short!");
 	    exercise(A_WIS, FALSE); /* What were you THINKING! */
-	    u.dx = 0;
-	    u.dy = 0;
+	    player.dx = 0;
+	    player.dy = 0;
 	    return 1;
 	} else if (!cansee(cc.x, cc.y) || IS_STWALL(levl[cc.x][cc.y].typ)) {
 	    Your("mind fails to lock onto that location!");
 	    return 0;
 	} else {
-	    u.dx=cc.x;
-	    u.dy=cc.y;
+	    player.dx=cc.x;
+	    player.dy=cc.y;
 	    return 1;
 	}
 }
@@ -1153,7 +1153,7 @@ STATIC_OVL int percent_success(int spell) {
 	 */
 	skill = P_SKILL(spell_skilltype(spellid(spell)));
 	skill = max(skill,P_UNSKILLED) - 1;	/* unskilled => 0 */
-	difficulty= (spellev(spell)-1) * 4 - ((skill * 6) + (u.ulevel/3) + 1);
+	difficulty= (spellev(spell)-1) * 4 - ((skill * 6) + (player.ulevel/3) + 1);
 
 	if (difficulty > 0) {
 		/* Player is too low level or unskilled. */

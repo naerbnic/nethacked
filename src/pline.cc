@@ -94,7 +94,7 @@ vpline(const char *line, va_list the_args) {
 	if (no_repeat && !strcmp(line, toplines))
 	    return;
 	if (vision_full_recalc) vision_recalc(0);
-	if (u.ux) flush_screen(1);		/* %% */
+	if (player.ux) flush_screen(1);		/* %% */
 	if (typ == MSGTYP_NOSHOW) return;
 	if (typ == MSGTYP_NOREP && !strcmp(line, prevmsg)) return;
 	putstr(WIN_MESSAGE, 0, line);
@@ -204,7 +204,7 @@ You_hear(const char *line, ...) {
 	va_start(args, line);
 	if (Underwater)
 		YouPrefix(tmp, "You barely hear ", line);
-	else if (u.usleep)
+	else if (player.usleep)
 		YouPrefix(tmp, "You dream that you hear ", line);
 	else
 		YouPrefix(tmp, "You hear ", line);
@@ -335,14 +335,14 @@ void mstatusline(Monster *mtmp) {
 					", ???? speed");
 	if (mtmp->mundetected)	  strcat(info, ", concealed");
 	if (mtmp->minvis)	  strcat(info, ", invisible");
-	if (mtmp == u.ustuck)	  strcat(info,
+	if (mtmp == player.ustuck)	  strcat(info,
 			(sticks(youmonst.data)) ? ", held by you" :
-				u.uswallow ? (is_animal(u.ustuck->data) ?
+				player.uswallow ? (is_animal(player.ustuck->data) ?
 				", swallowed you" :
 				", engulfed you") :
 				", holding you");
 #ifdef STEED
-	if (mtmp == u.usteed)	  strcat(info, ", carrying you");
+	if (mtmp == player.usteed)	  strcat(info, ", carrying you");
 #endif
 
 	/* avoid "Status of the invisible newt ..., invisible" */
@@ -366,10 +366,10 @@ void ustatusline() {
 	info[0] = '\0';
 	if (Sick) {
 		strcat(info, ", dying from");
-		if (u.usick_type & SICK_VOMITABLE)
+		if (player.usick_type & SICK_VOMITABLE)
 			strcat(info, " food poisoning");
-		if (u.usick_type & SICK_NONVOMITABLE) {
-			if (u.usick_type & SICK_VOMITABLE)
+		if (player.usick_type & SICK_NONVOMITABLE) {
+			if (player.usick_type & SICK_VOMITABLE)
 				strcat(info, " and");
 			strcat(info, " illness");
 		}
@@ -381,8 +381,8 @@ void ustatusline() {
 	if (Confusion)		strcat(info, ", confused");
 	if (Blind) {
 	    strcat(info, ", blind");
-	    if (u.ucreamed) {
-		if ((long)u.ucreamed < Blinded || Blindfolded
+	    if (player.ucreamed) {
+		if ((long)player.ucreamed < Blinded || Blindfolded
 						|| !haseyes(youmonst.data))
 		    strcat(info, ", cover");
 		strcat(info, "ed by sticky goop");
@@ -390,7 +390,7 @@ void ustatusline() {
 	}
 	if (Stunned)		strcat(info, ", stunned");
 #ifdef STEED
-	if (!u.usteed)
+	if (!player.usteed)
 #endif
 	if (Wounded_legs) {
 	    const char *what = body_part(LEG);
@@ -400,34 +400,34 @@ void ustatusline() {
 	}
 	if (Glib)		sprintf(eos(info), ", slippery %s",
 					makeplural(body_part(HAND)));
-	if (u.utrap)		strcat(info, ", trapped");
+	if (player.utrap)		strcat(info, ", trapped");
 	if (Fast)		strcat(info, Very_fast ?
 						", very fast" : ", fast");
-	if (u.uundetected)	strcat(info, ", concealed");
+	if (player.uundetected)	strcat(info, ", concealed");
 	if (Invis)		strcat(info, ", invisible");
-	if (u.ustuck) {
+	if (player.ustuck) {
 	    if (sticks(youmonst.data))
 		strcat(info, ", holding ");
 	    else
 		strcat(info, ", held by ");
-	    strcat(info, mon_nam(u.ustuck));
+	    strcat(info, mon_nam(player.ustuck));
 	}
 
 	pline("Status of %s (%s%s):  Level %d  HP %d(%d)  AC %d%s.",
 		plname,
-		    (u.ualign.record >= 20) ? "piously " :
-		    (u.ualign.record > 13) ? "devoutly " :
-		    (u.ualign.record > 8) ? "fervently " :
-		    (u.ualign.record > 3) ? "stridently " :
-		    (u.ualign.record == 3) ? "" :
-		    (u.ualign.record >= 1) ? "haltingly " :
-		    (u.ualign.record == 0) ? "nominally " :
+		    (player.ualign.record >= 20) ? "piously " :
+		    (player.ualign.record > 13) ? "devoutly " :
+		    (player.ualign.record > 8) ? "fervently " :
+		    (player.ualign.record > 3) ? "stridently " :
+		    (player.ualign.record == 3) ? "" :
+		    (player.ualign.record >= 1) ? "haltingly " :
+		    (player.ualign.record == 0) ? "nominally " :
 					    "insufficiently ",
-		align_str(u.ualign.type),
-		Upolyd ? mons[u.umonnum].mlevel : u.ulevel,
-		Upolyd ? u.mh : u.uhp,
-		Upolyd ? u.mhmax : u.uhpmax,
-		u.uac,
+		align_str(player.ualign.type),
+		Upolyd ? mons[player.umonnum].mlevel : player.ulevel,
+		Upolyd ? player.mh : player.uhp,
+		Upolyd ? player.mhmax : player.uhpmax,
+		player.uac,
 		info);
 }
 

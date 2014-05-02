@@ -51,7 +51,7 @@ int doread() {
 	    if(flags.verbose)
 		You("break up the cookie and throw away the pieces.");
 	    outrumor(bcsign(scroll), BY_COOKIE);
-	    if (!Blind) u.uconduct.literate++;
+	    if (!Blind) player.uconduct.literate++;
 	    useup(scroll);
 	    return(1);
 #ifdef TOURIST
@@ -81,7 +81,7 @@ int doread() {
 		You_cant("feel any Braille writing.");
 		return 0;
 	    }
-	    u.uconduct.literate++;
+	    player.uconduct.literate++;
 	    if(flags.verbose)
 		pline("It reads:");
 	    strcpy(buf, shirt_msgs[scroll->o_id % SIZE(shirt_msgs)]);
@@ -89,7 +89,7 @@ int doread() {
 	    if (erosion)
 		wipeout_text(buf,
 			(int)(strlen(buf) * erosion / (2*MAX_ERODE)),
-			     scroll->o_id ^ (unsigned)u.ubirthday);
+			     scroll->o_id ^ (unsigned)player.ubirthday);
 	    pline("\"%s\"", buf);
 	    return 1;
 #endif	/* TOURIST */
@@ -113,7 +113,7 @@ int doread() {
 	if (scroll->otyp != SPE_BOOK_OF_THE_DEAD &&
 		scroll->otyp != SPE_BLANK_PAPER &&
 		scroll->otyp != SCR_BLANK_PAPER)
-	    u.uconduct.literate++;
+	    player.uconduct.literate++;
 
 	confused = (Confusion != 0);
 #ifdef MAIL
@@ -478,7 +478,7 @@ void forget_objects(int percent) {
 void forget_map(int howmuch) {
 	int zx, zy;
 
-	if (In_sokoban(&u.uz))
+	if (In_sokoban(&player.uz))
 	    return;
 
 	known = TRUE;
@@ -497,7 +497,7 @@ void forget_traps() {
 
 	/* forget all traps (except the one the hero is in :-) */
 	for (trap = ftrap; trap; trap = trap->ntrap)
-	    if ((trap->tx != u.ux || trap->ty != u.uy) && (trap->ttyp != HOLE))
+	    if ((trap->tx != player.ux || trap->ty != player.uy) && (trap->ttyp != HOLE))
 		trap->tseen = 0;
 }
 
@@ -517,7 +517,7 @@ void forget_levels(int percent) {
 	    return;
 	}
 
-	this_lev = ledger_no(&u.uz);
+	this_lev = ledger_no(&player.uz);
 	maxl = maxledgerno();
 
 	/* count & save indices of non-forgotten visited levels */
@@ -561,7 +561,7 @@ void forget_levels(int percent) {
  */
 static void forget(int howmuch) {
 
-	if (Punished) u.bc_felt = 0;	/* forget felt ball&chain */
+	if (Punished) player.bc_felt = 0;	/* forget felt ball&chain */
 
 	forget_map(howmuch);
 	forget_traps();
@@ -786,23 +786,23 @@ int seffects(Object *sobj) {
 			makeplural(body_part(HAND)),
 			Blind ? "" : " begin to glow",
 			Blind ? (const char *)"tingle" : hcolor(NH_RED),
-			u.umconf ? " even more" : "");
-			u.umconf++;
+			player.umconf ? " even more" : "");
+			player.umconf++;
 		    } else {
 			if (Blind)
 			    Your("%s tingle %s sharply.",
 				makeplural(body_part(HAND)),
-				u.umconf ? "even more" : "very");
+				player.umconf ? "even more" : "very");
 			else
 			    Your("%s glow a%s brilliant %s.",
 				makeplural(body_part(HAND)),
-				u.umconf ? "n even more" : "",
+				player.umconf ? "n even more" : "",
 				hcolor(NH_RED));
 			/* after a while, repeated uses become less effective */
-			if (u.umconf >= 40)
-			    u.umconf++;
+			if (player.umconf >= 40)
+			    player.umconf++;
 			else
-			    u.umconf += rn1(8, 2);
+			    player.umconf += rn1(8, 2);
 		    }
 		}
 		break;
@@ -869,7 +869,7 @@ int seffects(Object *sobj) {
 			       allow auxiliary weapon slots to be used to
 			       artificially increase number of worn items */
 			    if (obj == uswapwep) {
-				if (!u.twoweap) wornmask = 0L;
+				if (!player.twoweap) wornmask = 0L;
 			    } else if (obj == uquiver) {
 				if (obj->oclass == WEAPON_CLASS) {
 				    /* mergeable weapon test covers ammo,
@@ -938,15 +938,15 @@ int seffects(Object *sobj) {
 		break;
 	case SCR_TAMING:
 	case SPE_CHARM_MONSTER:
-		if (u.uswallow) {
-		    maybe_tame(u.ustuck, sobj);
+		if (player.uswallow) {
+		    maybe_tame(player.ustuck, sobj);
 		} else {
 		    int i, j, bd = confused ? 5 : 1;
 		    Monster *mtmp;
 
 		    for (i = -bd; i <= bd; i++) for(j = -bd; j <= bd; j++) {
-			if (!isok(u.ux + i, u.uy + j)) continue;
-			if ((mtmp = m_at(u.ux + i, u.uy + j)) != 0)
+			if (!isok(player.ux + i, player.uy + j)) continue;
+			if ((mtmp = m_at(player.ux + i, player.uy + j)) != 0)
 			    maybe_tame(mtmp, sobj);
 		    }
 		}
@@ -970,8 +970,8 @@ int seffects(Object *sobj) {
 					break;
 			}
 			tele();
-			if(Teleport_control || !couldsee(u.ux0, u.uy0) ||
-			   (distu(u.ux0, u.uy0) >= 16))
+			if(Teleport_control || !couldsee(player.ux0, player.uy0) ||
+			   (distu(player.ux0, player.uy0) >= 16))
 				known = TRUE;
 		}
 		break;
@@ -1008,10 +1008,10 @@ int seffects(Object *sobj) {
 	case SCR_CHARGING:
 		if (confused) {
 		    You_feel("charged up!");
-		    if (u.uen < u.uenmax)
-			u.uen = u.uenmax;
+		    if (player.uen < player.uenmax)
+			player.uen = player.uenmax;
 		    else
-			u.uen = (u.uenmax += d(5,4));
+			player.uen = (player.uenmax += d(5,4));
 		    flags.botl = 1;
 		    break;
 		}
@@ -1081,7 +1081,7 @@ int seffects(Object *sobj) {
 		makeknown(SCR_FIRE);
 		if(confused) {
 		    if(Fire_resistance) {
-			shieldeff(u.ux, u.uy);
+			shieldeff(player.ux, player.uy);
 			if(!Blind)
 			    pline("Oh, look, what a pretty fire in your %s.",
 				makeplural(body_part(HAND)));
@@ -1100,34 +1100,34 @@ int seffects(Object *sobj) {
 		    pline_The("scroll erupts in a tower of flame!");
 		    burn_away_slime();
 		}
-		explode(u.ux, u.uy, 11, (2*(rn1(3, 3) + 2 * cval) + 1)/3,
+		explode(player.ux, player.uy, 11, (2*(rn1(3, 3) + 2 * cval) + 1)/3,
 							SCROLL_CLASS, EXPL_FIERY);
 		return(1);
 	case SCR_EARTH:
 	    /* TODO: handle steeds */
 	    if (
 #ifdef REINCARNATION
-		!Is_rogue_level(&u.uz) && 
+		!Is_rogue_level(&player.uz) && 
 #endif
-	    	 (!In_endgame(&u.uz) || Is_earthlevel(&u.uz))) {
+	    	 (!In_endgame(&player.uz) || Is_earthlevel(&player.uz))) {
 	    	int x, y;
 
 	    	/* Identify the scroll */
-	    	pline_The("%s rumbles %s you!", ceiling(u.ux,u.uy),
+	    	pline_The("%s rumbles %s you!", ceiling(player.ux,player.uy),
 	    			sobj->blessed ? "around" : "above");
 	    	known = 1;
-	    	if (In_sokoban(&u.uz))
+	    	if (In_sokoban(&player.uz))
 	    	    change_luck(-1);	/* Sokoban guilt */
 
 	    	/* Loop through the surrounding squares */
-	    	if (!sobj->cursed) for (x = u.ux-1; x <= u.ux+1; x++) {
-	    	    for (y = u.uy-1; y <= u.uy+1; y++) {
+	    	if (!sobj->cursed) for (x = player.ux-1; x <= player.ux+1; x++) {
+	    	    for (y = player.uy-1; y <= player.uy+1; y++) {
 
 	    	    	/* Is this a suitable spot? */
 	    	    	if (isok(x, y) && !closed_door(x, y) &&
 	    	    			!IS_ROCK(levl[x][y].typ) &&
 	    	    			!IS_AIR(levl[x][y].typ) &&
-					(x != u.ux || y != u.uy)) {
+					(x != player.ux || y != player.uy)) {
 			    Object *otmp2;
 			    Monster *mtmp;
 
@@ -1210,10 +1210,10 @@ int seffects(Object *sobj) {
 		    } else
 			dmg = 0;
 		    /* Must be before the losehp(), for bones files */
-		    if (!flooreffects(otmp2, u.ux, u.uy, "fall")) {
-			place_object(otmp2, u.ux, u.uy);
+		    if (!flooreffects(otmp2, player.ux, player.uy, "fall")) {
+			place_object(otmp2, player.ux, player.uy);
 			stackobj(otmp2);
-			newsym(u.ux, u.uy);
+			newsym(player.ux, player.uy);
 		    }
 		    if (dmg) losehp(dmg, "scroll of earth", KILLED_BY_AN);
 		}
@@ -1233,8 +1233,8 @@ int seffects(Object *sobj) {
 		You("have found a scroll of stinking cloud!");
 		known = TRUE;
 		pline("Where do you want to center the cloud?");
-		cc.x = u.ux;
-		cc.y = u.uy;
+		cc.x = player.ux;
+		cc.y = player.uy;
 		if (getpos(&cc, TRUE, "the desired position") < 0) {
 		    pline(Never_mind);
 		    return 0;
@@ -1257,7 +1257,7 @@ static void wand_explode(Object *obj) {
     obj->in_use = TRUE;	/* in case losehp() is fatal */
     Your("%s vibrates violently, and explodes!",xname(obj));
     nhbell();
-    losehp(rnd(2*(u.uhpmax+1)/3), "exploding wand", KILLED_BY_AN);
+    losehp(rnd(2*(player.uhpmax+1)/3), "exploding wand", KILLED_BY_AN);
     useup(obj);
     exercise(A_STR, FALSE);
 }
@@ -1283,7 +1283,7 @@ void litroom(bool on, Object *obj) {
 		Object *otmp;
 
 		if (!Blind) {
-		    if(u.uswallow) {
+		    if(player.uswallow) {
 			pline("It seems even darker in here than before.");
 			return;
 		    }
@@ -1301,17 +1301,17 @@ void litroom(bool on, Object *obj) {
 		if (Blind) goto do_it;
 	} else {
 		if (Blind) goto do_it;
-		if(u.uswallow){
-			if (is_animal(u.ustuck->data))
+		if(player.uswallow){
+			if (is_animal(player.ustuck->data))
 				pline("%s %s is lit.",
-				        s_suffix(Monnam(u.ustuck)),
-					mbodypart(u.ustuck, STOMACH));
+				        s_suffix(Monnam(player.ustuck)),
+					mbodypart(player.ustuck, STOMACH));
 			else
-				if (is_whirly(u.ustuck->data))
+				if (is_whirly(player.ustuck->data))
 					pline("%s shines briefly.",
-					      Monnam(u.ustuck));
+					      Monnam(player.ustuck));
 				else
-					pline("%s glistens.", Monnam(u.ustuck));
+					pline("%s glistens.", Monnam(player.ustuck));
 			return;
 		}
 		pline("A lit field surrounds you!");
@@ -1319,7 +1319,7 @@ void litroom(bool on, Object *obj) {
 
 do_it:
 	/* No-op in water - can only see the adjacent squares and that's it! */
-	if (Underwater || Is_waterlevel(&u.uz)) return;
+	if (Underwater || Is_waterlevel(&player.uz)) return;
 	/*
 	 *  If we are darkening the room and the hero is punished but not
 	 *  blind, then we have to pick up and replace the ball and chain so
@@ -1329,10 +1329,10 @@ do_it:
 	    move_bc(1, 0, uball->ox, uball->oy, uchain->ox, uchain->oy);
 
 #ifdef REINCARNATION
-	if (Is_rogue_level(&u.uz)) {
+	if (Is_rogue_level(&player.uz)) {
 	    /* Can't use do_clear_area because MAX_RADIUS is too small */
 	    /* rogue lighting must light the entire room */
-	    int rnum = levl[u.ux][u.uy].roomno - ROOMOFFSET;
+	    int rnum = levl[player.ux][player.uy].roomno - ROOMOFFSET;
 	    int rx, ry;
 	    if(rnum >= 0) {
 		for(rx = rooms[rnum].lx-1; rx <= rooms[rnum].hx+1; rx++)
@@ -1344,7 +1344,7 @@ do_it:
 	    /* hallways remain dark on the rogue level */
 	} else
 #endif
-	    do_clear_area(u.ux,u.uy,
+	    do_clear_area(player.ux,player.uy,
 		(obj && obj->oclass==SCROLL_CLASS && obj->blessed) ? 9 : 5,
 		set_lit, (genericptr_t)(on ? &is_lit : (char *)0));
 
@@ -1456,8 +1456,8 @@ static void do_class_genocide() {
 			    kill_genocided_monsters();
 			    update_inventory();		/* eggs & tins */
 			    pline("Wiped out all %s.", nam);
-			    if (Upolyd && i == u.umonnum) {
-				u.mh = -1;
+			    if (Upolyd && i == player.umonnum) {
+				player.mh = -1;
 				if (Unchanging) {
 				    if (!feel_dead++) You("die.");
 				    /* finish genociding this class_id of
@@ -1470,7 +1470,7 @@ static void do_class_genocide() {
 			       or role.  Assumption:  male and female forms
 			       share same monster class_id. */
 			    if (i == urole.malenum || i == urace.malenum) {
-				u.uhp = -1;
+				player.uhp = -1;
 				if (Upolyd) {
 				    if (!feel_dead++) You_feel("dead inside.");
 				} else {
@@ -1507,7 +1507,7 @@ static void do_class_genocide() {
 			}
 		    }
 		}
-		if (gameover || u.uhp == -1) {
+		if (gameover || player.uhp == -1) {
 		    killer_format = KILLED_BY_AN;
 		    killer = "scroll of genocide";
 		    if (gameover) done(GENOCIDED);
@@ -1531,7 +1531,7 @@ void do_genocide(int how) {
 	const char *which;
 
 	if (how & PLAYER) {
-		mndx = u.umonster;	/* non-polymorphed mon num */
+		mndx = player.umonster;	/* non-polymorphed mon num */
 		ptr = &mons[mndx];
 		strcpy(buf, ptr->mname);
 		killplayer++;
@@ -1569,8 +1569,8 @@ void do_genocide(int how) {
 			killplayer++;
 			break;
 		}
-		if (is_human(ptr)) adjalign(-sgn(u.ualign.type));
-		if (is_demon(ptr)) adjalign(sgn(u.ualign.type));
+		if (is_human(ptr)) adjalign(-sgn(player.ualign.type));
+		if (is_demon(ptr)) adjalign(sgn(player.ualign.type));
 
 		if(!(ptr->geno & G_GENO)) {
 			if(flags.soundok) {
@@ -1619,7 +1619,7 @@ void do_genocide(int how) {
 		if (urace.femalenum != NON_PM && mndx == urace.femalenum)
 		    mvitals[urace.malenum].mvflags |= (G_GENOD | G_NOCORPSE);
 
-		u.uhp = -1;
+		player.uhp = -1;
 		if (how & PLAYER) {
 		    killer_format = KILLED_BY;
 		    killer = "genocidal confusion";
@@ -1652,7 +1652,7 @@ void do_genocide(int how) {
 	    if (!(mons[mndx].geno & G_UNIQ) &&
 		    !(mvitals[mndx].mvflags & (G_GENOD | G_EXTINCT)))
 		for (i = rn1(3, 4); i > 0; i--) {
-		    if (!makemon(ptr, u.ux, u.uy, NO_MINVENT))
+		    if (!makemon(ptr, player.ux, player.uy, NO_MINVENT))
 			break;	/* couldn't make one */
 		    ++cnt;
 		    if (mvitals[mndx].mvflags & G_EXTINCT)
@@ -1686,10 +1686,10 @@ void punish(Object *sobj) {
 	 *  Place ball & chain if not swallowed.  If swallowed, the ball &
 	 *  chain variables will be set at the next call to placebc().
 	 */
-	if (!u.uswallow) {
+	if (!player.uswallow) {
 	    placebc();
 	    if (Blind) set_bc(1);	/* set up ball and chain variables */
-	    newsym(u.ux,u.uy);		/* see ball&chain if can't see self */
+	    newsym(player.ux,player.uy);		/* see ball&chain if can't see self */
 	}
 }
 
@@ -1778,13 +1778,13 @@ bool create_particular() {
 		if (monclass != MAXMCLASSES)
 		    whichpm = mkclass(monclass, 0);
 		if (maketame) {
-		    mtmp = makemon(whichpm, u.ux, u.uy, MM_EDOG);
+		    mtmp = makemon(whichpm, player.ux, player.uy, MM_EDOG);
 		    if (mtmp) {
 			initedog(mtmp);
 			set_malign(mtmp);
 		    }
 		} else {
-		    mtmp = makemon(whichpm, u.ux, u.uy, NO_MM_FLAGS);
+		    mtmp = makemon(whichpm, player.ux, player.uy, NO_MM_FLAGS);
 		    if ((makepeaceful || makehostile) && mtmp) {
 			mtmp->mtame = 0;	/* sanity precaution */
 			mtmp->mpeaceful = makepeaceful ? 1 : 0;

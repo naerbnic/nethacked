@@ -253,7 +253,7 @@ void map_object(Object *obj, int show) {
  * by newsym() if necessary.
  */
 void map_invisible(xchar x, xchar y) {
-    if (x != u.ux || y != u.uy) { /* don't display I at hero's location */
+    if (x != player.ux || y != player.uy) { /* don't display I at hero's location */
 	if (level.flags.hero_memory)
 	    levl[x][y].glyph = GLYPH_INVISIBLE;
 	show_glyph(x, y, GLYPH_INVISIBLE);
@@ -469,14 +469,14 @@ void feel_location(xchar x, xchar y) {
     if (glyph_is_invisible(levl[x][y].glyph) && m_at(x,y)) return;
 
     /* The hero can't feel non pool locations while under water. */
-    if (Underwater && !Is_waterlevel(&u.uz) && ! is_pool(x,y))
+    if (Underwater && !Is_waterlevel(&player.uz) && ! is_pool(x,y))
 	return;
 
     /* Set the seen vector as if the hero had seen it.  It doesn't matter */
     /* if the hero is levitating or not.				  */
-    set_seenv(lev, u.ux, u.uy, x, y);
+    set_seenv(lev, player.ux, player.uy, x, y);
 
-    if (Levitation && !Is_airlevel(&u.uz) && !Is_waterlevel(&u.uz)) {
+    if (Levitation && !Is_airlevel(&player.uz) && !Is_waterlevel(&player.uz)) {
 	/*
 	 * Levitation Rules.  It is assumed that the hero can feel the state
 	 * of the walls around herself and can tell if she is in a corridor,
@@ -561,15 +561,15 @@ void feel_location(xchar x, xchar y) {
 	     */
 	    if (uchain->ox == x && uchain->oy == y) {
 		if (level.objects[x][y] == uchain)
-		    u.bc_felt |= BC_CHAIN;
+		    player.bc_felt |= BC_CHAIN;
 		else
-		    u.bc_felt &= ~BC_CHAIN;	/* do not feel the chain */
+		    player.bc_felt &= ~BC_CHAIN;	/* do not feel the chain */
 	    }
 	    if (!carried(uball) && uball->ox == x && uball->oy == y) {
 		if (level.objects[x][y] == uball)
-		    u.bc_felt |= BC_BALL;
+		    player.bc_felt |= BC_BALL;
 		else
-		    u.bc_felt &= ~BC_BALL;	/* do not feel the ball */
+		    player.bc_felt &= ~BC_BALL;	/* do not feel the ball */
 	    }
 	}
 
@@ -582,7 +582,7 @@ void feel_location(xchar x, xchar y) {
 	    show_glyph(x,y, lev->glyph = cmap_to_glyph(S_corr));
     }
     /* draw monster on top if we can sense it */
-    if ((x != u.ux || y != u.uy) && (mon = m_at(x,y)) && sensemon(mon))
+    if ((x != player.ux || y != player.uy) && (mon = m_at(x,y)) && sensemon(mon))
 	display_monster(x, y, mon,
 		(tp_sensemon(mon) || MATCH_WARN_OF_MON(mon)) ? PHYSICALLY_SEEN : DETECTED,
 		is_worm_tail(mon));
@@ -602,16 +602,16 @@ void newsym(int x, int y) {
     if (in_mklev) return;
 
     /* only permit updating the hero when swallowed */
-    if (u.uswallow) {
-	if (x == u.ux && y == u.uy) display_self();
+    if (player.uswallow) {
+	if (x == player.ux && y == player.uy) display_self();
 	return;
     }
-    if (Underwater && !Is_waterlevel(&u.uz)) {
+    if (Underwater && !Is_waterlevel(&player.uz)) {
 	/* don't do anything unless (x,y) is an adjacent underwater position */
 	int dx, dy;
 	if (!is_pool(x,y)) return;
-	dx = x - u.ux;	if (dx < 0) dx = -dx;
-	dy = y - u.uy;	if (dy < 0) dy = -dy;
+	dx = x - player.ux;	if (dx < 0) dx = -dx;
+	dy = y - player.uy;	if (dy < 0) dy = -dy;
 	if (dx > 1 || dy > 1) return;
     }
 
@@ -636,7 +636,7 @@ void newsym(int x, int y) {
 	    show_region(reg,x,y);
 	    return;
 	}
-	if (x == u.ux && y == u.uy) {
+	if (x == player.ux && y == player.uy) {
 	    if (senseself()) {
 		_map_location(x,y,0);	/* map *under* self */
 		display_self();
@@ -676,8 +676,8 @@ void newsym(int x, int y) {
 
     /* Can't see the location. */
     else {
-	if (x == u.ux && y == u.uy) {
-	    feel_location(u.ux, u.uy);		/* forces an update */
+	if (x == player.ux && y == player.uy) {
+	    feel_location(player.ux, player.uy);		/* forces an update */
 
 	    if (senseself()) display_self();
 	}
@@ -891,38 +891,38 @@ void swallowed(int first) {
 		if (isok(x,y)) show_glyph(x,y,cmap_to_glyph(S_stone));
     }
 
-    swallower = monsndx(u.ustuck->data);
-    /* assume isok(u.ux,u.uy) */
-    left_ok = isok(u.ux-1,u.uy);
-    rght_ok = isok(u.ux+1,u.uy);
+    swallower = monsndx(player.ustuck->data);
+    /* assume isok(player.ux,player.uy) */
+    left_ok = isok(player.ux-1,player.uy);
+    rght_ok = isok(player.ux+1,player.uy);
     /*
      *  Display the hero surrounded by the monster's stomach.
      */
-    if(isok(u.ux, u.uy-1)) {
+    if(isok(player.ux, player.uy-1)) {
 	if (left_ok)
-	show_glyph(u.ux-1, u.uy-1, swallow_to_glyph(swallower, S_sw_tl));
-	show_glyph(u.ux  , u.uy-1, swallow_to_glyph(swallower, S_sw_tc));
+	show_glyph(player.ux-1, player.uy-1, swallow_to_glyph(swallower, S_sw_tl));
+	show_glyph(player.ux  , player.uy-1, swallow_to_glyph(swallower, S_sw_tc));
 	if (rght_ok)
-	show_glyph(u.ux+1, u.uy-1, swallow_to_glyph(swallower, S_sw_tr));
+	show_glyph(player.ux+1, player.uy-1, swallow_to_glyph(swallower, S_sw_tr));
     }
 
     if (left_ok)
-    show_glyph(u.ux-1, u.uy  , swallow_to_glyph(swallower, S_sw_ml));
+    show_glyph(player.ux-1, player.uy  , swallow_to_glyph(swallower, S_sw_ml));
     display_self();
     if (rght_ok)
-    show_glyph(u.ux+1, u.uy  , swallow_to_glyph(swallower, S_sw_mr));
+    show_glyph(player.ux+1, player.uy  , swallow_to_glyph(swallower, S_sw_mr));
 
-    if(isok(u.ux, u.uy+1)) {
+    if(isok(player.ux, player.uy+1)) {
 	if (left_ok)
-	show_glyph(u.ux-1, u.uy+1, swallow_to_glyph(swallower, S_sw_bl));
-	show_glyph(u.ux  , u.uy+1, swallow_to_glyph(swallower, S_sw_bc));
+	show_glyph(player.ux-1, player.uy+1, swallow_to_glyph(swallower, S_sw_bl));
+	show_glyph(player.ux  , player.uy+1, swallow_to_glyph(swallower, S_sw_bc));
 	if (rght_ok)
-	show_glyph(u.ux+1, u.uy+1, swallow_to_glyph(swallower, S_sw_br));
+	show_glyph(player.ux+1, player.uy+1, swallow_to_glyph(swallower, S_sw_br));
     }
 
     /* Update the swallowed position. */
-    lastx = u.ux;
-    lasty = u.uy;
+    lastx = player.ux;
+    lasty = player.uy;
 }
 
 /*
@@ -937,7 +937,7 @@ void under_water(int mode) {
     int x, y;
 
     /* swallowing has a higher precedence than under water */
-    if (Is_waterlevel(&u.uz) || u.uswallow) return;
+    if (Is_waterlevel(&player.uz) || player.uswallow) return;
 
     /* full update */
     if (mode == 1 || dela) {
@@ -956,16 +956,16 @@ void under_water(int mode) {
 		if (isok(x,y))
 		    show_glyph(x,y,cmap_to_glyph(S_stone));
     }
-    for (x = u.ux-1; x <= u.ux+1; x++)
-	for (y = u.uy-1; y <= u.uy+1; y++)
+    for (x = player.ux-1; x <= player.ux+1; x++)
+	for (y = player.uy-1; y <= player.uy+1; y++)
 	    if (isok(x,y) && is_pool(x,y)) {
-		if (Blind && !(x == u.ux && y == u.uy))
+		if (Blind && !(x == player.ux && y == player.uy))
 		    show_glyph(x,y,cmap_to_glyph(S_stone));
 		else	
 		    newsym(x,y);
 	    }
-    lastx = u.ux;
-    lasty = u.uy;
+    lastx = player.ux;
+    lasty = player.uy;
 }
 
 /*
@@ -977,7 +977,7 @@ void under_ground(int mode) {
     static bool dela;
 
     /* swallowing has a higher precedence than under ground */
-    if (u.uswallow) return;
+    if (player.uswallow) return;
 
     /* full update */
     if (mode == 1 || dela) {
@@ -991,7 +991,7 @@ void under_ground(int mode) {
     }
     /* limited update */
     else
-	newsym(u.ux,u.uy);
+	newsym(player.ux,player.uy);
 }
 
 
@@ -1021,9 +1021,9 @@ void see_monsters() {
     }
 #ifdef STEED
     /* when mounted, hero's location gets caught by monster loop */
-    if (!u.usteed)
+    if (!player.usteed)
 #endif
-    newsym(u.ux, u.uy);
+    newsym(player.ux, player.uy);
 }
 
 /*
@@ -1088,17 +1088,17 @@ void docrt() {
     int x,y;
     struct rm *lev;
 
-    if (!u.ux) return; /* display isn't ready yet */
+    if (!player.ux) return; /* display isn't ready yet */
 
-    if (u.uswallow) {
+    if (player.uswallow) {
 	swallowed(1);
 	return;
     }
-    if (Underwater && !Is_waterlevel(&u.uz)) {
+    if (Underwater && !Is_waterlevel(&player.uz)) {
 	under_water(1);
 	return;
     }
-    if (u.uburied) {
+    if (player.uburied) {
 	under_ground(1);
 	return;
     }
@@ -1284,7 +1284,7 @@ void flush_screen(int cursor_on_u) {
 	    }
     }
 
-    if (cursor_on_u) curs(WIN_MAP, u.ux,u.uy); /* move cursor to the hero */
+    if (cursor_on_u) curs(WIN_MAP, player.ux,player.uy); /* move cursor to the hero */
     display_nhwindow(WIN_MAP, FALSE);
     reset_glyph_bbox();
     flushing = 0;

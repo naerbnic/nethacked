@@ -120,7 +120,7 @@ Object * mk_artifact(Object *otmp, aligntyp alignment) {
 	for (n = 0, a = artilist+1, m = 1; a->otyp; a++, m++)
 	    if ((!by_align ? a->otyp == o_typ :
 		    (a->alignment == alignment ||
-			(a->alignment == A_NONE && u.ugifts > 0))) &&
+			(a->alignment == A_NONE && player.ugifts > 0))) &&
 		(!(a->spfx & SPFX_NOGEN) || unique) && !artiexist[m]) {
 		if (by_align && a->race != NON_PM && race_hostile(&mons[a->race]))
 		    continue;	/* skip enemies' equipment */
@@ -408,8 +408,8 @@ void set_artifact_intrinsic(Object *otmp, bool on, long wp_mask) {
 	}
 	if (spfx & SPFX_XRAY) {
 	    /* this assumes that no one else is using xray_range */
-	    if (on) u.xray_range = 3;
-	    else u.xray_range = -1;
+	    if (on) player.xray_range = 3;
+	    else player.xray_range = -1;
 	    vision_full_recalc = 1;
 	}
 	if ((spfx & SPFX_REFLECT) && (wp_mask & W_WEP)) {
@@ -420,7 +420,7 @@ void set_artifact_intrinsic(Object *otmp, bool on, long wp_mask) {
 	if(wp_mask == W_ART && !on && oart->inv_prop) {
 	    /* might have to turn off invoked power too */
 	    if (oart->inv_prop <= LAST_PROP &&
-		(u.uprops[oart->inv_prop].extrinsic & W_ARTI))
+		(player.uprops[oart->inv_prop].extrinsic & W_ARTI))
 		(void) arti_invoke(otmp);
 	}
 }
@@ -447,7 +447,7 @@ int touch_artifact(Object *obj, Monster *mon) {
 		   ((oart->role != NON_PM && !Role_if(oart->role)) ||
 		    (oart->race != NON_PM && !Race_if(oart->race)));
 	badalign = (oart->spfx & SPFX_RESTR) && oart->alignment != A_NONE &&
-		   (oart->alignment != u.ualign.type || u.ualign.record < 0);
+		   (oart->alignment != player.ualign.type || player.ualign.record < 0);
     } else if (!is_covetous(mon->data) && !is_mplayer(mon->data)) {
 	badclass = self_willed &&
 		   oart->role != NON_PM && oart != &artilist[ART_EXCALIBUR];
@@ -513,9 +513,9 @@ STATIC_OVL int spec_applies(const Artifact *weap, Monster *mtmp) {
 	} else if (weap->spfx & SPFX_DFLAG2) {
 	    return ((ptr->mflags2 & weap->mtype) || (yours &&
 			((!Upolyd && (urace.selfmask & weap->mtype)) ||
-			 ((weap->mtype & M2_WERE) && u.ulycn >= LOW_PM))));
+			 ((weap->mtype & M2_WERE) && player.ulycn >= LOW_PM))));
 	} else if (weap->spfx & SPFX_DALIGN) {
-	    return yours ? (u.ualign.type != weap->alignment) :
+	    return yours ? (player.ualign.type != weap->alignment) :
 			   (ptr->maligntyp == A_NONE ||
 				sgn(ptr->maligntyp) != weap->alignment);
 	} else if (weap->spfx & SPFX_ATTK) {
@@ -735,10 +735,10 @@ STATIC_OVL bool Mb_hit(Monster *magr, Monster *mdef, Object *mb, int *dmgptr, in
 	    if (youdefend) {
 		if (youmonst.data != old_uasmon)
 		    *dmgptr = 0;    /* rehumanized, so no more damage */
-		if (u.uenmax > 0) {
+		if (player.uenmax > 0) {
 		    You("lose magical energy!");
-		    u.uenmax--;
-		    if (u.uen > 0) u.uen--;
+		    player.uenmax--;
+		    if (player.uen > 0) player.uen--;
 		    flags.botl = 1;
 		}
 	    } else {
@@ -746,8 +746,8 @@ STATIC_OVL bool Mb_hit(Monster *magr, Monster *mdef, Object *mb, int *dmgptr, in
 		    mdef->mhp = 1;	/* cancelled clay golems will die */
 		if (youattack && attacktype(mdef->data, AT_MAGC)) {
 		    You("absorb magical energy!");
-		    u.uenmax++;
-		    u.uen++;
+		    player.uenmax++;
+		    player.uen++;
 		    flags.botl = 1;
 		}
 	    }
@@ -761,8 +761,8 @@ STATIC_OVL bool Mb_hit(Monster *magr, Monster *mdef, Object *mb, int *dmgptr, in
 	    } else {
 		nomul(-3, "being scared stiff");
 		nomovemsg = "";
-		if (magr && magr == u.ustuck && sticks(youmonst.data)) {
-		    u.ustuck = (Monster *)0;
+		if (magr && magr == player.ustuck && sticks(youmonst.data)) {
+		    player.ustuck = (Monster *)0;
 		    You("release %s!", mon_nam(magr));
 		}
 	    }
@@ -809,8 +809,8 @@ STATIC_OVL bool Mb_hit(Monster *magr, Monster *mdef, Object *mb, int *dmgptr, in
 	(void) upstart(hittee);	/* capitalize */
 	if (resisted) {
 	    pline("%s %s!", hittee, vtense(hittee, "resist"));
-	    shieldeff(youdefend ? u.ux : mdef->mx,
-		      youdefend ? u.uy : mdef->my);
+	    shieldeff(youdefend ? player.ux : mdef->mx,
+		      youdefend ? player.uy : mdef->my);
 	}
 	if ((do_stun || do_confuse) && flags.verbose) {
 	    char buf[BUFSZ];
@@ -840,7 +840,7 @@ bool artifact_hit(Monster *magr, Monster *mdef, Object *otmp, int *dmgptr, int d
 	bool youdefend = (mdef == &youmonst);
 	bool vis = (!youattack && magr && cansee(magr->mx, magr->my))
 	    || (!youdefend && cansee(mdef->mx, mdef->my))
-	    || (youattack && u.uswallow && mdef == u.ustuck && !Blind);
+	    || (youattack && player.uswallow && mdef == player.ustuck && !Blind);
 	bool realizes_damage;
 	const char *wepdesc;
 	static const char you[] = "you";
@@ -861,7 +861,7 @@ bool artifact_hit(Monster *magr, Monster *mdef, Object *otmp, int *dmgptr, int d
 
 	realizes_damage = (youdefend || vis || 
 			   /* feel the effect even if not seen */
-			   (youattack && mdef == u.ustuck));
+			   (youattack && mdef == player.ustuck));
 
 	/* the four basic attacks: fire, cold, shock and missiles */
 	if (attacks(AD_FIRE, otmp)) {
@@ -920,7 +920,7 @@ bool artifact_hit(Monster *magr, Monster *mdef, Object *otmp, int *dmgptr, int d
 	    if (otmp->oartifact == ART_TSURUGI_OF_MURAMASA && dieroll == 1) {
 		wepdesc = "The razor-sharp blade";
 		/* not really beheading, but so close, why add another SPFX */
-		if (youattack && u.uswallow && mdef == u.ustuck) {
+		if (youattack && player.uswallow && mdef == player.ustuck) {
 		    You("slice %s wide open!", mon_nam(mdef));
 		    *dmgptr = 2 * mdef->mhp + FATAL_DAMAGE_MODIFIER;
 		    return TRUE;
@@ -957,7 +957,7 @@ bool artifact_hit(Monster *magr, Monster *mdef, Object *otmp, int *dmgptr, int d
 			 * value to the damage so that this reduction in
 			 * damage does not prevent death.
 			 */
-			*dmgptr = 2 * (Upolyd ? u.mh : u.uhp) + FATAL_DAMAGE_MODIFIER;
+			*dmgptr = 2 * (Upolyd ? player.mh : player.uhp) + FATAL_DAMAGE_MODIFIER;
 			pline("%s cuts you in half!", wepdesc);
 			otmp->dknown = TRUE;
 			return TRUE;
@@ -969,11 +969,11 @@ bool artifact_hit(Monster *magr, Monster *mdef, Object *otmp, int *dmgptr, int d
 		     "%s decapitates %s!"
 		};
 
-		if (youattack && u.uswallow && mdef == u.ustuck)
+		if (youattack && player.uswallow && mdef == player.ustuck)
 			return FALSE;
 		wepdesc = artilist[ART_VORPAL_BLADE].name;
 		if (!youdefend) {
-			if (!has_head(mdef->data) || notonhead || u.uswallow) {
+			if (!has_head(mdef->data) || notonhead || player.uswallow) {
 				if (youattack)
 					pline("Somehow, you miss %s wildly.",
 						mon_nam(mdef));
@@ -1006,7 +1006,7 @@ bool artifact_hit(Monster *magr, Monster *mdef, Object *otmp, int *dmgptr, int d
 				      wepdesc, body_part(NECK));
 				return TRUE;
 			}
-			*dmgptr = 2 * (Upolyd ? u.mh : u.uhp)
+			*dmgptr = 2 * (Upolyd ? player.mh : player.uhp)
 				  + FATAL_DAMAGE_MODIFIER;
 			pline(behead_msg[rn2(SIZE(behead_msg))],
 			      wepdesc, "you");
@@ -1040,7 +1040,7 @@ bool artifact_hit(Monster *magr, Monster *mdef, Object *otmp, int *dmgptr, int d
 			}
 			return vis;
 		} else { /* youdefend */
-			int oldhpmax = u.uhpmax;
+			int oldhpmax = player.uhpmax;
 
 			if (Blind)
 				You_feel("an %s drain your life!",
@@ -1054,7 +1054,7 @@ bool artifact_hit(Monster *magr, Monster *mdef, Object *otmp, int *dmgptr, int d
 				      The(distant_name(otmp, xname)));
 			losexp("life drainage");
 			if (magr && magr->mhp < magr->mhpmax) {
-			    magr->mhp += (oldhpmax - u.uhpmax)/2;
+			    magr->mhp += (oldhpmax - player.uhpmax)/2;
 			    if (magr->mhp > magr->mhpmax) magr->mhp = magr->mhpmax;
 			}
 			return TRUE;
@@ -1109,10 +1109,10 @@ STATIC_OVL int arti_invoke(Object *obj) {
 	    break;
 	  }
 	case HEALING: {
-	    int healamt = (u.uhpmax + 1 - u.uhp) / 2;
-	    long creamed = (long)u.ucreamed;
+	    int healamt = (player.uhpmax + 1 - player.uhp) / 2;
+	    long creamed = (long)player.ucreamed;
 
-	    if (Upolyd) healamt = (u.mhmax + 1 - u.mh) / 2;
+	    if (Upolyd) healamt = (player.mhmax + 1 - player.mh) / 2;
 	    if (healamt || Sick || Slimed || Blinded > creamed) {
 		You_feel("better.");
             } else {
@@ -1122,8 +1122,8 @@ STATIC_OVL int arti_invoke(Object *obj) {
               return 1;
             }
 	    if (healamt > 0) {
-		if (Upolyd) u.mh += healamt;
-		else u.uhp += healamt;
+		if (Upolyd) player.mh += healamt;
+		else player.uhp += healamt;
 	    }
 	    if(Sick) make_sick(0L,(char *)0,FALSE,SICK_ALL);
 	    if(Slimed) Slimed = 0L;
@@ -1132,12 +1132,12 @@ STATIC_OVL int arti_invoke(Object *obj) {
 	    break;
 	  }
 	case ENERGY_BOOST: {
-	    int epboost = (u.uenmax + 1 - u.uen) / 2;
+	    int epboost = (player.uenmax + 1 - player.uen) / 2;
 	    if (epboost > 120) epboost = 120;		/* arbitrary */
-	    else if (epboost < 12) epboost = u.uenmax - u.uen;
+	    else if (epboost < 12) epboost = player.uenmax - player.uen;
 	    if(epboost) {
 		You_feel("re-energized.");
-		u.uen += epboost;
+		player.uen += epboost;
 		flags.botl = 1;
 	    } else {
               /* you had the property from some other source too */
@@ -1215,12 +1215,12 @@ STATIC_OVL int arti_invoke(Object *obj) {
 	     * The closest level is either the entry or dunlev_ureached.
 	     */
 	    newlev.dnum = i;
-	    if(dungeons[i].depth_start >= depth(&u.uz))
+	    if(dungeons[i].depth_start >= depth(&player.uz))
 		newlev.dlevel = dungeons[i].entry_lev;
 	    else
 		newlev.dlevel = dungeons[i].dunlev_ureached;
-	    if(u.uhave.amulet || In_endgame(&u.uz) || In_endgame(&newlev) ||
-	       newlev.dnum == u.uz.dnum) {
+	    if(player.uhave.amulet || In_endgame(&player.uz) || In_endgame(&newlev) ||
+	       newlev.dnum == player.uz.dnum) {
 		You_feel("very disoriented for a moment.");
 	    } else {
 		if(!Blind) You("are surrounded by a shimmering sphere!");
@@ -1258,13 +1258,13 @@ STATIC_OVL int arti_invoke(Object *obj) {
 	  }
 	}
     } else {
-	long eprop = (u.uprops[oart->inv_prop].extrinsic ^= W_ARTI),
-	     iprop = u.uprops[oart->inv_prop].intrinsic;
+	long eprop = (player.uprops[oart->inv_prop].extrinsic ^= W_ARTI),
+	     iprop = player.uprops[oart->inv_prop].intrinsic;
 	bool on = (eprop & W_ARTI) != 0; /* true if invoked prop just set */
 
 	if(on && obj->age > monstermoves) {
 	    /* the artifact is tired :-) */
-	    u.uprops[oart->inv_prop].extrinsic ^= W_ARTI;
+	    player.uprops[oart->inv_prop].extrinsic ^= W_ARTI;
 	    You_feel("that %s %s ignoring you.",
 		     the(xname(obj)), otense(obj, "are"));
 	    /* can't just keep repeatedly trying */
@@ -1300,7 +1300,7 @@ STATIC_OVL int arti_invoke(Object *obj) {
                   You_feel("a surge of power, but nothing seems to happen.");
               return 1;
             }
-	    newsym(u.ux, u.uy);
+	    newsym(player.ux, player.uy);
 	    if (on)
 		Your("body takes on a %s transparency...",
 		     Hallucination ? "normal" : "strange");

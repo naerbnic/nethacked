@@ -87,7 +87,7 @@ bool resists_blnd(Monster *mon) {
 	bool is_you = (mon == &youmonst);
 	Object *o;
 
-	if (is_you ? (Blind || u.usleep) :
+	if (is_you ? (Blind || player.usleep) :
 		(mon->mblinded || !mon->mcansee || !haseyes(ptr) ||
 		    /* BUG: temporary sleep sets mfrozen, but since
 			    paralysis does too, we can't check it */
@@ -135,19 +135,19 @@ bool can_blnd(Monster *magr, Monster *mdef, uchar aatyp, Object *obj) {
 		    return FALSE;
 	    } else if (obj && (obj->otyp == BLINDING_VENOM)) {
 		/* all ublindf, including LENSES, protect, cream-pies too */
-		if (is_you && (ublindf || u.ucreamed))
+		if (is_you && (ublindf || player.ucreamed))
 		    return FALSE;
 		check_visor = TRUE;
 	    } else if (obj && (obj->otyp == POT_BLINDNESS)) {
 		return TRUE;	/* no defense */
 	    } else
 		return FALSE;	/* other objects cannot cause blindness yet */
-	    if ((magr == &youmonst) && u.uswallow)
+	    if ((magr == &youmonst) && player.uswallow)
 		return FALSE;	/* can't affect eyes while inside monster */
 	    break;
 
 	case AT_ENGL:
-	    if (is_you && (Blindfolded || u.usleep || u.ucreamed))
+	    if (is_you && (Blindfolded || player.usleep || player.ucreamed))
 		return FALSE;
 	    if (!is_you && mdef->msleeping)
 		return FALSE;
@@ -157,7 +157,7 @@ bool can_blnd(Monster *magr, Monster *mdef, uchar aatyp, Object *obj) {
 	    /* e.g. raven: all ublindf, including LENSES, protect */
 	    if (is_you && ublindf)
 		return FALSE;
-	    if ((magr == &youmonst) && u.uswallow)
+	    if ((magr == &youmonst) && player.uswallow)
 		return FALSE;	/* can't affect eyes while inside monster */
 	    check_visor = TRUE;
 	    break;
@@ -478,7 +478,7 @@ bool levl_follower(Monster *mtmp) {
 	/* stalking types follow, but won't when fleeing unless you hold
 	   the Amulet */
 	return (bool)((mtmp->data->mflags2 & M2_STALK) &&
-				(!mtmp->mflee || u.uhave.amulet));
+				(!mtmp->mflee || player.uhave.amulet));
 }
 
 static const short grownups[][2] = {

@@ -206,7 +206,7 @@ STATIC_OVL void convert_arg(char c) {
 	    case 'c':	str = (flags.female && urole.name.f) ?
 	    			urole.name.f : urole.name.m;
 			break;
-	    case 'r':	str = rank_of(u.ulevel, Role_switch, flags.female);
+	    case 'r':	str = rank_of(player.ulevel, Role_switch, flags.female);
 			break;
 	    case 'R':	str = rank_of(MIN_QUEST_LEVEL, Role_switch,
 	    			flags.female);
@@ -225,15 +225,15 @@ STATIC_OVL void convert_arg(char c) {
 			break;
 	    case 'g':	str = guardname();
 			break;
-	    case 'G':	str = align_gtitle(u.ualignbase[A_ORIGINAL]);
+	    case 'G':	str = align_gtitle(player.ualignbase[A_ORIGINAL]);
 			break;
 	    case 'H':	str = homebase();
 			break;
-	    case 'a':	str = align_str(u.ualignbase[A_ORIGINAL]);
+	    case 'a':	str = align_str(player.ualignbase[A_ORIGINAL]);
 			break;
-	    case 'A':	str = align_str(u.ualign.type);
+	    case 'A':	str = align_str(player.ualign.type);
 			break;
-	    case 'd':	str = align_gname(u.ualignbase[A_ORIGINAL]);
+	    case 'd':	str = align_gname(player.ualignbase[A_ORIGINAL]);
 			break;
 	    case 'D':	str = align_gname(A_LAWFUL);
 			break;

@@ -56,7 +56,7 @@
 					/* IF the monster		    */\
     (!mon->minvis || See_invisible) &&	/* 1. is not invisible AND	    */\
     (!mon->mundetected) &&		/* 2. not an undetected hider	    */\
-    (!(mon->mburied || u.uburied))	/* 3. neither you or it is buried   */\
+    (!(mon->mburied || player.uburied))	/* 3. neither you or it is buried   */\
 )
 
 /*
@@ -129,10 +129,10 @@
  *
  * This returns true if the hero can see her/himself.
  *
- * The u.uswallow check assumes that you can see yourself even if you are
+ * The player.uswallow check assumes that you can see yourself even if you are
  * invisible.  If not, then we don't need the check.
  */
-#define canseeself()	(Blind || u.uswallow || (!Invisible && !u.uundetected))
+#define canseeself()	(Blind || player.uswallow || (!Invisible && !player.uundetected))
 #define senseself()	(canseeself() || Unblind_telepat || Detect_monsters)
 
 /*
@@ -193,14 +193,14 @@
  * _if_ the hero can be seen have already been done.
  */
 #ifdef STEED
-#define maybe_display_usteed	(u.usteed && mon_visible(u.usteed)) ? \
-					ridden_mon_to_glyph(u.usteed) :
+#define maybe_display_usteed	(player.usteed && mon_visible(player.usteed)) ? \
+					ridden_mon_to_glyph(player.usteed) :
 #else
 #define maybe_display_usteed	/* empty */
 #endif
 
 #define display_self()							\
-    show_glyph(u.ux, u.uy,						\
+    show_glyph(player.ux, player.uy,						\
 	maybe_display_usteed			/* else */		\
 	youmonst.m_ap_type == M_AP_NOTHING ?				\
 				hero_glyph :				\
@@ -312,7 +312,7 @@
 /* The hero's glyph when seen as a monster.
  */
 #define hero_glyph \
-	monnum_to_glyph((Upolyd || !iflags.showrace) ? u.umonnum : \
+	monnum_to_glyph((Upolyd || !iflags.showrace) ? player.umonnum : \
 	                (flags.female && urace.femalenum != NON_PM) ? urace.femalenum : \
 	                urace.malenum)
 

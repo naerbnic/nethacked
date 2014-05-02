@@ -92,7 +92,7 @@ void genl_outrip(winid tmpwin, int how) {
 
 	/* Put $ on stone */
 #ifndef GOLDOBJ
-	sprintf(buf, "%ld Au", u.ugold);
+	sprintf(buf, "%ld Au", player.ugold);
 #else
 	sprintf(buf, "%ld Au", done_money);
 #endif

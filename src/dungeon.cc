@@ -952,45 +952,45 @@ branch * Is_branchlev(d_level *lev) {
 
 /* goto the next level (or appropriate dungeon) */
 void next_level(bool at_stairs) {
-	if (at_stairs && u.ux == sstairs.sx && u.uy == sstairs.sy) {
+	if (at_stairs && player.ux == sstairs.sx && player.uy == sstairs.sy) {
 		/* Taking a down dungeon branch. */
 		goto_level(&sstairs.tolev, at_stairs, FALSE, FALSE);
 	} else {
 		/* Going down a stairs or jump in a trap door. */
 		d_level	newlevel;
 
-		newlevel.dnum = u.uz.dnum;
-		newlevel.dlevel = u.uz.dlevel + 1;
+		newlevel.dnum = player.uz.dnum;
+		newlevel.dlevel = player.uz.dlevel + 1;
 		goto_level(&newlevel, at_stairs, !at_stairs, FALSE);
 	}
 }
 
 /* goto the previous level (or appropriate dungeon) */
 void prev_level(bool at_stairs) {
-	if (at_stairs && u.ux == sstairs.sx && u.uy == sstairs.sy) {
+	if (at_stairs && player.ux == sstairs.sx && player.uy == sstairs.sy) {
 		/* Taking an up dungeon branch. */
 		/* KMH -- Upwards branches are okay if not level 1 */
 		/* (Just make sure it doesn't go above depth 1) */
-		if(!u.uz.dnum && u.uz.dlevel == 1 && !u.uhave.amulet) done(ESCAPED);
+		if(!player.uz.dnum && player.uz.dlevel == 1 && !player.uhave.amulet) done(ESCAPED);
 		else goto_level(&sstairs.tolev, at_stairs, FALSE, FALSE);
 	} else {
 		/* Going up a stairs or rising through the ceiling. */
 		d_level	newlevel;
-		newlevel.dnum = u.uz.dnum;
-		newlevel.dlevel = u.uz.dlevel - 1;
+		newlevel.dnum = player.uz.dnum;
+		newlevel.dlevel = player.uz.dlevel - 1;
 		goto_level(&newlevel, at_stairs, FALSE, FALSE);
 	}
 }
 
 void u_on_newpos(int x, int y) {
-	u.ux = x;
-	u.uy = y;
+	player.ux = x;
+	player.uy = y;
 #ifdef CLIPPING
-	cliparound(u.ux, u.uy);
+	cliparound(player.ux, player.uy);
 #endif
 #ifdef STEED
 	/* ridden steed always shares hero's location */
-	if (u.usteed) u.usteed->mx = u.ux, u.usteed->my = u.uy;
+	if (player.usteed) player.usteed->mx = player.ux, player.usteed->my = player.uy;
 #endif
 }
 
@@ -1094,11 +1094,11 @@ bool Can_rise_up(int x, int y, d_level *lev) {
  */
 void get_level(d_level *newlevel, int levnum) {
 	branch *br;
-	xchar dgn = u.uz.dnum;
+	xchar dgn = player.uz.dnum;
 
 	if (levnum <= 0) {
 	    /* can only currently happen in endgame */
-	    levnum = u.uz.dlevel;
+	    levnum = player.uz.dlevel;
 	} else if (levnum > dungeons[dgn].depth_start
 			    + dungeons[dgn].num_dunlevs - 1) {
 	    /* beyond end of dungeon, jump to last level */
@@ -1187,7 +1187,7 @@ bool at_dgn_entrance(const char *s) {
     branch *br;
 
     br = dungeon_branch(s);
-    return((bool)(on_level(&u.uz, &br->end1) ? TRUE : FALSE));
+    return((bool)(on_level(&player.uz, &br->end1) ? TRUE : FALSE));
 }
 
 /* is `lev' part of Vlad's tower? */
@@ -1264,14 +1264,14 @@ void assign_rnd_level(d_level* dest, d_level* src, int range) {
 #ifdef OVL0
 
 int induced_align(int pct) {
-	s_level	*lev = Is_special(&u.uz);
+	s_level	*lev = Is_special(&player.uz);
 	aligntyp al;
 
 	if (lev && lev->flags.align)
 		if(rn2(100) < pct) return(lev->flags.align);
 
-	if(dungeons[u.uz.dnum].flags.align)
-		if(rn2(100) < pct) return(dungeons[u.uz.dnum].flags.align);
+	if(dungeons[player.uz.dnum].flags.align)
+		if(rn2(100) < pct) return(dungeons[player.uz.dnum].flags.align);
 
 	al = rn2(3) - 1;
 	return(Align2amask(al));
@@ -1289,13 +1289,13 @@ bool Invocation_lev(d_level *lev) {
  * dependent on the location in the dungeon (eg. monster creation).
  */
 xchar level_difficulty() {
-	if (In_endgame(&u.uz))
-		return((xchar)(depth(&sanctum_level) + u.ulevel/2));
+	if (In_endgame(&player.uz))
+		return((xchar)(depth(&sanctum_level) + player.ulevel/2));
 	else
-		if (u.uhave.amulet)
+		if (player.uhave.amulet)
 			return(deepest_lev_reached(FALSE));
 		else
-			return((xchar) depth(&u.uz));
+			return((xchar) depth(&player.uz));
 }
 
 /* Take one word and try to match it to a level.
@@ -1318,18 +1318,18 @@ schar lev_by_name(const char *nam) {
     /* hell is the old name, and wouldn't match; gehennom would match its
        branch, yielding the castle level instead of the valley of the dead */
     if (!strcmpi(nam, "gehennom") || !strcmpi(nam, "hell")) {
-	if (In_V_tower(&u.uz)) nam = " to Vlad's tower";  /* branch to... */
+	if (In_V_tower(&player.uz)) nam = " to Vlad's tower";  /* branch to... */
 	else nam = "valley";
     }
 
     if ((slev = find_level(nam)) != 0) {
 	dlev = slev->dlevel;
 	idx = ledger_no(&dlev);
-	if ((dlev.dnum == u.uz.dnum ||
+	if ((dlev.dnum == player.uz.dnum ||
 		/* within same branch, or else main dungeon <-> gehennom */
-		(u.uz.dnum == valley_level.dnum &&
+		(player.uz.dnum == valley_level.dnum &&
 			dlev.dnum == medusa_level.dnum) ||
-		(u.uz.dnum == medusa_level.dnum &&
+		(player.uz.dnum == medusa_level.dnum &&
 			dlev.dnum == valley_level.dnum)) &&
 	    (	/* either wizard mode or else seen and not forgotten */
 #ifdef WIZARD
@@ -1353,7 +1353,7 @@ schar lev_by_name(const char *nam) {
 #endif
 		((level_info[idx].flags & (FORGOTTEN|VISITED)) == VISITED &&
 		 (level_info[idxtoo].flags & (FORGOTTEN|VISITED)) == VISITED)) {
-		if (ledger_to_dnum(idxtoo) == u.uz.dnum) idx = idxtoo;
+		if (ledger_to_dnum(idxtoo) == player.uz.dnum) idx = idxtoo;
 		dlev.dnum = ledger_to_dnum(idx);
 		dlev.dlevel = ledger_to_dlev(idx);
 		lev = depth(&dlev);
@@ -1523,10 +1523,10 @@ schar print_dungeon(bool bymenu, schar *rlev, xchar *rdgn) {
     }
 
     /* I hate searching for the invocation pos while debugging. -dean */
-    if (Invocation_lev(&u.uz)) {
+    if (Invocation_lev(&player.uz)) {
 	putstr(win, 0, "");
 	sprintf(buf, "Invocation position @ (%d,%d), hero @ (%d,%d)",
-		inv_pos.x, inv_pos.y, u.ux, u.uy);
+		inv_pos.x, inv_pos.y, player.ux, player.uy);
 	putstr(win, 0, buf);
     }
     /*
@@ -1534,8 +1534,8 @@ schar print_dungeon(bool bymenu, schar *rlev, xchar *rdgn) {
      * created by the level compiler (not the dungeon compiler) only exist
      * one per level (currently true, of course).
      */
-    else if (Is_earthlevel(&u.uz) || Is_waterlevel(&u.uz)
-				|| Is_firelevel(&u.uz) || Is_airlevel(&u.uz)) {
+    else if (Is_earthlevel(&player.uz) || Is_waterlevel(&player.uz)
+				|| Is_firelevel(&player.uz) || Is_airlevel(&player.uz)) {
 	Trap *trap;
 	for (trap = ftrap; trap; trap = trap->ntrap)
 	    if (trap->ttyp == MAGIC_PORTAL) break;
@@ -1543,7 +1543,7 @@ schar print_dungeon(bool bymenu, schar *rlev, xchar *rdgn) {
 	putstr(win, 0, "");
 	if (trap)
 	    sprintf(buf, "Portal @ (%d,%d), hero @ (%d,%d)",
-		trap->tx, trap->ty, u.ux, u.uy);
+		trap->tx, trap->ty, player.ux, player.uy);
 	else
 	    sprintf(buf, "No portal found.");
 	putstr(win, 0, buf);

@@ -55,7 +55,7 @@ STATIC_OVL MonsterType * lookat(int x, int y, char *buf, char *monbuf) {
 
     buf[0] = monbuf[0] = 0;
     glyph = glyph_at(x,y);
-    if (u.ux == x && u.uy == y && senseself()) {
+    if (player.ux == x && player.uy == y && senseself()) {
 	char race[QBUFSZ];
 
 	/* if not polymorphed, show both the role and the race */
@@ -67,7 +67,7 @@ STATIC_OVL MonsterType * lookat(int x, int y, char *buf, char *monbuf) {
 	sprintf(buf, "%s%s%s called %s",
 		Invis ? "invisible " : "",
 		race,
-		mons[u.umonnum].mname,
+		mons[player.umonnum].mname,
 		plname);
 	/* file lookup can't distinguish between "gnomish wizard" monster
 	   and correspondingly named player character, always picking the
@@ -76,10 +76,10 @@ STATIC_OVL MonsterType * lookat(int x, int y, char *buf, char *monbuf) {
 	    pm = &mons[PM_WIZARD];
 
 #ifdef STEED
-	if (u.usteed) {
+	if (player.usteed) {
 	    char steedbuf[BUFSZ];
 
-	    sprintf(steedbuf, ", mounted on %s", y_monnam(u.usteed));
+	    sprintf(steedbuf, ", mounted on %s", y_monnam(player.usteed));
 	    /* assert((sizeof buf >= strlen(buf)+strlen(steedbuf)+1); */
 	    strcat(buf, steedbuf);
 	}
@@ -88,7 +88,7 @@ STATIC_OVL MonsterType * lookat(int x, int y, char *buf, char *monbuf) {
 	   (even if you could also see yourself via other means).
 	   Sensing self while blind or swallowed is treated as if it
 	   were by normal vision (cf canseeself()). */
-	if ((Invisible || u.uundetected) && !Blind && !u.uswallow) {
+	if ((Invisible || player.uundetected) && !Blind && !player.uswallow) {
 	    unsigned how = 0;
 
 	    if (Infravision)	 how |= 1;
@@ -105,11 +105,11 @@ STATIC_OVL MonsterType * lookat(int x, int y, char *buf, char *monbuf) {
 			((how & 7) > 4) ? ", " : "",
 			(how & 4) ? "monster detection" : "");
 	}
-    } else if (u.uswallow) {
+    } else if (player.uswallow) {
 	/* all locations when swallowed other than the hero are the monster */
 	sprintf(buf, "interior of %s",
-				    Blind ? "a monster" : a_monnam(u.ustuck));
-	pm = u.ustuck->data;
+				    Blind ? "a monster" : a_monnam(player.ustuck));
+	pm = player.ustuck->data;
     } else if (glyph_is_monster(glyph)) {
 	bhitpos.x = x;
 	bhitpos.y = y;
@@ -131,7 +131,7 @@ STATIC_OVL MonsterType * lookat(int x, int y, char *buf, char *monbuf) {
 		    (mtmp->mtame && accurate) ? "tame " :
 		    (mtmp->mpeaceful && accurate) ? "peaceful " : "",
 		    name);
-	    if (u.ustuck == mtmp)
+	    if (player.ustuck == mtmp)
 		strcat(buf, (Upolyd && sticks(youmonst.data)) ?
 			", being held" : ", holding you");
 	    if (mtmp->mleashed)
@@ -152,7 +152,7 @@ STATIC_OVL MonsterType * lookat(int x, int y, char *buf, char *monbuf) {
 		int ways_seen = 0, normal = 0, xraydist;
 		bool useemon = (bool) canseemon(mtmp);
 
-		xraydist = (u.xray_range<0) ? -1 : u.xray_range * u.xray_range;
+		xraydist = (player.xray_range<0) ? -1 : player.xray_range * player.xray_range;
 		/* normal vision */
 		if ((mtmp->wormno ? worm_known(mtmp) : cansee(mtmp->mx, mtmp->my)) &&
 			mon_visible(mtmp) && !mtmp->minvis) {
@@ -254,7 +254,7 @@ STATIC_OVL MonsterType * lookat(int x, int y, char *buf, char *monbuf) {
 	strcpy(buf,"dark part of a room");
     } else switch(glyph_to_cmap(glyph)) {
     case S_altar:
-	if(!In_endgame(&u.uz))
+	if(!In_endgame(&player.uz))
 	    sprintf(buf, "%s altar",
 		align_str(Amask2align(levl[x][y].altarmask & ~AM_SHRINE)));
 	else sprintf(buf, "aligned altar");
@@ -268,7 +268,7 @@ STATIC_OVL MonsterType * lookat(int x, int y, char *buf, char *monbuf) {
 	    strcpy(buf,"doorway");
 	break;
     case S_cloud:
-	strcpy(buf, Is_airlevel(&u.uz) ? "cloudy area" : "fog/vapor cloud");
+	strcpy(buf, Is_airlevel(&player.uz) ? "cloudy area" : "fog/vapor cloud");
 	break;
     default:
 	strcpy(buf,defsyms[glyph_to_cmap(glyph)].explanation);
@@ -465,8 +465,8 @@ STATIC_OVL int do_look(bool quick) {
     }
 
     if (from_screen) {
-	cc.x = u.ux;
-	cc.y = u.uy;
+	cc.x = player.ux;
+	cc.y = player.uy;
 	sym = 0;		/* gcc -Wall lint */
     } else {
 	getlin("Specify what? (type the word)", out_str);
@@ -560,7 +560,7 @@ STATIC_OVL int do_look(bool quick) {
 	   playing a character which isn't normally displayed by that
 	   symbol; firstmatch is assumed to already be set for '@' */
 	if ((from_screen ?
-		(sym == monsyms[S_HUMAN] && cc.x == u.ux && cc.y == u.uy) :
+		(sym == monsyms[S_HUMAN] && cc.x == player.ux && cc.y == player.uy) :
 		(sym == def_monsyms[S_HUMAN] && !iflags.showrace)) &&
 	    !(Race_if(PM_HUMAN) || Race_if(PM_ELF)) && !Upolyd)
 	    found += append_str(out_str, "you");	/* tack on "or you" */
@@ -570,7 +570,7 @@ STATIC_OVL int do_look(bool quick) {
 	 * and looking at something other than our own symbol, then just say
 	 * "the interior of a monster".
 	 */
-	if (u.uswallow && from_screen && is_swallow_sym(sym)) {
+	if (player.uswallow && from_screen && is_swallow_sym(sym)) {
 	    if (!found) {
 		sprintf(out_str, "%c       %s", sym, mon_interior);
 		firstmatch = mon_interior;
@@ -631,7 +631,7 @@ STATIC_OVL int do_look(bool quick) {
 		    }
 		    firstmatch = x_str;
 		    found++;
-		} else if (!u.uswallow && !(hit_trap && is_cmap_trap(i)) &&
+		} else if (!player.uswallow && !(hit_trap && is_cmap_trap(i)) &&
 			   !(found >= 3 && is_cmap_drawbridge(i))) {
 		    found += append_str(out_str,
 					article == 2 ? the(x_str) :
@@ -744,14 +744,14 @@ int doidtrap() {
 	int x, y, tt;
 
 	if (!getdir("^")) return 0;
-	x = u.ux + u.dx;
-	y = u.uy + u.dy;
+	x = player.ux + player.dx;
+	y = player.uy + player.dy;
 	for (trap = ftrap; trap; trap = trap->ntrap)
 	    if (trap->tx == x && trap->ty == y) {
 		if (!trap->tseen) break;
 		tt = trap->ttyp;
-		if (u.dz) {
-		    if (u.dz < 0 ? (tt == TRAPDOOR || tt == HOLE) :
+		if (player.dz) {
+		    if (player.dz < 0 ? (tt == TRAPDOOR || tt == HOLE) :
 			    tt == ROCKTRAP) break;
 		}
 		tt = what_trap(tt);

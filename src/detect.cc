@@ -144,7 +144,7 @@ STATIC_OVL bool clear_stale_map(char oclass, unsigned material) {
 int gold_detect(Object *sobj) {
     Object *obj;
     Monster *mtmp;
-    int uw = u.uinwater;
+    int uw = player.uinwater;
     Object *temp;
     bool stale;
 
@@ -175,10 +175,10 @@ int gold_detect(Object *sobj) {
     for (obj = fobj; obj; obj = obj->nobj) {
 	if (sobj->blessed && o_material(obj, GOLD)) {
 	    known = TRUE;
-	    if (obj->ox != u.ux || obj->oy != u.uy) goto outgoldmap;
+	    if (obj->ox != player.ux || obj->oy != player.uy) goto outgoldmap;
 	} else if (o_in(obj, COIN_CLASS)) {
 	    known = TRUE;
-	    if (obj->ox != u.ux || obj->oy != u.uy) goto outgoldmap;
+	    if (obj->ox != player.ux || obj->oy != player.uy) goto outgoldmap;
 	}
     }
 
@@ -192,7 +192,7 @@ int gold_detect(Object *sobj) {
 				currency(2L));
 		} else if (hidden_gold() ||
 #ifndef GOLDOBJ
-				u.ugold)
+				player.ugold)
 #else
 			        money_cnt(invent))
 #endif
@@ -212,7 +212,7 @@ int gold_detect(Object *sobj) {
 outgoldmap:
     cls();
 
-    u.uinwater = 0;
+    player.uinwater = 0;
     /* Discover gold locations. */
     for (obj = fobj; obj; obj = obj->nobj) {
     	if (sobj->blessed && (temp = o_material(obj, GOLD))) {
@@ -256,14 +256,14 @@ outgoldmap:
 	    }
     }
     
-    newsym(u.ux,u.uy);
+    newsym(player.ux,player.uy);
     You_feel("very greedy, and sense gold!");
     exercise(A_WIS, TRUE);
     display_nhwindow(WIN_MAP, TRUE);
     docrt();
-    u.uinwater = uw;
+    player.uinwater = uw;
     if (Underwater) under_water(2);
-    if (u.uburied) under_ground(2);
+    if (player.uburied) under_ground(2);
     return(0);
 }
 
@@ -276,13 +276,13 @@ int food_detect(Object *sobj) {
     bool confused = (Confusion || (sobj && sobj->cursed)), stale;
     char oclass = confused ? POTION_CLASS : FOOD_CLASS;
     const char *what = confused ? something : "food";
-    int uw = u.uinwater;
+    int uw = player.uinwater;
 
     stale = clear_stale_map(oclass, 0);
 
     for (obj = fobj; obj; obj = obj->nobj)
 	if (o_in(obj, oclass)) {
-	    if (obj->ox == u.ux && obj->oy == u.uy) ctu++;
+	    if (obj->ox == player.ux && obj->oy == player.uy) ctu++;
 	    else ct++;
 	}
     for (mtmp = fmon; mtmp && !ct; mtmp = mtmp->nmon) {
@@ -300,19 +300,19 @@ int food_detect(Object *sobj) {
 	    docrt();
 	    You("sense a lack of %s nearby.", what);
 	    if (sobj && sobj->blessed) {
-		if (!u.uedibility) Your("%s starts to tingle.", body_part(NOSE));
-		u.uedibility = 1;
+		if (!player.uedibility) Your("%s starts to tingle.", body_part(NOSE));
+		player.uedibility = 1;
 	    }
 	} else if (sobj) {
 	    char buf[BUFSZ];
 	    sprintf(buf, "Your %s twitches%s.", body_part(NOSE),
-			(sobj->blessed && !u.uedibility) ? " then starts to tingle" : "");
-	    if (sobj->blessed && !u.uedibility) {
+			(sobj->blessed && !player.uedibility) ? " then starts to tingle" : "");
+	    if (sobj->blessed && !player.uedibility) {
 		bool savebeginner = flags.beginner;	/* prevent non-delivery of */
 		flags.beginner = FALSE;			/* 	message            */
 		strange_feeling(sobj, buf);
 		flags.beginner = savebeginner;
-		u.uedibility = 1;
+		player.uedibility = 1;
 	    } else
 		strange_feeling(sobj, buf);
 	}
@@ -321,14 +321,14 @@ int food_detect(Object *sobj) {
 	known = TRUE;
 	You("%s %s nearby.", sobj ? "smell" : "sense", what);
 	if (sobj && sobj->blessed) {
-		if (!u.uedibility) pline("Your %s starts to tingle.", body_part(NOSE));
-		u.uedibility = 1;
+		if (!player.uedibility) pline("Your %s starts to tingle.", body_part(NOSE));
+		player.uedibility = 1;
 	}
     } else {
 	Object *temp;
 	known = TRUE;
 	cls();
-	u.uinwater = 0;
+	player.uinwater = 0;
 	for (obj = fobj; obj; obj = obj->nobj)
 	    if ((temp = o_in(obj, oclass)) != 0) {
 		if (temp != obj) {
@@ -346,12 +346,12 @@ int food_detect(Object *sobj) {
 		    map_object(temp,1);
 		    break;	/* skip rest of this monster's inventory */
 		}
-	newsym(u.ux,u.uy);
+	newsym(player.ux,player.uy);
 	if (sobj) {
 	    if (sobj->blessed) {
 	    	Your("%s %s to tingle and you smell %s.", body_part(NOSE),
-	    		u.uedibility ? "continues" : "starts", what);
-		u.uedibility = 1;
+	    		player.uedibility ? "continues" : "starts", what);
+		player.uedibility = 1;
 	    } else
 		Your("%s tingles and you smell %s.", body_part(NOSE), what);
 	}
@@ -359,9 +359,9 @@ int food_detect(Object *sobj) {
 	display_nhwindow(WIN_MAP, TRUE);
 	exercise(A_WIS, TRUE);
 	docrt();
-	u.uinwater = uw;
+	player.uinwater = uw;
 	if (Underwater) under_water(2);
-	if (u.uburied) under_ground(2);
+	if (player.uburied) under_ground(2);
     }
     return(0);
 }
@@ -382,7 +382,7 @@ int object_detect(Object *detector, int class_id) {
     int ct = 0, ctu = 0;
     Object *obj, *otmp = nullptr;
     Monster *mtmp;
-    int uw = u.uinwater;
+    int uw = player.uinwater;
     int sym, boulder = 0;
 
     if (class_id < 0 || class_id >= MAXOCLASSES) {
@@ -410,7 +410,7 @@ int object_detect(Object *detector, int class_id) {
 
     for (obj = fobj; obj; obj = obj->nobj) {
 	if ((!class_id && !boulder) || o_in(obj, class_id) || o_in(obj, boulder)) {
-	    if (obj->ox == u.ux && obj->oy == u.uy) ctu++;
+	    if (obj->ox == player.ux && obj->oy == player.uy) ctu++;
 	    else ct++;
 	}
 	if (do_dknown) do_dknown_of(obj);
@@ -418,7 +418,7 @@ int object_detect(Object *detector, int class_id) {
 
     for (obj = level.buriedobjlist; obj; obj = obj->nobj) {
 	if (!class_id || o_in(obj, class_id)) {
-	    if (obj->ox == u.ux && obj->oy == u.uy) ctu++;
+	    if (obj->ox == player.ux && obj->oy == player.uy) ctu++;
 	    else ct++;
 	}
 	if (do_dknown) do_dknown_of(obj);
@@ -455,7 +455,7 @@ int object_detect(Object *detector, int class_id) {
 
     cls();
 
-    u.uinwater = 0;
+    player.uinwater = 0;
 /*
  *	Map all buried objects first.
  */
@@ -530,7 +530,7 @@ int object_detect(Object *detector, int class_id) {
 	}
     }
 
-    newsym(u.ux,u.uy);
+    newsym(player.ux,player.uy);
     You("detect the %s of %s.", ct ? "presence" : "absence", stuff);
     display_nhwindow(WIN_MAP, TRUE);
     /*
@@ -539,9 +539,9 @@ int object_detect(Object *detector, int class_id) {
      */
     docrt();	/* this will correctly reset vision */
 
-    u.uinwater = uw;
+    player.uinwater = uw;
     if (Underwater) under_water(2);
-    if (u.uburied) under_ground(2);
+    if (player.uburied) under_ground(2);
     return 0;
 }
 
@@ -604,7 +604,7 @@ int monster_detect(Object *otmp, int mclass) {
 	display_nhwindow(WIN_MAP, TRUE);
 	docrt();
 	if (Underwater) under_water(2);
-	if (u.uburied) under_ground(2);
+	if (player.uburied) under_ground(2);
     }
     return 0;
 }
@@ -644,18 +644,18 @@ int trap_detect(Object *sobj) {
     Trap *ttmp;
     Object *obj;
     int door;
-    int uw = u.uinwater;
+    int uw = player.uinwater;
     bool found = FALSE;
     coord cc;
 
     for (ttmp = ftrap; ttmp; ttmp = ttmp->ntrap) {
-	if (ttmp->tx != u.ux || ttmp->ty != u.uy)
+	if (ttmp->tx != player.ux || ttmp->ty != player.uy)
 	    goto outtrapmap;
 	else found = TRUE;
     }
     for (obj = fobj; obj; obj = obj->nobj) {
 	if ((obj->otyp==LARGE_BOX || obj->otyp==CHEST) && obj->otrapped) {
-	    if (obj->ox != u.ux || obj->oy != u.uy)
+	    if (obj->ox != player.ux || obj->oy != player.uy)
 		goto outtrapmap;
 	    else found = TRUE;
 	}
@@ -663,7 +663,7 @@ int trap_detect(Object *sobj) {
     for (door = 0; door < doorindex; door++) {
 	cc = doors[door];
 	if (levl[cc.x][cc.y].doormask & D_TRAPPED) {
-	    if (cc.x != u.ux || cc.y != u.uy)
+	    if (cc.x != player.ux || cc.y != player.uy)
 		goto outtrapmap;
 	    else found = TRUE;
 	}
@@ -680,7 +680,7 @@ int trap_detect(Object *sobj) {
 outtrapmap:
     cls();
 
-    u.uinwater = 0;
+    player.uinwater = 0;
     for (ttmp = ftrap; ttmp; ttmp = ttmp->ntrap)
 	sense_trap(ttmp, 0, 0, sobj && sobj->cursed);
 
@@ -694,19 +694,19 @@ outtrapmap:
 	sense_trap((Trap *)0, cc.x, cc.y, sobj && sobj->cursed);
     }
 
-    newsym(u.ux,u.uy);
+    newsym(player.ux,player.uy);
     You_feel("%s.", sobj && sobj->cursed ? "very greedy" : "entrapped");
     display_nhwindow(WIN_MAP, TRUE);
     docrt();
-    u.uinwater = uw;
+    player.uinwater = uw;
     if (Underwater) under_water(2);
-    if (u.uburied) under_ground(2);
+    if (player.uburied) under_ground(2);
     return(0);
 }
 
 const char * level_distance(d_level *where) {
-    schar ll = depth(&u.uz) - depth(where);
-    bool indun = (u.uz.dnum == where->dnum);
+    schar ll = depth(&player.uz) - depth(where);
+    bool indun = (player.uz.dnum == where->dnum);
 
     if (ll < 0) {
 	if (ll < (-8 - rn2(3)))
@@ -891,14 +891,14 @@ STATIC_OVL void show_map_spot(int x, int y) {
 
 void do_mapping() {
     int zx, zy;
-    int uw = u.uinwater;
+    int uw = player.uinwater;
 
-    u.uinwater = 0;
+    player.uinwater = 0;
     for (zx = 1; zx < COLNO; zx++)
 	for (zy = 0; zy < ROWNO; zy++)
 	    show_map_spot(zx, zy);
     exercise(A_WIS, TRUE);
-    u.uinwater = uw;
+    player.uinwater = uw;
     if (!level.flags.hero_memory || Underwater) {
 	flush_screen(1);			/* flush temp screen */
 	display_nhwindow(WIN_MAP, TRUE);	/* wait */
@@ -908,10 +908,10 @@ void do_mapping() {
 
 void do_vicinity_map() {
     int zx, zy;
-    int lo_y = (u.uy-5 < 0 ? 0 : u.uy-5),
-	hi_y = (u.uy+6 > ROWNO ? ROWNO : u.uy+6),
-	lo_x = (u.ux-9 < 1 ? 1 : u.ux-9),	/* avoid column 0 */
-	hi_x = (u.ux+10 > COLNO ? COLNO : u.ux+10);
+    int lo_y = (player.uy-5 < 0 ? 0 : player.uy-5),
+	hi_y = (player.uy+6 > ROWNO ? ROWNO : player.uy+6),
+	lo_x = (player.ux-9 < 1 ? 1 : player.ux-9),	/* avoid column 0 */
+	hi_x = (player.ux+10 > COLNO ? COLNO : player.ux+10);
 
     for (zx = lo_x; zx < hi_x; zx++)
 	for (zy = lo_y; zy < hi_y; zy++)
@@ -929,7 +929,7 @@ void cvt_sdoor_to_door(struct rm *lev) {
 	int newmask = lev->doormask & ~WM_MASK;
 
 #ifdef REINCARNATION
-	if (Is_rogue_level(&u.uz))
+	if (Is_rogue_level(&player.uz))
 	    /* rogue didn't have doors, only doorways */
 	    newmask = D_NODOOR;
 	else
@@ -1037,8 +1037,8 @@ STATIC_PTR void openone(int zx, int zy, genericptr_t num) {
 int findit() {
 	int num = 0;
 
-	if(u.uswallow) return(0);
-	do_clear_area(u.ux, u.uy, BOLT_LIM, findone, (genericptr_t) &num);
+	if(player.uswallow) return(0);
+	do_clear_area(player.ux, player.uy, BOLT_LIM, findone, (genericptr_t) &num);
 	return(num);
 }
 
@@ -1046,16 +1046,16 @@ int findit() {
 int openit() {
 	int num = 0;
 
-	if(u.uswallow) {
-		if (is_animal(u.ustuck->data)) {
+	if(player.uswallow) {
+		if (is_animal(player.ustuck->data)) {
 			if (Blind) pline("Its mouth opens!");
-			else pline("%s opens its mouth!", Monnam(u.ustuck));
+			else pline("%s opens its mouth!", Monnam(player.ustuck));
 		}
-		expels(u.ustuck, u.ustuck->data, TRUE);
+		expels(player.ustuck, player.ustuck->data, TRUE);
 		return(-1);
 	}
 
-	do_clear_area(u.ux, u.uy, BOLT_LIM, openone, (genericptr_t) &num);
+	do_clear_area(player.ux, player.uy, BOLT_LIM, openone, (genericptr_t) &num);
 	return(num);
 }
 
@@ -1100,7 +1100,7 @@ int dosearch0(int aflag) {
 	Trap *trap;
 	Monster *mtmp;
 
-	if(u.uswallow) {
+	if(player.uswallow) {
 		if (!aflag)
 			pline("What are you looking for?  The exit?");
 	} else {
@@ -1110,10 +1110,10 @@ int dosearch0(int aflag) {
 	    if (ublindf && ublindf->otyp == LENSES && !Blind)
 		    fund += 2; /* JDS: lenses help searching */
 	    if (fund > 5) fund = 5;
-	    for(x = u.ux-1; x < u.ux+2; x++)
-	      for(y = u.uy-1; y < u.uy+2; y++) {
+	    for(x = player.ux-1; x < player.ux+2; x++)
+	      for(y = player.uy-1; y < player.uy+2; y++) {
 		if(!isok(x,y)) continue;
-		if(x != u.ux || y != u.uy) {
+		if(x != player.ux || y != player.uy) {
 		    if (Blind && !aflag) feel_location(x,y);
 		    if(levl[x][y].typ == SDOOR) {
 			if(rnl(7-fund)) continue;

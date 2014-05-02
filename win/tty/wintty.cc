@@ -183,11 +183,11 @@ STATIC_OVL void winch(int ignored) {
 	    tty_destroy_nhwindow(WIN_STATUS);
 	    WIN_STATUS = tty_create_nhwindow(NHW_STATUS);
 
-	    if(u.ux) {
+	    if(player.ux) {
 #ifdef CLIPPING
 		if(CO < COLNO || LI < ROWNO+3) {
 		    setclipped();
-		    tty_cliparound(u.ux, u.uy);
+		    tty_cliparound(player.ux, player.uy);
 		} else {
 		    clipping = FALSE;
 		    clipx = clipy = 0;
@@ -1785,7 +1785,7 @@ void tty_display_file(const char *fname, bool complain) {
 		home();  tty_mark_synch();  tty_raw_print("");
 		perror(fname);  tty_wait_synch();
 		pline("Cannot open \"%s\".", fname);
-	    } else if(u.ux) docrt();
+	    } else if(player.ux) docrt();
 	} else {
 	    winid datawin = tty_create_nhwindow(NHW_TEXT);
 	    bool empty = TRUE;
@@ -2076,7 +2076,7 @@ void docorner(int xmin, int ymax) {
     int y;
     struct WinDesc *cw = wins[WIN_MAP];
 
-    if (u.uswallow) {	/* Can be done more efficiently */
+    if (player.uswallow) {	/* Can be done more efficiently */
 	swallowed(1);
 	return;
     }
@@ -2179,7 +2179,7 @@ void tty_cliparound(int x, int y) {
 		clipy = clipymax - (LI - 3);
 	}
 	if (clipx != oldx || clipy != oldy) {
-	    if (on_level(&u.uz0, &u.uz) && !restoring)
+	    if (on_level(&player.uz0, &player.uz) && !restoring)
 		(void) doredraw();
 	}
 }

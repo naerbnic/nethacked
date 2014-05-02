@@ -243,13 +243,13 @@ STATIC_OVL void m_to_e(Monster *mtmp, int x, int y, struct entity *etmp) {
 
 STATIC_OVL void u_to_e(struct entity *etmp) {
 	etmp->emon = &youmonst;
-	etmp->ex = u.ux;
-	etmp->ey = u.uy;
+	etmp->ex = player.ux;
+	etmp->ey = player.uy;
 	etmp->edata = youmonst.data;
 }
 
 STATIC_OVL void set_entity(int x, int y, struct entity *etmp) {
-	if ((x == u.ux) && (y == u.uy))
+	if ((x == player.ux) && (y == player.uy))
 		u_to_e(etmp);
 	else if (MON_AT(x, y))
 		m_to_e(m_at(x, y), x, y, etmp);
@@ -352,7 +352,7 @@ STATIC_OVL void e_died(struct entity *etmp, int dest, int how) {
 			}
 		}
 		/* we might have crawled out of the moat to survive */
-		etmp->ex = u.ux,  etmp->ey = u.uy;
+		etmp->ex = player.ux,  etmp->ey = player.uy;
 	} else {
 		int entitycnt;
 
@@ -594,8 +594,8 @@ STATIC_OVL void do_entity(struct entity *etmp) {
 			place_monster(etmp->emon, newx, newy);
 			update_monster_region(etmp->emon);
 		} else {
-			u.ux = newx;
-			u.uy = newy;
+			player.ux = newx;
+			player.uy = newy;
 		}
 		etmp->ex = newx;
 		etmp->ey = newy;
@@ -686,7 +686,7 @@ void close_drawbridge(int x, int y) {
 	get_wall_for_db(&x2,&y2);
 	if (cansee(x,y) || cansee(x2,y2))
 		You("see a drawbridge %s up!",
-		    (((u.ux == x || u.uy == y) && !Underwater) ||
+		    (((player.ux == x || player.uy == y) && !Underwater) ||
 		     distu(x2,y2) < distu(x,y)) ? "coming" : "going");
 	lev1->typ = DRAWBRIDGE_UP;
 	lev2 = &levl[x2][y2];
@@ -752,7 +752,7 @@ void open_drawbridge(int x, int y) {
 	newsym(x, y);
 	newsym(x2, y2);
 	unblock_point(x2,y2);	/* vision */
-	if (Is_stronghold(&u.uz)) u.uevent.uopened_dbridge = TRUE;
+	if (Is_stronghold(&player.uz)) player.uevent.uopened_dbridge = TRUE;
 }
 
 /*
@@ -813,7 +813,7 @@ void destroy_drawbridge(int x, int y) {
 	newsym(x,y);
 	newsym(x2,y2);
 	if (!does_block(x2,y2,lev2)) unblock_point(x2,y2);	/* vision */
-	if (Is_stronghold(&u.uz)) u.uevent.uopened_dbridge = TRUE;
+	if (Is_stronghold(&player.uz)) player.uevent.uopened_dbridge = TRUE;
 
 	set_entity(x2, y2, etmp2); /* currently only automissers can be here */
 	if (etmp2->edata) {

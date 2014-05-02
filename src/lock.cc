@@ -22,8 +22,8 @@ STATIC_DCL void chest_shatter_msg(Object *);
 
 bool picking_lock(int *x, int *y) {
 	if (occupation == picklock) {
-	    *x = u.ux + u.dx;
-	    *y = u.uy + u.dy;
+	    *x = player.ux + player.dx;
+	    *y = player.uy + player.dy;
 	    return TRUE;
 	} else {
 	    *x = *y = 0;
@@ -68,11 +68,11 @@ STATIC_PTR
 int picklock() {
 
 	if (xlock.box) {
-	    if((xlock.box->ox != u.ux) || (xlock.box->oy != u.uy)) {
+	    if((xlock.box->ox != player.ux) || (xlock.box->oy != player.uy)) {
 		return((xlock.usedtime = 0));		/* you or it moved */
 	    }
 	} else {		/* door */
-	    if(xlock.door != &(levl[u.ux+u.dx][u.uy+u.dy])) {
+	    if(xlock.door != &(levl[player.ux+player.dx][player.uy+player.dy])) {
 		return((xlock.usedtime = 0));		/* you moved */
 	    }
 	    switch (xlock.door->doormask) {
@@ -101,10 +101,10 @@ int picklock() {
 	    if(xlock.door->doormask & D_TRAPPED) {
 		    b_trapped("door", FINGER);
 		    xlock.door->doormask = D_NODOOR;
-		    unblock_point(u.ux+u.dx, u.uy+u.dy);
-		    if (*in_rooms(u.ux+u.dx, u.uy+u.dy, SHOPBASE))
-			add_damage(u.ux+u.dx, u.uy+u.dy, 0L);
-		    newsym(u.ux+u.dx, u.uy+u.dy);
+		    unblock_point(player.ux+player.dx, player.uy+player.dy);
+		    if (*in_rooms(player.ux+player.dx, player.uy+player.dy, SHOPBASE))
+			add_damage(player.ux+player.dx, player.uy+player.dy, 0L);
+		    newsym(player.ux+player.dx, player.uy+player.dy);
 	    } else if (xlock.door->doormask & D_LOCKED)
 		xlock.door->doormask = D_CLOSED;
 	    else xlock.door->doormask = D_LOCKED;
@@ -123,7 +123,7 @@ int forcelock() {
 
 	Object *otmp;
 
-	if((xlock.box->ox != u.ux) || (xlock.box->oy != u.uy))
+	if((xlock.box->ox != player.ux) || (xlock.box->oy != player.uy))
 		return((xlock.usedtime = 0));		/* you or it moved */
 
 	if (xlock.usedtime++ >= 50 || !uwep || nohands(youmonst.data)) {
@@ -160,8 +160,8 @@ int forcelock() {
 	    bool costly;
 	    long loss = 0L;
 
-	    costly = (*u.ushops && costly_spot(u.ux, u.uy));
-	    shkp = costly ? shop_keeper(*u.ushops) : 0;
+	    costly = (*player.ushops && costly_spot(player.ux, player.uy));
+	    shkp = costly ? shop_keeper(*player.ushops) : 0;
 
 	    pline("In fact, you've totally destroyed %s.",
 		  the(xname(xlock.box)));
@@ -172,7 +172,7 @@ int forcelock() {
 		if(!rn2(3) || otmp->oclass == POTION_CLASS) {
 		    chest_shatter_msg(otmp);
 		    if (costly)
-		        loss += stolen_value(otmp, u.ux, u.uy,
+		        loss += stolen_value(otmp, player.ux, player.uy,
 					     (bool)shkp->mpeaceful, TRUE);
 		    if (otmp->quan == 1L) {
 			obfree(otmp, (Object *) 0);
@@ -184,12 +184,12 @@ int forcelock() {
 		    otmp->age = monstermoves - otmp->age; /* actual age */
 		    start_corpse_timeout(otmp);
 		}
-		place_object(otmp, u.ux, u.uy);
+		place_object(otmp, player.ux, player.uy);
 		stackobj(otmp);
 	    }
 
 	    if (costly)
-		loss += stolen_value(xlock.box, u.ux, u.uy,
+		loss += stolen_value(xlock.box, player.ux, player.uy,
 					     (bool)shkp->mpeaceful, TRUE);
 	    if(loss) You("owe %ld %s for objects destroyed.", loss, currency(loss));
 	    delobj(xlock.box);
@@ -259,21 +259,21 @@ int pick_lock(Object *pick) {
 	}
 	ch = 0;		/* lint suppression */
 
-	if(!get_adjacent_loc((char *)0, "Invalid location!", u.ux, u.uy, &cc)) return 0;
-	if (cc.x == u.ux && cc.y == u.uy) {	/* pick lock on a container */
+	if(!get_adjacent_loc((char *)0, "Invalid location!", player.ux, player.uy, &cc)) return 0;
+	if (cc.x == player.ux && cc.y == player.uy) {	/* pick lock on a container */
 	    const char *verb;
 	    bool it;
 	    int count;
 
-	    if (u.dz < 0) {
+	    if (player.dz < 0) {
 		There("isn't any sort of lock up %s.",
 		      Levitation ? "here" : "there");
 		return 0;
-	    } else if (is_lava(u.ux, u.uy)) {
+	    } else if (is_lava(player.ux, player.uy)) {
 		pline("Doing that would probably melt your %s.",
 		      xname(pick));
 		return 0;
-	    } else if (is_pool(u.ux, u.uy) && !Underwater) {
+	    } else if (is_pool(player.ux, player.uy) && !Underwater) {
 		pline_The("water has no lock.");
 		return 0;
 	    }
@@ -361,7 +361,7 @@ int pick_lock(Object *pick) {
 	} else {			/* pick the lock in a door */
 	    Monster *mtmp;
 
-	    if (u.utrap && u.utraptype == TT_PIT) {
+	    if (player.utrap && player.utraptype == TT_PIT) {
 		You_cant("reach over the edge of the pit.");
 		return(0);
 	    }
@@ -477,7 +477,7 @@ int doforce() {
 
 	/* A lock is made only for the honest man, the thief will break it. */
 	xlock.box = nullptr;
-	for(otmp = level.objects[u.ux][u.uy]; otmp; otmp = otmp->nexthere)
+	for(otmp = level.objects[player.ux][player.uy]; otmp; otmp = otmp->nexthere)
 	    if(Is_box(otmp)) {
 		if (otmp->obroken || !otmp->olocked) {
 		    There("is %s here, but its lock is already %s.",
@@ -520,14 +520,14 @@ int doopen() {
 	    return 0;
 	}
 
-	if (u.utrap && u.utraptype == TT_PIT) {
+	if (player.utrap && player.utraptype == TT_PIT) {
 	    You_cant("reach over the edge of the pit.");
 	    return 0;
 	}
 
-	if(!get_adjacent_loc((char *)0, (char *)0, u.ux, u.uy, &cc)) return(0);
+	if(!get_adjacent_loc((char *)0, (char *)0, player.ux, player.uy, &cc)) return(0);
 
-	if((cc.x == u.ux) && (cc.y == u.uy)) return(0);
+	if((cc.x == player.ux) && (cc.y == player.uy)) return(0);
 
 	if ((mtmp = m_at(cc.x,cc.y))			&&
 		mtmp->m_ap_type == M_AP_FURNITURE	&&
@@ -622,16 +622,16 @@ int doclose() {
 	    return 0;
 	}
 
-	if (u.utrap && u.utraptype == TT_PIT) {
+	if (player.utrap && player.utraptype == TT_PIT) {
 	    You_cant("reach over the edge of the pit.");
 	    return 0;
 	}
 
 	if(!getdir((char *)0)) return(0);
 
-	x = u.ux + u.dx;
-	y = u.uy + u.dy;
-	if((x == u.ux) && (y == u.uy)) {
+	x = player.ux + player.dx;
+	y = player.uy + player.dy;
+	if((x == player.ux) && (y == player.uy)) {
 		You("are in the way!");
 		return(1);
 	}
@@ -677,7 +677,7 @@ int doclose() {
 	if(door->doormask == D_ISOPEN) {
 	    if(verysmall(youmonst.data)
 #ifdef STEED
-		&& !u.usteed
+		&& !player.usteed
 #endif
 		) {
 		 pline("You're too small to push the door closed.");
@@ -685,7 +685,7 @@ int doclose() {
 	    }
 	    if (
 #ifdef STEED
-		 u.usteed ||
+		 player.usteed ||
 #endif
 		rn2(25) < (ACURRSTR+ACURR(A_DEX)+ACURR(A_CON))/3) {
 		pline_The("door closes.");
@@ -772,7 +772,7 @@ bool			/* Door/secret door was hit with spell effect otmp */ doorlock(Object *ot
 	case WAN_LOCKING:
 	case SPE_WIZARD_LOCK:
 #ifdef REINCARNATION
-	    if (Is_rogue_level(&u.uz)) {
+	    if (Is_rogue_level(&player.uz)) {
 	    	bool vis = cansee(x,y);
 		/* Can't have real locking in Rogue, so just hide doorway */
 		if (vis) pline("%s springs up in the older, more primitive doorway.",

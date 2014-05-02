@@ -393,7 +393,7 @@ STATIC_OVL MonsterType * morguemon() {
 	int i = rn2(100), hd = rn2(level_difficulty());
 
 	if(hd > 10 && i < 10)
-		return((Inhell || In_endgame(&u.uz)) ? mkclass(S_DEMON,0) :
+		return((Inhell || In_endgame(&player.uz)) ? mkclass(S_DEMON,0) :
 						       &mons[ndemon(A_NONE)]);
 	if(hd > 8 && i > 85)
 		return(mkclass(S_VAMPIRE,0));
@@ -406,7 +406,7 @@ STATIC_OVL MonsterType * antholemon() {
 	int mtyp;
 
 	/* Same monsters within a level, different ones between levels */
-	switch ((level_difficulty() + ((long)u.ubirthday)) % 3) {
+	switch ((level_difficulty() + ((long)player.ubirthday)) % 3) {
 	default:	mtyp = PM_GIANT_ANT; break;
 	case 0:		mtyp = PM_SOLDIER_ANT; break;
 	case 1:		mtyp = PM_FIRE_ANT; break;
@@ -477,7 +477,7 @@ STATIC_OVL void mktemple() {
 	lev = &levl[shrine_spot->x][shrine_spot->y];
 	lev->typ = ALTAR;
 	lev->altarmask = induced_align(80);
-	priestini(&u.uz, sroom, shrine_spot->x, shrine_spot->y, FALSE);
+	priestini(&player.uz, sroom, shrine_spot->x, shrine_spot->y, FALSE);
 	lev->altarmask |= AM_SHRINE;
 	level.flags.has_temple = 1;
 }

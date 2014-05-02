@@ -437,17 +437,17 @@ STATIC_PTR int domonability() {
 	else if (webmaker(youmonst.data)) return dospinweb();
 	else if (is_hider(youmonst.data)) return dohide();
 	else if (is_mind_flayer(youmonst.data)) return domindblast();
-	else if (u.umonnum == PM_GREMLIN) {
-	    if(IS_FOUNTAIN(levl[u.ux][u.uy].typ)) {
+	else if (player.umonnum == PM_GREMLIN) {
+	    if(IS_FOUNTAIN(levl[player.ux][player.uy].typ)) {
 		if (split_mon(&youmonst, (Monster *)0))
-		    dryup(u.ux, u.uy, TRUE);
+		    dryup(player.ux, player.uy, TRUE);
 	    } else There("is no fountain here.");
 	} else if (is_unicorn(youmonst.data)) {
 	    use_unicorn_horn(nullptr);
 	    return 1;
 	} else if (youmonst.data->msound == MS_SHRIEK) {
 	    You("shriek.");
-	    if(u.uburied)
+	    if(player.uburied)
 		pline("Unfortunately sound does not carry well through rock.");
 	    else aggravate();
 	} else if (Upolyd)
@@ -584,26 +584,26 @@ STATIC_PTR int wiz_level_change() {
 	pline(Never_mind);
 	return 0;
     }
-    if (newlevel == u.ulevel) {
+    if (newlevel == player.ulevel) {
 	You("are already that experienced.");
-    } else if (newlevel < u.ulevel) {
-	if (u.ulevel == 1) {
+    } else if (newlevel < player.ulevel) {
+	if (player.ulevel == 1) {
 	    You("are already as inexperienced as you can get.");
 	    return 0;
 	}
 	if (newlevel < 1) newlevel = 1;
-	while (u.ulevel > newlevel)
+	while (player.ulevel > newlevel)
 	    losexp("#levelchange");
     } else {
-	if (u.ulevel >= MAXULEV) {
+	if (player.ulevel >= MAXULEV) {
 	    You("are already as experienced as you can get.");
 	    return 0;
 	}
 	if (newlevel > MAXULEV) newlevel = MAXULEV;
-	while (u.ulevel < newlevel)
+	while (player.ulevel < newlevel)
 	    pluslvl(FALSE);
     }
-    u.ulevelmax = u.ulevel;
+    player.ulevelmax = player.ulevel;
     return 0;
 }
 
@@ -631,14 +631,14 @@ STATIC_PTR int wiz_show_seenv() {
 	 * Each seenv description takes up 2 characters, so center
 	 * the seenv display around the hero.
 	 */
-	startx = max(1, u.ux-(COLNO/4));
+	startx = max(1, player.ux-(COLNO/4));
 	stopx = min(startx+(COLNO/2), COLNO);
 	/* can't have a line exactly 80 chars long */
 	if (stopx - startx == COLNO/2) startx++;
 
 	for (y = 0; y < ROWNO; y++) {
 	    for (x = startx, curx = 0; x < stopx; x++, curx += 2) {
-		if (x == u.ux && y == u.uy) {
+		if (x == player.ux && y == player.uy) {
 		    row[curx] = row[curx+1] = '@';
 		} else {
 		    v = levl[x][y].seenv & 0xff;
@@ -673,7 +673,7 @@ STATIC_PTR int wiz_show_vision() {
 	putstr(win, 0, "");
 	for (y = 0; y < ROWNO; y++) {
 	    for (x = 1; x < COLNO; x++) {
-		if (x == u.ux && y == u.uy)
+		if (x == player.ux && y == player.uy)
 		    row[x] = '@';
 		else {
 		    v = viz_array[y][x]; /* data access should be hidden */
@@ -706,7 +706,7 @@ STATIC_PTR int wiz_show_wmodes() {
 	for (y = 0; y < ROWNO; y++) {
 	    for (x = 0; x < COLNO; x++) {
 		lev = &levl[x][y];
-		if (x == u.ux && y == u.uy)
+		if (x == player.ux && y == player.uy)
 		    row[x] = '@';
 		else if (IS_WALL(lev->typ) || lev->typ == SDOOR)
 		    row[x] = '0' + (lev->wall_info & WM_MASK);
@@ -803,30 +803,30 @@ void enlightenment(int final) {
 	putstr(en_win, 0, "");
 
 #ifdef ELBERETH
-	if (u.uevent.uhand_of_elbereth) {
+	if (player.uevent.uhand_of_elbereth) {
 	    static const char * const hofe_titles[3] = {
 				"the Hand of Elbereth",
 				"the Envoy of Balance",
 				"the Glory of Arioch"
 	    };
-	    you_are(hofe_titles[u.uevent.uhand_of_elbereth - 1]);
+	    you_are(hofe_titles[player.uevent.uhand_of_elbereth - 1]);
 	}
 #endif
 
 	/* note: piousness 20 matches MIN_QUEST_ALIGN (quest.h) */
-	if (u.ualign.record >= 20)	you_are("piously aligned");
-	else if (u.ualign.record > 13)	you_are("devoutly aligned");
-	else if (u.ualign.record > 8)	you_are("fervently aligned");
-	else if (u.ualign.record > 3)	you_are("stridently aligned");
-	else if (u.ualign.record == 3)	you_are("aligned");
-	else if (u.ualign.record > 0)	you_are("haltingly aligned");
-	else if (u.ualign.record == 0)	you_are("nominally aligned");
-	else if (u.ualign.record >= -3)	you_have("strayed");
-	else if (u.ualign.record >= -8)	you_have("sinned");
+	if (player.ualign.record >= 20)	you_are("piously aligned");
+	else if (player.ualign.record > 13)	you_are("devoutly aligned");
+	else if (player.ualign.record > 8)	you_are("fervently aligned");
+	else if (player.ualign.record > 3)	you_are("stridently aligned");
+	else if (player.ualign.record == 3)	you_are("aligned");
+	else if (player.ualign.record > 0)	you_are("haltingly aligned");
+	else if (player.ualign.record == 0)	you_are("nominally aligned");
+	else if (player.ualign.record >= -3)	you_have("strayed");
+	else if (player.ualign.record >= -8)	you_have("sinned");
 	else you_have("transgressed");
 #ifdef WIZARD
 	if (wizard) {
-		sprintf(buf, " %d", u.ualign.record);
+		sprintf(buf, " %d", player.ualign.record);
 		enl_msg("Your alignment ", "is", "was", buf);
 	}
 #endif
@@ -845,7 +845,7 @@ void enlightenment(int final) {
 	if (Stone_resistance)
 		you_are("petrification resistant");
 	if (Invulnerable) you_are("invulnerable");
-	if (u.uedibility) you_can("recognize detrimental food");
+	if (player.uedibility) you_can("recognize detrimental food");
 
 	/*** Troubles ***/
 	if (Halluc_resistance)
@@ -856,15 +856,15 @@ void enlightenment(int final) {
 		if (Confusion) you_are("confused");
 		if (Blinded) you_are("blinded");
 		if (Sick) {
-			if (u.usick_type & SICK_VOMITABLE)
+			if (player.usick_type & SICK_VOMITABLE)
 				you_are("sick from food poisoning");
-			if (u.usick_type & SICK_NONVOMITABLE)
+			if (player.usick_type & SICK_NONVOMITABLE)
 				you_are("sick from illness");
 		}
 	}
 	if (Stoned) you_are("turning to stone");
 	if (Slimed) you_are("turning into slime");
-	if (Strangled) you_are((u.uburied) ? "buried" : "being strangled");
+	if (Strangled) you_are((player.uburied) ? "buried" : "being strangled");
 	if (Glib) {
 		sprintf(buf, "slippery %s", makeplural(body_part(FINGER)));
 		you_have(buf);
@@ -872,15 +872,15 @@ void enlightenment(int final) {
 	if (Fumbling) enl_msg("You fumble", "", "d", "");
 	if (Wounded_legs
 #ifdef STEED
-	    && !u.usteed
+	    && !player.usteed
 #endif
 			  ) {
 		sprintf(buf, "wounded %s", makeplural(body_part(LEG)));
 		you_have(buf);
 	}
 #if defined(WIZARD) && defined(STEED)
-	if (Wounded_legs && u.usteed && wizard) {
-	    strcpy(buf, x_monnam(u.usteed, ARTICLE_YOUR, (char *)0, 
+	if (Wounded_legs && player.usteed && wizard) {
+	    strcpy(buf, x_monnam(player.usteed, ARTICLE_YOUR, (char *)0, 
 		    SUPPRESS_SADDLE | SUPPRESS_HALLUCINATION, FALSE));
 	    *buf = highc(*buf);
 	    enl_msg(buf, " has", " had", " wounded legs");
@@ -905,7 +905,7 @@ void enlightenment(int final) {
 	if (Clairvoyant) you_are("clairvoyant");
 	if (Infravision) you_have("infravision");
 	if (Detect_monsters) you_are("sensing the presence of monsters");
-	if (u.umconf) you_are("going to confuse monsters");
+	if (player.umconf) you_are("going to confuse monsters");
 
 	/*** Appearance and behavior ***/
 	if (Adornment) {
@@ -942,41 +942,41 @@ void enlightenment(int final) {
 	else if (Amphibious) you_can("breathe water");
 	if (Passes_walls) you_can("walk through walls");
 #ifdef STEED
-	/* If you die while dismounting, u.usteed is still set.  Since several
-	 * places in the done() sequence depend on u.usteed, just detect this
+	/* If you die while dismounting, player.usteed is still set.  Since several
+	 * places in the done() sequence depend on player.usteed, just detect this
 	 * special case. */
-	if (u.usteed && (final < 2 || strcmp(killer, "riding accident"))) {
-	    sprintf(buf, "riding %s", y_monnam(u.usteed));
+	if (player.usteed && (final < 2 || strcmp(killer, "riding accident"))) {
+	    sprintf(buf, "riding %s", y_monnam(player.usteed));
 	    you_are(buf);
 	}
 #endif
-	if (u.uswallow) {
-	    sprintf(buf, "swallowed by %s", a_monnam(u.ustuck));
+	if (player.uswallow) {
+	    sprintf(buf, "swallowed by %s", a_monnam(player.ustuck));
 #ifdef WIZARD
-	    if (wizard) sprintf(eos(buf), " (%u)", u.uswldtim);
+	    if (wizard) sprintf(eos(buf), " (%u)", player.uswldtim);
 #endif
 	    you_are(buf);
-	} else if (u.ustuck) {
+	} else if (player.ustuck) {
 	    sprintf(buf, "%s %s",
 		    (Upolyd && sticks(youmonst.data)) ? "holding" : "held by",
-		    a_monnam(u.ustuck));
+		    a_monnam(player.ustuck));
 	    you_are(buf);
 	}
 
 	/*** Physical attributes ***/
-	if (u.uhitinc)
-	    you_have(enlght_combatinc("to hit", u.uhitinc, final, buf));
-	if (u.udaminc)
-	    you_have(enlght_combatinc("damage", u.udaminc, final, buf));
+	if (player.uhitinc)
+	    you_have(enlght_combatinc("to hit", player.uhitinc, final, buf));
+	if (player.udaminc)
+	    you_have(enlght_combatinc("damage", player.udaminc, final, buf));
 	if (Slow_digestion) you_have("slower digestion");
 	if (Regeneration) enl_msg("You regenerate", "", "d", "");
-	if (u.uspellprot || Protection) {
+	if (player.uspellprot || Protection) {
 	    int prot = 0;
 
 	    if(uleft && uleft->otyp == RIN_PROTECTION) prot += uleft->spe;
 	    if(uright && uright->otyp == RIN_PROTECTION) prot += uright->spe;
-	    if (HProtection & INTRINSIC) prot += u.ublessed;
-	    prot += u.uspellprot;
+	    if (HProtection & INTRINSIC) prot += player.ublessed;
+	    prot += player.uspellprot;
 
 	    if (prot < 0)
 		you_are("ineffectively protected");
@@ -987,15 +987,15 @@ void enlightenment(int final) {
 		you_are("protected from shape changers");
 	if (Polymorph) you_are("polymorphing");
 	if (Polymorph_control) you_have("polymorph control");
-	if (u.ulycn >= LOW_PM) {
-		strcpy(buf, an(mons[u.ulycn].mname));
+	if (player.ulycn >= LOW_PM) {
+		strcpy(buf, an(mons[player.ulycn].mname));
 		you_are(buf);
 	}
 	if (Upolyd) {
-	    if (u.umonnum == u.ulycn) strcpy(buf, "in beast form");
+	    if (player.umonnum == player.ulycn) strcpy(buf, "in beast form");
 	    else sprintf(buf, "polymorphed into %s", an(youmonst.data->mname));
 #ifdef WIZARD
-	    if (wizard) sprintf(eos(buf), " (%d)", u.mtimedone);
+	    if (wizard) sprintf(eos(buf), " (%d)", player.mtimedone);
 #endif
 	    you_are(buf);
 	}
@@ -1006,7 +1006,7 @@ void enlightenment(int final) {
 	if (Fixed_abil) you_have("fixed abilities");
 	if (Lifesaved)
 		enl_msg("Your life ", "will be", "would have been", " saved");
-	if (u.twoweap) you_are("wielding two weapons at once");
+	if (player.twoweap) you_are("wielding two weapons at once");
 
 	/*** Miscellany ***/
 	if (Luck) {
@@ -1022,8 +1022,8 @@ void enlightenment(int final) {
 #ifdef WIZARD
 	 else if (wizard) enl_msg("Your luck ", "is", "was", " zero");
 #endif
-	if (u.moreluck > 0) you_have("extra luck");
-	else if (u.moreluck < 0) you_have("reduced luck");
+	if (player.moreluck > 0) you_have("extra luck");
+	else if (player.moreluck < 0) you_have("reduced luck");
 	if (carrying(LUCKSTONE) || stone_luck(TRUE)) {
 	    ltmp = stone_luck(FALSE);
 	    if (ltmp <= 0)
@@ -1032,11 +1032,11 @@ void enlightenment(int final) {
 		enl_msg("Good luck ", "does", "did", " not time out for you");
 	}
 
-	if (u.ugangr) {
+	if (player.ugangr) {
 	    sprintf(buf, " %sangry with you",
-		    u.ugangr > 6 ? "extremely " : u.ugangr > 3 ? "very " : "");
+		    player.ugangr > 6 ? "extremely " : player.ugangr > 3 ? "very " : "");
 #ifdef WIZARD
-	    if (wizard) sprintf(eos(buf), " (%d)", u.ugangr);
+	    if (wizard) sprintf(eos(buf), " (%d)", player.ugangr);
 #endif
 	    enl_msg(u_gname(), " is", " was", buf);
 	} else
@@ -1054,7 +1054,7 @@ void enlightenment(int final) {
 	    sprintf(buf, "%ssafely pray", can_pray(FALSE) ? "" : "not ");
 #endif
 #ifdef WIZARD
-	    if (wizard) sprintf(eos(buf), " (%d)", u.ublesscnt);
+	    if (wizard) sprintf(eos(buf), " (%d)", player.ublesscnt);
 #endif
 	    you_can(buf);
 	}
@@ -1065,21 +1065,21 @@ void enlightenment(int final) {
 	buf[0] = '\0';
 	if (final < 2) {    /* still in progress, or quit/escaped/ascended */
 	    p = "survived after being killed ";
-	    switch (u.umortality) {
+	    switch (player.umortality) {
 	    case 0:  p = !final ? (char *)0 : "survived";  break;
 	    case 1:  strcpy(buf, "once");  break;
 	    case 2:  strcpy(buf, "twice");  break;
 	    case 3:  strcpy(buf, "thrice");  break;
-	    default: sprintf(buf, "%d times", u.umortality);
+	    default: sprintf(buf, "%d times", player.umortality);
 		     break;
 	    }
 	} else {		/* game ended in character's death */
 	    p = "are dead";
-	    switch (u.umortality) {
+	    switch (player.umortality) {
 	    case 0:  impossible("dead without dying?");
 	    case 1:  break;			/* just "are dead" */
-	    default: sprintf(buf, " (%d%s time!)", u.umortality,
-			     ordin(u.umortality));
+	    default: sprintf(buf, " (%d%s time!)", player.umortality,
+			     ordin(player.umortality));
 		     break;
 	    }
 	}
@@ -1112,35 +1112,35 @@ void dump_enlightenment(int final) {
 	dump("", "Final attributes");
 
 #ifdef ELBERETH
-	if (u.uevent.uhand_of_elbereth) {
+	if (player.uevent.uhand_of_elbereth) {
 	    static const char * const hofe_titles[3] = {
 				"the Hand of Elbereth",
 				"the Envoy of Balance",
 				"the Glory of Arioch"
 	    };
 	    dump(youwere,
-		(char *)hofe_titles[u.uevent.uhand_of_elbereth - 1]);
+		(char *)hofe_titles[player.uevent.uhand_of_elbereth - 1]);
 	}
 #endif
 
-	if (u.ualign.record >= 20)
+	if (player.ualign.record >= 20)
 		dump(youwere, "piously aligned");
-	else if (u.ualign.record > 13)
+	else if (player.ualign.record > 13)
 	    dump(youwere, "devoutly aligned");
-	else if (u.ualign.record > 8)
+	else if (player.ualign.record > 8)
 	    dump(youwere, "fervently aligned");
-	else if (u.ualign.record > 3)
+	else if (player.ualign.record > 3)
 	    dump(youwere, "stridently aligned");
-	else if (u.ualign.record == 3)
+	else if (player.ualign.record == 3)
 	    dump(youwere, "aligned");
-	else if (u.ualign.record > 0)
+	else if (player.ualign.record > 0)
 	    dump(youwere, "haltingly aligned");
-	else if (u.ualign.record == 0)
+	else if (player.ualign.record == 0)
 	    dump(youwere, "nominally aligned");
-	else if (u.ualign.record >= -3)	dump(youhave, "strayed");
-	else if (u.ualign.record >= -8)	dump(youhave, "sinned");
+	else if (player.ualign.record >= -3)	dump(youhave, "strayed");
+	else if (player.ualign.record >= -8)	dump(youhave, "sinned");
 	else dump("  You have ", "transgressed");
-	sprintf(buf, " %d", u.ualign.record);
+	sprintf(buf, " %d", player.ualign.record);
 	dump("  Your alignment was ", buf);
 
 
@@ -1157,7 +1157,7 @@ void dump_enlightenment(int final) {
 	if (Acid_resistance) dump(youwere, "acid resistant");
 	if (Stone_resistance) dump(youwere, "petrification resistant");
 	if (Invulnerable) dump(youwere, "invulnerable");
-	if (u.uedibility) dump(youcould, "recognize detrimental food");
+	if (player.uedibility) dump(youcould, "recognize detrimental food");
 
 	/*** Troubles ***/
 	if (Halluc_resistance) 	dump("  ", "You resisted hallucinations");
@@ -1166,15 +1166,15 @@ void dump_enlightenment(int final) {
 	if (Confusion) dump(youwere, "confused");
 	if (Blinded) dump(youwere, "blinded");
 	if (Sick) {
-		if (u.usick_type & SICK_VOMITABLE)
+		if (player.usick_type & SICK_VOMITABLE)
 			dump(youwere, "sick from food poisoning");
-		if (u.usick_type & SICK_NONVOMITABLE)
+		if (player.usick_type & SICK_NONVOMITABLE)
 			dump(youwere, "sick from illness");
 	}
 	if (Stoned) dump(youwere, "turning to stone");
 	if (Slimed) dump(youwere, "turning into slime");
 	if (Strangled)
-		dump(youwere, (u.uburied) ? "buried" : "being strangled");
+		dump(youwere, (player.uburied) ? "buried" : "being strangled");
 	if (Glib) {
 		sprintf(buf, "slippery %s", makeplural(body_part(FINGER)));
 		dump(youhad, buf);
@@ -1182,15 +1182,15 @@ void dump_enlightenment(int final) {
 	if (Fumbling) dump("  ", "You fumbled");
 	if (Wounded_legs
 #ifdef STEED
-	    && !u.usteed
+	    && !player.usteed
 #endif
 			  ) {
 		sprintf(buf, "wounded %s", makeplural(body_part(LEG)));
 		dump(youhad, buf);
 	}
 #ifdef STEED
-	if (Wounded_legs && u.usteed) {
-	    strcpy(buf, x_monnam(u.usteed, ARTICLE_YOUR, (char *)0, 
+	if (Wounded_legs && player.usteed) {
+	    strcpy(buf, x_monnam(player.usteed, ARTICLE_YOUR, (char *)0, 
 		    SUPPRESS_SADDLE | SUPPRESS_HALLUCINATION, FALSE));
 	    *buf = highc(*buf);
 	    strcat(buf, " had wounded legs");
@@ -1217,7 +1217,7 @@ void dump_enlightenment(int final) {
 	if (Infravision) dump(youhad, "infravision");
 	if (Detect_monsters)
 	  dump(youwere, "sensing the presence of monsters");
-	if (u.umconf) dump(youwere, "going to confuse monsters");
+	if (player.umconf) dump(youwere, "going to confuse monsters");
 
 	/*** Appearance and behavior ***/
 	if (Adornment) {
@@ -1254,40 +1254,40 @@ void dump_enlightenment(int final) {
 	else if (Amphibious) dump(youcould, "breathe water");
 	if (Passes_walls) dump(youcould, "walk through walls");
 #ifdef STEED
-	if (u.usteed && (final < 2 || strcmp(killer, "riding accident"))) {
-	    sprintf(buf, "riding %s", y_monnam(u.usteed));
+	if (player.usteed && (final < 2 || strcmp(killer, "riding accident"))) {
+	    sprintf(buf, "riding %s", y_monnam(player.usteed));
 	    dump(youwere, buf);
 	}
 #endif
-	if (u.uswallow) {
-	    sprintf(buf, "swallowed by %s", a_monnam(u.ustuck));
+	if (player.uswallow) {
+	    sprintf(buf, "swallowed by %s", a_monnam(player.ustuck));
 #ifdef WIZARD
-	    if (wizard) sprintf(eos(buf), " (%u)", u.uswldtim);
+	    if (wizard) sprintf(eos(buf), " (%u)", player.uswldtim);
 #endif
 	    dump(youwere, buf);
-	} else if (u.ustuck) {
+	} else if (player.ustuck) {
 	    sprintf(buf, "%s %s",
 		    (Upolyd && sticks(youmonst.data)) ? "holding" : "held by",
-		    a_monnam(u.ustuck));
+		    a_monnam(player.ustuck));
 	    dump(youwere, buf);
 	}
 
 	/*** Physical attributes ***/
-	if (u.uhitinc)
+	if (player.uhitinc)
 	    dump(youhad,
-		enlght_combatinc("to hit", u.uhitinc, final, buf));
-	if (u.udaminc)
+		enlght_combatinc("to hit", player.uhitinc, final, buf));
+	if (player.udaminc)
 	    dump(youhad,
-		enlght_combatinc("damage", u.udaminc, final, buf));
+		enlght_combatinc("damage", player.udaminc, final, buf));
 	if (Slow_digestion) dump(youhad, "slower digestion");
 	if (Regeneration) dump("  ", "You regenerated");
-	if (u.uspellprot || Protection) {
+	if (player.uspellprot || Protection) {
 	    int prot = 0;
 
 	    if(uleft && uleft->otyp == RIN_PROTECTION) prot += uleft->spe;
 	    if(uright && uright->otyp == RIN_PROTECTION) prot += uright->spe;
-	    if (HProtection & INTRINSIC) prot += u.ublessed;
-	    prot += u.uspellprot;
+	    if (HProtection & INTRINSIC) prot += player.ublessed;
+	    prot += player.uspellprot;
 	    
 	    if (prot < 0)
 		dump(youwere, "ineffectively protected");
@@ -1298,16 +1298,16 @@ void dump_enlightenment(int final) {
 		dump(youwere, "protected from shape changers");
 	if (Polymorph) dump(youwere, "polymorphing");
 	if (Polymorph_control) dump(youhad, "polymorph control");
-	if (u.ulycn >= LOW_PM) {
-		strcpy(buf, an(mons[u.ulycn].mname));
+	if (player.ulycn >= LOW_PM) {
+		strcpy(buf, an(mons[player.ulycn].mname));
 		dump(youwere, buf);
 	}
 	if (Upolyd) {
-	    if (u.umonnum == u.ulycn) strcpy(buf, "in beast form");
+	    if (player.umonnum == player.ulycn) strcpy(buf, "in beast form");
 	    else sprintf(buf, "polymorphed into %s",
 			 an(youmonst.data->mname));
 #ifdef WIZARD
-	    if (wizard) sprintf(eos(buf), " (%d)", u.mtimedone);
+	    if (wizard) sprintf(eos(buf), " (%d)", player.mtimedone);
 #endif
 	    dump(youwere, buf);
 	}
@@ -1319,7 +1319,7 @@ void dump_enlightenment(int final) {
 	if (Fixed_abil) dump(youhad, "fixed abilities");
 	if (Lifesaved)
 		dump("  ", "Your life would have been saved");
-	if (u.twoweap) dump(youwere, "wielding two weapons at once");
+	if (player.twoweap) dump(youwere, "wielding two weapons at once");
 
 	/*** Miscellany ***/
 	if (Luck) {
@@ -1332,8 +1332,8 @@ void dump_enlightenment(int final) {
 #ifdef WIZARD
 	 else if (wizard) dump("  ", "Your luck was zero");
 #endif
-	if (u.moreluck > 0) dump(youhad, "extra luck");
-	else if (u.moreluck < 0) dump(youhad, "reduced luck");
+	if (player.moreluck > 0) dump(youhad, "extra luck");
+	else if (player.moreluck < 0) dump(youhad, "reduced luck");
 	if (carrying(LUCKSTONE) || stone_luck(TRUE)) {
 	    ltmp = stone_luck(FALSE);
 	    if (ltmp <= 0)
@@ -1342,11 +1342,11 @@ void dump_enlightenment(int final) {
 		dump("  ", "Good luck did not time out for you");
 	}
 
-	if (u.ugangr) {
+	if (player.ugangr) {
 	    sprintf(buf, " %sangry with you",
-		u.ugangr > 6 ? "extremely " : u.ugangr > 3 ? "very " : "");
+		player.ugangr > 6 ? "extremely " : player.ugangr > 3 ? "very " : "");
 #ifdef WIZARD
-	    if (wizard) sprintf(eos(buf), " (%d)", u.ugangr);
+	    if (wizard) sprintf(eos(buf), " (%d)", player.ugangr);
 #endif
 	    sprintf(buf2, "%s was %s", u_gname(), buf);
 	    dump("  ", buf2);
@@ -1358,21 +1358,21 @@ void dump_enlightenment(int final) {
 	buf[0] = '\0';
 	if (final < 2) {    /* quit/escaped/ascended */
 	    p = "survived after being killed ";
-	    switch (u.umortality) {
+	    switch (player.umortality) {
 	    case 0:  p = "survived";  break;
 	    case 1:  strcpy(buf, "once");  break;
 	    case 2:  strcpy(buf, "twice");  break;
 	    case 3:  strcpy(buf, "thrice");  break;
-	    default: sprintf(buf, "%d times", u.umortality);
+	    default: sprintf(buf, "%d times", player.umortality);
 		     break;
 	    }
 	} else {		/* game ended in character's death */
 	    p = "are dead";
-	    switch (u.umortality) {
+	    switch (player.umortality) {
 	    case 0:  impossible("dead without dying?");
 	    case 1:  break;			/* just "are dead" */
-	    default: sprintf(buf, " (%d%s time!)", u.umortality,
-			     ordin(u.umortality));
+	    default: sprintf(buf, " (%d%s time!)", player.umortality,
+			     ordin(player.umortality));
 		     break;
 	    }
 	}
@@ -1426,7 +1426,7 @@ STATIC_OVL bool minimal_enlightenment() {
 	add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, buf, FALSE);
 
 	/* Starting alignment */
-	sprintf(buf, fmtstr, "alignment", align_str(u.ualignbase[A_ORIGINAL]));
+	sprintf(buf, fmtstr, "alignment", align_str(player.ualignbase[A_ORIGINAL]));
 	add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, buf, FALSE);
 
 	/* Current name, race, role, gender */
@@ -1436,7 +1436,7 @@ STATIC_OVL bool minimal_enlightenment() {
 	add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, buf, FALSE);
 	if (Upolyd) {
 	    sprintf(buf, fmtstr, "role (base)",
-		(u.mfemale && urole.name.f) ? urole.name.f : urole.name.m);
+		(player.mfemale && urole.name.f) ? urole.name.f : urole.name.m);
 	    add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, buf, FALSE);
 	} else {
 	    sprintf(buf, fmtstr, "role",
@@ -1447,39 +1447,39 @@ STATIC_OVL bool minimal_enlightenment() {
 	genidx = is_neuter(youmonst.data) ? 2 : flags.female;
 	sprintf(buf, fmtstr, "gender", genders[genidx].adj);
 	add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, buf, FALSE);
-	if (Upolyd && (int)u.mfemale != genidx) {
-	    sprintf(buf, fmtstr, "gender (base)", genders[u.mfemale].adj);
+	if (Upolyd && (int)player.mfemale != genidx) {
+	    sprintf(buf, fmtstr, "gender (base)", genders[player.mfemale].adj);
 	    add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, buf, FALSE);
 	}
 
 	/* Current alignment */
-	sprintf(buf, fmtstr, "alignment", align_str(u.ualign.type));
+	sprintf(buf, fmtstr, "alignment", align_str(player.ualign.type));
 	add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, buf, FALSE);
 
 	/* Deity list */
 	add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, "", FALSE);
 	add_menu(tmpwin, NO_GLYPH, &any, 0, 0, iflags.menu_headings, "Deities", FALSE);
 	sprintf(buf2, deity_fmtstr, align_gname(A_CHAOTIC),
-	    (u.ualignbase[A_ORIGINAL] == u.ualign.type
-		&& u.ualign.type == A_CHAOTIC) ? " (s,c)" :
-	    (u.ualignbase[A_ORIGINAL] == A_CHAOTIC)       ? " (s)" :
-	    (u.ualign.type   == A_CHAOTIC)       ? " (c)" : "");
+	    (player.ualignbase[A_ORIGINAL] == player.ualign.type
+		&& player.ualign.type == A_CHAOTIC) ? " (s,c)" :
+	    (player.ualignbase[A_ORIGINAL] == A_CHAOTIC)       ? " (s)" :
+	    (player.ualign.type   == A_CHAOTIC)       ? " (c)" : "");
 	sprintf(buf, fmtstr, "Chaotic", buf2);
 	add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, buf, FALSE);
 
 	sprintf(buf2, deity_fmtstr, align_gname(A_NEUTRAL),
-	    (u.ualignbase[A_ORIGINAL] == u.ualign.type
-		&& u.ualign.type == A_NEUTRAL) ? " (s,c)" :
-	    (u.ualignbase[A_ORIGINAL] == A_NEUTRAL)       ? " (s)" :
-	    (u.ualign.type   == A_NEUTRAL)       ? " (c)" : "");
+	    (player.ualignbase[A_ORIGINAL] == player.ualign.type
+		&& player.ualign.type == A_NEUTRAL) ? " (s,c)" :
+	    (player.ualignbase[A_ORIGINAL] == A_NEUTRAL)       ? " (s)" :
+	    (player.ualign.type   == A_NEUTRAL)       ? " (c)" : "");
 	sprintf(buf, fmtstr, "Neutral", buf2);
 	add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, buf, FALSE);
 
 	sprintf(buf2, deity_fmtstr, align_gname(A_LAWFUL),
-	    (u.ualignbase[A_ORIGINAL] == u.ualign.type &&
-		u.ualign.type == A_LAWFUL)  ? " (s,c)" :
-	    (u.ualignbase[A_ORIGINAL] == A_LAWFUL)        ? " (s)" :
-	    (u.ualign.type   == A_LAWFUL)        ? " (c)" : "");
+	    (player.ualignbase[A_ORIGINAL] == player.ualign.type &&
+		player.ualign.type == A_LAWFUL)  ? " (s,c)" :
+	    (player.ualignbase[A_ORIGINAL] == A_LAWFUL)        ? " (s)" :
+	    (player.ualign.type   == A_LAWFUL)        ? " (c)" : "");
 	sprintf(buf, fmtstr, "Lawful", buf2);
 	add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, buf, FALSE);
 
@@ -1514,35 +1514,35 @@ void show_conduct(int final) {
 	putstr(en_win, 0, "Voluntary challenges:");
 	putstr(en_win, 0, "");
 
-	if (!u.uconduct.food)
+	if (!player.uconduct.food)
 	    enl_msg(You_, "have gone", "went", " without food");
 	    /* But beverages are okay */
-	else if (!u.uconduct.unvegan)
+	else if (!player.uconduct.unvegan)
 	    you_have_X("followed a strict vegan diet");
-	else if (!u.uconduct.unvegetarian)
+	else if (!player.uconduct.unvegetarian)
 	    you_have_been("vegetarian");
 
-	if (!u.uconduct.gnostic)
+	if (!player.uconduct.gnostic)
 	    you_have_been("an atheist");
 
-	if (!u.uconduct.weaphit)
+	if (!player.uconduct.weaphit)
 	    you_have_never("hit with a wielded weapon");
 #ifdef WIZARD
 	else if (wizard) {
 	    sprintf(buf, "used a wielded weapon %ld time%s",
-		    u.uconduct.weaphit, plur(u.uconduct.weaphit));
+		    player.uconduct.weaphit, plur(player.uconduct.weaphit));
 	    you_have_X(buf);
 	}
 #endif
-	if (!u.uconduct.killer)
+	if (!player.uconduct.killer)
 	    you_have_been("a pacifist");
 
-	if (!u.uconduct.literate)
+	if (!player.uconduct.literate)
 	    you_have_been("illiterate");
 #ifdef WIZARD
 	else if (wizard) {
 	    sprintf(buf, "read items or engraved %ld time%s",
-		    u.uconduct.literate, plur(u.uconduct.literate));
+		    player.uconduct.literate, plur(player.uconduct.literate));
 	    you_have_X(buf);
 	}
 #endif
@@ -1556,34 +1556,34 @@ void show_conduct(int final) {
 	    you_have_X(buf);
 	}
 
-	if (!u.uconduct.polypiles)
+	if (!player.uconduct.polypiles)
 	    you_have_never("polymorphed an object");
 #ifdef WIZARD
 	else if (wizard) {
 	    sprintf(buf, "polymorphed %ld item%s",
-		    u.uconduct.polypiles, plur(u.uconduct.polypiles));
+		    player.uconduct.polypiles, plur(player.uconduct.polypiles));
 	    you_have_X(buf);
 	}
 #endif
 
-	if (!u.uconduct.polyselfs)
+	if (!player.uconduct.polyselfs)
 	    you_have_never("changed form");
 #ifdef WIZARD
 	else if (wizard) {
 	    sprintf(buf, "changed form %ld time%s",
-		    u.uconduct.polyselfs, plur(u.uconduct.polyselfs));
+		    player.uconduct.polyselfs, plur(player.uconduct.polyselfs));
 	    you_have_X(buf);
 	}
 #endif
 
-	if (!u.uconduct.wishes)
+	if (!player.uconduct.wishes)
 	    you_have_X("used no wishes");
 	else {
 	    sprintf(buf, "used %ld wish%s",
-		    u.uconduct.wishes, (u.uconduct.wishes > 1L) ? "es" : "");
+		    player.uconduct.wishes, (player.uconduct.wishes > 1L) ? "es" : "");
 	    you_have_X(buf);
 
-	    if (!u.uconduct.wisharti)
+	    if (!player.uconduct.wisharti)
 		enl_msg(You_, "have not wished", "did not wish",
 			" for any artifacts");
 	}
@@ -1600,45 +1600,45 @@ void dump_conduct(int final) {
 
 	dump("", "Voluntary challenges");
 
-	if (!u.uconduct.food)
+	if (!player.uconduct.food)
 	    dump("", "  You went without food");
 	    /* But beverages are okay */
-	else if (!u.uconduct.unvegan)
+	else if (!player.uconduct.unvegan)
 	    dump("", "  You followed a strict vegan diet");
-	else if (!u.uconduct.unvegetarian)
+	else if (!player.uconduct.unvegetarian)
 	    dump("", "  You were a vegetarian");
-	else if (Role_if(PM_MONK) && u.uconduct.unvegetarian < 10) {
+	else if (Role_if(PM_MONK) && player.uconduct.unvegetarian < 10) {
 	    sprintf(buf, "  You ate non-vegetarian food %ld time%s.", 
-		u.uconduct.unvegetarian, plur(u.uconduct.unvegetarian));
+		player.uconduct.unvegetarian, plur(player.uconduct.unvegetarian));
 	    dump("", buf);
 	}
 
-	if (!u.uconduct.gnostic)
+	if (!player.uconduct.gnostic)
 	    dump("", "  You were an atheist");
 
-	if (!u.uconduct.weaphit)
+	if (!player.uconduct.weaphit)
 	    dump("", "  You never hit with a wielded weapon");
-	else if (Role_if(PM_MONK) && u.uconduct.weaphit < 10) {
+	else if (Role_if(PM_MONK) && player.uconduct.weaphit < 10) {
 	    sprintf(buf, "  You hit with a wielded weapon %ld time%s",
-		    u.uconduct.weaphit, plur(u.uconduct.weaphit));
+		    player.uconduct.weaphit, plur(player.uconduct.weaphit));
 	    dump("", buf);
 	}
 #ifdef WIZARD
 	else if (wizard) {
 	    sprintf(buf, "hit with a wielded weapon %ld time%s",
-		    u.uconduct.weaphit, plur(u.uconduct.weaphit));
+		    player.uconduct.weaphit, plur(player.uconduct.weaphit));
 	    dump("  You ", buf);
 	}
 #endif
-	if (!u.uconduct.killer)
+	if (!player.uconduct.killer)
 	    dump("", "  You were a pacifist");
 
-	if (!u.uconduct.literate)
+	if (!player.uconduct.literate)
 	    dump("", "  You were illiterate");
 #ifdef WIZARD
 	else if (wizard) {
 	    sprintf(buf, "read items or engraved %ld time%s",
-		    u.uconduct.literate, plur(u.uconduct.literate));
+		    player.uconduct.literate, plur(player.uconduct.literate));
 	    dump("  You ", buf);
 	}
 #endif
@@ -1652,30 +1652,30 @@ void dump_conduct(int final) {
 	    dump("  You ", buf);
 	}
 
-	if (!u.uconduct.polypiles)
+	if (!player.uconduct.polypiles)
 	    dump("", "  You never polymorphed an object");
 	else {
 	    sprintf(buf, "polymorphed %ld item%s",
-		    u.uconduct.polypiles, plur(u.uconduct.polypiles));
+		    player.uconduct.polypiles, plur(player.uconduct.polypiles));
 	    dump("  You ", buf);
 	}
 
-	if (!u.uconduct.polyselfs)
+	if (!player.uconduct.polyselfs)
 	    dump("", "  You never changed form");
 	else {
 	    sprintf(buf, "changed form %ld time%s",
-		    u.uconduct.polyselfs, plur(u.uconduct.polyselfs));
+		    player.uconduct.polyselfs, plur(player.uconduct.polyselfs));
 	    dump("  You ", buf);
 	}
 
-	if (!u.uconduct.wishes)
+	if (!player.uconduct.wishes)
 	    dump("", "  You used no wishes");
 	else {
 	    sprintf(buf, "used %ld wish%s",
-		    u.uconduct.wishes, (u.uconduct.wishes > 1L) ? "es" : "");
+		    player.uconduct.wishes, (player.uconduct.wishes > 1L) ? "es" : "");
 	    dump("  You ", buf);
 
-	    if (!u.uconduct.wisharti)
+	    if (!player.uconduct.wisharti)
 		dump("", "  You did not wish for any artifacts");
 	}
 
@@ -2083,13 +2083,13 @@ static int wiz_migrate_mons() {
 	getlin("How many random monsters to migrate? [0]", inbuf);
 	if (*inbuf == '\033') return 0;
 	mcount = atoi(inbuf);
-	if (mcount < 0 || mcount > (COLNO * ROWNO) || Is_botlevel(&u.uz))
+	if (mcount < 0 || mcount > (COLNO * ROWNO) || Is_botlevel(&player.uz))
 		return 0;
 	while (mcount > 0) {
-		if (Is_stronghold(&u.uz))
+		if (Is_stronghold(&player.uz))
 		    assign_level(&tolevel, &valley_level);
 		else
-		    get_level(&tolevel, depth(&u.uz) + 1);
+		    get_level(&tolevel, depth(&player.uz) + 1);
 		ptr = rndmonst();
 		mtmp = makemon(ptr, 0, 0, NO_MM_FLAGS);
 		if (mtmp) migrate_to_level(mtmp, ledger_no(&tolevel),
@@ -2178,10 +2178,10 @@ void rhack(char *cmd) {
 		    } else
 			prefix_seen = TRUE;
 		    break;
-	 case 'm':  if (movecmd(cmd[1]) || u.dz) {
+	 case 'm':  if (movecmd(cmd[1]) || player.dz) {
 			flags.run = 0;
 			flags.nopick = 1;
-			if (!u.dz) do_walk = TRUE;
+			if (!player.dz) do_walk = TRUE;
 			else cmd[0] = cmd[1];	/* "m<" or "m>" */
 		    } else
 			prefix_seen = TRUE;
@@ -2237,7 +2237,7 @@ void rhack(char *cmd) {
 	} else if (do_rush) {
 	    if (firsttime) {
 		if (!multi) multi = max(COLNO,ROWNO);
-		u.last_str_turn = 0;
+		player.last_str_turn = 0;
 	    }
 	    flags.mv = TRUE;
 	    domove();
@@ -2256,7 +2256,7 @@ void rhack(char *cmd) {
 	    for (tlist = cmdlist; tlist->f_char; tlist++) {
 		if ((*cmd & 0xff) != (tlist->f_char & 0xff)) continue;
 
-		if (u.uburied && !tlist->can_if_buried) {
+		if (player.uburied && !tlist->can_if_buried) {
 		    You_cant("do that while you are buried!");
 		    res = 0;
 		} else {
@@ -2321,22 +2321,22 @@ void dtoxy(coord *cc, int dd) {
 	return;
 }
 
-/* also sets u.dz, but returns false for <> */
+/* also sets player.dz, but returns false for <> */
 int movecmd(char sym) {
 	const char *dp;
 	const char *sdp;
 	if(iflags.num_pad) sdp = ndir; else sdp = sdir;	/* DICE workaround */
 
-	u.dz = 0;
+	player.dz = 0;
 	if(!(dp = index(sdp, sym))) return 0;
-	u.dx = xdir[dp-sdp];
-	u.dy = ydir[dp-sdp];
-	u.dz = zdir[dp-sdp];
-	if (u.dx && u.dy && u.umonnum == PM_GRID_BUG) {
-		u.dx = u.dy = 0;
+	player.dx = xdir[dp-sdp];
+	player.dy = ydir[dp-sdp];
+	player.dz = zdir[dp-sdp];
+	if (player.dx && player.dy && player.umonnum == PM_GRID_BUG) {
+		player.dx = player.dy = 0;
 		return 0;
 	}
-	return !u.dz;
+	return !player.dz;
 }
 
 /*
@@ -2359,8 +2359,8 @@ int get_adjacent_loc(
 		pline(Never_mind);
 		return 0;
 	}
-	new_x = x + u.dx;
-	new_y = y + u.dy;
+	new_x = x + player.dx;
+	new_y = y + player.dy;
 	if (cc && isok(new_x,new_y)) {
 		cc->x = new_x;
 		cc->y = new_y;
@@ -2385,8 +2385,8 @@ int getdir(const char *s) {
 	savech(dirsym);
 #endif
 	if(dirsym == '.' || dirsym == 's')
-		u.dx = u.dy = u.dz = 0;
-	else if(!movecmd(dirsym) && !u.dz) {
+		player.dx = player.dy = player.dz = 0;
+	else if(!movecmd(dirsym) && !player.dz) {
 		bool did_help = FALSE;
 		if(!index(quitchars, dirsym)) {
 		    if (iflags.cmdassist) {
@@ -2397,7 +2397,7 @@ int getdir(const char *s) {
 		}
 		return 0;
 	}
-	if(!u.dz && (Stunned || (Confusion && !rn2(5)))) confdir();
+	if(!player.dz && (Stunned || (Confusion && !rn2(5)))) confdir();
 	return 1;
 }
 
@@ -2437,14 +2437,14 @@ STATIC_OVL bool help_dir(char sym, const char *msg) {
 		putstr(win, 0, "");
 	    }
 	}
-	if (iflags.num_pad && u.umonnum == PM_GRID_BUG) {
+	if (iflags.num_pad && player.umonnum == PM_GRID_BUG) {
 	    putstr(win, 0, "Valid direction keys in your current form (with number_pad on) are:");
 	    putstr(win, 0, "             8   ");
 	    putstr(win, 0, "             |   ");
 	    putstr(win, 0, "          4- . -6");
 	    putstr(win, 0, "             |   ");
 	    putstr(win, 0, "             2   ");
-	} else if (u.umonnum == PM_GRID_BUG) {
+	} else if (player.umonnum == PM_GRID_BUG) {
 	    putstr(win, 0, "Valid direction keys in your current form are:");
 	    putstr(win, 0, "             k   ");
 	    putstr(win, 0, "             |   ");
@@ -2481,9 +2481,9 @@ STATIC_OVL bool help_dir(char sym, const char *msg) {
 #ifdef OVLB
 
 void confdir() {
-	int x = (u.umonnum == PM_GRID_BUG) ? 2*rn2(4) : rn2(8);
-	u.dx = xdir[x];
-	u.dy = ydir[x];
+	int x = (player.umonnum == PM_GRID_BUG) ? 2*rn2(4) : rn2(8);
+	player.dx = xdir[x];
+	player.dy = ydir[x];
 	return;
 }
 
@@ -2505,37 +2505,37 @@ const char * click_to_cmd(int x, int y, int mod) {
     static char cmd[4];
     cmd[1]=0;
 
-    x -= u.ux;
-    y -= u.uy;
+    x -= player.ux;
+    y -= player.uy;
 
     if (iflags.travelcmd) {
         if (abs(x) <= 1 && abs(y) <= 1 ) {
             x = sgn(x), y = sgn(y);
         } else {
-            u.tx = u.ux+x;
-            u.ty = u.uy+y;
+            player.tx = player.ux+x;
+            player.ty = player.uy+y;
             cmd[0] = CMD_TRAVEL;
             return cmd;
         }
 
         if(x == 0 && y == 0) {
             /* here */
-            if(IS_FOUNTAIN(levl[u.ux][u.uy].typ) || IS_SINK(levl[u.ux][u.uy].typ)) {
+            if(IS_FOUNTAIN(levl[player.ux][player.uy].typ) || IS_SINK(levl[player.ux][player.uy].typ)) {
                 cmd[0]=mod == CLICK_1 ? 'q' : M('d');
                 return cmd;
-            } else if(IS_THRONE(levl[u.ux][u.uy].typ)) {
+            } else if(IS_THRONE(levl[player.ux][player.uy].typ)) {
                 cmd[0]=M('s');
                 return cmd;
-            } else if((u.ux == xupstair && u.uy == yupstair)
-                      || (u.ux == sstairs.sx && u.uy == sstairs.sy && sstairs.up)
-                      || (u.ux == xupladder && u.uy == yupladder)) {
+            } else if((player.ux == xupstair && player.uy == yupstair)
+                      || (player.ux == sstairs.sx && player.uy == sstairs.sy && sstairs.up)
+                      || (player.ux == xupladder && player.uy == yupladder)) {
                 return "<";
-            } else if((u.ux == xdnstair && u.uy == ydnstair)
-                      || (u.ux == sstairs.sx && u.uy == sstairs.sy && !sstairs.up)
-                      || (u.ux == xdnladder && u.uy == ydnladder)) {
+            } else if((player.ux == xdnstair && player.uy == ydnstair)
+                      || (player.ux == sstairs.sx && player.uy == sstairs.sy && !sstairs.up)
+                      || (player.ux == xdnladder && player.uy == ydnladder)) {
                 return ">";
-            } else if(OBJ_AT(u.ux, u.uy)) {
-                cmd[0] = Is_container(level.objects[u.ux][u.uy]) ? M('l') : ',';
+            } else if(OBJ_AT(player.ux, player.uy)) {
+                cmd[0] = Is_container(level.objects[player.ux][player.uy]) ? M('l') : ',';
                 return cmd;
             } else {
                 return "."; /* just rest */
@@ -2546,21 +2546,21 @@ const char * click_to_cmd(int x, int y, int mod) {
 
         dir = xytod(x, y);
 
-	if (!m_at(u.ux+x, u.uy+y) && !test_move(u.ux, u.uy, x, y, TEST_MOVE)) {
+	if (!m_at(player.ux+x, player.uy+y) && !test_move(player.ux, player.uy, x, y, TEST_MOVE)) {
             cmd[1] = (iflags.num_pad ? ndir[dir] : sdir[dir]);
             cmd[2] = 0;
-            if (IS_DOOR(levl[u.ux+x][u.uy+y].typ)) {
+            if (IS_DOOR(levl[player.ux+x][player.uy+y].typ)) {
                 /* slight assistance to the player: choose kick/open for them */
-                if (levl[u.ux+x][u.uy+y].doormask & D_LOCKED) {
+                if (levl[player.ux+x][player.uy+y].doormask & D_LOCKED) {
                     cmd[0] = C('d');
                     return cmd;
                 }
-                if (levl[u.ux+x][u.uy+y].doormask & D_CLOSED) {
+                if (levl[player.ux+x][player.uy+y].doormask & D_CLOSED) {
                     cmd[0] = 'o';
                     return cmd;
                 }
             }
-            if (levl[u.ux+x][u.uy+y].typ <= SCORR) {
+            if (levl[player.ux+x][player.uy+y].typ <= SCORR) {
                 cmd[0] = 's';
                 cmd[1] = 0;
                 return cmd;
@@ -2681,7 +2681,7 @@ void end_of_input() {
 
 char readchar() {
 	int sym;
-	int x = u.ux, y = u.uy, mod = 0;
+	int x = player.ux, y = player.uy, mod = 0;
 
 	if ( *readchar_queue )
 	    sym = *readchar_queue++;
@@ -2728,16 +2728,16 @@ STATIC_PTR int dotravel() {
 	cc.y = iflags.travelcc.y;
 	if (cc.x == -1 && cc.y == -1) {
 	    /* No cached destination, start attempt from current position */
-	    cc.x = u.ux;
-	    cc.y = u.uy;
+	    cc.x = player.ux;
+	    cc.y = player.uy;
 	}
 	pline("Where do you want to travel to?");
 	if (getpos(&cc, TRUE, "the desired destination") < 0) {
 		/* user pressed ESC */
 		return 0;
 	}
-	iflags.travelcc.x = u.tx = cc.x;
-	iflags.travelcc.y = u.ty = cc.y;
+	iflags.travelcc.x = player.tx = cc.x;
+	iflags.travelcc.y = player.ty = cc.y;
 	cmd[0] = CMD_TRAVEL;
 	readchar_queue = cmd;
 	return 0;

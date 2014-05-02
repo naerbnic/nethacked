@@ -132,13 +132,13 @@ STATIC_OVL int rndtrap() {
 	     case HOLE:		/* no random holes on special levels */
 	     case MAGIC_PORTAL:	rtrap = NO_TRAP;
 				break;
-	     case TRAPDOOR:	if (!Can_dig_down(&u.uz)) rtrap = NO_TRAP;
+	     case TRAPDOOR:	if (!Can_dig_down(&player.uz)) rtrap = NO_TRAP;
 				break;
 	     case LEVEL_TELEP:
 	     case TELEP_TRAP:	if (level.flags.noteleport) rtrap = NO_TRAP;
 				break;
 	     case ROLLING_BOULDER_TRAP:
-	     case ROCKTRAP:	if (In_endgame(&u.uz)) rtrap = NO_TRAP;
+	     case ROCKTRAP:	if (In_endgame(&player.uz)) rtrap = NO_TRAP;
 				break;
 	    }
 	} while (rtrap == NO_TRAP);
@@ -199,7 +199,7 @@ found_it:;
 STATIC_OVL bool is_ok_location(schar x, schar y, int humidity) {
 	int typ;
 
-	if (Is_waterlevel(&u.uz)) return TRUE;	/* accept any spot */
+	if (Is_waterlevel(&player.uz)) return TRUE;	/* accept any spot */
 
 	if (humidity & DRY) {
 	    typ = levl[x][y].typ;
@@ -351,7 +351,7 @@ bool create_room(xchar x, xchar y, xchar w, xchar h, xchar xal, xchar yal, xchar
 
 	/* is light state random ? */
 	if (rlit == -1)
-	    rlit = (rnd(1+abs(depth(&u.uz))) < 11 && rn2(77)) ? TRUE : FALSE;
+	    rlit = (rnd(1+abs(depth(&player.uz))) < 11 && rn2(77)) ? TRUE : FALSE;
 
 	/*
 	 * Here we will try to create a room. If some parameters are
@@ -524,7 +524,7 @@ STATIC_OVL bool create_subroom(struct mkroom *proom, xchar x, xchar y, xchar w, 
 	if (rtype == -1)
 	    rtype = OROOM;
 	if (rlit == -1)
-	    rlit = (rnd(1+abs(depth(&u.uz))) < 11 && rn2(77)) ? TRUE : FALSE;
+	    rlit = (rnd(1+abs(depth(&player.uz))) < 11 && rn2(77)) ? TRUE : FALSE;
 	add_subroom(proom, proom->lx + x, proom->ly + y,
 		    proom->lx + x + w - 1, proom->ly + y + h - 1,
 		    rlit, rtype, FALSE);
@@ -708,9 +708,9 @@ STATIC_OVL void create_monster(monster *m, struct mkroom *croom) {
 	    panic("create_monster: unknown monster class_id '%c'", m->class_id);
 
 	amask = (m->align == AM_SPLEV_CO) ?
-			Align2amask(u.ualignbase[A_ORIGINAL]) :
+			Align2amask(player.ualignbase[A_ORIGINAL]) :
 		(m->align == AM_SPLEV_NONCO) ?
-			Align2amask(noncoalignment(u.ualignbase[A_ORIGINAL])) :
+			Align2amask(noncoalignment(player.ualignbase[A_ORIGINAL])) :
 		(m->align <= -11) ? induced_align(80) :
 		(m->align < 0 ? ralign[-m->align-1] : m->align);
 
@@ -728,7 +728,7 @@ STATIC_OVL void create_monster(monster *m, struct mkroom *croom) {
 	    /* if we can't get a specific monster type (pm == 0) then the
 	       class_id has been genocided, so settle for a random monster */
 	}
-	if (In_mines(&u.uz) && pm && your_race(pm) &&
+	if (In_mines(&player.uz) && pm && your_race(pm) &&
 			(Race_if(PM_DWARF) || Race_if(PM_GNOME)) && rn2(3))
 	    pm = (MonsterType *) 0;
 
@@ -940,7 +940,7 @@ STATIC_OVL void create_object(object *o, struct mkroom *croom) {
 	 * are not stone-resistant and have monster inventory.  They also lack
 	 * other contents, but that can be specified as an empty container.
 	 */
-	if (o->id == STATUE && Is_medusa_level(&u.uz) &&
+	if (o->id == STATUE && Is_medusa_level(&player.uz) &&
 		    o->corpsenm == NON_PM) {
 	    Monster *was;
 	    Object *obj;
@@ -972,11 +972,11 @@ STATIC_OVL void create_object(object *o, struct mkroom *croom) {
          * "prize" and then set record_achieve_special (maps to corpsenm)
          * for the object.  That field will later be checked to find out if
          * the player obtained the prize. */
-        if(otmp->otyp == LUCKSTONE && Is_mineend_level(&u.uz)) {
+        if(otmp->otyp == LUCKSTONE && Is_mineend_level(&player.uz)) {
                 otmp->record_achieve_special = 1;
         } else if((otmp->otyp == AMULET_OF_REFLECTION ||
                    otmp->otyp == BAG_OF_HOLDING) && 
-                  Is_sokoend_level(&u.uz)) {
+                  Is_sokoend_level(&player.uz)) {
                 otmp->record_achieve_special = 1;
         }
 #endif
@@ -1058,9 +1058,9 @@ STATIC_OVL void create_altar(altar *a, struct mkroom *croom) {
 	 */
 
 	amask = (a->align == AM_SPLEV_CO) ?
-			Align2amask(u.ualignbase[A_ORIGINAL]) :
+			Align2amask(player.ualignbase[A_ORIGINAL]) :
 		(a->align == AM_SPLEV_NONCO) ?
-			Align2amask(noncoalignment(u.ualignbase[A_ORIGINAL])) :
+			Align2amask(noncoalignment(player.ualignbase[A_ORIGINAL])) :
 		(a->align == -11) ? induced_align(80) :
 		(a->align < 0 ? ralign[-a->align-1] : a->align);
 
@@ -1077,7 +1077,7 @@ STATIC_OVL void create_altar(altar *a, struct mkroom *croom) {
 	if (!croom_is_temple || !a->shrine) return;
 
 	if (a->shrine) {	/* Is it a shrine  or sanctum? */
-	    priestini(&u.uz, croom, x, y, (a->shrine > 1));
+	    priestini(&player.uz, croom, x, y, (a->shrine > 1));
 	    levl[x][y].altarmask |= AM_SHRINE;
 	    level.flags.has_temple = TRUE;
 	}
@@ -1388,7 +1388,7 @@ void fill_room(struct mkroom *croom, bool prefilled) {
 		case VAULT:
 		    for (x=croom->lx;x<=croom->hx;x++)
 			for (y=croom->ly;y<=croom->hy;y++)
-			    (void) mkgold((long)rn1(abs(depth(&u.uz))*100, 51), x, y);
+			    (void) mkgold((long)rn1(abs(depth(&player.uz))*100, 51), x, y);
 		    break;
 		case COURT:
 		case ZOO:
@@ -2159,7 +2159,7 @@ STATIC_OVL bool load_maze(dlb *fd) {
 		    prefilled = FALSE;
 
 		if(tmpregion.rlit < 0)
-		    tmpregion.rlit = (rnd(1+abs(depth(&u.uz))) < 11 && rn2(77))
+		    tmpregion.rlit = (rnd(1+abs(depth(&player.uz))) < 11 && rn2(77))
 			? TRUE : FALSE;
 
 		get_location(&tmpregion.x1, &tmpregion.y1, DRY|WET);

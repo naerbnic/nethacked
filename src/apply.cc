@@ -63,19 +63,19 @@ STATIC_OVL int use_camera(Object *obj) {
 
 	if (obj->cursed && !rn2(2)) {
 		(void) zapyourself(obj, TRUE);
-	} else if (u.uswallow) {
-		You("take a picture of %s %s.", s_suffix(mon_nam(u.ustuck)),
-		    mbodypart(u.ustuck, STOMACH));
-	} else if (u.dz) {
+	} else if (player.uswallow) {
+		You("take a picture of %s %s.", s_suffix(mon_nam(player.ustuck)),
+		    mbodypart(player.ustuck, STOMACH));
+	} else if (player.dz) {
 		You("take a picture of the %s.",
-			(u.dz > 0) ? surface(u.ux,u.uy) : ceiling(u.ux,u.uy));
-	} else if (!u.dx && !u.dy) {
+			(player.dz > 0) ? surface(player.ux,player.uy) : ceiling(player.ux,player.uy));
+	} else if (!player.dx && !player.dy) {
 		(void) zapyourself(obj, TRUE);
-	} else if ((mtmp = bhit(u.dx, u.dy, COLNO, FLASHED_LIGHT,
+	} else if ((mtmp = bhit(player.dx, player.dy, COLNO, FLASHED_LIGHT,
 				(int (*)(Monster*,Object*))0,
 				(int (*)(Object*,Object*))0,
 				obj, NULL)) != 0) {
-		obj->ox = u.ux,  obj->oy = u.uy;
+		obj->ox = player.ux,  obj->oy = player.uy;
 		(void) flash_hits_mon(mtmp, obj);
 	}
 	return 1;
@@ -100,11 +100,11 @@ STATIC_OVL int use_towel(Object *obj) {
 		    return 1;
 		case 1:
 		    if (!ublindf) {
-			old = u.ucreamed;
-			u.ucreamed += rn1(10, 3);
+			old = player.ucreamed;
+			player.ucreamed += rn1(10, 3);
 			pline("Yecch! Your %s %s gunk on it!", body_part(FACE),
 			      (old ? "has more" : "now has"));
-			make_blinded(Blinded + (long)u.ucreamed - old, TRUE);
+			make_blinded(Blinded + (long)player.ucreamed - old, TRUE);
 		    } else {
 			const char *what = (ublindf->otyp == LENSES) ?
 					    "lenses" : "blindfold";
@@ -128,9 +128,9 @@ STATIC_OVL int use_towel(Object *obj) {
 		Glib = 0;
 		You("wipe off your %s.", makeplural(body_part(HAND)));
 		return 1;
-	} else if(u.ucreamed) {
-		Blinded -= u.ucreamed;
-		u.ucreamed = 0;
+	} else if(player.ucreamed) {
+		Blinded -= player.ucreamed;
+		player.ucreamed = 0;
 
 		if (!Blinded) {
 			pline("You've got the glop off.");
@@ -169,7 +169,7 @@ STATIC_OVL bool its_dead(int rx, int ry, int *resp) {
 	    if (vobj_at(rx, ry)->otyp == STATUE) otmp = vobj_at(rx, ry);
 	    if (otmp->otyp == CORPSE) {
 		You("determine that %s unfortunate being is dead.",
-		    (rx == u.ux && ry == u.uy) ? "this" : "that");
+		    (rx == player.ux && ry == player.uy) ? "this" : "that");
 	    } else {
 		ttmp = t_at(rx, ry);
 		pline("%s appears to be in %s health for a statue.",
@@ -194,7 +194,7 @@ STATIC_OVL int use_stethoscope(Object *obj) {
 	Monster *mtmp;
 	struct rm *lev;
 	int rx, ry, res;
-	bool interference = (u.uswallow && is_whirly(u.ustuck->data) &&
+	bool interference = (player.uswallow && is_whirly(player.ustuck->data) &&
 				!rn2(Role_if(PM_HEALER) ? 10 : 3));
 
 	if (nohands(youmonst.data)) {	/* should also check for no ears and/or deaf */
@@ -212,45 +212,45 @@ STATIC_OVL int use_stethoscope(Object *obj) {
 	last_used_movement = youmonst.movement;
 
 #ifdef STEED
-	if (u.usteed && u.dz > 0) {
+	if (player.usteed && player.dz > 0) {
 		if (interference) {
-			pline("%s interferes.", Monnam(u.ustuck));
-			mstatusline(u.ustuck);
+			pline("%s interferes.", Monnam(player.ustuck));
+			mstatusline(player.ustuck);
 		} else
-			mstatusline(u.usteed);
+			mstatusline(player.usteed);
 		return res;
 	} else
 #endif
-	if (u.uswallow && (u.dx || u.dy || u.dz)) {
-		mstatusline(u.ustuck);
+	if (player.uswallow && (player.dx || player.dy || player.dz)) {
+		mstatusline(player.ustuck);
 		return res;
-	} else if (u.uswallow && interference) {
-		pline("%s interferes.", Monnam(u.ustuck));
-		mstatusline(u.ustuck);
+	} else if (player.uswallow && interference) {
+		pline("%s interferes.", Monnam(player.ustuck));
+		mstatusline(player.ustuck);
 		return res;
-	} else if (u.dz) {
+	} else if (player.dz) {
 		if (Underwater)
 		    You_hear("faint splashing.");
-		else if (u.dz < 0 || !can_reach_floor())
+		else if (player.dz < 0 || !can_reach_floor())
 		    You_cant("reach the %s.",
-			(u.dz > 0) ? surface(u.ux,u.uy) : ceiling(u.ux,u.uy));
-		else if (its_dead(u.ux, u.uy, &res))
+			(player.dz > 0) ? surface(player.ux,player.uy) : ceiling(player.ux,player.uy));
+		else if (its_dead(player.ux, player.uy, &res))
 		    ;	/* message already given */
-		else if (Is_stronghold(&u.uz))
+		else if (Is_stronghold(&player.uz))
 		    You_hear("the crackling of hellfire.");
 		else
-		    pline_The("%s seems healthy enough.", surface(u.ux,u.uy));
+		    pline_The("%s seems healthy enough.", surface(player.ux,player.uy));
 		return res;
 	} else if (obj->cursed && !rn2(2)) {
 		You_hear("your heart beat.");
 		return res;
 	}
 	if (Stunned || (Confusion && !rn2(5))) confdir();
-	if (!u.dx && !u.dy) {
+	if (!player.dx && !player.dy) {
 		ustatusline();
 		return res;
 	}
-	rx = u.ux + u.dx; ry = u.uy + u.dy;
+	rx = player.ux + player.dx; ry = player.uy + player.dy;
 	if (!isok(rx,ry)) {
 		You_hear("a faint typing noise.");
 		return 0;
@@ -327,7 +327,7 @@ STATIC_OVL void use_magic_whistle(Object *obj) {
 }
 
 bool um_dist(xchar x, xchar y, xchar n) {
-	return((bool)(abs(u.ux - x) > n  || abs(u.uy - y) > n));
+	return((bool)(abs(player.ux - x) > n  || abs(player.uy - y) > n));
 }
 
 int number_leashed() {
@@ -390,12 +390,12 @@ STATIC_OVL void use_leash(Object *obj) {
 		return;
 	}
 
-	if(!get_adjacent_loc((char *)0, (char *)0, u.ux, u.uy, &cc)) return;
+	if(!get_adjacent_loc((char *)0, (char *)0, player.ux, player.uy, &cc)) return;
 
-	if((cc.x == u.ux) && (cc.y == u.uy)) {
+	if((cc.x == player.ux) && (cc.y == player.uy)) {
 #ifdef STEED
-		if (u.usteed && u.dz > 0) {
-		    mtmp = u.usteed;
+		if (player.usteed && player.dz > 0) {
+		    mtmp = player.usteed;
 		    spotmon = 1;
 		    goto got_target;
 		}
@@ -491,7 +491,7 @@ bool next_to_u() {
 	}
 #ifdef STEED
 	/* no pack mules for the Amulet */
-	if (u.usteed && mon_has_amulet(u.usteed)) return FALSE;
+	if (player.usteed && mon_has_amulet(player.usteed)) return FALSE;
 #endif
 	return(TRUE);
 }
@@ -514,14 +514,14 @@ void check_leash(xchar x, xchar y) {
 		otmp->leashmon = 0;
 		continue;
 	    }
-	    if (dist2(u.ux,u.uy,mtmp->mx,mtmp->my) >
+	    if (dist2(player.ux,player.uy,mtmp->mx,mtmp->my) >
 		    dist2(x,y,mtmp->mx,mtmp->my)) {
 		if (!um_dist(mtmp->mx, mtmp->my, 3)) {
 		    ;	/* still close enough */
 		} else if (otmp->cursed && !breathless(mtmp->data)) {
 		    if (um_dist(mtmp->mx, mtmp->my, 5) ||
 			    (mtmp->mhp -= rnd(2)) <= 0) {
-			long save_pacifism = u.uconduct.killer;
+			long save_pacifism = player.uconduct.killer;
 
 			Your("leash chokes %s to death!", mon_nam(mtmp));
 			/* hero might not have intended to kill pet, but
@@ -530,7 +530,7 @@ void check_leash(xchar x, xchar y) {
 			   corpse less likely to remain tame after revival */
 			xkilled(mtmp, 0);	/* no "you kill it" message */
 			/* life-saving doesn't ordinarily reset this */
-			if (mtmp->mhp > 0) u.uconduct.killer = save_pacifism;
+			if (mtmp->mhp > 0) player.uconduct.killer = save_pacifism;
 		    } else {
 			pline("%s chokes on the leash!", Monnam(mtmp));
 			/* tameness eventually drops to 1 here (never 0) */
@@ -572,25 +572,25 @@ STATIC_OVL int use_mirror(Object *obj) {
 			pline_The("mirror fogs up and doesn't reflect!");
 		return 1;
 	}
-	if(!u.dx && !u.dy && !u.dz) {
+	if(!player.dx && !player.dy && !player.dz) {
 		if(!Blind && !Invisible) {
-		    if (u.umonnum == PM_FLOATING_EYE) {
+		    if (player.umonnum == PM_FLOATING_EYE) {
 			if (!Free_action) {
 			pline(Hallucination ?
 			      "Yow!  The mirror stares back!" :
 			      "Yikes!  You've frozen yourself!");
-			nomul(-rnd((MAXULEV+6) - u.ulevel), "gazing into a mirror");
+			nomul(-rnd((MAXULEV+6) - player.ulevel), "gazing into a mirror");
 			} else You("stiffen momentarily under your gaze.");
 		    } else if (youmonst.data->mlet == S_VAMPIRE)
 			You("don't have a reflection.");
-		    else if (u.umonnum == PM_UMBER_HULK) {
+		    else if (player.umonnum == PM_UMBER_HULK) {
 			pline("Huh?  That doesn't look like you!");
 			make_confused(HConfusion + d(3,4),FALSE);
 		    } else if (Hallucination)
 			You(look_str, hcolor((char *)0));
 		    else if (Sick)
 			You(look_str, "peaked");
-		    else if (u.uhs >= WEAK)
+		    else if (player.uhs >= WEAK)
 			You(look_str, "undernourished");
 		    else You("look as %s as ever.",
 				ACURR(A_CHA) > 14 ?
@@ -605,9 +605,9 @@ STATIC_OVL int use_mirror(Object *obj) {
 		}
 		return 1;
 	}
-	if(u.uswallow) {
-		if (!Blind) You("reflect %s %s.", s_suffix(mon_nam(u.ustuck)),
-		    mbodypart(u.ustuck, STOMACH));
+	if(player.uswallow) {
+		if (!Blind) You("reflect %s %s.", s_suffix(mon_nam(player.ustuck)),
+		    mbodypart(player.ustuck, STOMACH));
 		return 1;
 	}
 	if(Underwater) {
@@ -616,13 +616,13 @@ STATIC_OVL int use_mirror(Object *obj) {
 		    "reflect the murky water.");
 		return 1;
 	}
-	if(u.dz) {
+	if(player.dz) {
 		if (!Blind)
 		    You("reflect the %s.",
-			(u.dz > 0) ? surface(u.ux,u.uy) : ceiling(u.ux,u.uy));
+			(player.dz > 0) ? surface(player.ux,player.uy) : ceiling(player.ux,player.uy));
 		return 1;
 	}
-	mtmp = bhit(u.dx, u.dy, COLNO, INVIS_BEAM,
+	mtmp = bhit(player.dx, player.dy, COLNO, INVIS_BEAM,
 		    (int (*)(Monster*,Object*))0,
 		    (int (*)(Object*,Object*))0,
 		    obj, NULL);
@@ -701,11 +701,11 @@ STATIC_OVL void use_bell(Object **optr) {
 	bool wakem = FALSE, learno = FALSE,
 		ordinary = (obj->otyp != BELL_OF_OPENING || !obj->spe),
 		invoking = (obj->otyp == BELL_OF_OPENING &&
-			 invocation_pos(u.ux, u.uy) && !On_stairs(u.ux, u.uy));
+			 invocation_pos(player.ux, player.uy) && !On_stairs(player.ux, player.uy));
 
 	You("ring %s.", the(xname(obj)));
 
-	if (Underwater || (u.uswallow && ordinary)) {
+	if (Underwater || (player.uswallow && ordinary)) {
 	    pline("But the sound is muffled.");
 
 	} else if (invoking && ordinary) {
@@ -720,7 +720,7 @@ STATIC_OVL void use_bell(Object **optr) {
 		    !(mvitals[PM_WATER_NYMPH].mvflags & G_GONE) &&
 		    !(mvitals[PM_MOUNTAIN_NYMPH].mvflags & G_GONE) &&
 		    (mtmp = makemon(mkclass(S_NYMPH, 0),
-					u.ux, u.uy, NO_MINVENT)) != 0) {
+					player.ux, player.uy, NO_MINVENT)) != 0) {
 		You("summon %s!", a_monnam(mtmp));
 		if (!obj_resists(obj, 93, 100)) {
 		    pline("%s shattered!", Tobjnam(obj, "have"));
@@ -744,7 +744,7 @@ STATIC_OVL void use_bell(Object **optr) {
 	    /* charged Bell of Opening */
 	    consume_obj_charge(obj, TRUE);
 
-	    if (u.uswallow) {
+	    if (player.uswallow) {
 		if (!obj->cursed)
 		    (void) openit();
 		else
@@ -753,8 +753,8 @@ STATIC_OVL void use_bell(Object **optr) {
 	    } else if (obj->cursed) {
 		coord mm;
 
-		mm.x = u.ux;
-		mm.y = u.uy;
+		mm.x = player.ux;
+		mm.y = player.uy;
 		mkundead(&mm, FALSE, NO_MINVENT);
 		wakem = TRUE;
 
@@ -811,7 +811,7 @@ STATIC_OVL void use_candelabrum(Object *obj) {
 		pline("This %s has no %s.", xname(obj), s);
 		return;
 	}
-	if(u.uswallow || obj->cursed) {
+	if(player.uswallow || obj->cursed) {
 		if (!Blind)
 		    pline_The("%s %s for a moment, then %s.",
 			      s, vtense(s, "flicker"), vtense(s, "die"));
@@ -828,7 +828,7 @@ STATIC_OVL void use_candelabrum(Object *obj) {
 		pline("%s's %s burn%s", The(xname(obj)), s,
 			(Blind ? "." : " brightly!"));
 	}
-	if (!invocation_pos(u.ux, u.uy)) {
+	if (!invocation_pos(player.ux, player.uy)) {
 		pline_The("%s %s being rapidly consumed!", s, vtense(s, "are"));
 		obj->age /= 2;
 	} else {
@@ -849,7 +849,7 @@ STATIC_OVL void use_candle(Object **optr) {
 	const char *s = (obj->quan != 1) ? "candles" : "candle";
 	char qbuf[QBUFSZ];
 
-	if(u.uswallow) {
+	if(player.uswallow) {
 		You(no_elbow_room);
 		return;
 	}
@@ -968,7 +968,7 @@ bool catch_lit(Object *obj) {
 	    if (obj->where == OBJ_MINVENT ? cansee(x,y) : !Blind)
 		pline("%s %s light!", Yname2(obj), otense(obj, "catch"));
 	    if (obj->otyp == POT_OIL) makeknown(obj->otyp);
-	    if (obj->unpaid && costly_spot(u.ux, u.uy) && (obj->where == OBJ_INVENT)) {
+	    if (obj->unpaid && costly_spot(player.ux, player.uy) && (obj->where == OBJ_INVENT)) {
 	        /* if it catches while you have it, then it's your tough luck */
 		check_unpaid(obj);
 	        verbalize("That's in addition to the cost of %s %s, of course.",
@@ -1018,7 +1018,7 @@ STATIC_OVL void use_lamp(Object *obj) {
 			s_suffix(Yname2(obj)),
 			plur(obj->quan), otense(obj, "burn"),
 			Blind ? "." : " brightly!");
-		    if (obj->unpaid && costly_spot(u.ux, u.uy) &&
+		    if (obj->unpaid && costly_spot(player.ux, player.uy) &&
 			  obj->age == 20L * (long)objects[obj->otyp].oc_cost) {
 			const char *ithem = obj->quan > 1L ? "them" : "it";
 			verbalize("You burn %s, you bought %s!", ithem, ithem);
@@ -1032,7 +1032,7 @@ STATIC_OVL void use_lamp(Object *obj) {
 STATIC_OVL void light_cocktail(Object *obj) {
 	char buf[BUFSZ];
 
-	if (u.uswallow) {
+	if (player.uswallow) {
 	    You(no_elbow_room);
 	    return;
 	}
@@ -1055,7 +1055,7 @@ STATIC_OVL void light_cocktail(Object *obj) {
 
 	You("light %s potion.%s", shk_your(buf, obj),
 	    Blind ? "" : "  It gives off a dim light.");
-	if (obj->unpaid && costly_spot(u.ux, u.uy)) {
+	if (obj->unpaid && costly_spot(player.ux, player.uy)) {
 	    /* Normally, we shouldn't both partially and fully charge
 	     * for an item, but (Yendorian Fuel) Taxes are inevitable...
 	     */
@@ -1132,33 +1132,33 @@ int jump(int magic) {
 	} else if (!magic && !Jumping) {
 		You_cant("jump very far.");
 		return 0;
-	} else if (u.uswallow) {
+	} else if (player.uswallow) {
 		if (magic) {
 			You("bounce around a little.");
 			return 1;
 		}
 		pline("You've got to be kidding!");
 		return 0;
-	} else if (u.uinwater) {
+	} else if (player.uinwater) {
 		if (magic) {
 			You("swish around a little.");
 			return 1;
 		}
 		pline("This calls for swimming, not jumping!");
 		return 0;
-	} else if (u.ustuck) {
-		if (u.ustuck->mtame && !Conflict && !u.ustuck->mconf) {
-		    You("pull free from %s.", mon_nam(u.ustuck));
-		    u.ustuck = 0;
+	} else if (player.ustuck) {
+		if (player.ustuck->mtame && !Conflict && !player.ustuck->mconf) {
+		    You("pull free from %s.", mon_nam(player.ustuck));
+		    player.ustuck = 0;
 		    return 1;
 		}
 		if (magic) {
-			You("writhe a little in the grasp of %s!", mon_nam(u.ustuck));
+			You("writhe a little in the grasp of %s!", mon_nam(player.ustuck));
 			return 1;
 		}
-		You("cannot escape from %s!", mon_nam(u.ustuck));
+		You("cannot escape from %s!", mon_nam(player.ustuck));
 		return 0;
-	} else if (Levitation || Is_airlevel(&u.uz) || Is_waterlevel(&u.uz)) {
+	} else if (Levitation || Is_airlevel(&player.uz) || Is_waterlevel(&player.uz)) {
 		if (magic) {
 			You("flail around a little.");
 			return 1;
@@ -1168,7 +1168,7 @@ int jump(int magic) {
 	} else if (!magic && near_capacity() > UNENCUMBERED) {
 		You("are carrying too much to jump!");
 		return 0;
-	} else if (!magic && (u.uhunger <= 100 || ACURR(A_STR) < 6)) {
+	} else if (!magic && (player.uhunger <= 100 || ACURR(A_STR) < 6)) {
 		You("lack the strength to jump!");
 		return 0;
 	} else if (Wounded_legs) {
@@ -1177,8 +1177,8 @@ int jump(int magic) {
 
 		if (wl == BOTH_SIDES) bp = makeplural(bp);
 #ifdef STEED
-		if (u.usteed)
-		    pline("%s is in no shape for jumping.", Monnam(u.usteed));
+		if (player.usteed)
+		    pline("%s is in no shape for jumping.", Monnam(player.usteed));
 		else
 #endif
 		Your("%s%s %s in no shape for jumping.",
@@ -1188,15 +1188,15 @@ int jump(int magic) {
 		return 0;
 	}
 #ifdef STEED
-	else if (u.usteed && u.utrap) {
-		pline("%s is stuck in a trap.", Monnam(u.usteed));
+	else if (player.usteed && player.utrap) {
+		pline("%s is stuck in a trap.", Monnam(player.usteed));
 		return (0);
 	}
 #endif
 
 	pline("Where do you want to jump?");
-	cc.x = u.ux;
-	cc.y = u.uy;
+	cc.x = player.ux;
+	cc.y = player.uy;
 	if (getpos(&cc, TRUE, "the desired position") < 0)
 		return 0;	/* user pressed ESC */
 	if (!magic && !(HJumping & ~INTRINSIC) && !EJumping &&
@@ -1219,8 +1219,8 @@ int jump(int magic) {
 	    coord uc;
 	    int range, temp;
 
-	    if(u.utrap)
-		switch(u.utraptype) {
+	    if(player.utrap)
+		switch(player.utraptype) {
 		case TT_BEARTRAP: {
 		    long side = rn2(3) ? LEFT_SIDE : RIGHT_SIDE;
 		    You("rip yourself free of the bear trap!  Ouch!");
@@ -1233,11 +1233,11 @@ int jump(int magic) {
 		    break;
 		case TT_WEB:
 		    You("tear the web apart as you pull yourself free!");
-		    deltrap(t_at(u.ux,u.uy));
+		    deltrap(t_at(player.ux,player.uy));
 		    break;
 		case TT_LAVA:
 		    You("pull yourself above the lava!");
-		    u.utrap = 0;
+		    player.utrap = 0;
 		    return 1;
 		case TT_INFLOOR:
 		    You("strain your %s, but you're still stuck in the floor.",
@@ -1252,8 +1252,8 @@ int jump(int magic) {
 	     * location.  The final position actually reached will be
 	     * in cc.
 	     */
-	    uc.x = u.ux;
-	    uc.y = u.uy;
+	    uc.x = player.ux;
+	    uc.y = player.uy;
 	    /* calculate max(abs(dx), abs(dy)) as the range */
 	    range = cc.x - uc.x;
 	    if (range < 0) range = -range;
@@ -1264,7 +1264,7 @@ int jump(int magic) {
 	    (void) walk_path(&uc, &cc, hurtle_step, (genericptr_t)&range);
 
 	    /* A little Sokoban guilt... */
-	    if (In_sokoban(&u.uz))
+	    if (In_sokoban(&player.uz))
 		change_luck(-1);
 
 	    teleds(cc.x, cc.y, TRUE);
@@ -1388,7 +1388,7 @@ void use_unicorn_horn(Object *obj) {
 
 	/* collect property troubles */
 	if (Sick) prop_trouble(SICK);
-	if (Blinded > (long)u.ucreamed) prop_trouble(BLINDED);
+	if (Blinded > (long)player.ucreamed) prop_trouble(BLINDED);
 	if (HHallucination) prop_trouble(HALLUC);
 	if (Vomiting) prop_trouble(VOMITING);
 	if (HConfusion) prop_trouble(CONFUSION);
@@ -1400,7 +1400,7 @@ void use_unicorn_horn(Object *obj) {
 	for (idx = 0; idx < A_MAX; idx++) {
 	    val_limit = AMAX(idx);
 	    /* don't recover strength lost from hunger */
-	    if (idx == A_STR && u.uhs >= WEAK) val_limit--;
+	    if (idx == A_STR && player.uhs >= WEAK) val_limit--;
 	    /* don't recover more than 3 points worth of any attribute */
 	    if (val_limit > ABASE(idx) + 3) val_limit = ABASE(idx) + 3;
 
@@ -1443,7 +1443,7 @@ void use_unicorn_horn(Object *obj) {
 		did_prop++;
 		break;
 	    case prop2trbl(BLINDED):
-		make_blinded((long)u.ucreamed, TRUE);
+		make_blinded((long)player.ucreamed, TRUE);
 		did_prop++;
 		break;
 	    case prop2trbl(HALLUC):
@@ -1579,7 +1579,7 @@ void fig_transform(genericptr_t arg, long timeout) {
 STATIC_OVL bool figurine_location_checks(Object *obj, coord *cc, bool quietly) {
 	xchar x,y;
 
-	if (carried(obj) && u.uswallow) {
+	if (carried(obj) && player.uswallow) {
 		if (!quietly)
 			You("don't have enough room in here.");
 		return FALSE;
@@ -1611,7 +1611,7 @@ STATIC_OVL void use_figurine(Object **optr) {
 	xchar x, y;
 	coord cc;
 
-	if (u.uswallow) {
+	if (player.uswallow) {
 		/* can't activate a figurine while swallowed */
 		if (!figurine_location_checks(obj, (coord *)0, FALSE))
 			return;
@@ -1620,16 +1620,16 @@ STATIC_OVL void use_figurine(Object **optr) {
 		flags.move = multi = 0;
 		return;
 	}
-	x = u.ux + u.dx; y = u.uy + u.dy;
+	x = player.ux + player.dx; y = player.uy + player.dy;
 	cc.x = x; cc.y = y;
 	/* Passing FALSE arg here will result in messages displayed */
 	if (!figurine_location_checks(obj, &cc, FALSE)) return;
 	You("%s and it transforms.",
-	    (u.dx||u.dy) ? "set the figurine beside you" :
-	    (Is_airlevel(&u.uz) || Is_waterlevel(&u.uz) ||
+	    (player.dx||player.dy) ? "set the figurine beside you" :
+	    (Is_airlevel(&player.uz) || Is_waterlevel(&player.uz) ||
 	     is_pool(cc.x, cc.y)) ?
 		"release the figurine" :
-	    (u.dz < 0 ?
+	    (player.dz < 0 ?
 		"toss the figurine into the air" :
 		"set the figurine on the ground"));
 	(void) make_familiar(obj, cc.x, cc.y, FALSE);
@@ -1739,7 +1739,7 @@ STATIC_OVL void use_stone(Object *tstone) {
 	return;
 #ifndef GOLDOBJ
     if (obj->oclass == COIN_CLASS) {
-	u.ugold += obj->quan;	/* keep botl up to date */
+	player.ugold += obj->quan;	/* keep botl up to date */
 	goldobj = *obj;
 	dealloc_obj(obj);
 	obj = &goldobj;
@@ -1862,23 +1862,23 @@ STATIC_OVL void use_trap(Object *otmp) {
 	    what = "without hands";
 	else if (Stunned)
 	    what = "while stunned";
-	else if (u.uswallow)
-	    what = is_animal(u.ustuck->data) ? "while swallowed" :
+	else if (player.uswallow)
+	    what = is_animal(player.ustuck->data) ? "while swallowed" :
 			"while engulfed";
 	else if (Underwater)
 	    what = "underwater";
 	else if (Levitation)
 	    what = "while levitating";
-	else if (is_pool(u.ux, u.uy))
+	else if (is_pool(player.ux, player.uy))
 	    what = "in water";
-	else if (is_lava(u.ux, u.uy))
+	else if (is_lava(player.ux, player.uy))
 	    what = "in lava";
-	else if (On_stairs(u.ux, u.uy))
-	    what = (u.ux == xdnladder || u.ux == xupladder) ?
+	else if (On_stairs(player.ux, player.uy))
+	    what = (player.ux == xdnladder || player.ux == xupladder) ?
 			"on the ladder" : "on the stairs";
-	else if (IS_FURNITURE(levl[u.ux][u.uy].typ) ||
-		IS_ROCK(levl[u.ux][u.uy].typ) ||
-		closed_door(u.ux, u.uy) || t_at(u.ux, u.uy))
+	else if (IS_FURNITURE(levl[player.ux][player.uy].typ) ||
+		IS_ROCK(levl[player.ux][player.uy].typ) ||
+		closed_door(player.ux, player.uy) || t_at(player.ux, player.uy))
 	    what = "here";
 	if (what) {
 	    You_cant("set a trap %s!",what);
@@ -1887,7 +1887,7 @@ STATIC_OVL void use_trap(Object *otmp) {
 	}
 	ttyp = (otmp->otyp == LAND_MINE) ? LANDMINE : BEAR_TRAP;
 	if (otmp == trapinfo.tobj &&
-		u.ux == trapinfo.tx && u.uy == trapinfo.ty) {
+		player.ux == trapinfo.tx && player.uy == trapinfo.ty) {
 	    You("resume setting %s %s.",
 		shk_your(buf, otmp),
 		defsyms[trap_to_defsym(what_trap(ttyp))].explanation);
@@ -1895,7 +1895,7 @@ STATIC_OVL void use_trap(Object *otmp) {
 	    return;
 	}
 	trapinfo.tobj = otmp;
-	trapinfo.tx = u.ux,  trapinfo.ty = u.uy;
+	trapinfo.tx = player.ux,  trapinfo.ty = player.uy;
 	tmp = ACURR(A_DEX);
 	trapinfo.time_needed = (tmp > 17) ? 2 : (tmp > 12) ? 3 :
 				(tmp > 7) ? 4 : 5;
@@ -1906,13 +1906,13 @@ STATIC_OVL void use_trap(Object *otmp) {
 	/*[fumbling and/or confusion and/or cursed object check(s)
 	   should be incorporated here instead of in set_trap]*/
 #ifdef STEED
-	if (u.usteed && P_SKILL(P_RIDING) < P_BASIC) {
+	if (player.usteed && P_SKILL(P_RIDING) < P_BASIC) {
 	    bool chance;
 
 	    if (Fumbling || otmp->cursed) chance = (rnl(10) > 3);
 	    else  chance = (rnl(10) > 5);
 	    You("aren't very skilled at reaching from %s.",
-		mon_nam(u.usteed));
+		mon_nam(player.usteed));
 	    sprintf(buf, "Continue your attempt to set %s?",
 		the(defsyms[trap_to_defsym(what_trap(ttyp))].explanation));
 	    if(yn(buf) == 'y') {
@@ -1950,7 +1950,7 @@ int set_trap() {
 	int ttyp;
 
 	if (!otmp || !carried(otmp) ||
-		u.ux != trapinfo.tx || u.uy != trapinfo.ty) {
+		player.ux != trapinfo.tx || player.uy != trapinfo.ty) {
 	    /* ?? */
 	    reset_trapset();
 	    return 0;
@@ -1959,13 +1959,13 @@ int set_trap() {
 	if (--trapinfo.time_needed > 0) return 1;	/* still busy */
 
 	ttyp = (otmp->otyp == LAND_MINE) ? LANDMINE : BEAR_TRAP;
-	ttmp = maketrap(u.ux, u.uy, ttyp);
+	ttmp = maketrap(player.ux, player.uy, ttyp);
 	if (ttmp) {
 	    ttmp->tseen = 1;
 	    ttmp->madeby_u = 1;
-	    newsym(u.ux, u.uy); /* if our hero happens to be invisible */
-	    if (*in_rooms(u.ux,u.uy,SHOPBASE)) {
-		add_damage(u.ux, u.uy, 0L);		/* schedule removal */
+	    newsym(player.ux, player.uy); /* if our hero happens to be invisible */
+	    if (*in_rooms(player.ux,player.uy,SHOPBASE)) {
+		add_damage(player.ux, player.uy, 0L);		/* schedule removal */
 	    }
 	    if (!trapinfo.force_bungle)
 		You("finish arming %s.",
@@ -1997,8 +1997,8 @@ STATIC_OVL int use_whip(Object *obj) {
     if (!getdir((char *)0)) return res;
 
     if (Stunned || (Confusion && !rn2(5))) confdir();
-    rx = u.ux + u.dx;
-    ry = u.uy + u.dy;
+    rx = player.ux + player.dx;
+    ry = player.uy + player.dy;
     mtmp = m_at(rx, ry);
 
     /* fake some proficiency checks */
@@ -2010,40 +2010,40 @@ STATIC_OVL int use_whip(Object *obj) {
     if (proficient > 3) proficient = 3;
     if (proficient < 0) proficient = 0;
 
-    if (u.uswallow && attack(u.ustuck)) {
+    if (player.uswallow && attack(player.ustuck)) {
 	There("is not enough room to flick your bullwhip.");
 
     } else if (Underwater) {
 	There("is too much resistance to flick your bullwhip.");
 
-    } else if (u.dz < 0) {
-	You("flick a bug off of the %s.",ceiling(u.ux,u.uy));
+    } else if (player.dz < 0) {
+	You("flick a bug off of the %s.",ceiling(player.ux,player.uy));
 
-    } else if ((!u.dx && !u.dy) || (u.dz > 0)) {
+    } else if ((!player.dx && !player.dy) || (player.dz > 0)) {
 	int dam;
 
 #ifdef STEED
 	/* Sometimes you hit your steed by mistake */
-	if (u.usteed && !rn2(proficient + 2)) {
-	    You("whip %s!", mon_nam(u.usteed));
+	if (player.usteed && !rn2(proficient + 2)) {
+	    You("whip %s!", mon_nam(player.usteed));
 	    kick_steed();
 	    return 1;
 	}
 #endif
 	if (Levitation
 #ifdef STEED
-			|| u.usteed
+			|| player.usteed
 #endif
 		) {
 	    /* Have a shot at snaring something on the floor */
-	    otmp = level.objects[u.ux][u.uy];
+	    otmp = level.objects[player.ux][player.uy];
 	    if (otmp && otmp->otyp == CORPSE && otmp->corpsenm == PM_HORSE) {
 		pline("Why beat a dead horse?");
 		return 1;
 	    }
 	    if (otmp && proficient) {
 		You("wrap your bullwhip around %s on the %s.",
-		    an(singular(otmp, xname)), surface(u.ux, u.uy));
+		    an(singular(otmp, xname)), surface(player.ux, player.uy));
 		if (rnl(6) || pickup_object(otmp, 1L, TRUE) < 1)
 		    pline(msg_slipsfree);
 		return 1;
@@ -2061,7 +2061,7 @@ STATIC_OVL int use_whip(Object *obj) {
 	pline_The("bullwhip slips out of your %s.", body_part(HAND));
 	dropx(obj);
 
-    } else if (u.utrap && u.utraptype == TT_PIT) {
+    } else if (player.utrap && player.utraptype == TT_PIT) {
 	/*
 	 *     Assumptions:
 	 *
@@ -2104,7 +2104,7 @@ STATIC_OVL int use_whip(Object *obj) {
 		if (!mtmp || enexto(&cc, rx, ry, youmonst.data)) {
 		    You("yank yourself out of the pit!");
 		    teleds(cc.x, cc.y, TRUE);
-		    u.utrap = 0;
+		    player.utrap = 0;
 		    vision_full_recalc = 1;
 		}
 	    } else {
@@ -2151,8 +2151,8 @@ STATIC_OVL int use_whip(Object *obj) {
 		case 2:
 		    /* to floor near you */
 		    You("yank %s %s to the %s!", s_suffix(mon_nam(mtmp)),
-			onambuf, surface(u.ux, u.uy));
-		    place_object(otmp, u.ux, u.uy);
+			onambuf, surface(player.ux, player.uy));
+		    place_object(otmp, player.ux, player.uy);
 		    stackobj(otmp);
 		    break;
 		case 3:
@@ -2171,7 +2171,7 @@ STATIC_OVL int use_whip(Object *obj) {
 			    pline_The("%s hits you as you try to snatch it!",
 				the(onambuf));
 			}
-			place_object(otmp, u.ux, u.uy);
+			place_object(otmp, player.ux, player.uy);
 			stackobj(otmp);
 			break;
 		    }
@@ -2217,7 +2217,7 @@ STATIC_OVL int use_whip(Object *obj) {
 	    }
 	}
 
-    } else if (Is_airlevel(&u.uz) || Is_waterlevel(&u.uz)) {
+    } else if (Is_airlevel(&player.uz) || Is_waterlevel(&player.uz)) {
 	    /* it must be air -- water checked above */
 	    You("snap your whip through thin air.");
 
@@ -2243,7 +2243,7 @@ STATIC_OVL int use_pole (Object *obj) {
 
 
 	/* Are you allowed to use the pole? */
-	if (u.uswallow) {
+	if (player.uswallow) {
 	    pline(not_enough_room);
 	    return (0);
 	}
@@ -2255,8 +2255,8 @@ STATIC_OVL int use_pole (Object *obj) {
 
 	/* Prompt for a location */
 	pline(where_to_hit);
-	cc.x = u.ux;
-	cc.y = u.uy;
+	cc.x = player.ux;
+	cc.y = player.uy;
 	if (getpos(&cc, TRUE, "the spot to hit") < 0)
 	    return 0;	/* user pressed ESC */
 
@@ -2293,7 +2293,7 @@ STATIC_OVL int use_pole (Object *obj) {
 	     * non-silver weapon on a shade?)
 	     */
 	    if (mtmp->mhp < oldhp)
-		u.uconduct.weaphit++;
+		player.uconduct.weaphit++;
 	} else
 	    /* Now you know that nothing is there... */
 	    pline(nothing_happens);
@@ -2302,7 +2302,7 @@ STATIC_OVL int use_pole (Object *obj) {
 
 STATIC_OVL int use_cream_pie(Object *obj) {
 	bool wasblind = Blind;
-	bool wascreamed = u.ucreamed;
+	bool wascreamed = player.ucreamed;
 	bool several = FALSE;
 
 	if (obj->quan > 1L) {
@@ -2317,7 +2317,7 @@ STATIC_OVL int use_cream_pie(Object *obj) {
 			several ? makeplural(the(xname(obj))) : the(xname(obj)));
 	if(can_blnd((Monster*)0, &youmonst, AT_WEAP, obj)) {
 		int blindinc = rnd(25);
-		u.ucreamed += blindinc;
+		player.ucreamed += blindinc;
 		make_blinded(Blinded + (long)blindinc, FALSE);
 		if (!Blind || (Blind && wasblind))
 			pline("There's %ssticky goop all over your %s.",
@@ -2343,7 +2343,7 @@ STATIC_OVL int use_grapple(Object *obj) {
 	Object *otmp;
 
 	/* Are you allowed to use the hook? */
-	if (u.uswallow) {
+	if (player.uswallow) {
 	    pline(not_enough_room);
 	    return (0);
 	}
@@ -2355,8 +2355,8 @@ STATIC_OVL int use_grapple(Object *obj) {
 
 	/* Prompt for a location */
 	pline(where_to_hit);
-	cc.x = u.ux;
-	cc.y = u.uy;
+	cc.x = player.ux;
+	cc.y = player.uy;
 	if (getpos(&cc, TRUE, "the spot to hit") < 0)
 	    return 0;	/* user pressed ESC */
 
@@ -2424,7 +2424,7 @@ STATIC_OVL int use_grapple(Object *obj) {
 	case 2:	/* Monster */
 	    if ((mtmp = m_at(cc.x, cc.y)) == (Monster *)0) break;
 	    if (verysmall(mtmp->data) && !rn2(4) &&
-			enexto(&cc, u.ux, u.uy, (MonsterType *)0)) {
+			enexto(&cc, player.ux, player.uy, (MonsterType *)0)) {
 		You("pull in %s!", mon_nam(mtmp));
 		mtmp->mundetected = 0;
 		rloc_to(mtmp, cc.x, cc.y);
@@ -2440,7 +2440,7 @@ STATIC_OVL int use_grapple(Object *obj) {
 		pline_The("hook slices through the %s.", surface(cc.x, cc.y));
 	    else {
 		You("are yanked toward the %s!", surface(cc.x, cc.y));
-		hurtle(sgn(cc.x-u.ux), sgn(cc.y-u.uy), 1, FALSE);
+		hurtle(sgn(cc.x-player.ux), sgn(cc.y-player.uy), 1, FALSE);
 		spoteffects(TRUE);
 	    }
 	    return (1);
@@ -2502,8 +2502,8 @@ STATIC_OVL int do_break_wand(Object *obj) {
 	pline(nothing_else_happens);
 	goto discard_broken_wand;
     }
-    obj->ox = u.ux;
-    obj->oy = u.uy;
+    obj->ox = player.ux;
+    obj->oy = player.uy;
     dmg = obj->spe * 4;
     affects_objects = FALSE;
 
@@ -2528,7 +2528,7 @@ STATIC_OVL int do_break_wand(Object *obj) {
 	dmg *= 2;
     case WAN_MAGIC_MISSILE:
     wanexpl:
-	explode(u.ux, u.uy,
+	explode(player.ux, player.uy,
 		(obj->otyp - WAN_MAGIC_MISSILE), dmg, WAND_CLASS, expltype);
 	makeknown(obj->otyp);	/* explode described the effect */
 	goto discard_broken_wand;
@@ -2564,16 +2564,16 @@ STATIC_OVL int do_break_wand(Object *obj) {
 		    if (*in_rooms(x,y,SHOPBASE)) shop_damage = TRUE;
 		}		    
 		digactualhole(x, y, BY_OBJECT,
-			      (rn2(obj->spe) < 3 || !Can_dig_down(&u.uz)) ?
+			      (rn2(obj->spe) < 3 || !Can_dig_down(&player.uz)) ?
 			       PIT : HOLE);
 	    }
 	    continue;
 	} else if(obj->otyp == WAN_CREATE_MONSTER) {
-	    /* u.ux,u.uy creates it near you--x,y might create it in rock */
-	    (void) makemon((MonsterType *)0, u.ux, u.uy, NO_MM_FLAGS);
+	    /* player.ux,player.uy creates it near you--x,y might create it in rock */
+	    (void) makemon((MonsterType *)0, player.ux, player.uy, NO_MM_FLAGS);
 	    continue;
 	} else {
-	    if (x == u.ux && y == u.uy) {
+	    if (x == player.ux && y == player.uy) {
 		/* teleport objects first to avoid race with tele control and
 		   autopickup.  Other wand/object effects handled after
 		   possible wand damage is assessed */
@@ -2830,12 +2830,12 @@ int doapply() {
 		    otmp->blessed = obj->blessed;
 		    otmp->cursed = obj->cursed;
 		    otmp->owt = weight(otmp);
-		    otmp = hold_another_object(otmp, u.uswallow ?
+		    otmp = hold_another_object(otmp, player.uswallow ?
 				       "Oops!  %s out of your reach!" :
-					(Is_airlevel(&u.uz) ||
-					 Is_waterlevel(&u.uz) ||
-					 levl[u.ux][u.uy].typ < IRONBARS ||
-					 levl[u.ux][u.uy].typ >= ICE) ?
+					(Is_airlevel(&player.uz) ||
+					 Is_waterlevel(&player.uz) ||
+					 levl[player.ux][player.uy].typ < IRONBARS ||
+					 levl[player.ux][player.uy].typ >= ICE) ?
 					       "Oops!  %s away from you!" :
 					       "Oops!  %s to the floor!",
 					       The(aobjnam(otmp, "slip")),
@@ -2883,7 +2883,7 @@ int unfixable_trouble_count(bool is_horn) {
 	if (Strangled) unfixable_trbl++;
 	if (Wounded_legs
 #ifdef STEED
-		    && !u.usteed
+		    && !player.usteed
 #endif
 				) unfixable_trbl++;
 	if (Slimed) unfixable_trbl++;

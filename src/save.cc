@@ -48,7 +48,7 @@ int dosave() {
 		program_state.done_hup = 0;
 		if(dosave0()) {
 			program_state.something_worth_saving = 0;
-			u.uhp = -1;		/* universal game's over indicator */
+			player.uhp = -1;		/* universal game's over indicator */
 			/* make sure they see the Saving message */
 			display_nhwindow(WIN_MESSAGE, TRUE);
 			exit_nhwindows("Be seeing you...");
@@ -134,27 +134,27 @@ int dosave0() {
 #ifdef STORE_PLNAME_IN_FILE
 	bwrite(fd, (genericptr_t) plname, PL_NSIZ);
 #endif
-	ustuck_id = (u.ustuck ? u.ustuck->m_id : 0);
+	ustuck_id = (player.ustuck ? player.ustuck->m_id : 0);
 #ifdef STEED
-	usteed_id = (u.usteed ? u.usteed->m_id : 0);
+	usteed_id = (player.usteed ? player.usteed->m_id : 0);
 #endif
 
-	savelev(fd, ledger_no(&u.uz), WRITE_SAVE | FREE_SAVE);
+	savelev(fd, ledger_no(&player.uz), WRITE_SAVE | FREE_SAVE);
 	savegamestate(fd, WRITE_SAVE | FREE_SAVE);
 
-	/* While copying level files around, zero out u.uz to keep
+	/* While copying level files around, zero out player.uz to keep
 	 * parts of the restore code from completely initializing all
 	 * in-core data structures, since all we're doing is copying.
 	 * This also avoids at least one nasty core dump.
 	 */
-	uz_save = u.uz;
-	u.uz.dnum = u.uz.dlevel = 0;
-	/* these pointers are no longer valid, and at least u.usteed
+	uz_save = player.uz;
+	player.uz.dnum = player.uz.dlevel = 0;
+	/* these pointers are no longer valid, and at least player.usteed
 	 * may mislead place_monster() on other levels
 	 */
-	u.ustuck = (Monster *)0;
+	player.ustuck = (Monster *)0;
 #ifdef STEED
-	u.usteed = (Monster *)0;
+	player.usteed = (Monster *)0;
 #endif
 
 	for(ltmp = (xchar)1; ltmp <= maxledgerno(); ltmp++) {
@@ -178,10 +178,10 @@ int dosave0() {
 	}
 	bclose(fd);
 
-	u.uz = uz_save;
+	player.uz = uz_save;
 
 	/* get rid of current level --jgm */
-	delete_levelfile(ledger_no(&u.uz));
+	delete_levelfile(ledger_no(&player.uz));
 	delete_levelfile(0);
 	compress(fq_save);
 	return(1);
@@ -196,7 +196,7 @@ STATIC_OVL void savegamestate(int fd, int mode) {
 	uid = getuid();
 	bwrite(fd, (genericptr_t) &uid, sizeof uid);
 	bwrite(fd, (genericptr_t) &flags, sizeof(struct flag));
-	bwrite(fd, (genericptr_t) &u, sizeof(struct Player));
+	bwrite(fd, (genericptr_t) &player, sizeof(struct Player));
 
 	/* must come before migrating_objs and migrating_mons are freed */
 	save_timers(fd, mode, RANGE_GLOBAL);
@@ -299,7 +299,7 @@ void savestateinlock() {
 		}
 		(void) write(fd, (genericptr_t) &hackpid, sizeof(hackpid));
 		if (flags.ins_chkpt) {
-		    int currlev = ledger_no(&u.uz);
+		    int currlev = ledger_no(&player.uz);
 
 		    (void) write(fd, (genericptr_t) &currlev, sizeof(currlev));
 		    save_savefile_name(fd);
@@ -307,9 +307,9 @@ void savestateinlock() {
 #ifdef STORE_PLNAME_IN_FILE
 		    bwrite(fd, (genericptr_t) plname, PL_NSIZ);
 #endif
-		    ustuck_id = (u.ustuck ? u.ustuck->m_id : 0);
+		    ustuck_id = (player.ustuck ? player.ustuck->m_id : 0);
 #ifdef STEED
-		    usteed_id = (u.usteed ? u.usteed->m_id : 0);
+		    usteed_id = (player.usteed ? player.usteed->m_id : 0);
 #endif
 		    savegamestate(fd, WRITE_SAVE);
 		}

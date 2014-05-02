@@ -51,12 +51,12 @@ void cursetxt(Monster *mtmp, bool undirected) {
 	    if (undirected)
 		point_msg = "all around, then curses";
 	    else if ((Invis && !perceives(mtmp->data) &&
-			(mtmp->mux != u.ux || mtmp->muy != u.uy)) ||
+			(mtmp->mux != player.ux || mtmp->muy != player.uy)) ||
 		    (youmonst.m_ap_type == M_AP_OBJECT &&
 			youmonst.mappearance == STRANGE_OBJECT) ||
-		    u.uundetected)
+		    player.uundetected)
 		point_msg = "and curses in your general direction";
-	    else if (Displaced && (mtmp->mux != u.ux || mtmp->muy != u.uy))
+	    else if (Displaced && (mtmp->mux != player.ux || mtmp->muy != player.uy))
 		point_msg = "and curses at your displaced image";
 	    else
 		point_msg = "at you, then curses";
@@ -223,9 +223,9 @@ int castmu(Monster *mtmp, struct Attack *mattk, bool thinks_it_foundyou, bool fo
 		  canspotmon(mtmp) ? Monnam(mtmp) : "Something",
 		  is_undirected_spell(mattk->adtyp, spellnum) ? "" :
 		  (Invisible && !perceives(mtmp->data) && 
-		   (mtmp->mux != u.ux || mtmp->muy != u.uy)) ?
+		   (mtmp->mux != player.ux || mtmp->muy != player.uy)) ?
 		  " at a spot near you" :
-		  (Displaced && (mtmp->mux != u.ux || mtmp->muy != u.uy)) ?
+		  (Displaced && (mtmp->mux != player.ux || mtmp->muy != player.uy)) ?
 		  " at your displaced image" :
 		  " at you");
 	}
@@ -254,7 +254,7 @@ int castmu(Monster *mtmp, struct Attack *mattk, bool thinks_it_foundyou, bool fo
 	    case AD_FIRE:
 		pline("You're enveloped in flames.");
 		if(Fire_resistance) {
-			shieldeff(u.ux, u.uy);
+			shieldeff(player.ux, player.uy);
 			pline("But you resist the effects.");
 			dmg = 0;
 		}
@@ -263,7 +263,7 @@ int castmu(Monster *mtmp, struct Attack *mattk, bool thinks_it_foundyou, bool fo
 	    case AD_COLD:
 		pline("You're covered in frost.");
 		if(Cold_resistance) {
-			shieldeff(u.ux, u.uy);
+			shieldeff(player.ux, player.uy);
 			pline("But you resist the effects.");
 			dmg = 0;
 		}
@@ -271,7 +271,7 @@ int castmu(Monster *mtmp, struct Attack *mattk, bool thinks_it_foundyou, bool fo
 	    case AD_MAGM:
 		You("are hit by a shower of missiles!");
 		if(Antimagic) {
-			shieldeff(u.ux, u.uy);
+			shieldeff(player.ux, player.uy);
 			pline_The("missiles bounce off!");
 			dmg = 0;
 		} else dmg = d((int)mtmp->m_lev/2 + 1,6);
@@ -321,7 +321,7 @@ void cast_wizard_spell(Monster *mtmp, int dmg, int spellnum) {
 		done(DIED);
 	    }
 	} else {
-	    if (Antimagic) shieldeff(u.ux, u.uy);
+	    if (Antimagic) shieldeff(player.ux, player.uy);
 	    pline("Lucky for you, it didn't work!");
 	}
 	dmg = 0;
@@ -348,9 +348,9 @@ void cast_wizard_spell(Monster *mtmp, int dmg, int spellnum) {
 	    /* messages not quite right if plural monsters created but
 	       only a single monster is seen */
 	    if (Invisible && !perceives(mtmp->data) &&
-				    (mtmp->mux != u.ux || mtmp->muy != u.uy))
+				    (mtmp->mux != player.ux || mtmp->muy != player.uy))
 		pline("%s around a spot near you!", mappear);
-	    else if (Displaced && (mtmp->mux != u.ux || mtmp->muy != u.uy))
+	    else if (Displaced && (mtmp->mux != player.ux || mtmp->muy != player.uy))
 		pline("%s around your displaced image!", mappear);
 	    else
 		pline("%s from nowhere!", mappear);
@@ -370,7 +370,7 @@ void cast_wizard_spell(Monster *mtmp, int dmg, int spellnum) {
 	break;
     case MGC_DESTRY_ARMR:
 	if (Antimagic) {
-	    shieldeff(u.ux, u.uy);
+	    shieldeff(player.ux, player.uy);
 	    pline("A field of force surrounds you!");
 	} else if (!destroy_arm(some_armor(&youmonst))) {
 	    Your("skin itches.");
@@ -379,14 +379,14 @@ void cast_wizard_spell(Monster *mtmp, int dmg, int spellnum) {
 	break;
     case MGC_WEAKEN_YOU:		/* drain strength */
 	if (Antimagic) {
-	    shieldeff(u.ux, u.uy);
+	    shieldeff(player.ux, player.uy);
 	    You_feel("momentarily weakened.");
 	} else {
 	    You("suddenly feel weaker!");
 	    dmg = mtmp->m_lev - 6;
 	    if (Half_spell_damage) dmg = (dmg + 1) / 2;
 	    losestr(rnd(dmg));
-	    if (u.uhp < 1)
+	    if (player.uhp < 1)
 		done_in_by(mtmp);
 	}
 	dmg = 0;
@@ -403,7 +403,7 @@ void cast_wizard_spell(Monster *mtmp, int dmg, int spellnum) {
 	break;
     case MGC_STUN_YOU:
 	if (Antimagic || Free_action) {
-	    shieldeff(u.ux, u.uy);
+	    shieldeff(player.ux, player.uy);
 	    if (!Stunned)
 		You_feel("momentarily disoriented.");
 	    make_stunned(1L, FALSE);
@@ -433,7 +433,7 @@ void cast_wizard_spell(Monster *mtmp, int dmg, int spellnum) {
 	/* prior to 3.4.0 Antimagic was setting the damage to 1--this
 	   made the spell virtually harmless to players with magic res. */
 	if (Antimagic) {
-	    shieldeff(u.ux, u.uy);
+	    shieldeff(player.ux, player.uy);
 	    dmg = (dmg + 1) / 2;
 	}
 	if (dmg <= 5)
@@ -471,7 +471,7 @@ void cast_cleric_spell(Monster *mtmp, int dmg, int spellnum) {
     case CLC_FIRE_PILLAR:
 	pline("A pillar of fire strikes all around you!");
 	if (Fire_resistance) {
-	    shieldeff(u.ux, u.uy);
+	    shieldeff(player.ux, player.uy);
 	    dmg = 0;
 	} else
 	    dmg = d(8, 6);
@@ -481,7 +481,7 @@ void cast_cleric_spell(Monster *mtmp, int dmg, int spellnum) {
 	destroy_item(SCROLL_CLASS, AD_FIRE);
 	destroy_item(POTION_CLASS, AD_FIRE);
 	destroy_item(SPBOOK_CLASS, AD_FIRE);
-	(void) burn_floor_paper(u.ux, u.uy, TRUE, FALSE);
+	(void) burn_floor_paper(player.ux, player.uy, TRUE, FALSE);
 	break;
     case CLC_LIGHTNING:
     {
@@ -490,7 +490,7 @@ void cast_cleric_spell(Monster *mtmp, int dmg, int spellnum) {
 	pline("A bolt of lightning strikes down at you from above!");
 	reflects = ureflects("It bounces off your %s%s.", "");
 	if (reflects || Shock_resistance) {
-	    shieldeff(u.ux, u.uy);
+	    shieldeff(player.ux, player.uy);
 	    dmg = 0;
 	    if (reflects)
 		break;
@@ -545,10 +545,10 @@ void cast_cleric_spell(Monster *mtmp, int dmg, int spellnum) {
 	    pline("%s transforms a clump of sticks into snakes!",
 		Monnam(mtmp));
 	else if (Invisible && !perceives(mtmp->data) &&
-				(mtmp->mux != u.ux || mtmp->muy != u.uy))
+				(mtmp->mux != player.ux || mtmp->muy != player.uy))
 	    pline("%s summons insects around a spot near you!",
 		Monnam(mtmp));
-	else if (Displaced && (mtmp->mux != u.ux || mtmp->muy != u.uy))
+	else if (Displaced && (mtmp->mux != player.ux || mtmp->muy != player.uy))
 	    pline("%s summons insects around your displaced image!",
 		Monnam(mtmp));
 	else
@@ -571,7 +571,7 @@ void cast_cleric_spell(Monster *mtmp, int dmg, int spellnum) {
 	break;
     case CLC_PARALYZE:
 	if (Antimagic || Free_action) {
-	    shieldeff(u.ux, u.uy);
+	    shieldeff(player.ux, player.uy);
 	    if (multi >= 0)
 		You("stiffen briefly.");
 	    nomul(-1, "paralyzed by a monster");
@@ -586,7 +586,7 @@ void cast_cleric_spell(Monster *mtmp, int dmg, int spellnum) {
 	break;
     case CLC_CONFUSE_YOU:
 	if (Antimagic) {
-	    shieldeff(u.ux, u.uy);
+	    shieldeff(player.ux, player.uy);
 	    You_feel("momentarily dizzy.");
 	} else {
 	    bool oldprop = !!Confusion;
@@ -613,7 +613,7 @@ void cast_cleric_spell(Monster *mtmp, int dmg, int spellnum) {
 	break;
     case CLC_OPEN_WOUNDS:
 	if (Antimagic) {
-	    shieldeff(u.ux, u.uy);
+	    shieldeff(player.ux, player.uy);
 	    dmg = (dmg + 1) / 2;
 	}
 	if (dmg <= 5)

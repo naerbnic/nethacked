@@ -127,7 +127,7 @@ STATIC_OVL bool md_start(coord *startp) {
      * the hero is not going to see it anyway.  So pick a nearby position.
      */
     if (Blind && !Blind_telepat) {
-	if (!enexto(startp, u.ux, u.uy, (MonsterType *) 0))
+	if (!enexto(startp, player.ux, player.uy, (MonsterType *) 0))
 	    return FALSE;	/* no good posiitons */
 	return TRUE;
     }
@@ -216,9 +216,9 @@ retry:
 STATIC_OVL bool md_stop(coord *stopp, coord *startp) {
     int x, y, distance, min_distance = -1;
 
-    for (x = u.ux-1; x <= u.ux+1; x++)
-	for (y = u.uy-1; y <= u.uy+1; y++) {
-	    if (!isok(x, y) || (x == u.ux && y == u.uy)) continue;
+    for (x = player.ux-1; x <= player.ux+1; x++)
+	for (y = player.uy-1; y <= player.uy+1; y++) {
+	    if (!isok(x, y) || (x == player.ux && y == player.uy)) continue;
 
 	    if (ACCESSIBLE(levl[x][y].typ) && !MON_AT(x,y)) {
 		distance = dist2(x,y,startp->x,startp->y);
@@ -233,7 +233,7 @@ STATIC_OVL bool md_stop(coord *stopp, coord *startp) {
 
     /* If we didn't find a good spot, try enexto(). */
     if (min_distance < 0 &&
-		!enexto(stopp, u.ux, u.uy, &mons[PM_MAIL_DAEMON]))
+		!enexto(stopp, player.ux, player.uy, &mons[PM_MAIL_DAEMON]))
 	return FALSE;
 
     return TRUE;
@@ -298,7 +298,7 @@ STATIC_OVL bool md_rush(Monster *md, int tx, int ty) {
 
 	if ((mon = m_at(fx,fy)) != 0)	/* save monster at this position */
 	    verbalize(md_exclamations());
-	else if (fx == u.ux && fy == u.uy)
+	else if (fx == player.ux && fy == player.uy)
 	    verbalize("Excuse me.");
 
 	place_monster(md,fx,fy);	/* put md down */
@@ -392,7 +392,7 @@ give_up:
 }
 
 void ckmailstatus() {
-	if(!mailbox || u.uswallow || !flags.biff
+	if(!mailbox || player.uswallow || !flags.biff
 #  ifdef MAILCKFREQ
 		    || moves < laststattime + MAILCKFREQ
 #  endif
@@ -453,7 +453,7 @@ void readmail(Object *otmp) {
 void ckmailstatus() {
 	static int laststattime = 0;
 	
-	if(u.uswallow || !flags.biff
+	if(player.uswallow || !flags.biff
 #  ifdef MAILCKFREQ
 		    || moves < laststattime + MAILCKFREQ
 #  endif

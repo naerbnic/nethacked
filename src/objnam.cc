@@ -732,7 +732,7 @@ char * doname(Object *obj) {
     }
   }
   if (obj->owornmask & W_SWAPWEP) {
-    if (u.twoweap)
+    if (player.twoweap)
       sprintf(eos(bp), " (wielded in other %s)", body_part(HAND));
     else
       strcat(bp, " (alternate weapon; not wielded)");
@@ -2004,7 +2004,7 @@ Object * readobjnam(char *bp, Object *no_wish, bool from_user) {
 #ifndef GOLDOBJ
 		if (from_user)
 		    pline("%d gold piece%s.", cnt, plur(cnt));
-		u.ugold += cnt;
+		player.ugold += cnt;
 		flags.botl=1;
 		return (&zeroobj);
 #else
@@ -2221,8 +2221,8 @@ srch:
 			if (!strncmpi(tname, bp, strlen(tname))) {
 				/* avoid stupid mistakes */
 				if((trap == TRAPDOOR || trap == HOLE)
-				      && !Can_fall_thru(&u.uz)) trap = ROCKTRAP;
-				(void) maketrap(u.ux, u.uy, trap);
+				      && !Can_fall_thru(&player.uz)) trap = ROCKTRAP;
+				(void) maketrap(player.ux, player.uy, trap);
 				pline("%s.", An(tname));
 				return(&zeroobj);
 			}
@@ -2230,52 +2230,52 @@ srch:
 		/* or some other dungeon features -dlc */
 		p = eos(bp);
 		if(!BSTRCMP(bp, p-8, "fountain")) {
-			levl[u.ux][u.uy].typ = FOUNTAIN;
+			levl[player.ux][player.uy].typ = FOUNTAIN;
 			level.flags.nfountains++;
 			if(!strncmpi(bp, "magic ", 6))
-				levl[u.ux][u.uy].blessedftn = 1;
+				levl[player.ux][player.uy].blessedftn = 1;
 			pline("A %sfountain.",
-			      levl[u.ux][u.uy].blessedftn ? "magic " : "");
-			newsym(u.ux, u.uy);
+			      levl[player.ux][player.uy].blessedftn ? "magic " : "");
+			newsym(player.ux, player.uy);
 			return(&zeroobj);
 		}
 		if(!BSTRCMP(bp, p-6, "throne")) {
-			levl[u.ux][u.uy].typ = THRONE;
+			levl[player.ux][player.uy].typ = THRONE;
 			pline("A throne.");
-			newsym(u.ux, u.uy);
+			newsym(player.ux, player.uy);
 			return(&zeroobj);
 		}
 # ifdef SINKS
 		if(!BSTRCMP(bp, p-4, "sink")) {
-			levl[u.ux][u.uy].typ = SINK;
+			levl[player.ux][player.uy].typ = SINK;
 			level.flags.nsinks++;
 			pline("A sink.");
-			newsym(u.ux, u.uy);
+			newsym(player.ux, player.uy);
 			return &zeroobj;
 		}
 # endif
 		if(!BSTRCMP(bp, p-4, "pool")) {
-			levl[u.ux][u.uy].typ = POOL;
-			del_engr_at(u.ux, u.uy);
+			levl[player.ux][player.uy].typ = POOL;
+			del_engr_at(player.ux, player.uy);
 			pline("A pool.");
 			/* Must manually make kelp! */
-			water_damage(level.objects[u.ux][u.uy], FALSE, TRUE);
-			newsym(u.ux, u.uy);
+			water_damage(level.objects[player.ux][player.uy], FALSE, TRUE);
+			newsym(player.ux, player.uy);
 			return &zeroobj;
 		}
 		if (!BSTRCMP(bp, p-4, "lava")) {  /* also matches "molten lava" */
-			levl[u.ux][u.uy].typ = LAVAPOOL;
-			del_engr_at(u.ux, u.uy);
+			levl[player.ux][player.uy].typ = LAVAPOOL;
+			del_engr_at(player.ux, player.uy);
 			pline("A pool of molten lava.");
 			if (!(Levitation || Flying)) (void) lava_effects();
-			newsym(u.ux, u.uy);
+			newsym(player.ux, player.uy);
 			return &zeroobj;
 		}
 
 		if(!BSTRCMP(bp, p-5, "altar")) {
 		    aligntyp al;
 
-		    levl[u.ux][u.uy].typ = ALTAR;
+		    levl[player.ux][player.uy].typ = ALTAR;
 		    if(!strncmpi(bp, "chaotic ", 8))
 			al = A_CHAOTIC;
 		    else if(!strncmpi(bp, "neutral ", 8))
@@ -2286,31 +2286,31 @@ srch:
 			al = A_NONE;
 		    else /* -1 - A_CHAOTIC, 0 - A_NEUTRAL, 1 - A_LAWFUL */
 			al = (!rn2(6)) ? A_NONE : rn2((int)A_LAWFUL+2) - 1;
-		    levl[u.ux][u.uy].altarmask = Align2amask( al );
+		    levl[player.ux][player.uy].altarmask = Align2amask( al );
 		    pline("%s altar.", An(align_str(al)));
-		    newsym(u.ux, u.uy);
+		    newsym(player.ux, player.uy);
 		    return(&zeroobj);
 		}
 
 		if(!BSTRCMP(bp, p-5, "grave") || !BSTRCMP(bp, p-9, "headstone")) {
-		    make_grave(u.ux, u.uy, (char *) 0);
+		    make_grave(player.ux, player.uy, (char *) 0);
 		    pline("A grave.");
-		    newsym(u.ux, u.uy);
+		    newsym(player.ux, player.uy);
 		    return(&zeroobj);
 		}
 
 		if(!BSTRCMP(bp, p-4, "tree")) {
-		    levl[u.ux][u.uy].typ = TREE;
+		    levl[player.ux][player.uy].typ = TREE;
 		    pline("A tree.");
-		    newsym(u.ux, u.uy);
-		    block_point(u.ux, u.uy);
+		    newsym(player.ux, player.uy);
+		    block_point(player.ux, player.uy);
 		    return &zeroobj;
 		}
 
 		if(!BSTRCMP(bp, p-4, "bars")) {
-		    levl[u.ux][u.uy].typ = IRONBARS;
+		    levl[player.ux][player.uy].typ = IRONBARS;
 		    pline("Iron bars.");
-		    newsym(u.ux, u.uy);
+		    newsym(player.ux, player.uy);
 		    return &zeroobj;
 		}
 	}
@@ -2371,7 +2371,7 @@ typfnd:
 	if (islit &&
 		(typ == OIL_LAMP || typ == MAGIC_LAMP || typ == BRASS_LANTERN ||
 		 Is_candle(otmp) || typ == POT_OIL)) {
-	    place_object(otmp, u.ux, u.uy);  /* make it viable light source */
+	    place_object(otmp, player.ux, player.uy);  /* make it viable light source */
 	    begin_burn(otmp, FALSE);
 	    obj_extract_self(otmp);	 /* now release it for caller's use */
 	}
@@ -2592,7 +2592,7 @@ typfnd:
 		otmp = oname(otmp, name);
 		if (otmp->oartifact) {
 			otmp->quan = 1L;
-			u.uconduct.wisharti++;	/* KMH, conduct */
+			player.uconduct.wisharti++;	/* KMH, conduct */
 		}
 	}
 

@@ -35,7 +35,7 @@ void dosounds() {
     int hallu, vx, vy;
     Monster *mtmp;
 
-    if (!flags.soundok || u.uswallow || Underwater) return;
+    if (!flags.soundok || player.uswallow || Underwater) return;
 
     hallu = Hallucination ? 1 : 0;
 
@@ -104,7 +104,7 @@ void dosounds() {
 			for (vy = sroom->ly; vy <= sroom->hy; vy++)
 			    if (g_at(vx, vy))
 				gold_in_vault = TRUE;
-		    if (vault_occupied(u.urooms) !=
+		    if (vault_occupied(player.urooms) !=
 			 (ROOM_INDEX(sroom) + ROOMOFFSET))
 		    {
 			if (gold_in_vault)
@@ -214,7 +214,7 @@ void dosounds() {
 	    return;
 	}
 	if (tended_shop(sroom) &&
-		!index(u.ushops, ROOM_INDEX(sroom) + ROOMOFFSET)) {
+		!index(player.ushops, ROOM_INDEX(sroom) + ROOMOFFSET)) {
 	    static const char * const shop_msg[3] = {
 		    "someone cursing shoplifters.",
 		    "the chime of a cash register.",
@@ -224,7 +224,7 @@ void dosounds() {
 	}
 	return;
     }
-    if (Is_oracle_level(&u.uz) && !rn2(400)) {
+    if (Is_oracle_level(&player.uz) && !rn2(400)) {
 	/* make sure the Oracle is still here */
 	for (mtmp = fmon; mtmp; mtmp = mtmp->nmon)
 	    if (!mtmp->dead() && mtmp->data == &mons[PM_ORACLE])
@@ -433,11 +433,11 @@ static int domonnoise(Monster *mtmp) {
 	    {
 	    /* vampire messages are varied by tameness, peacefulness, and time of night */
 		bool isnight = night();
-		bool kindred =    (Upolyd && (u.umonnum == PM_VAMPIRE ||
-				       u.umonnum == PM_VAMPIRE_LORD));
-		bool nightchild = (Upolyd && (u.umonnum == PM_WOLF ||
-				       u.umonnum == PM_WINTER_WOLF ||
-	    			       u.umonnum == PM_WINTER_WOLF_CUB));
+		bool kindred =    (Upolyd && (player.umonnum == PM_VAMPIRE ||
+				       player.umonnum == PM_VAMPIRE_LORD));
+		bool nightchild = (Upolyd && (player.umonnum == PM_WOLF ||
+				       player.umonnum == PM_WINTER_WOLF ||
+	    			       player.umonnum == PM_WINTER_WOLF_CUB));
 		const char *racenoun = (flags.female && urace.individual.f) ?
 					urace.individual.f : (urace.individual.m) ?
 					urace.individual.m : urace.noun;
@@ -493,7 +493,7 @@ static int domonnoise(Monster *mtmp) {
 	    			verbl_msg = verbuf;
 			    } else if (vampindex == 1) {
 				sprintf(verbuf, vampmsg[vampindex],
-					Upolyd ? an(mons[u.umonnum].mname) : an(racenoun));
+					Upolyd ? an(mons[player.umonnum].mname) : an(racenoun));
 	    			verbl_msg = verbuf;
 		    	    } else
 			    	verbl_msg = vampmsg[vampindex];
@@ -635,7 +635,7 @@ static int domonnoise(Monster *mtmp) {
 	    /* else FALLTHRU */
 	case MS_HUMANOID:
 	    if (!mtmp->mpeaceful) {
-		if (In_endgame(&u.uz) && is_mplayer(ptr)) {
+		if (In_endgame(&player.uz) && is_mplayer(ptr)) {
 		    mplayer_talk(mtmp);
 		    break;
 		} else return 0;	/* no sound */
@@ -753,7 +753,7 @@ static int domonnoise(Monster *mtmp) {
 	    break;
 	case MS_GUARD:
 #ifndef GOLDOBJ
-	    if (u.ugold)
+	    if (player.ugold)
 #else
 	    if (money_cnt(invent))
 #endif
@@ -811,7 +811,7 @@ static int dochat() {
 	You_cant("speak.  You're choking!");
 	return(0);
     }
-    if (u.uswallow) {
+    if (player.uswallow) {
 	pline("They won't hear you out there.");
 	return(0);
     }
@@ -820,7 +820,7 @@ static int dochat() {
 	return(0);
     }
 
-    if (!Blind && (otmp = shop_object(u.ux, u.uy)) != nullptr) {
+    if (!Blind && (otmp = shop_object(player.ux, player.uy)) != nullptr) {
 	/* standing on something in a shop and chatting causes the shopkeeper
 	   to describe the price(s).  This can inhibit other chatting inside
 	   a shop, but that shouldn't matter much.  shop_object() returns an
@@ -838,20 +838,20 @@ static int dochat() {
     }
 
 #ifdef STEED
-    if (u.usteed && u.dz > 0)
-	return (domonnoise(u.usteed));
+    if (player.usteed && player.dz > 0)
+	return (domonnoise(player.usteed));
 #endif
-    if (u.dz) {
-	pline("They won't hear you %s there.", u.dz < 0 ? "up" : "down");
+    if (player.dz) {
+	pline("They won't hear you %s there.", player.dz < 0 ? "up" : "down");
 	return(0);
     }
 
-    if (u.dx == 0 && u.dy == 0) {
+    if (player.dx == 0 && player.dy == 0) {
 /*
  * Let's not include this.  It raises all sorts of questions: can you wear
  * 2 helmets, 2 amulets, 3 pairs of gloves or 6 rings as a marilith,
  * etc...  --KAA
-	if (u.umonnum == PM_ETTIN) {
+	if (player.umonnum == PM_ETTIN) {
 	    You("discover that your other head makes boring conversation.");
 	    return(1);
 	}
@@ -860,7 +860,7 @@ static int dochat() {
 	return(0);
     }
 
-    tx = u.ux+u.dx; ty = u.uy+u.dy;
+    tx = player.ux+player.dx; ty = player.uy+player.dy;
     mtmp = m_at(tx, ty);
 
     if (!mtmp || mtmp->mundetected ||

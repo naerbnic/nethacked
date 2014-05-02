@@ -98,7 +98,7 @@ Object * mkobj(char oclass, bool artif) {
   if (oclass == RANDOM_CLASS) {
     const struct icp *iprobs =
 #ifdef REINCARNATION
-        (Is_rogue_level(&u.uz)) ? (const struct icp *) rogueprobs :
+        (Is_rogue_level(&player.uz)) ? (const struct icp *) rogueprobs :
 #endif
         Inhell ?
             (const struct icp *) hellprobs : (const struct icp *) mkobjprobs;
@@ -292,7 +292,7 @@ void replace_object(Object *obj, Object *otmp) {
  * command needs to display the original object.
  *
  * The caller is responsible for checking otmp->unpaid and
- * costly_spot(u.ux, u.uy).  This function will make otmp no charge.
+ * costly_spot(player.ux, player.uy).  This function will make otmp no charge.
  *
  * Note that check_unpaid_usage() should be used instead for partial
  * usage of an object.
@@ -301,7 +301,7 @@ void bill_dummy_object(Object *otmp) {
 	Object *dummy;
 
 	if (otmp->unpaid)
-	    subfrombill(otmp, shop_keeper(*u.ushops));
+	    subfrombill(otmp, shop_keeper(*player.ushops));
 	dummy = newobj(otmp->oxlth + otmp->onamelth);
 	*dummy = *otmp;
 	dummy->where = OBJ_FREE;
@@ -524,7 +524,7 @@ Object * mksobj(int otyp, bool init, bool artif) {
 		    otmp = mk_artifact(otmp, (aligntyp)A_NONE);
 		/* simulate lacquered armor for samurai */
 		if (Role_if(PM_SAMURAI) && otmp->otyp == SPLINT_MAIL &&
-		    (moves <= 1 || In_quest(&u.uz))) {
+		    (moves <= 1 || In_quest(&player.uz))) {
 #ifdef UNIXPC
 			/* optimizer bitfield bug */
 			otmp->oerodeproof = 1;
@@ -675,7 +675,7 @@ void curse(Object *otmp) {
 	if (otmp == uwep && bimanual(uwep)) reset_remarm();
 	/* rules at top of wield.c state that twoweapon cannot be done
 	   with cursed alternate weapon */
-	if (otmp == uswapwep && u.twoweap)
+	if (otmp == uswapwep && player.twoweap)
 	    drop_uswapwep();
 	/* some cursed items need immediate updating */
 	if (carried(otmp) && confers_luck(otmp))

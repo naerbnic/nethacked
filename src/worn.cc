@@ -60,17 +60,17 @@ void setworn(Object *obj, long mask) {
 		if(oobj && !(oobj->owornmask & wp->w_mask))
 			impossible("Setworn: mask = %ld.", wp->w_mask);
 		if(oobj) {
-		    if (u.twoweap && (oobj->owornmask & (W_WEP|W_SWAPWEP)))
-			u.twoweap = 0;
+		    if (player.twoweap && (oobj->owornmask & (W_WEP|W_SWAPWEP)))
+			player.twoweap = 0;
 		    oobj->owornmask &= ~wp->w_mask;
 		    if (wp->w_mask & ~(W_SWAPWEP|W_QUIVER)) {
 			/* leave as "x = x <op> y", here and below, for broken
 			 * compilers */
 			p = objects[oobj->otyp].oc_oprop;
-			u.uprops[p].extrinsic =
-					u.uprops[p].extrinsic & ~wp->w_mask;
+			player.uprops[p].extrinsic =
+					player.uprops[p].extrinsic & ~wp->w_mask;
 			if ((p = w_blocks(oobj,mask)) != 0)
-			    u.uprops[p].blocked &= ~wp->w_mask;
+			    player.uprops[p].blocked &= ~wp->w_mask;
 			if (oobj->oartifact)
 			    set_artifact_intrinsic(oobj, 0, mask);
 		    }
@@ -87,10 +87,10 @@ void setworn(Object *obj, long mask) {
 			if (obj->oclass == WEAPON_CLASS || is_weptool(obj) ||
 					    mask != W_WEP) {
 			    p = objects[obj->otyp].oc_oprop;
-			    u.uprops[p].extrinsic =
-					u.uprops[p].extrinsic | wp->w_mask;
+			    player.uprops[p].extrinsic =
+					player.uprops[p].extrinsic | wp->w_mask;
 			    if ((p = w_blocks(obj, mask)) != 0)
-				u.uprops[p].blocked |= wp->w_mask;
+				player.uprops[p].blocked |= wp->w_mask;
 			}
 			if (obj->oartifact)
 			    set_artifact_intrinsic(obj, 1, mask);
@@ -108,17 +108,17 @@ void setnotworn(Object *obj) {
 	int p;
 
 	if (!obj) return;
-	if (obj == uwep || obj == uswapwep) u.twoweap = 0;
+	if (obj == uwep || obj == uswapwep) player.twoweap = 0;
 	for(wp = worn; wp->w_mask; wp++)
 	    if(obj == *(wp->w_obj)) {
 		*(wp->w_obj) = 0;
 		p = objects[obj->otyp].oc_oprop;
-		u.uprops[p].extrinsic = u.uprops[p].extrinsic & ~wp->w_mask;
+		player.uprops[p].extrinsic = player.uprops[p].extrinsic & ~wp->w_mask;
 		obj->owornmask &= ~wp->w_mask;
 		if (obj->oartifact)
 		    set_artifact_intrinsic(obj, 0, wp->w_mask);
 		if ((p = w_blocks(obj,wp->w_mask)) != 0)
-		    u.uprops[p].blocked &= ~wp->w_mask;
+		    player.uprops[p].blocked &= ~wp->w_mask;
 	    }
 	update_inventory();
 }
@@ -297,7 +297,7 @@ void update_mon_intrinsics(Monster *mon, Object *obj, bool on, bool silently) {
     }
 
 #ifdef STEED
-	if (!on && mon == u.usteed && obj->otyp == SADDLE)
+	if (!on && mon == player.usteed && obj->otyp == SADDLE)
 	    dismount_steed(DISMOUNT_FELL);
 #endif
 
@@ -684,18 +684,18 @@ void mon_break_armor(Monster *mon, bool polyspot) {
 		if (vis)
 		    pline("%s saddle falls off.", s_suffix(Monnam(mon)));
 	    }
-	    if (mon == u.usteed)
+	    if (mon == player.usteed)
 		goto noride;
-	} else if (mon == u.usteed && !can_ride(mon)) {
+	} else if (mon == player.usteed && !can_ride(mon)) {
 	noride:
 	    You("can no longer ride %s.", mon_nam(mon));
-	    if (touch_petrifies(u.usteed->data) &&
+	    if (touch_petrifies(player.usteed->data) &&
 			!Stone_resistance && rnl(3)) {
 		char buf[BUFSZ];
 
-		You("touch %s.", mon_nam(u.usteed));
+		You("touch %s.", mon_nam(player.usteed));
 		sprintf(buf, "falling off %s",
-				an(u.usteed->data->mname));
+				an(player.usteed->data->mname));
 		instapetrify(buf);
 	    }
 	    dismount_steed(DISMOUNT_FELL);

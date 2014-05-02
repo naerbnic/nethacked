@@ -2131,7 +2131,7 @@ goodfruit:
 # endif
 				) {
 # ifdef REINCARNATION
-			    if (!initial && Is_rogue_level(&u.uz))
+			    if (!initial && Is_rogue_level(&player.uz))
 				assign_rogue_graphics(FALSE);
 # endif
 			    need_redraw = TRUE;
@@ -2146,7 +2146,7 @@ goodfruit:
 						IBM_GRAPHICS : ASCII_GRAPHICS);
 # endif
 # ifdef REINCARNATION
-			    if (!initial && Is_rogue_level(&u.uz))
+			    if (!initial && Is_rogue_level(&player.uz))
 				assign_rogue_graphics(TRUE);
 # endif
 			}

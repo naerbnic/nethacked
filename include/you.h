@@ -321,7 +321,7 @@ struct Player {
 #define A_CURRENT	0
 	aligntyp ualignbase[CONVERT];	/* for ualign conversion record */
 	schar uluck, moreluck;		/* luck and luck bonus */
-#define Luck	(u.uluck + u.moreluck)
+#define Luck	(player.uluck + player.moreluck)
 #define LUCKADD		3	/* added value when carrying luck stone */
 #define LUCKMAX		10	/* on moonlit nights 11 */
 #define LUCKMIN		(-10)
@@ -363,6 +363,6 @@ struct Player {
 
 };	/* end of `struct you' */
 
-#define Upolyd (u.umonnum != u.umonster)
+#define Upolyd (player.umonnum != player.umonster)
 
 #endif	/* YOU_H */

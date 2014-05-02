@@ -72,7 +72,7 @@ void msummon(Monster *mon) {
 	}
 
 	while (cnt > 0) {
-	    mtmp = makemon(&mons[dtype], u.ux, u.uy, NO_MM_FLAGS);
+	    mtmp = makemon(&mons[dtype], player.ux, player.uy, NO_MM_FLAGS);
 	    if (mtmp && (dtype == PM_ANGEL)) {
 		/* alignment should match the summoner */
 		EPRI(mtmp)->shralign = atyp;
@@ -105,19 +105,19 @@ void summon_minion(aligntyp alignment, bool talk) {
 	mon = 0;
     } else if (mons[mnum].pxlth == 0) {
 	MonsterType *pm = &mons[mnum];
-	mon = makemon(pm, u.ux, u.uy, MM_EMIN);
+	mon = makemon(pm, player.ux, player.uy, MM_EMIN);
 	if (mon) {
 	    mon->isminion = TRUE;
 	    EMIN(mon)->min_align = alignment;
 	}
     } else if (mnum == PM_ANGEL) {
-	mon = makemon(&mons[mnum], u.ux, u.uy, NO_MM_FLAGS);
+	mon = makemon(&mons[mnum], player.ux, player.uy, NO_MM_FLAGS);
 	if (mon) {
 	    mon->isminion = TRUE;
 	    EPRI(mon)->shralign = alignment;	/* always A_LAWFUL here */
 	}
     } else
-	mon = makemon(&mons[mnum], u.ux, u.uy, NO_MM_FLAGS);
+	mon = makemon(&mons[mnum], player.ux, player.uy, NO_MM_FLAGS);
     if (mon) {
 	if (talk) {
 	    pline_The("voice of %s booms:", align_gname(alignment));
@@ -157,12 +157,12 @@ int demon_talk(Monster *mtmp) {
 	    return(1);
 	}
 #ifndef GOLDOBJ
-	cash = u.ugold;
+	cash = player.ugold;
 #else
 	cash = money_cnt(invent);
 #endif
 	demand = (cash * (rnd(80) + 20 * Athome)) /
-	    (100 * (1 + (sgn(u.ualign.type) == sgn(mtmp->data->maligntyp))));
+	    (100 * (1 + (sgn(player.ualign.type) == sgn(mtmp->data->maligntyp))));
 
 	if (!demand) {		/* you have no gold */
 	    mtmp->mpeaceful = 0;
@@ -215,13 +215,13 @@ long bribe(Monster *mtmp) {
 		You("refuse.");
 		return 0L;
 #ifndef GOLDOBJ
-	} else if (offer >= u.ugold) {
+	} else if (offer >= player.ugold) {
 		You("give %s all your gold.", mon_nam(mtmp));
-		offer = u.ugold;
+		offer = player.ugold;
 	} else {
 		You("give %s %ld %s.", mon_nam(mtmp), offer, currency(offer));
 	}
-	u.ugold -= offer;
+	player.ugold -= offer;
 	mtmp->mgold += offer;
 #else
 	} else if (offer >= umoney) {

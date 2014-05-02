@@ -253,7 +253,7 @@ E Object *billobjs;
 E Object zeroobj;		/* init'd and defined in decl.c */
 
 #include "you.h"
-E struct Player u;
+E struct Player player;
 
 #include "onames.h"
 #ifndef PM_H		/* (pm.h has already been included via youprop.h) */
@@ -414,7 +414,7 @@ struct u_achieve {
                                       * of Yendor */
         Bitfield(ascended,1);        /* You ascended to demigod[dess]hood.
                                       * Not quite the same as 
-                                      * u.uevent.ascended. */
+                                      * player.uevent.ascended. */
         Bitfield(get_luckstone,1);   /* You obtained the luckstone at the
                                       * end of the mines. */
         Bitfield(finish_sokoban,1);  /* You obtained the sokoban prize. */

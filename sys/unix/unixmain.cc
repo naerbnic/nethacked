@@ -148,7 +148,7 @@ int main(int argc, char *argv[]) {
 	/*
 	 * It seems you really want to play.
 	 */
-	u.uhp = 1;	/* prevent RIP on early quits */
+	player.uhp = 1;	/* prevent RIP on early quits */
 	(void) signal(SIGHUP, (SIG_RET_TYPE) hangup);
 #ifdef SIGXCPU
 	(void) signal(SIGXCPU, (SIG_RET_TYPE) hangup);

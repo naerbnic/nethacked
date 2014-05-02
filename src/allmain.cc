@@ -47,7 +47,7 @@ void moveloop() {
 
     (void) encumber_msg(); /* in case they auto-picked up something */
 
-    u.uz0.dlevel = u.uz.dlevel;
+    player.uz0.dlevel = player.uz.dlevel;
     youmonst.movement = NORMAL_SPEED;	/* give the hero some movement points */
 
     for(;;) {
@@ -82,15 +82,15 @@ void moveloop() {
 		    for (mtmp = fmon; mtmp; mtmp = mtmp->nmon)
 			mtmp->movement += mcalcmove(mtmp);
 
-		    if(!rn2(u.uevent.udemigod ? 25 :
-			    (depth(&u.uz) > depth(&stronghold_level)) ? 50 : 70))
+		    if(!rn2(player.uevent.udemigod ? 25 :
+			    (depth(&player.uz) > depth(&stronghold_level)) ? 50 : 70))
 			(void) makemon((MonsterType *)0, 0, 0, NO_MM_FLAGS);
 
 		    /* calculate how much time passed. */
 #ifdef STEED
-		    if (u.usteed && u.umoved) {
+		    if (player.usteed && player.umoved) {
 			/* your speed doesn't augment steed's speed */
-			moveamt = mcalcmove(u.usteed);
+			moveamt = mcalcmove(player.usteed);
 		    } else
 #endif
 		    {
@@ -131,7 +131,7 @@ void moveloop() {
 		    nh_timeout();
 		    run_regions();
 
-		    if (u.ublesscnt)  u.ublesscnt--;
+		    if (player.ublesscnt)  player.ublesscnt--;
 		    if(flags.time && !flags.run)
 			flags.botl = 1;
 
@@ -142,53 +142,53 @@ void moveloop() {
 		     * Another possible result is rehumanization, which requires
 		     * that encumbrance and movement rate be recalculated.
 		     */
-		    if (u.uinvulnerable) {
+		    if (player.uinvulnerable) {
 			/* for the moment at least, you're in tiptop shape */
 			wtcap = UNENCUMBERED;
-		    } else if (Upolyd && youmonst.data->mlet == S_EEL && !is_pool(u.ux,u.uy) && !Is_waterlevel(&u.uz)) {
-			if (u.mh > 1) {
-			    u.mh--;
+		    } else if (Upolyd && youmonst.data->mlet == S_EEL && !is_pool(player.ux,player.uy) && !Is_waterlevel(&player.uz)) {
+			if (player.mh > 1) {
+			    player.mh--;
 			    flags.botl = 1;
-			} else if (u.mh < 1)
+			} else if (player.mh < 1)
 			    rehumanize();
-		    } else if (Upolyd && u.mh < u.mhmax) {
-			if (u.mh < 1)
+		    } else if (Upolyd && player.mh < player.mhmax) {
+			if (player.mh < 1)
 			    rehumanize();
 			else if (Regeneration ||
 				    (wtcap < MOD_ENCUMBER && !(moves%20))) {
 			    flags.botl = 1;
-			    u.mh++;
+			    player.mh++;
 			}
-		    } else if (u.uhp < u.uhpmax &&
-			 (wtcap < MOD_ENCUMBER || !u.umoved || Regeneration)) {
-			if (u.ulevel > 9 && !(moves % 3)) {
+		    } else if (player.uhp < player.uhpmax &&
+			 (wtcap < MOD_ENCUMBER || !player.umoved || Regeneration)) {
+			if (player.ulevel > 9 && !(moves % 3)) {
 			    int heal, Con = (int) ACURR(A_CON);
 
 			    if (Con <= 12) {
 				heal = 1;
 			    } else {
 				heal = rnd(Con);
-				if (heal > u.ulevel-9) heal = u.ulevel-9;
+				if (heal > player.ulevel-9) heal = player.ulevel-9;
 			    }
 			    flags.botl = 1;
-			    u.uhp += heal;
-			    if(u.uhp > u.uhpmax)
-				u.uhp = u.uhpmax;
+			    player.uhp += heal;
+			    if(player.uhp > player.uhpmax)
+				player.uhp = player.uhpmax;
 			} else if (Regeneration ||
-			     (u.ulevel <= 9 &&
-			      !(moves % ((MAXULEV+12) / (u.ulevel+2) + 1)))) {
+			     (player.ulevel <= 9 &&
+			      !(moves % ((MAXULEV+12) / (player.ulevel+2) + 1)))) {
 			    flags.botl = 1;
-			    u.uhp++;
+			    player.uhp++;
 			}
 		    }
 
 		    /* moving around while encumbered is hard work */
-		    if (wtcap > MOD_ENCUMBER && u.umoved) {
+		    if (wtcap > MOD_ENCUMBER && player.umoved) {
 			if(!(wtcap < EXT_ENCUMBER ? moves%30 : moves%10)) {
-			    if (Upolyd && u.mh > 1) {
-				u.mh--;
-			    } else if (!Upolyd && u.uhp > 1) {
-				u.uhp--;
+			    if (Upolyd && player.mh > 1) {
+				player.mh--;
+			    } else if (!Upolyd && player.uhp > 1) {
+				player.uhp--;
 			    } else {
 				You("pass out from exertion!");
 				exercise(A_CON, FALSE);
@@ -197,21 +197,21 @@ void moveloop() {
 			}
 		    }
 
-		    if ((u.uen < u.uenmax) &&
+		    if ((player.uen < player.uenmax) &&
 			((wtcap < MOD_ENCUMBER &&
-			  (!(moves%((MAXULEV + 8 - u.ulevel) *
+			  (!(moves%((MAXULEV + 8 - player.ulevel) *
 				    (Role_if(PM_WIZARD) ? 3 : 4) / 6))))
 			 || Energy_regeneration)) {
-			u.uen += rn1((int)(ACURR(A_WIS) + ACURR(A_INT)) / 15 + 1,1);
-			if (u.uen > u.uenmax)  u.uen = u.uenmax;
+			player.uen += rn1((int)(ACURR(A_WIS) + ACURR(A_INT)) / 15 + 1,1);
+			if (player.uen > player.uenmax)  player.uen = player.uenmax;
 			flags.botl = 1;
 		    }
 
-		    if(!u.uinvulnerable) {
+		    if(!player.uinvulnerable) {
 			if(Teleportation && !rn2(85)) {
-			    xchar old_ux = u.ux, old_uy = u.uy;
+			    xchar old_ux = player.ux, old_uy = player.uy;
 			    tele();
-			    if (u.ux != old_ux || u.uy != old_uy) {
+			    if (player.ux != old_ux || player.uy != old_uy) {
 				if (!next_to_u()) {
 				    check_leash(old_ux, old_uy);
 				}
@@ -224,11 +224,11 @@ void moveloop() {
 			}
 			/* delayed change may not be valid anymore */
 			if ((change == 1 && !Polymorph) ||
-			    (change == 2 && u.ulycn == NON_PM))
+			    (change == 2 && player.ulycn == NON_PM))
 			    change = 0;
 			if(Polymorph && !rn2(100))
 			    change = 1;
-			else if (u.ulycn >= LOW_PM && !Upolyd &&
+			else if (player.ulycn >= LOW_PM && !Upolyd &&
 				 !rn2(80 - (20 * night())))
 			    change = 2;
 			if (change && !Unchanging) {
@@ -251,31 +251,31 @@ void moveloop() {
 		    age_spells();
 		    exerchk();
 		    invault();
-		    if (u.uhave.amulet) amulet();
+		    if (player.uhave.amulet) amulet();
 		    if (!rn2(40+(int)(ACURR(A_DEX)*3)))
 			u_wipe_engr(rnd(3));
-		    if (u.uevent.udemigod && !u.uinvulnerable) {
-			if (u.udg_cnt) u.udg_cnt--;
-			if (!u.udg_cnt) {
+		    if (player.uevent.udemigod && !player.uinvulnerable) {
+			if (player.udg_cnt) player.udg_cnt--;
+			if (!player.udg_cnt) {
 			    intervene();
-			    u.udg_cnt = rn1(200, 50);
+			    player.udg_cnt = rn1(200, 50);
 			}
 		    }
 		    restore_attrib();
 		    /* underwater and waterlevel vision are done here */
-		    if (Is_waterlevel(&u.uz))
+		    if (Is_waterlevel(&player.uz))
 			movebubbles();
 		    else if (Underwater)
 			under_water(0);
 		    /* vision while buried done here */
-		    else if (u.uburied) under_ground(0);
+		    else if (player.uburied) under_ground(0);
 
 		    /* when immobile, count is in turns */
 		    if(multi < 0) {
 			if (++multi == 0) {	/* finished yet? */
 			    unmul((char *)0);
 			    /* if unmul caused a level change, take it now */
-			    if (u.utotype) deferred_goto();
+			    if (player.utotype) deferred_goto();
 			}
 		    }
 		}
@@ -299,7 +299,7 @@ void moveloop() {
 		see_monsters();
 		see_objects();
 		see_traps();
-		if (u.uswallow) swallowed(0);
+		if (player.uswallow) swallowed(0);
 	    } else if (Unblind_telepat) {
 		see_monsters();
 	    } else if (Warning || Warn_of_mon)
@@ -331,24 +331,24 @@ void moveloop() {
 	    continue;
 	}
 
-	if ((u.uhave.amulet || Clairvoyant) &&
-	    !In_endgame(&u.uz) && !BClairvoyant &&
+	if ((player.uhave.amulet || Clairvoyant) &&
+	    !In_endgame(&player.uz) && !BClairvoyant &&
 	    !(moves % 15) && !rn2(2))
 		do_vicinity_map();
 
-	if(u.utrap && u.utraptype == TT_LAVA) {
-	    if(!is_lava(u.ux,u.uy))
-		u.utrap = 0;
-	    else if (!u.uinvulnerable) {
-		u.utrap -= 1<<8;
-		if(u.utrap < 1<<8) {
+	if(player.utrap && player.utraptype == TT_LAVA) {
+	    if(!is_lava(player.ux,player.uy))
+		player.utrap = 0;
+	    else if (!player.uinvulnerable) {
+		player.utrap -= 1<<8;
+		if(player.utrap < 1<<8) {
 		    killer_format = KILLED_BY;
 		    killer = "molten lava";
 		    You("sink below the surface and die.");
 		    done(DISSOLVED);
-		} else if(didmove && !u.umoved) {
+		} else if(didmove && !player.umoved) {
 		    Norep("You sink deeper into the lava.");
-		    u.utrap += rnd(4);
+		    player.utrap += rnd(4);
 		}
 	    }
 	}
@@ -360,10 +360,10 @@ void moveloop() {
 
 #ifdef CLIPPING
 	/* just before rhack */
-	cliparound(u.ux, u.uy);
+	cliparound(player.ux, player.uy);
 #endif
 
-	u.umoved = FALSE;
+	player.umoved = FALSE;
 
 	if (multi > 0) {
 	    lookaround();
@@ -387,7 +387,7 @@ void moveloop() {
 #endif
 	    rhack((char *)0);
 	}
-	if (u.utotype)		/* change dungeon level */
+	if (player.utotype)		/* change dungeon level */
 	    deferred_goto();	/* after rhack() */
 	/* !flags.move here: multiple movement command stopped */
 	else if (flags.time && (!flags.move || !flags.mv))
@@ -411,7 +411,7 @@ void stop_occupation() {
 		if (!maybe_finished_meal(TRUE))
 		    You("stop %s.", occtxt);
 		occupation = 0;
-		flags.botl = 1; /* in case u.uhs changed */
+		flags.botl = 1; /* in case player.uhs changed */
 /* fainting stops your occupation, there's no reason to sync.
 		sync_hunger();
 */
@@ -485,7 +485,7 @@ void newgame() {
 	 * makedog() will fail when it calls makemon().
 	 *			- ucsfcgl!kneller
 	 */
-	if(MON_AT(u.ux, u.uy)) mnexto(m_at(u.ux, u.uy));
+	if(MON_AT(player.ux, player.uy)) mnexto(m_at(player.ux, player.uy));
 	(void) makedog();
 	docrt();
 
@@ -516,7 +516,7 @@ void newgame() {
 /* show "welcome [back] to nethack" message at program startup */
 void welcome(bool new_game) {
     char buf[BUFSZ];
-    bool currentgend = Upolyd ? u.mfemale : flags.female;
+    bool currentgend = Upolyd ? player.mfemale : flags.female;
 
     /*
      * The "welcome back" message always describes your innate form
@@ -527,8 +527,8 @@ void welcome(bool new_game) {
      * restores it's only shown if different from its original value.
      */
     *buf = '\0';
-    if (new_game || u.ualignbase[A_ORIGINAL] != u.ualignbase[A_CURRENT])
-	sprintf(eos(buf), " %s", align_str(u.ualignbase[A_ORIGINAL]));
+    if (new_game || player.ualignbase[A_ORIGINAL] != player.ualignbase[A_CURRENT])
+	sprintf(eos(buf), " %s", align_str(player.ualignbase[A_ORIGINAL]));
     if (!urole.name.f &&
 	    (new_game ? (urole.allow & ROLE_GENDMASK) == (ROLE_MALE|ROLE_FEMALE) :
 	     currentgend != flags.initgend))
@@ -583,9 +583,9 @@ STATIC_DCL void do_positionbar() {
 	}
 
 	/* hero location */
-	if (u.ux) {
+	if (player.ux) {
 		*p++ = '@';
-		*p++ = u.ux;
+		*p++ = player.ux;
 	}
 	/* fence post */
 	*p = 0;

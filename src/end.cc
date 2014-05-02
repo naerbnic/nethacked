@@ -176,8 +176,8 @@ int done2() {
 		wait_synch();
 		if(multi > 0) nomul(0, 0);
 		if(multi == 0) {
-		    u.uinvulnerable = FALSE;	/* avoid ctrl-C bug -dlc */
-		    u.usleep = 0;
+		    player.uinvulnerable = FALSE;	/* avoid ctrl-C bug -dlc */
+		    player.usleep = 0;
 		}
 		return 0;
 	}
@@ -272,16 +272,16 @@ void done_in_by(Monster *mtmp) {
 	}
 	killer = buf;
 	if (mtmp->data->mlet == S_WRAITH)
-		u.ugrave_arise = PM_WRAITH;
+		player.ugrave_arise = PM_WRAITH;
 	else if (mtmp->data->mlet == S_MUMMY && urace.mummynum != NON_PM)
-		u.ugrave_arise = urace.mummynum;
+		player.ugrave_arise = urace.mummynum;
 	else if (mtmp->data->mlet == S_VAMPIRE && Race_if(PM_HUMAN))
-		u.ugrave_arise = PM_VAMPIRE;
+		player.ugrave_arise = PM_VAMPIRE;
 	else if (mtmp->data == &mons[PM_GHOUL])
-		u.ugrave_arise = PM_GHOUL;
-	if (u.ugrave_arise >= LOW_PM &&
-				(mvitals[u.ugrave_arise].mvflags & G_GENOD))
-		u.ugrave_arise = NON_PM;
+		player.ugrave_arise = PM_GHOUL;
+	if (player.ugrave_arise >= LOW_PM &&
+				(mvitals[player.ugrave_arise].mvflags & G_GENOD))
+		player.ugrave_arise = NON_PM;
 	if (touch_petrifies(mtmp->data))
 		done(STONING);
 	else
@@ -461,24 +461,24 @@ STATIC_OVL void disclose(int how, bool taken) {
 
 /* try to get the player back in a viable state after being killed */
 STATIC_OVL void savelife(int how) {
-	u.uswldtim = 0;
-	u.uhp = u.uhpmax;
-	if (u.uhunger < 500) {
-	    u.uhunger = 500;
+	player.uswldtim = 0;
+	player.uhp = player.uhpmax;
+	if (player.uhunger < 500) {
+	    player.uhunger = 500;
 	    newuhs(FALSE);
 	}
 	/* cure impending doom of sickness hero won't have time to fix */
 	if ((Sick & TIMEOUT) == 1) {
-	    u.usick_type = 0;
+	    player.usick_type = 0;
 	    Sick = 0;
 	}
 	if (how == CHOKING) init_uhunger();
 	nomovemsg = "You survived that attempt on your life.";
 	flags.move = 0;
 	if(multi > 0) multi = 0; else multi = -1;
-	if(u.utrap && u.utraptype == TT_LAVA) u.utrap = 0;
+	if(player.utrap && player.utraptype == TT_LAVA) player.utrap = 0;
 	flags.botl = 1;
-	u.ugrave_arise = NON_PM;
+	player.ugrave_arise = NON_PM;
 	HUnchanging = 0L;
 	curs_on_u();
 }
@@ -550,7 +550,7 @@ STATIC_OVL void artifact_score(Object *list, bool counting, winid endwin) {
 	    value = arti_cost(otmp);	/* zorkmid value */
 	    points = value * 5 / 2;	/* score value */
 	    if (counting) {
-		u.urexp += points;
+		player.urexp += points;
 	    } else {
 		makeknown(otmp->otyp);
 		otmp->known = otmp->dknown = otmp->bknown = otmp->rknown = 1;
@@ -613,7 +613,7 @@ void done(int how) {
 	strcpy(kilbuf, (!killer || how >= PANICKED ? deaths[how] : killer));
 	killer = kilbuf;
 
-	if (how < PANICKED) u.umortality++;
+	if (how < PANICKED) player.umortality++;
 	if (Lifesaved && (how <= GENOCIDED)) {
 		pline("But wait...");
 		makeknown(AMULET_OF_LIFE_SAVING);
@@ -625,7 +625,7 @@ void done(int how) {
 		if (uamul) useup(uamul);
 
 		(void) adjattrib(A_CON, -1, TRUE);
-		if(u.uhpmax <= 0) u.uhpmax = 10;	/* arbitrary */
+		if(player.uhpmax <= 0) player.uhpmax = 10;	/* arbitrary */
 		savelife(how);
 		if (how == GENOCIDED)
 			pline("Unfortunately you are still genocided...");
@@ -643,7 +643,7 @@ void done(int how) {
 		if(yn("Die?") == 'y') goto die;
 		pline("OK, so you don't %s.",
 			(how == CHOKING) ? "choke" : "die");
-		if(u.uhpmax <= 0) u.uhpmax = u.ulevel * 8;	/* arbitrary */
+		if(player.uhpmax <= 0) player.uhpmax = player.ulevel * 8;	/* arbitrary */
 		savelife(how);
 		killer = 0;
 		killer_format = 0;
@@ -663,7 +663,7 @@ die:
 	if (dump_fn[0]) {
 	  dump_init();
 	  sprintf(pbuf, "%s, %s %s %s %s", plname,
-		  aligns[1 - u.ualign.type].adj,
+		  aligns[1 - player.ualign.type].adj,
 		  genders[flags.female].adj,
 		  urace.adj,
 		  (flags.female && urole.name.f)?
@@ -717,41 +717,41 @@ die:
 	bones_ok = (how < GENOCIDED) && can_make_bones();
 
 	if (how == TURNED_SLIME)
-	    u.ugrave_arise = PM_GREEN_SLIME;
+	    player.ugrave_arise = PM_GREEN_SLIME;
 
-	if (bones_ok && u.ugrave_arise < LOW_PM) {
+	if (bones_ok && player.ugrave_arise < LOW_PM) {
 	    /* corpse gets burnt up too */
 	    if (how == BURNING)
-		u.ugrave_arise = (NON_PM - 2);	/* leave no corpse */
+		player.ugrave_arise = (NON_PM - 2);	/* leave no corpse */
 	    else if (how == STONING)
-		u.ugrave_arise = (NON_PM - 1);	/* statue instead of corpse */
-	    else if (u.ugrave_arise == NON_PM &&
-		     !(mvitals[u.umonnum].mvflags & G_NOCORPSE)) {
-		int mnum = u.umonnum;
+		player.ugrave_arise = (NON_PM - 1);	/* statue instead of corpse */
+	    else if (player.ugrave_arise == NON_PM &&
+		     !(mvitals[player.umonnum].mvflags & G_NOCORPSE)) {
+		int mnum = player.umonnum;
 
 		if (!Upolyd) {
 		    /* Base corpse on race when not poly'd since original
-		     * u.umonnum is based on role, and all role monsters
+		     * player.umonnum is based on role, and all role monsters
 		     * are human.
 		     */
 		    mnum = (flags.female && urace.femalenum != NON_PM) ?
 			urace.femalenum : urace.malenum;
 		}
 		corpse = mk_named_object(CORPSE, &mons[mnum],
-				       u.ux, u.uy, plname);
+				       player.ux, player.uy, plname);
 		sprintf(pbuf, "%s, %s%s", plname,
 			killer_format == NO_KILLER_PREFIX ? "" :
 			killed_by_prefix[how],
 			killer_format == KILLED_BY_AN ? an(killer) : killer);
-		make_grave(u.ux, u.uy, pbuf);
+		make_grave(player.ux, player.uy, pbuf);
 	    }
 	}
 
 	if (how == QUIT) {
 		killer_format = NO_KILLER_PREFIX;
-		if (u.uhp < 1) {
+		if (player.uhp < 1) {
 			how = DIED;
-			u.umortality++;	/* skipped above when how==QUIT */
+			player.umortality++;	/* skipped above when how==QUIT */
 			/* note that killer is pointing at kilbuf */
 			strcpy(kilbuf, "quit while already on Charon's boat");
 		}
@@ -782,11 +782,11 @@ die:
 	    int deepest = deepest_lev_reached(FALSE);
 
 #ifndef GOLDOBJ
-	    umoney = u.ugold;
-	    tmp = u.ugold0;
+	    umoney = player.ugold;
+	    tmp = player.ugold0;
 #else
 	    umoney = money_cnt(invent);
-	    tmp = u.umoney0;
+	    tmp = player.umoney0;
 #endif
 	    umoney += hidden_gold();	/* accumulate gold from containers */
 	    tmp = umoney - tmp;		/* net gain */
@@ -795,11 +795,11 @@ die:
 		tmp = 0L;
 	    if (how < PANICKED)
 		tmp -= tmp / 10L;
-	    u.urexp += tmp;
-	    u.urexp += 50L * (long)(deepest - 1);
+	    player.urexp += tmp;
+	    player.urexp += 50L * (long)(deepest - 1);
 	    if (deepest > 20)
-		u.urexp += 1000L * (long)((deepest > 30) ? 10 : deepest - 20);
-	    if (how == ASCENDED) u.urexp *= 2L;
+		player.urexp += 1000L * (long)((deepest > 30) ? 10 : deepest - 20);
+	    if (how == ASCENDED) player.urexp *= 2L;
 	}
 
 	if (bones_ok) {
@@ -825,7 +825,7 @@ die:
 	/* update gold for the rip output, which can't use hidden_gold()
 	   (containers will be gone by then if bones just got saved...) */
 #ifndef GOLDOBJ
-	u.ugold = umoney;
+	player.ugold = umoney;
 #else
 	done_money = umoney;
 #endif
@@ -850,9 +850,9 @@ die:
 /* changing kilbuf really changes killer. we do it this way because
    killer is declared a (const char *)
 */
-	if (u.uhave.amulet) strcat(kilbuf, " (with the Amulet)");
+	if (player.uhave.amulet) strcat(kilbuf, " (with the Amulet)");
 	else if (how == ESCAPED) {
-	    if (Is_astralevel(&u.uz))	/* offered Amulet to wrong deity */
+	    if (Is_astralevel(&player.uz))	/* offered Amulet to wrong deity */
 		strcat(kilbuf, " (in celestial disgrace)");
 	    else if (carrying(FAKE_AMULET_OF_YENDOR))
 		strcat(kilbuf, " (with a fake Amulet)");
@@ -888,7 +888,7 @@ die:
 	    for (val = valuables; val->list; val++)
 		for (i = 0; i < val->size; i++)
 		    if (val->list[i].count != 0L)
-			u.urexp += val->list[i].count
+			player.urexp += val->list[i].count
 				  * (long)objects[val->list[i].typ].oc_cost;
 
 	    /* count the points for artifacts */
@@ -902,7 +902,7 @@ die:
 		while (mtmp) {
 			sprintf(eos(pbuf), " and %s", mon_nam(mtmp));
 		    if (mtmp->mtame)
-			u.urexp += mtmp->mhp;
+			player.urexp += mtmp->mhp;
 		    mtmp = mtmp->nmon;
 		}
 		if (!done_stopprint) putstr(endwin, 0, pbuf);
@@ -916,7 +916,7 @@ die:
 		sprintf(eos(pbuf), "%s with %ld point%s,",
 			how==ASCENDED ? "went to your reward" :
 					"escaped from the dungeon",
-			u.urexp, plur(u.urexp));
+			player.urexp, plur(player.urexp));
 #ifdef DUMP_LOG
 	    if (dump_fp) dump("", pbuf);
 #endif
@@ -963,24 +963,24 @@ die:
 
 	} else {
 	    /* did not escape or ascend */
-	    if (u.uz.dnum == 0 && u.uz.dlevel <= 0) {
+	    if (player.uz.dnum == 0 && player.uz.dlevel <= 0) {
 		/* level teleported out of the dungeon; `how' is DIED,
 		   due to falling or to "arriving at heaven prematurely" */
 		sprintf(pbuf, "You %s beyond the confines of the dungeon",
-			(u.uz.dlevel < 0) ? "passed away" : ends[how]);
+			(player.uz.dlevel < 0) ? "passed away" : ends[how]);
 	    } else {
 		/* more conventional demise */
-		const char *where = dungeons[u.uz.dnum].dname;
+		const char *where = dungeons[player.uz.dnum].dname;
 
-		if (Is_astralevel(&u.uz)) where = "The Astral Plane";
+		if (Is_astralevel(&player.uz)) where = "The Astral Plane";
 		sprintf(pbuf, "You %s in %s", ends[how], where);
-		if (!In_endgame(&u.uz) && !Is_knox(&u.uz))
+		if (!In_endgame(&player.uz) && !Is_knox(&player.uz))
 		    sprintf(eos(pbuf), " on dungeon level %d",
-			    In_quest(&u.uz) ? dunlev(&u.uz) : depth(&u.uz));
+			    In_quest(&player.uz) ? dunlev(&player.uz) : depth(&player.uz));
 	    }
 
 	    sprintf(eos(pbuf), " with %ld point%s,",
-		    u.urexp, plur(u.urexp));
+		    player.urexp, plur(player.urexp));
 	    if (!done_stopprint) putstr(endwin, 0, pbuf);
 #ifdef DUMP_LOG
 	    if (dump_fp) dump("", pbuf);
@@ -999,7 +999,7 @@ die:
 #endif
 	    sprintf(pbuf,
 	     "You were level %d with a maximum of %d hit point%s when you %s.",
-		    u.ulevel, u.uhpmax, plur(u.uhpmax), ends[how]);
+		    player.ulevel, player.uhpmax, plur(player.uhpmax), ends[how]);
 	if (!done_stopprint) {
 	    putstr(endwin, 0, pbuf);
 	    putstr(endwin, 0, "");

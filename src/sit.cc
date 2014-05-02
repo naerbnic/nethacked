@@ -7,11 +7,11 @@
 
 void take_gold() {
 #ifndef GOLDOBJ
-	if (u.ugold <= 0)  {
+	if (player.ugold <= 0)  {
 		You_feel("a strange sensation.");
 	} else {
 		You("notice you have no gold!");
-		u.ugold = 0;
+		player.ugold = 0;
 		flags.botl = 1;
 	}
 #else
@@ -36,12 +36,12 @@ void take_gold() {
 int dosit() {
 	static const char sit_message[] = "sit on the %s.";
 	Trap *trap;
-	int typ = levl[u.ux][u.uy].typ;
+	int typ = levl[player.ux][player.uy].typ;
 
 
 #ifdef STEED
-	if (u.usteed) {
-	    You("are already sitting on %s.", mon_nam(u.usteed));
+	if (player.usteed) {
+	    You("are already sitting on %s.", mon_nam(player.usteed));
 	    return (0);
 	}
 #endif
@@ -52,56 +52,56 @@ int dosit() {
 	    else
 		You("are sitting on air.");
 	    return 0;
-	} else if (is_pool(u.ux, u.uy) && !Underwater) {  /* water walking */
+	} else if (is_pool(player.ux, player.uy) && !Underwater) {  /* water walking */
 	    goto in_water;
 	}
 
-	if(OBJ_AT(u.ux, u.uy)) {
+	if(OBJ_AT(player.ux, player.uy)) {
 	    Object *obj;
 
-	    obj = level.objects[u.ux][u.uy];
+	    obj = level.objects[player.ux][player.uy];
 	    You("sit on %s.", the(xname(obj)));
 	    if (!(Is_box(obj) || objects[obj->otyp].oc_material == CLOTH))
 		pline("It's not very comfortable...");
 
-	} else if ((trap = t_at(u.ux, u.uy)) != 0 ||
-		   (u.utrap && (u.utraptype >= TT_LAVA))) {
+	} else if ((trap = t_at(player.ux, player.uy)) != 0 ||
+		   (player.utrap && (player.utraptype >= TT_LAVA))) {
 
-	    if (u.utrap) {
+	    if (player.utrap) {
 		exercise(A_WIS, FALSE);	/* you're getting stuck longer */
-		if(u.utraptype == TT_BEARTRAP) {
+		if(player.utraptype == TT_BEARTRAP) {
 		    You_cant("sit down with your %s in the bear trap.", body_part(FOOT));
-		    u.utrap++;
-	        } else if(u.utraptype == TT_PIT) {
+		    player.utrap++;
+	        } else if(player.utraptype == TT_PIT) {
 		    if(trap->ttyp == SPIKED_PIT) {
 			You("sit down on a spike.  Ouch!");
 			losehp(1, "sitting on an iron spike", KILLED_BY);
 			exercise(A_STR, FALSE);
 		    } else
 			You("sit down in the pit.");
-		    u.utrap += rn2(5);
-		} else if(u.utraptype == TT_WEB) {
+		    player.utrap += rn2(5);
+		} else if(player.utraptype == TT_WEB) {
 		    You("sit in the spider web and get entangled further!");
-		    u.utrap += rn1(10, 5);
-		} else if(u.utraptype == TT_LAVA) {
+		    player.utrap += rn1(10, 5);
+		} else if(player.utraptype == TT_LAVA) {
 		    /* Must have fire resistance or they'd be dead already */
 		    You("sit in the lava!");
-		    u.utrap += rnd(4);
+		    player.utrap += rnd(4);
 		    losehp(d(2,10), "sitting in lava", KILLED_BY);
-		} else if(u.utraptype == TT_INFLOOR) {
+		} else if(player.utraptype == TT_INFLOOR) {
 		    You_cant("maneuver to sit!");
-		    u.utrap++;
+		    player.utrap++;
 		}
 	    } else {
 	        You("sit down.");
 		dotrap(trap, 0);
 	    }
-	} else if(Underwater || Is_waterlevel(&u.uz)) {
-	    if (Is_waterlevel(&u.uz))
+	} else if(Underwater || Is_waterlevel(&player.uz)) {
+	    if (Is_waterlevel(&player.uz))
 		There("are no cushions floating nearby.");
 	    else
 		You("sit down on the muddy bottom.");
-	} else if(is_pool(u.ux, u.uy)) {
+	} else if(is_pool(player.ux, player.uy)) {
  in_water:
 	    You("sit in the water.");
 	    if (!rn2(10) && uarm)
@@ -117,7 +117,7 @@ int dosit() {
 	} else if(IS_ALTAR(typ)) {
 
 	    You(sit_message, defsyms[S_altar].explanation);
-	    altar_wrath(u.ux, u.uy);
+	    altar_wrath(player.ux, player.uy);
 
 	} else if(IS_GRAVE(typ)) {
 
@@ -131,7 +131,7 @@ int dosit() {
 
 	    You(sit_message, "ladder");
 
-	} else if (is_lava(u.ux, u.uy)) {
+	} else if (is_lava(player.ux, player.uy)) {
 
 	    /* must be WWalking */
 	    You(sit_message, "lava");
@@ -144,7 +144,7 @@ int dosit() {
 	    losehp(d((Fire_resistance ? 2 : 10), 10),
 		   "sitting on lava", KILLED_BY);
 
-	} else if (is_ice(u.ux, u.uy)) {
+	} else if (is_ice(player.ux, player.uy)) {
 
 	    You(sit_message, defsyms[S_ice].explanation);
 	    if (!Cold_resistance) pline_The("ice feels cold.");
@@ -175,11 +175,11 @@ int dosit() {
 		    case 4:
 			You_feel("much, much better!");
 			if (Upolyd) {
-			    if (u.mh >= (u.mhmax - 5))  u.mhmax += 4;
-			    u.mh = u.mhmax;
+			    if (player.mh >= (player.mhmax - 5))  player.mhmax += 4;
+			    player.mh = player.mhmax;
 			}
-			if(u.uhp >= (u.uhpmax - 5))  u.uhpmax += 4;
-			u.uhp = u.uhpmax;
+			if(player.uhp >= (player.uhpmax - 5))  player.uhpmax += 4;
+			player.uhp = player.uhpmax;
 			make_blinded(0L,TRUE);
 			make_sick(0L, (char *) 0, FALSE, SICK_ALL);
 			heal_legs();
@@ -189,7 +189,7 @@ int dosit() {
 			take_gold();
 			break;
 		    case 6:
-			if(u.uluck + rn2(5) < 0) {
+			if(player.uluck + rn2(5) < 0) {
 			    You_feel("your luck is changing.");
 			    change_luck(1);
 			} else	    makewish();
@@ -202,7 +202,7 @@ int dosit() {
 			verbalize("Thy audience hath been summoned, %s!",
 				  flags.female ? "Dame" : "Sire");
 			while(cnt--)
-			    (void) makemon(courtmon(), u.ux, u.uy, NO_MM_FLAGS);
+			    (void) makemon(courtmon(), player.ux, player.uy, NO_MM_FLAGS);
 			break;
 			}
 		    case 8:
@@ -232,7 +232,7 @@ int dosit() {
 			} else  {
 				Your("vision becomes clear.");
 				HSee_invisible |= FROMOUTSIDE;
-				newsym(u.ux, u.uy);
+				newsym(player.ux, player.uy);
 			}
 			break;
 		    case 11:
@@ -266,11 +266,11 @@ int dosit() {
 		    You_feel("somehow out of place...");
 	    }
 
-	    if (!rn2(3) && IS_THRONE(levl[u.ux][u.uy].typ)) {
+	    if (!rn2(3) && IS_THRONE(levl[player.ux][player.uy].typ)) {
 		/* may have teleported */
-		levl[u.ux][u.uy].typ = ROOM;
+		levl[player.ux][player.uy].typ = ROOM;
 		pline_The("throne vanishes in a puff of logic.");
-		newsym(u.ux,u.uy);
+		newsym(player.ux,player.uy);
 	    }
 
 	} else if (lays_eggs(youmonst.data)) {
@@ -281,7 +281,7 @@ int dosit() {
 			return 0;
 		}
 
-		if (u.uhunger < (int)objects[EGG].oc_nutrition) {
+		if (player.uhunger < (int)objects[EGG].oc_nutrition) {
 			You("don't have enough energy to lay an egg.");
 			return 0;
 		}
@@ -290,17 +290,17 @@ int dosit() {
 		uegg->spe = 1;
 		uegg->quan = 1;
 		uegg->owt = weight(uegg);
-		uegg->corpsenm = egg_type_from_parent(u.umonnum, FALSE);
+		uegg->corpsenm = egg_type_from_parent(player.umonnum, FALSE);
 		uegg->known = uegg->dknown = 1;
 		attach_egg_hatch_timeout(uegg);
 		You("lay an egg.");
 		dropy(uegg);
 		stackobj(uegg);
 		morehungry((int)objects[EGG].oc_nutrition);
-	} else if (u.uswallow)
+	} else if (player.uswallow)
 		There("are no seats in here!");
 	else
-		pline("Having fun sitting on the %s?", surface(u.ux,u.uy));
+		pline("Having fun sitting on the %s?", surface(player.ux,player.uy));
 	return(1);
 }
 
@@ -317,7 +317,7 @@ void rndcurse() {
 	}
 
 	if(Antimagic) {
-	    shieldeff(u.ux, u.uy);
+	    shieldeff(player.ux, player.uy);
 	    You(mal_aura, "you");
 	}
 
@@ -359,8 +359,8 @@ void rndcurse() {
 
 #ifdef STEED
 	/* treat steed's saddle as extended part of hero's inventory */
-	if (u.usteed && !rn2(4) &&
-		(otmp = which_armor(u.usteed, W_SADDLE)) != 0 &&
+	if (player.usteed && !rn2(4) &&
+		(otmp = which_armor(player.usteed, W_SADDLE)) != 0 &&
 		!otmp->cursed) {	/* skip if already cursed */
 	    if (otmp->blessed)
 		unbless(otmp);
@@ -368,7 +368,7 @@ void rndcurse() {
 		curse(otmp);
 	    if (!Blind) {
 		pline("%s %s %s.",
-		      s_suffix(upstart(y_monnam(u.usteed))),
+		      s_suffix(upstart(y_monnam(player.usteed))),
 		      aobjnam(otmp, "glow"),
 		      hcolor(otmp->cursed ? NH_BLACK : (const char *)"brown"));
 		otmp->bknown = TRUE;

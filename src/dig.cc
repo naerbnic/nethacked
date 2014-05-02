@@ -32,10 +32,10 @@ STATIC_DCL void dig_up_grave();
 STATIC_OVL bool rm_waslit() {
     xchar x, y;
 
-    if(levl[u.ux][u.uy].typ == ROOM && levl[u.ux][u.uy].waslit)
+    if(levl[player.ux][player.uy].typ == ROOM && levl[player.ux][player.uy].waslit)
 	return(TRUE);
-    for(x = u.ux-2; x < u.ux+3; x++)
-	for(y = u.uy-1; y < u.uy+2; y++)
+    for(x = player.ux-2; x < player.ux+3; x++)
+	for(y = player.uy-1; y < player.uy+2; y++)
 	    if(isok(x,y) && levl[x][y].waslit) return(TRUE);
     return(FALSE);
 }
@@ -80,14 +80,14 @@ STATIC_OVL void mkcavepos(xchar x, xchar y, int dist, bool waslit, bool rockit) 
 
 STATIC_OVL void mkcavearea(bool rockit) {
     int dist;
-    xchar xmin = u.ux, xmax = u.ux;
-    xchar ymin = u.uy, ymax = u.uy;
+    xchar xmin = player.ux, xmax = player.ux;
+    xchar ymin = player.uy, ymax = player.uy;
     xchar i;
     bool waslit = rm_waslit();
 
     if(rockit) pline("Crash!  The ceiling collapses around you!");
     else pline("A mysterious force %s cave around you!",
-	     (levl[u.ux][u.uy].typ == CORR) ? "creates a" : "extends the");
+	     (levl[player.ux][player.uy].typ == CORR) ? "creates a" : "extends the");
     display_nhwindow(WIN_MESSAGE, TRUE);
 
     for(dist = 1; dist <= 2; dist++) {
@@ -112,10 +112,10 @@ STATIC_OVL void mkcavearea(bool rockit) {
 	delay_output();
     }
 
-    if(!rockit && levl[u.ux][u.uy].typ == CORR) {
-	levl[u.ux][u.uy].typ = ROOM;
-	if(waslit) levl[u.ux][u.uy].waslit = TRUE;
-	newsym(u.ux, u.uy); /* in case player is invisible */
+    if(!rockit && levl[player.ux][player.uy].typ == CORR) {
+	levl[player.ux][player.uy].typ = ROOM;
+	if(waslit) levl[player.ux][player.uy].waslit = TRUE;
+	newsym(player.ux, player.uy); /* in case player is invisible */
     }
 
     vision_full_recalc = 1;	/* everything changed */
@@ -158,19 +158,19 @@ bool dig_check(Monster *madeby, bool verbose, int x, int y) {
 	    if(verbose) pline_The("throne is too hard to break apart.");
 	    return(FALSE);
 	} else if (IS_ALTAR(levl[x][y].typ) && (madeby != BY_OBJECT ||
-				Is_astralevel(&u.uz) || Is_sanctum(&u.uz))) {
+				Is_astralevel(&player.uz) || Is_sanctum(&player.uz))) {
 	    if(verbose) pline_The("altar is too hard to break apart.");
 	    return(FALSE);
-	} else if (Is_airlevel(&u.uz)) {
+	} else if (Is_airlevel(&player.uz)) {
 	    if(verbose) You("cannot %s thin air.", verb);
 	    return(FALSE);
-	} else if (Is_waterlevel(&u.uz)) {
+	} else if (Is_waterlevel(&player.uz)) {
 	    if(verbose) pline_The("water splashes and subsides.");
 	    return(FALSE);
 	} else if ((IS_ROCK(levl[x][y].typ) && levl[x][y].typ != SDOOR &&
 		      (levl[x][y].wall_info & W_NONDIGGABLE) != 0)
 		|| (ttmp &&
-		      (ttmp->ttyp == MAGIC_PORTAL || !Can_dig_down(&u.uz)))) {
+		      (ttmp->ttyp == MAGIC_PORTAL || !Can_dig_down(&player.uz)))) {
 	    if(verbose) pline_The("%s here is too hard to %s.",
 				  surface(x,y), verb);
 	    return(FALSE);
@@ -197,14 +197,14 @@ STATIC_OVL int dig() {
 	lev = &levl[dpx][dpy];
 	/* perhaps a nymph stole your pick-axe while you were busy digging */
 	/* or perhaps you teleported away */
-	if (u.uswallow || !uwep || (!ispick && !is_axe(uwep)) ||
-	    !on_level(&digging.level, &u.uz) ||
-	    ((digging.down ? (dpx != u.ux || dpy != u.uy)
+	if (player.uswallow || !uwep || (!ispick && !is_axe(uwep)) ||
+	    !on_level(&digging.level, &player.uz) ||
+	    ((digging.down ? (dpx != player.ux || dpy != player.uy)
 			   : (distu(dpx,dpy) > 2))))
 		return(0);
 
 	if (digging.down) {
-	    if(!dig_check(BY_YOU, TRUE, u.ux, u.uy)) return(0);
+	    if(!dig_check(BY_YOU, TRUE, player.ux, player.uy)) return(0);
 	} else { /* !digging.down */
 	    if (IS_TREE(lev->typ) && !may_dig(dpx,dpy) &&
 			dig_typ(uwep, dpx, dpy) == DIGTYP_TREE) {
@@ -225,11 +225,11 @@ STATIC_OVL int dig() {
 		    dropx(uwep);
 		} else {
 #ifdef STEED
-		    if (u.usteed)
+		    if (player.usteed)
 			Your("%s %s and %s %s!",
 			     xname(uwep),
 			     otense(uwep, "bounce"), otense(uwep, "hit"),
-			     mon_nam(u.usteed));
+			     mon_nam(player.usteed));
 		    else
 #endif
 			pline("Ouch!  Your %s %s and %s you!",
@@ -249,7 +249,7 @@ STATIC_OVL int dig() {
 	}
 
 	digging.effort += 10 + rn2(5) + abon() +
-			   uwep->spe - greatest_erosion(uwep) + u.udaminc;
+			   uwep->spe - greatest_erosion(uwep) + player.udaminc;
 	if (Race_if(PM_DWARF))
 	    digging.effort *= 2;
 	if (digging.down) {
@@ -272,7 +272,7 @@ STATIC_OVL int dig() {
 		    angry_priest();
 		}
 
-		if (dighole(TRUE)) {	/* make pit at <u.ux,u.uy> */
+		if (dighole(TRUE)) {	/* make pit at <player.ux,player.uy> */
 		    digging.level.dnum = 0;
 		    digging.level.dlevel = -1;
 		}
@@ -304,7 +304,7 @@ STATIC_OVL int dig() {
 			digtxt = "The boulder falls apart.";
 		} else if (lev->typ == STONE || lev->typ == SCORR ||
 				IS_TREE(lev->typ)) {
-			if(Is_earthlevel(&u.uz)) {
+			if(Is_earthlevel(&player.uz)) {
 			    if(uwep->blessed && !rn2(3)) {
 				mkcavearea(FALSE);
 				goto cleanup;
@@ -362,7 +362,7 @@ STATIC_OVL int dig() {
 		if(dmgtxt)
 		    pay_for_damage(dmgtxt, FALSE);
 
-		if(Is_earthlevel(&u.uz) && !rn2(3)) {
+		if(Is_earthlevel(&player.uz) && !rn2(3)) {
 		    Monster *mtmp;
 
 		    switch(rn2(2)) {
@@ -413,7 +413,7 @@ cleanup:
 
 /* When will hole be finished? Very rough indication used by shopkeeper. */
 int holetime() {
-	if(occupation != dig || !*u.ushops) return(-1);
+	if(occupation != dig || !*player.ushops) return(-1);
 	return ((250 - digging.effort) / 20);
 }
 
@@ -458,10 +458,10 @@ void digactualhole(int x, int y, Monster *madeby, int ttyp) {
 	Monster *mtmp = m_at(x, y);	/* may be madeby */
 	bool madeby_u = (madeby == BY_YOU);
 	bool madeby_obj = (madeby == BY_OBJECT);
-	bool at_u = (x == u.ux) && (y == u.uy);
+	bool at_u = (x == player.ux) && (y == player.uy);
 	bool wont_fall = Levitation || Flying;
 
-	if (u.utrap && u.utraptype == TT_INFLOOR) u.utrap = 0;
+	if (player.utrap && player.utraptype == TT_INFLOOR) player.utrap = 0;
 
 	/* these furniture checks were in dighole(), but wand
 	   breaking bypasses that routine and calls us directly */
@@ -484,7 +484,7 @@ void digactualhole(int x, int y, Monster *madeby, int ttyp) {
 	    return;
 	}
 
-	if (ttyp != PIT && !Can_dig_down(&u.uz)) {
+	if (ttyp != PIT && !Can_dig_down(&player.uz)) {
 	    impossible("digactualhole: can't dig %s on this level.",
 		       defsyms[trap_to_defsym(ttyp)].explanation);
 	    ttyp = PIT;
@@ -518,11 +518,11 @@ void digactualhole(int x, int y, Monster *madeby, int ttyp) {
 	    if(at_u) {
 		if (!wont_fall) {
 		    if (!Passes_walls)
-			u.utrap = rn1(4,2);
-		    u.utraptype = TT_PIT;
+			player.utrap = rn1(4,2);
+		    player.utraptype = TT_PIT;
 		    vision_full_recalc = 1;	/* vision limits change */
 		} else
-		    u.utrap = 0;
+		    player.utrap = 0;
 		if (oldobjs != newobjs)	/* something unearthed */
 			(void) pickup(1);	/* detects pit */
 	    } else if(mtmp) {
@@ -545,7 +545,7 @@ void digactualhole(int x, int y, Monster *madeby, int ttyp) {
 		pline("A hole appears in the %s.", surface_type);
 
 	    if (at_u) {
-		if (!u.ustuck && !wont_fall && !next_to_u()) {
+		if (!player.ustuck && !wont_fall && !next_to_u()) {
 		    You("are jerked back by your pet!");
 		    wont_fall = TRUE;
 		}
@@ -554,7 +554,7 @@ void digactualhole(int x, int y, Monster *madeby, int ttyp) {
 		 * the hero does NOT fall down is treated here.  The case
 		 * where the hero does fall down is treated in goto_level().
 		 */
-		if (u.ustuck || wont_fall) {
+		if (player.ustuck || wont_fall) {
 		    if (newobjs)
 			impact_drop(nullptr, x, y, 0);
 		    if (oldobjs != newobjs)
@@ -564,7 +564,7 @@ void digactualhole(int x, int y, Monster *madeby, int ttyp) {
 		} else {
 		    d_level newlevel;
 
-		    if (*u.ushops && madeby_u)
+		    if (*player.ushops && madeby_u)
 			shopdig(1); /* shk might snatch pack */
 		    /* handle earlier damage, eg breaking wand of digging */
 		    else if (!madeby_u) pay_for_damage("dig into", TRUE);
@@ -573,8 +573,8 @@ void digactualhole(int x, int y, Monster *madeby, int ttyp) {
 		    /* Earlier checks must ensure that the destination
 		     * level exists and is in the present dungeon.
 		     */
-		    newlevel.dnum = u.uz.dnum;
-		    newlevel.dlevel = u.uz.dlevel + 1;
+		    newlevel.dnum = player.uz.dnum;
+		    newlevel.dlevel = player.uz.dlevel + 1;
 		    goto_level(&newlevel, FALSE, TRUE, FALSE);
 		    /* messages for arriving in special rooms */
 		    spoteffects(FALSE);
@@ -589,20 +589,20 @@ void digactualhole(int x, int y, Monster *madeby, int ttyp) {
 		        mtmp->data == &mons[PM_WUMPUS] ||
 			(mtmp->wormno && count_wsegs(mtmp) > 5) ||
 			mtmp->data->msize >= MZ_HUGE) return;
-		    if (mtmp == u.ustuck)	/* probably a vortex */
+		    if (mtmp == player.ustuck)	/* probably a vortex */
 			    return;		/* temporary? kludge */
 
 		    if (teleport_pet(mtmp, FALSE)) {
 			d_level tolevel;
 
-			if (Is_stronghold(&u.uz)) {
+			if (Is_stronghold(&player.uz)) {
 			    assign_level(&tolevel, &valley_level);
-			} else if (Is_botlevel(&u.uz)) {
+			} else if (Is_botlevel(&player.uz)) {
 			    if (canseemon(mtmp))
 				pline("%s avoids the trap.", Monnam(mtmp));
 			    return;
 			} else {
-			    get_level(&tolevel, depth(&u.uz) + 1);
+			    get_level(&tolevel, depth(&player.uz) + 1);
 			}
 			if (mtmp->isshk) make_angry_shk(mtmp, 0, 0);
 			migrate_to_level(mtmp, ledger_no(&tolevel),
@@ -615,24 +615,24 @@ void digactualhole(int x, int y, Monster *madeby, int ttyp) {
 
 /* return TRUE if digging succeeded, FALSE otherwise */
 bool dighole(bool pit_only) {
-	Trap *ttmp = t_at(u.ux, u.uy);
-	struct rm *lev = &levl[u.ux][u.uy];
+	Trap *ttmp = t_at(player.ux, player.uy);
+	struct rm *lev = &levl[player.ux][player.uy];
 	Object *boulder_here;
 	schar typ;
-	bool nohole = !Can_dig_down(&u.uz);
+	bool nohole = !Can_dig_down(&player.uz);
 
 	if ((ttmp && (ttmp->ttyp == MAGIC_PORTAL || nohole)) ||
 	   (IS_ROCK(lev->typ) && lev->typ != SDOOR &&
 	    (lev->wall_info & W_NONDIGGABLE) != 0)) {
-		pline_The("%s here is too hard to dig in.", surface(u.ux,u.uy));
+		pline_The("%s here is too hard to dig in.", surface(player.ux,player.uy));
 
-	} else if (is_pool(u.ux, u.uy) || is_lava(u.ux, u.uy)) {
+	} else if (is_pool(player.ux, player.uy) || is_lava(player.ux, player.uy)) {
 		pline_The("%s sloshes furiously for a moment, then subsides.",
-			is_lava(u.ux, u.uy) ? "lava" : "water");
+			is_lava(player.ux, player.uy) ? "lava" : "water");
 		wake_nearby();	/* splashing */
 
 	} else if (lev->typ == DRAWBRIDGE_DOWN ||
-		   (is_drawbridge_wall(u.ux, u.uy) >= 0)) {
+		   (is_drawbridge_wall(player.ux, player.uy) >= 0)) {
 		/* drawbridge_down is the platform crossing the moat when the
 		   bridge is extended; drawbridge_wall is the open "doorway" or
 		   closed "door" where the portcullis/mechanism is located */
@@ -640,14 +640,14 @@ bool dighole(bool pit_only) {
 		    pline_The("drawbridge seems too hard to dig through.");
 		    return FALSE;
 		} else {
-		    int x = u.ux, y = u.uy;
+		    int x = player.ux, y = player.uy;
 		    /* if under the portcullis, the bridge is adjacent */
 		    (void) find_drawbridge(&x, &y);
 		    destroy_drawbridge(x, y);
 		    return TRUE;
 		}
 
-	} else if ((boulder_here = sobj_at(BOULDER, u.ux, u.uy)) != 0) {
+	} else if ((boulder_here = sobj_at(BOULDER, player.ux, player.uy)) != 0) {
 		if (ttmp && (ttmp->ttyp == PIT || ttmp->ttyp == SPIKED_PIT) &&
 		    rn2(2)) {
 			pline_The("boulder settles into the pit.");
@@ -664,13 +664,13 @@ bool dighole(bool pit_only) {
 		return TRUE;
 
 	} else if (IS_GRAVE(lev->typ)) {        
-	    digactualhole(u.ux, u.uy, BY_YOU, PIT);
+	    digactualhole(player.ux, player.uy, BY_YOU, PIT);
 	    dig_up_grave();
 	    return TRUE;
 	} else if (lev->typ == DRAWBRIDGE_UP) {
 		/* must be floor or ice, other cases handled above */
 		/* dig "pit" and let fluid flow in (if possible) */
-		typ = fillholetyp(u.ux,u.uy);
+		typ = fillholetyp(player.ux,player.uy);
 
 		if (typ == ROOM) {
 			/*
@@ -678,7 +678,7 @@ bool dighole(bool pit_only) {
 			 * the drawbridge.  The following is a cop-out. --dlc
 			 */
 			pline_The("%s here is too hard to dig in.",
-			      surface(u.ux, u.uy));
+			      surface(player.ux, player.uy));
 			return FALSE;
 		}
 
@@ -688,7 +688,7 @@ bool dighole(bool pit_only) {
  liquid_flow:
 		if (ttmp) (void) delfloortrap(ttmp);
 		/* if any objects were frozen here, they're released now */
-		unearth_objs(u.ux, u.uy);
+		unearth_objs(player.ux, player.uy);
 
 		pline("As you dig, the hole fills with %s!",
 		      typ == LAVAPOOL ? "lava" : "water");
@@ -708,7 +708,7 @@ bool dighole(bool pit_only) {
 		pline_The("altar is too hard to break apart.");
 
 	} else {
-		typ = fillholetyp(u.ux,u.uy);
+		typ = fillholetyp(player.ux,player.uy);
 
 		if (typ != ROOM) {
 			lev->typ = typ;
@@ -717,9 +717,9 @@ bool dighole(bool pit_only) {
 
 		/* finally we get to make a hole */
 		if (nohole || pit_only)
-			digactualhole(u.ux, u.uy, BY_YOU, PIT);
+			digactualhole(player.ux, player.uy, BY_YOU, PIT);
 		else
-			digactualhole(u.ux, u.uy, BY_YOU, HOLE);
+			digactualhole(player.ux, player.uy, BY_YOU, HOLE);
 
 		return TRUE;
 	}
@@ -733,13 +733,13 @@ STATIC_OVL void dig_up_grave() {
 	/* Grave-robbing is frowned upon... */
 	exercise(A_WIS, FALSE);
 	if (Role_if(PM_ARCHEOLOGIST)) {
-	    adjalign(-sgn(u.ualign.type)*3);
+	    adjalign(-sgn(player.ualign.type)*3);
 	    You_feel("like a despicable grave-robber!");
 	} else if (Role_if(PM_SAMURAI)) {
-	    adjalign(-sgn(u.ualign.type));
+	    adjalign(-sgn(player.ualign.type));
 	    You("disturb the honorable dead!");
-	} else if ((u.ualign.type == A_LAWFUL) && (u.ualign.record > -10)) {
-	    adjalign(-sgn(u.ualign.type));
+	} else if ((player.ualign.type == A_LAWFUL) && (player.ualign.record > -10)) {
+	    adjalign(-sgn(player.ualign.type));
 	    You("have violated the sanctity of this grave!");
 	}
 
@@ -747,27 +747,27 @@ STATIC_OVL void dig_up_grave() {
 	case 0:
 	case 1:
 	    You("unearth a corpse.");
-	    if (!!(otmp = mk_tt_object(CORPSE, u.ux, u.uy)))
+	    if (!!(otmp = mk_tt_object(CORPSE, player.ux, player.uy)))
 	    	otmp->age -= 100;		/* this is an *OLD* corpse */;
 	    break;
 	case 2:
 	    if (!Blind) pline(Hallucination ? "Dude!  The living dead!" :
  			"The grave's owner is very upset!");
- 	    (void) makemon(mkclass(S_ZOMBIE,0), u.ux, u.uy, NO_MM_FLAGS);
+ 	    (void) makemon(mkclass(S_ZOMBIE,0), player.ux, player.uy, NO_MM_FLAGS);
 	    break;
 	case 3:
 	    if (!Blind) pline(Hallucination ? "I want my mummy!" :
  			"You've disturbed a tomb!");
- 	    (void) makemon(mkclass(S_MUMMY,0), u.ux, u.uy, NO_MM_FLAGS);
+ 	    (void) makemon(mkclass(S_MUMMY,0), player.ux, player.uy, NO_MM_FLAGS);
 	    break;
 	default:
 	    /* No corpse */
 	    pline_The("grave seems unused.  Strange....");
 	    break;
 	}
-	levl[u.ux][u.uy].typ = ROOM;
-	del_engr_at(u.ux, u.uy);
-	newsym(u.ux,u.uy);
+	levl[player.ux][player.uy].typ = ROOM;
+	del_engr_at(player.ux, player.uy);
+	newsym(player.ux,player.uy);
 	return;
 }
 
@@ -790,7 +790,7 @@ int use_pick_axe(Object *obj) {
 	ispick = is_pick(obj);
 	verb = ispick ? "dig" : "chop";
 
-	if (u.utrap && u.utraptype == TT_WEB) {
+	if (player.utrap && player.utraptype == TT_WEB) {
 	    pline("%s you can't %s while entangled in a web.",
 		  /* res==0 => no prior message;
 		     res==1 => just got "You now wield a pick-axe." message */
@@ -799,12 +799,12 @@ int use_pick_axe(Object *obj) {
 	}
 
 	while(*sdp) {
-		(void) movecmd(*sdp);	/* sets u.dx and u.dy and u.dz */
-		rx = u.ux + u.dx;
-		ry = u.uy + u.dy;
+		(void) movecmd(*sdp);	/* sets player.dx and player.dy and player.dz */
+		rx = player.ux + player.dx;
+		ry = player.uy + player.dy;
 		/* Include down even with axe, so we have at least one direction */
-		if (u.dz > 0 ||
-		    (u.dz == 0 && isok(rx, ry) &&
+		if (player.dz > 0 ||
+		    (player.dz == 0 && isok(rx, ry) &&
 		     dig_typ(obj, rx, ry) != DIGTYP_UNDIGGABLE))
 			*dsp++ = *sdp;
 		sdp++;
@@ -819,7 +819,7 @@ int use_pick_axe(Object *obj) {
 
 /* MRKR: use_pick_axe() is split in two to allow autodig to bypass */
 /*       the "In what direction do you want to dig?" query.        */
-/*       use_pick_axe2() uses the existing u.dx, u.dy and u.dz    */
+/*       use_pick_axe2() uses the existing player.dx, player.dy and player.dz    */
 
 int use_pick_axe2(Object *obj) {
 	int rx, ry;
@@ -828,16 +828,16 @@ int use_pick_axe2(Object *obj) {
 	bool ispick = is_pick(obj);
 	const char *verbing = ispick ? "digging" : "chopping";
 
-	if (u.uswallow && attack(u.ustuck)) {
+	if (player.uswallow && attack(player.ustuck)) {
 		;  /* return(1) */
 	} else if (Underwater) {
 		pline("Turbulence torpedoes your %s attempts.", verbing);
-	} else if(u.dz < 0) {
+	} else if(player.dz < 0) {
 		if(Levitation)
 			You("don't have enough leverage.");
 		else
-			You_cant("reach the %s.",ceiling(u.ux,u.uy));
-	} else if(!u.dx && !u.dy && !u.dz) {
+			You_cant("reach the %s.",ceiling(player.ux,player.uy));
+	} else if(!player.dx && !player.dy && !player.dz) {
 		char buf[BUFSZ];
 		int dam;
 
@@ -849,10 +849,10 @@ int use_pick_axe2(Object *obj) {
 		losehp(dam, buf, KILLED_BY);
 		flags.botl=1;
 		return(1);
-	} else if(u.dz == 0) {
+	} else if(player.dz == 0) {
 		if(Stunned || (Confusion && !rn2(5))) confdir();
-		rx = u.ux + u.dx;
-		ry = u.uy + u.dy;
+		rx = player.ux + player.dx;
+		ry = player.uy + player.dy;
 		if(!isok(rx, ry)) {
 			pline("Clash!");
 			return(1);
@@ -906,11 +906,11 @@ int use_pick_axe2(Object *obj) {
 			did_dig_msg = FALSE;
 			digging.quiet = FALSE;
 			if (digging.pos.x != rx || digging.pos.y != ry ||
-			    !on_level(&digging.level, &u.uz) || digging.down) {
+			    !on_level(&digging.level, &player.uz) || digging.down) {
 			    if (flags.autodig &&
 				dig_target == DIGTYP_ROCK && !digging.down &&
-				digging.pos.x == u.ux &&
-				digging.pos.y == u.uy &&
+				digging.pos.x == player.ux &&
+				digging.pos.y == player.uy &&
 				(moves <= digging.lastdigtime+2 &&
 				 moves >= digging.lastdigtime)) {
 				/* avoid messages if repeated autodigging */
@@ -921,7 +921,7 @@ int use_pick_axe2(Object *obj) {
 			    digging.warned = FALSE;
 			    digging.pos.x = rx;
 			    digging.pos.y = ry;
-			    assign_level(&digging.level, &u.uz);
+			    assign_level(&digging.level, &player.uz);
 			    digging.effort = 0;
 			    if (!digging.quiet)
 				You("start %s.", d_action[dig_target]);
@@ -932,31 +932,31 @@ int use_pick_axe2(Object *obj) {
 			}
 			set_occupation(dig, verbing, 0);
 		}
-	} else if (Is_airlevel(&u.uz) || Is_waterlevel(&u.uz)) {
+	} else if (Is_airlevel(&player.uz) || Is_waterlevel(&player.uz)) {
 		/* it must be air -- water checked above */
 		You("swing your %s through thin air.", aobjnam(obj, (char *)0));
 	} else if (!can_reach_floor()) {
-		You_cant("reach the %s.", surface(u.ux,u.uy));
-	} else if (is_pool(u.ux, u.uy) || is_lava(u.ux, u.uy)) {
+		You_cant("reach the %s.", surface(player.ux,player.uy));
+	} else if (is_pool(player.ux, player.uy) || is_lava(player.ux, player.uy)) {
 		/* Monsters which swim also happen not to be able to dig */
 		You("cannot stay under%s long enough.",
-				is_pool(u.ux, u.uy) ? "water" : " the lava");
+				is_pool(player.ux, player.uy) ? "water" : " the lava");
 	} else if (!ispick) {
 		Your("%s merely scratches the %s.",
-				aobjnam(obj, (char *)0), surface(u.ux,u.uy));
+				aobjnam(obj, (char *)0), surface(player.ux,player.uy));
 		u_wipe_engr(3);
 	} else {
-		if (digging.pos.x != u.ux || digging.pos.y != u.uy ||
-			!on_level(&digging.level, &u.uz) || !digging.down) {
+		if (digging.pos.x != player.ux || digging.pos.y != player.uy ||
+			!on_level(&digging.level, &player.uz) || !digging.down) {
 		    digging.chew = FALSE;
 		    digging.down = TRUE;
 		    digging.warned = FALSE;
-		    digging.pos.x = u.ux;
-		    digging.pos.y = u.uy;
-		    assign_level(&digging.level, &u.uz);
+		    digging.pos.x = player.ux;
+		    digging.pos.y = player.uy;
+		    assign_level(&digging.level, &player.uz);
 		    digging.effort = 0;
 		    You("start %s downward.", verbing);
-		    if (*u.ushops) shopdig(0);
+		    if (*player.ushops) shopdig(0);
 		} else
 		    You("continue %s downward.", verbing);
 		did_dig_msg = FALSE;
@@ -1104,8 +1104,8 @@ void zap_dig() {
 	 * also down on request of Lennart Augustsson.
 	 */
 
-	if (u.uswallow) {
-	    mtmp = u.ustuck;
+	if (player.uswallow) {
+	    mtmp = player.ustuck;
 
 	    if (!is_whirly(mtmp->data)) {
 		if (is_animal(mtmp->data))
@@ -1117,25 +1117,25 @@ void zap_dig() {
 	    return;
 	} /* swallowed */
 
-	if (u.dz) {
-	    if (!Is_airlevel(&u.uz) && !Is_waterlevel(&u.uz) && !Underwater) {
-		if (u.dz < 0 || On_stairs(u.ux, u.uy)) {
-		    if (On_stairs(u.ux, u.uy))
+	if (player.dz) {
+	    if (!Is_airlevel(&player.uz) && !Is_waterlevel(&player.uz) && !Underwater) {
+		if (player.dz < 0 || On_stairs(player.ux, player.uy)) {
+		    if (On_stairs(player.ux, player.uy))
 			pline_The("beam bounces off the %s and hits the %s.",
-			      (u.ux == xdnladder || u.ux == xupladder) ?
-			      "ladder" : "stairs", ceiling(u.ux, u.uy));
-		    You("loosen a rock from the %s.", ceiling(u.ux, u.uy));
+			      (player.ux == xdnladder || player.ux == xupladder) ?
+			      "ladder" : "stairs", ceiling(player.ux, player.uy));
+		    You("loosen a rock from the %s.", ceiling(player.ux, player.uy));
 		    pline("It falls on your %s!", body_part(HEAD));
 		    losehp(rnd((uarmh && is_metallic(uarmh)) ? 2 : 6),
 			   "falling rock", KILLED_BY_AN);
-		    otmp = mksobj_at(ROCK, u.ux, u.uy, FALSE, FALSE);
+		    otmp = mksobj_at(ROCK, player.ux, player.uy, FALSE, FALSE);
 		    if (otmp) {
 			(void)xname(otmp);	/* set dknown, maybe bknown */
 			stackobj(otmp);
 		    }
-		    newsym(u.ux, u.uy);
+		    newsym(player.ux, player.uy);
 		} else {
-		    watch_dig((Monster *)0, u.ux, u.uy, TRUE);
+		    watch_dig((Monster *)0, player.ux, player.uy, TRUE);
 		    (void) dighole(FALSE);
 		}
 	    }
@@ -1144,9 +1144,9 @@ void zap_dig() {
 
 	/* normal case: digging across the level */
 	shopdoor = shopwall = FALSE;
-	maze_dig = level.flags.is_maze_lev && !Is_earthlevel(&u.uz);
-	zx = u.ux + u.dx;
-	zy = u.uy + u.dy;
+	maze_dig = level.flags.is_maze_lev && !Is_earthlevel(&player.uz);
+	zx = player.ux + player.dx;
+	zy = player.uy + player.dy;
 	digdepth = rn1(18, 8);
 	tmp_at(DISP_BEAM, cmap_to_glyph(S_digbeam));
 	while (--digdepth >= 0) {
@@ -1219,8 +1219,8 @@ void zap_dig() {
 		}
 		unblock_point(zx,zy); /* vision */
 	    }
-	    zx += u.dx;
-	    zy += u.dy;
+	    zx += player.dx;
+	    zy += player.dy;
 	} /* while */
 	tmp_at(DISP_END,0);	/* closing call */
 	if (shopdoor || shopwall)
@@ -1408,13 +1408,13 @@ void bury_you() {
 	pline("bury_you");
 #endif
     if (!Levitation && !Flying) {
-	if(u.uswallow)
+	if(player.uswallow)
 	    You_feel("a sensation like falling into a trap!");
 	else
 	    pline_The("%s opens beneath you and you fall in!",
-		  surface(u.ux, u.uy));
+		  surface(player.ux, player.uy));
 
-	u.uburied = TRUE;
+	player.uburied = TRUE;
 	if(!Strangled && !Breathless) Strangled = 6;
 	under_ground(1);
     }
@@ -1424,7 +1424,7 @@ void unearth_you() {
 #ifdef DEBUG
 	pline("unearth_you");
 #endif
-	u.uburied = FALSE;
+	player.uburied = FALSE;
 	under_ground(0);
 	if(!uamul || uamul->otyp != AMULET_OF_STRANGULATION)
 		Strangled = 0;
@@ -1439,7 +1439,7 @@ void escape_tomb() {
 	    (Teleport_control || rn2(3) < Luck+2)) {
 		You("attempt a teleport spell.");
 		(void) dotele();	/* calls unearth_you() */
-	} else if(u.uburied) { /* still buried after 'port attempt */
+	} else if(player.uburied) { /* still buried after 'port attempt */
 		bool good;
 
 		if(amorphous(youmonst.data) || Passes_walls ||
@@ -1449,7 +1449,7 @@ void escape_tomb() {
 		    You("%s up through the %s.",
 			(tunnels(youmonst.data) && !needspick(youmonst.data)) ?
 			 "try to tunnel" : (amorphous(youmonst.data)) ?
-			 "ooze" : "phase", surface(u.ux, u.uy));
+			 "ooze" : "phase", surface(player.ux, player.uy));
 
 		    if(tunnels(youmonst.data) && !needspick(youmonst.data))
 			good = dighole(TRUE);
@@ -1477,8 +1477,8 @@ void bury_obj(Object *otmp) {
 int wiz_debug_cmd() {
 	int x, y;
 
-	for (x = u.ux - 1; x <= u.ux + 1; x++)
-	    for (y = u.uy - 1; y <= u.uy + 1; y++)
+	for (x = player.ux - 1; x <= player.ux + 1; x++)
+	    for (y = player.uy - 1; y <= player.uy + 1; y++)
 		if (isok(x,y)) bury_objs(x,y);
 	return 0;
 }

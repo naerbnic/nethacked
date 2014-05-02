@@ -47,7 +47,7 @@ bool /* TRUE : mtmp died */ mb_trapped(Monster *mtmp) {
 STATIC_OVL void watch_on_duty(Monster *mtmp) {
 	int	x, y;
 
-	if(mtmp->mpeaceful && in_town(u.ux+u.dx, u.uy+u.dy) &&
+	if(mtmp->mpeaceful && in_town(player.ux+player.dx, player.uy+player.dy) &&
 	   mtmp->mcansee && m_canseeu(mtmp) && !rn2(3)) {
 
 	    if(picking_lock(&x, &y) && IS_DOOR(levl[x][y].typ) &&
@@ -110,7 +110,7 @@ int dochugw(Monster *mtmp) {
 	    (canseemon(mtmp) ||
 		(sensemon(mtmp) && couldsee(mtmp->mx,mtmp->my))) &&
 	    mtmp->mcanmove &&
-	    !noattacks(mtmp->data) && !onscary(u.ux, u.uy, mtmp))
+	    !noattacks(mtmp->data) && !onscary(player.ux, player.uy, mtmp))
 		stop_occupation();
 
 	return(rd);
@@ -188,8 +188,8 @@ STATIC_OVL int disturb(Monster *mtmp) {
  * if first, only adds fleetime if monster isn't already fleeing
  * if fleemsg, prints a message about new flight, otherwise, caller should */
 void monflee(Monster *mtmp, int fleetime, bool first, bool fleemsg) {
-	if (u.ustuck == mtmp) {
-	    if (u.uswallow)
+	if (player.ustuck == mtmp) {
+	    if (player.uswallow)
 		expels(mtmp, mtmp->data, TRUE);
 	    else if (!sticks(youmonst.data)) {
 		unstuck(mtmp);	/* monster lets go when fleeing */
@@ -231,8 +231,8 @@ STATIC_OVL void distfleeck(Monster *mtmp, int *inrange, int *nearby, int *scared
 		seescaryx = mtmp->mux;
 		seescaryy = mtmp->muy;
 	} else {
-		seescaryx = u.ux;
-		seescaryy = u.uy;
+		seescaryx = player.ux;
+		seescaryy = player.uy;
 	}
 	*scared = (*nearby && (onscary(seescaryx, seescaryy, mtmp) ||
 			       (!mtmp->mpeaceful &&
@@ -287,7 +287,7 @@ int dochug(Monster *mtmp) {
 	if (!mtmp->mcanmove || (mtmp->mstrategy & STRAT_WAITMASK)) {
 	    if (Hallucination) newsym(mtmp->mx,mtmp->my);
 	    if (mtmp->mcanmove && (mtmp->mstrategy & STRAT_CLOSE) &&
-	       !mtmp->msleeping && monnear(mtmp, u.ux, u.uy))
+	       !mtmp->msleeping && monnear(mtmp, player.ux, player.uy))
 		quest_talk(mtmp);	/* give the leaders a chance to speak */
 	    return(0);	/* other frozen monsters can't do anything */
 	}
@@ -346,8 +346,8 @@ int dochug(Monster *mtmp) {
 
 	/* Demonic Blackmail! */
 	if(nearby && mdat->msound == MS_BRIBE &&
-	   mtmp->mpeaceful && !mtmp->mtame && !u.uswallow) {
-		if (mtmp->mux != u.ux || mtmp->muy != u.uy) {
+	   mtmp->mpeaceful && !mtmp->mtame && !player.uswallow) {
+		if (mtmp->mux != player.ux || mtmp->muy != player.uy) {
 			pline("%s whispers at thin air.",
 			    cansee(mtmp->mux, mtmp->muy) ? Monnam(mtmp) : "It");
 
@@ -443,7 +443,7 @@ toofar:
 #ifndef GOLDOBJ
 	if(!nearby || mtmp->mflee || scared ||
 	   mtmp->mconf || mtmp->mstun || (mtmp->minvis && !rn2(3)) ||
-	   (mdat->mlet == S_LEPRECHAUN && !u.ugold && (mtmp->mgold || rn2(2))) ||
+	   (mdat->mlet == S_LEPRECHAUN && !player.ugold && (mtmp->mgold || rn2(2))) ||
 #else
         if (mdat->mlet == S_LEPRECHAUN) {
 	    ygold = findgold(invent);
@@ -462,7 +462,7 @@ toofar:
 		/* arbitrary distance restriction to keep monster far away
 		   from you from having cast dozens of sticks-to-snakes
 		   or similar spells by the time you reach it */
-		if (dist2(mtmp->mx, mtmp->my, u.ux, u.uy) <= 49 && !mtmp->mspec_used) {
+		if (dist2(mtmp->mx, mtmp->my, player.ux, player.uy) <= 49 && !mtmp->mspec_used) {
 		    struct Attack *a;
 
 		    for (a = &mdat->mattk[0]; a < &mdat->mattk[NATTK]; a++) {
@@ -497,7 +497,7 @@ toofar:
 			if(!nearby &&
 			  (ranged_attk(mdat) || find_offensive(mtmp)))
 			    break;
- 			else if(u.uswallow && mtmp == u.ustuck) {
+ 			else if(player.uswallow && mtmp == player.ustuck) {
 			    /* a monster that's digesting you can move at the
 			     * same time -dlc
 			     */
@@ -515,7 +515,7 @@ toofar:
 
 	if (!mtmp->mpeaceful ||
 	    (Conflict && !resist(mtmp, RING_CLASS, 0, 0))) {
-	    if(inrange && !noattacks(mdat) && u.uhp > 0 && !scared && tmp != 3)
+	    if(inrange && !noattacks(mdat) && player.uhp > 0 && !scared && tmp != 3)
 		if(mattacku(mtmp)) return(1); /* monster died (e.g. exploded) */
 
 	    if(mtmp->wormno) wormhitu(mtmp);
@@ -540,7 +540,7 @@ static const char boulder_class[] = { ROCK_CLASS, 0 };
 static const char gem_class[] = { GEM_CLASS, 0 };
 
 bool itsstuck(Monster *mtmp) {
-	if (sticks(youmonst.data) && mtmp==u.ustuck && !u.uswallow) {
+	if (sticks(youmonst.data) && mtmp==player.ustuck && !player.uswallow) {
 		pline("%s cannot escape from you!", Monnam(mtmp));
 		return(TRUE);
 	}
@@ -590,7 +590,7 @@ int m_move(Monster *mtmp, int after) {
 	 * other calls of m_move (ex. leprechauns dodging)
 	 */
 #ifdef REINCARNATION
-	if (!Is_rogue_level(&u.uz))
+	if (!Is_rogue_level(&player.uz))
 #endif
 	    can_tunnel = tunnels(ptr);
 	can_open = !(nohands(ptr) || verysmall(ptr));
@@ -667,13 +667,13 @@ int m_move(Monster *mtmp, int after) {
 	    goto postmov;
 	}
 not_special:
-	if(u.uswallow && !mtmp->mflee && u.ustuck != mtmp) return(1);
+	if(player.uswallow && !mtmp->mflee && player.ustuck != mtmp) return(1);
 	omx = mtmp->mx;
 	omy = mtmp->my;
 	gx = mtmp->mux;
 	gy = mtmp->muy;
 	appr = mtmp->mflee ? -1 : 1;
-	if (mtmp->mconf || (u.uswallow && mtmp == u.ustuck))
+	if (mtmp->mconf || (player.uswallow && mtmp == player.ustuck))
 		appr = 0;
 	else {
 #ifdef GOLDOBJ
@@ -686,7 +686,7 @@ not_special:
 
 		if (!mtmp->mcansee ||
 		    (should_see && Invis && !perceives(ptr) && rn2(11)) ||
-		    (youmonst.m_ap_type == M_AP_OBJECT && youmonst.mappearance == STRANGE_OBJECT) || u.uundetected ||
+		    (youmonst.m_ap_type == M_AP_OBJECT && youmonst.mappearance == STRANGE_OBJECT) || player.uundetected ||
 		    (youmonst.m_ap_type == M_AP_OBJECT && youmonst.mappearance == GOLD_PIECE && !likes_gold(ptr)) ||
 		    (mtmp->mpeaceful && !mtmp->isshk) ||  /* allow shks to follow */
 		    ((monsndx(ptr) == PM_STALKER || ptr->mlet == S_BAT ||
@@ -695,7 +695,7 @@ not_special:
 
 		if(monsndx(ptr) == PM_LEPRECHAUN && (appr == 1) &&
 #ifndef GOLDOBJ
-		   (mtmp->mgold > u.ugold))
+		   (mtmp->mgold > player.ugold))
 #else
 		   ( (lepgold = findgold(mtmp->minvent)) && 
                    (lepgold->quan > ((ygold = findgold(invent)) ? ygold->quan : 0L)) ))
@@ -715,7 +715,7 @@ not_special:
 
 	if ((!mtmp->mpeaceful || !rn2(10))
 #ifdef REINCARNATION
-				    && (!Is_rogue_level(&u.uz))
+				    && (!Is_rogue_level(&player.uz))
 #endif
 							    ) {
 	    bool in_line = lined_up(mtmp) &&
@@ -738,7 +738,7 @@ not_special:
 			&& pctload < 75);
 		likeobjs = (likes_objs(ptr) && pctload < 75);
 		likemagic = (likes_magic(ptr) && pctload < 85);
-		likerock = (throws_rocks(ptr) && pctload < 50 && !In_sokoban(&u.uz));
+		likerock = (throws_rocks(ptr) && pctload < 50 && !In_sokoban(&player.uz));
 		conceals = hides_under(ptr);
 		setlikes = TRUE;
 	    }
@@ -912,7 +912,7 @@ not_special:
 	if(mmoved) {
 	    int j;
 
-	    if (mmoved==1 && (u.ux != nix || u.uy != niy) && itsstuck(mtmp))
+	    if (mmoved==1 && (player.ux != nix || player.uy != niy) && itsstuck(mtmp))
 		return(3);
 
 	    if (((IS_ROCK(levl[nix][niy].typ) && may_dig(nix,niy)) ||
@@ -947,9 +947,9 @@ not_special:
 		nix = mtmp->mux;
 		niy = mtmp->muy;
 	    }
-	    if (nix == u.ux && niy == u.uy) {
-		mtmp->mux = u.ux;
-		mtmp->muy = u.uy;
+	    if (nix == player.ux && niy == player.uy) {
+		mtmp->mux = player.ux;
+		mtmp->muy = player.uy;
 		return(0);
 	    }
 	    /* The monster may attack another based on 1 of 2 conditions:
@@ -1096,13 +1096,13 @@ postmov:
 			return(2);  /* mon died (position already updated) */
 
 		/* set also in domove(), hack.c */
-		if (u.uswallow && mtmp == u.ustuck &&
+		if (player.uswallow && mtmp == player.ustuck &&
 					(mtmp->mx != omx || mtmp->my != omy)) {
 		    /* If the monster moved, then update */
-		    u.ux0 = u.ux;
-		    u.uy0 = u.uy;
-		    u.ux = mtmp->mx;
-		    u.uy = mtmp->my;
+		    player.ux0 = player.ux;
+		    player.uy0 = player.uy;
+		    player.ux = mtmp->mx;
+		    player.uy = mtmp->my;
 		    swallowed(0);
 		} else
 		newsym(mtmp->mx,mtmp->my);
@@ -1122,7 +1122,7 @@ postmov:
 		    likeobjs = (likes_objs(ptr) && pctload < 75);
 		    likemagic = (likes_magic(ptr) && pctload < 85);
 		    likerock = (throws_rocks(ptr) && pctload < 50 &&
-				!In_sokoban(&u.uz));
+				!In_sokoban(&player.uz));
 		    conceals = hides_under(ptr);
 		}
 
@@ -1163,7 +1163,7 @@ postmov:
 			(mtmp->mcanmove && !mtmp->msleeping && rn2(5)))
 		    mtmp->mundetected = (ptr->mlet != S_EEL) ?
 			OBJ_AT(mtmp->mx, mtmp->my) :
-			(is_pool(mtmp->mx, mtmp->my) && !Is_waterlevel(&u.uz));
+			(is_pool(mtmp->mx, mtmp->my) && !Is_waterlevel(&player.uz));
 		newsym(mtmp->mx, mtmp->my);
 	    }
 	    if (mtmp->isshk) {
@@ -1201,11 +1201,11 @@ void set_apparxy(Monster *mtmp) {
 	 */
 
 	/* pet knows your smell; grabber still has hold of you */
-	if (mtmp->mtame || mtmp == u.ustuck) goto found_you;
+	if (mtmp->mtame || mtmp == player.ustuck) goto found_you;
 
 	/* monsters which know where you are don't suddenly forget,
 	   if you haven't moved away */
-	if (mx == u.ux && my == u.uy) goto found_you;
+	if (mx == player.ux && my == player.uy) goto found_you;
 
 	notseen = (!mtmp->mcansee || (Invis && !perceives(mtmp->data)));
 	/* add cases as required.  eg. Displacement ... */
@@ -1213,7 +1213,7 @@ void set_apparxy(Monster *mtmp) {
 	    /* Xorns can smell valuable metal like gold, treat as seen */
 	    if ((mtmp->data == &mons[PM_XORN]) &&
 #ifndef GOLDOBJ
-			u.ugold
+			player.ugold
 #else
 			umoney
 #endif
@@ -1232,26 +1232,26 @@ void set_apparxy(Monster *mtmp) {
 
 #if 0		/* this never worked as intended & isn't needed anyway */
 	/* If invis but not displaced, staying around gets you 'discovered' */
-	gotu |= (!Displaced && u.dx == 0 && u.dy == 0);
+	gotu |= (!Displaced && player.dx == 0 && player.dy == 0);
 #endif
 
 	if (!gotu) {
 	    int try_cnt = 0;
 	    do {
 		if (++try_cnt > 200) goto found_you;		/* punt */
-		mx = u.ux - disp + rn2(2*disp+1);
-		my = u.uy - disp + rn2(2*disp+1);
+		mx = player.ux - disp + rn2(2*disp+1);
+		my = player.uy - disp + rn2(2*disp+1);
 	    } while (!isok(mx,my)
 		  || (disp != 2 && mx == mtmp->mx && my == mtmp->my)
-		  || ((mx != u.ux || my != u.uy) &&
+		  || ((mx != player.ux || my != player.uy) &&
 		      !passes_walls(mtmp->data) &&
 		      (!ACCESSIBLE(levl[mx][my].typ) ||
 		       (closed_door(mx, my) && !can_ooze(mtmp))))
 		  || !couldsee(mx, my));
 	} else {
 found_you:
-	    mx = u.ux;
-	    my = u.uy;
+	    mx = player.ux;
+	    my = player.uy;
 	}
 
 	mtmp->mux = mx;
@@ -1264,7 +1264,7 @@ bool can_ooze(Monster *mtmp) {
 	if (!amorphous(mtmp->data)) return FALSE;
 	if (mtmp == &youmonst) {
 #ifndef GOLDOBJ
-		if (u.ugold > 100L) return FALSE;
+		if (player.ugold > 100L) return FALSE;
 #endif
 		chain = invent;
 	} else {

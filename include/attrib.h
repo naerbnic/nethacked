@@ -16,19 +16,19 @@
 
 #define A_MAX	6	/* used in rn2() selection of attrib */
 
-#define ABASE(x)	(u.acurr.a[x])
-#define ABON(x)		(u.abon.a[x])
-#define AEXE(x)		(u.aexe.a[x])
+#define ABASE(x)	(player.acurr.a[x])
+#define ABON(x)		(player.abon.a[x])
+#define AEXE(x)		(player.aexe.a[x])
 #define ACURR(x)	(acurr(x))
 #define ACURRSTR	(acurrstr())
 /* should be: */
 /* #define ACURR(x) (ABON(x) + ATEMP(x) + (Upolyd  ? MBASE(x) : ABASE(x)) */
-#define MCURR(x)	(u.macurr.a[x])
-#define AMAX(x)		(u.amax.a[x])
-#define MMAX(x)		(u.mamax.a[x])
+#define MCURR(x)	(player.macurr.a[x])
+#define AMAX(x)		(player.amax.a[x])
+#define MMAX(x)		(player.mamax.a[x])
 
-#define ATEMP(x)	(u.atemp.a[x])
-#define ATIME(x)	(u.atime.a[x])
+#define ATEMP(x)	(player.atemp.a[x])
+#define ATIME(x)	(player.atime.a[x])
 
 /* KMH -- Conveniences when dealing with strength constants */
 #define STR18(x)	(18+(x))	/* 18/xx */

@@ -29,28 +29,28 @@ long		/* actually returns something that fits in an int */ somegold() {
 #ifdef LINT	/* long conv. ok */
 	return(0L);
 #else
-	return (long)( (u.ugold < 100) ? u.ugold :
-		(u.ugold > 10000) ? rnd(10000) : rnd((int) u.ugold) );
+	return (long)( (player.ugold < 100) ? player.ugold :
+		(player.ugold > 10000) ? rnd(10000) : rnd((int) player.ugold) );
 #endif
 }
 
 void stealgold(Monster *mtmp) {
-	Object *gold = g_at(u.ux, u.uy);
+	Object *gold = g_at(player.ux, player.uy);
 	long tmp;
 
-	if (gold && ( !u.ugold || gold->quan > u.ugold || !rn2(5))) {
+	if (gold && ( !player.ugold || gold->quan > player.ugold || !rn2(5))) {
 	    mtmp->mgold += gold->quan;
 	    delobj(gold);
-	    newsym(u.ux, u.uy);
+	    newsym(player.ux, player.uy);
 	    pline("%s quickly snatches some gold from between your %s!",
 		    Monnam(mtmp), makeplural(body_part(FOOT)));
-	    if(!u.ugold || !rn2(5)) {
+	    if(!player.ugold || !rn2(5)) {
 		if (!tele_restrict(mtmp)) (void) rloc(mtmp, FALSE);
 		/* do not set mtmp->mavenge here; gold on the floor is fair game */
 		monflee(mtmp, 0, FALSE, FALSE);
 	    }
-	} else if(u.ugold) {
-	    u.ugold -= (tmp = somegold());
+	} else if(player.ugold) {
+	    player.ugold -= (tmp = somegold());
 	    Your("purse feels lighter.");
 	    mtmp->mgold += tmp;
 	if (!tele_restrict(mtmp)) (void) rloc(mtmp, FALSE);
@@ -88,7 +88,7 @@ Object * findgold(Object *chain) {
 Steal gold coins only.  Leprechauns don't care for lesser coins.
 */
 void stealgold(Monster *mtmp) {
-	Object *fgold = g_at(u.ux, u.uy);
+	Object *fgold = g_at(player.ux, player.uy);
 	Object *ygold;
 	long tmp;
 
@@ -101,7 +101,7 @@ void stealgold(Monster *mtmp) {
 	if (fgold && ( !ygold || fgold->quan > ygold->quan || !rn2(5))) {
             obj_extract_self(fgold);
 	    add_to_minv(mtmp, fgold);
-	    newsym(u.ux, u.uy);
+	    newsym(player.ux, player.uy);
 	    pline("%s quickly snatches some gold from between your %s!",
 		    Monnam(mtmp), makeplural(body_part(FOOT)));
 	    if(!ygold || !rn2(5)) {
@@ -139,7 +139,7 @@ STATIC_PTR int stealarm() {
 			if(!dmgtype(mtmp->data, AD_SITM)) /* polymorphed */
 			    goto botm;
 			if(otmp->unpaid)
-			    subfrombill(otmp, shop_keeper(*u.ushops));
+			    subfrombill(otmp, shop_keeper(*player.ushops));
 			freeinv(otmp);
 			pline("%s steals %s!", Monnam(mtmp), doname(otmp));
 			(void) mpickobj(mtmp,otmp);	/* may free otmp */
@@ -215,7 +215,7 @@ int steal(Monster *mtmp, char *objnambuf) {
 
 	if (objnambuf) *objnambuf = '\0';
 	/* the following is true if successful on first of two attacks. */
-	if(!monnear(mtmp, u.ux, u.uy)) return(0);
+	if(!monnear(mtmp, player.ux, player.uy)) return(0);
 
 	/* food being eaten might already be used up but will not have
 	   been removed from inventory yet; we don't want to steal that,
@@ -287,7 +287,7 @@ gotobj:
 	       (ignores loadstones; the !can_carry() check will catch those) */
 	    if (otmp == uball)
 		ostuck = TRUE;	/* effectively worn; curse is implicit */
-	    else if (otmp == uquiver || (otmp == uswapwep && !u.twoweap))
+	    else if (otmp == uquiver || (otmp == uswapwep && !player.twoweap))
 		ostuck = FALSE;	/* not really worn; curse doesn't matter */
 	    else
 		ostuck = (otmp->cursed && otmp->owornmask);
@@ -422,7 +422,7 @@ int mpickobj(Monster *mtmp, Object *otmp) {
       	obj_sheds_light(otmp) &&
 	attacktype(mtmp->data, AT_ENGL)) {
 	/* this is probably a burning object that you dropped or threw */
-	if (u.uswallow && mtmp == u.ustuck && !Blind)
+	if (player.uswallow && mtmp == player.ustuck && !Blind)
 	    pline("%s out.", Tobjnam(otmp, "go"));
 	snuff_otmp = TRUE;
     }
@@ -447,19 +447,19 @@ void stealamulet(Monster *mtmp) {
     int real=0, fake=0;
 
     /* select the artifact to steal */
-    if(u.uhave.amulet) {
+    if(player.uhave.amulet) {
 	real = AMULET_OF_YENDOR;
 	fake = FAKE_AMULET_OF_YENDOR;
-    } else if(u.uhave.questart) {
+    } else if(player.uhave.questart) {
 	for(otmp = invent; otmp; otmp = otmp->nobj)
 	    if(is_quest_artifact(otmp)) break;
 	if (!otmp) return;	/* should we panic instead? */
-    } else if(u.uhave.bell) {
+    } else if(player.uhave.bell) {
 	real = BELL_OF_OPENING;
 	fake = BELL;
-    } else if(u.uhave.book) {
+    } else if(player.uhave.book) {
 	real = SPE_BOOK_OF_THE_DEAD;
-    } else if(u.uhave.menorah) {
+    } else if(player.uhave.menorah) {
 	real = CANDELABRUM_OF_INVOCATION;
     } else return;	/* you have nothing of special interest */
 

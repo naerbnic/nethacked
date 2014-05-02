@@ -517,78 +517,78 @@ void u_init() {
 
 	/* zero u, including pointer values --
 	 * necessary when aborting from a failed restore */
-	(void) memset((genericptr_t)&u, 0, sizeof(u));
-	u.ustuck = (Monster *)0;
+	(void) memset((genericptr_t)&player, 0, sizeof(player));
+	player.ustuck = (Monster *)0;
 
 #if 0	/* documentation of more zero values as desirable */
-	u.usick_cause[0] = 0;
-	u.uluck  = u.moreluck = 0;
+	player.usick_cause[0] = 0;
+	player.uluck  = player.moreluck = 0;
 # ifdef TOURIST
 	uarmu = 0;
 # endif
 	uarm = uarmc = uarmh = uarms = uarmg = uarmf = 0;
 	uwep = uball = uchain = uleft = uright = 0;
 	uswapwep = uquiver = 0;
-	u.twoweap = 0;
-	u.ublessed = 0;				/* not worthy yet */
-	u.ugangr   = 0;				/* gods not angry */
-	u.ugifts   = 0;				/* no divine gifts bestowed */
+	player.twoweap = 0;
+	player.ublessed = 0;				/* not worthy yet */
+	player.ugangr   = 0;				/* gods not angry */
+	player.ugifts   = 0;				/* no divine gifts bestowed */
 # ifdef ELBERETH
-	u.uevent.uhand_of_elbereth = 0;
+	player.uevent.uhand_of_elbereth = 0;
 # endif
-	u.uevent.uheard_tune = 0;
-	u.uevent.uopened_dbridge = 0;
-	u.uevent.udemigod = 0;		/* not a demi-god yet... */
-	u.udg_cnt = 0;
-	u.mh = u.mhmax = u.mtimedone = 0;
-	u.uz.dnum = u.uz0.dnum = 0;
-	u.utotype = 0;
+	player.uevent.uheard_tune = 0;
+	player.uevent.uopened_dbridge = 0;
+	player.uevent.udemigod = 0;		/* not a demi-god yet... */
+	player.udg_cnt = 0;
+	player.mh = player.mhmax = player.mtimedone = 0;
+	player.uz.dnum = player.uz0.dnum = 0;
+	player.utotype = 0;
 #endif	/* 0 */
 
-	u.uz.dlevel = 1;
-	u.uz0.dlevel = 0;
-	u.utolev = u.uz;
+	player.uz.dlevel = 1;
+	player.uz0.dlevel = 0;
+	player.utolev = player.uz;
 
-	u.umoved = FALSE;
-	u.umortality = 0;
-	u.ugrave_arise = NON_PM;
+	player.umoved = FALSE;
+	player.umortality = 0;
+	player.ugrave_arise = NON_PM;
 
-	u.umonnum = u.umonster = (flags.female &&
+	player.umonnum = player.umonster = (flags.female &&
 			urole.femalenum != NON_PM) ? urole.femalenum :
 			urole.malenum;
 	set_uasmon();
 
-	u.ulevel = 0;	/* set up some of the initial attributes */
-	u.uhp = u.uhpmax = newhp();
-	u.uenmax = urole.enadv.infix + urace.enadv.infix;
+	player.ulevel = 0;	/* set up some of the initial attributes */
+	player.uhp = player.uhpmax = newhp();
+	player.uenmax = urole.enadv.infix + urace.enadv.infix;
 	if (urole.enadv.inrnd > 0)
-	    u.uenmax += rnd(urole.enadv.inrnd);
+	    player.uenmax += rnd(urole.enadv.inrnd);
 	if (urace.enadv.inrnd > 0)
-	    u.uenmax += rnd(urace.enadv.inrnd);
-	u.uen = u.uenmax;
-	u.uspellprot = 0;
+	    player.uenmax += rnd(urace.enadv.inrnd);
+	player.uen = player.uenmax;
+	player.uspellprot = 0;
 	adjabil(0,1);
-	u.ulevel = u.ulevelmax = 1;
+	player.ulevel = player.ulevelmax = 1;
 
 	init_uhunger();
 	for (i = 0; i <= MAXSPELL; i++) spl_book[i].sp_id = NO_SPELL;
-	u.ublesscnt = 300;			/* no prayers just yet */
-	u.ualignbase[A_CURRENT] = u.ualignbase[A_ORIGINAL] = u.ualign.type =
+	player.ublesscnt = 300;			/* no prayers just yet */
+	player.ualignbase[A_CURRENT] = player.ualignbase[A_ORIGINAL] = player.ualign.type =
 			aligns[flags.initalign].value;
-	u.ulycn = NON_PM;
+	player.ulycn = NON_PM;
 
 #if defined(BSD) && !defined(POSIX_TYPES)
-	(void) time((long *)&u.ubirthday);
+	(void) time((long *)&player.ubirthday);
 #else
-	(void) time(&u.ubirthday);
+	(void) time(&player.ubirthday);
 #endif
 
 	/*
 	 *  For now, everyone starts out with a night vision range of 1 and
 	 *  their xray range disabled.
 	 */
-	u.nv_range   =  1;
-	u.xray_range = -1;
+	player.nv_range   =  1;
+	player.xray_range = -1;
 
 
 	/*** Role-specific initializations ***/
@@ -624,9 +624,9 @@ void u_init() {
 		break;
 	case PM_HEALER:
 #ifndef GOLDOBJ
-		u.ugold = u.ugold0 = rn1(1000, 1001);
+		player.ugold = player.ugold0 = rn1(1000, 1001);
 #else
-		u.umoney0 = rn1(1000, 1001);
+		player.umoney0 = rn1(1000, 1001);
 #endif
 		ini_inv(Healer);
 		if(!rn2(25)) ini_inv(Lamp);
@@ -677,9 +677,9 @@ void u_init() {
 	case PM_ROGUE:
 		Rogue[R_DAGGERS].trquan = rn1(10, 6);
 #ifndef GOLDOBJ
-		u.ugold = u.ugold0 = 0;
+		player.ugold = player.ugold0 = 0;
 #else
-		u.umoney0 = 0;
+		player.umoney0 = 0;
 #endif
 		ini_inv(Rogue);
 		if(!rn2(5)) ini_inv(Blindfold);
@@ -698,9 +698,9 @@ void u_init() {
 	case PM_TOURIST:
 		Tourist[T_DARTS].trquan = rn1(20, 21);
 #ifndef GOLDOBJ
-		u.ugold = u.ugold0 = rnd(1000);
+		player.ugold = player.ugold0 = rnd(1000);
 #else
-		u.umoney0 = rnd(1000);
+		player.umoney0 = rnd(1000);
 #endif
 		ini_inv(Tourist);
 		if(!rn2(25)) ini_inv(Tinopener);
@@ -809,10 +809,10 @@ void u_init() {
 #endif
 
 #ifndef GOLDOBJ
-	u.ugold0 += hidden_gold();	/* in case sack has gold in it */
+	player.ugold0 += hidden_gold();	/* in case sack has gold in it */
 #else
-	if (u.umoney0) ini_inv(Money);
-	u.umoney0 += hidden_gold();	/* in case sack has gold in it */
+	if (player.umoney0) ini_inv(Money);
+	player.umoney0 += hidden_gold();	/* in case sack has gold in it */
 #endif
 
 	find_ac();			/* get initial ac value */
@@ -970,13 +970,13 @@ STATIC_OVL void ini_inv(struct trobj *trop) {
 #ifdef GOLDOBJ
 		if (trop->trclass == COIN_CLASS) {
 			/* no "blessed" or "identified" money */
-			Object->quan = u.umoney0;
+			Object->quan = player.umoney0;
 		} else {
 #endif
 			obj->dknown = obj->bknown = obj->rknown = 1;
 			if (objects[otyp].oc_uses_known) obj->known = 1;
 			obj->cursed = 0;
-			if (obj->opoisoned && u.ualign.type != A_CHAOTIC)
+			if (obj->opoisoned && player.ualign.type != A_CHAOTIC)
 			    obj->opoisoned = 0;
 			if (obj->oclass == WEAPON_CLASS ||
 				obj->oclass == TOOL_CLASS) {

@@ -24,7 +24,7 @@ STATIC_DCL void kill_eggs(Object *);
 
 #ifdef REINCARNATION
 #define LEVEL_SPECIFIC_NOCORPSE(mdat) \
-	 (Is_rogue_level(&u.uz) || \
+	 (Is_rogue_level(&player.uz) || \
 	   (level.flags.graveyard && is_undead(mdat) && rn2(3)))
 #else
 #define LEVEL_SPECIFIC_NOCORPSE(mdat) \
@@ -377,7 +377,7 @@ int minliquid(Monster *mtmp) {
 #ifdef STEED
 	/* Flying and levitation keeps our steed out of the liquid */
 	/* (but not water-walking or swimming) */
-	if (mtmp == u.usteed && (Flying || Levitation))
+	if (mtmp == player.usteed && (Flying || Levitation))
 		return (0);
 #endif
 
@@ -445,7 +445,7 @@ int minliquid(Monster *mtmp) {
 	    if (cansee(mtmp->mx,mtmp->my)) {
 		    pline("%s drowns.", Monnam(mtmp));
 	    }
-	    if (u.ustuck && u.uswallow && u.ustuck == mtmp) {
+	    if (player.ustuck && player.uswallow && player.ustuck == mtmp) {
 	    /* This can happen after a purple worm plucks you off a
 		flying steed while you are over water. */
 		pline("%s sinks as water rushes in and flushes you out.",
@@ -461,7 +461,7 @@ int minliquid(Monster *mtmp) {
 	}
     } else {
 	/* but eels have a difficult time outside */
-	if (mtmp->data->mlet == S_EEL && !Is_waterlevel(&u.uz)) {
+	if (mtmp->data->mlet == S_EEL && !Is_waterlevel(&player.uz)) {
 	    if(mtmp->mhp > 1) mtmp->mhp--;
 	    monflee(mtmp, 2, FALSE, FALSE);
 	}
@@ -483,8 +483,8 @@ int mcalcmove(Monster *mon) {
 	mmove = (4 * mmove + 2) / 3;
 
 #ifdef STEED
-    if (mon == u.usteed) {
-	if (u.ugallop && flags.mv) {
+    if (mon == player.usteed) {
+	if (player.ugallop && flags.mv) {
 	    /* average movement is 1.50 times normal */
 	    mmove = ((rn2(2) ? 4 : 5) * mmove) / 3;
 	}
@@ -612,7 +612,7 @@ int movemon() {
     dmonsfree();	/* remove all dead monsters */
 
     /* a monster may have levteleported player -dlc */
-    if (u.utotype) {
+    if (player.utotype) {
 	deferred_goto();
 	/* changed levels, so these monsters are dormant */
 	somebody_can_move = FALSE;
@@ -930,7 +930,7 @@ bool can_carry(Monster *mtmp, Object *otmp) {
 
 #ifdef STEED
 	/* Steeds don't pick up stuff (to avoid shop abuse) */
-	if (mtmp == u.usteed) return (FALSE);
+	if (mtmp == player.usteed) return (FALSE);
 #endif
 	if (mtmp->isshk) return(TRUE); /* no limit */
 	if (mtmp->mpeaceful && !mtmp->mtame) return(FALSE);
@@ -1018,9 +1018,9 @@ nexttry:	/* eels prefer the water, but if there is no water nearby,
 	    if(nx != x && ny != y && (nodiag ||
 #ifdef REINCARNATION
 	       ((IS_DOOR(nowtyp) &&
-		 ((levl[x][y].doormask & ~D_BROKEN) || Is_rogue_level(&u.uz))) ||
+		 ((levl[x][y].doormask & ~D_BROKEN) || Is_rogue_level(&player.uz))) ||
 		(IS_DOOR(ntyp) &&
-		 ((levl[nx][ny].doormask & ~D_BROKEN) || Is_rogue_level(&u.uz))))
+		 ((levl[nx][ny].doormask & ~D_BROKEN) || Is_rogue_level(&player.uz))))
 #else
 	       ((IS_DOOR(nowtyp) && (levl[x][y].doormask & ~D_BROKEN)) ||
 		(IS_DOOR(ntyp) && (levl[nx][ny].doormask & ~D_BROKEN)))
@@ -1037,8 +1037,8 @@ nexttry:	/* eels prefer the water, but if there is no water nearby,
 		 * as long as you are visible.
 		 */
 		if(Displaced && monseeu && (mon->mux==nx) && (mon->muy==ny)) {
-		    dispx = u.ux;
-		    dispy = u.uy;
+		    dispx = player.ux;
+		    dispy = player.uy;
 		} else {
 		    dispx = nx;
 		    dispy = ny;
@@ -1049,17 +1049,17 @@ nexttry:	/* eels prefer the water, but if there is no water nearby,
 		    if(!(flag & ALLOW_SSM)) continue;
 		    info[cnt] |= ALLOW_SSM;
 		}
-		if((nx == u.ux && ny == u.uy) ||
+		if((nx == player.ux && ny == player.uy) ||
 		   (nx == mon->mux && ny == mon->muy)) {
-			if (nx == u.ux && ny == u.uy) {
+			if (nx == player.ux && ny == player.uy) {
 				/* If it's right next to you, it found you,
 				 * displaced or no.  We must set mux and muy
 				 * right now, so when we return we can tell
 				 * that the ALLOW_U means to attack _you_ and
 				 * not the image.
 				 */
-				mon->mux = u.ux;
-				mon->muy = u.uy;
+				mon->mux = player.ux;
+				mon->muy = player.uy;
 			}
 			if(!(flag & ALLOW_U)) continue;
 			info[cnt] |= ALLOW_U;
@@ -1122,7 +1122,7 @@ impossible("A monster looked at a very strange trap of type %d.", ttmp->ttyp);
 				      || (!is_flyer(mdat)
 				    && !is_floater(mdat)
 				    && !is_clinger(mdat))
-				      || In_sokoban(&u.uz))
+				      || In_sokoban(&player.uz))
 				&& (ttmp->ttyp != SLP_GAS_TRAP ||
 				    !resists_sleep(mon))
 				&& (ttmp->ttyp != BEAR_TRAP ||
@@ -1226,7 +1226,7 @@ void replmon(Monster *mtmp, Monster *mtmp2) {
 
     /* finish adding its replacement */
 #ifdef STEED
-    if (mtmp == u.usteed) ; else	/* don't place steed onto the map */
+    if (mtmp == player.usteed) ; else	/* don't place steed onto the map */
 #endif
     place_monster(mtmp2, mtmp2->mx, mtmp2->my);
     if (mtmp2->wormno)	    /* update level.monsters[wseg->wx][wseg->wy] */
@@ -1241,9 +1241,9 @@ void replmon(Monster *mtmp, Monster *mtmp2) {
     }
     mtmp2->nmon = fmon;
     fmon = mtmp2;
-    if (u.ustuck == mtmp) u.ustuck = mtmp2;
+    if (player.ustuck == mtmp) player.ustuck = mtmp2;
 #ifdef STEED
-    if (u.usteed == mtmp) u.usteed = mtmp2;
+    if (player.usteed == mtmp) player.usteed = mtmp2;
 #endif
     if (mtmp2->isshk) replshk(mtmp,mtmp2);
 
@@ -1349,7 +1349,7 @@ void mondead(Monster *mtmp) {
 
 #ifdef STEED
 	/* Player is thrown from his steed when it dies */
-	if (mtmp == u.usteed)
+	if (mtmp == player.usteed)
 		dismount_steed(DISMOUNT_GENERIC);
 #endif
 
@@ -1496,7 +1496,7 @@ void mongone(Monster *mdef) {
 	mdef->mhp = 0;	/* can skip some inventory bookkeeping */
 #ifdef STEED
 	/* Player is thrown from his steed when it disappears */
-	if (mdef == u.usteed)
+	if (mdef == player.usteed)
 		dismount_steed(DISMOUNT_GENERIC);
 #endif
 
@@ -1584,7 +1584,7 @@ void monstone(Monster *mdef) {
 	    unmap_object(x, y);
 	if (cansee(x, y)) newsym(x,y);
 	/* We don't currently trap the hero in the statue in this case but we could */
-	if (u.uswallow && u.ustuck == mdef) wasinside = TRUE;
+	if (player.uswallow && player.ustuck == mdef) wasinside = TRUE;
 	mondead(mdef);
 	if (wasinside) {
 		if (is_animal(mdef->data))
@@ -1619,17 +1619,17 @@ void monkilled(Monster *mdef, const char *fltxt, int how) {
 }
 
 void unstuck(Monster *mtmp) {
-	if(u.ustuck == mtmp) {
-		if(u.uswallow){
-			u.ux = mtmp->mx;
-			u.uy = mtmp->my;
-			u.uswallow = 0;
-			u.uswldtim = 0;
+	if(player.ustuck == mtmp) {
+		if(player.uswallow){
+			player.ux = mtmp->mx;
+			player.uy = mtmp->my;
+			player.uswallow = 0;
+			player.uswldtim = 0;
 			if (Punished) placebc();
 			vision_full_recalc = 1;
 			docrt();
 		}
-		u.ustuck = 0;
+		player.ustuck = 0;
 	}
 }
 
@@ -1651,11 +1651,11 @@ void xkilled(
 	Object *otmp;
 	Trap *t;
 	bool redisp = FALSE;
-	bool wasinside = u.uswallow && (u.ustuck == mtmp);
+	bool wasinside = player.uswallow && (player.ustuck == mtmp);
 
 
 	/* KMH, conduct */
-	u.uconduct.killer++;
+	player.uconduct.killer++;
 
 	if (dest & 1) {
 	    const char *verb = nonliving(mtmp->data) ? "destroy" : "kill";
@@ -1719,11 +1719,11 @@ void xkilled(
 	}
 #endif
 	if((!accessible(x, y) && !is_pool(x, y)) ||
-	   (x == u.ux && y == u.uy)) {
+	   (x == player.ux && y == player.uy)) {
 	    /* might be mimic in wall or corpse in lava or on player's spot */
 	    redisp = TRUE;
 	    if(wasinside) spoteffects(TRUE);
-	} else if(x != u.ux || y != u.uy) {
+	} else if(x != player.ux || y != player.uy) {
 		/* might be here after swallowed */
 		if (!rn2(6) && !(mvitals[mndx].mvflags & G_NOCORPSE)
 #ifdef KOPS
@@ -1757,7 +1757,7 @@ cleanup:
 	/* punish bad behaviour */
 	if(is_human(mdat) && (!always_hostile(mdat) && mtmp->malign <= 0) &&
 	   (mndx < PM_ARCHEOLOGIST || mndx > PM_WIZARD) &&
-	   u.ualign.type != A_CHAOTIC) {
+	   player.ualign.type != A_CHAOTIC) {
 		HTelepat &= ~INTRINSIC;
 		change_luck(-2);
 		You("murderer!");
@@ -1766,7 +1766,7 @@ cleanup:
 	}
 	if((mtmp->mpeaceful && !rn2(2)) || mtmp->mtame)	change_luck(-1);
 	if (is_unicorn(mdat) &&
-				sgn(u.ualign.type) == sgn(mdat->maligntyp)) {
+				sgn(player.ualign.type) == sgn(mdat->maligntyp)) {
 		change_luck(-5);
 		You_feel("guilty...");
 	}
@@ -1778,9 +1778,9 @@ cleanup:
 
 	/* adjust alignment points */
 	if (mtmp->m_id == quest_status.leader_m_id) {		/* REAL BAD! */
-	    adjalign(-(u.ualign.record+(int)ALIGNLIM/2));
+	    adjalign(-(player.ualign.record+(int)ALIGNLIM/2));
 	    pline("That was %sa bad idea...",
-	    		u.uevent.qcompleted ? "probably " : "");
+	    		player.uevent.qcompleted ? "probably " : "");
 	} else if (mdat->msound == MS_NEMESIS)	/* Real good! */
 	    adjalign((int)(ALIGNLIM/4));
 	else if (mdat->msound == MS_GUARDIAN) {	/* Bad */
@@ -1790,7 +1790,7 @@ cleanup:
 	}else if (mtmp->ispriest) {
 		adjalign((p_coaligned(mtmp)) ? -2 : 2);
 		/* cancel divine protection for killing your priest */
-		if (p_coaligned(mtmp)) u.ublessed = 0;
+		if (p_coaligned(mtmp)) player.ublessed = 0;
 		if (mdat->maligntyp == A_NONE)
 			adjalign((int)(ALIGNLIM / 4));		/* BIG bonus */
 	} else if (mtmp->mtame) {
@@ -1801,7 +1801,7 @@ cleanup:
 	} else if (mtmp->mpeaceful)
 		adjalign(-5);
 
-	/* malign was already adjusted for u.ualign.type and randomization */
+	/* malign was already adjusted for player.ualign.type and randomization */
 	adjalign(mtmp->malign);
 }
 
@@ -1828,15 +1828,15 @@ void mnexto(Monster* mtmp) {
 	coord mm;
 
 #ifdef STEED
-	if (mtmp == u.usteed) {
+	if (mtmp == player.usteed) {
 		/* Keep your steed in sync with you instead */
-		mtmp->mx = u.ux;
-		mtmp->my = u.uy;
+		mtmp->mx = player.ux;
+		mtmp->my = player.uy;
 		return;
 	}
 #endif
 
-	if(!enexto(&mm, u.ux, u.uy, mtmp->data)) return;
+	if(!enexto(&mm, player.ux, player.uy, mtmp->data)) return;
 	rloc_to(mtmp, mm.x, mm.y);
 	return;
 }
@@ -1912,7 +1912,7 @@ void poisoned(const char *string, int typ, const char *pname, int fatal) {
 	}
 
 	if(Poison_resistance) {
-		if(!strcmp(string, "blast")) shieldeff(u.ux, u.uy);
+		if(!strcmp(string, "blast")) shieldeff(player.ux, player.uy);
 		pline_The("poison doesn't seem to affect you.");
 		return;
 	}
@@ -1928,7 +1928,7 @@ void poisoned(const char *string, int typ, const char *pname, int fatal) {
 	}
 	i = rn2(fatal + 20*thrown_weapon);
 	if(i == 0 && typ != A_CHA) {
-		u.uhp = -1;
+		player.uhp = -1;
 		pline_The("poison was deadly...");
 	} else if(i <= 5) {
 		/* Check that a stat change was made */
@@ -1939,7 +1939,7 @@ void poisoned(const char *string, int typ, const char *pname, int fatal) {
 		if(Half_physical_damage) i = (i+1) / 2;
 		losehp(i, pname, kprefix);
 	}
-	if(u.uhp < 1) {
+	if(player.uhp < 1) {
 		killer_format = kprefix;
 		killer = pname;
 		/* "Poisoned by a poisoned ___" is redundant */
@@ -2031,7 +2031,7 @@ void wake_nearby() {
 	Monster *mtmp;
 
 	for(mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
-	    if (!mtmp->dead() && distu(mtmp->mx,mtmp->my) < u.ulevel*20) {
+	    if (!mtmp->dead() && distu(mtmp->mx,mtmp->my) < player.ulevel*20) {
 		mtmp->msleeping = 0;
 		if (mtmp->mtame && !mtmp->isminion)
 		    EDOG(mtmp)->whistletime = moves;
@@ -2131,7 +2131,7 @@ void restore_cham(Monster *mon) {
 /* unwatched hiders may hide again; if so, a 1 is returned.  */
 STATIC_OVL bool restrap(Monster *mtmp) {
 	if(mtmp->cham || mtmp->mcan || mtmp->m_ap_type ||
-	   cansee(mtmp->mx, mtmp->my) || rn2(3) || (mtmp == u.ustuck) ||
+	   cansee(mtmp->mx, mtmp->my) || rn2(3) || (mtmp == player.ustuck) ||
 	   (sensemon(mtmp) && distu(mtmp->mx, mtmp->my) <= 2))
 		return(FALSE);
 
@@ -2267,7 +2267,7 @@ int newcham(Monster *mtmp, MonsterType *mdat, bool polyspot, bool msg) {
 		if(!rn2(10)) mtmp->female = !mtmp->female;
 	}
 
-	if (In_endgame(&u.uz) && is_mplayer(olddata)) {
+	if (In_endgame(&player.uz) && is_mplayer(olddata)) {
 		/* mplayers start out as "Foo the Bar", but some of the
 		 * titles are inappropriate when polymorphed, particularly
 		 * into the opposite sex.  players don't use ranks when
@@ -2332,8 +2332,8 @@ int newcham(Monster *mtmp, MonsterType *mdat, bool polyspot, bool msg) {
 	if (!(hides_under(mdat) && OBJ_AT(mtmp->mx, mtmp->my)) &&
 			!(mdat->mlet == S_EEL && is_pool(mtmp->mx, mtmp->my)))
 		mtmp->mundetected = 0;
-	if (u.ustuck == mtmp) {
-		if(u.uswallow) {
+	if (player.ustuck == mtmp) {
+		if(player.uswallow) {
 			if(!attacktype(mdat,AT_ENGL)) {
 				/* Does mdat care? */
 				if (!noncorporeal(mdat) && !amorphous(mdat) &&

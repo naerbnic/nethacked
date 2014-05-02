@@ -234,17 +234,17 @@ int do_mname() {
 		You("would never recognize it anyway.");
 		return 0;
 	}
-	cc.x = u.ux;
-	cc.y = u.uy;
+	cc.x = player.ux;
+	cc.y = player.uy;
 	if (getpos(&cc, FALSE, "the monster you want to name") < 0 ||
 			(cx = cc.x) < 0)
 		return 0;
 	cy = cc.y;
 
-	if (cx == u.ux && cy == u.uy) {
+	if (cx == player.ux && cy == player.uy) {
 #ifdef STEED
-	    if (u.usteed && canspotmon(u.usteed))
-		mtmp = u.usteed;
+	    if (player.usteed && canspotmon(player.usteed))
+		mtmp = player.usteed;
 	    else {
 #endif
 		pline("This %s creature is called %s and cannot be renamed.",
@@ -276,7 +276,7 @@ int do_mname() {
 	(void)mungspaces(buf);
 
 	if (mtmp->data->geno & G_UNIQ) {
-        if (mtmp->data == &mons[PM_HIGH_PRIEST] && Is_astralevel(&u.uz)) {
+        if (mtmp->data == &mons[PM_HIGH_PRIEST] && Is_astralevel(&player.uz)) {
             pline_The("high priest%s doesn't like being called names!", mtmp->female ? "ess" : "");
         } else {
             pline("%s doesn't like being called names!", Monnam(mtmp));
@@ -356,12 +356,12 @@ Object * realloc_obj(Object *obj, int oextra_size, genericptr_t oextra_src, int 
 	}
 
 	if (obj->owornmask) {
-		bool save_twoweap = u.twoweap;
+		bool save_twoweap = player.twoweap;
 		/* unwearing the old instance will clear dual-wield mode
 		   if this object is either of the two weapons */
 		setworn(nullptr, obj->owornmask);
 		setworn(otmp, otmp->owornmask);
-		u.twoweap = save_twoweap;
+		player.twoweap = save_twoweap;
 	}
 
 	/* replace obj with otmp */
@@ -586,9 +586,9 @@ char* x_monnam(
 	    article != ARTICLE_YOUR &&
 	    !program_state.gameover &&
 #ifdef STEED
-	    mtmp != u.usteed &&
+	    mtmp != player.usteed &&
 #endif
-	    !(u.uswallow && mtmp == u.ustuck) &&
+	    !(player.uswallow && mtmp == player.ustuck) &&
 	    !(suppress & SUPPRESS_IT);
 	do_saddle = !(suppress & SUPPRESS_SADDLE);
 
@@ -687,7 +687,7 @@ char* x_monnam(
 		strcat(buf, name);
 		name_at_start = TRUE;
 	    }
-	} else if (is_mplayer(mdat) && !In_endgame(&u.uz)) {
+	} else if (is_mplayer(mdat) && !In_endgame(&player.uz)) {
 	    char pbuf[BUFSZ];
 	    strcpy(pbuf, rank_of((int)mtmp->m_lev,
 				 monsndx(mdat),
@@ -784,7 +784,7 @@ char * y_monnam(Monster *mtmp) {
 	suppression_flag = (mtmp->mnamelth
 #ifdef STEED
 			    /* "saddled" is redundant when mounted */
-			    || mtmp == u.usteed
+			    || mtmp == player.usteed
 #endif
 			    ) ? SUPPRESS_SADDLE : 0;
 
@@ -821,7 +821,7 @@ char * distant_monnam(Monster *mon, int article, char *outbuf) {
        unless you're adjacent (overridden for hallucination which does
        its own obfuscation) */
     if (mon->data == &mons[PM_HIGH_PRIEST] && !Hallucination &&
-	    Is_astralevel(&u.uz) && distu(mon->mx, mon->my) > 2) {
+	    Is_astralevel(&player.uz) && distu(mon->mx, mon->my) > 2) {
 	strcpy(outbuf, article == ARTICLE_THE ? "the " : "");
 	strcat(outbuf, mon->female ? "high priestess" : "high priest");
     } else {

@@ -103,12 +103,12 @@ int fightm(Monster *mtmp) {
 	if(resist(mtmp, RING_CLASS, 0, 0))
 	    return(0);
 
-	if(u.ustuck == mtmp) {
+	if(player.ustuck == mtmp) {
 	    /* perhaps we're holding it... */
 	    if(itsstuck(mtmp))
 		return(0);
 	}
-	has_u_swallowed = (u.uswallow && (mtmp == u.ustuck));
+	has_u_swallowed = (player.uswallow && (mtmp == player.ustuck));
 
 	for(mon = fmon; mon; mon = nmon) {
 	    nmon = mon->nmon;
@@ -120,10 +120,10 @@ int fightm(Monster *mtmp) {
 	     */
 	    if(mon != mtmp && !mon->dead()) {
 		if(monnear(mtmp,mon->mx,mon->my)) {
-		    if(!u.uswallow && (mtmp == u.ustuck)) {
+		    if(!player.uswallow && (mtmp == player.ustuck)) {
 			if(!rn2(4)) {
 			    pline("%s releases you!", Monnam(mtmp));
-			    u.ustuck = 0;
+			    player.ustuck = 0;
 			} else
 			    break;
 		    }
@@ -210,7 +210,7 @@ int mattackm(Monster *magr, Monster *mdef) {
 	mdef->mundetected = 0;
 	newsym(mdef->mx, mdef->my);
 	if(canseemon(mdef) && !sensemon(mdef)) {
-	    if (u.usleep) You("dream of %s.",
+	    if (player.usleep) You("dream of %s.",
 				(mdef->data->geno & G_UNIQ) ?
 				a_monnam(mdef) : makeplural(m_monnam(mdef)));
 	    else pline("Suddenly, you notice %s.", a_monnam(mdef));
@@ -317,7 +317,7 @@ int mattackm(Monster *magr, Monster *mdef) {
 
 	    case AT_ENGL:
 #ifdef STEED
-		if (u.usteed && (mdef == u.usteed)) {
+		if (player.usteed && (mdef == player.usteed)) {
 		    strike = 0;
 		    break;
 		} 
@@ -325,7 +325,7 @@ int mattackm(Monster *magr, Monster *mdef) {
 		/* Engulfing attacks are directed at the hero if
 		 * possible. -dlc
 		 */
-		if (u.uswallow && magr == u.ustuck)
+		if (player.uswallow && magr == player.ustuck)
 		    strike = 0;
 		else {
 		    if ((strike = (tmp > rnd(20+i))))
@@ -402,7 +402,7 @@ STATIC_OVL int hitmm(Monster *magr, Monster *mdef, struct Attack *mattk) {
 					s_suffix(magr_name));
 				break;
 			case AT_HUGS:
-				if (magr != u.ustuck) {
+				if (magr != player.ustuck) {
 				    sprintf(buf,"%s squeezes", magr_name);
 				    break;
 				}
@@ -823,7 +823,7 @@ STATIC_OVL int mdamagem(Monster *magr, Monster *mdef, struct Attack *mattk) {
 		    (void) rloc(mdef, FALSE);
 		    if (vis && !canspotmon(mdef)
 #ifdef STEED
-		    	&& mdef != u.usteed
+		    	&& mdef != player.usteed
 #endif
 		    	)
 			pline("%s suddenly disappears!", mdef_Monnam);
@@ -985,7 +985,7 @@ STATIC_OVL int mdamagem(Monster *magr, Monster *mdef, struct Attack *mattk) {
 
 			otmp = obj;
 #ifdef STEED
-			if (u.usteed == mdef &&
+			if (player.usteed == mdef &&
 					otmp == which_armor(mdef, W_SADDLE))
 				/* "You can no longer ride <steed>." */
 				dismount_steed(DISMOUNT_POLY);
@@ -1162,8 +1162,8 @@ int sleep_monst(Monster *mon, int amt, int how) {
 
 /* sleeping grabber releases, engulfer doesn't; don't use for paralysis! */
 void slept_monst(Monster *mon) {
-	if ((mon->msleeping || !mon->mcanmove) && mon == u.ustuck &&
-		!sticks(youmonst.data) && !u.uswallow) {
+	if ((mon->msleeping || !mon->mcanmove) && mon == player.ustuck &&
+		!sticks(youmonst.data) && !player.uswallow) {
 	    pline("%s grip relaxes.", s_suffix(Monnam(mon)));
 	    unstuck(mon);
 	}

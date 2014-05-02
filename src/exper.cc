@@ -86,14 +86,14 @@ int experience(Monster* mtmp, int nk) {
 }
 
 void more_experienced(int exp, int rexp) {
-	u.uexp += exp;
-	u.urexp += 4*exp + rexp;
+	player.uexp += exp;
+	player.urexp += 4*exp + rexp;
 	if(exp
 #ifdef SCORE_ON_BOTL
 	   || flags.showscore
 #endif
 	   ) flags.botl = 1;
-	if (u.urexp >= (Role_if(PM_WIZARD) ? 1000 : 2000))
+	if (player.urexp >= (Role_if(PM_WIZARD) ? 1000 : 2000))
 		flags.beginner = 0;
 }
 
@@ -110,10 +110,10 @@ void losexp(const char *drainer) {
 #endif
 	    if (resists_drli(&youmonst)) return;
 
-	if (u.ulevel > 1) {
-		pline("%s level %d.", Goodbye(), u.ulevel--);
+	if (player.ulevel > 1) {
+		pline("%s level %d.", Goodbye(), player.ulevel--);
 		/* remove intrinsic abilities */
-		adjabil(u.ulevel + 1, u.ulevel);
+		adjabil(player.ulevel + 1, player.ulevel);
 		reset_rndmonst(NON_PM);	/* new monster selection */
 	} else {
 		if (drainer) {
@@ -122,30 +122,30 @@ void losexp(const char *drainer) {
 			done(DIED);
 		}
 		/* no drainer or lifesaved */
-		u.uexp = 0;
+		player.uexp = 0;
 	}
 	num = newhp();
-	u.uhpmax -= num;
-	if (u.uhpmax < 1) u.uhpmax = 1;
-	u.uhp -= num;
-	if (u.uhp < 1) u.uhp = 1;
-	else if (u.uhp > u.uhpmax) u.uhp = u.uhpmax;
+	player.uhpmax -= num;
+	if (player.uhpmax < 1) player.uhpmax = 1;
+	player.uhp -= num;
+	if (player.uhp < 1) player.uhp = 1;
+	else if (player.uhp > player.uhpmax) player.uhp = player.uhpmax;
 
-	if (u.ulevel < urole.xlev)
+	if (player.ulevel < urole.xlev)
 	    num = rn1((int)ACURR(A_WIS)/2 + urole.enadv.lornd + urace.enadv.lornd,
 			urole.enadv.lofix + urace.enadv.lofix);
 	else
 	    num = rn1((int)ACURR(A_WIS)/2 + urole.enadv.hirnd + urace.enadv.hirnd,
 			urole.enadv.hifix + urace.enadv.hifix);
 	num = enermod(num);		/* M. Stephenson */
-	u.uenmax -= num;
-	if (u.uenmax < 0) u.uenmax = 0;
-	u.uen -= num;
-	if (u.uen < 0) u.uen = 0;
-	else if (u.uen > u.uenmax) u.uen = u.uenmax;
+	player.uenmax -= num;
+	if (player.uenmax < 0) player.uenmax = 0;
+	player.uen -= num;
+	if (player.uen < 0) player.uen = 0;
+	else if (player.uen > player.uenmax) player.uen = player.uenmax;
 
-	if (u.uexp > 0)
-		u.uexp = newuexp(u.ulevel) - 1;
+	if (player.uexp > 0)
+		player.uexp = newuexp(player.ulevel) - 1;
 	flags.botl = 1;
 }
 
@@ -156,7 +156,7 @@ void losexp(const char *drainer) {
  * at a dragon created with a wand of polymorph??
  */
 void newexplevel() {
-	if (u.ulevel < MAXULEV && u.uexp >= newuexp(u.ulevel))
+	if (player.ulevel < MAXULEV && player.uexp >= newuexp(player.ulevel))
 	    pluslvl(TRUE);
 }
 
@@ -165,33 +165,33 @@ void pluslvl(bool incr) {
 
 	if (!incr) You_feel("more experienced.");
 	num = newhp();
-	u.uhpmax += num;
-	u.uhp += num;
+	player.uhpmax += num;
+	player.uhp += num;
 	if (Upolyd) {
 	    num = rnd(8);
-	    u.mhmax += num;
-	    u.mh += num;
+	    player.mhmax += num;
+	    player.mh += num;
 	}
-	if (u.ulevel < urole.xlev)
+	if (player.ulevel < urole.xlev)
 	    num = rn1((int)ACURR(A_WIS)/2 + urole.enadv.lornd + urace.enadv.lornd,
 			urole.enadv.lofix + urace.enadv.lofix);
 	else
 	    num = rn1((int)ACURR(A_WIS)/2 + urole.enadv.hirnd + urace.enadv.hirnd,
 			urole.enadv.hifix + urace.enadv.hifix);
 	num = enermod(num);	/* M. Stephenson */
-	u.uenmax += num;
-	u.uen += num;
-	if (u.ulevel < MAXULEV) {
+	player.uenmax += num;
+	player.uen += num;
+	if (player.ulevel < MAXULEV) {
 	    if (incr) {
-		long tmp = newuexp(u.ulevel + 1);
-		if (u.uexp >= tmp) u.uexp = tmp - 1;
+		long tmp = newuexp(player.ulevel + 1);
+		if (player.uexp >= tmp) player.uexp = tmp - 1;
 	    } else {
-		u.uexp = newuexp(u.ulevel);
+		player.uexp = newuexp(player.ulevel);
 	    }
-	    ++u.ulevel;
-	    if (u.ulevelmax < u.ulevel) u.ulevelmax = u.ulevel;
-	    pline("Welcome to experience level %d.", u.ulevel);
-	    adjabil(u.ulevel - 1, u.ulevel);	/* give new intrinsics */
+	    ++player.ulevel;
+	    if (player.ulevelmax < player.ulevel) player.ulevelmax = player.ulevel;
+	    pline("Welcome to experience level %d.", player.ulevel);
+	    adjabil(player.ulevel - 1, player.ulevel);	/* give new intrinsics */
 	    reset_rndmonst(NON_PM);		/* new monster selection */
 	}
 	flags.botl = 1;
@@ -203,8 +203,8 @@ void pluslvl(bool incr) {
 long rndexp(bool gaining) {
 	long minexp, maxexp, diff, factor, result;
 
-	minexp = (u.ulevel == 1) ? 0L : newuexp(u.ulevel - 1);
-	maxexp = newuexp(u.ulevel);
+	minexp = (player.ulevel == 1) ? 0L : newuexp(player.ulevel - 1);
+	maxexp = newuexp(player.ulevel);
 	diff = maxexp - minexp,  factor = 1L;
 	/* make sure that `diff' is an argument which rn2() can handle */
 	while (diff >= (long)LARGEST_INT)
@@ -214,10 +214,10 @@ long rndexp(bool gaining) {
 	   points rather than to threshold needed to reach the current
 	   level; otherwise blessed potions of gain level can result
 	   in lowering the experience points instead of raising them */
-	if (u.ulevel == MAXULEV && gaining) {
-	    result += (u.uexp - minexp);
+	if (player.ulevel == MAXULEV && gaining) {
+	    result += (player.uexp - minexp);
 	    /* avoid wrapping (over 400 blessed potions needed for that...) */
-	    if (result < u.uexp) result = u.uexp;
+	    if (result < player.uexp) result = player.uexp;
 	}
 	return result;
 }

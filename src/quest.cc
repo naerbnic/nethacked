@@ -9,7 +9,7 @@
 #include "quest.h"
 #include "qtext.h"
 
-#define Not_firsttime	(on_level(&u.uz0, &u.uz))
+#define Not_firsttime	(on_level(&player.uz0, &player.uz))
 #define Qstat(x)	(quest_status.x)
 
 STATIC_DCL void on_start();
@@ -28,7 +28,7 @@ STATIC_OVL void on_start() {
   if(!Qstat(first_start)) {
     qt_pager(QT_FIRSTTIME);
     Qstat(first_start) = TRUE;
-  } else if((u.uz0.dnum != u.uz.dnum) || (u.uz0.dlevel < u.uz.dlevel)) {
+  } else if((player.uz0.dnum != player.uz.dnum) || (player.uz0.dlevel < player.uz.dlevel)) {
     if(Qstat(not_ready) <= 2) qt_pager(QT_NEXTTIME);
     else	qt_pager(QT_OTHERTIME);
   }
@@ -38,7 +38,7 @@ STATIC_OVL void on_locate() {
   if(!Qstat(first_locate)) {
     qt_pager(QT_FIRSTLOCATE);
     Qstat(first_locate) = TRUE;
-  } else if(u.uz0.dlevel < u.uz.dlevel && !Qstat(killed_nemesis))
+  } else if(player.uz0.dlevel < player.uz.dlevel && !Qstat(killed_nemesis))
 	qt_pager(QT_NEXTLOCATE);
 }
 
@@ -55,12 +55,12 @@ STATIC_OVL void on_goal() {
 }
 
 void onquest() {
-	if(u.uevent.qcompleted || Not_firsttime) return;
-	if(!Is_special(&u.uz)) return;
+	if(player.uevent.qcompleted || Not_firsttime) return;
+	if(!Is_special(&player.uz)) return;
 
-	if(Is_qstart(&u.uz)) on_start();
-	else if(Is_qlocate(&u.uz) && u.uz.dlevel > u.uz0.dlevel) on_locate();
-	else if(Is_nemesis(&u.uz)) on_goal();
+	if(Is_qstart(&player.uz)) on_start();
+	else if(Is_qlocate(&player.uz) && player.uz.dlevel > player.uz0.dlevel) on_locate();
+	else if(Is_nemesis(&player.uz)) on_goal();
 	return;
 }
 
@@ -86,32 +86,32 @@ bool ok_to_quest() {
 }
 
 STATIC_OVL bool not_capable() {
-	return((bool)(u.ulevel < MIN_QUEST_LEVEL));
+	return((bool)(player.ulevel < MIN_QUEST_LEVEL));
 }
 
 STATIC_OVL int is_pure(bool talk) {
     int purity;
-    aligntyp original_alignment = u.ualignbase[A_ORIGINAL];
+    aligntyp original_alignment = player.ualignbase[A_ORIGINAL];
 
 #ifdef WIZARD
     if (wizard && talk) {
-	if (u.ualign.type != original_alignment) {
+	if (player.ualign.type != original_alignment) {
 	    You("are currently %s instead of %s.",
-		align_str(u.ualign.type), align_str(original_alignment));
-	} else if (u.ualignbase[A_CURRENT] != original_alignment) {
+		align_str(player.ualign.type), align_str(original_alignment));
+	} else if (player.ualignbase[A_CURRENT] != original_alignment) {
 	    You("have converted.");
-	} else if (u.ualign.record < MIN_QUEST_ALIGN) {
+	} else if (player.ualign.record < MIN_QUEST_ALIGN) {
 	    You("are currently %d and require %d.",
-		u.ualign.record, MIN_QUEST_ALIGN);
+		player.ualign.record, MIN_QUEST_ALIGN);
 	    if (yn_function("adjust?", (char *)0, 'y') == 'y')
-		u.ualign.record = MIN_QUEST_ALIGN;
+		player.ualign.record = MIN_QUEST_ALIGN;
 	}
     }
 #endif
-    purity = (u.ualign.record >= MIN_QUEST_ALIGN &&
-	      u.ualign.type == original_alignment &&
-	      u.ualignbase[A_CURRENT] == original_alignment) ?  1 :
-	     (u.ualignbase[A_CURRENT] != original_alignment) ? -1 : 0;
+    purity = (player.ualign.record >= MIN_QUEST_ALIGN &&
+	      player.ualign.type == original_alignment &&
+	      player.ualignbase[A_CURRENT] == original_alignment) ?  1 :
+	     (player.ualignbase[A_CURRENT] != original_alignment) ? -1 : 0;
     return purity;
 }
 
@@ -128,13 +128,13 @@ STATIC_OVL void expulsion(bool seal) {
     int portal_flag;
 
     br = dungeon_branch("The Quest");
-    dest = (br->end1.dnum == u.uz.dnum) ? &br->end2 : &br->end1;
-    portal_flag = u.uevent.qexpelled ? 0 :	/* returned via artifact? */
+    dest = (br->end1.dnum == player.uz.dnum) ? &br->end2 : &br->end1;
+    portal_flag = player.uevent.qexpelled ? 0 :	/* returned via artifact? */
 		  !seal ? 1 : -1;
     schedule_goto(dest, FALSE, FALSE, portal_flag, (char *)0, (char *)0);
     if (seal) {	/* remove the portal to the quest - sealing it off */
-	int reexpelled = u.uevent.qexpelled;
-	u.uevent.qexpelled = 1;
+	int reexpelled = player.uevent.qexpelled;
+	player.uevent.qexpelled = 1;
 	/* Delete the near portal now; the far (main dungeon side)
 	   portal will be deleted as part of arrival on that level.
 	   If monster movement is in progress, any who haven't moved
@@ -154,7 +154,7 @@ STATIC_OVL void expulsion(bool seal) {
 void finish_quest(Object *obj) {
 	Object *otmp;
 
-	if (u.uhave.amulet) {	/* unlikely but not impossible */
+	if (player.uhave.amulet) {	/* unlikely but not impossible */
 	    qt_pager(QT_HASAMULET);
 	    /* leader IDs the real amulet but ignores any fakes */
 	    if ((otmp = carrying(AMULET_OF_YENDOR)) != 0)
@@ -169,7 +169,7 @@ void finish_quest(Object *obj) {
 	Qstat(got_thanks) = TRUE;
 
 	if (obj) {
-	    u.uevent.qcompleted = 1;	/* you did it! */
+	    player.uevent.qcompleted = 1;	/* you did it! */
 	    /* behave as if leader imparts sufficient info about the
 	       quest artifact */
 	    fully_identify_obj(obj);
@@ -179,7 +179,7 @@ void finish_quest(Object *obj) {
 
 STATIC_OVL void chat_with_leader() {
 /*	Rule 0:	Cheater checks.					*/
-	if(u.uhave.questart && !Qstat(met_nemesis))
+	if(player.uhave.questart && !Qstat(met_nemesis))
 	    Qstat(cheater) = TRUE;
 
 /*	It is possible for you to get the amulet without completing
@@ -187,14 +187,14 @@ STATIC_OVL void chat_with_leader() {
  */
 	if(Qstat(got_thanks)) {
 /*	Rule 1:	You've gone back with/without the amulet.	*/
-	    if(u.uhave.amulet)	finish_quest(nullptr);
+	    if(player.uhave.amulet)	finish_quest(nullptr);
 
 /*	Rule 2:	You've gone back before going for the amulet.	*/
 	    else		qt_pager(QT_POSTHANKS);
 	}
 
 /*	Rule 3: You've got the artifact and are back to return it. */
-	  else if(u.uhave.questart) {
+	  else if(player.uhave.questart) {
 	    Object *otmp;
 
 	    for (otmp = invent; otmp; otmp = otmp->nobj)
@@ -215,7 +215,7 @@ STATIC_OVL void chat_with_leader() {
 	  } else qt_pager(QT_NEXTLEADER);
 	  /* the quest leader might have passed through the portal into
 	     the regular dungeon; none of the remaining make sense there */
-	  if (!on_level(&u.uz, &qstart_level)) return;
+	  if (!on_level(&player.uz, &qstart_level)) return;
 
 	  if(not_capable()) {
 	    qt_pager(QT_BADLEVEL);
@@ -250,7 +250,7 @@ void leader_speaks(Monster *mtmp) {
 	}
 	/* the quest leader might have passed through the portal into the
 	   regular dungeon; if so, mustn't perform "backwards expulsion" */
-	if (!on_level(&u.uz, &qstart_level)) return;
+	if (!on_level(&player.uz, &qstart_level)) return;
 
 	if(Qstat(pissed_off)) {
 	  qt_pager(QT_LASTLEADER);
@@ -266,7 +266,7 @@ STATIC_OVL void chat_with_nemesis() {
 
 void nemesis_speaks() {
 	if(!Qstat(in_battle)) {
-	  if(u.uhave.questart) qt_pager(QT_NEMWANTSIT);
+	  if(player.uhave.questart) qt_pager(QT_NEMWANTSIT);
 	  else if(Qstat(made_goal) == 1 || !Qstat(met_nemesis))
 	      qt_pager(QT_FIRSTNEMESIS);
 	  else if(Qstat(made_goal) < 4) qt_pager(QT_NEXTNEMESIS);
@@ -280,7 +280,7 @@ void nemesis_speaks() {
 
 STATIC_OVL void chat_with_guardian() {
 /*	These guys/gals really don't have much to say... */
-	if (u.uhave.questart && Qstat(killed_nemesis))
+	if (player.uhave.questart && Qstat(killed_nemesis))
 	    qt_pager(rn1(5, QT_GUARDTALK2));
 	else
 	    qt_pager(rn1(5, QT_GUARDTALK));
@@ -333,7 +333,7 @@ void quest_talk(Monster *mtmp) {
 void quest_stat_check(Monster *mtmp) {
     if(mtmp->data->msound == MS_NEMESIS)
 	Qstat(in_battle) = (mtmp->mcanmove && !mtmp->msleeping &&
-			    monnear(mtmp, u.ux, u.uy));
+			    monnear(mtmp, player.ux, player.uy));
 }
 
 /*quest.c*/

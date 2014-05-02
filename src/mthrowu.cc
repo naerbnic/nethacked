@@ -8,7 +8,7 @@
 
 STATIC_DCL int drop_throw(Object *,bool,int,int);
 
-#define URETREATING(x,y) (distmin(u.ux,u.uy,x,y) > distmin(u.ux0,u.uy0,x,y))
+#define URETREATING(x,y) (distmin(player.ux,player.uy,x,y) > distmin(player.ux0,player.uy0,x,y))
 
 #define POLE_LIM 5	/* How far monsters can use pole-weapons */
 
@@ -58,7 +58,7 @@ int thitu(int tlev, int dam, Object *obj, const char *name) {
 			    (obj && obj->quan > 1L) ? name : an(name);
 	is_acid = (obj && obj->otyp == ACID_VENOM);
 
-	if(u.uac + tlev <= rnd(20)) {
+	if(player.uac + tlev <= rnd(20)) {
 		if(Blind || !flags.verbose) pline("It misses.");
 		else You("are almost hit by %s.", onm);
 		return(0);
@@ -112,7 +112,7 @@ STATIC_OVL int drop_throw(Object *obj, bool ohit, int x, int y) {
 		if (!objgone) {
 			if (!flooreffects(obj,x,y,"fall")) { /* don't double-dip on damage */
 			    place_object(obj, x, y);
-			    if (!mtmp && x == u.ux && y == u.uy)
+			    if (!mtmp && x == player.ux && y == player.uy)
 				mtmp = &youmonst;
 			    if (mtmp && ohit)
 				passive_obj(mtmp, obj, (struct Attack *)0);
@@ -315,7 +315,7 @@ void m_throw(Monster *mon, int x, int y, int dx, int dy, int range, Object *obj)
 		if ((mtmp = m_at(bhitpos.x, bhitpos.y)) != 0) {
 		    if (ohitmon(mtmp, singleobj, range, TRUE))
 			break;
-		} else if (bhitpos.x == u.ux && bhitpos.y == u.uy) {
+		} else if (bhitpos.x == player.ux && bhitpos.y == player.uy) {
 		    if (multi) nomul(0, 0);
 
 		    if (singleobj->oclass == GEM_CLASS &&
@@ -357,7 +357,7 @@ void m_throw(Monster *mon, int x, int y, int dx, int dy, int range, Object *obj)
 			    break;
 			default:
 			    dam = dmgval(singleobj, &youmonst);
-			    hitv = 3 - distmin(u.ux,u.uy, mon->mx,mon->my);
+			    hitv = 3 - distmin(player.ux,player.uy, mon->mx,mon->my);
 			    if (hitv < -4) hitv = -4;
 			    if (is_elf(mon->data) &&
 				objects[singleobj->otyp].oc_skill == P_BOW) {
@@ -410,7 +410,7 @@ void m_throw(Monster *mon, int x, int y, int dx, int dy, int range, Object *obj)
 		    }
 		    stop_occupation();
 		    if (hitu || !range) {
-			(void) drop_throw(singleobj, hitu, u.ux, u.uy);
+			(void) drop_throw(singleobj, hitu, player.ux, player.uy);
 			break;
 		    }
 		} else if (!range	/* reached end of path */
@@ -440,7 +440,7 @@ void m_throw(Monster *mon, int x, int y, int dx, int dy, int range, Object *obj)
 	tmp_at(DISP_END, 0);
 
 	if (blindinc) {
-		u.ucreamed += blindinc;
+		player.ucreamed += blindinc;
 		make_blinded(Blinded + (long)blindinc, FALSE);
 		if (!Blind) Your(vision_clears);
 	}
@@ -501,7 +501,7 @@ void thrwmu(Monster *mtmp) {
 	    }
 
 	    dam = dmgval(otmp, &youmonst);
-	    hitv = 3 - distmin(u.ux,u.uy, mtmp->mx,mtmp->my);
+	    hitv = 3 - distmin(player.ux,player.uy, mtmp->mx,mtmp->my);
 	    if (hitv < -4) hitv = -4;
 	    if (bigmonst(youmonst.data)) hitv++;
 	    hitv += 8 + otmp->spe;
@@ -687,7 +687,7 @@ bool linedup(xchar ax, xchar ay, xchar bx, xchar by) {
 
 	if((!tbx || !tby || abs(tbx) == abs(tby)) /* straight line or diagonal */
 	   && distmin(tbx, tby, 0, 0) < BOLT_LIM) {
-	    if(ax == u.ux && ay == u.uy) return((bool)(couldsee(bx,by)));
+	    if(ax == player.ux && ay == player.uy) return((bool)(couldsee(bx,by)));
 	    else if(clear_path(ax,ay,bx,by)) return TRUE;
 	}
 	return FALSE;

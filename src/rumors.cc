@@ -264,7 +264,7 @@ int doconsult(Monster *oracl) {
 #ifdef GOLDOBJ
         long umoney = money_cnt(invent);
 #endif
-	int u_pay, minor_cost = 50, major_cost = 500 + 50 * u.ulevel;
+	int u_pay, minor_cost = 50, major_cost = 500 + 50 * player.ulevel;
 	int add_xpts;
 	char qbuf[QBUFSZ];
 
@@ -277,7 +277,7 @@ int doconsult(Monster *oracl) {
 		pline("%s is in no mood for consultations.", Monnam(oracl));
 		return 0;
 #ifndef GOLDOBJ
-	} else if (!u.ugold) {
+	} else if (!player.ugold) {
 #else
 	} else if (!umoney) {
 #endif
@@ -294,7 +294,7 @@ int doconsult(Monster *oracl) {
 		return 0;
 	    case 'y':
 #ifndef GOLDOBJ
-		if (u.ugold < (long)minor_cost) {
+		if (player.ugold < (long)minor_cost) {
 #else
 		if (umoney < (long)minor_cost) {
 #endif
@@ -305,7 +305,7 @@ int doconsult(Monster *oracl) {
 		break;
 	    case 'n':
 #ifndef GOLDOBJ
-		if (u.ugold <= (long)minor_cost ||	/* don't even ask */
+		if (player.ugold <= (long)minor_cost ||	/* don't even ask */
 #else
 		if (umoney <= (long)minor_cost ||	/* don't even ask */
 #endif
@@ -315,7 +315,7 @@ int doconsult(Monster *oracl) {
 			major_cost, currency((long)major_cost));
 		if (yn(qbuf) != 'y') return 0;
 #ifndef GOLDOBJ
-		u_pay = (u.ugold < (long)major_cost ? (int)u.ugold
+		u_pay = (player.ugold < (long)major_cost ? (int)player.ugold
 						    : major_cost);
 #else
 		u_pay = (umoney < (long)major_cost ? (int)umoney
@@ -324,7 +324,7 @@ int doconsult(Monster *oracl) {
 		break;
 	}
 #ifndef GOLDOBJ
-	u.ugold -= (long)u_pay;
+	player.ugold -= (long)u_pay;
 	oracl->mgold += (long)u_pay;
 #else
         money2mon(oracl, (long)u_pay);
@@ -333,17 +333,17 @@ int doconsult(Monster *oracl) {
 	add_xpts = 0;	/* first oracle of each type gives experience points */
 	if (u_pay == minor_cost) {
 		outrumor(1, BY_ORACLE);
-		if (!u.uevent.minor_oracle)
-		    add_xpts = u_pay / (u.uevent.major_oracle ? 25 : 10);
+		if (!player.uevent.minor_oracle)
+		    add_xpts = u_pay / (player.uevent.major_oracle ? 25 : 10);
 		    /* 5 pts if very 1st, or 2 pts if major already done */
-		u.uevent.minor_oracle = TRUE;
+		player.uevent.minor_oracle = TRUE;
 	} else {
 		bool cheapskate = u_pay < major_cost;
 		outoracle(cheapskate, TRUE);
-		if (!cheapskate && !u.uevent.major_oracle)
-		    add_xpts = u_pay / (u.uevent.minor_oracle ? 25 : 10);
+		if (!cheapskate && !player.uevent.major_oracle)
+		    add_xpts = u_pay / (player.uevent.minor_oracle ? 25 : 10);
 		    /* ~100 pts if very 1st, ~40 pts if minor already done */
-		u.uevent.major_oracle = TRUE;
+		player.uevent.major_oracle = TRUE;
 		exercise(A_WIS, !cheapskate);
 	}
 	if (add_xpts) {

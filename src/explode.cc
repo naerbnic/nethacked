@@ -90,7 +90,7 @@ void explode(int x, int y, int type, int dam, char olet, int expltype) {
 		} else
 			explmask[i][j] = 0;
 
-		if (i+x-1 == u.ux && j+y-1 == u.uy) {
+		if (i+x-1 == player.ux && j+y-1 == player.uy) {
 		    switch(adtyp) {
 			case AD_PHYS:                        
 				explmask[i][j] = 0;
@@ -126,8 +126,8 @@ void explode(int x, int y, int type, int dam, char olet, int expltype) {
 		/* can be both you and mtmp if you're swallowed */
 		mtmp = m_at(i+x-1, j+y-1);
 #ifdef STEED
-		if (!mtmp && i+x-1 == u.ux && j+y-1 == u.uy)
-			mtmp = u.usteed;
+		if (!mtmp && i+x-1 == player.ux && j+y-1 == player.uy)
+			mtmp = player.usteed;
 #endif
 		if (mtmp) {
 		    if (mtmp->mhp < 1) explmask[i][j] = 2;
@@ -223,7 +223,7 @@ void explode(int x, int y, int type, int dam, char olet, int expltype) {
     if (dam)
 	for (i=0; i<3; i++) for (j=0; j<3; j++) {
 		if (explmask[i][j] == 2) continue;
-		if (i+x-1 == u.ux && j+y-1 == u.uy)
+		if (i+x-1 == player.ux && j+y-1 == player.uy)
 			uhurt = (explmask[i][j] == 1) ? 1 : 2;
 		idamres = idamnonres = 0;
 		if (type >= 0)
@@ -232,14 +232,14 @@ void explode(int x, int y, int type, int dam, char olet, int expltype) {
 
 		mtmp = m_at(i+x-1, j+y-1);
 #ifdef STEED
-		if (!mtmp && i+x-1 == u.ux && j+y-1 == u.uy)
-			mtmp = u.usteed;
+		if (!mtmp && i+x-1 == player.ux && j+y-1 == player.uy)
+			mtmp = player.usteed;
 #endif
 		if (!mtmp) continue;
-		if (u.uswallow && mtmp == u.ustuck) {
-			if (is_animal(u.ustuck->data))
+		if (player.uswallow && mtmp == player.ustuck) {
+			if (is_animal(player.ustuck->data))
 				pline("%s gets %s!",
-				      Monnam(u.ustuck),
+				      Monnam(player.ustuck),
 				      (adtyp == AD_FIRE) ? "heartburn" :
 				      (adtyp == AD_COLD) ? "chilly" :
 				      (adtyp == AD_DISN) ? ((olet == WAND_CLASS) ?
@@ -250,7 +250,7 @@ void explode(int x, int y, int type, int dam, char olet, int expltype) {
 				       "fried");
 			else
 				pline("%s gets slightly %s!",
-				      Monnam(u.ustuck),
+				      Monnam(player.ustuck),
 				      (adtyp == AD_FIRE) ? "toasted" :
 				      (adtyp == AD_COLD) ? "chilly" :
 				      (adtyp == AD_DISN) ? ((olet == WAND_CLASS) ?
@@ -285,7 +285,7 @@ void explode(int x, int y, int type, int dam, char olet, int expltype) {
 				pline("%s resists the %s!", Monnam(mtmp), str);
 			    mdam = dam/2;
 			}
-			if (mtmp == u.ustuck)
+			if (mtmp == player.ustuck)
 				mdam *= 2;
 			if (resists_cold(mtmp) && adtyp == AD_FIRE)
 				mdam *= 2;
@@ -323,13 +323,13 @@ void explode(int x, int y, int type, int dam, char olet, int expltype) {
 		ugolemeffects((int) adtyp, damu);
 		if (uhurt == 2) {
 		    if (Upolyd)
-		    	u.mh  -= damu;
+		    	player.mh  -= damu;
 		    else
-			u.uhp -= damu;
+			player.uhp -= damu;
 		    flags.botl = 1;
 		}
 
-		if (u.uhp <= 0 || (Upolyd && u.mh <= 0)) {
+		if (player.uhp <= 0 || (Upolyd && player.mh <= 0)) {
 		    if (Upolyd) {
 			rehumanize();
 		    } else {
@@ -498,7 +498,7 @@ long scatter(int sx, int sy, int blastforce, unsigned int scflags, Object *obj) 
 					stmp->stopped = TRUE;
 				    }
 				}
-			} else if (bhitpos.x==u.ux && bhitpos.y==u.uy) {
+			} else if (bhitpos.x==player.ux && bhitpos.y==player.uy) {
 				if (scflags & MAY_HITYOU) {
 				    int hitvalu, hitu;
 

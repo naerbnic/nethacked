@@ -292,7 +292,7 @@ STATIC_OVL void write_xlentry(FILE *rfile, struct toptenentry *tt) {
 #endif
 
 #ifdef RECORD_START_END_TIME
-  (void)fprintf(rfile, SEP "starttime=%ld", (long)u.ubirthday);
+  (void)fprintf(rfile, SEP "starttime=%ld", (long)player.ubirthday);
   (void)fprintf(rfile, SEP "endtime=%ld", (long)deathtime);
 #endif
 
@@ -302,7 +302,7 @@ STATIC_OVL void write_xlentry(FILE *rfile, struct toptenentry *tt) {
 
 #ifdef RECORD_ALIGN0
   (void)fprintf(rfile, SEP "align0=%s", 
-          aligns[1 - u.ualignbase[A_ORIGINAL]].filecode);
+          aligns[1 - player.ualignbase[A_ORIGINAL]].filecode);
 #endif
 
   (void)fprintf(rfile, "\n");
@@ -377,13 +377,13 @@ void topten(int how) {
 	t0->ver_major = VERSION_MAJOR;
 	t0->ver_minor = VERSION_MINOR;
 	t0->patchlevel = PATCHLEVEL;
-	t0->points = u.urexp;
-	t0->deathdnum = u.uz.dnum;
-	t0->deathlev = observable_depth(&u.uz);
+	t0->points = player.urexp;
+	t0->deathdnum = player.uz.dnum;
+	t0->deathlev = observable_depth(&player.uz);
 	t0->maxlvl = deepest_lev_reached(TRUE);
-	t0->hp = u.uhp;
-	t0->maxhp = u.uhpmax;
-	t0->deaths = u.umortality;
+	t0->hp = player.uhp;
+	t0->maxhp = player.uhpmax;
+	t0->deaths = player.umortality;
 	t0->uid = uid;
 	(void) strncpy(t0->plrole, urole.filecode, ROLESZ);
 	t0->plrole[ROLESZ] = '\0';
@@ -391,7 +391,7 @@ void topten(int how) {
 	t0->plrace[ROLESZ] = '\0';
 	(void) strncpy(t0->plgend, genders[flags.female].filecode, ROLESZ);
 	t0->plgend[ROLESZ] = '\0';
-	(void) strncpy(t0->plalign, aligns[1-u.ualign.type].filecode, ROLESZ);
+	(void) strncpy(t0->plalign, aligns[1-player.ualign.type].filecode, ROLESZ);
 	t0->plalign[ROLESZ] = '\0';
 	(void) strncpy(t0->name, plname, NAMSZ);
 	t0->name[NAMSZ] = '\0';
@@ -422,7 +422,7 @@ void topten(int how) {
 	if (discover && strlen(t0->death) < DTHSZ - 6)
 	    strcat(t0->death, " {exp}");
 #endif
-	t0->birthdate = yyyymmdd(u.ubirthday);
+	t0->birthdate = yyyymmdd(player.ubirthday);
 
 #ifdef RECORD_START_END_TIME
   /* Make sure that deathdate and deathtime refer to the same time; it
@@ -884,17 +884,17 @@ encodeconduct(void)
 {
        long e = 0L;
 
-       if(!u.uconduct.food)            e |= 0x001L;
-       if(!u.uconduct.unvegan)         e |= 0x002L;
-       if(!u.uconduct.unvegetarian)    e |= 0x004L;
-       if(!u.uconduct.gnostic)         e |= 0x008L;
-       if(!u.uconduct.weaphit)         e |= 0x010L;
-       if(!u.uconduct.killer)          e |= 0x020L;
-       if(!u.uconduct.literate)        e |= 0x040L;
-       if(!u.uconduct.polypiles)       e |= 0x080L;
-       if(!u.uconduct.polyselfs)       e |= 0x100L;
-       if(!u.uconduct.wishes)          e |= 0x200L;
-       if(!u.uconduct.wisharti)        e |= 0x400L;
+       if(!player.uconduct.food)            e |= 0x001L;
+       if(!player.uconduct.unvegan)         e |= 0x002L;
+       if(!player.uconduct.unvegetarian)    e |= 0x004L;
+       if(!player.uconduct.gnostic)         e |= 0x008L;
+       if(!player.uconduct.weaphit)         e |= 0x010L;
+       if(!player.uconduct.killer)          e |= 0x020L;
+       if(!player.uconduct.literate)        e |= 0x040L;
+       if(!player.uconduct.polypiles)       e |= 0x080L;
+       if(!player.uconduct.polyselfs)       e |= 0x100L;
+       if(!player.uconduct.wishes)          e |= 0x200L;
+       if(!player.uconduct.wisharti)        e |= 0x400L;
        if(!num_genocides())            e |= 0x800L;
 
        return e;
@@ -931,8 +931,8 @@ encodeachieve(void)
   if(achieve.get_book)           r |= 1L << 3;
   if(achieve.perform_invocation) r |= 1L << 4;
   if(achieve.get_amulet)         r |= 1L << 5;
-  if(In_endgame(&u.uz))          r |= 1L << 6;
-  if(Is_astralevel(&u.uz))       r |= 1L << 7;
+  if(In_endgame(&player.uz))          r |= 1L << 6;
+  if(Is_astralevel(&player.uz))       r |= 1L << 7;
   if(achieve.ascended)           r |= 1L << 8;
   if(achieve.get_luckstone)      r |= 1L << 9;
   if(achieve.finish_sokoban)     r |= 1L << 10;

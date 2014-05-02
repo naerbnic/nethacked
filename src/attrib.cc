@@ -175,20 +175,20 @@ void losestr(int num) {
 	    ++ustr;
 	    --num;
 	    if (Upolyd) {
-		u.mh -= 6;
-		u.mhmax -= 6;
+		player.mh -= 6;
+		player.mhmax -= 6;
 	    } else {
-		u.uhp -= 6;
-		u.uhpmax -= 6;
+		player.uhp -= 6;
+		player.uhpmax -= 6;
 	    }
 	}
 	(void) adjattrib(A_STR, -num, TRUE);
 }
 
 void change_luck(schar n) {
-	u.uluck += n;
-	if (u.uluck < 0 && u.uluck < LUCKMIN)	u.uluck = LUCKMIN;
-	if (u.uluck > 0 && u.uluck > LUCKMAX)	u.uluck = LUCKMAX;
+	player.uluck += n;
+	if (player.uluck < 0 && player.uluck < LUCKMIN)	player.uluck = LUCKMIN;
+	if (player.uluck > 0 && player.uluck > LUCKMAX)	player.uluck = LUCKMAX;
 }
 
 int stone_luck(bool parameter) {
@@ -209,9 +209,9 @@ int stone_luck(bool parameter) {
 void set_moreluck() {
 	int luckbon = stone_luck(TRUE);
 
-	if (!luckbon && !carrying(LUCKSTONE)) u.moreluck = 0;
-	else if (luckbon >= 0) u.moreluck = LUCKADD;
-	else u.moreluck = -LUCKADD;
+	if (!luckbon && !carrying(LUCKSTONE)) player.moreluck = 0;
+	else if (luckbon >= 0) player.moreluck = LUCKADD;
+	else player.moreluck = -LUCKADD;
 }
 
 #endif /* OVLB */
@@ -282,10 +282,10 @@ STATIC_OVL void exerper() {
 	if(!(moves % 10)) {
 		/* Hunger Checks */
 
-		int hs = (u.uhunger > 1000) ? SATIATED :
-			 (u.uhunger > 150) ? NOT_HUNGRY :
-			 (u.uhunger > 50) ? HUNGRY :
-			 (u.uhunger > 0) ? WEAK : FAINTING;
+		int hs = (player.uhunger > 1000) ? SATIATED :
+			 (player.uhunger > 150) ? NOT_HUNGRY :
+			 (player.uhunger > 50) ? HUNGRY :
+			 (player.uhunger > 0) ? WEAK : FAINTING;
 
 #ifdef DEBUG
 		pline("exerper: Hunger checks");
@@ -331,7 +331,7 @@ STATIC_OVL void exerper() {
 		if(Confusion || Hallucination)		exercise(A_WIS, FALSE);
 		if((Wounded_legs 
 #ifdef STEED
-		    && !u.usteed
+		    && !player.usteed
 #endif
 			    ) || Fumbling || HStun)	exercise(A_DEX, FALSE);
 	}
@@ -580,19 +580,19 @@ int newhp() {
 	int	hp, conplus;
 
 
-	if (u.ulevel == 0) {
+	if (player.ulevel == 0) {
 	    /* Initialize hit points */
 	    hp = urole.hpadv.infix + urace.hpadv.infix;
 	    if (urole.hpadv.inrnd > 0) hp += rnd(urole.hpadv.inrnd);
 	    if (urace.hpadv.inrnd > 0) hp += rnd(urace.hpadv.inrnd);
 
 	    /* Initialize alignment stuff */
-	    u.ualign.type = aligns[flags.initalign].value;
-	    u.ualign.record = urole.initrecord;
+	    player.ualign.type = aligns[flags.initalign].value;
+	    player.ualign.record = urole.initrecord;
 
 		return hp;
 	} else {
-	    if (u.ulevel < urole.xlev) {
+	    if (player.ulevel < urole.xlev) {
 	    	hp = urole.hpadv.lofix + urace.hpadv.lofix;
 	    	if (urole.hpadv.lornd > 0) hp += rnd(urole.hpadv.lornd);
 	    	if (urace.hpadv.lornd > 0) hp += rnd(urace.hpadv.lornd);
@@ -619,7 +619,7 @@ int newhp() {
 #ifdef OVL0
 
 schar acurr(int x) {
-	int tmp = (u.abon.a[x] + u.atemp.a[x] + u.acurr.a[x]);
+	int tmp = (player.abon.a[x] + player.atemp.a[x] + player.acurr.a[x]);
 
 	if (x == A_STR) {
 		if (uarmg && uarmg->otyp == GAUNTLETS_OF_POWER) return(125);
@@ -630,7 +630,7 @@ schar acurr(int x) {
 #endif
 	} else if (x == A_CHA) {
 		if (tmp < 18 && (youmonst.data->mlet == S_NYMPH ||
-		    u.umonnum==PM_SUCCUBUS || u.umonnum == PM_INCUBUS))
+		    player.umonnum==PM_SUCCUBUS || player.umonnum == PM_INCUBUS))
 		    return 18;
 	} else if (x == A_INT || x == A_WIS) {
 		/* yes, this may raise int/wis if player is sufficiently
@@ -662,16 +662,16 @@ schar acurrstr() {
  * location for any future alignment limits
  */
 void adjalign(int n) {
-	int newalign = u.ualign.record + n;
+	int newalign = player.ualign.record + n;
 
 	if(n < 0) {
-		if(newalign < u.ualign.record)
-			u.ualign.record = newalign;
+		if(newalign < player.ualign.record)
+			player.ualign.record = newalign;
 	} else
-		if(newalign > u.ualign.record) {
-			u.ualign.record = newalign;
-			if(u.ualign.record > ALIGNLIM)
-				u.ualign.record = ALIGNLIM;
+		if(newalign > player.ualign.record) {
+			player.ualign.record = newalign;
+			if(player.ualign.record > ALIGNLIM)
+				player.ualign.record = ALIGNLIM;
 		}
 }
 

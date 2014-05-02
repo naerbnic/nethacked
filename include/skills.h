@@ -105,10 +105,10 @@ struct skills {
 	unsigned short advance;
 };
 
-#define P_SKILL(type)		(u.weapon_skills[type].skill)
-#define P_MAX_SKILL(type)	(u.weapon_skills[type].max_skill)
-#define P_ADVANCE(type)		(u.weapon_skills[type].advance)
-#define P_RESTRICTED(type)	(u.weapon_skills[type].skill == P_ISRESTRICTED)
+#define P_SKILL(type)		(player.weapon_skills[type].skill)
+#define P_MAX_SKILL(type)	(player.weapon_skills[type].max_skill)
+#define P_ADVANCE(type)		(player.weapon_skills[type].advance)
+#define P_RESTRICTED(type)	(player.weapon_skills[type].skill == P_ISRESTRICTED)
 
 #define P_SKILL_LIMIT 60	/* Max number of skill advancements */
 

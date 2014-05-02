@@ -170,9 +170,9 @@ void awaken_soldiers() {
 STATIC_OVL void charm_monsters(int distance) {
 	Monster *mtmp, *mtmp2;
 
-	if (u.uswallow) {
-	    if (!resist(u.ustuck, TOOL_CLASS, 0, NOTELL))
-		(void) tamedog(u.ustuck, (Object *) 0);
+	if (player.uswallow) {
+	    if (!resist(player.ustuck, TOOL_CLASS, 0, NOTELL))
+		(void) tamedog(player.ustuck, (Object *) 0);
 	} else {
 	    for (mtmp = fmon; mtmp; mtmp = mtmp2) {
 		mtmp2 = mtmp->nmon;
@@ -198,10 +198,10 @@ STATIC_OVL void do_earthquake(int force) {
 	Trap *chasm;
 	int start_x, start_y, end_x, end_y;
 
-	start_x = u.ux - (force * 2);
-	start_y = u.uy - (force * 2);
-	end_x = u.ux + (force * 2);
-	end_y = u.uy + (force * 2);
+	start_x = player.ux - (force * 2);
+	start_y = player.uy - (force * 2);
+	end_x = player.ux + (force * 2);
+	end_y = player.uy + (force * 2);
 	if (start_x < 1) start_x = 1;
 	if (start_y < 1) start_y = 1;
 	if (end_x >= COLNO) end_x = COLNO - 1;
@@ -216,7 +216,7 @@ STATIC_OVL void do_earthquake(int force) {
 							    Amonnam(mtmp));
 		    else
 			You_hear("a thumping sound.");
-		    if (x==u.ux && y==u.uy)
+		    if (x==player.ux && y==player.uy)
 			You("easily dodge the falling %s.",
 							    mon_nam(mtmp));
 		    newsym(x,y);
@@ -234,7 +234,7 @@ STATIC_OVL void do_earthquake(int force) {
 			goto do_pit;
 #endif
 		  case ALTAR :
-			if (Is_astralevel(&u.uz) || Is_sanctum(&u.uz)) break;
+			if (Is_astralevel(&player.uz) || Is_sanctum(&player.uz)) break;
 
 			if (cansee(x,y))
 				pline_The("altar falls into a chasm.");
@@ -260,7 +260,7 @@ do_pit:		    chasm = maketrap(x,y,PIT);
 		    if ((otmp = sobj_at(BOULDER, x, y)) != 0) {
 			if (cansee(x, y))
 			   pline("KADOOM! The boulder falls into a chasm%s!",
-			      ((x == u.ux) && (y == u.uy)) ? " below you" : "");
+			      ((x == player.ux) && (y == player.uy)) ? " below you" : "");
 			if (mtmp)
 				mtmp->mtrapped = 0;
 			obj_extract_self(otmp);
@@ -292,15 +292,15 @@ do_pit:		    chasm = maketrap(x,y,PIT);
 				    xkilled(mtmp,0);
 				}
 			}
-		    } else if (x == u.ux && y == u.uy) {
+		    } else if (x == player.ux && y == player.uy) {
 			    if (Levitation || Flying ||
 						is_clinger(youmonst.data)) {
 				    pline("A chasm opens up under you!");
 				    You("don't fall in!");
 			    } else {
 				    You("fall into a chasm!");
-				    u.utrap = rn1(6,2);
-				    u.utraptype = TT_PIT;
+				    player.utrap = rn1(6,2);
+				    player.utraptype = TT_PIT;
 				    losehp(rnd(6),"fell into a chasm",
 					NO_KILLER_PREFIX);
 				    selftouch("Falling, you");
@@ -351,14 +351,14 @@ STATIC_OVL int do_improvisation(Object *instr) {
 		consume_obj_charge(instr, TRUE);
 
 		You("produce soft music.");
-		put_monsters_to_sleep(u.ulevel * 5);
+		put_monsters_to_sleep(player.ulevel * 5);
 		exercise(A_DEX, TRUE);
 		break;
 	    } /* else FALLTHRU */
 	case WOODEN_FLUTE:		/* May charm snakes */
-	    do_spec &= (rn2(ACURR(A_DEX)) + u.ulevel > 25);
+	    do_spec &= (rn2(ACURR(A_DEX)) + player.ulevel > 25);
 	    pline("%s.", Tobjnam(instr, do_spec ? "trill" : "toot"));
-	    if (do_spec) charm_snakes(u.ulevel * 3);
+	    if (do_spec) charm_snakes(player.ulevel * 3);
 	    exercise(A_DEX, TRUE);
 	    break;
 	case FROST_HORN:		/* Idem wand of cold */
@@ -369,7 +369,7 @@ STATIC_OVL int do_improvisation(Object *instr) {
 		if (!getdir((char *)0)) {
 		    pline("%s.", Tobjnam(instr, "vibrate"));
 		    break;
-		} else if (!u.dx && !u.dy && !u.dz) {
+		} else if (!player.dx && !player.dy && !player.dz) {
 		    if ((damage = zapyourself(instr, TRUE)) != 0) {
 			char buf[BUFSZ];
 			sprintf(buf, "using a magical horn on %sself", uhim());
@@ -377,14 +377,14 @@ STATIC_OVL int do_improvisation(Object *instr) {
 		    }
 		} else {
 		    buzz((instr->otyp == FROST_HORN) ? AD_COLD-1 : AD_FIRE-1,
-			 rn1(6,6), u.ux, u.uy, u.dx, u.dy);
+			 rn1(6,6), player.ux, player.uy, player.dx, player.dy);
 		}
 		makeknown(instr->otyp);
 		break;
 	    } /* else FALLTHRU */
 	case TOOLED_HORN:		/* Awaken or scare monsters */
 	    You("produce a frightful, grave sound.");
-	    awaken_monsters(u.ulevel * 30);
+	    awaken_monsters(player.ulevel * 30);
 	    exercise(A_WIS, FALSE);
 	    break;
 	case BUGLE:			/* Awaken & attract soldiers */
@@ -397,15 +397,15 @@ STATIC_OVL int do_improvisation(Object *instr) {
 		consume_obj_charge(instr, TRUE);
 
 		pline("%s very attractive music.", Tobjnam(instr, "produce"));
-		charm_monsters((u.ulevel - 1) / 3 + 1);
+		charm_monsters((player.ulevel - 1) / 3 + 1);
 		exercise(A_DEX, TRUE);
 		break;
 	    } /* else FALLTHRU */
 	case WOODEN_HARP:		/* May calm Nymph */
-	    do_spec &= (rn2(ACURR(A_DEX)) + u.ulevel > 25);
+	    do_spec &= (rn2(ACURR(A_DEX)) + player.ulevel > 25);
 	    pline("%s %s.", The(xname(instr)),
 		  do_spec ? "produces a lilting melody" : "twangs");
-	    if (do_spec) calm_nymphs(u.ulevel * 3);
+	    if (do_spec) calm_nymphs(player.ulevel * 3);
 	    exercise(A_DEX, TRUE);
 	    break;
 	case DRUM_OF_EARTHQUAKE:	/* create several pits */
@@ -414,7 +414,7 @@ STATIC_OVL int do_improvisation(Object *instr) {
 
 		You("produce a heavy, thunderous rolling!");
 		pline_The("entire dungeon is shaking around you!");
-		do_earthquake((u.ulevel - 1) / 3 + 1);
+		do_earthquake((player.ulevel - 1) / 3 + 1);
 		/* shake up monsters in a much larger radius... */
 		awaken_monsters(ROWNO * COLNO);
 		makeknown(DRUM_OF_EARTHQUAKE);
@@ -422,7 +422,7 @@ STATIC_OVL int do_improvisation(Object *instr) {
 	    } /* else FALLTHRU */
 	case LEATHER_DRUM:		/* Awaken monsters */
 	    You("beat a deafening row!");
-	    awaken_monsters(u.ulevel * 40);
+	    awaken_monsters(player.ulevel * 40);
 	    exercise(A_WIS, FALSE);
 	    break;
 	default:
@@ -450,7 +450,7 @@ int do_play_instrument(Object *instr) {
 	c = yn("Improvise?");
     }
     if (c == 'n') {
-	if (u.uevent.uheard_tune == 2 && yn("Play the passtune?") == 'y') {
+	if (player.uevent.uheard_tune == 2 && yn("Play the passtune?") == 'y') {
 	    strcpy(buf, tune);
 	} else {
 	    getlin("What tune are you playing? [5 notes, A-G]", buf);
@@ -474,15 +474,15 @@ int do_play_instrument(Object *instr) {
 	/* Check if there was the Stronghold drawbridge near
 	 * and if the tune conforms to what we're waiting for.
 	 */
-	if(Is_stronghold(&u.uz)) {
+	if(Is_stronghold(&player.uz)) {
 	    exercise(A_WIS, TRUE);		/* just for trying */
 	    if(!strcmp(buf,tune)) {
 		/* Search for the drawbridge */
-		for(y=u.uy-1; y<=u.uy+1; y++)
-		    for(x=u.ux-1;x<=u.ux+1;x++)
+		for(y=player.uy-1; y<=player.uy+1; y++)
+		    for(x=player.ux-1;x<=player.ux+1;x++)
 			if(isok(x,y))
 			if(find_drawbridge(&x,&y)) {
-			    u.uevent.uheard_tune = 2; /* tune now fully known */
+			    player.uevent.uheard_tune = 2; /* tune now fully known */
 			    if(levl[x][y].typ == DRAWBRIDGE_DOWN)
 				close_drawbridge(x,y);
 			    else
@@ -490,13 +490,13 @@ int do_play_instrument(Object *instr) {
 			    return 0;
 			}
 	    } else if(flags.soundok) {
-		if (u.uevent.uheard_tune < 1) u.uevent.uheard_tune = 1;
+		if (player.uevent.uheard_tune < 1) player.uevent.uheard_tune = 1;
 		/* Okay, it wasn't the right tune, but perhaps
 		 * we can give the player some hints like in the
 		 * Mastermind game */
 		ok = FALSE;
-		for(y = u.uy-1; y <= u.uy+1 && !ok; y++)
-		    for(x = u.ux-1; x <= u.ux+1 && !ok; x++)
+		for(y = player.uy-1; y <= player.uy+1 && !ok; y++)
+		    for(x = player.ux-1; x <= player.ux+1 && !ok; x++)
 			if(isok(x,y))
 			if(IS_DRAWBRIDGE(levl[x][y].typ) ||
 			   is_drawbridge_wall(x,y) >= 0)
@@ -536,7 +536,7 @@ int do_play_instrument(Object *instr) {
 			/* could only get `gears == 5' by playing five
 			   correct notes followed by excess; otherwise,
 			   tune would have matched above */
-			if (gears == 5) u.uevent.uheard_tune = 2;
+			if (gears == 5) player.uevent.uheard_tune = 2;
 		    }
 		}
 	    }

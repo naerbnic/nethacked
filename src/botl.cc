@@ -89,7 +89,7 @@ const char * rank_of(int lev, short monnum, bool female) {
 
 
 STATIC_OVL const char * rank() {
-	return(rank_of(u.ulevel, Role_switch, flags.female));
+	return(rank_of(player.ulevel, Role_switch, flags.female));
 }
 
 int title_to_mon(const char *str, int *rank_indx, int *title_length) {
@@ -136,15 +136,15 @@ void max_rank_sz() {
 long botl_score() {
     int deepest = deepest_lev_reached(FALSE);
 #ifndef GOLDOBJ
-    long ugold = u.ugold + hidden_gold();
+    long ugold = player.ugold + hidden_gold();
 
-    if ((ugold -= u.ugold0) < 0L) ugold = 0L;
-    return ugold + u.urexp + (long)(50 * (deepest - 1))
+    if ((ugold -= player.ugold0) < 0L) ugold = 0L;
+    return ugold + player.urexp + (long)(50 * (deepest - 1))
 #else
     long umoney = money_cnt(invent) + hidden_gold();
 
-    if ((umoney -= u.umoney0) < 0L) umoney = 0L;
-    return umoney + u.urexp + (long)(50 * (deepest - 1))
+    if ((umoney -= player.umoney0) < 0L) umoney = 0L;
+    return umoney + player.urexp + (long)(50 * (deepest - 1))
 #endif
 			  + (long)(deepest > 30 ? 10000 :
 				   deepest > 20 ? 1000*(deepest - 20) : 0);
@@ -173,7 +173,7 @@ bot1()
 		char mbot[BUFSZ];
 		int k = 0;
 
-		strcpy(mbot, mons[u.umonnum].mname);
+		strcpy(mbot, mons[player.umonnum].mname);
 		while(mbot[k] != 0) {
 		    if ((k == 0 || (k > 0 && mbot[k-1] == ' ')) &&
 					'a' <= mbot[k] && mbot[k] <= 'z')
@@ -201,8 +201,8 @@ bot1()
 	sprintf(nb = eos(nb),
 		"Dx:%-1d Co:%-1d In:%-1d Wi:%-1d Ch:%-1d",
 		ACURR(A_DEX), ACURR(A_CON), ACURR(A_INT), ACURR(A_WIS), ACURR(A_CHA));
-	sprintf(nb = eos(nb), (u.ualign.type == A_CHAOTIC) ? "  Chaotic" :
-			(u.ualign.type == A_NEUTRAL) ? "  Neutral" : "  Lawful");
+	sprintf(nb = eos(nb), (player.ualign.type == A_CHAOTIC) ? "  Chaotic" :
+			(player.ualign.type == A_NEUTRAL) ? "  Neutral" : "  Lawful");
 #ifdef SCORE_ON_BOTL
 	if (flags.showscore)
 	    sprintf(nb = eos(nb), " S:%ld", botl_score());
@@ -223,16 +223,16 @@ int describe_level(char *buf) {
 	int ret = 1;
 
 	/* TODO:	Add in dungeon name */
-	if (Is_knox(&u.uz))
-		sprintf(buf, "%s ", dungeons[u.uz.dnum].dname);
-	else if (In_quest(&u.uz))
-		sprintf(buf, "Home %d ", dunlev(&u.uz));
-	else if (In_endgame(&u.uz))
+	if (Is_knox(&player.uz))
+		sprintf(buf, "%s ", dungeons[player.uz.dnum].dname);
+	else if (In_quest(&player.uz))
+		sprintf(buf, "Home %d ", dunlev(&player.uz));
+	else if (In_endgame(&player.uz))
 		sprintf(buf,
-			Is_astralevel(&u.uz) ? "Astral Plane " : "End Game ");
+			Is_astralevel(&player.uz) ? "Astral Plane " : "End Game ");
 	else {
 		/* ports with more room may expand this one */
-		sprintf(buf, "Dlvl:%-2d ", depth(&u.uz));
+		sprintf(buf, "Dlvl:%-2d ", depth(&player.uz));
 		ret = 0;
 	}
 	return ret;
@@ -246,8 +246,8 @@ void bot2str(char* newbot2) {
 #endif
 	int cap = near_capacity();
 
-	hp = Upolyd ? u.mh : u.uhp;
-	hpmax = Upolyd ? u.mhmax : u.uhpmax;
+	hp = Upolyd ? player.mh : player.uhp;
+	hpmax = Upolyd ? player.mhmax : player.uhpmax;
 
 	if(hp < 0) hp = 0;
 	(void) describe_level(newbot2);
@@ -255,7 +255,7 @@ void bot2str(char* newbot2) {
 #ifdef HPMON
 		"%c:%-2ld HP:", oc_syms[COIN_CLASS],
 #ifndef GOLDOBJ
-		u.ugold
+		player.ugold
 #else
 		money_cnt(invent)
 #endif
@@ -263,11 +263,11 @@ void bot2str(char* newbot2) {
 #else /* HPMON */
 		"%c:%-2ld HP:%d(%d) Pw:%d(%d) AC:%-2d", oc_syms[COIN_CLASS],
 #ifndef GOLDOBJ
-		u.ugold,
+		player.ugold,
 #else
 		money_cnt(invent),
 #endif
-		hp, hpmax, u.uen, u.uenmax, u.uac);
+		hp, hpmax, player.uen, player.uenmax, player.uac);
 #endif /* HPMON */
 #ifdef HPMON
 	curs(WIN_STATUS, 1, 1);
@@ -299,17 +299,17 @@ void bot2str(char* newbot2) {
 	}
 #endif /* TEXTCOLOR */
 	sprintf(nb = eos(newbot2), " Pw:%d(%d) AC:%-2d",
-		u.uen, u.uenmax, u.uac);
+		player.uen, player.uenmax, player.uac);
 #endif /* HPMON */
 
 	if (Upolyd)
-		sprintf(nb = eos(nb), " HD:%d", mons[u.umonnum].mlevel);
+		sprintf(nb = eos(nb), " HD:%d", mons[player.umonnum].mlevel);
 #ifdef EXP_ON_BOTL
 	else if(flags.showexp)
-		sprintf(nb = eos(nb), " Xp:%u/%-1ld", u.ulevel,u.uexp);
+		sprintf(nb = eos(nb), " Xp:%u/%-1ld", player.ulevel,player.uexp);
 #endif
 	else
-		sprintf(nb = eos(nb), " Exp:%u", u.ulevel);
+		sprintf(nb = eos(nb), " Exp:%u", player.ulevel);
 
 	if(flags.time)
 	    sprintf(nb = eos(nb), " T:%ld", moves);
@@ -322,15 +322,15 @@ void bot2str(char* newbot2) {
   }
 #endif
 
-	if(strcmp(hu_stat[u.uhs], "        ")) {
+	if(strcmp(hu_stat[player.uhs], "        ")) {
 		sprintf(nb = eos(nb), " ");
-		strcat(newbot2, hu_stat[u.uhs]);
+		strcat(newbot2, hu_stat[player.uhs]);
 	}
 	if(Confusion)	   sprintf(nb = eos(nb), " Conf");
 	if(Sick) {
-		if (u.usick_type & SICK_VOMITABLE)
+		if (player.usick_type & SICK_VOMITABLE)
 			   sprintf(nb = eos(nb), " FoodPois");
-		if (u.usick_type & SICK_NONVOMITABLE)
+		if (player.usick_type & SICK_NONVOMITABLE)
 			   sprintf(nb = eos(nb), " Ill");
 	}
 	if(Blind)	   sprintf(nb = eos(nb), " Blind");

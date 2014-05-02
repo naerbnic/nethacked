@@ -89,7 +89,7 @@ STATIC_OVL void on_msg(Object *otmp) {
 STATIC_PTR
 int Boots_on() {
     long oldprop =
-	u.uprops[objects[uarmf->otyp].oc_oprop].extrinsic & ~WORN_BOOTS;
+	player.uprops[objects[uarmf->otyp].oc_oprop].extrinsic & ~WORN_BOOTS;
 
     switch(uarmf->otyp) {
 	case LOW_BOOTS:
@@ -99,7 +99,7 @@ int Boots_on() {
 	case KICKING_BOOTS:
 		break;
 	case WATER_WALKING_BOOTS:
-		if (u.uinwater) spoteffects(TRUE);
+		if (player.uinwater) spoteffects(TRUE);
 		break;
 	case SPEED_BOOTS:
 		/* Speed boots are still better than intrinsic speed, */
@@ -134,7 +134,7 @@ int Boots_on() {
 
 int Boots_off() {
     int otyp = uarmf->otyp;
-    long oldprop = u.uprops[objects[otyp].oc_oprop].extrinsic & ~WORN_BOOTS;
+    long oldprop = player.uprops[objects[otyp].oc_oprop].extrinsic & ~WORN_BOOTS;
 
     takeoff_mask &= ~W_ARMF;
 	/* For levitation, float_down() returns if Levitation, so we
@@ -150,7 +150,7 @@ int Boots_off() {
 		}
 		break;
 	case WATER_WALKING_BOOTS:
-		if (is_pool(u.ux,u.uy) && !Levitation && !Flying &&
+		if (is_pool(player.ux,player.uy) && !Levitation && !Flying &&
 		    !is_clinger(youmonst.data) && !cancelled_don) {
 			makeknown(otyp);
 			/* make boots known in case you survive the drowning */
@@ -187,7 +187,7 @@ int Boots_off() {
 
 STATIC_OVL int Cloak_on() {
     long oldprop =
-	u.uprops[objects[uarmc->otyp].oc_oprop].extrinsic & ~WORN_CLOAK;
+	player.uprops[objects[uarmc->otyp].oc_oprop].extrinsic & ~WORN_CLOAK;
 
     switch(uarmc->otyp) {
 	case ELVEN_CLOAK:
@@ -204,7 +204,7 @@ STATIC_OVL int Cloak_on() {
 	case MUMMY_WRAPPING:
 		/* Note: it's already being worn, so we have to cheat here. */
 		if ((HInvis || EInvis || pm_invisible(youmonst.data)) && !Blind) {
-		    newsym(u.ux,u.uy);
+		    newsym(player.ux,player.uy);
 		    You("can %s!",
 			See_invisible ? "no longer see through yourself"
 			: see_yourself);
@@ -215,7 +215,7 @@ STATIC_OVL int Cloak_on() {
 		   wasn't, so no need to check `oldprop' against blocked */
 		if (!oldprop && !HInvis && !Blind) {
 		    makeknown(uarmc->otyp);
-		    newsym(u.ux,u.uy);
+		    newsym(player.ux,player.uy);
 		    pline("Suddenly you can%s yourself.",
 			See_invisible ? " see through" : "not see");
 		}
@@ -234,7 +234,7 @@ STATIC_OVL int Cloak_on() {
 
 int Cloak_off() {
     int otyp = uarmc->otyp;
-    long oldprop = u.uprops[objects[otyp].oc_oprop].extrinsic & ~WORN_CLOAK;
+    long oldprop = player.uprops[objects[otyp].oc_oprop].extrinsic & ~WORN_CLOAK;
 
     takeoff_mask &= ~W_ARMC;
 	/* For mummy wrapping, taking it off first resets `Invisible'. */
@@ -252,7 +252,7 @@ int Cloak_off() {
 		break;
 	case MUMMY_WRAPPING:
 		if (Invis && !Blind) {
-		    newsym(u.ux,u.uy);
+		    newsym(player.ux,player.uy);
 		    You("can %s.",
 			See_invisible ? "see through yourself"
 			: "no longer see yourself");
@@ -261,7 +261,7 @@ int Cloak_off() {
 	case CLOAK_OF_INVISIBILITY:
 		if (!oldprop && !HInvis && !Blind) {
 		    makeknown(CLOAK_OF_INVISIBILITY);
-		    newsym(u.ux,u.uy);
+		    newsym(player.ux,player.uy);
 		    pline("Suddenly you can %s.",
 			See_invisible ? "no longer see through yourself"
 			: see_yourself);
@@ -300,10 +300,10 @@ int Helmet_on() {
 		makeknown(uarmh->otyp);
 		break;
 	case HELM_OF_OPPOSITE_ALIGNMENT:
-		if (u.ualign.type == A_NEUTRAL)
-		    u.ualign.type = rn2(2) ? A_CHAOTIC : A_LAWFUL;
-		else u.ualign.type = -(u.ualign.type);
-		u.ublessed = 0; /* lose your god's protection */
+		if (player.ualign.type == A_NEUTRAL)
+		    player.ualign.type = rn2(2) ? A_CHAOTIC : A_LAWFUL;
+		else player.ualign.type = -(player.ualign.type);
+		player.ublessed = 0; /* lose your god's protection */
 	     /* makeknown(uarmh->otyp);   -- moved below, after xname() */
 		/*FALLTHRU*/
 	case DUNCE_CAP:
@@ -361,8 +361,8 @@ int Helmet_off() {
 	    if (!cancelled_don) adj_abon(uarmh, -uarmh->spe);
 	    break;
 	case HELM_OF_OPPOSITE_ALIGNMENT:
-	    u.ualign.type = u.ualignbase[A_CURRENT];
-	    u.ublessed = 0; /* lose the other god's protection */
+	    player.ualign.type = player.ualignbase[A_CURRENT];
+	    player.ublessed = 0; /* lose the other god's protection */
 	    flags.botl = 1;
 	    break;
 	default: impossible(unknown_type, c_helmet, uarmh->otyp);
@@ -375,7 +375,7 @@ int Helmet_off() {
 STATIC_PTR
 int Gloves_on() {
     long oldprop =
-	u.uprops[objects[uarmg->otyp].oc_oprop].extrinsic & ~WORN_GLOVES;
+	player.uprops[objects[uarmg->otyp].oc_oprop].extrinsic & ~WORN_GLOVES;
 
     switch(uarmg->otyp) {
 	case LEATHER_GLOVES:
@@ -398,7 +398,7 @@ int Gloves_on() {
 
 int Gloves_off() {
     long oldprop =
-	u.uprops[objects[uarmg->otyp].oc_oprop].extrinsic & ~WORN_GLOVES;
+	player.uprops[objects[uarmg->otyp].oc_oprop].extrinsic & ~WORN_GLOVES;
 
     takeoff_mask &= ~W_ARMG;
 
@@ -435,7 +435,7 @@ int Gloves_off() {
     }
 
     /* KMH -- ...or your secondary weapon when you're wielding it */
-    if (u.twoweap && uswapwep && uswapwep->otyp == CORPSE &&
+    if (player.twoweap && uswapwep && uswapwep->otyp == CORPSE &&
 	touch_petrifies(&mons[uswapwep->corpsenm])) {
 	char kbuf[BUFSZ];
 
@@ -640,7 +640,7 @@ void Amulet_off() {
 }
 
 void Ring_on(Object *obj) {
-    long oldprop = u.uprops[objects[obj->otyp].oc_oprop].extrinsic;
+    long oldprop = player.uprops[objects[obj->otyp].oc_oprop].extrinsic;
     int old_attrib, which;
 
     if (obj == uwep) setuwep((Object *) 0);
@@ -684,7 +684,7 @@ void Ring_on(Object *obj) {
 
 		if (Invis && !oldprop && !HSee_invisible &&
 				!perceives(youmonst.data) && !Blind) {
-		    newsym(u.ux,u.uy);
+		    newsym(player.ux,player.uy);
 		    pline("Suddenly you are transparent, but there!");
 		    makeknown(RIN_SEE_INVISIBLE);
 		}
@@ -692,7 +692,7 @@ void Ring_on(Object *obj) {
 	case RIN_INVISIBILITY:
 		if (!oldprop && !HInvis && !BInvis && !Blind) {
 		    makeknown(RIN_INVISIBILITY);
-		    newsym(u.ux,u.uy);
+		    newsym(player.ux,player.uy);
 		    self_invis_message();
 		}
 		break;
@@ -724,10 +724,10 @@ void Ring_on(Object *obj) {
 		}
 		break;
 	case RIN_INCREASE_ACCURACY:	/* KMH */
-		u.uhitinc += obj->spe;
+		player.uhitinc += obj->spe;
 		break;
 	case RIN_INCREASE_DAMAGE:
-		u.udaminc += obj->spe;
+		player.udaminc += obj->spe;
 		break;
 	case RIN_PROTECTION_FROM_SHAPE_CHAN:
 		rescham();
@@ -748,7 +748,7 @@ STATIC_OVL void Ring_off_or_gone(Object *obj, bool gone) {
     int old_attrib, which;
 
     takeoff_mask &= ~mask;
-    if(!(u.uprops[objects[obj->otyp].oc_oprop].extrinsic & mask))
+    if(!(player.uprops[objects[obj->otyp].oc_oprop].extrinsic & mask))
 	impossible("Strange... I didn't know you had that ring.");
     if(gone) setnotworn(obj);
     else setworn(nullptr, obj->owornmask);
@@ -787,14 +787,14 @@ STATIC_OVL void Ring_off_or_gone(Object *obj, bool gone) {
 		}
 
 		if (Invisible && !Blind) {
-		    newsym(u.ux,u.uy);
+		    newsym(player.ux,player.uy);
 		    pline("Suddenly you cannot see yourself.");
 		    makeknown(RIN_SEE_INVISIBLE);
 		}
 		break;
 	case RIN_INVISIBILITY:
 		if (!Invis && !BInvis && !Blind) {
-		    newsym(u.ux,u.uy);
+		    newsym(player.ux,player.uy);
 		    Your("body seems to unfade%s.",
 			 See_invisible ? " completely" : "..");
 		    makeknown(RIN_INVISIBILITY);
@@ -823,10 +823,10 @@ STATIC_OVL void Ring_off_or_gone(Object *obj, bool gone) {
 		}
 		break;
 	case RIN_INCREASE_ACCURACY:	/* KMH */
-		u.uhitinc -= obj->spe;
+		player.uhitinc -= obj->spe;
 		break;
 	case RIN_INCREASE_DAMAGE:
-		u.udaminc -= obj->spe;
+		player.udaminc -= obj->spe;
 		break;
 	case RIN_PROTECTION:
 		/* might have forgotten it due to amnesia */
@@ -1232,7 +1232,7 @@ int canwearobj(Object *otmp, long *mask, bool noisy) {
 		    is_sword(uwep) ? c_sword :
 		    (uwep->otyp == BATTLE_AXE) ? c_axe : c_weapon);
 	    err++;
-	} else if (u.twoweap) {
+	} else if (player.twoweap) {
 	    if (noisy)
 		You("cannot wear a shield while wielding two weapons.");
 	    err++;
@@ -1252,14 +1252,14 @@ int canwearobj(Object *otmp, long *mask, bool noisy) {
 			     c_boots);	/* makeplural(body_part(FOOT)) yields
 					   "rear hooves" which sounds odd */
 	    err++;
-	} else if (u.utrap && (u.utraptype == TT_BEARTRAP ||
-				u.utraptype == TT_INFLOOR)) {
-	    if (u.utraptype == TT_BEARTRAP) {
+	} else if (player.utrap && (player.utraptype == TT_BEARTRAP ||
+				player.utraptype == TT_INFLOOR)) {
+	    if (player.utraptype == TT_BEARTRAP) {
 		if (noisy) Your("%s is trapped!", body_part(FOOT));
 	    } else {
 		if (noisy) Your("%s are stuck in the %s!",
 				makeplural(body_part(FOOT)),
-				surface(u.ux, u.uy));
+				surface(player.ux, player.uy));
 	    }
 	    err++;
 	} else
@@ -1342,12 +1342,12 @@ int dowear() {
 	    return 1;	/* costs a turn even though it didn't get worn */
 
 	if (otmp->otyp == HELM_OF_OPPOSITE_ALIGNMENT &&
-			qstart_level.dnum == u.uz.dnum) {	/* in quest */
-		if (u.ualignbase[A_CURRENT] == u.ualignbase[A_ORIGINAL])
+			qstart_level.dnum == player.uz.dnum) {	/* in quest */
+		if (player.ualignbase[A_CURRENT] == player.ualignbase[A_ORIGINAL])
 			You("narrowly avoid losing all chance at your goal.");
 		else	/* converted */
 			You("are suddenly overcome with shame and change your mind.");
-		u.ublessed = 0; /* lose your god's protection */
+		player.ublessed = 0; /* lose your god's protection */
 		makeknown(otmp->otyp);
 		flags.botl = 1;
 		return 1;
@@ -1512,7 +1512,7 @@ int doputon() {
 #ifdef OVL0
 
 void find_ac() {
-	int uac = mons[u.umonnum].ac;
+	int uac = mons[player.umonnum].ac;
 
 	if(uarm) uac -= ARM_BONUS(uarm);
 	if(uarmc) uac -= ARM_BONUS(uarmc);
@@ -1525,11 +1525,11 @@ void find_ac() {
 #endif
 	if(uleft && uleft->otyp == RIN_PROTECTION) uac -= uleft->spe;
 	if(uright && uright->otyp == RIN_PROTECTION) uac -= uright->spe;
-	if (HProtection & INTRINSIC) uac -= u.ublessed;
-	uac -= u.uspellprot;
-	if (uac < -128) uac = -128;	/* u.uac is an schar */
-	if(uac != u.uac){
-		u.uac = uac;
+	if (HProtection & INTRINSIC) uac -= player.ublessed;
+	uac -= player.uspellprot;
+	if (uac < -128) uac = -128;	/* player.uac is an schar */
+	if(uac != player.uac){
+		player.uac = uac;
 		flags.botl = 1;
 	}
 }
@@ -1566,7 +1566,7 @@ void glibr() {
 	}
 
 	otmp = uswapwep;
-	if (u.twoweap && otmp) {
+	if (player.twoweap && otmp) {
 		otherwep = is_sword(otmp) ? c_sword :
 		    makesingular(oclass_names[(int)otmp->oclass]);
 		Your("%s %sslips from your %s.",
@@ -1701,13 +1701,13 @@ int select_off(Object *otmp) {
 	}
 	/* special boot checks */
 	if (otmp == uarmf) {
-	    if (u.utrap && u.utraptype == TT_BEARTRAP) {
+	    if (player.utrap && player.utraptype == TT_BEARTRAP) {
 		pline_The("bear trap prevents you from pulling your %s out.",
 			  body_part(FOOT));
 		return 0;
-	    } else if (u.utrap && u.utraptype == TT_INFLOOR) {
+	    } else if (player.utrap && player.utraptype == TT_INFLOOR) {
 		You("are stuck in the %s, and cannot pull your %s out.",
-		    surface(u.ux, u.uy), makeplural(body_part(FOOT)));
+		    surface(player.ux, player.uy), makeplural(body_part(FOOT)));
 		return 0;
 	    }
 	}
@@ -1739,7 +1739,7 @@ int select_off(Object *otmp) {
 	    }
 	}
 	/* basic curse check */
-	if (otmp == uquiver || (otmp == uswapwep && !u.twoweap)) {
+	if (otmp == uquiver || (otmp == uswapwep && !player.twoweap)) {
 	    ;	/* some items can be removed even when cursed */
 	} else {
 	    /* otherwise, this is fundamental */
@@ -1775,12 +1775,12 @@ STATIC_OVL Object * do_takeoff() {
 	  if(!cursed(uwep)) {
 	    setuwep((Object *) 0);
 	    You("are empty %s.", body_part(HANDED));
-	    u.twoweap = FALSE;
+	    player.twoweap = FALSE;
 	  }
 	} else if (taking_off == W_SWAPWEP) {
 	  setuswapwep((Object *) 0);
 	  You("no longer have a second weapon readied.");
-	  u.twoweap = FALSE;
+	  player.twoweap = FALSE;
 	} else if (taking_off == W_QUIVER) {
 	  setuqwep((Object *) 0);
 	  You("no longer have ammunition readied.");
@@ -2004,7 +2004,7 @@ int destroy_arm(Object *atmp) {
 	} else if (DESTROY_ARM(uarm)) {
 		if (donning(otmp)) cancel_don();
 		Your("armor turns to dust and falls to the %s!",
-			surface(u.ux,u.uy));
+			surface(player.ux,player.uy));
 		(void) Armor_gone();
 		useup(otmp);
 #ifdef TOURIST

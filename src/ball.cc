@@ -12,7 +12,7 @@ STATIC_DCL void litter();
 void ballfall() {
 	bool gets_hit;
 
-	gets_hit = (((uball->ox != u.ux) || (uball->oy != u.uy)) &&
+	gets_hit = (((uball->ox != player.ux) || (uball->oy != player.uy)) &&
 		    ((uwep == uball)? FALSE : (bool)rn2(5)));
 	if (carried(uball)) {
 		pline("Startled, you drop the iron ball.");
@@ -66,19 +66,19 @@ void ballfall() {
 
 /*
  * from you.h
- *	int u.bglyph		glyph under the ball
- *	int u.cglyph		glyph under the chain
- *	int u.bc_felt		mask for ball/chain being felt
- *	#define BC_BALL  0x01	bit mask in u.bc_felt for ball
- *	#define BC_CHAIN 0x02	bit mask in u.bc_felt for chain
- *	int u.bc_order		ball & chain order
+ *	int player.bglyph		glyph under the ball
+ *	int player.cglyph		glyph under the chain
+ *	int player.bc_felt		mask for ball/chain being felt
+ *	#define BC_BALL  0x01	bit mask in player.bc_felt for ball
+ *	#define BC_CHAIN 0x02	bit mask in player.bc_felt for chain
+ *	int player.bc_order		ball & chain order
  *
- * u.bc_felt is also manipulated in display.c and read.c, the others only
+ * player.bc_felt is also manipulated in display.c and read.c, the others only
  * in this file.  None of these variables are valid unless the player is
  * Blind.
  */
 
-/* values for u.bc_order */
+/* values for player.bc_order */
 #define BCPOS_DIFFER	0	/* ball & chain at different positions */
 #define BCPOS_CHAIN	1	/* chain on top of ball */
 #define BCPOS_BALL	2	/* ball on top of chain */
@@ -99,40 +99,40 @@ void placebc() {
 	return;
     }
 
-    (void) flooreffects(uchain, u.ux, u.uy, "");	/* chain might rust */
+    (void) flooreffects(uchain, player.ux, player.uy, "");	/* chain might rust */
 
     if (carried(uball))		/* the ball is carried */
-	u.bc_order = BCPOS_DIFFER;
+	player.bc_order = BCPOS_DIFFER;
     else {
 	/* ball might rust -- already checked when carried */
-	(void) flooreffects(uball, u.ux, u.uy, "");
-	place_object(uball, u.ux, u.uy);
-	u.bc_order = BCPOS_CHAIN;
+	(void) flooreffects(uball, player.ux, player.uy, "");
+	place_object(uball, player.ux, player.uy);
+	player.bc_order = BCPOS_CHAIN;
     }
 
-    place_object(uchain, u.ux, u.uy);
+    place_object(uchain, player.ux, player.uy);
 
-    u.bglyph = u.cglyph = levl[u.ux][u.uy].glyph;   /* pick up glyph */
+    player.bglyph = player.cglyph = levl[player.ux][player.uy].glyph;   /* pick up glyph */
 
-    newsym(u.ux,u.uy);
+    newsym(player.ux,player.uy);
 }
 
 void unplacebc() {
-    if (u.uswallow) return;	/* ball&chain not placed while swallowed */
+    if (player.uswallow) return;	/* ball&chain not placed while swallowed */
 
     if (!carried(uball)) {
 	obj_extract_self(uball);
-	if (Blind && (u.bc_felt & BC_BALL))		/* drop glyph */
-	    levl[uball->ox][uball->oy].glyph = u.bglyph;
+	if (Blind && (player.bc_felt & BC_BALL))		/* drop glyph */
+	    levl[uball->ox][uball->oy].glyph = player.bglyph;
 
 	newsym(uball->ox,uball->oy);
     }
     obj_extract_self(uchain);
-    if (Blind && (u.bc_felt & BC_CHAIN))		/* drop glyph */
-	levl[uchain->ox][uchain->oy].glyph = u.cglyph;
+    if (Blind && (player.bc_felt & BC_CHAIN))		/* drop glyph */
+	levl[uchain->ox][uchain->oy].glyph = player.cglyph;
 
     newsym(uchain->ox,uchain->oy);
-    u.bc_felt = 0;					/* feel nothing */
+    player.bc_felt = 0;					/* feel nothing */
 }
 
 
@@ -144,7 +144,7 @@ STATIC_OVL int bc_order() {
     Object *obj;
 
     if (uchain->ox != uball->ox || uchain->oy != uball->oy || carried(uball)
-		|| u.uswallow)
+		|| player.uswallow)
 	return BCPOS_DIFFER;
 
     for (obj = level.objects[uball->ox][uball->oy]; obj; obj = obj->nexthere) {
@@ -164,11 +164,11 @@ STATIC_OVL int bc_order() {
 void set_bc(int already_blind) {
     int ball_on_floor = !carried(uball);
 
-    u.bc_order = bc_order();				/* get the order */
-    u.bc_felt = ball_on_floor ? BC_BALL|BC_CHAIN : BC_CHAIN;	/* felt */
+    player.bc_order = bc_order();				/* get the order */
+    player.bc_felt = ball_on_floor ? BC_BALL|BC_CHAIN : BC_CHAIN;	/* felt */
 
-    if (already_blind || u.uswallow) {
-	u.cglyph = u.bglyph = levl[u.ux][u.uy].glyph;
+    if (already_blind || player.uswallow) {
+	player.cglyph = player.bglyph = levl[player.ux][player.uy].glyph;
 	return;
     }
 
@@ -181,20 +181,20 @@ void set_bc(int already_blind) {
     if (ball_on_floor) remove_object(uball);
 
     newsym(uchain->ox, uchain->oy);
-    u.cglyph = levl[uchain->ox][uchain->oy].glyph;
+    player.cglyph = levl[uchain->ox][uchain->oy].glyph;
 
-    if (u.bc_order == BCPOS_DIFFER) {		/* different locations */
+    if (player.bc_order == BCPOS_DIFFER) {		/* different locations */
 	place_object(uchain, uchain->ox, uchain->oy);
 	newsym(uchain->ox, uchain->oy);
 	if (ball_on_floor) {
 	    newsym(uball->ox, uball->oy);		/* see under ball */
-	    u.bglyph = levl[uball->ox][uball->oy].glyph;
+	    player.bglyph = levl[uball->ox][uball->oy].glyph;
 	    place_object(uball,  uball->ox, uball->oy);
 	    newsym(uball->ox, uball->oy);		/* restore ball */
 	}
     } else {
-	u.bglyph = u.cglyph;
-	if (u.bc_order == BCPOS_CHAIN) {
+	player.bglyph = player.cglyph;
+	if (player.bc_order == BCPOS_CHAIN) {
 	    place_object(uball,  uball->ox, uball->oy);
 	    place_object(uchain, uchain->ox, uchain->oy);
 	} else {
@@ -233,58 +233,58 @@ void move_bc(int before, int control, xchar ballx, xchar bally, xchar chainx, xc
 		/*
 		 *  Both ball and chain moved.  If felt, drop glyph.
 		 */
-		if (u.bc_felt & BC_BALL)
-		    levl[uball->ox][uball->oy].glyph = u.bglyph;
-		if (u.bc_felt & BC_CHAIN)
-		    levl[uchain->ox][uchain->oy].glyph = u.cglyph;
-		u.bc_felt = 0;
+		if (player.bc_felt & BC_BALL)
+		    levl[uball->ox][uball->oy].glyph = player.bglyph;
+		if (player.bc_felt & BC_CHAIN)
+		    levl[uchain->ox][uchain->oy].glyph = player.cglyph;
+		player.bc_felt = 0;
 
 		/* Pick up glyph at new location. */
-		u.bglyph = levl[ballx][bally].glyph;
-		u.cglyph = levl[chainx][chainy].glyph;
+		player.bglyph = levl[ballx][bally].glyph;
+		player.cglyph = levl[chainx][chainy].glyph;
 
 		movobj(uball,ballx,bally);
 		movobj(uchain,chainx,chainy);
 	    } else if (control & BC_BALL) {
-		if (u.bc_felt & BC_BALL) {
-		    if (u.bc_order == BCPOS_DIFFER) {	/* ball by itself */
-			levl[uball->ox][uball->oy].glyph = u.bglyph;
-		    } else if (u.bc_order == BCPOS_BALL) {
-			if (u.bc_felt & BC_CHAIN) {   /* know chain is there */
+		if (player.bc_felt & BC_BALL) {
+		    if (player.bc_order == BCPOS_DIFFER) {	/* ball by itself */
+			levl[uball->ox][uball->oy].glyph = player.bglyph;
+		    } else if (player.bc_order == BCPOS_BALL) {
+			if (player.bc_felt & BC_CHAIN) {   /* know chain is there */
 			    map_object(uchain, 0);
 			} else {
-			    levl[uball->ox][uball->oy].glyph = u.bglyph;
+			    levl[uball->ox][uball->oy].glyph = player.bglyph;
 			}
 		    }
-		    u.bc_felt &= ~BC_BALL;	/* no longer feel the ball */
+		    player.bc_felt &= ~BC_BALL;	/* no longer feel the ball */
 		}
 
 		/* Pick up glyph at new position. */
-		u.bglyph = (ballx != chainx || bally != chainy) ?
-					levl[ballx][bally].glyph : u.cglyph;
+		player.bglyph = (ballx != chainx || bally != chainy) ?
+					levl[ballx][bally].glyph : player.cglyph;
 
 		movobj(uball,ballx,bally);
 	    } else if (control & BC_CHAIN) {
-		if (u.bc_felt & BC_CHAIN) {
-		    if (u.bc_order == BCPOS_DIFFER) {
-			levl[uchain->ox][uchain->oy].glyph = u.cglyph;
-		    } else if (u.bc_order == BCPOS_CHAIN) {
-			if (u.bc_felt & BC_BALL) {
+		if (player.bc_felt & BC_CHAIN) {
+		    if (player.bc_order == BCPOS_DIFFER) {
+			levl[uchain->ox][uchain->oy].glyph = player.cglyph;
+		    } else if (player.bc_order == BCPOS_CHAIN) {
+			if (player.bc_felt & BC_BALL) {
 			    map_object(uball, 0);
 			} else {
-			    levl[uchain->ox][uchain->oy].glyph = u.cglyph;
+			    levl[uchain->ox][uchain->oy].glyph = player.cglyph;
 			}
 		    }
-		    u.bc_felt &= ~BC_CHAIN;
+		    player.bc_felt &= ~BC_CHAIN;
 		}
 		/* Pick up glyph at new position. */
-		u.cglyph = (ballx != chainx || bally != chainy) ?
-					levl[chainx][chainy].glyph : u.bglyph;
+		player.cglyph = (ballx != chainx || bally != chainy) ?
+					levl[chainx][chainy].glyph : player.bglyph;
 
 		movobj(uchain,chainx,chainy);
 	    }
 
-	    u.bc_order = bc_order();	/* reset the order */
+	    player.bc_order = bc_order();	/* reset the order */
 	}
 
     } else {
@@ -297,10 +297,10 @@ void move_bc(int before, int control, xchar ballx, xchar bally, xchar chainx, xc
 	    if (!control) {
 		/*
 		 * Neither ball nor chain is moving, so remember which was
-		 * on top until !before.  Use the variable u.bc_order
+		 * on top until !before.  Use the variable player.bc_order
 		 * since it is only valid when blind.
 		 */
-		u.bc_order = bc_order();
+		player.bc_order = bc_order();
 	    }
 
 	    remove_object(uchain);
@@ -313,7 +313,7 @@ void move_bc(int before, int control, xchar ballx, xchar bally, xchar chainx, xc
 	    int on_floor = !carried(uball);
 
 	    if ((control & BC_CHAIN) ||
-				(!control && u.bc_order == BCPOS_CHAIN)) {
+				(!control && player.bc_order == BCPOS_CHAIN)) {
 		/* If the chain moved or nothing moved & chain on top. */
 		if (on_floor) place_object(uball,  ballx, bally);
 		place_object(uchain, chainx, chainy);	/* chain on top */
@@ -371,8 +371,8 @@ bool drag_ball(
 	    if (carried(uball)) {
 		/* move chain only if necessary */
 		if (distmin(x, y, uchain->ox, uchain->oy) > 1) {
-		    *chainx = u.ux;
-		    *chainy = u.uy;
+		    *chainx = player.ux;
+		    *chainy = player.uy;
 		}
 		return TRUE;
 	    }
@@ -390,7 +390,7 @@ bool drag_ball(
 #define SKIP_TO_DRAG { *chainx = oldchainx; *chainy = oldchainy; \
     move_bc(0, *bc_control, *ballx, *bally, *chainx, *chainy); \
     goto drag; } 
-	    if (IS_CHAIN_ROCK(u.ux, u.uy) || IS_CHAIN_ROCK(*chainx, *chainy)
+	    if (IS_CHAIN_ROCK(player.ux, player.uy) || IS_CHAIN_ROCK(*chainx, *chainy)
 			|| IS_CHAIN_ROCK(uball->ox, uball->oy))
 		already_in_rock = TRUE;
 	    else
@@ -434,7 +434,7 @@ bool drag_ball(
 			     *   _X  move northeast  ----->  X@
 			     *    @
 			     */
-			    if (dist2(u.ux, u.uy, uball->ox, uball->oy) == 5 &&
+			    if (dist2(player.ux, player.uy, uball->ox, uball->oy) == 5 &&
 				  dist2(x, y, tempx, tempy) == 1)
 				SKIP_TO_DRAG;
 			    /* Avoid pathological case *if* not teleporting:
@@ -442,7 +442,7 @@ bool drag_ball(
 			     *   _X  move east       ----->  X_
 			     *    @			      @
 			     */
-			    if (dist2(u.ux, u.uy, uball->ox, uball->oy) == 4 &&
+			    if (dist2(player.ux, player.uy, uball->ox, uball->oy) == 4 &&
 				  dist2(x, y, tempx, tempy) == 2)
 				SKIP_TO_DRAG;
 			}
@@ -452,10 +452,10 @@ bool drag_ball(
 				IS_CHAIN_ROCK(tempx2, tempy2) &&
 				!already_in_rock) {
 			if (allow_drag) {
-			    if (dist2(u.ux, u.uy, uball->ox, uball->oy) == 5 &&
+			    if (dist2(player.ux, player.uy, uball->ox, uball->oy) == 5 &&
 				    dist2(x, y, tempx2, tempy2) == 1)
 				SKIP_TO_DRAG;
-			    if (dist2(u.ux, u.uy, uball->ox, uball->oy) == 4 &&
+			    if (dist2(player.ux, player.uy, uball->ox, uball->oy) == 4 &&
 				  dist2(x, y, tempx2, tempy2) == 2)
 				SKIP_TO_DRAG;
 			}
@@ -515,9 +515,9 @@ bool drag_ball(
 		    if (CHAIN_IN_MIDDLE(uchain->ox, uchain->oy))
 			break;
 		    /* otherwise try to drag chain to player's old position */
-		    if (CHAIN_IN_MIDDLE(u.ux, u.uy)) {
-			*chainx = u.ux;
-			*chainy = u.uy;
+		    if (CHAIN_IN_MIDDLE(player.ux, player.uy)) {
+			*chainx = player.ux;
+			*chainy = player.uy;
 			break;
 		    }
 		    /* otherwise use player's new position (they must have
@@ -537,7 +537,7 @@ bool drag_ball(
 
 drag:
 
-	if (near_capacity() > SLT_ENCUMBER && dist2(x, y, u.ux, u.uy) <= 2) {
+	if (near_capacity() > SLT_ENCUMBER && dist2(x, y, player.ux, player.uy) <= 2) {
 	    You("cannot %sdrag the heavy iron ball.",
 			    invent ? "carry all that and also " : "");
 	    nomul(0, 0);
@@ -574,9 +574,9 @@ drag:
 
 		}		/* now check again in case mon died */
 		if (!m_at(uchain->ox, uchain->oy)) {
-		    u.ux = uchain->ox;
-		    u.uy = uchain->oy;
-		    newsym(u.ux0, u.uy0);
+		    player.ux = uchain->ox;
+		    player.uy = uchain->oy;
+		    newsym(player.ux0, player.uy0);
 		}
 		nomul(0, 0);
 
@@ -593,7 +593,7 @@ drag:
 	*bc_control = BC_BALL|BC_CHAIN;
 
 	move_bc(1, *bc_control, *ballx, *bally, *chainx, *chainy);
-	if (dist2(x, y, u.ux, u.uy) > 2) {
+	if (dist2(x, y, player.ux, player.uy) > 2) {
 	    /* Awful case: we're still in range of the ball, so we thought we
 	     * could only move the chain, but it turned out that the target
 	     * square for the chain was rock, so we had to drag it instead.
@@ -606,8 +606,8 @@ drag:
 	} else {
 	    *ballx  = uchain->ox;
 	    *bally  = uchain->oy;
-	    *chainx = u.ux;
-	    *chainy = u.uy;
+	    *chainx = player.ux;
+	    *chainy = player.uy;
 	}
 	*cause_delay = TRUE;
 	return TRUE;
@@ -624,24 +624,24 @@ drag:
  */
 void drop_ball(xchar x, xchar y) {
     if (Blind) {
-	u.bc_order = bc_order();			/* get the order */
+	player.bc_order = bc_order();			/* get the order */
 							/* pick up glyph */
-	u.bglyph = (u.bc_order) ? u.cglyph : levl[x][y].glyph;
+	player.bglyph = (player.bc_order) ? player.cglyph : levl[x][y].glyph;
     }
 
-    if (x != u.ux || y != u.uy) {
+    if (x != player.ux || y != player.uy) {
 	Trap *t;
 	const char *pullmsg = "The ball pulls you out of the %s!";
 
-	if (u.utrap && u.utraptype != TT_INFLOOR) {
-	    switch(u.utraptype) {
+	if (player.utrap && player.utraptype != TT_INFLOOR) {
+	    switch(player.utraptype) {
 	    case TT_PIT:
 		pline(pullmsg, "pit");
 		break;
 	    case TT_WEB:
 		pline(pullmsg, "web");
 		pline_The("web is destroyed!");
-		deltrap(t_at(u.ux,u.uy));
+		deltrap(t_at(player.ux,player.uy));
 		break;
 	    case TT_LAVA:
 		pline(pullmsg, "lava");
@@ -651,7 +651,7 @@ void drop_ball(xchar x, xchar y) {
 		pline(pullmsg, "bear trap");
 		set_wounded_legs(side, rn1(1000, 500));
 #ifdef STEED
-		if (!u.usteed)
+		if (!player.usteed)
 #endif
 		{
 		    Your("%s %s is severely damaged.",
@@ -663,41 +663,41 @@ void drop_ball(xchar x, xchar y) {
 		break;
 	      }
 	    }
-	    u.utrap = 0;
-	    fill_pit(u.ux, u.uy);
+	    player.utrap = 0;
+	    fill_pit(player.ux, player.uy);
 	}
 
-	u.ux0 = u.ux;
-	u.uy0 = u.uy;
-	if (!Levitation && !MON_AT(x, y) && !u.utrap &&
+	player.ux0 = player.ux;
+	player.uy0 = player.uy;
+	if (!Levitation && !MON_AT(x, y) && !player.utrap &&
 			    (is_pool(x, y) ||
 			     ((t = t_at(x, y)) &&
 			      (t->ttyp == PIT || t->ttyp == SPIKED_PIT ||
 			       t->ttyp == TRAPDOOR || t->ttyp == HOLE)))) {
-	    u.ux = x;
-	    u.uy = y;
+	    player.ux = x;
+	    player.uy = y;
 	} else {
-	    u.ux = x - u.dx;
-	    u.uy = y - u.dy;
+	    player.ux = x - player.dx;
+	    player.uy = y - player.dy;
 	}
 	vision_full_recalc = 1;	/* hero has moved, recalculate vision later */
 
 	if (Blind) {
 	    /* drop glyph under the chain */
-	    if (u.bc_felt & BC_CHAIN)
-		levl[uchain->ox][uchain->oy].glyph = u.cglyph;
-	    u.bc_felt  = 0;		/* feel nothing */
+	    if (player.bc_felt & BC_CHAIN)
+		levl[uchain->ox][uchain->oy].glyph = player.cglyph;
+	    player.bc_felt  = 0;		/* feel nothing */
 	    /* pick up new glyph */
-	    u.cglyph = (u.bc_order) ? u.bglyph : levl[u.ux][u.uy].glyph;
+	    player.cglyph = (player.bc_order) ? player.bglyph : levl[player.ux][player.uy].glyph;
 	}
-	movobj(uchain,u.ux,u.uy);	/* has a newsym */
+	movobj(uchain,player.ux,player.uy);	/* has a newsym */
 	if (Blind) {
-	    u.bc_order = bc_order();
+	    player.bc_order = bc_order();
 	}
-	newsym(u.ux0,u.uy0);		/* clean up old position */
-	if (u.ux0 != u.ux || u.uy0 != u.uy) {
+	newsym(player.ux0,player.uy0);		/* clean up old position */
+	if (player.ux0 != player.ux || player.uy0 != player.uy) {
 	    spoteffects(TRUE);
-	    if (In_sokoban(&u.uz))
+	    if (In_sokoban(&player.uz))
 		change_luck(-1);	/* Sokoban guilt */
 	}
     }

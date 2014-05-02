@@ -160,8 +160,8 @@ void nh_timeout() {
 
 	if (flags.friday13) baseluck -= 1;
 
-	if (u.uluck != baseluck &&
-		moves % (u.uhave.amulet || u.ugangr ? 300 : 600) == 0) {
+	if (player.uluck != baseluck &&
+		moves % (player.uhave.amulet || player.ugangr ? 300 : 600) == 0) {
 	/* Cursed luckstones stop bad luck from timing out; blessed luckstones
 	 * stop good luck from timing out; normal luckstones stop both;
 	 * neither is stopped if you don't have a luckstone.
@@ -170,46 +170,46 @@ void nh_timeout() {
 	    int time_luck = stone_luck(FALSE);
 	    bool nostone = !carrying(LUCKSTONE) && !stone_luck(TRUE);
 
-	    if(u.uluck > baseluck && (nostone || time_luck < 0))
-		u.uluck--;
-	    else if(u.uluck < baseluck && (nostone || time_luck > 0))
-		u.uluck++;
+	    if(player.uluck > baseluck && (nostone || time_luck < 0))
+		player.uluck--;
+	    else if(player.uluck < baseluck && (nostone || time_luck > 0))
+		player.uluck++;
 	}
-	if(u.uinvulnerable) return; /* things past this point could kill you */
+	if(player.uinvulnerable) return; /* things past this point could kill you */
 	if(Stoned) stoned_dialogue();
 	if(Slimed) slime_dialogue();
 	if(Vomiting) vomiting_dialogue();
 	if(Strangled) choke_dialogue();
-	if(u.mtimedone && !--u.mtimedone) {
+	if(player.mtimedone && !--player.mtimedone) {
 		if (Unchanging)
-			u.mtimedone = rnd(100*youmonst.data->mlevel + 1);
+			player.mtimedone = rnd(100*youmonst.data->mlevel + 1);
 		else
 			rehumanize();
 	}
-	if(u.ucreamed) u.ucreamed--;
+	if(player.ucreamed) player.ucreamed--;
 
 	/* Dissipate spell-based protection. */
-	if (u.usptime) {
-	    if (--u.usptime == 0 && u.uspellprot) {
-		u.usptime = u.uspmtime;
-		u.uspellprot--;
+	if (player.usptime) {
+	    if (--player.usptime == 0 && player.uspellprot) {
+		player.usptime = player.uspmtime;
+		player.uspellprot--;
 		find_ac();
 		if (!Blind)
 		    Norep("The %s haze around you %s.", hcolor(NH_GOLDEN),
-			  u.uspellprot ? "becomes less dense" : "disappears");
+			  player.uspellprot ? "becomes less dense" : "disappears");
 	    }
 	}
 
 #ifdef STEED
-	if (u.ugallop) {
-	    if (--u.ugallop == 0L && u.usteed)
-	    	pline("%s stops galloping.", Monnam(u.usteed));
+	if (player.ugallop) {
+	    if (--player.ugallop == 0L && player.usteed)
+	    	pline("%s stops galloping.", Monnam(player.usteed));
 	}
 #endif
 
-	for(upp = u.uprops; upp < u.uprops+SIZE(u.uprops); upp++)
+	for(upp = player.uprops; upp < player.uprops+SIZE(player.uprops); upp++)
 	    if((upp->intrinsic & TIMEOUT) && !(--upp->intrinsic & TIMEOUT)) {
-		switch(upp - u.uprops){
+		switch(upp - player.uprops){
 		case STONED:
 			if (delayed_killer && !killer) {
 				killer = delayed_killer;
@@ -240,17 +240,17 @@ void nh_timeout() {
 		case SICK:
 			You("die from your illness.");
 			killer_format = KILLED_BY_AN;
-			killer = u.usick_cause;
+			killer = player.usick_cause;
 			if ((m_idx = name_to_mon(killer)) >= LOW_PM) {
 			    if (type_is_pname(&mons[m_idx])) {
 				killer_format = KILLED_BY;
 			    } else if (mons[m_idx].geno & G_UNIQ) {
 				killer = the(killer);
-				strcpy(u.usick_cause, killer);
+				strcpy(player.usick_cause, killer);
 				killer_format = KILLED_BY;
 			    }
 			}
-			u.usick_type = 0;
+			player.usick_type = 0;
 			done(POISONING);
 			break;
 		case FAST:
@@ -274,7 +274,7 @@ void nh_timeout() {
 			stop_occupation();
 			break;
 		case INVIS:
-			newsym(u.ux,u.uy);
+			newsym(player.ux,player.uy);
 			if (!Invis && !BInvis && !Blind) {
 			    You(!See_invisible ?
 				    "are no longer invisible." :
@@ -285,7 +285,7 @@ void nh_timeout() {
 		case SEE_INVIS:
 			set_mimic_blocking(); /* do special mimic handling */
 			see_monsters();		/* make invis mons appear */
-			newsym(u.ux,u.uy);	/* make self appear */
+			newsym(player.ux,player.uy);	/* make self appear */
 			stop_occupation();
 			break;
 		case WOUNDED_LEGS:
@@ -312,13 +312,13 @@ void nh_timeout() {
 			break;
 		case STRANGLED:
 			killer_format = KILLED_BY;
-			killer = (u.uburied) ? "suffocation" : "strangulation";
+			killer = (player.uburied) ? "suffocation" : "strangulation";
 			done(DIED);
 			break;
 		case FUMBLING:
 			/* call this only when a move took place.  */
 			/* otherwise handle fumbling msgs locally. */
-			if (u.umoved && !Levitation) {
+			if (player.umoved && !Levitation) {
 			    slip_or_trip();
 			    nomul(-2, "fumbling");
 			    nomovemsg = "";
@@ -360,7 +360,7 @@ void fall_asleep(int how_long, bool wakeup_msg) {
 	    afternmv = Hear_again;	/* this won't give any messages */
 	}
 	/* early wakeup from combat won't be possible until next monster turn */
-	u.usleep = monstermoves;
+	player.usleep = monstermoves;
 	nomovemsg = wakeup_msg ? "You wake up." : You_can_move_again;
 }
 
@@ -587,15 +587,15 @@ void attach_fig_transform_timeout(Object *figurine) {
 
 /* give a fumble message */
 STATIC_OVL void slip_or_trip() {
-	Object *otmp = vobj_at(u.ux, u.uy);
+	Object *otmp = vobj_at(player.ux, player.uy);
 	const char *what, *pronoun;
 	char buf[BUFSZ];
 	bool on_foot = TRUE;
 #ifdef STEED
-	if (u.usteed) on_foot = FALSE;
+	if (player.usteed) on_foot = FALSE;
 #endif
 
-	if (otmp && on_foot && !u.uinwater && is_pool(u.ux, u.uy)) otmp = 0;
+	if (otmp && on_foot && !player.uinwater && is_pool(player.ux, player.uy)) otmp = 0;
 
 	if (otmp && on_foot) {		/* trip over something in particular */
 	    /*
@@ -608,7 +608,7 @@ STATIC_OVL void slip_or_trip() {
 	    pronoun = otmp->quan == 1L ? "it" : Hallucination ? "they" : "them";
 	    what = !otmp->nexthere ? pronoun :
 		  (otmp->dknown || !Blind) ? doname(otmp) :
-		  ((otmp = sobj_at(ROCK, u.ux, u.uy)) == 0 ? something :
+		  ((otmp = sobj_at(ROCK, player.ux, player.uy)) == 0 ? something :
 		  (otmp->quan == 1L ? "a rock" : "some rocks"));
 	    if (Hallucination) {
 		what = strcpy(buf, what);
@@ -619,11 +619,11 @@ STATIC_OVL void slip_or_trip() {
 	    } else {
 		You("trip over %s.", what);
 	    }
-	} else if (rn2(3) && is_ice(u.ux, u.uy)) {
+	} else if (rn2(3) && is_ice(player.ux, player.uy)) {
 	    pline("%s %s%s on the ice.",
 #ifdef STEED
-		u.usteed ? upstart(x_monnam(u.usteed,
-				u.usteed->mnamelth ? ARTICLE_NONE : ARTICLE_THE,
+		player.usteed ? upstart(x_monnam(player.usteed,
+				player.usteed->mnamelth ? ARTICLE_NONE : ARTICLE_THE,
 				(char *)0, SUPPRESS_SADDLE, FALSE)) :
 #endif
 		"You", rn2(2) ? "slip" : "slide", on_foot ? "" : "s");
@@ -1141,7 +1141,7 @@ void do_storms() {
     int count;
 
     /* no lightning if not the air level or too often, even then */
-    if(!Is_airlevel(&u.uz) || rn2(8))
+    if(!Is_airlevel(&player.uz) || rn2(8))
 	return;
 
     /* the number of strikes is 8-log2(nstrike) */
@@ -1161,10 +1161,10 @@ void do_storms() {
 	}
     }
 
-    if(levl[u.ux][u.uy].typ == CLOUD) {
+    if(levl[player.ux][player.uy].typ == CLOUD) {
 	/* inside a cloud during a thunder storm is deafening */
 	pline("Kaboom!!!  Boom!!  Boom!!");
-	if(!u.uinvulnerable) {
+	if(!player.uinvulnerable) {
 	    stop_occupation();
 	    nomul(-3, "hiding from a thunderstorm");
 	}

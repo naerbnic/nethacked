@@ -140,7 +140,7 @@ void do_light_sources(char **cs_rows) {
 
 	/* minor optimization: don't bother with duplicate light sources */
 	/* at hero */
-	if (ls->x == u.ux && ls->y == u.uy) {
+	if (ls->x == player.ux && ls->y == player.uy) {
 	    if (at_hero_range >= ls->range)
 		ls->flags &= ~LSF_SHOW;
 	    else
@@ -164,7 +164,7 @@ void do_light_sources(char **cs_rows) {
 		if ((min_x = (ls->x - offset)) < 0) min_x = 0;
 		if ((max_x = (ls->x + offset)) >= COLNO) max_x = COLNO-1;
 
-		if (ls->x == u.ux && ls->y == u.uy) {
+		if (ls->x == player.ux && ls->y == player.uy) {
 		    /*
 		     * If the light source is located at the hero, then
 		     * we can use the COULD_SEE bits already calcualted
@@ -532,7 +532,7 @@ int wiz_light_sources() {
     win = create_nhwindow(NHW_MENU);	/* corner text window */
     if (win == WIN_ERR) return 0;
 
-    sprintf(buf, "Mobile light sources: hero @ (%2d,%2d)", u.ux, u.uy);
+    sprintf(buf, "Mobile light sources: hero @ (%2d,%2d)", player.ux, player.uy);
     putstr(win, 0, buf);
     putstr(win, 0, "");
 

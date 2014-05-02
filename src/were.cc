@@ -115,7 +115,7 @@ int were_summon(
 		default:
 			continue;
 	    }
-	    mtmp = makemon(&mons[typ], u.ux, u.uy, NO_MM_FLAGS);
+	    mtmp = makemon(&mons[typ], player.ux, player.uy, NO_MM_FLAGS);
 	    if (mtmp) {
 		total++;
 		if (canseemon(mtmp)) *visible += 1;
@@ -129,20 +129,20 @@ int were_summon(
 void you_were() {
 	char qbuf[QBUFSZ];
 
-	if (Unchanging || (u.umonnum == u.ulycn)) return;
+	if (Unchanging || (player.umonnum == player.ulycn)) return;
 	if (Polymorph_control) {
 	    /* `+4' => skip "were" prefix to get name of beast */
 	    sprintf(qbuf, "Do you want to change into %s? ",
-		    an(mons[u.ulycn].mname+4));
+		    an(mons[player.ulycn].mname+4));
 	    if(yn(qbuf) == 'n') return;
 	}
-	(void) polymon(u.ulycn);
+	(void) polymon(player.ulycn);
 }
 
 void you_unwere(bool purify) {
 	if (purify) {
 	    You_feel("purified.");
-	    u.ulycn = NON_PM;	/* cure lycanthropy */
+	    player.ulycn = NON_PM;	/* cure lycanthropy */
 	}
 	if (!Unchanging && is_were(youmonst.data) &&
 		(!Polymorph_control || yn("Remain in beast form?") == 'n'))

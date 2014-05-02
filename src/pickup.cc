@@ -253,7 +253,7 @@ STATIC_OVL void check_here(bool picked_some) {
 	int ct = 0;
 
 	/* count the objects here */
-	for (obj = level.objects[u.ux][u.uy]; obj; obj = obj->nexthere) {
+	for (obj = level.objects[player.ux][player.uy]; obj; obj = obj->nexthere) {
 	    if (obj != uchain)
 		ct++;
 	}
@@ -264,7 +264,7 @@ STATIC_OVL void check_here(bool picked_some) {
 	    flush_screen(1);
 	    (void) look_here(ct, picked_some);
 	} else {
-	    read_engr_at(u.ux,u.uy);
+	    read_engr_at(player.ux,player.uy);
 	}
 }
 
@@ -365,19 +365,19 @@ int pickup(int what) {
 	else			/* pick anything */
 	    count = 0;
 
-	if (!u.uswallow) {
-		Trap *ttmp = t_at(u.ux, u.uy);
+	if (!player.uswallow) {
+		Trap *ttmp = t_at(player.ux, player.uy);
 		/* no auto-pick if no-pick move, nothing there, or in a pool */
-		if (autopickup && (flags.nopick || !OBJ_AT(u.ux, u.uy) ||
-			(is_pool(u.ux, u.uy) && !Underwater) || is_lava(u.ux, u.uy))) {
-			read_engr_at(u.ux, u.uy);
+		if (autopickup && (flags.nopick || !OBJ_AT(player.ux, player.uy) ||
+			(is_pool(player.ux, player.uy) && !Underwater) || is_lava(player.ux, player.uy))) {
+			read_engr_at(player.ux, player.uy);
 			return (0);
 		}
 
 		/* no pickup if levitating & not on air or water level */
 		if (!can_reach_floor()) {
 		    if ((multi && !flags.run) || (autopickup && !flags.pickup))
-			read_engr_at(u.ux, u.uy);
+			read_engr_at(player.ux, player.uy);
 		    return (0);
 		}
 		if (ttmp && ttmp->tseen) {
@@ -387,8 +387,8 @@ int pickup(int what) {
 		     * discrepancy with stuff in pits.
 		     */
 		    if ((ttmp->ttyp == PIT || ttmp->ttyp == SPIKED_PIT) &&
-			(!u.utrap || (u.utrap && u.utraptype != TT_PIT))) {
-			read_engr_at(u.ux, u.uy);
+			(!player.utrap || (player.utrap && player.utraptype != TT_PIT))) {
+			read_engr_at(player.ux, player.uy);
 			return(0);
 		    }
 		}
@@ -409,15 +409,15 @@ int pickup(int what) {
 		}
 
 		/* if there's anything here, stop running */
-		if (OBJ_AT(u.ux,u.uy) && flags.run && flags.run != 8 && !flags.nopick) nomul(0, 0);
+		if (OBJ_AT(player.ux,player.uy) && flags.run && flags.run != 8 && !flags.nopick) nomul(0, 0);
 	}
 
 	add_valid_menu_class(0);	/* reset */
-	if (!u.uswallow) {
-		objchain = level.objects[u.ux][u.uy];
+	if (!player.uswallow) {
+		objchain = level.objects[player.ux][player.uy];
 		traverse_how = BY_NEXTHERE;
 	} else {
-		objchain = u.ustuck->minvent;
+		objchain = player.ustuck->minvent;
 		traverse_how = 0;	/* nobj */
 	}
 	/*
@@ -552,11 +552,11 @@ end_query:
 	    ;	/* semicolon needed by brain-damaged compilers */
 	}
 
-	if (!u.uswallow) {
-		if (!OBJ_AT(u.ux,u.uy)) u.uundetected = 0;
+	if (!player.uswallow) {
+		if (!OBJ_AT(player.ux,player.uy)) player.uundetected = 0;
 
 		/* position may need updating (invisible hero) */
-		if (n_picked) newsym(u.ux,u.uy);
+		if (n_picked) newsym(player.ux,player.uy);
 
 		/* see whether there's anything else here, after auto-pickup is done */
 		if (autopickup) check_here(n_picked > 0);
@@ -996,7 +996,7 @@ STATIC_OVL long carry_count(Object *obj, Object *container, long count, bool tel
 		(int)DELTA_CWT(container, obj) : (int)obj->owt;
 #ifndef GOLDOBJ
     if (is_gold)	/* merged gold might affect cumulative weight */
-	wt -= (GOLD_WT(u.ugold) + GOLD_WT(count) - GOLD_WT(u.ugold + count));
+	wt -= (GOLD_WT(player.ugold) + GOLD_WT(count) - GOLD_WT(player.ugold + count));
 #else
     /* This will go with silver+copper & new gold weight */
     if (is_gold)	/* merged gold might affect cumulative weight */
@@ -1015,12 +1015,12 @@ STATIC_OVL long carry_count(Object *obj, Object *container, long count, bool tel
     /* see how many we can lift */
     if (is_gold) {
 #ifndef GOLDOBJ
-	iw -= (int)GOLD_WT(u.ugold);
+	iw -= (int)GOLD_WT(player.ugold);
 	if (!adjust_wt) {
-	    qq = GOLD_CAPACITY((long)iw, u.ugold);
+	    qq = GOLD_CAPACITY((long)iw, player.ugold);
 	} else {
 	    oow = 0;
-	    qq = 50L - (u.ugold % 100L) - 1L;
+	    qq = 50L - (player.ugold % 100L) - 1L;
 #else
 	iw -= (int)GOLD_WT(umoney);
 	if (!adjust_wt) {
@@ -1034,7 +1034,7 @@ STATIC_OVL long carry_count(Object *obj, Object *container, long count, bool tel
 		obj->quan = qq;
 		obj->owt = (unsigned)GOLD_WT(qq);
 #ifndef GOLDOBJ
-		ow = (int)GOLD_WT(u.ugold + qq);
+		ow = (int)GOLD_WT(player.ugold + qq);
 #else
 		ow = (int)GOLD_WT(umoney + qq);
 #endif
@@ -1049,7 +1049,7 @@ STATIC_OVL long carry_count(Object *obj, Object *container, long count, bool tel
 	if (qq < 0L) qq = 0L;
 	else if (qq > count) qq = count;
 #ifndef GOLDOBJ
-	wt = iw + (int)GOLD_WT(u.ugold + qq);
+	wt = iw + (int)GOLD_WT(player.ugold + qq);
 #else
 	wt = iw + (int)GOLD_WT(umoney + qq);
 #endif
@@ -1105,7 +1105,7 @@ STATIC_OVL long carry_count(Object *obj, Object *container, long count, bool tel
 
     if (!container) strcpy(where, "here");  /* slightly shorter form */
 #ifndef GOLDOBJ
-    if (invent || u.ugold) {
+    if (invent || player.ugold) {
 #else
     if (invent || umoney) {
 #endif
@@ -1130,7 +1130,7 @@ STATIC_OVL
 int lift_object(Object *obj, Object *container, long *cnt_p, bool telekinesis) {
     int result, old_wt, new_wt, prev_encumbr, next_encumbr;
 
-    if (obj->otyp == BOULDER && In_sokoban(&u.uz)) {
+    if (obj->otyp == BOULDER && In_sokoban(&player.uz)) {
 	You("cannot get your %s around this %s.",
 			body_part(HAND), xname(obj));
 	return -1;
@@ -1217,7 +1217,7 @@ const char * safe_qbuf(const char *qbuf, unsigned padlength, const char *planA, 
 int pickup_object(Object *obj, long count, bool telekinesis) {
 	int res, nearload;
 #ifndef GOLDOBJ
-	const char *where = (obj->ox == u.ux && obj->oy == u.uy) ?
+	const char *where = (obj->ox == player.ux && obj->oy == player.uy) ?
 			    "here" : "there";
 #endif
 
@@ -1242,8 +1242,8 @@ int pickup_object(Object *obj, long count, bool telekinesis) {
 #ifndef GOLDOBJ
 	} else if (obj->oclass == COIN_CLASS) {
 	    /* Special consideration for gold pieces... */
-	    long iw = (long)max_capacity() - GOLD_WT(u.ugold);
-	    long gold_capacity = GOLD_CAPACITY(iw, u.ugold);
+	    long iw = (long)max_capacity() - GOLD_WT(player.ugold);
+	    long gold_capacity = GOLD_CAPACITY(iw, player.ugold);
 
 	    if (gold_capacity <= 0L) {
 		pline(
@@ -1257,11 +1257,11 @@ int pickup_object(Object *obj, long count, bool telekinesis) {
 		    gold_capacity == 1L ? "one" : "some", obj->quan, where);
 		pline("%s %ld gold piece%s.",
 		    nearloadmsg, gold_capacity, plur(gold_capacity));
-		u.ugold += gold_capacity;
+		player.ugold += gold_capacity;
 		obj->quan -= gold_capacity;
 		costly_gold(obj->ox, obj->oy, gold_capacity);
 	    } else {
-		u.ugold += count;
+		player.ugold += count;
 		if ((nearload = near_capacity()) != 0)
 		    pline("%s %ld gold piece%s.",
 			  nearload < MOD_ENCUMBER ?
@@ -1346,21 +1346,21 @@ int pickup_object(Object *obj, long count, bool telekinesis) {
  */
 Object * pick_obj(Object *otmp) {
 	obj_extract_self(otmp);
-	if (!u.uswallow && otmp != uball && costly_spot(otmp->ox, otmp->oy)) {
+	if (!player.uswallow && otmp != uball && costly_spot(otmp->ox, otmp->oy)) {
 	    char saveushops[5], fakeshop[2];
 
 	    /* addtobill cares about your location rather than the object's;
 	       usually they'll be the same, but not when using telekinesis
 	       (if ever implemented) or a grappling hook */
-	    strcpy(saveushops, u.ushops);
+	    strcpy(saveushops, player.ushops);
 	    fakeshop[0] = *in_rooms(otmp->ox, otmp->oy, SHOPBASE);
 	    fakeshop[1] = '\0';
-	    strcpy(u.ushops, fakeshop);
+	    strcpy(player.ushops, fakeshop);
 	    /* sets obj->unpaid if necessary */
 	    addtobill(otmp, TRUE, FALSE, FALSE);
-	    strcpy(u.ushops, saveushops);
+	    strcpy(player.ushops, saveushops);
 	    /* if you're outside the shop, make shk notice */
-	    if (!index(u.ushops, *fakeshop))
+	    if (!index(player.ushops, *fakeshop))
 		remote_burglary(otmp->ox, otmp->oy);
 	}
 	if (otmp->no_charge)	/* only applies to objects outside invent */
@@ -1428,7 +1428,7 @@ STATIC_OVL int container_at(int x, int y, bool countem) {
 STATIC_OVL bool able_to_loot(int x, int y) {
 	if (!can_reach_floor()) {
 #ifdef STEED
-		if (u.usteed && P_SKILL(P_RIDING) < P_BASIC)
+		if (player.usteed && P_SKILL(P_RIDING) < P_BASIC)
 			rider_cant_reach(); /* not skilled enough to reach */
 		else
 #endif
@@ -1483,7 +1483,7 @@ int doloot() {
 	You("have no hands!");	/* not `body_part(HAND)' */
 	return 0;
     }
-    cc.x = u.ux; cc.y = u.uy;
+    cc.x = player.ux; cc.y = player.uy;
 
 lootcont:
 
@@ -1528,8 +1528,8 @@ lootcont:
 	if (any) c = 'y';
     } else if (Confusion) {
 #ifndef GOLDOBJ
-	if (u.ugold){
-	    long contribution = rnd((int)min(LARGEST_INT,u.ugold));
+	if (player.ugold){
+	    long contribution = rnd((int)min(LARGEST_INT,player.ugold));
 	    Object *goldob = mkgoldobj(contribution);
 #else
 	Object *goldob;
@@ -1543,7 +1543,7 @@ lootcont:
 		goldob = splitobj(goldob, contribution);
 	    freeinv(goldob);
 #endif
-	    if (IS_THRONE(levl[u.ux][u.uy].typ)){
+	    if (IS_THRONE(levl[player.ux][player.uy].typ)){
 		Object *coffers;
 		int pass;
 		/* find the original coffers chest, or any chest */
@@ -1558,7 +1558,7 @@ gotit:
 		    coffers->owt = weight(coffers);
 		} else {
 		    Monster *mon = makemon(courtmon(),
-					    u.ux, u.uy, NO_MM_FLAGS);
+					    player.ux, player.uy, NO_MM_FLAGS);
 		    if (mon) {
 #ifndef GOLDOBJ
 			mon->mgold += goldob->quan;
@@ -1589,16 +1589,16 @@ gotit:
     /*
      * 3.3.1 introduced directional looting for some things.
      */
-    if (c != 'y' && mon_beside(u.ux, u.uy)) {
+    if (c != 'y' && mon_beside(player.ux, player.uy)) {
 	if (!get_adjacent_loc("Loot in what direction?", "Invalid loot location",
-			u.ux, u.uy, &cc)) return 0;
-	if (cc.x == u.ux && cc.y == u.uy) {
+			player.ux, player.uy, &cc)) return 0;
+	if (cc.x == player.ux && cc.y == player.uy) {
 	    underfoot = TRUE;
 	    if (container_at(cc.x, cc.y, FALSE))
 		goto lootcont;
 	} else
 	    underfoot = FALSE;
-	if (u.dz < 0) {
+	if (player.dz < 0) {
 	    You("%s to loot on the %s.", dont_find_anything,
 		ceiling(cc.x, cc.y));
 	    timepassed = 1;
@@ -1645,7 +1645,7 @@ int loot_mon(Monster *mtmp, int *passed_info, bool *prev_loot) {
     /* 3.3.1 introduced the ability to remove saddle from a steed             */
     /* 	*passed_info is set to TRUE if a loot query was given.               */
     /*	*prev_loot is set to TRUE if something was actually acquired in here. */
-    if (mtmp && mtmp != u.usteed && (otmp = which_armor(mtmp, W_SADDLE))) {
+    if (mtmp && mtmp != player.usteed && (otmp = which_armor(mtmp, W_SADDLE))) {
 	long unwornmask;
 	if (passed_info) *passed_info = 1;
 	sprintf(qbuf, "Do you want to remove the saddle from %s?",
@@ -1679,7 +1679,7 @@ int loot_mon(Monster *mtmp, int *passed_info, bool *prev_loot) {
     }
 #endif	/* STEED */
     /* 3.4.0 introduced the ability to pick things up from within swallower's stomach */
-    if (u.uswallow) {
+    if (player.uswallow) {
 	int count = passed_info ? *passed_info : 0;
 	timepassed = pickup(count);
     }
@@ -1801,7 +1801,7 @@ STATIC_PTR int in_container(Object *obj) {
 	if (obj_is_burning(obj))	/* this used to be part of freeinv() */
 		(void) snuff_lit(obj);
 
-	if (floor_container && costly_spot(u.ux, u.uy)) {
+	if (floor_container && costly_spot(player.ux, player.uy)) {
 	    if (current_container->no_charge && !obj->unpaid) {
 		/* don't sell when putting the item into your own container */
 		obj->no_charge = 1;
@@ -1810,7 +1810,7 @@ STATIC_PTR int in_container(Object *obj) {
 		 * note: coins are handled later */
 		was_unpaid = obj->unpaid ? TRUE : FALSE;
 		sellobj_state(SELL_DELIBERATE);
-		sellobj(obj, u.ux, u.uy);
+		sellobj(obj, player.ux, player.uy);
 		sellobj_state(SELL_NORMAL);
 	    }
 	}
@@ -1834,7 +1834,7 @@ STATIC_PTR int in_container(Object *obj) {
 		delete_contents(current_container);
 		if (!floor_container)
 			useup(current_container);
-		else if (obj_here(current_container, u.ux, u.uy))
+		else if (obj_here(current_container, player.ux, player.uy))
 			useupf(current_container, obj->quan);
 		else
 			panic("in_container:  bag not found.");
@@ -1922,7 +1922,7 @@ STATIC_PTR int out_container(Object *obj) {
 		obj->oy = current_container->oy;
 		addtobill(obj, FALSE, FALSE, FALSE);
 	}
-	if (is_pick(obj) && !obj->unpaid && *u.ushops && shop_keeper(*u.ushops))
+	if (is_pick(obj) && !obj->unpaid && *player.ushops && shop_keeper(*player.ushops))
 		verbalize("You sneaky cad! Get out of here with that pick!");
 
 	otmp = addinv(obj);
@@ -1952,9 +1952,9 @@ STATIC_OVL long mbag_item_gone(int held, Object *item) {
     else
 	You("%s %s disappear!", Blind ? "notice" : "see", doname(item));
 
-    if (*u.ushops && (shkp = shop_keeper(*u.ushops)) != 0) {
-	if (held ? (bool) item->unpaid : costly_spot(u.ux, u.uy))
-	    loss = stolen_value(item, u.ux, u.uy,
+    if (*player.ushops && (shkp = shop_keeper(*player.ushops)) != 0) {
+	if (held ? (bool) item->unpaid : costly_spot(player.ux, player.uy))
+	    loss = stolen_value(item, player.ux, player.uy,
 				(bool)shkp->mpeaceful, TRUE);
     }
     obfree(item, (Object *) 0);
@@ -2074,7 +2074,7 @@ int use_container(Object *obj, int held) {
 		    char menuprompt[BUFSZ];
 		    bool outokay = (cnt != 0);
 #ifndef GOLDOBJ
-		    bool inokay = (invent != 0) || (u.ugold != 0);
+		    bool inokay = (invent != 0) || (player.ugold != 0);
 #else
 		    bool inokay = (invent != 0);
 #endif
@@ -2143,7 +2143,7 @@ ask_again2:
 	}
 
 #ifndef GOLDOBJ
-	if (!invent && u.ugold == 0) {
+	if (!invent && player.ugold == 0) {
 #else
 	if (!invent) {
 #endif
@@ -2178,14 +2178,14 @@ ask_again2:
 	 */
 	if (loot_in) {
 #ifndef GOLDOBJ
-	    if (u.ugold) {
+	    if (player.ugold) {
 		/*
 		 * Hack: gold is not in the inventory, so make a gold object
 		 * and put it at the head of the inventory list.
 		 */
-		u_gold = mkgoldobj(u.ugold);	/* removes from u.ugold */
+		u_gold = mkgoldobj(player.ugold);	/* removes from player.ugold */
 		u_gold->in_use = TRUE;
-		u.ugold = u_gold->quan;		/* put the gold back */
+		player.ugold = u_gold->quan;		/* put the gold back */
 		assigninvlet(u_gold);		/* might end up as NOINVSYM */
 		u_gold->nobj = invent;
 		invent = u_gold;
@@ -2200,7 +2200,7 @@ ask_again2:
 		if (query_classes(select, &one_by_one, &allflag, "put in",
 				   invent, FALSE,
 #ifndef GOLDOBJ
-				   (u.ugold != 0L),
+				   (player.ugold != 0L),
 #endif
 				   &menu_on_request)) {
 		    (void) askchain((Object **)&invent,

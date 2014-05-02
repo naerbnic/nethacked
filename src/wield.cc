@@ -103,7 +103,7 @@ void setuwep(Object *obj) {
 				is_launcher(obj) || is_ammo(obj) ||
 				is_missile(obj) || (is_pole(obj)
 #ifdef STEED
-				&& !u.usteed
+				&& !player.usteed
 #endif
 				) : !is_weptool(obj);
 	} else
@@ -188,7 +188,7 @@ STATIC_OVL int ready_weapon(Object *wep) {
 	    if (wep->unpaid) {
 		Monster *this_shkp;
 
-		if ((this_shkp = shop_keeper(inside_shop(u.ux, u.uy))) !=
+		if ((this_shkp = shop_keeper(inside_shop(player.ux, player.uy))) !=
 		    (Monster *)0) {
 		    pline("%s says \"You be careful with my %s!\"",
 			  shkname(this_shkp),
@@ -307,7 +307,7 @@ int doswapweapon() {
 			You("have no secondary weapon readied.");
 	}
 
-	if (u.twoweap && !can_twoweapon())
+	if (player.twoweap && !can_twoweapon())
 		untwoweapon();
 
 	return (result);
@@ -438,7 +438,7 @@ bool wield_tool(Object *obj, const char *verb) {
     }
     if (uwep != obj) return FALSE;	/* rewielded old object after dying */
     /* applying weapon or tool that gets wielded ends two-weapon combat */
-    if (u.twoweap)
+    if (player.twoweap)
 	untwoweapon();
     if (obj->oclass != WEAPON_CLASS)
 	unweapon = TRUE;
@@ -500,9 +500,9 @@ void drop_uswapwep() {
 
 int dotwoweapon() {
 	/* You can always toggle it off */
-	if (u.twoweap) {
+	if (player.twoweap) {
 		You("switch to your primary weapon.");
-		u.twoweap = 0;
+		player.twoweap = 0;
 		update_inventory();
 		return (0);
 	}
@@ -511,7 +511,7 @@ int dotwoweapon() {
 	if (can_twoweapon()) {
 		/* Success! */
 		You("begin two-weapon combat.");
-		u.twoweap = 1;
+		player.twoweap = 1;
 		update_inventory();
 		return (rnd(20) > ACURR(A_DEX));
 	}
@@ -551,9 +551,9 @@ void uqwepgone() {
 }
 
 void untwoweapon() {
-	if (u.twoweap) {
+	if (player.twoweap) {
 		You("can no longer use two weapons at once.");
-		u.twoweap = FALSE;
+		player.twoweap = FALSE;
 		update_inventory();
 	}
 	return;

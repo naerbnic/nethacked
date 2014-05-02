@@ -43,7 +43,7 @@ int explcolors[] = {
 #endif
 
 #ifdef ROGUE_COLOR
-#define HAS_ROGUE_IBM_GRAPHICS (iflags.IBMgraphics && Is_rogue_level(&u.uz))
+#define HAS_ROGUE_IBM_GRAPHICS (iflags.IBMgraphics && Is_rogue_level(&player.uz))
 #endif
 
 /*ARGSUSED*/
@@ -182,7 +182,7 @@ void mapglyph(int glyph, int *ochar, int *ocolor, unsigned *ospecial, int x, int
 	ch = monsyms[(int)mons[glyph].mlet];
 #ifdef ROGUE_COLOR
 	if (HAS_ROGUE_IBM_GRAPHICS && iflags.use_color) {
-	    if (x == u.ux && y == u.uy)
+	    if (x == player.ux && y == player.uy)
 		/* actually player should be yellow-on-gray if in a corridor */
 		color = CLR_YELLOW;
 	    else
@@ -193,7 +193,7 @@ void mapglyph(int glyph, int *ochar, int *ocolor, unsigned *ospecial, int x, int
 	    mon_color(glyph);
 	    /* special case the hero for `showrace' option */
 #ifdef TEXTCOLOR
-	    if (iflags.use_color && x == u.ux && y == u.uy &&
+	    if (iflags.use_color && x == player.ux && y == player.uy &&
 		    iflags.showrace && !Upolyd)
 		color = HI_DOMESTIC;
 #endif
@@ -204,9 +204,9 @@ void mapglyph(int glyph, int *ochar, int *ocolor, unsigned *ospecial, int x, int
     /* Turn off color if no color defined, or rogue level w/o PC graphics. */
 # ifdef REINCARNATION
 #  ifdef ASCIIGRAPH
-    if (!has_color(color) || (Is_rogue_level(&u.uz) && !HAS_ROGUE_IBM_GRAPHICS))
+    if (!has_color(color) || (Is_rogue_level(&player.uz) && !HAS_ROGUE_IBM_GRAPHICS))
 #  else
-    if (!has_color(color) || Is_rogue_level(&u.uz))
+    if (!has_color(color) || Is_rogue_level(&player.uz))
 #  endif
 # else
     if (!has_color(color))

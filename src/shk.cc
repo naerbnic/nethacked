@@ -178,7 +178,7 @@ void shkgone(Monster *mtmp) {
 
 	/* [BUG: some of this should be done on the shop level */
 	/*       even when the shk dies on a different level.] */
-	if (on_level(&eshk->shoplevel, &u.uz)) {
+	if (on_level(&eshk->shoplevel, &player.uz)) {
 	    remove_damage(mtmp, TRUE);
 	    sroom->resident = (Monster *)0;
 	    if (!search_special(ANY_SHOP))
@@ -192,31 +192,31 @@ void shkgone(Monster *mtmp) {
 
 	    /* Make sure bill is set only when the
 	       dead shk is the resident shk. */
-	    if ((p = index(u.ushops, eshk->shoproom)) != 0) {
+	    if ((p = index(player.ushops, eshk->shoproom)) != 0) {
 		setpaid(mtmp);
 		eshk->bill_p = (struct bill_x *)0;
-		/* remove eshk->shoproom from u.ushops */
+		/* remove eshk->shoproom from player.ushops */
 		do { *p = *(p + 1); } while (*++p);
 	    }
 	}
 }
 
 void set_residency(Monster *shkp, bool zero_out) {
-	if (on_level(&(ESHK(shkp)->shoplevel), &u.uz))
+	if (on_level(&(ESHK(shkp)->shoplevel), &player.uz))
 	    rooms[ESHK(shkp)->shoproom - ROOMOFFSET].resident =
 		(zero_out)? (Monster *)0 : shkp;
 }
 
 void replshk(Monster *mtmp, Monster *mtmp2) {
 	rooms[ESHK(mtmp2)->shoproom - ROOMOFFSET].resident = mtmp2;
-	if (inhishop(mtmp) && *u.ushops == ESHK(mtmp)->shoproom) {
+	if (inhishop(mtmp) && *player.ushops == ESHK(mtmp)->shoproom) {
 		ESHK(mtmp2)->bill_p = &(ESHK(mtmp2)->bill[0]);
 	}
 }
 
 /* do shopkeeper specific structure munging -dlc */
 void restshk(Monster *shkp, bool ghostly) {
-    if (u.uz.dlevel) {
+    if (player.uz.dlevel) {
 	struct eshk *eshkp = ESHK(shkp);
 
 	if (eshkp->bill_p != (struct bill_x *) -1000)
@@ -224,7 +224,7 @@ void restshk(Monster *shkp, bool ghostly) {
 	/* shoplevel can change as dungeons move around */
 	/* savebones guarantees that non-homed shk's will be gone */
 	if (ghostly) {
-	    assign_level(&eshkp->shoplevel, &u.uz);
+	    assign_level(&eshkp->shoplevel, &player.uz);
 	    if (ANGRY(shkp) && strncmpi(eshkp->customer, plname, PL_NSIZ))
 		pacify_shk(shkp);
 	}
@@ -319,8 +319,8 @@ STATIC_OVL void call_kops(Monster *shkp, bool nearshop) {
 		/* Create swarm around you, if you merely "stepped out" */
 		if (flags.verbose)
 		    pline_The("Keystone Kops appear!");
-		mm.x = u.ux;
-		mm.y = u.uy;
+		mm.x = player.ux;
+		mm.y = player.uy;
 		makekops(&mm);
 		return;
 	    }
@@ -361,10 +361,10 @@ void u_left_shop(char *leavestring, bool newlev) {
 	 * THEN (there's nothing to do, so just return)
 	 */
 	if(!*leavestring &&
-	   (!levl[u.ux][u.uy].edge || levl[u.ux0][u.uy0].edge))
+	   (!levl[player.ux][player.uy].edge || levl[player.ux0][player.uy0].edge))
 	    return;
 
-	shkp = shop_keeper(*u.ushops0);
+	shkp = shop_keeper(*player.ushops0);
 	if (!shkp || !inhishop(shkp))
 	    return;	/* shk died, teleported, changed levels... */
 
@@ -386,7 +386,7 @@ void u_left_shop(char *leavestring, bool newlev) {
 
 	if (rob_shop(shkp)) {
 #ifdef KOPS
-	    call_kops(shkp, (!newlev && levl[u.ux0][u.uy0].edge));
+	    call_kops(shkp, (!newlev && levl[player.ux0][player.uy0].edge));
 #else
 	    (void) angry_guards(FALSE);
 #endif
@@ -441,7 +441,7 @@ static bool rob_shop(Monster *shkp) {
 	You("stole %ld %s worth of merchandise.",
 	    total, currency(total));
 	if (!Role_if(PM_ROGUE))	/* stealing is unlawful */
-	    adjalign(-sgn(u.ualign.type));
+	    adjalign(-sgn(player.ualign.type));
 
 	hot_pursuit(shkp);
 	return TRUE;
@@ -460,11 +460,11 @@ void u_entered_shop(char *enterstring) {
 
 	if(!(shkp = shop_keeper(*enterstring))) {
 	    if (!index(empty_shops, *enterstring) &&
-		in_rooms(u.ux, u.uy, SHOPBASE) !=
-				  in_rooms(u.ux0, u.uy0, SHOPBASE))
+		in_rooms(player.ux, player.uy, SHOPBASE) !=
+				  in_rooms(player.ux0, player.uy0, SHOPBASE))
 		pline(no_shk);
-	    strcpy(empty_shops, u.ushops);
-	    u.ushops[0] = '\0';
+	    strcpy(empty_shops, player.ushops);
+	    player.ushops[0] = '\0';
 	    return;
 	}
 
@@ -475,8 +475,8 @@ void u_entered_shop(char *enterstring) {
 	    eshkp->bill_p = (struct bill_x *) -1000;
 	    if (!index(empty_shops, *enterstring))
 		pline(no_shk);
-	    strcpy(empty_shops, u.ushops);
-	    u.ushops[0] = '\0';
+	    strcpy(empty_shops, player.ushops);
+	    player.ushops[0] = '\0';
 	    return;
 	}
 
@@ -517,7 +517,7 @@ void u_entered_shop(char *enterstring) {
 		      shtypes[rt - SHOPBASE].name);
 	}
 	/* can't do anything about blocking if teleported in */
-	if (!inside_shop(u.ux, u.uy)) {
+	if (!inside_shop(player.ux, player.uy)) {
 	    bool should_block;
 	    int cnt;
 	    const char *tool;
@@ -547,15 +547,15 @@ void u_entered_shop(char *enterstring) {
 			  tool, plur(cnt));
 		should_block = TRUE;
 #ifdef STEED
-	    } else if (u.usteed) {
+	    } else if (player.usteed) {
 		verbalize(NOTANGRY(shkp) ?
 			  "Will you please leave %s outside?" :
-			  "Leave %s outside.", y_monnam(u.usteed));
+			  "Leave %s outside.", y_monnam(player.usteed));
 		should_block = TRUE;
 #endif
 	    } else {
-		should_block = (Fast && (sobj_at(PICK_AXE, u.ux, u.uy) ||
-				      sobj_at(DWARVISH_MATTOCK, u.ux, u.uy)));
+		should_block = (Fast && (sobj_at(PICK_AXE, player.ux, player.uy) ||
+				      sobj_at(DWARVISH_MATTOCK, player.ux, player.uy)));
 	    }
 	    if (should_block) (void) dochug(shkp);  /* shk gets extra move */
 	}
@@ -608,7 +608,7 @@ STATIC_OVL long shop_debt(struct eshk *eshkp) {
 
 /* called in response to the `$' command */
 void shopper_financial_report() {
-	Monster *shkp, *this_shkp = shop_keeper(inside_shop(u.ux, u.uy));
+	Monster *shkp, *this_shkp = shop_keeper(inside_shop(player.ux, player.uy));
 	struct eshk *eshkp;
 	long amt;
 	int pass;
@@ -646,7 +646,7 @@ void shopper_financial_report() {
 int inhishop(Monster *mtmp) {
 	return(index(in_rooms(mtmp->mx, mtmp->my, SHOPBASE),
 		     ESHK(mtmp)->shoproom) &&
-		on_level(&(ESHK(mtmp)->shoplevel), &u.uz));
+		on_level(&(ESHK(mtmp)->shoplevel), &player.uz));
 }
 
 Monster * shop_keeper(char rmno) {
@@ -716,9 +716,9 @@ void obfree(Object *obj, Object *merge) {
 		if (onbill(obj, shkp, TRUE)) break;
 	}
 	/* sanity check, more or less */
-	if (!shkp) shkp = shop_keeper(*u.ushops);
+	if (!shkp) shkp = shop_keeper(*player.ushops);
 		/*
-		 * Note:  `shkp = shop_keeper(*u.ushops)' used to be
+		 * Note:  `shkp = shop_keeper(*player.ushops)' used to be
 		 *	  unconditional.  But obfree() is used all over
 		 *	  the place, so making its behavior be dependent
 		 *	  upon player location doesn't make much sense.
@@ -777,7 +777,7 @@ STATIC_OVL void pay(long tmp, Monster *shkp) {
 	long balance = ((tmp <= 0L) ? tmp : check_credit(tmp, shkp));
 
 #ifndef GOLDOBJ
-	u.ugold -= balance;
+	player.ugold -= balance;
 	shkp->mgold += balance;
 #else
 	if (balance > 0) money2mon(shkp, balance);
@@ -872,13 +872,13 @@ void make_happy_shk(Monster *shkp, bool silentkops) {
 	eshkp->following = 0;
 	eshkp->robbed = 0L;
 	if (!Role_if(PM_ROGUE))
-		adjalign(sgn(u.ualign.type));
+		adjalign(sgn(player.ualign.type));
 	if(!inhishop(shkp)) {
 		char shk_nam[BUFSZ];
 		bool vanished = canseemon(shkp);
 
 		strcpy(shk_nam, mon_nam(shkp));
-		if (on_level(&eshkp->shoplevel, &u.uz)) {
+		if (on_level(&eshkp->shoplevel, &player.uz)) {
 			home_shk(shkp, FALSE);
 			/* didn't disappear if shk can still be seen */
 			if (canseemon(shkp)) vanished = FALSE;
@@ -992,7 +992,7 @@ int dopay() {
 	    sk++;
 	    if (ANGRY(shkp) && distu(shkp->mx, shkp->my) <= 2) nxtm = shkp;
 	    if (canspotmon(shkp)) seensk++;
-	    if (inhishop(shkp) && (*u.ushops == ESHK(shkp)->shoproom))
+	    if (inhishop(shkp) && (*player.ushops == ESHK(shkp)->shoproom))
 		resident = shkp;
 	}
 
@@ -1033,8 +1033,8 @@ int dopay() {
 		int cx, cy;
 
 		pline("Pay whom?");
-		cc.x = u.ux;
-		cc.y = u.uy;
+		cc.x = player.ux;
+		cc.y = player.uy;
 		if (getpos(&cc, TRUE, "the creature you want to pay") < 0)
 		    return 0;	/* player pressed ESC */
 		cx = cc.x;
@@ -1043,7 +1043,7 @@ int dopay() {
 		     pline("Try again...");
 		     return(0);
 		}
-		if(u.ux == cx && u.uy == cy) {
+		if(player.ux == cx && player.uy == cy) {
 		     You("are generous to yourself.");
 		     return(0);
 		}
@@ -1092,7 +1092,7 @@ proceed:
 		if(!ltmp)
 		    You("do not owe %s anything.", mon_nam(shkp));
 #ifndef GOLDOBJ
-		else if(!u.ugold) {
+		else if(!player.ugold) {
 #else
 		else if(!umoney) {
 #endif
@@ -1101,7 +1101,7 @@ proceed:
 			pline("But you have some gold stashed away.");
 		} else {
 #ifndef GOLDOBJ
-		    long ugold = u.ugold;
+		    long ugold = player.ugold;
 		    if(ugold > ltmp) {
 #else
 		    if(umoney > ltmp) {
@@ -1113,7 +1113,7 @@ proceed:
 			You("give %s all your%s gold.", mon_nam(shkp),
 					stashed_gold ? " openly kept" : "");
 #ifndef GOLDOBJ
-			pay(u.ugold, shkp);
+			pay(player.ugold, shkp);
 #else
 			pay(umoney, shkp);
 #endif
@@ -1140,7 +1140,7 @@ proceed:
 		if(!ltmp && NOTANGRY(shkp)) {
 		    You("do not owe %s anything.", mon_nam(shkp));
 #ifndef GOLDOBJ
-		    if (!u.ugold)
+		    if (!player.ugold)
 #else
 		    if (!umoney)
 #endif
@@ -1148,9 +1148,9 @@ proceed:
 		} else if(ltmp) {
 		    pline("%s is after blood, not money!", Monnam(shkp));
 #ifndef GOLDOBJ
-		    if(u.ugold < ltmp/2L ||
-				(u.ugold < ltmp && stashed_gold)) {
-			if (!u.ugold)
+		    if(player.ugold < ltmp/2L ||
+				(player.ugold < ltmp && stashed_gold)) {
+			if (!player.ugold)
 #else
 		    if(umoney < ltmp/2L ||
 				(umoney < ltmp && stashed_gold)) {
@@ -1164,14 +1164,14 @@ proceed:
 			  mhis(shkp));
 		    pline("you %scompensate %s for %s losses.",
 #ifndef GOLDOBJ
-			  (u.ugold < ltmp) ? 
+			  (player.ugold < ltmp) ? 
 #else
 			  (umoney < ltmp) ? 
 #endif
 			  "partially " : "",
 			  mon_nam(shkp), mhis(shkp));
 #ifndef GOLDOBJ
-		    pay(u.ugold < ltmp ? u.ugold : ltmp, shkp);
+		    pay(player.ugold < ltmp ? player.ugold : ltmp, shkp);
 #else
 		    pay(umoney < ltmp ? umoney : ltmp, shkp);
 #endif
@@ -1182,8 +1182,8 @@ proceed:
 		    pline("%s is after your hide, not your money!",
 			  Monnam(shkp));
 #ifndef GOLDOBJ
-		    if(u.ugold < 1000L) {
-			if (!u.ugold)
+		    if(player.ugold < 1000L) {
+			if (!player.ugold)
 #else
 		    if(umoney < 1000L) {
 			if (!umoney)
@@ -1226,7 +1226,7 @@ proceed:
 		} else strcat(sbuf, "for the use of merchandise.");
 		pline(sbuf);
 #ifndef GOLDOBJ
-		if (u.ugold + eshkp->credit < dtmp) {
+		if (player.ugold + eshkp->credit < dtmp) {
 #else
 		if (umoney + eshkp->credit < dtmp) {
 #endif
@@ -1242,7 +1242,7 @@ proceed:
 			Your("debt is covered by your credit.");
 		    } else if (!eshkp->credit) {
 #ifndef GOLDOBJ
-			u.ugold -= dtmp;
+			player.ugold -= dtmp;
  			shkp->mgold += dtmp;
 #else
                         money2mon(shkp, dtmp);
@@ -1255,7 +1255,7 @@ proceed:
 			dtmp -= eshkp->credit;
 			eshkp->credit = 0L;
 #ifndef GOLDOBJ
-			u.ugold -= dtmp;
+			player.ugold -= dtmp;
 			shkp->mgold += dtmp;
 #else
                         money2mon(shkp, dtmp);
@@ -1273,7 +1273,7 @@ proceed:
 	if (eshkp->billct) {
 	    bool itemize;
 #ifndef GOLDOBJ
-	    if (!u.ugold && !eshkp->credit) {
+	    if (!player.ugold && !eshkp->credit) {
 #else
             umoney = money_cnt(invent);
 	    if (!umoney && !eshkp->credit) {
@@ -1284,7 +1284,7 @@ proceed:
 		return(0);
 	    }
 #ifndef GOLDOBJ
-	    if ((u.ugold + eshkp->credit) < cheapest_item(shkp)) {
+	    if ((player.ugold + eshkp->credit) < cheapest_item(shkp)) {
 #else
 	    if ((umoney + eshkp->credit) < cheapest_item(shkp)) {
 #endif
@@ -1378,7 +1378,7 @@ STATIC_OVL int dopayobj(Monster *shkp, struct bill_x *bp, Object **obj_p, int wh
 		return PAY_BUY;
 	}
 #ifndef GOLDOBJ
-	if(itemize && u.ugold + ESHK(shkp)->credit == 0L){
+	if(itemize && player.ugold + ESHK(shkp)->credit == 0L){
 #else
 	if(itemize && umoney + ESHK(shkp)->credit == 0L){
 #endif
@@ -1418,7 +1418,7 @@ STATIC_OVL int dopayobj(Monster *shkp, struct bill_x *bp, Object **obj_p, int wh
 	    }
 	}
 #ifndef GOLDOBJ
-	if (buy == PAY_BUY && u.ugold + ESHK(shkp)->credit < ltmp) {
+	if (buy == PAY_BUY && player.ugold + ESHK(shkp)->credit < ltmp) {
 #else
 	if (buy == PAY_BUY && umoney + ESHK(shkp)->credit < ltmp) {
 #endif
@@ -1479,7 +1479,7 @@ bool paybill(int croaked) {
 	repo_location.x = repo_location.y = 0;
 
 	/* give shopkeeper first crack */
-	if ((mtmp = shop_keeper(*u.ushops)) && inhishop(mtmp)) {
+	if ((mtmp = shop_keeper(*player.ushops)) && inhishop(mtmp)) {
 	    numsk++;
 	    resident = mtmp;
 	    taken = inherits(resident, numsk, croaked);
@@ -1489,7 +1489,7 @@ bool paybill(int croaked) {
 	    mtmp2 = mtmp->nmon;
 	    if (mtmp != resident) {
 		/* for bones: we don't want a shopless shk around */
-		if(!on_level(&(ESHK(mtmp)->shoplevel), &u.uz))
+		if(!on_level(&(ESHK(mtmp)->shoplevel), &player.uz))
 			mongone(mtmp);
 		else {
 		    numsk++;
@@ -1508,7 +1508,7 @@ STATIC_OVL bool inherits(Monster *shkp, int numsk, int croaked) {
 #endif
 	struct eshk *eshkp = ESHK(shkp);
 	bool take = FALSE, taken = FALSE;
-	int roomno = *u.ushops;
+	int roomno = *player.ushops;
 	char takes[BUFSZ];
 
 	/* the simplifying principle is that first-come */
@@ -1547,7 +1547,7 @@ STATIC_OVL bool inherits(Monster *shkp, int numsk, int croaked) {
 
 	if (eshkp->following || ANGRY(shkp) || take) {
 #ifndef GOLDOBJ
-		if (!invent && !u.ugold) goto skip;
+		if (!invent && !player.ugold) goto skip;
 #else
 		if (!invent) goto skip;
                 umoney = money_cnt(invent);
@@ -1560,11 +1560,11 @@ STATIC_OVL bool inherits(Monster *shkp, int numsk, int croaked) {
 		strcat(takes, "takes");
 
 #ifndef GOLDOBJ
-		if (loss > u.ugold || !loss || roomno == eshkp->shoproom) {
-			eshkp->robbed -= u.ugold;
+		if (loss > player.ugold || !loss || roomno == eshkp->shoproom) {
+			eshkp->robbed -= player.ugold;
 			if (eshkp->robbed < 0L) eshkp->robbed = 0L;
-			shkp->mgold += u.ugold;
-			u.ugold = 0L;
+			shkp->mgold += player.ugold;
+			player.ugold = 0L;
 #else
 		if (loss > umoney || !loss || roomno == eshkp->shoproom) {
 			eshkp->robbed -= umoney;
@@ -1580,7 +1580,7 @@ STATIC_OVL bool inherits(Monster *shkp, int numsk, int croaked) {
 		} else {
 #ifndef GOLDOBJ
 			shkp->mgold += loss;
-			u.ugold -= loss;
+			player.ugold -= loss;
 #else
                         money2mon(shkp, loss);
 #endif
@@ -1612,9 +1612,9 @@ STATIC_OVL void set_repo_loc(struct eshk *eshkp) {
 
 	/* if you're not in this shk's shop room, or if you're in its doorway
 	    or entry spot, then your gear gets dumped all the way inside */
-	if (*u.ushops != eshkp->shoproom ||
-		IS_DOOR(levl[u.ux][u.uy].typ) ||
-		(u.ux == eshkp->shk.x && u.uy == eshkp->shk.y)) {
+	if (*player.ushops != eshkp->shoproom ||
+		IS_DOOR(levl[player.ux][player.uy].typ) ||
+		(player.ux == eshkp->shk.x && player.uy == eshkp->shk.y)) {
 	    /* shk.x,shk.y is the position immediately in
 	     * front of the door -- move in one more space
 	     */
@@ -1623,8 +1623,8 @@ STATIC_OVL void set_repo_loc(struct eshk *eshkp) {
 	    ox += sgn(ox - eshkp->shd.x);
 	    oy += sgn(oy - eshkp->shd.y);
 	} else {		/* already inside this shk's shop */
-	    ox = u.ux;
-	    oy = u.uy;
+	    ox = player.ux;
+	    oy = player.uy;
 	}
 	/* finish_paybill will deposit invent here */
 	repo_location.x = ox;
@@ -1708,7 +1708,7 @@ STATIC_OVL long get_cost(Object *obj, Monster *shkp) {
 		    /* get a value that's 'random' from game to game, but the
 		       same within the same game */
 		    bool pseudorand =
-			(((int)u.ubirthday % obj->otyp) >= obj->otyp/2);
+			(((int)player.ubirthday % obj->otyp) >= obj->otyp/2);
 
 		    /* all gems are priced high - real or not */
 		    switch(obj->otyp - LAST_GEM) {
@@ -1748,7 +1748,7 @@ STATIC_OVL long get_cost(Object *obj, Monster *shkp) {
 		    tmp += tmp / 3L;
 	}
 #ifdef TOURIST
-	if ((Role_if(PM_TOURIST) && u.ulevel < (MAXULEV/2))
+	if ((Role_if(PM_TOURIST) && player.ulevel < (MAXULEV/2))
 	    || (uarmu && !uarm && !uarmc))	/* touristy shirt visible */
 		tmp += tmp / 3L;
 	else
@@ -1852,7 +1852,7 @@ STATIC_OVL long set_cost(Object *obj, Monster *shkp) {
 	long tmp = getprice(obj, TRUE) * obj->quan;
 
 #ifdef TOURIST
-	if ((Role_if(PM_TOURIST) && u.ulevel < (MAXULEV/2))
+	if ((Role_if(PM_TOURIST) && player.ulevel < (MAXULEV/2))
 	    || (uarmu && !uarm && !uarmc))	/* touristy shirt visible */
 		tmp /= 3L;
 	else
@@ -1900,7 +1900,7 @@ STATIC_OVL void add_one_tobill(Object *obj, bool dummy) {
 	Monster *shkp;
 	struct bill_x *bp;
 	int bct;
-	char roomno = *u.ushops;
+	char roomno = *player.ushops;
 
 	if (!roomno) return;
 	if (!(shkp = shop_keeper(roomno))) return;
@@ -1993,11 +1993,11 @@ STATIC_OVL void shk_names_obj(Monster *shkp, Object *obj, const char *fmt, long 
 
 void addtobill(Object *obj, bool ininv, bool dummy, bool silent) {
 	Monster *shkp;
-	char roomno = *u.ushops;
+	char roomno = *player.ushops;
 	long ltmp = 0L, cltmp = 0L, gltmp = 0L;
 	bool container = Has_contents(obj);
 
-	if(!*u.ushops) return;
+	if(!*player.ushops) return;
 
 	if(!(shkp = shop_keeper(roomno))) return;
 
@@ -2072,7 +2072,7 @@ speak:
 		  "good", "honored", "most gracious", "esteemed",
 		  "most renowned and sacred"
 		};
-		strcat(buf, honored[rn2(4) + u.uevent.udemigod]);
+		strcat(buf, honored[rn2(4) + player.uevent.udemigod]);
 		if (!is_human(youmonst.data)) strcat(buf, " creature");
 		else
 		    strcat(buf, (flags.female) ? " lady" : " sir");
@@ -2099,7 +2099,7 @@ void splitbill(Object *obj, Object *otmp) {
 	/* otmp has been split off from obj */
 	struct bill_x *bp;
 	long tmp;
-	Monster *shkp = shop_keeper(*u.ushops);
+	Monster *shkp = shop_keeper(*player.ushops);
 
 	if(!shkp || !inhishop(shkp)) {
 		impossible("splitbill: no resident shopkeeper??");
@@ -2324,7 +2324,7 @@ void sellobj(Object *obj, xchar x, xchar y) {
 	if(!(shkp = shop_keeper(*in_rooms(x, y, SHOPBASE))) ||
 	   !inhishop(shkp)) return;
 	if(!costly_spot(x, y))	return;
-	if(!*u.ushops) return;
+	if(!*player.ushops) return;
 
 	if(obj->unpaid && !container && !isgold) {
 	    sub_one_frombill(obj, shkp);
@@ -2539,7 +2539,7 @@ int doinvbill(int mode) {
 	char *buf_p;
 	winid datawin;
 
-	shkp = shop_keeper(*u.ushops);
+	shkp = shop_keeper(*player.ushops);
 	if (!shkp || !inhishop(shkp)) {
 	    if (mode != 0) impossible("doinvbill: no shopkeeper?");
 	    return 0;
@@ -2622,7 +2622,7 @@ STATIC_OVL long getprice(Object *obj, bool shk_buying) {
 	switch(obj->oclass) {
 	case FOOD_CLASS:
 		/* simpler hunger check, (2-4)*cost */
-		if (u.uhs >= HUNGRY && !shk_buying) tmp *= (long) u.uhs;
+		if (player.uhs >= HUNGRY && !shk_buying) tmp *= (long) player.uhs;
 		if (obj->oeaten) tmp = 0L;
 		break;
 	case WAND_CLASS:
@@ -2653,7 +2653,7 @@ Monster * shkcatch(Object *obj, xchar x, xchar y) {
 	    !inhishop(shkp)) return(0);
 
 	if (shkp->mcanmove && !shkp->msleeping &&
-	    (*u.ushops != ESHK(shkp)->shoproom || !inside_shop(u.ux, u.uy)) &&
+	    (*player.ushops != ESHK(shkp)->shoproom || !inside_shop(player.ux, player.uy)) &&
 	    dist2(shkp->mx, shkp->my, x, y) < 3 &&
 	    /* if it is the shk's pos, you hit and anger him */
 	    (shkp->mx != x || shkp->my != y)) {
@@ -2798,7 +2798,7 @@ void remove_damage(Monster *shkp, bool croaked) {
 		pline("Suddenly, the floor damage is gone!");
 	    else if (saw_untrap)
 	        pline("Suddenly, the trap is removed from the floor!");
-	    else if (inside_shop(u.ux, u.uy) == ESHK(shkp)->shoproom)
+	    else if (inside_shop(player.ux, player.uy) == ESHK(shkp)->shoproom)
 		You_feel("more claustrophobic than before.");
 	    else if (flags.soundok && !rn2(10))
 		Norep("The dungeon acoustics noticeably change.");
@@ -2825,7 +2825,7 @@ int repair_damage(Monster *shkp, struct damage *tmp_dam, bool catchup) {
 	x = tmp_dam->place.x;
 	y = tmp_dam->place.y;
 	if (!IS_ROOM(tmp_dam->typ)) {
-	    if (x == u.ux && y == u.uy)
+	    if (x == player.ux && y == player.uy)
 		if (!Passes_walls)
 		    return(0);
 	    if (x == shkp->mx && y == shkp->my)
@@ -2834,7 +2834,7 @@ int repair_damage(Monster *shkp, struct damage *tmp_dam, bool catchup) {
 		return(0);
 	}
 	if ((ttmp = t_at(x, y)) != 0) {
-	    if (x == u.ux && y == u.uy)
+	    if (x == player.ux && y == player.uy)
 		if (!Passes_walls)
 		    return(0);
 	    if (ttmp->ttyp == LANDMINE || ttmp->ttyp == BEAR_TRAP) {
@@ -2881,7 +2881,7 @@ int repair_damage(Monster *shkp, struct damage *tmp_dam, bool catchup) {
 				y+vert(i)) == ESHK(shkp)->shoproom)
 		    litter[i] |= INSHOP;
 	    }
-	    if (Punished && !u.uswallow &&
+	    if (Punished && !player.uswallow &&
 				((uchain->ox == x && uchain->oy == y) ||
 				 (uball->ox == x && uball->oy == y))) {
 		/*
@@ -2953,7 +2953,7 @@ int shk_move(Monster *shkp) {
 	    remove_damage(shkp, FALSE);
 
 	if((udist = distu(omx,omy)) < 3 &&
-	   (shkp->data != &mons[PM_GRID_BUG] || (omx==u.ux || omy==u.uy))) {
+	   (shkp->data != &mons[PM_GRID_BUG] || (omx==player.ux || omy==player.uy))) {
 		if(ANGRY(shkp) ||
 		   (Conflict && !resist(shkp, RING_CLASS, 0, 0))) {
 			if(Displaced)
@@ -2998,34 +2998,34 @@ int shk_move(Monster *shkp) {
 		    next level once the character fell through the hole.] */
 		if (udist > 4 && eshkp->following)
 		    return(-1);	/* leave it to m_move */
-		gx = u.ux;
-		gy = u.uy;
+		gx = player.ux;
+		gy = player.uy;
 	} else if(ANGRY(shkp)) {
 		/* Move towards the hero if the shopkeeper can see him. */
 		if(shkp->mcansee && m_canseeu(shkp)) {
-			gx = u.ux;
-			gy = u.uy;
+			gx = player.ux;
+			gy = player.uy;
 		}
 		avoid = FALSE;
 	} else {
 #define	GDIST(x,y)	(dist2(x,y,gx,gy))
 		if (Invis
 #ifdef STEED
-			|| u.usteed
+			|| player.usteed
 #endif
 			) {
 		    avoid = FALSE;
 		} else {
-		    uondoor = (u.ux == eshkp->shd.x && u.uy == eshkp->shd.y);
+		    uondoor = (player.ux == eshkp->shd.x && player.uy == eshkp->shd.y);
 		    if(uondoor) {
 			badinv = (carrying(PICK_AXE) || carrying(DWARVISH_MATTOCK) ||
-				  (Fast && (sobj_at(PICK_AXE, u.ux, u.uy) ||
-				  sobj_at(DWARVISH_MATTOCK, u.ux, u.uy))));
+				  (Fast && (sobj_at(PICK_AXE, player.ux, player.uy) ||
+				  sobj_at(DWARVISH_MATTOCK, player.ux, player.uy))));
 			if(satdoor && badinv)
 			    return(0);
 			avoid = !badinv;
 		    } else {
-			avoid = (*u.ushops && distu(gx,gy) > 8);
+			avoid = (*player.ushops && distu(gx,gy) > 8);
 			badinv = FALSE;
 		    }
 
@@ -3066,7 +3066,7 @@ bool is_fshk(Monster *mtmp) {
 
 /* You are digging in the shop. */
 void shopdig(int fall) {
-    Monster *shkp = shop_keeper(*u.ushops);
+    Monster *shkp = shop_keeper(*player.ushops);
     int lang;
     const char *grabs = "grabs";
 
@@ -3084,14 +3084,14 @@ void shopdig(int fall) {
     if(!inhishop(shkp)) {
 	if (Role_if(PM_KNIGHT)) {
 	    You_feel("like a common thief.");
-	    adjalign(-sgn(u.ualign.type));
+	    adjalign(-sgn(player.ualign.type));
 	}
 	return;
     }
 
     if(!fall) {
 	if (lang == 2) {
-	    if(u.utraptype == TT_PIT)
+	    if(player.utraptype == TT_PIT)
 		verbalize(
 			"Be careful, %s, or you might fall through the floor.",
 			flags.female ? "madam" : "sir");
@@ -3101,7 +3101,7 @@ void shopdig(int fall) {
 	}
 	if (Role_if(PM_KNIGHT)) {
 	    You_feel("like a common thief.");
-	    adjalign(-sgn(u.ualign.type));
+	    adjalign(-sgn(player.ualign.type));
 	}
     } else if(!um_dist(shkp->mx, shkp->my, 5) &&
 		!shkp->msleeping && shkp->mcanmove &&
@@ -3139,7 +3139,7 @@ void shopdig(int fall) {
 	    for(obj = invent; obj; obj = obj2) {
 		obj2 = obj->nobj;
 		if ((obj->owornmask & ~(W_SWAPWEP|W_QUIVER)) != 0 ||
-			(obj == uswapwep && u.twoweap) ||
+			(obj == uswapwep && player.twoweap) ||
 			(obj->otyp == LEASH && obj->leashmon)) continue;
 		if (obj == current_wand) continue;
 		setnotworn(obj);
@@ -3157,7 +3157,7 @@ STATIC_OVL void makekops(coord *mm) {
 	};
 	int k_cnt[4], cnt, mndx, k;
 
-	k_cnt[0] = cnt = abs(depth(&u.uz)) + rnd(5);
+	k_cnt[0] = cnt = abs(depth(&player.uz)) + rnd(5);
 	k_cnt[1] = (cnt / 3) + 1;	/* at least one sarge */
 	k_cnt[2] = (cnt / 6);		/* maybe a lieutenant */
 	k_cnt[3] = (cnt / 9);		/* and maybe a kaptain */
@@ -3177,7 +3177,7 @@ STATIC_OVL void makekops(coord *mm) {
 void pay_for_damage(const char *dmgstr, bool cant_mollify) {
 	Monster *shkp = (Monster *)0;
 	char shops_affected[5];
-	bool uinshp = (*u.ushops != '\0');
+	bool uinshp = (*player.ushops != '\0');
 	char qbuf[80];
 	xchar x, y;
 	bool dugwall = !strcmp(dmgstr, "dig into") ||	/* wand */
@@ -3283,7 +3283,7 @@ void pay_for_damage(const char *dmgstr, bool cant_mollify) {
 
 	if((um_dist(x, y, 1) && !uinshp) || cant_mollify ||
 #ifndef GOLDOBJ
-	   (u.ugold + ESHK(shkp)->credit) < cost_of_damage
+	   (player.ugold + ESHK(shkp)->credit) < cost_of_damage
 #else
 	   (money_cnt(invent) + ESHK(shkp)->credit) < cost_of_damage
 #endif
@@ -3307,7 +3307,7 @@ getcad:
 	if(yn(qbuf) != 'n') {
 		cost_of_damage = check_credit(cost_of_damage, shkp);
 #ifndef GOLDOBJ
-		u.ugold -= cost_of_damage;
+		player.ugold -= cost_of_damage;
 		shkp->mgold += cost_of_damage;
 #else
                 money2mon(shkp, cost_of_damage);
@@ -3321,7 +3321,7 @@ getcad:
 	} else {
 		verbalize("Oh, yes!  You'll pay!");
 		hot_pursuit(shkp);
-		adjalign(-sgn(u.ualign.type));
+		adjalign(-sgn(player.ualign.type));
 	}
 }
 #endif /*OVLB*/
@@ -3366,7 +3366,7 @@ void price_quote(Object *first_obj) {
     long cost;
     int cnt = 0;
     winid tmpwin;
-    Monster *shkp = shop_keeper(inside_shop(u.ux, u.uy));
+    Monster *shkp = shop_keeper(inside_shop(player.ux, player.uy));
 
     tmpwin = create_nhwindow(NHW_MENU);
     putstr(tmpwin, 0, "Fine goods for sale:");
@@ -3591,10 +3591,10 @@ void check_unpaid_usage(Object *otmp, bool altusage) {
 	const char *fmt, *arg1, *arg2;
 	long tmp;
 
-	if (!otmp->unpaid || !*u.ushops ||
+	if (!otmp->unpaid || !*player.ushops ||
 		(otmp->spe <= 0 && objects[otmp->otyp].oc_charged))
 	    return;
-	if (!(shkp = shop_keeper(*u.ushops)) || !inhishop(shkp))
+	if (!(shkp = shop_keeper(*player.ushops)) || !inhishop(shkp))
 	    return;
 	if ((tmp = cost_per_charge(shkp, otmp, altusage)) == 0L)
 	    return;
@@ -3662,7 +3662,7 @@ bool block_door(xchar x, xchar y) {
 
 	if(roomno < 0 || !IS_SHOP(roomno)) return(FALSE);
 	if(!IS_DOOR(levl[x][y].typ)) return(FALSE);
-	if(roomno != *u.ushops) return(FALSE);
+	if(roomno != *player.ushops) return(FALSE);
 
 	if(!(shkp = shop_keeper((char)roomno)) || !inhishop(shkp))
 		return(FALSE);
@@ -3684,21 +3684,21 @@ bool block_door(xchar x, xchar y) {
 }
 
 /* used in domove to block diagonal shop-entry */
-/* u.ux, u.uy should always be a door */
+/* player.ux, player.uy should always be a door */
 bool block_entry(xchar x, xchar y) {
 	xchar sx, sy;
 	int roomno;
 	Monster *shkp;
 
-	if(!(IS_DOOR(levl[u.ux][u.uy].typ) &&
-		levl[u.ux][u.uy].doormask == D_BROKEN)) return(FALSE);
+	if(!(IS_DOOR(levl[player.ux][player.uy].typ) &&
+		levl[player.ux][player.uy].doormask == D_BROKEN)) return(FALSE);
 
 	roomno = *in_rooms(x, y, SHOPBASE);
 	if(roomno < 0 || !IS_SHOP(roomno)) return(FALSE);
 	if(!(shkp = shop_keeper((char)roomno)) || !inhishop(shkp))
 		return(FALSE);
 
-	if(ESHK(shkp)->shd.x != u.ux || ESHK(shkp)->shd.y != u.uy)
+	if(ESHK(shkp)->shd.x != player.ux || ESHK(shkp)->shd.y != player.uy)
 		return(FALSE);
 
 	sx = ESHK(shkp)->shk.x;
@@ -3709,7 +3709,7 @@ bool block_entry(xchar x, xchar y) {
 		&& (x == sx-1 || x == sx+1 || y == sy-1 || y == sy+1)
 		&& (Invis || carrying(PICK_AXE) || carrying(DWARVISH_MATTOCK)
 #ifdef STEED
-			|| u.usteed
+			|| player.usteed
 #endif
 	  )) {
 		pline("%s%s blocks your way!", shkname(shkp),

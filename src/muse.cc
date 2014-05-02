@@ -238,7 +238,7 @@ bool find_defensive(Monster *mtmp) {
 	Object *obj = 0;
 	Trap *t;
 	int x=mtmp->mx, y=mtmp->my;
-	bool stuck = (mtmp == u.ustuck);
+	bool stuck = (mtmp == player.ustuck);
 	bool immobile = (mtmp->data->mmove == 0);
 	int fraction;
 
@@ -246,7 +246,7 @@ bool find_defensive(Monster *mtmp) {
 		return FALSE;
 	if(dist2(x, y, mtmp->mux, mtmp->muy) > 25)
 		return FALSE;
-	if (u.uswallow && stuck) return FALSE;
+	if (player.uswallow && stuck) return FALSE;
 
 	m.defensive = nullptr;
 	m.has_defense = 0;
@@ -304,7 +304,7 @@ bool find_defensive(Monster *mtmp) {
 	    }
 	}
 
-	fraction = u.ulevel < 10 ? 5 : u.ulevel < 14 ? 4 : 3;
+	fraction = player.ulevel < 10 ? 5 : player.ulevel < 14 ? 4 : 3;
 	if(mtmp->mhp >= mtmp->mhpmax ||
 			(mtmp->mhp >= 10 && mtmp->mhp*fraction >= mtmp->mhpmax))
 		return FALSE;
@@ -333,7 +333,7 @@ bool find_defensive(Monster *mtmp) {
 	if (levl[x][y].typ == STAIRS && !stuck && !immobile) {
 		if (x == xdnstair && y == ydnstair && !is_floater(mtmp->data))
 			m.has_defense = MUSE_DOWNSTAIRS;
-		if (x == xupstair && y == yupstair && ledger_no(&u.uz) != 1)
+		if (x == xupstair && y == yupstair && ledger_no(&player.uz) != 1)
 	/* Unfair to let the monsters leave the dungeon with the Amulet */
 	/* (or go to the endlevel since you also need it, to get there) */
 			m.has_defense = MUSE_UPSTAIRS;
@@ -350,7 +350,7 @@ bool find_defensive(Monster *mtmp) {
 
 		for(xx = x-1; xx <= x+1; xx++) for(yy = y-1; yy <= y+1; yy++)
 		if (isok(xx,yy))
-		if (xx != u.ux && yy != u.uy)
+		if (xx != player.ux && yy != player.uy)
 		if (mtmp->data != &mons[PM_GRID_BUG] || xx == x || yy == y)
 		if ((xx==x && yy==y) || !level.monsters[xx][yy])
 		if ((t = t_at(xx,yy)) != 0)
@@ -361,7 +361,7 @@ bool find_defensive(Monster *mtmp) {
 				&& !is_floater(mtmp->data)
 				&& !mtmp->isshk && !mtmp->isgd
 				&& !mtmp->ispriest
-				&& Can_fall_thru(&u.uz)
+				&& Can_fall_thru(&player.uz)
 						) {
 				trapx = xx;
 				trapy = yy;
@@ -416,13 +416,13 @@ bool find_defensive(Monster *mtmp) {
 		    && !mtmp->isshk && !mtmp->isgd && !mtmp->ispriest
 		    && !is_floater(mtmp->data)
 		    /* monsters digging in Sokoban can ruin things */
-		    && !In_sokoban(&u.uz)
+		    && !In_sokoban(&player.uz)
 		    /* digging wouldn't be effective; assume they know that */
 		    && !(levl[x][y].wall_info & W_NONDIGGABLE)
-		    && !(Is_botlevel(&u.uz) || In_endgame(&u.uz))
+		    && !(Is_botlevel(&player.uz) || In_endgame(&player.uz))
 		    && !(is_ice(x,y) || is_pool(x,y) || is_lava(x,y))
 		    && !(mtmp->data == &mons[PM_VLAD_THE_IMPALER]
-			 && In_V_tower(&u.uz))) {
+			 && In_V_tower(&player.uz))) {
 			m.defensive = obj;
 			m.has_defense = MUSE_WAN_DIGGING;
 		}
@@ -566,7 +566,7 @@ mon_tele:
 #if 0
 			mon_has_amulet(mtmp) ||
 #endif
-			On_W_tower_level(&u.uz)) && !rn2(3)) {
+			On_W_tower_level(&player.uz)) && !rn2(3)) {
 		    if (vismon)
 			pline("%s seems disoriented for a moment.",
 				Monnam(mtmp));
@@ -599,14 +599,14 @@ mon_tele:
 			int nlev;
 			d_level flev;
 
-			if (mon_has_amulet(mtmp) || In_endgame(&u.uz)) {
+			if (mon_has_amulet(mtmp) || In_endgame(&player.uz)) {
 			    if (vismon)
 				pline("%s seems very disoriented for a moment.",
 					Monnam(mtmp));
 			    return 2;
 			}
 			nlev = random_teleport_level();
-			if (nlev == depth(&u.uz)) {
+			if (nlev == depth(&player.uz)) {
 			    if (vismon)
 				pline("%s shudders for a moment.",
 								Monnam(mtmp));
@@ -634,7 +634,7 @@ mon_tele:
 			pline_The("digging ray is ineffective.");
 			return 2;
 		}
-		if (!Can_dig_down(&u.uz)) {
+		if (!Can_dig_down(&player.uz)) {
 		    if(canseemon(mtmp))
 			pline_The("%s here is too hard to dig in.",
 					surface(mtmp->mx, mtmp->my));
@@ -652,7 +652,7 @@ mon_tele:
 			You_hear("%s crash through the %s.", something,
 				surface(mtmp->mx, mtmp->my));
 		/* we made sure that there is a level for mtmp to go to */
-		migrate_to_level(mtmp, ledger_no(&u.uz) + 1,
+		migrate_to_level(mtmp, ledger_no(&player.uz) + 1,
 				 MIGR_RANDOM, (coord *)0);
 		return 2;
 	    }
@@ -660,7 +660,7 @@ mon_tele:
 	    {	coord cc;
 		    /* pm: 0 => random, eel => aquatic, croc => amphibious */
 		MonsterType *pm = !is_pool(mtmp->mx, mtmp->my) ? 0 :
-			     &mons[u.uinwater ? PM_GIANT_EEL : PM_CROCODILE];
+			     &mons[player.uinwater ? PM_GIANT_EEL : PM_CROCODILE];
 		Monster *mon;
 
 		if (!enexto(&cc, mtmp->mx, mtmp->my, pm)) return 0;
@@ -682,7 +682,7 @@ mon_tele:
 		if (mtmp->mconf || otmp->cursed) cnt += 12;
 		if (mtmp->mconf) pm = fish = &mons[PM_ACID_BLOB];
 		else if (is_pool(mtmp->mx, mtmp->my))
-		    fish = &mons[u.uinwater ? PM_GIANT_EEL : PM_CROCODILE];
+		    fish = &mons[player.uinwater ? PM_GIANT_EEL : PM_CROCODILE];
 		mreadmsg(mtmp, otmp);
 		while(cnt--) {
 		    /* `fish' potentially gives bias towards water locations;
@@ -709,7 +709,7 @@ mon_tele:
 		 * trap doors, not holes in the floor.  We check here for
 		 * safety.
 		 */
-		if (Is_botlevel(&u.uz)) return 0;
+		if (Is_botlevel(&player.uz)) return 0;
 		m_flee(mtmp);
 		if (vis) {
 			Trap *t;
@@ -731,7 +731,7 @@ mon_tele:
 		if (mtmp->wormno) worm_move(mtmp);
 		newsym(trapx, trapy);
 
-		migrate_to_level(mtmp, ledger_no(&u.uz) + 1,
+		migrate_to_level(mtmp, ledger_no(&player.uz) + 1,
 				 MIGR_RANDOM, (coord *)0);
 		return 2;
 	case MUSE_UPSTAIRS:
@@ -741,7 +741,7 @@ mon_tele:
 		 * which we cannot allow since that would leave the
 		 * player stranded.
 		 */
-		if (ledger_no(&u.uz) == 1) {
+		if (ledger_no(&player.uz) == 1) {
 			if (mon_has_special(mtmp))
 				return 0;
 			if (vismon)
@@ -751,7 +751,7 @@ mon_tele:
 		}
 		m_flee(mtmp);
 		if (Inhell && mon_has_amulet(mtmp) && !rn2(4) &&
-			(dunlev(&u.uz) < dunlevs_in_dungeon(&u.uz) - 3)) {
+			(dunlev(&player.uz) < dunlevs_in_dungeon(&player.uz) - 3)) {
 		    if (vismon) pline(
      "As %s climbs the stairs, a mysterious force momentarily surrounds %s...",
 				     mon_nam(mtmp), mhim(mtmp));
@@ -759,30 +759,30 @@ mon_tele:
 		       the Wizard and he'll immediately go right to the
 		       upstairs, so there's not much point in having any
 		       chance for a random position on the current level */
-		    migrate_to_level(mtmp, ledger_no(&u.uz) + 1,
+		    migrate_to_level(mtmp, ledger_no(&player.uz) + 1,
 				     MIGR_RANDOM, (coord *)0);
 		} else {
 		    if (vismon) pline("%s escapes upstairs!", Monnam(mtmp));
-		    migrate_to_level(mtmp, ledger_no(&u.uz) - 1,
+		    migrate_to_level(mtmp, ledger_no(&player.uz) - 1,
 				     MIGR_STAIRS_DOWN, (coord *)0);
 		}
 		return 2;
 	case MUSE_DOWNSTAIRS:
 		m_flee(mtmp);
 		if (vismon) pline("%s escapes downstairs!", Monnam(mtmp));
-		migrate_to_level(mtmp, ledger_no(&u.uz) + 1,
+		migrate_to_level(mtmp, ledger_no(&player.uz) + 1,
 				 MIGR_STAIRS_UP, (coord *)0);
 		return 2;
 	case MUSE_UP_LADDER:
 		m_flee(mtmp);
 		if (vismon) pline("%s escapes up the ladder!", Monnam(mtmp));
-		migrate_to_level(mtmp, ledger_no(&u.uz) - 1,
+		migrate_to_level(mtmp, ledger_no(&player.uz) - 1,
 				 MIGR_LADDER_DOWN, (coord *)0);
 		return 2;
 	case MUSE_DN_LADDER:
 		m_flee(mtmp);
 		if (vismon) pline("%s escapes down the ladder!", Monnam(mtmp));
-		migrate_to_level(mtmp, ledger_no(&u.uz) + 1,
+		migrate_to_level(mtmp, ledger_no(&player.uz) + 1,
 				 MIGR_LADDER_UP, (coord *)0);
 		return 2;
 	case MUSE_SSTAIRS:
@@ -948,7 +948,7 @@ bool find_offensive(Monster *mtmp) {
 	if (mtmp->mpeaceful || is_animal(mtmp->data) ||
 				mindless(mtmp->data) || nohands(mtmp->data))
 		return FALSE;
-	if (u.uswallow) return FALSE;
+	if (player.uswallow) return FALSE;
 	if (in_your_sanctuary(mtmp, 0, 0)) return FALSE;
 	if (dmgtype(mtmp->data, AD_HEAL) && !uwep
 #ifdef TOURIST
@@ -1046,9 +1046,9 @@ bool find_offensive(Monster *mtmp) {
 		       && dist2(mtmp->mx,mtmp->my,mtmp->mux,mtmp->muy) <= 2
 		       && mtmp->mcansee && haseyes(mtmp->data)
 #ifdef REINCARNATION
-		       && !Is_rogue_level(&u.uz)
+		       && !Is_rogue_level(&player.uz)
 #endif
-		       && (!In_endgame(&u.uz) || Is_earthlevel(&u.uz))) {
+		       && (!In_endgame(&player.uz) || Is_earthlevel(&player.uz))) {
 		    m.offensive = obj;
 		    m.has_offense = MUSE_SCR_EARTH;
 		}
@@ -1081,9 +1081,9 @@ int mbhitm(Monster *mtmp, Object *otmp) {
 		if (mtmp == &youmonst) {
 			if (zap_oseen) makeknown(WAN_STRIKING);
 			if (Antimagic) {
-			    shieldeff(u.ux, u.uy);
+			    shieldeff(player.ux, player.uy);
 			    pline("Boing!");
-			} else if (rnd(20) < 10 + u.uac) {
+			} else if (rnd(20) < 10 + player.uac) {
 			    pline_The("wand hits you!");
 			    tmp = d(2,12);
 			    if(Half_spell_damage) tmp = (tmp+1) / 2;
@@ -1180,7 +1180,7 @@ STATIC_OVL void mbhit(
 			case WAN_STRIKING:
 			    destroy_drawbridge(x,y);
 		    }
-		if(bhitpos.x==u.ux && bhitpos.y==u.uy) {
+		if(bhitpos.x==player.ux && bhitpos.y==player.uy) {
 			(*fhitm)(&youmonst, obj);
 			range -= 3;
 		} else if(MON_AT(bhitpos.x, bhitpos.y)){
@@ -1318,7 +1318,7 @@ int use_offensive(Monster *mtmp) {
 	    	    			!IS_AIR(levl[x][y].typ) &&
 	    	    			(((x == mmx) && (y == mmy)) ?
 	    	    			    !otmp->blessed : !otmp->cursed) &&
-					(x != u.ux || y != u.uy)) {
+					(x != player.ux || y != player.uy)) {
 			    Object *otmp2;
 			    Monster *mtmp2;
 
@@ -1376,7 +1376,7 @@ int use_offensive(Monster *mtmp) {
 		}
 		m_useup(mtmp, otmp);
 		/* Attack the player */
-		if (distmin(mmx, mmy, u.ux, u.uy) == 1 && !otmp->cursed) {
+		if (distmin(mmx, mmy, player.ux, player.uy) == 1 && !otmp->cursed) {
 		    int dmg;
 		    Object *otmp2;
 
@@ -1403,10 +1403,10 @@ int use_offensive(Monster *mtmp) {
 			}
 		    } else
 			dmg = 0;
-		    if (!flooreffects(otmp2, u.ux, u.uy, "fall")) {
-			place_object(otmp2, u.ux, u.uy);
+		    if (!flooreffects(otmp2, player.ux, player.uy, "fall")) {
+			place_object(otmp2, player.ux, player.uy);
 			stackobj(otmp2);
-			newsym(u.ux, u.uy);
+			newsym(player.ux, player.uy);
 		    }
 		    if (dmg) losehp(dmg, "scroll of earth", KILLED_BY_AN);
 		}
@@ -1537,13 +1537,13 @@ bool find_misc(Monster *mtmp) {
 	Trap *t;
 	int xx, yy;
 	bool immobile = (mdat->mmove == 0);
-	bool stuck = (mtmp == u.ustuck);
+	bool stuck = (mtmp == player.ustuck);
 
 	m.misc = nullptr;
 	m.has_misc = 0;
 	if (is_animal(mdat) || mindless(mdat))
 		return 0;
-	if (u.uswallow && stuck) return FALSE;
+	if (player.uswallow && stuck) return FALSE;
 
 	/* We arbitrarily limit to times when a player is nearby for the
 	 * same reason as Junior Pac-Man doesn't have energizers eaten until
@@ -1558,7 +1558,7 @@ bool find_misc(Monster *mtmp) {
 				     passes_walls(mdat));
 	  for(xx = x-1; xx <= x+1; xx++)
 	    for(yy = y-1; yy <= y+1; yy++)
-		if (isok(xx,yy) && (xx != u.ux || yy != u.uy))
+		if (isok(xx,yy) && (xx != player.ux || yy != player.uy))
 		    if (mdat != &mons[PM_GRID_BUG] || xx == x || yy == y)
 			if (/* (xx==x && yy==y) || */ !level.monsters[xx][yy])
 			    if ((t = t_at(xx, yy)) != 0 &&
@@ -1667,13 +1667,13 @@ int use_misc(Monster *mtmp) {
 	case MUSE_POT_GAIN_LEVEL:
 		mquaffmsg(mtmp, otmp);
 		if (otmp->cursed) {
-		    if (Can_rise_up(mtmp->mx, mtmp->my, &u.uz)) {
-			int tolev = depth(&u.uz)-1;
+		    if (Can_rise_up(mtmp->mx, mtmp->my, &player.uz)) {
+			int tolev = depth(&player.uz)-1;
 			d_level tolevel;
 
 			get_level(&tolevel, tolev);
 			/* insurance against future changes... */
-			if(on_level(&tolevel, &u.uz)) goto skipmsg;
+			if(on_level(&tolevel, &player.uz)) goto skipmsg;
 			if (vismon) {
 			    pline("%s rises up, through the %s!",
 				  Monnam(mtmp), ceiling(mtmp->mx, mtmp->my));
@@ -1819,7 +1819,7 @@ skipmsg:
 			    break;
 			case 2:		/* onto floor beneath you */
 			    pline("%s yanks %s to the %s!", Monnam(mtmp),
-				  the_weapon, surface(u.ux, u.uy));
+				  the_weapon, surface(player.ux, player.uy));
 			    dropy(obj);
 			    break;
 			case 3:		/* into mon's inventory */

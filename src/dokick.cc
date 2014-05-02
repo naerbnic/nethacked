@@ -83,14 +83,14 @@ STATIC_OVL void kickdmg(Monster *mon, bool clumsy) {
 	}
 	if (blessed_foot_damage) dmg += rnd(4);
 	if (uarmf) dmg += uarmf->spe;
-	dmg += u.udaminc;	/* add ring(s) of increase damage */
+	dmg += player.udaminc;	/* add ring(s) of increase damage */
 	if (dmg > 0)
 		mon->mhp -= dmg;
 	if (mon->mhp > 0 && martial() && !bigmonst(mon->data) && !rn2(3) &&
-	    mon->mcanmove && mon != u.ustuck && !mon->mtrapped) {
+	    mon->mcanmove && mon != player.ustuck && !mon->mtrapped) {
 		/* see if the monster has a place to move into */
-		mdx = mon->mx + u.dx;
-		mdy = mon->my + u.dy;
+		mdx = mon->mx + player.dx;
+		mdy = mon->my + player.dy;
 		if(goodpos(mdx, mdy, mon, 0)) {
 			pline("%s reels from the blow.", Monnam(mon));
 			if (m_in_out_region(mon, mdx, mdy)) {
@@ -302,10 +302,10 @@ bool ghitm(Monster *mtmp, Object *gold) {
 			if (goldreqd) {
 #ifndef GOLDOBJ
 			   if (gold->quan > goldreqd +
-				(u.ugold + u.ulevel*rn2(5))/ACURR(A_CHA))
+				(player.ugold + player.ulevel*rn2(5))/ACURR(A_CHA))
 #else
 			   if (value > goldreqd +
-				(money_cnt(invent) + u.ulevel*rn2(5))/ACURR(A_CHA))
+				(money_cnt(invent) + player.ulevel*rn2(5))/ACURR(A_CHA))
 #endif
 			    mtmp->mpeaceful = TRUE;
 			}
@@ -341,8 +341,8 @@ void container_impact_dmg(Object *obj) {
 
 	costly = ((shkp = shop_keeper(*in_rooms(x, y, SHOPBASE))) &&
 		  costly_spot(x, y));
-	insider = (*u.ushops && inside_shop(u.ux, u.uy) &&
-		   *in_rooms(x, y, SHOPBASE) == *u.ushops);
+	insider = (*player.ushops && inside_shop(player.ux, player.uy) &&
+		   *in_rooms(x, y, SHOPBASE) == *player.ushops);
 
 	for (otmp = obj->cobj; otmp; otmp = otmp2) {
 	    const char *result = (char *)0;
@@ -450,7 +450,7 @@ STATIC_OVL int kick_object(xchar x, xchar y) {
 	if(kickobj->oartifact == ART_MJOLLNIR) range = 1;
 
 	/* see if the object has a place to move into */
-	if(!ZAP_POS(levl[x+u.dx][y+u.dy].typ) || closed_door(x+u.dx, y+u.dy))
+	if(!ZAP_POS(levl[x+player.dx][y+player.dy].typ) || closed_door(x+player.dx, y+player.dy))
 		range = 1;
 
 	costly = ((shkp = shop_keeper(*in_rooms(x, y, SHOPBASE))) &&
@@ -459,7 +459,7 @@ STATIC_OVL int kick_object(xchar x, xchar y) {
 
 	if (IS_ROCK(levl[x][y].typ) || closed_door(x, y)) {
 	    if ((!martial() && rn2(20) > ACURR(A_DEX)) ||
-		    IS_ROCK(levl[u.ux][u.uy].typ) || closed_door(u.ux, u.uy)) {
+		    IS_ROCK(levl[player.ux][player.uy].typ) || closed_door(player.ux, player.uy)) {
 		if (Blind)
 		    pline("It doesn't come loose.");
 		else
@@ -476,13 +476,13 @@ STATIC_OVL int kick_object(xchar x, xchar y) {
 		      otense(kickobj, "come"));
 	    obj_extract_self(kickobj);
 	    newsym(x, y);
-	    if (costly && (!costly_spot(u.ux, u.uy) ||
-		    !index(u.urooms, *in_rooms(x, y, SHOPBASE))))
+	    if (costly && (!costly_spot(player.ux, player.uy) ||
+		    !index(player.urooms, *in_rooms(x, y, SHOPBASE))))
 		addtobill(kickobj, FALSE, FALSE, FALSE);
-	    if (!flooreffects(kickobj, u.ux, u.uy, "fall")) {
-		place_object(kickobj, u.ux, u.uy);
+	    if (!flooreffects(kickobj, player.ux, player.uy, "fall")) {
+		place_object(kickobj, player.ux, player.uy);
 		stackobj(kickobj);
-		newsym(u.ux, u.uy);
+		newsym(player.ux, player.uy);
 	    }
 	    return 1;
 	}
@@ -535,7 +535,7 @@ STATIC_OVL int kick_object(xchar x, xchar y) {
 	obj_extract_self(kickobj);
 	(void) snuff_candle(kickobj);
 	newsym(x, y);
-	mon = bhit(u.dx, u.dy, range, KICKED_WEAPON,
+	mon = bhit(player.dx, player.dy, range, KICKED_WEAPON,
 		   (int (*)(Monster*,Object*))0,
 		   (int (*)(Object*,Object*))0,
 		   kickobj, NULL);
@@ -614,9 +614,9 @@ int dokick() {
 		You("are too small to do any kicking.");
 		no_kick = TRUE;
 #ifdef STEED
-	} else if (u.usteed) {
+	} else if (player.usteed) {
 		if (yn_function("Kick your steed?", ynchars, 'y') == 'y') {
-		    You("kick %s.", mon_nam(u.usteed));
+		    You("kick %s.", mon_nam(player.usteed));
 		    kick_steed();
 		    return 1;
 		} else {
@@ -640,11 +640,11 @@ int dokick() {
 	} else if (youmonst.data->mlet == S_LIZARD) {
 		Your("legs cannot kick effectively.");
 		no_kick = TRUE;
-	} else if (u.uinwater && !rn2(2)) {
+	} else if (player.uinwater && !rn2(2)) {
 		Your("slow motion kick doesn't hit anything.");
 		no_kick = TRUE;
-	} else if (u.utrap) {
-		switch (u.utraptype) {
+	} else if (player.utrap) {
+		switch (player.utraptype) {
 		    case TT_PIT:
 			pline("There's not enough room to kick down here.");
 			break;
@@ -665,10 +665,10 @@ int dokick() {
 	}
 
 	if(!getdir((char *)0)) return(0);
-	if(!u.dx && !u.dy) return(0);
+	if(!player.dx && !player.dy) return(0);
 
-	x = u.ux + u.dx;
-	y = u.uy + u.dy;
+	x = player.ux + player.dx;
+	y = player.uy + player.dy;
 
 	/* KMH -- Kicking boots always succeed */
 	if (uarmf && uarmf->otyp == KICKING_BOOTS)
@@ -676,12 +676,12 @@ int dokick() {
 	else
 	    avrg_attrib = (ACURRSTR+ACURR(A_DEX)+ACURR(A_CON))/3;
 
-	if(u.uswallow) {
+	if(player.uswallow) {
 		switch(rn2(3)) {
 		case 0:  You_cant("move your %s!", body_part(LEG));
 			 break;
-		case 1:  if (is_animal(u.ustuck->data)) {
-				pline("%s burps loudly.", Monnam(u.ustuck));
+		case 1:  if (is_animal(player.ustuck->data)) {
+				pline("%s burps loudly.", Monnam(player.ustuck));
 				break;
 			 }
 		default: Your("feeble kick has no effect."); break;
@@ -691,15 +691,15 @@ int dokick() {
 	if (Levitation) {
 		int xx, yy;
 
-		xx = u.ux - u.dx;
-		yy = u.uy - u.dy;
+		xx = player.ux - player.dx;
+		yy = player.uy - player.dy;
 		/* doors can be opened while levitating, so they must be
 		 * reachable for bracing purposes
 		 * Possible extension: allow bracing against stuff on the side?
 		 */
 		if (isok(xx,yy) && !IS_ROCK(levl[xx][yy].typ) &&
 			!IS_DOOR(levl[xx][yy].typ) &&
-			(!Is_airlevel(&u.uz) || !OBJ_AT(xx,yy))) {
+			(!Is_airlevel(&player.uz) || !OBJ_AT(xx,yy))) {
 		    You("have nothing to brace yourself against.");
 		    return(0);
 		}
@@ -730,9 +730,9 @@ int dokick() {
 		       jumping to an unseen square doesn't leave an I behind */
 		    mtmp->mx == x && mtmp->my == y &&
 		    !glyph_is_invisible(levl[x][y].glyph) &&
-		    !(u.uswallow && mtmp == u.ustuck))
+		    !(player.uswallow && mtmp == player.ustuck))
 			map_invisible(x, y);
-		if((Is_airlevel(&u.uz) || Levitation) && flags.move) {
+		if((Is_airlevel(&player.uz) || Levitation) && flags.move) {
 		    int range;
 
 		    range = ((int)youmonst.data->cwt + (weight_cap() + inv_weight()));
@@ -740,7 +740,7 @@ int dokick() {
 		    range = (3*(int)mdat->cwt) / range;
 
 		    if(range < 1) range = 1;
-		    hurtle(-u.dx, -u.dy, range, TRUE);
+		    hurtle(-player.dx, -player.dy, range, TRUE);
 		}
 		return(1);
 	}
@@ -748,7 +748,7 @@ int dokick() {
 		unmap_object(x, y);
 		newsym(x, y);
 	}
-	if (is_pool(x, y) ^ !!u.uinwater) {
+	if (is_pool(x, y) ^ !!player.uinwater) {
 		/* objects normally can't be removed from water by kicking */
 		You("splash some water around.");
 		return 1;
@@ -756,11 +756,11 @@ int dokick() {
 
 	kickobj = nullptr;
 	if (OBJ_AT(x, y) &&
-	    (!Levitation || Is_airlevel(&u.uz) || Is_waterlevel(&u.uz)
+	    (!Levitation || Is_airlevel(&player.uz) || Is_waterlevel(&player.uz)
 	     || sobj_at(BOULDER,x,y))) {
 		if(kick_object(x, y)) {
-		    if(Is_airlevel(&u.uz))
-			hurtle(-u.dx, -u.dy, 1, TRUE); /* assume it's light */
+		    if(Is_airlevel(&player.uz))
+			hurtle(-player.dx, -player.dy, 1, TRUE); /* assume it's light */
 		    return(1);
 		}
 		goto ouch;
@@ -837,7 +837,7 @@ int dokick() {
 			maploc->looted = T_LOOTED;
 			return(1);
 		    } else if (!rn2(4)) {
-			if(dunlev(&u.uz) < dunlevs_in_dungeon(&u.uz)) {
+			if(dunlev(&player.uz) < dunlevs_in_dungeon(&player.uz)) {
 			    fall_through(FALSE);
 			    return(1);
 			} else goto ouch;
@@ -991,8 +991,8 @@ ouch:
 		    if(!rn2(3)) set_wounded_legs(RIGHT_SIDE, 5 + rnd(5));
 		    losehp(rnd(ACURR(A_CON) > 15 ? 3 : 5), kickstr(buf),
 			KILLED_BY);
-		    if(Is_airlevel(&u.uz) || Levitation)
-			hurtle(-u.dx, -u.dy, rn1(2,4), TRUE); /* assume it's heavy */
+		    if(Is_airlevel(&player.uz) || Levitation)
+			hurtle(-player.dx, -player.dy, rn1(2,4), TRUE); /* assume it's heavy */
 		    return(1);
 		}
 		goto dumb;
@@ -1011,8 +1011,8 @@ dumb:
 			exercise(A_STR, FALSE);
 			set_wounded_legs(RIGHT_SIDE, 5 + rnd(5));
 		}
-		if ((Is_airlevel(&u.uz) || Levitation) && rn2(2)) {
-		    hurtle(-u.dx, -u.dy, 1, TRUE);
+		if ((Is_airlevel(&player.uz) || Levitation) && rn2(2)) {
+		    hurtle(-player.dx, -player.dy, 1, TRUE);
 		    return 1;		/* you moved, so use up a turn */
 		}
 		return(0);
@@ -1097,18 +1097,18 @@ STATIC_OVL void drop_to(coord *cc, schar loc) {
 	/* cover all the MIGR_xxx choices generated by down_gate() */
 	switch (loc) {
 	 case MIGR_RANDOM:	/* trap door or hole */
-		    if (Is_stronghold(&u.uz)) {
+		    if (Is_stronghold(&player.uz)) {
 			cc->x = valley_level.dnum;
 			cc->y = valley_level.dlevel;
 			break;
-		    } else if (In_endgame(&u.uz) || Is_botlevel(&u.uz)) {
+		    } else if (In_endgame(&player.uz) || Is_botlevel(&player.uz)) {
 			cc->y = cc->x = 0;
 			break;
 		    } /* else fall to the next cases */
 	 case MIGR_STAIRS_UP:
 	 case MIGR_LADDER_UP:
-		    cc->x = u.uz.dnum;
-		    cc->y = u.uz.dlevel + 1;
+		    cc->x = player.uz.dnum;
+		    cc->y = player.uz.dlevel + 1;
 		    break;
 	 case MIGR_SSTAIRS:
 		    cc->x = sstairs.tolev.dnum;
@@ -1177,8 +1177,8 @@ void impact_drop(Object *missile, xchar x, xchar y, xchar dlev) {
 
 		if(costly) {
 		    price += stolen_value(obj, x, y,
-				(costly_spot(u.ux, u.uy) &&
-				 index(u.urooms, *in_rooms(x, y, SHOPBASE))),
+				(costly_spot(player.ux, player.uy) &&
+				 index(player.urooms, *in_rooms(x, y, SHOPBASE))),
 				TRUE);
 		    /* set obj->no_charge to 0 */
 		    if (Has_contents(obj))
@@ -1286,14 +1286,14 @@ bool ship_object(Object *otmp, xchar x, xchar y, bool shop_floor_obj) {
 
 	if(unpaid || shop_floor_obj) {
 	    if(unpaid) {
-		subfrombill(otmp, shop_keeper(*u.ushops));
-		(void)stolen_value(otmp, u.ux, u.uy, TRUE, FALSE);
+		subfrombill(otmp, shop_keeper(*player.ushops));
+		(void)stolen_value(otmp, player.ux, player.uy, TRUE, FALSE);
 	    } else {
 		ox = otmp->ox;
 		oy = otmp->oy;
 		(void)stolen_value(otmp, ox, oy,
-			  (costly_spot(u.ux, u.uy) &&
-			      index(u.urooms, *in_rooms(ox, oy, SHOPBASE))),
+			  (costly_spot(player.ux, player.uy) &&
+			      index(player.urooms, *in_rooms(ox, oy, SHOPBASE))),
 			  FALSE);
 	    }
 	    /* set otmp->no_charge to 0 */
@@ -1361,7 +1361,7 @@ void obj_delivery() {
 
 	for (otmp = migrating_objs; otmp; otmp = otmp2) {
 	    otmp2 = otmp->nobj;
-	    if (otmp->ox != u.uz.dnum || otmp->oy != u.uz.dlevel) continue;
+	    if (otmp->ox != player.uz.dnum || otmp->oy != player.uz.dlevel) continue;
 
 	    obj_extract_self(otmp);
 	    where = otmp->owornmask;		/* destination code */
@@ -1374,7 +1374,7 @@ void obj_delivery() {
 				break;
 	     case MIGR_SSTAIRS:	    nx = sstairs.sx,  ny = sstairs.sy;
 				break;
-	     case MIGR_NEAR_PLAYER: nx = u.ux,  ny = u.uy;
+	     case MIGR_NEAR_PLAYER: nx = player.ux,  ny = player.uy;
 				break;
 	     default:
 	     case MIGR_RANDOM:	    nx = ny = 0;
@@ -1422,7 +1422,7 @@ schar down_gate(xchar x, xchar y) {
 
 	gate_str = 0;
 	/* this matches the player restriction in goto_level() */
-	if (on_level(&u.uz, &qstart_level) && !ok_to_quest())
+	if (on_level(&player.uz, &qstart_level) && !ok_to_quest())
 	    return MIGR_NOWHERE;
 
 	if ((xdnstair == x && ydnstair == y) ||

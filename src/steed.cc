@@ -18,7 +18,7 @@ STATIC_DCL bool landing_spot(coord *, int, int);
 
 /* caller has decided that hero can't reach something while mounted */
 void rider_cant_reach() {
-     You("aren't skilled enough to reach from %s.", y_monnam(u.usteed));
+     You("aren't skilled enough to reach from %s.", y_monnam(player.usteed));
 }
 
 /*** Putting the saddle on ***/
@@ -51,16 +51,16 @@ int use_saddle(Object *otmp) {
 	}
 
 	/* Select an animal */
-	if (u.uswallow || Underwater || !getdir((char *)0)) {
+	if (player.uswallow || Underwater || !getdir((char *)0)) {
 	    pline(Never_mind);
 	    return 0;
 	}
-	if (!u.dx && !u.dy) {
+	if (!player.dx && !player.dy) {
 	    pline("Saddle yourself?  Very funny...");
 	    return 0;
 	}
-	if (!isok(u.ux+u.dx, u.uy+u.dy) ||
-			!(mtmp = m_at(u.ux+u.dx, u.uy+u.dy)) ||
+	if (!isok(player.ux+player.dx, player.uy+player.dy) ||
+			!(mtmp = m_at(player.ux+player.dx, player.uy+player.dy)) ||
 			!canspotmon(mtmp)) {
 	    pline("I see nobody there.");
 	    return 1;
@@ -99,7 +99,7 @@ int use_saddle(Object *otmp) {
 
 	/* Calculate your chance */
 	chance = ACURR(A_DEX) + ACURR(A_CHA)/2 + 2*mtmp->mtame;
-	chance += u.ulevel * (mtmp->mtame ? 20 : 5);
+	chance += player.ulevel * (mtmp->mtame ? 20 : 5);
 	if (!mtmp->mtame) chance -= 10*mtmp->m_lev;
 	if (Role_if(PM_KNIGHT))
 	    chance += 20;
@@ -161,14 +161,14 @@ bool can_ride(Monster *mtmp) {
 int doride() {
 	bool forcemount = FALSE;
 
-	if (u.usteed)
+	if (player.usteed)
 	    dismount_steed(DISMOUNT_BYCHOICE);
-	else if (getdir((char *)0) && isok(u.ux+u.dx, u.uy+u.dy)) {
+	else if (getdir((char *)0) && isok(player.ux+player.dx, player.uy+player.dy)) {
 #ifdef WIZARD
 	if (wizard && yn("Force the mount to succeed?") == 'y')
 		forcemount = TRUE;
 #endif
-	    return (mount_steed(m_at(u.ux+u.dx, u.uy+u.dy), forcemount));
+	    return (mount_steed(m_at(player.ux+player.dx, player.uy+player.dy), forcemount));
 	} else
 	    return 0;
 	return 1;
@@ -182,8 +182,8 @@ bool mount_steed(Monster *mtmp, bool force) {
 	MonsterType *ptr;
 
 	/* Sanity checks */
-	if (u.usteed) {
-	    You("are already riding %s.", mon_nam(u.usteed));
+	if (player.usteed) {
+	    You("are already riding %s.", mon_nam(player.usteed));
 	    return (FALSE);
 	}
 
@@ -230,9 +230,9 @@ bool mount_steed(Monster *mtmp, bool force) {
 	    pline("I see nobody there.");
 	    return (FALSE);
 	}
-	if (u.uswallow || u.ustuck || u.utrap || Punished ||
-	    !test_move(u.ux, u.uy, mtmp->mx-u.ux, mtmp->my-u.uy, TEST_MOVE)) {
-	    if (Punished || !(u.uswallow || u.ustuck || u.utrap))
+	if (player.uswallow || player.ustuck || player.utrap || Punished ||
+	    !test_move(player.ux, player.uy, mtmp->mx-player.ux, mtmp->my-player.uy, TEST_MOVE)) {
+	    if (Punished || !(player.uswallow || player.ustuck || player.utrap))
 		You("are unable to swing your %s over.", body_part(LEG)); 
 	    else
 		You("are stuck here for now.");
@@ -297,7 +297,7 @@ bool mount_steed(Monster *mtmp, bool force) {
 	    return (FALSE);
 	}
 	if (!force && (Confusion || Fumbling || Glib || Wounded_legs ||
-		otmp->cursed || (u.ulevel+mtmp->mtame < rnd(MAXULEV/2+5)))) {
+		otmp->cursed || (player.ulevel+mtmp->mtame < rnd(MAXULEV/2+5)))) {
 	    if (Levitation) {
 		pline("%s slips away from you.", Monnam(mtmp));
 		return FALSE;
@@ -322,7 +322,7 @@ bool mount_steed(Monster *mtmp, bool force) {
 	}
 	/* setuwep handles polearms differently when you're mounted */
 	if (uwep && is_pole(uwep)) unweapon = FALSE;
-	u.usteed = mtmp;
+	player.usteed = mtmp;
 	remove_monster(mtmp->mx, mtmp->my);
 	teleds(mtmp->mx, mtmp->my, TRUE);
 	return (TRUE);
@@ -331,12 +331,12 @@ bool mount_steed(Monster *mtmp, bool force) {
 
 /* You and your steed have moved */
 void exercise_steed() {
-	if (!u.usteed)
+	if (!player.usteed)
 		return;
 
 	/* It takes many turns of riding to exercise skill */
-	if (u.urideturns++ >= 100) {
-	    u.urideturns = 0;
+	if (player.urideturns++ >= 100) {
+	    player.urideturns = 0;
 	    use_skill(P_RIDING, 1);
 	}
 	return;
@@ -346,45 +346,45 @@ void exercise_steed() {
 /* The player kicks or whips the steed */
 void kick_steed() {
 	char He[4];
-	if (!u.usteed)
+	if (!player.usteed)
 	    return;
 
 	/* [ALI] Various effects of kicking sleeping/paralyzed steeds */
-	if (u.usteed->msleeping || !u.usteed->mcanmove) {
+	if (player.usteed->msleeping || !player.usteed->mcanmove) {
 	    /* We assume a message has just been output of the form
 	     * "You kick <steed>."
 	     */
-	    strcpy(He, mhe(u.usteed));
+	    strcpy(He, mhe(player.usteed));
 	    *He = highc(*He);
-	    if ((u.usteed->mcanmove || u.usteed->mfrozen) && !rn2(2)) {
-		if (u.usteed->mcanmove)
-		    u.usteed->msleeping = 0;
-		else if (u.usteed->mfrozen > 2)
-		    u.usteed->mfrozen -= 2;
+	    if ((player.usteed->mcanmove || player.usteed->mfrozen) && !rn2(2)) {
+		if (player.usteed->mcanmove)
+		    player.usteed->msleeping = 0;
+		else if (player.usteed->mfrozen > 2)
+		    player.usteed->mfrozen -= 2;
 		else {
-		    u.usteed->mfrozen = 0;
-		    u.usteed->mcanmove = 1;
+		    player.usteed->mfrozen = 0;
+		    player.usteed->mcanmove = 1;
 		}
-		if (u.usteed->msleeping || !u.usteed->mcanmove)
+		if (player.usteed->msleeping || !player.usteed->mcanmove)
 		    pline("%s stirs.", He);
 		else
-		    pline("%s rouses %sself!", He, mhim(u.usteed));
+		    pline("%s rouses %sself!", He, mhim(player.usteed));
 	    } else
 		pline("%s does not respond.", He);
 	    return;
 	}
 
 	/* Make the steed less tame and check if it resists */
-	if (u.usteed->mtame) u.usteed->mtame--;
-	if (!u.usteed->mtame && u.usteed->mleashed) m_unleash(u.usteed, TRUE);
-	if (!u.usteed->mtame || (u.ulevel+u.usteed->mtame < rnd(MAXULEV/2+5))) {
-	    newsym(u.usteed->mx, u.usteed->my);
+	if (player.usteed->mtame) player.usteed->mtame--;
+	if (!player.usteed->mtame && player.usteed->mleashed) m_unleash(player.usteed, TRUE);
+	if (!player.usteed->mtame || (player.ulevel+player.usteed->mtame < rnd(MAXULEV/2+5))) {
+	    newsym(player.usteed->mx, player.usteed->my);
 	    dismount_steed(DISMOUNT_THROWN);
 	    return;
 	}
 
-	pline("%s gallops!", Monnam(u.usteed));
-	u.ugallop += rn1(20, 30);
+	pline("%s gallops!", Monnam(player.usteed));
+	player.ugallop += rn1(20, 30);
 	return;
 }
 
@@ -403,9 +403,9 @@ STATIC_OVL bool landing_spot(coord *spot, int reason, int forceit) {
     /* avoid known traps (i == 0) and boulders, but allow them as a backup */
     if (reason != DISMOUNT_BYCHOICE || Stunned || Confusion || Fumbling) i = 1;
     for (; !found && i < 2; ++i) {
-	for (x = u.ux-1; x <= u.ux+1; x++)
-	    for (y = u.uy-1; y <= u.uy+1; y++) {
-		if (!isok(x, y) || (x == u.ux && y == u.uy)) continue;
+	for (x = player.ux-1; x <= player.ux+1; x++)
+	    for (y = player.uy-1; y <= player.uy+1; y++) {
+		if (!isok(x, y) || (x == player.ux && y == player.uy)) continue;
 
 		if (ACCESSIBLE(levl[x][y].typ) &&
 			    !MON_AT(x,y) && !closed_door(x,y)) {
@@ -427,7 +427,7 @@ STATIC_OVL bool landing_spot(coord *spot, int reason, int forceit) {
 
     /* If we didn't find a good spot and forceit is on, try enexto(). */
     if (forceit && min_distance < 0 &&
-		!enexto(spot, u.ux, u.uy, youmonst.data))
+		!enexto(spot, player.ux, player.uy, youmonst.data))
 	return FALSE;
 
     return found;
@@ -440,10 +440,10 @@ void dismount_steed(int reason) {
 	coord cc;
 	const char *verb = "fall";
 	bool repair_leg_damage = TRUE;
-	unsigned save_utrap = u.utrap;
+	unsigned save_utrap = player.utrap;
 	bool have_spot = landing_spot(&cc,reason,0);
 	
-	mtmp = u.usteed;		/* make a copy of steed pointer */
+	mtmp = player.usteed;		/* make a copy of steed pointer */
 	/* Sanity check */
 	if (!mtmp)		/* Just return silently */
 	    return;
@@ -461,7 +461,7 @@ void dismount_steed(int reason) {
 		repair_leg_damage = FALSE;
 		break;
 	    case DISMOUNT_POLY:
-		You("can no longer ride %s.", mon_nam(u.usteed));
+		You("can no longer ride %s.", mon_nam(player.usteed));
 		if (!have_spot) have_spot = landing_spot(&cc,reason,1);
 		break;
 	    case DISMOUNT_ENGULFED:
@@ -500,35 +500,35 @@ void dismount_steed(int reason) {
 	if (repair_leg_damage) HWounded_legs = EWounded_legs = 0;
 
 	/* Release the steed and saddle */
-	u.usteed = 0;
-	u.ugallop = 0L;
+	player.usteed = 0;
+	player.ugallop = 0L;
 
 	/* Set player and steed's position.  Try moving the player first
 	   unless we're in the midst of creating a bones file. */
 	if (reason == DISMOUNT_BONES) {
 	    /* move the steed to an adjacent square */
-	    if (enexto(&cc, u.ux, u.uy, mtmp->data))
+	    if (enexto(&cc, player.ux, player.uy, mtmp->data))
 		rloc_to(mtmp, cc.x, cc.y);
 	    else	/* evidently no room nearby; move steed elsewhere */
 		(void) rloc(mtmp, FALSE);
 	    return;
 	}
 	if (!mtmp->dead()) {
-	    place_monster(mtmp, u.ux, u.uy);
-	    if (!u.uswallow && !u.ustuck && have_spot) {
+	    place_monster(mtmp, player.ux, player.uy);
+	    if (!player.uswallow && !player.ustuck && have_spot) {
 		MonsterType *mdat = mtmp->data;
 
 		/* The steed may drop into water/lava */
 		if (!is_flyer(mdat) && !is_floater(mdat) && !is_clinger(mdat)) {
-		    if (is_pool(u.ux, u.uy)) {
+		    if (is_pool(player.ux, player.uy)) {
 			if (!Underwater)
 			    pline("%s falls into the %s!", Monnam(mtmp),
-							surface(u.ux, u.uy));
+							surface(player.ux, player.uy));
 			if (!is_swimmer(mdat) && !amphibious(mdat)) {
 			    killed(mtmp);
 			    adjalign(-1);
 			}
-		    } else if (is_lava(u.ux, u.uy)) {
+		    } else if (is_lava(player.ux, player.uy)) {
 			pline("%s is pulled into the lava!", Monnam(mtmp));
 			if (!likes_lava(mdat)) {
 			    killed(mtmp);
@@ -556,7 +556,7 @@ void dismount_steed(int reason) {
 		/* [ALI] No need to move the player if the steed died. */
 		if (!mtmp->dead()) {
 		    /* Keep steed here, move the player to cc;
-		     * teleds() clears u.utrap
+		     * teleds() clears player.utrap
 		     */
 		    in_steed_dismounting = TRUE;
 		    teleds(cc.x, cc.y, TRUE);
@@ -567,7 +567,7 @@ void dismount_steed(int reason) {
 			(void) mintrap(mtmp);
 		}
 	    /* Couldn't... try placing the steed */
-	    } else if (enexto(&cc, u.ux, u.uy, mtmp->data)) {
+	    } else if (enexto(&cc, player.ux, player.uy, mtmp->data)) {
 		/* Keep player here, move the steed to cc */
 		rloc_to(mtmp, cc.x, cc.y);
 		/* Player stays put */
@@ -594,11 +594,11 @@ void dismount_steed(int reason) {
 }
 
 void place_monster(Monster *mon, int x, int y) {
-    if (mon == u.usteed ||
+    if (mon == player.usteed ||
 	    /* special case is for convoluted vault guard handling */
 	    (mon->dead() && !(mon->isgd && x == 0 && y == 0))) {
 	impossible("placing %s onto map?",
-		   (mon == u.usteed) ? "steed" : "defunct monster");
+		   (mon == player.usteed) ? "steed" : "defunct monster");
 	return;
     }
     mon->mx = x, mon->my = y;

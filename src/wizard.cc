@@ -55,7 +55,7 @@ void amulet() {
 	Object *amu;
 
 #if 0		/* caller takes care of this check */
-	if (!u.uhave.amulet)
+	if (!player.uhave.amulet)
 		return;
 #endif
 	if ((((amu = uamul) != 0 && amu->otyp == AMULET_OF_YENDOR) ||
@@ -179,11 +179,11 @@ STATIC_OVL Object * on_ground(short otyp) {
 
 STATIC_OVL bool you_have(int mask) {
 	switch(mask) {
-	    case M3_WANTSAMUL:	return(bool)(u.uhave.amulet);
-	    case M3_WANTSBELL:	return(bool)(u.uhave.bell);
-	    case M3_WANTSCAND:	return(bool)(u.uhave.menorah);
-	    case M3_WANTSBOOK:	return(bool)(u.uhave.book);
-	    case M3_WANTSARTI:	return(bool)(u.uhave.questart);
+	    case M3_WANTSAMUL:	return(bool)(player.uhave.amulet);
+	    case M3_WANTSBELL:	return(bool)(player.uhave.bell);
+	    case M3_WANTSCAND:	return(bool)(player.uhave.menorah);
+	    case M3_WANTSBOOK:	return(bool)(player.uhave.book);
+	    case M3_WANTSARTI:	return(bool)(player.uhave.questart);
 	    default:		break;
 	}
 	return(0);
@@ -199,7 +199,7 @@ STATIC_OVL long target_on(int mask, Monster *mtmp) {
 	otyp = which_arti(mask);
 	if(!mon_has_arti(mtmp, otyp)) {
 	    if(you_have(mask))
-		return(STRAT(STRAT_PLAYER, u.ux, u.uy, mask));
+		return(STRAT(STRAT_PLAYER, player.ux, player.uy, mask));
 	    else if((otmp = on_ground(otyp)))
 		return(STRAT(STRAT_GROUND, otmp->ox, otmp->oy, mask));
 	    else if((mtmp2 = other_mon_has_arti(mtmp, otyp)))
@@ -240,7 +240,7 @@ STATIC_OVL long strategy(Monster *mtmp) {
 	    if((strat = target_on(M3_WANTSAMUL, mtmp)) != STRAT_NONE)
 		return(strat);
 
-	if(u.uevent.invoked) {		/* priorities change once gate opened */
+	if(player.uevent.invoked) {		/* priorities change once gate opened */
 
 	    if((strat = target_on(M3_WANTSARTI, mtmp)) != STRAT_NONE)
 		return(strat);
@@ -274,7 +274,7 @@ int tactics(Monster *mtmp) {
 		/* if wounded, hole up on or near the stairs (to block them) */
 		/* unless, of course, there are no stairs (e.g. endlevel) */
 		mtmp->mavenge = 1; /* covetous monsters attack while fleeing */
-		if (In_W_tower(mtmp->mx, mtmp->my, &u.uz) ||
+		if (In_W_tower(mtmp->mx, mtmp->my, &player.uz) ||
 			(mtmp->iswiz && !xupstair && !mon_has_amulet(mtmp))) {
 		    if (!rn2(3 + mtmp->mhp/10)) (void) rloc(mtmp, FALSE);
 		} else if (xupstair &&
@@ -304,7 +304,7 @@ int tactics(Monster *mtmp) {
 		if(!targ) { /* simply wants you to close */
 		    return(0);
 		}
-		if((u.ux == tx && u.uy == ty) || where == STRAT_PLAYER) {
+		if((player.ux == tx && player.uy == ty) || where == STRAT_PLAYER) {
 		    /* player is standing on it (or has it) */
 		    mnexto(mtmp);
 		    return(0);
@@ -356,9 +356,9 @@ void clonewiz() {
 	Monster *mtmp2;
 
 	if ((mtmp2 = makemon(&mons[PM_WIZARD_OF_YENDOR],
-				u.ux, u.uy, NO_MM_FLAGS)) != 0) {
+				player.ux, player.uy, NO_MM_FLAGS)) != 0) {
 	    mtmp2->msleeping = mtmp2->mtame = mtmp2->mpeaceful = 0;
-	    if (!u.uhave.amulet && rn2(2)) {  /* give clone a fake */
+	    if (!player.uhave.amulet && rn2(2)) {  /* give clone a fake */
 		(void) add_to_minv(mtmp2, mksobj(FAKE_AMULET_OF_YENDOR,
 					TRUE, FALSE));
 	    }
@@ -388,10 +388,10 @@ int nasty(Monster *mcast) {
 	msummon((Monster *) 0);	/* summons like WoY */
 	count++;
     } else {
-	tmp = (u.ulevel > 3) ? u.ulevel/3 : 1; /* just in case -- rph */
+	tmp = (player.ulevel > 3) ? player.ulevel/3 : 1; /* just in case -- rph */
 	/* if we don't have a casting monster, the nasties appear around you */
-	bypos.x = u.ux;
-	bypos.y = u.uy;
+	bypos.x = player.ux;
+	bypos.y = player.uy;
 	for(i = rnd(tmp); i > 0; --i)
 	    for(j=0; j<20; j++) {
 		int makeindex;
@@ -433,7 +433,7 @@ void resurrect() {
 	if (!flags.no_of_wizards) {
 	    /* make a new Wizard */
 	    verb = "kill";
-	    mtmp = makemon(&mons[PM_WIZARD_OF_YENDOR], u.ux, u.uy, MM_NOWAIT);
+	    mtmp = makemon(&mons[PM_WIZARD_OF_YENDOR], player.ux, player.uy, MM_NOWAIT);
 	} else {
 	    /* look for a migrating Wizard */
 	    verb = "elude";
@@ -474,7 +474,7 @@ void resurrect() {
 /*	Here, we make trouble for the poor shmuck who actually	*/
 /*	managed to do in the Wizard.				*/
 void intervene() {
-	int which = Is_astralevel(&u.uz) ? rnd(4) : rn2(6);
+	int which = Is_astralevel(&player.uz) ? rnd(4) : rn2(6);
 	/* cases 0 and 5 don't apply on the Astral level */
 	switch (which) {
 	    case 0:
@@ -496,9 +496,9 @@ void intervene() {
 
 void wizdead() {
 	flags.no_of_wizards--;
-	if (!u.uevent.udemigod) {
-		u.uevent.udemigod = TRUE;
-		u.udg_cnt = rn1(250, 50);
+	if (!player.uevent.udemigod) {
+		player.uevent.udemigod = TRUE;
+		player.udg_cnt = rn1(250, 50);
 	}
 }
 
@@ -553,10 +553,10 @@ void cuss(Monster *mtmp) {
 	    if (!rn2(5))  /* typical bad guy action */
 		pline("%s laughs fiendishly.", Monnam(mtmp));
 	    else
-		if (u.uhave.amulet && !rn2(SIZE(random_insult)))
+		if (player.uhave.amulet && !rn2(SIZE(random_insult)))
 		    verbalize("Relinquish the amulet, %s!",
 			  random_insult[rn2(SIZE(random_insult))]);
-		else if (u.uhp < 5 && !rn2(2))	/* Panic */
+		else if (player.uhp < 5 && !rn2(2))	/* Panic */
 		    verbalize(rn2(2) ?
 			  "Even now thy life force ebbs, %s!" :
 			  "Savor thy breath, %s, it be thy last!",

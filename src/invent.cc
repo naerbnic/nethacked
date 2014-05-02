@@ -238,39 +238,39 @@ It may be valid to merge this code with with addinv_core2().
 void addinv_core1(Object *obj) {
 	if (obj->oclass == COIN_CLASS) {
 #ifndef GOLDOBJ
-		u.ugold += obj->quan;
+		player.ugold += obj->quan;
 #else
 		flags.botl = 1;
 #endif
 	} else if (obj->otyp == AMULET_OF_YENDOR) {
-		if (u.uhave.amulet) impossible("already have amulet?");
-		u.uhave.amulet = 1;
+		if (player.uhave.amulet) impossible("already have amulet?");
+		player.uhave.amulet = 1;
 #ifdef RECORD_ACHIEVE
                 achieve.get_amulet = 1;
 #endif
 	} else if (obj->otyp == CANDELABRUM_OF_INVOCATION) {
-		if (u.uhave.menorah) impossible("already have candelabrum?");
-		u.uhave.menorah = 1;
+		if (player.uhave.menorah) impossible("already have candelabrum?");
+		player.uhave.menorah = 1;
 #ifdef RECORD_ACHIEVE
                 achieve.get_candelabrum = 1;
 #endif
 	} else if (obj->otyp == BELL_OF_OPENING) {
-		if (u.uhave.bell) impossible("already have silver bell?");
-		u.uhave.bell = 1;
+		if (player.uhave.bell) impossible("already have silver bell?");
+		player.uhave.bell = 1;
 #ifdef RECORD_ACHIEVE
                 achieve.get_bell = 1;
 #endif
 	} else if (obj->otyp == SPE_BOOK_OF_THE_DEAD) {
-		if (u.uhave.book) impossible("already have the book?");
-		u.uhave.book = 1;
+		if (player.uhave.book) impossible("already have the book?");
+		player.uhave.book = 1;
 #ifdef RECORD_ACHIEVE
                 achieve.get_book = 1;
 #endif
 	} else if (obj->oartifact) {
 		if (is_quest_artifact(obj)) {
-		    if (u.uhave.questart)
+		    if (player.uhave.questart)
 			impossible("already have quest artifact?");
-		    u.uhave.questart = 1;
+		    player.uhave.questart = 1;
 		    artitouch();
 		}
 		set_artifact_intrinsic(obj, 1, W_ART);
@@ -389,7 +389,7 @@ Object * hold_another_object(Object *obj, const char *drop_fmt, const char *drop
 	    bool wasUpolyd = Upolyd;
 
 	    /* in case touching this object turns out to be fatal */
-	    place_object(obj, u.ux, u.uy);
+	    place_object(obj, player.ux, player.uy);
 
 	    if (!touch_artifact(obj, &youmonst)) {
 		obj_extract_self(obj);	/* remove it from the floor */
@@ -482,28 +482,28 @@ Should think of a better name...
 void freeinv_core(Object *obj) {
 	if (obj->oclass == COIN_CLASS) {
 #ifndef GOLDOBJ
-		u.ugold -= obj->quan;
+		player.ugold -= obj->quan;
 		obj->in_use = FALSE;
 #endif
 		flags.botl = 1;
 		return;
 	} else if (obj->otyp == AMULET_OF_YENDOR) {
-		if (!u.uhave.amulet) impossible("don't have amulet?");
-		u.uhave.amulet = 0;
+		if (!player.uhave.amulet) impossible("don't have amulet?");
+		player.uhave.amulet = 0;
 	} else if (obj->otyp == CANDELABRUM_OF_INVOCATION) {
-		if (!u.uhave.menorah) impossible("don't have candelabrum?");
-		u.uhave.menorah = 0;
+		if (!player.uhave.menorah) impossible("don't have candelabrum?");
+		player.uhave.menorah = 0;
 	} else if (obj->otyp == BELL_OF_OPENING) {
-		if (!u.uhave.bell) impossible("don't have silver bell?");
-		u.uhave.bell = 0;
+		if (!player.uhave.bell) impossible("don't have silver bell?");
+		player.uhave.bell = 0;
 	} else if (obj->otyp == SPE_BOOK_OF_THE_DEAD) {
-		if (!u.uhave.book) impossible("don't have the book?");
-		u.uhave.book = 0;
+		if (!player.uhave.book) impossible("don't have the book?");
+		player.uhave.book = 0;
 	} else if (obj->oartifact) {
 		if (is_quest_artifact(obj)) {
-		    if (!u.uhave.questart)
+		    if (!player.uhave.questart)
 			impossible("don't have quest artifact?");
-		    u.uhave.questart = 0;
+		    player.uhave.questart = 0;
 		}
 		set_artifact_intrinsic(obj, 0, W_ART);
 	}
@@ -641,7 +641,7 @@ Object * mkgoldobj(long q) {
 	Object *otmp;
 
 	otmp = mksobj(GOLD_PIECE, FALSE, FALSE);
-	u.ugold -= q;
+	player.ugold -= q;
 	otmp->quan = q;
 	otmp->owt = weight(otmp);
 	flags.botl = 1;
@@ -721,7 +721,7 @@ Object * getobj(const char *let, const char *word) {
 	if(*let == ALLOW_COUNT) let++, allowcnt = 1;
 #ifndef GOLDOBJ
 	if(*let == COIN_CLASS) let++,
-		usegold = TRUE, allowgold = (u.ugold ? TRUE : FALSE);
+		usegold = TRUE, allowgold = (player.ugold ? TRUE : FALSE);
 #else
 	if(*let == COIN_CLASS) let++, usegold = TRUE;
 #endif
@@ -790,7 +790,7 @@ Object * getobj(const char *let, const char *word) {
 		    (otmp->owornmask & W_WEP))
 #endif
 		|| (!strcmp(word, "ready") &&
-		    (otmp == uwep || (otmp == uswapwep && u.twoweap)))
+		    (otmp == uwep || (otmp == uswapwep && player.twoweap)))
 		    ) {
 			foo--;
 			foox++;
@@ -950,8 +950,8 @@ Object * getobj(const char *let, const char *word) {
 			}
 
 #ifndef GOLDOBJ
-			if(!(allowcnt == 2 && cnt < u.ugold))
-				cnt = u.ugold;
+			if(!(allowcnt == 2 && cnt < player.ugold))
+				cnt = player.ugold;
 			return(mkgoldobj(cnt));
 #endif
 		}
@@ -1127,7 +1127,7 @@ int ggetobj(
 
 	if (resultflags) *resultflags = 0;
 #ifndef GOLDOBJ
-	allowgold = (u.ugold && !strcmp(word, "drop")) ? 1 : 0;
+	allowgold = (player.ugold && !strcmp(word, "drop")) ? 1 : 0;
 #endif
 	takeoff = ident = allflag = m_seen = FALSE;
 #ifndef GOLDOBJ
@@ -1226,8 +1226,8 @@ int ggetobj(
 	    if (oc_of_sym == COIN_CLASS && !combo) {
 #ifndef GOLDOBJ
 		if (allowgold == 1)
-		    (*fn)(mkgoldobj(u.ugold));
-		else if (!u.ugold)
+		    (*fn)(mkgoldobj(player.ugold));
+		else if (!player.ugold)
 		    You("have no gold.");
 		allowgold = 2;
 #else
@@ -1652,7 +1652,7 @@ static char display_pickinv(
 	  if (want_disp) {
 #endif
 #ifndef GOLDOBJ
-	    pline("Not carrying anything%s.", u.ugold ? " except gold" : "");
+	    pline("Not carrying anything%s.", player.ugold ? " except gold" : "");
 #else
 	    pline("Not carrying anything.");
 #endif
@@ -1662,7 +1662,7 @@ static char display_pickinv(
 #ifdef GOLDOBJ
 	    dump("  ", "Not carrying anything");
 #else
-	    dump("  Not carrying anything", u.ugold ? " except gold." : ".");
+	    dump("  Not carrying anything", player.ugold ? " except gold." : ".");
 #endif
 	  }
 #endif
@@ -2002,13 +2002,13 @@ int dotypeinv() {
 	int n, i = 0;
 	char *extra_types, types[BUFSZ];
 	int class_count, oclass, unpaid_count, itemcount;
-	bool billx = *u.ushops && doinvbill(0);
+	bool billx = *player.ushops && doinvbill(0);
 	menu_item *pick_list;
 	bool traditional = TRUE;
 	const char *prompt = "What type of object do you want an inventory of?";
 
 #ifndef GOLDOBJ
-	if (!invent && !u.ugold && !billx) {
+	if (!invent && !player.ugold && !billx) {
 #else
 	if (!invent && !billx) {
 #endif
@@ -2034,7 +2034,7 @@ int dotypeinv() {
 	    class_count = collect_obj_classes(types, invent,
 					      FALSE,
 #ifndef GOLDOBJ
-					      (u.ugold != 0),
+					      (player.ugold != 0),
 #endif
 					      (bool (*)(Object*)) 0, &itemcount);
 	    if (unpaid_count) {
@@ -2180,8 +2180,8 @@ int look_here(int obj_cnt, bool picked_some) {
 	winid tmpwin;
 	bool skip_objects = (obj_cnt >= 5), felt_cockatrice = FALSE;
 
-	if (u.uswallow && u.ustuck) {
-	    Monster *mtmp = u.ustuck;
+	if (player.uswallow && player.ustuck) {
+	    Monster *mtmp = player.ustuck;
 	    sprintf(fbuf, "Contents of %s %s",
 		s_suffix(mon_nam(mtmp)), mbodypart(mtmp, STOMACH));
 	    /* Skip "Contents of " by using fbuf index 12 */
@@ -2201,26 +2201,26 @@ int look_here(int obj_cnt, bool picked_some) {
 	    }
 	    return(!!Blind);
 	}
-	if (!skip_objects && (trap = t_at(u.ux,u.uy)) && trap->tseen)
+	if (!skip_objects && (trap = t_at(player.ux,player.uy)) && trap->tseen)
 		There("is %s here.",
 			an(defsyms[trap_to_defsym(trap->ttyp)].explanation));
 
-	otmp = level.objects[u.ux][u.uy];
-	dfeature = dfeature_at(u.ux, u.uy, fbuf2);
+	otmp = level.objects[player.ux][player.uy];
+	dfeature = dfeature_at(player.ux, player.uy, fbuf2);
 	if (dfeature && !strcmp(dfeature, "pool of water") && Underwater)
 		dfeature = 0;
 
 	if (Blind) {
-		bool drift = Is_airlevel(&u.uz) || Is_waterlevel(&u.uz);
+		bool drift = Is_airlevel(&player.uz) || Is_waterlevel(&player.uz);
 		if (dfeature && !strncmp(dfeature, "altar ", 6)) {
 		    /* don't say "altar" twice, dfeature has more info */
 		    You("try to feel what is here.");
 		} else {
 		    You("try to feel what is %s%s.",
 			drift ? "floating here" : "lying here on the ",
-			drift ? ""		: surface(u.ux, u.uy));
+			drift ? ""		: surface(player.ux, player.uy));
 		}
-		if (dfeature && !drift && !strcmp(dfeature, surface(u.ux,u.uy)))
+		if (dfeature && !drift && !strcmp(dfeature, surface(player.ux,player.uy)))
 			dfeature = 0;		/* ice already identifed */
 		if (!can_reach_floor()) {
 			pline("But you can't reach it!");
@@ -2231,9 +2231,9 @@ int look_here(int obj_cnt, bool picked_some) {
 	if (dfeature)
 		sprintf(fbuf, "There is %s here.", an(dfeature));
 
-	if (!otmp || is_lava(u.ux,u.uy) || (is_pool(u.ux,u.uy) && !Underwater)) {
+	if (!otmp || is_lava(player.ux,player.uy) || (is_pool(player.ux,player.uy) && !Underwater)) {
 		if (dfeature) pline(fbuf);
-		read_engr_at(u.ux, u.uy); /* Eric Backus */
+		read_engr_at(player.ux, player.uy); /* Eric Backus */
 		if (!skip_objects && (Blind || !dfeature))
 		    You("%s no objects here.", verb);
 		return(!!Blind);
@@ -2242,14 +2242,14 @@ int look_here(int obj_cnt, bool picked_some) {
 
 	if (skip_objects) {
 	    if (dfeature) pline(fbuf);
-	    read_engr_at(u.ux, u.uy); /* Eric Backus */
+	    read_engr_at(player.ux, player.uy); /* Eric Backus */
 	    There("are %s%s objects here.",
 		  (obj_cnt <= 10) ? "several" : "many",
 		  picked_some ? " more" : "");
 	} else if (!otmp->nexthere) {
 	    /* only one object */
 	    if (dfeature) pline(fbuf);
-	    read_engr_at(u.ux, u.uy); /* Eric Backus */
+	    read_engr_at(player.ux, player.uy); /* Eric Backus */
 #ifdef INVISIBLE_OBJECTS
 	    if (otmp->oinvis && !See_invisible) verb = "feel";
 #endif
@@ -2278,7 +2278,7 @@ int look_here(int obj_cnt, bool picked_some) {
 	    display_nhwindow(tmpwin, TRUE);
 	    destroy_nhwindow(tmpwin);
 	    if (felt_cockatrice) feel_cockatrice(otmp, FALSE);
-	    read_engr_at(u.ux, u.uy); /* Eric Backus */
+	    read_engr_at(player.ux, player.uy); /* Eric Backus */
 	}
 	return(!!Blind);
 }
@@ -2401,10 +2401,10 @@ int doprgold() {
 	/* the messages used to refer to "carrying gold", but that didn't
 	   take containers into account */
 #ifndef GOLDOBJ
-	if(!u.ugold)
+	if(!player.ugold)
 	    Your("wallet is empty.");
 	else
-	    Your("wallet contains %ld gold piece%s.", u.ugold, plur(u.ugold));
+	    Your("wallet contains %ld gold piece%s.", player.ugold, plur(player.ugold));
 #else
         long umoney = money_cnt(invent);
 	if(!umoney)
@@ -2424,7 +2424,7 @@ int doprwep() {
 	You("are empty %s.", body_part(HANDED));
     } else {
 	prinv((char *)0, uwep, 0L);
-	if (u.twoweap) prinv((char *)0, uswapwep, 0L);
+	if (player.twoweap) prinv((char *)0, uswapwep, 0L);
     }
     return 0;
 }
@@ -2524,7 +2524,7 @@ int doprinuse() {
  */
 void useupf(Object *obj, long numused) {
 	Object *otmp;
-	bool at_u = (obj->ox == u.ux && obj->oy == u.uy);
+	bool at_u = (obj->ox == player.ux && obj->oy == player.uy);
 
 	/* burn_floor_paper() keeps an object pointer that it tries to
 	 * useupf() multiple times, so obj must survive if plural */
@@ -2533,13 +2533,13 @@ void useupf(Object *obj, long numused) {
 	else
 		otmp = obj;
 	if(costly_spot(otmp->ox, otmp->oy)) {
-	    if(index(u.urooms, *in_rooms(otmp->ox, otmp->oy, 0)))
+	    if(index(player.urooms, *in_rooms(otmp->ox, otmp->oy, 0)))
 	        addtobill(otmp, FALSE, FALSE, FALSE);
 	    else (void)stolen_value(otmp, otmp->ox, otmp->oy, FALSE, FALSE);
 	}
 	delobj(otmp);
-	if (at_u && u.uundetected && hides_under(youmonst.data))
-	    u.uundetected = OBJ_AT(u.ux, u.uy);
+	if (at_u && player.uundetected && hides_under(youmonst.data))
+	    player.uundetected = OBJ_AT(player.ux, player.uy);
 }
 
 #endif /* OVLB */

@@ -429,7 +429,7 @@ STATIC_OVL void makeniche(int trap_type) {
 		rm->typ = SCORR;
 		if(trap_type) {
 		    if((trap_type == HOLE || trap_type == TRAPDOOR)
-			&& !Can_fall_thru(&u.uz))
+			&& !Can_fall_thru(&player.uz))
 			trap_type = ROCKTRAP;
 		    ttmp = maketrap(xx, yy+dy, trap_type);
 		    if (ttmp) {
@@ -458,7 +458,7 @@ STATIC_OVL void makeniche(int trap_type) {
 }
 
 STATIC_OVL void make_niches() {
-	int ct = rnd((nroom>>1) + 1), dep = depth(&u.uz);
+	int ct = rnd((nroom>>1) + 1), dep = depth(&player.uz);
 
 	bool	ltptr = (!level.flags.noteleport && dep > 15),
 		vamp = (dep > 5 && dep < 25);
@@ -554,24 +554,24 @@ STATIC_OVL void makelevel() {
 	clear_level_structures();
 
 	{
-	    s_level *slev = Is_special(&u.uz);
+	    s_level *slev = Is_special(&player.uz);
 
 	    /* check for special levels */
 #ifdef REINCARNATION
-	    if (slev && !Is_rogue_level(&u.uz))
+	    if (slev && !Is_rogue_level(&player.uz))
 #else
 	    if (slev)
 #endif
 	    {
 		    makemaz(slev->proto);
 		    return;
-	    } else if (dungeons[u.uz.dnum].proto[0]) {
+	    } else if (dungeons[player.uz.dnum].proto[0]) {
 		    makemaz("");
 		    return;
-	    } else if (In_mines(&u.uz)) {
+	    } else if (In_mines(&player.uz)) {
 		    makemaz("minefill");
 		    return;
-	    } else if (In_quest(&u.uz)) {
+	    } else if (In_quest(&player.uz)) {
 		    char	fillname[9];
 		    s_level	*loc_lev;
 
@@ -580,12 +580,12 @@ STATIC_OVL void makelevel() {
 
 		    sprintf(fillname, "%s-fil", urole.filecode);
 		    strcat(fillname,
-			   (u.uz.dlevel < loc_lev->dlevel.dlevel) ? "a" : "b");
+			   (player.uz.dlevel < loc_lev->dlevel.dlevel) ? "a" : "b");
 		    makemaz(fillname);
 		    return;
-	    } else if(In_hell(&u.uz) ||
-		  (rn2(5) && u.uz.dnum == medusa_level.dnum
-			  && depth(&u.uz) > depth(&medusa_level))) {
+	    } else if(In_hell(&player.uz) ||
+		  (rn2(5) && player.uz.dnum == medusa_level.dnum
+			  && depth(&player.uz) > depth(&medusa_level))) {
 		    makemaz("");
 		    return;
 	    }
@@ -594,7 +594,7 @@ STATIC_OVL void makelevel() {
 	/* otherwise, fall through - it's a "regular" level. */
 
 #ifdef REINCARNATION
-	if (Is_rogue_level(&u.uz)) {
+	if (Is_rogue_level(&player.uz)) {
 		makeroguerooms();
 		makerogueghost();
 	} else
@@ -604,7 +604,7 @@ STATIC_OVL void makelevel() {
 
 	/* construct stairs (up and down in different rooms if possible) */
 	croom = &rooms[rn2(nroom)];
-	if (!Is_botlevel(&u.uz))
+	if (!Is_botlevel(&player.uz))
 	     mkstairs(somex(croom), somey(croom), 0, croom);	/* down */
 	if (nroom > 1) {
 	    troom = croom;
@@ -612,7 +612,7 @@ STATIC_OVL void makelevel() {
 	    if (croom == troom) croom++;
 	}
 
-	if (u.uz.dlevel != 1) {
+	if (player.uz.dlevel != 1) {
 	    xchar sx, sy;
 	    do {
 		sx = somex(croom);
@@ -621,11 +621,11 @@ STATIC_OVL void makelevel() {
 	    mkstairs(sx, sy, 1, croom);	/* up */
 	}
 
-	branchp = Is_branchlev(&u.uz);	/* possible dungeon branch */
+	branchp = Is_branchlev(&player.uz);	/* possible dungeon branch */
 	room_threshold = branchp ? 4 : 3; /* minimum number of rooms needed
 					     to allow a random special room */
 #ifdef REINCARNATION
-	if (Is_rogue_level(&u.uz)) goto skip0;
+	if (Is_rogue_level(&player.uz)) goto skip0;
 #endif
 	makecorridors();
 	make_niches();
@@ -658,7 +658,7 @@ STATIC_OVL void makelevel() {
 	}
 
     {
-	int u_depth = depth(&u.uz);
+	int u_depth = depth(&player.uz);
 
 #ifdef WIZARD
 	if(wizard && nh_getenv("SHOPTYPE")) mkroom(SHOPBASE); else
@@ -699,7 +699,7 @@ skip0:
 		   while a monster was on the stairs. Conclusion:
 		   we have to check for monsters on the stairs anyway. */
 
-		if(u.uhave.amulet || !rn2(3)) {
+		if(player.uhave.amulet || !rn2(3)) {
 		    x = somex(croom); y = somey(croom);
 		    tmonst = makemon((MonsterType *) 0, x,y,NO_MM_FLAGS);
 		    if (tmonst && tmonst->data == &mons[PM_GIANT_SPIDER] &&
@@ -715,14 +715,14 @@ skip0:
 		if (!goldseen && !rn2(3))
 		    (void) mkgold(0L, somex(croom), somey(croom));
 #ifdef REINCARNATION
-		if(Is_rogue_level(&u.uz)) goto skip_nonrogue;
+		if(Is_rogue_level(&player.uz)) goto skip_nonrogue;
 #endif
 		if(!rn2(10)) mkfount(0,croom);
 #ifdef SINKS
 		if(!rn2(60)) mksink(croom);
 #endif
 		if(!rn2(60)) mkaltar(croom);
-		x = 80 - (depth(&u.uz) * 2);
+		x = 80 - (depth(&player.uz) * 2);
 		if (x < 2) x = 2;
 		if(!rn2(x)) mkgrave(croom);
 
@@ -741,7 +741,7 @@ skip0:
 				     somex(croom), somey(croom), TRUE, FALSE);
 
 		/* maybe make some graffiti */
-		if(!rn2(27 + 3 * abs(depth(&u.uz)))) {
+		if(!rn2(27 + 3 * abs(depth(&player.uz)))) {
 		    char buf[BUFSZ];
 		    const char *mesg = random_engraving(buf);
 		    if (mesg) {
@@ -783,7 +783,7 @@ STATIC_OVL void mineralize() {
 
 
 	/* Place kelp, except on the plane of water */
-	if (In_endgame(&u.uz)) return;
+	if (In_endgame(&player.uz)) return;
 	for (x = 2; x < (COLNO - 2); x++)
 	    for (y = 1; y < (ROWNO - 1); y++)
 		if ((levl[x][y].typ == POOL && !rn2(10)) ||
@@ -792,24 +792,24 @@ STATIC_OVL void mineralize() {
 
 	/* determine if it is even allowed;
 	   almost all special levels are excluded */
-	if (In_hell(&u.uz) || In_V_tower(&u.uz) ||
+	if (In_hell(&player.uz) || In_V_tower(&player.uz) ||
 #ifdef REINCARNATION
-		Is_rogue_level(&u.uz) ||
+		Is_rogue_level(&player.uz) ||
 #endif
 		level.flags.arboreal ||
-		((sp = Is_special(&u.uz)) != 0 && !Is_oracle_level(&u.uz)
-					&& (!In_mines(&u.uz) || sp->flags.town)
+		((sp = Is_special(&player.uz)) != 0 && !Is_oracle_level(&player.uz)
+					&& (!In_mines(&player.uz) || sp->flags.town)
 	    )) return;
 
 	/* basic level-related probabilities */
-	goldprob = 20 + depth(&u.uz) / 3;
+	goldprob = 20 + depth(&player.uz) / 3;
 	gemprob = goldprob / 4;
 
 	/* mines have ***MORE*** goodies - otherwise why mine? */
-	if (In_mines(&u.uz)) {
+	if (In_mines(&player.uz)) {
 	    goldprob *= 2;
 	    gemprob *= 3;
-	} else if (In_quest(&u.uz)) {
+	} else if (In_quest(&player.uz)) {
 	    goldprob /= 4;
 	    gemprob /= 6;
 	}
@@ -840,7 +840,7 @@ STATIC_OVL void mineralize() {
 		    }
 		}
 		if (rn2(1000) < gemprob) {
-		    for (cnt = rnd(2 + dunlev(&u.uz) / 3); cnt > 0; cnt--)
+		    for (cnt = rnd(2 + dunlev(&player.uz) / 3); cnt > 0; cnt--)
 			if ((otmp = mkobj(GEM_CLASS, FALSE)) != 0) {
 			    if (otmp->otyp == ROCK) {
 				dealloc_obj(otmp);	/* discard it */
@@ -901,7 +901,7 @@ topologize(struct mkroom* croom)
 	    return;
 #ifdef SPECIALIZATION
 # ifdef REINCARNATION
-	if (Is_rogue_level(&u.uz))
+	if (Is_rogue_level(&player.uz))
 	    do_ordinary = TRUE;		/* vision routine helper */
 # endif
 	if ((rtype != OROOM) || do_ordinary)
@@ -1006,7 +1006,7 @@ void place_branch(branch *br, xchar x, xchar y) {
 	    br_room = pos_to_room(x, y);
 	}
 
-	if (on_level(&br->end1, &u.uz)) {
+	if (on_level(&br->end1, &player.uz)) {
 	    /* we're on end1 */
 	    make_stairs = br->type != BR_NO_END1;
 	    dest = &br->end2;
@@ -1021,7 +1021,7 @@ void place_branch(branch *br, xchar x, xchar y) {
 	} else if (make_stairs) {
 	    sstairs.sx = x;
 	    sstairs.sy = y;
-	    sstairs.up = (char) on_level(&br->end1, &u.uz) ?
+	    sstairs.up = (char) on_level(&br->end1, &player.uz) ?
 					    br->end1_up : !br->end1_up;
 	    assign_level(&sstairs.tolev, dest);
 	    sstairs_room = br_room;
@@ -1098,7 +1098,7 @@ void mktrap(int num, int mazeflag, struct mkroom *croom, coord *tm) {
 	if (num > 0 && num < TRAPNUM) {
 	    kind = num;
 #ifdef REINCARNATION
-	} else if (Is_rogue_level(&u.uz)) {
+	} else if (Is_rogue_level(&player.uz)) {
 	    switch (rn2(7)) {
 		default: kind = BEAR_TRAP; break; /* 0 */
 		case 1: kind = ARROW_TRAP; break;
@@ -1147,7 +1147,7 @@ void mktrap(int num, int mazeflag, struct mkroom *croom, coord *tm) {
 	    } while (kind == NO_TRAP);
 	}
 
-	if ((kind == TRAPDOOR || kind == HOLE) && !Can_fall_thru(&u.uz))
+	if ((kind == TRAPDOOR || kind == HOLE) && !Can_fall_thru(&player.uz))
 		kind = ROCKTRAP;
 
 	if (tm)
@@ -1184,8 +1184,8 @@ void mkstairs(xchar x, xchar y, char up, struct mkroom *croom) {
 	 * attempt can happen when a special level is placed at an end and
 	 * has an up or down stair specified in its description file.
 	 */
-	if ((dunlev(&u.uz) == 1 && up) ||
-			(dunlev(&u.uz) == dunlevs_in_dungeon(&u.uz) && !up))
+	if ((dunlev(&player.uz) == 1 && up) ||
+			(dunlev(&player.uz) == dunlevs_in_dungeon(&player.uz) && !up))
 	    return;
 
 	if(up) {
@@ -1345,8 +1345,8 @@ void mkinvokearea() {
     }
 
     You("are standing at the top of a stairwell leading down!");
-    mkstairs(u.ux, u.uy, 0, (struct mkroom *)0); /* down */
-    newsym(u.ux, u.uy);
+    mkstairs(player.ux, player.uy, 0, (struct mkroom *)0); /* down */
+    newsym(player.ux, player.uy);
     vision_full_recalc = 1;	/* everything changed */
 
 #ifdef RECORD_ACHIEVE
@@ -1444,7 +1444,7 @@ STATIC_OVL void mk_knox_portal(xchar x, xchar y) {
 	    source = &br->end2;
 	} else {
 	    /* disallow Knox branch on a level with one branch already */
-	    if(Is_branchlev(&u.uz))
+	    if(Is_branchlev(&player.uz))
 		return;
 	    source = &br->end1;
 	}
@@ -1456,14 +1456,14 @@ STATIC_OVL void mk_knox_portal(xchar x, xchar y) {
 #endif
 				      )) return;
 
-	if (! (u.uz.dnum == oracle_level.dnum	    /* in main dungeon */
+	if (! (player.uz.dnum == oracle_level.dnum	    /* in main dungeon */
 		&& !at_dgn_entrance("The Quest")    /* but not Quest's entry */
-		&& (u_depth = depth(&u.uz)) > 10    /* beneath 10 */
+		&& (u_depth = depth(&player.uz)) > 10    /* beneath 10 */
 		&& u_depth < depth(&medusa_level))) /* and above Medusa */
 	    return;
 
 	/* Adjust source to be current level and re-insert branch. */
-	*source = u.uz;
+	*source = player.uz;
 	insert_branch(br, TRUE);
 
 #ifdef DEBUG

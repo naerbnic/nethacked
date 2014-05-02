@@ -110,7 +110,7 @@ Monster * mk_mplayer(MonsterType *ptr, xchar x, xchar y, bool special) {
 	if(MON_AT(x, y))
 		(void) rloc(m_at(x, y), FALSE); /* insurance */
 
-	if(!In_endgame(&u.uz)) special = FALSE;
+	if(!In_endgame(&player.uz)) special = FALSE;
 
 	if ((mtmp = makemon(ptr, x, y, NO_MM_FLAGS)) != 0) {
 	    short weapon = rn2(2) ? LONG_SWORD : rnd_class(SPEAR, BULLWHIP);

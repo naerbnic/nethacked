@@ -220,7 +220,7 @@ STATIC_OVL bool dog_hunger(Monster *mtmp, struct edog *edog) {
  dog_died:
 		if (mtmp->mleashed
 #ifdef STEED
-		    && mtmp != u.usteed
+		    && mtmp != player.usteed
 #endif
 		    )
 		    Your("leash goes slack.");
@@ -313,7 +313,7 @@ STATIC_OVL int dog_goal(Monster *mtmp, struct edog *edog, int after, int udist, 
 
 #ifdef STEED
 	/* Steeds don't move on their own will */
-	if (mtmp == u.usteed)
+	if (mtmp == player.usteed)
 		return (-2);
 #endif
 
@@ -325,8 +325,8 @@ STATIC_OVL int dog_goal(Monster *mtmp, struct edog *edog, int after, int udist, 
 
 	if (!edog || mtmp->mleashed) {	/* he's not going anywhere... */
 	    gtyp = APPORT;
-	    gx = u.ux;
-	    gy = u.uy;
+	    gx = player.ux;
+	    gy = player.uy;
 	} else {
 #define DDIST(x,y) (dist2(x,y,omx,omy))
 #define SQSRCHRADIUS 5
@@ -366,7 +366,7 @@ STATIC_OVL int dog_goal(Monster *mtmp, struct edog *edog, int after, int udist, 
 			}
 		    } else if(gtyp == UNDEF && in_masters_sight &&
 			      !dog_has_minvent &&
-			      (!levl[omx][omy].lit || levl[u.ux][u.uy].lit) &&
+			      (!levl[omx][omy].lit || levl[player.ux][player.uy].lit) &&
 			      (otyp == MANFOOD || m_cansee(mtmp, nx, ny)) &&
 			      edog->apport > rn2(8) &&
 			      can_carry(mtmp,obj)) {
@@ -381,13 +381,13 @@ STATIC_OVL int dog_goal(Monster *mtmp, struct edog *edog, int after, int udist, 
 	/* follow player if appropriate */
 	if (gtyp == UNDEF ||
 	    (gtyp != DOGFOOD && gtyp != APPORT && monstermoves < edog->hungrytime)) {
-		gx = u.ux;
-		gy = u.uy;
-		if (after && udist <= 4 && gx == u.ux && gy == u.uy)
+		gx = player.ux;
+		gy = player.uy;
+		if (after && udist <= 4 && gx == player.ux && gy == player.uy)
 			return(-2);
 		appr = (udist >= 9) ? 1 : (mtmp->mflee) ? -1 : 0;
 		if (udist > 1) {
-			if (!IS_ROOM(levl[u.ux][u.uy].typ) || !rn2(4) ||
+			if (!IS_ROOM(levl[player.ux][player.uy].typ) || !rn2(4) ||
 			   whappr ||
 			   (dog_has_minvent && rn2(edog->apport)))
 				appr = 1;
@@ -409,7 +409,7 @@ STATIC_OVL int dog_goal(Monster *mtmp, struct edog *edog, int after, int udist, 
 	    appr = 0;
 
 #define FARAWAY (COLNO + 2)		/* position outside screen */
-	if (gx == u.ux && gy == u.uy && !in_masters_sight) {
+	if (gx == player.ux && gy == player.uy && !in_masters_sight) {
 	    coord *cp;
 
 	    cp = gettrack(omx,omy);
@@ -432,8 +432,8 @@ STATIC_OVL int dog_goal(Monster *mtmp, struct edog *edog, int after, int udist, 
 
 		    /* here gx == FARAWAY e.g. when dog is in a vault */
 		    if (gx == FARAWAY || (gx == omx && gy == omy)) {
-			gx = u.ux;
-			gy = u.uy;
+			gx = player.ux;
+			gy = player.uy;
 		    } else if(edog) {
 			edog->ogoal.x = gx;
 			edog->ogoal.y = gy;
@@ -479,7 +479,7 @@ int dog_move(Monster *mtmp, int after) {
 	udist = distu(omx,omy);
 #ifdef STEED
 	/* Let steeds eat and maybe throw rider during Conflict */
-	if (mtmp == u.usteed) {
+	if (mtmp == player.usteed) {
 	    if (Conflict && !resist(mtmp, RING_CLASS, 0, 0)) {
 		dismount_steed(DISMOUNT_THROWN);
 		return (1);
@@ -526,10 +526,10 @@ int dog_move(Monster *mtmp, int after) {
 		mongone(mtmp);
 		i = rnd(4);
 		while(i--) {
-		    mm.x = u.ux;
-		    mm.y = u.uy;
+		    mm.x = player.ux;
+		    mm.y = player.uy;
 		    if(enexto(&mm, mm.x, mm.y, &mons[PM_ANGEL]))
-			(void) mk_roamer(&mons[PM_ANGEL], u.ualign.type,
+			(void) mk_roamer(&mons[PM_ANGEL], player.ualign.type,
 					 mm.x, mm.y, FALSE);
 		}
 		return(2);
@@ -537,7 +537,7 @@ int dog_move(Monster *mtmp, int after) {
 	    }
 	}
 	if (!Conflict && !mtmp->mconf &&
-	    mtmp == u.ustuck && !sticks(youmonst.data)) {
+	    mtmp == player.ustuck && !sticks(youmonst.data)) {
 	    unstuck(mtmp);	/* swallowed case handled above */
 	    You("get released!");
 	}
@@ -731,10 +731,10 @@ newdogpos:
 		 */
 		coord cc;
 
-		nx = sgn(omx - u.ux);
-		ny = sgn(omy - u.uy);
-		cc.x = u.ux + nx;
-		cc.y = u.uy + ny;
+		nx = sgn(omx - player.ux);
+		ny = sgn(omy - player.uy);
+		cc.x = player.ux + nx;
+		cc.y = player.uy + ny;
 		if (goodpos(cc.x, cc.y, mtmp, 0)) goto dognext;
 
 		i  = xytod(nx, ny);

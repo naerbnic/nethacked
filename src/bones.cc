@@ -128,15 +128,15 @@ STATIC_OVL void drop_upon_death(Monster *mtmp, Object *cont) {
 		else if (cont)
 			(void) add_to_container(cont, otmp);
 		else
-			place_object(otmp, u.ux, u.uy);
+			place_object(otmp, player.ux, player.uy);
 	}
 #ifndef GOLDOBJ
-	if(u.ugold) {
-		long ugold = u.ugold;
+	if(player.ugold) {
+		long ugold = player.ugold;
 		if (mtmp) mtmp->mgold = ugold;
 		else if (cont) (void) add_to_container(cont, mkgoldobj(ugold));
-		else (void)mkgold(ugold, u.ux, u.uy);
-		u.ugold = ugold;	/* undo mkgoldobj()'s removal */
+		else (void)mkgold(ugold, player.ux, player.uy);
+		player.ugold = ugold;	/* undo mkgoldobj()'s removal */
 	}
 #endif
 	if (cont) cont->owt = weight(cont);
@@ -146,21 +146,21 @@ STATIC_OVL void drop_upon_death(Monster *mtmp, Object *cont) {
 bool can_make_bones() {
 	Trap *ttmp;
 
-	if (ledger_no(&u.uz) <= 0 || ledger_no(&u.uz) > maxledgerno())
+	if (ledger_no(&player.uz) <= 0 || ledger_no(&player.uz) > maxledgerno())
 	    return FALSE;
-	if (no_bones_level(&u.uz))
+	if (no_bones_level(&player.uz))
 	    return FALSE;		/* no bones for specific levels */
-	if (u.uswallow) {
+	if (player.uswallow) {
 	    return FALSE;		/* no bones when swallowed */
 	}
-	if (!Is_branchlev(&u.uz)) {
+	if (!Is_branchlev(&player.uz)) {
 	    /* no bones on non-branches with portals */
 	    for(ttmp = ftrap; ttmp; ttmp = ttmp->ntrap)
 		if (ttmp->ttyp == MAGIC_PORTAL) return FALSE;
 	}
 
-	if(depth(&u.uz) <= 0 ||		/* bulletproofing for endgame */
-	   (!rn2(1 + (depth(&u.uz)>>2))	/* fewer ghosts on low levels */
+	if(depth(&player.uz) <= 0 ||		/* bulletproofing for endgame */
+	   (!rn2(1 + (depth(&player.uz)>>2))	/* fewer ghosts on low levels */
 #ifdef WIZARD
 		&& !wizard
 #endif
@@ -184,14 +184,14 @@ void savebones(Object *corpse) {
 	/* caller has already checked `can_make_bones()' */
 
 	clear_bypasses();
-	fd = open_bonesfile(&u.uz, &bonesid);
+	fd = open_bonesfile(&player.uz, &bonesid);
 	if (fd >= 0) {
 		(void) close(fd);
 		compress_bonesfile();
 #ifdef WIZARD
 		if (wizard) {
 		    if (yn("Bones file already exists.  Replace it?") == 'y') {
-			if (delete_bonesfile(&u.uz)) goto make_bones;
+			if (delete_bonesfile(&player.uz)) goto make_bones;
 			else pline("Cannot unlink old bones.");
 		    }
 		}
@@ -213,7 +213,7 @@ void savebones(Object *corpse) {
 		mongone(mtmp);
 	}
 #ifdef STEED
-	if (u.usteed) dismount_steed(DISMOUNT_BONES);
+	if (player.usteed) dismount_steed(DISMOUNT_BONES);
 #endif
 	dmonsfree();		/* discard dead or gone monsters */
 
@@ -226,24 +226,24 @@ void savebones(Object *corpse) {
 	if (uball) uball->owornmask = uchain->owornmask = 0;
 
 	/* dispose of your possessions, usually cursed */
-	if (u.ugrave_arise == (NON_PM - 1)) {
+	if (player.ugrave_arise == (NON_PM - 1)) {
 		Object *otmp;
 
 		/* embed your possessions in your statue */
-		otmp = mk_named_object(STATUE, &mons[u.umonnum],
-				       u.ux, u.uy, plname);
+		otmp = mk_named_object(STATUE, &mons[player.umonnum],
+				       player.ux, player.uy, plname);
 
 		drop_upon_death((Monster *)0, otmp);
 		if (!otmp) return;	/* couldn't make statue */
 		mtmp = (Monster *)0;
-	} else if (u.ugrave_arise < LOW_PM) {
+	} else if (player.ugrave_arise < LOW_PM) {
 		/* drop everything */
 		drop_upon_death((Monster *)0, nullptr);
 		/* trick makemon() into allowing monster creation
 		 * on your location
 		 */
 		in_mklev = TRUE;
-		mtmp = makemon(&mons[PM_GHOST], u.ux, u.uy, MM_NONAME);
+		mtmp = makemon(&mons[PM_GHOST], player.ux, player.uy, MM_NONAME);
 		in_mklev = FALSE;
 		if (!mtmp) return;
 		mtmp = christen_monst(mtmp, plname);
@@ -252,23 +252,23 @@ void savebones(Object *corpse) {
 	} else {
 		/* give your possessions to the monster you become */
 		in_mklev = TRUE;
-		mtmp = makemon(&mons[u.ugrave_arise], u.ux, u.uy, NO_MM_FLAGS);
+		mtmp = makemon(&mons[player.ugrave_arise], player.ux, player.uy, NO_MM_FLAGS);
 		in_mklev = FALSE;
 		if (!mtmp) {
 			drop_upon_death((Monster *)0, nullptr);
 			return;
 		}
 		mtmp = christen_monst(mtmp, plname);
-		newsym(u.ux, u.uy);
+		newsym(player.ux, player.uy);
 		Your("body rises from the dead as %s...",
-			an(mons[u.ugrave_arise].mname));
+			an(mons[player.ugrave_arise].mname));
 		display_nhwindow(WIN_MESSAGE, FALSE);
 		drop_upon_death(mtmp, nullptr);
 		m_dowear(mtmp, TRUE);
 	}
 	if (mtmp) {
-		mtmp->m_lev = (u.ulevel ? u.ulevel : 1);
-		mtmp->mhp = mtmp->mhpmax = u.uhpmax;
+		mtmp->m_lev = (player.ulevel ? player.ulevel : 1);
+		mtmp->mhp = mtmp->mhpmax = player.uhpmax;
 		mtmp->female = flags.female;
 		mtmp->msleeping = 1;
 	}
@@ -286,7 +286,7 @@ void savebones(Object *corpse) {
 	resetobjs(level.buriedobjlist, FALSE);
 
 	/* Hero is no longer on the map. */
-	u.ux = u.uy = 0;
+	player.ux = player.uy = 0;
 
 	/* Clear all memory from the level. */
 	for(x=0; x<COLNO; x++) for(y=0; y<ROWNO; y++) {
@@ -295,7 +295,7 @@ void savebones(Object *corpse) {
 	    levl[x][y].glyph = cmap_to_glyph(S_stone);
 	}
 
-	fd = create_bonesfile(&u.uz, &bonesid, whynot);
+	fd = create_bonesfile(&player.uz, &bonesid, whynot);
 	if(fd < 0) {
 #ifdef WIZARD
 		if(wizard)
@@ -314,9 +314,9 @@ void savebones(Object *corpse) {
 	bwrite(fd, (genericptr_t) bonesid, (unsigned) c);	/* DD.nnn */
 	savefruitchn(fd, WRITE_SAVE | FREE_SAVE);
 	update_mlstmv();	/* update monsters for eventual restoration */
-	savelev(fd, ledger_no(&u.uz), WRITE_SAVE | FREE_SAVE);
+	savelev(fd, ledger_no(&player.uz), WRITE_SAVE | FREE_SAVE);
 	bclose(fd);
-	commit_bonesfile(&u.uz);
+	commit_bonesfile(&player.uz);
 	compress_bonesfile();
 }
 
@@ -334,8 +334,8 @@ int getbones() {
 		&& !wizard
 #endif
 		) return(0);
-	if(no_bones_level(&u.uz)) return(0);
-	fd = open_bonesfile(&u.uz, &bonesid);
+	if(no_bones_level(&player.uz)) return(0);
+	fd = open_bonesfile(&player.uz, &bonesid);
 	if (fd < 0) return(0);
 
 	if ((ok = uptodate(fd, bones)) == 0) {
@@ -405,7 +405,7 @@ int getbones() {
 		}
 	}
 #endif
-	if (!delete_bonesfile(&u.uz)) {
+	if (!delete_bonesfile(&player.uz)) {
 		/* When N games try to simultaneously restore the same
 		 * bones file, N-1 of them will fail to delete it
 		 * (the first N-1 under AmigaDOS, the last N-1 under UNIX).

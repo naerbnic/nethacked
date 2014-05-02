@@ -113,7 +113,7 @@ int d(int n, int x) {
 int rne(int x) {
 	int tmp, utmp;
 
-	utmp = (u.ulevel < 15) ? 5 : u.ulevel/3;
+	utmp = (player.ulevel < 15) ? 5 : player.ulevel/3;
 	tmp = 1;
 	while (tmp < utmp && !rn2(x))
 		tmp++;
@@ -122,7 +122,7 @@ int rne(int x) {
 	/* was:
 	 *	tmp = 1;
 	 *	while(!rn2(x)) tmp++;
-	 *	return(min(tmp,(u.ulevel < 15) ? 5 : u.ulevel/3));
+	 *	return(min(tmp,(player.ulevel < 15) ? 5 : player.ulevel/3));
 	 * which is clearer but less efficient and stands a vanishingly
 	 * small chance of overflowing tmp
 	 */
