@@ -143,6 +143,26 @@ struct Monster {
 	   be (or follow) a long int */
 	int meating;		/* monster is eating timeout */
 	long mextra[1]; /* monster dependent info */
+
+	// Methods
+
+	// Note that this appears to be writable. Examine the structure to figure out
+	// what we should do here
+	char* name() {
+	  return (((char *)mextra) + mxlth);
+	}
+
+	Object* weapon() const {
+	  return mw;
+	}
+
+  void ResetWeapon() {
+    mw = 0;
+  }
+
+  bool dead() const {
+    return mhp < 1;
+  }
 };
 
 /*
@@ -169,11 +189,11 @@ struct Monster {
 #define MSLOW 1		/* slow monster */
 #define MFAST 2		/* speeded monster */
 
-#define NAME(mtmp)	(((char *)(mtmp)->mextra) + (mtmp)->mxlth)
+#define NAME(mtmp)	((mtmp)->name())
 
-#define MON_WEP(mon)	((mon)->mw)
-#define MON_NOWEP(mon)	((mon)->mw = (Object *)0)
+#define MON_WEP(mon)	((mon)->weapon())
+#define MON_NOWEP(mon)	((mon)->ResetWeapon())
 
-#define DEADMONSTER(mon)	((mon)->mhp < 1)
+#define DEADMONSTER(mon)	((mon)->dead())
 
 #endif /* MONST_H */
