@@ -6,6 +6,7 @@
 
 #define DGN_COMP
 
+#include "alloc.h"
 #include "config.h"
 #include "dgn_yacc.hh"
 #include "dgn_file.h"

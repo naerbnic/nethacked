@@ -2,12 +2,11 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
-/* to get the malloc() prototype from system.h */
-#define ALLOC_C		/* comment line for pre-compiled headers */
+#include "alloc.h"
+
 /* since this file is also used in auxiliary programs, don't include all the
  * function declarations for all of nethack
  */
-#define EXTERN_H	/* comment line for pre-compiled headers */
 #include "config.h"
 
 #if defined(WIZARD)
@@ -15,7 +14,6 @@ char *fmt_ptr(const void*,char *);
 #endif
 
 long *alloc(unsigned int);
-extern void panic(const char *,...) PRINTF_F(1,2);
 
 
 long* alloc(unsigned int lth)
