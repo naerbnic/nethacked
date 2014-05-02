@@ -450,7 +450,7 @@ STATIC_OVL void makeniche(int trap_type) {
 		    if (!level.flags.noteleport)
 			(void) MakeSpecificObjectAt(SCR_TELEPORTATION,
 					 xx, yy+dy, TRUE, FALSE);
-		    if (!rn2(3)) (void) MakeRandomObjectOfClassAt(0, xx, yy+dy, TRUE);
+		    if (!rn2(3)) (void) MakeRandomObjectAt(0, xx, yy+dy, TRUE);
 		}
 	    }
 	    return;
@@ -758,14 +758,14 @@ skip0:
 	skip_nonrogue:
 #endif
 		if(!rn2(3)) {
-		    (void) MakeRandomObjectOfClassAt(0, somex(croom), somey(croom), TRUE);
+		    (void) MakeRandomObjectAt(0, somex(croom), somey(croom), TRUE);
 		    tryct = 0;
 		    while(!rn2(5)) {
 			if(++tryct > 100) {
 			    impossible("tryct overflow4");
 			    break;
 			}
-			(void) MakeRandomObjectOfClassAt(0, somex(croom), somey(croom), TRUE);
+			(void) MakeRandomObjectAt(0, somex(croom), somey(croom), TRUE);
 		    }
 		}
 	}

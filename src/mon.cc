@@ -1732,7 +1732,7 @@ void xkilled(
 							) {
 			int typ;
 
-			otmp = MakeRandomObjectOfClassAt(RANDOM_CLASS, x, y, TRUE);
+			otmp = MakeRandomObjectAt(RANDOM_CLASS, x, y, TRUE);
 			/* Don't create large objects from small monsters */
 			typ = otmp->otyp;
 			if (mdat->msize < MZ_HUMAN && typ != FOOD_RATION

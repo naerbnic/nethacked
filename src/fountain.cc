@@ -529,7 +529,7 @@ void drinksink() {
 			break;
 		case 5: if (!(levl[player.ux][player.uy].looted & S_LRING)) {
 			    You("find a ring in the sink!");
-			    (void) MakeRandomObjectOfClassAt(RING_CLASS, player.ux, player.uy, TRUE);
+			    (void) MakeRandomObjectAt(RING_CLASS, player.ux, player.uy, TRUE);
 			    levl[player.ux][player.uy].looted |= S_LRING;
 			    exercise(A_WIS, TRUE);
 			    newsym(player.ux,player.uy);

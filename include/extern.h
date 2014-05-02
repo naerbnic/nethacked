@@ -937,7 +937,7 @@ E const char *waterbody_name(xchar,xchar);
 
 /* ### mkobj.c ### */
 
-E Object *MakeRandomObjectOfClassAt(char,int,int,bool);
+E Object *MakeRandomObjectAt(char,int,int,bool);
 E Object *MakeSpecificObjectAt(int,int,int,bool,bool);
 E Object *MakeRandomObject(char,bool);
 E int PickRandomMonsterTypeIndex();

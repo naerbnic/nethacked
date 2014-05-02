@@ -962,7 +962,7 @@ int dokick() {
 			if(!(maploc->looted & S_LRING)) { /* once per sink */
 			    if (!Blind)
 				You("see a ring shining in its midst.");
-			    (void) MakeRandomObjectOfClassAt(RING_CLASS, x, y, TRUE);
+			    (void) MakeRandomObjectAt(RING_CLASS, x, y, TRUE);
 			    newsym(x, y);
 			    exercise(A_DEX, TRUE);
 			    exercise(A_WIS, TRUE);	/* a discovery! */

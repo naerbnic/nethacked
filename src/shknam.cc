@@ -259,7 +259,7 @@ STATIC_OVL void mkshobj_at(
 	    if (atype < 0)
 		(void) MakeSpecificObjectAt(-atype, sx, sy, TRUE, TRUE);
 	    else
-		(void) MakeRandomObjectOfClassAt(atype, sx, sy, TRUE);
+		(void) MakeRandomObjectAt(atype, sx, sy, TRUE);
 	}
 }
 

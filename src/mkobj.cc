@@ -76,7 +76,7 @@ const struct ItemClassProbability kHellProbabilities[] = {
 { 4, AMULET_CLASS}
 };
 
-Object * MakeRandomObjectOfClassAt(char let, int x, int y, bool artif) {
+Object * MakeRandomObjectAt(char let, int x, int y, bool artif) {
 	Object *otmp = MakeRandomObject(let, artif);
 	place_object(otmp, x, y);
 	return(otmp);
@@ -613,71 +613,74 @@ Object * MakeSpecificObject(int otyp, bool init, bool artif) {
  * This takes the age of the corpse into consideration as of 3.4.0.
  */
 void StartCorpseTimeout(Object *body) {
-	long when; 		/* rot away when this old */
-	long corpse_age;	/* age of corpse          */
-	int rot_adjust;
-	short action;
+  long when; /* rot away when this old */
+  long corpse_age; /* age of corpse          */
+  int rot_adjust;
+  short action;
 
 #define TAINT_AGE (50L)		/* age when corpses go bad */
 #define TROLL_REVIVE_CHANCE 37	/* 1/37 chance for 50 turns ~ 75% chance */
 #define ROT_AGE (250L)		/* age when corpses rot away */
 
-	/* lizards and lichen don't rot or revive */
-	if (body->corpsenm == PM_LIZARD || body->corpsenm == PM_LICHEN) return;
+  /* lizards and lichen don't rot or revive */
+  if (body->corpsenm == PM_LIZARD || body->corpsenm == PM_LICHEN)
+    return;
 
-	action = ROT_CORPSE;		/* default action: rot away */
-	rot_adjust = in_mklev ? 25 : 10;	/* give some variation */
-	corpse_age = monstermoves - body->age;
-	if (corpse_age > ROT_AGE)
-		when = rot_adjust;
-	else
-		when = ROT_AGE - corpse_age;
-	when += (long)(rnz(rot_adjust) - rot_adjust);
+  action = ROT_CORPSE; /* default action: rot away */
+  rot_adjust = in_mklev ? 25 : 10; /* give some variation */
+  corpse_age = monstermoves - body->age;
+  if (corpse_age > ROT_AGE)
+    when = rot_adjust;
+  else
+    when = ROT_AGE - corpse_age;
+  when += (long) (rnz(rot_adjust) - rot_adjust);
 
-	if (is_rider(&mons[body->corpsenm])) {
-		/*
-		 * Riders always revive.  They have a 1/3 chance per turn
-		 * of reviving after 12 turns.  Always revive by 500.
-		 */
-		action = REVIVE_MON;
-		for (when = 12L; when < 500L; when++)
-		    if (!rn2(3)) break;
+  if (is_rider(&mons[body->corpsenm])) {
+    /*
+     * Riders always revive.  They have a 1/3 chance per turn
+     * of reviving after 12 turns.  Always revive by 500.
+     */
+    action = REVIVE_MON;
+    for (when = 12L; when < 500L; when++)
+      if (!rn2(3))
+        break;
 
-	} else if (mons[body->corpsenm].mlet == S_TROLL && !body->norevive) {
-		long age;
-		for (age = 2; age <= TAINT_AGE; age++)
-		    if (!rn2(TROLL_REVIVE_CHANCE)) {	/* troll revives */
-			action = REVIVE_MON;
-			when = age;
-			break;
-		    }
-	}
+  } else if (mons[body->corpsenm].mlet == S_TROLL && !body->norevive) {
+    long age;
+    for (age = 2; age <= TAINT_AGE; age++)
+      if (!rn2(TROLL_REVIVE_CHANCE)) { /* troll revives */
+        action = REVIVE_MON;
+        when = age;
+        break;
+      }
+  }
 
-	if (body->norevive) body->norevive = 0;
-	start_timer(when, TIMER_OBJECT, action, (genericptr_t)body);
+  if (body->norevive)
+    body->norevive = 0;
+  start_timer(when, TIMER_OBJECT, action, (genericptr_t) body);
 }
 
 void Bless(Object *otmp) {
 #ifdef GOLDOBJ
-	if (otmp->oclass == COIN_CLASS) return;
+  if (otmp->oclass == COIN_CLASS) return;
 #endif
-	otmp->cursed = 0;
-	otmp->blessed = 1;
-	if (carried(otmp) && confers_luck(otmp))
-	    set_moreluck();
-	else if (otmp->otyp == BAG_OF_HOLDING)
-	    otmp->owt = weight(otmp);
-	else if (otmp->otyp == FIGURINE && otmp->timed)
-		stop_timer(FIG_TRANSFORM, (genericptr_t) otmp);
-	return;
+  otmp->cursed = 0;
+  otmp->blessed = 1;
+  if (carried(otmp) && confers_luck(otmp))
+    set_moreluck();
+  else if (otmp->otyp == BAG_OF_HOLDING)
+    otmp->owt = weight(otmp);
+  else if (otmp->otyp == FIGURINE && otmp->timed)
+    stop_timer(FIG_TRANSFORM, (genericptr_t) otmp);
+  return;
 }
 
 void unbless(Object *otmp) {
-	otmp->blessed = 0;
-	if (carried(otmp) && confers_luck(otmp))
-	    set_moreluck();
-	else if (otmp->otyp == BAG_OF_HOLDING)
-	    otmp->owt = weight(otmp);
+  otmp->blessed = 0;
+  if (carried(otmp) && confers_luck(otmp))
+    set_moreluck();
+  else if (otmp->otyp == BAG_OF_HOLDING)
+    otmp->owt = weight(otmp);
 }
 
 void curse(Object *otmp) {

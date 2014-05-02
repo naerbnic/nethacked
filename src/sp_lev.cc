@@ -866,7 +866,7 @@ STATIC_OVL void create_object(object *o, struct mkroom *croom) {
 	    c = 0;
 
 	if (!c)
-	    otmp = MakeRandomObjectOfClassAt(RANDOM_CLASS, x, y, !named);
+	    otmp = MakeRandomObjectAt(RANDOM_CLASS, x, y, !named);
 	else if (o->id != -1)
 	    otmp = MakeSpecificObjectAt(o->id, x, y, TRUE, !named);
 	else {
@@ -883,7 +883,7 @@ STATIC_OVL void create_object(object *o, struct mkroom *croom) {
 	    if (oclass == COIN_CLASS)
 		otmp = mkgold(0L, x, y);
 	    else
-		otmp = MakeRandomObjectOfClassAt(oclass, x, y, !named);
+		otmp = MakeRandomObjectAt(oclass, x, y, !named);
 	}
 
 	if (o->spe != -127)	/* That means NOT RANDOM! */
@@ -2461,7 +2461,7 @@ STATIC_OVL bool load_maze(dlb *fd) {
 	    mapfact = (int) ((mapcount * 100L) / mapcountmax);
 	    for(x = rnd((int) (20 * mapfact) / 100); x; x--) {
 		    maze1xy(&mm, DRY);
-		    (void) MakeRandomObjectOfClassAt(rn2(2) ? GEM_CLASS : RANDOM_CLASS,
+		    (void) MakeRandomObjectAt(rn2(2) ? GEM_CLASS : RANDOM_CLASS,
 							mm.x, mm.y, TRUE);
 	    }
 	    for(x = rnd((int) (12 * mapfact) / 100); x; x--) {

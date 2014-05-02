@@ -336,7 +336,7 @@ void fill_zoo(struct mkroom *sroom) {
 			break;
 		    case ANTHOLE:
 			if(!rn2(3))
-			    (void) MakeRandomObjectOfClassAt(FOOD_CLASS, sx, sy, FALSE);
+			    (void) MakeRandomObjectAt(FOOD_CLASS, sx, sy, FALSE);
 			break;
 		}
 	    }

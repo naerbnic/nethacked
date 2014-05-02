@@ -589,7 +589,7 @@ void makemaz(const char *s) {
 
 	for(x = rn1(8,11); x; x--) {
 		mazexy(&mm);
-		(void) MakeRandomObjectOfClassAt(rn2(2) ? GEM_CLASS : 0, mm.x, mm.y, TRUE);
+		(void) MakeRandomObjectAt(rn2(2) ? GEM_CLASS : 0, mm.x, mm.y, TRUE);
 	}
 	for(x = rn1(10,2); x; x--) {
 		mazexy(&mm);
