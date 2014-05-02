@@ -3,7 +3,6 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 /* first pass */
-struct Monster { struct Monster *dummy; };	/* lint: struct obj's union */
 #include "config.h"
 #include "obj.h"
 #include "objclass.h"

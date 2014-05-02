@@ -23,9 +23,9 @@ STATIC_DCL struct mkroom * pick_room(bool);
 STATIC_DCL void mkshop(), mkzoo(int), mkswamp();
 STATIC_DCL void mktemple();
 STATIC_DCL coord * shrine_pos(int);
-STATIC_DCL struct MonsterType * morguemon();
-STATIC_DCL struct MonsterType * antholemon();
-STATIC_DCL struct MonsterType * squadmon();
+STATIC_DCL MonsterType * morguemon();
+STATIC_DCL MonsterType * antholemon();
+STATIC_DCL MonsterType * squadmon();
 STATIC_DCL void save_room(int,struct mkroom *);
 STATIC_DCL void rest_room(int,struct mkroom *);
 #endif /* OVLB */
@@ -208,7 +208,7 @@ STATIC_OVL void mkzoo(int type) {
 }
 
 void fill_zoo(struct mkroom *sroom) {
-	struct Monster *mon;
+	Monster *mon;
 	int sx,sy,i;
 	int sh, tx, ty, goldlim, type = sroom->rtype;
 	int rmno = (sroom - rooms) + ROOMOFFSET;
@@ -280,7 +280,7 @@ void fill_zoo(struct mkroom *sroom) {
 		    (type == LEPREHALL) ? &mons[PM_LEPRECHAUN] :
 		    (type == COCKNEST) ? &mons[PM_COCKATRICE] :
 		    (type == ANTHOLE) ? antholemon() :
-		    (struct MonsterType *) 0,
+		    (MonsterType *) 0,
 		   sx, sy, NO_MM_FLAGS);
 		if(mon) {
 			mon->msleeping = 1;
@@ -374,7 +374,7 @@ void fill_zoo(struct mkroom *sroom) {
 /* make a swarm of undead around mm */
 void mkundead(coord *mm, bool revive_corpses, int mm_flags) {
 	int cnt = (level_difficulty() + 1)/10 + rnd(5);
-	struct MonsterType *mdat;
+	MonsterType *mdat;
 	Object *otmp;
 	coord cc;
 
@@ -389,7 +389,7 @@ void mkundead(coord *mm, bool revive_corpses, int mm_flags) {
 	level.flags.graveyard = TRUE;	/* reduced chance for undead corpse */
 }
 
-STATIC_OVL struct MonsterType * morguemon() {
+STATIC_OVL MonsterType * morguemon() {
 	int i = rn2(100), hd = rn2(level_difficulty());
 
 	if(hd > 10 && i < 10)
@@ -402,7 +402,7 @@ STATIC_OVL struct MonsterType * morguemon() {
 			: (i < 40) ? &mons[PM_WRAITH] : mkclass(S_ZOMBIE,0));
 }
 
-STATIC_OVL struct MonsterType * antholemon() {
+STATIC_OVL MonsterType * antholemon() {
 	int mtyp;
 
 	/* Same monsters within a level, different ones between levels */
@@ -412,7 +412,7 @@ STATIC_OVL struct MonsterType * antholemon() {
 	case 1:		mtyp = PM_FIRE_ANT; break;
 	}
 	return ((mvitals[mtyp].mvflags & G_GONE) ?
-			(struct MonsterType *)0 : &mons[mtyp]);
+			(MonsterType *)0 : &mons[mtyp]);
 }
 
 /* Michiel Huisjes & Fred de Wilde */
@@ -600,7 +600,7 @@ struct mkroom * search_special(schar type) {
 #endif /* OVL0 */
 #ifdef OVLB
 
-struct MonsterType * courtmon() {
+MonsterType * courtmon() {
 	int     i = rn2(60) + rn2(3*level_difficulty());
 	if (i > 100)		return(mkclass(S_DRAGON,0));
 	else if (i > 95)	return(mkclass(S_GIANT,0));
@@ -623,7 +623,7 @@ static struct {
 };
 
 /* return soldier types. */
-STATIC_OVL struct MonsterType * squadmon() {
+STATIC_OVL MonsterType * squadmon() {
 	int sel_prob, i, cpro, mndx;
 
 	sel_prob = rnd(80+level_difficulty());
@@ -639,7 +639,7 @@ STATIC_OVL struct MonsterType * squadmon() {
 	mndx = squadprob[rn2(NSTYPES)].pm;
 gotone:
 	if (!(mvitals[mndx].mvflags & G_GONE)) return(&mons[mndx]);
-	else			    return((struct MonsterType *) 0);
+	else			    return((MonsterType *) 0);
 }
 
 /*
@@ -694,7 +694,7 @@ void rest_rooms(int fd) {
   mread(fd, (genericptr_t) &nroom, sizeof(nroom));
   for(i = 0; i<nroom; i++) {
     rest_room(fd, &rooms[i]);
-    rooms[i].resident = (struct Monster *)0;
+    rooms[i].resident = (Monster *)0;
   }
   rooms[nroom].hx = -1;		/* restore ending flags */
   subrooms.clear();

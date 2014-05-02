@@ -12,7 +12,7 @@
 
 #ifdef OVLB
 
-void set_mon_data(struct Monster *mon, struct MonsterType *ptr, int flag) {
+void set_mon_data(Monster *mon, MonsterType *ptr, int flag) {
     mon->data = ptr;
     if (flag == -1) return;		/* "don't care" */
 
@@ -26,7 +26,7 @@ void set_mon_data(struct Monster *mon, struct MonsterType *ptr, int flag) {
 #endif /* OVLB */
 #ifdef OVL0
 
-struct Attack * attacktype_fordmg(struct MonsterType *ptr, int atyp, int dtyp) {
+struct Attack * attacktype_fordmg(MonsterType *ptr, int atyp, int dtyp) {
     struct Attack *a;
 
     for (a = &ptr->mattk[0]; a < &ptr->mattk[NATTK]; a++)
@@ -36,22 +36,22 @@ struct Attack * attacktype_fordmg(struct MonsterType *ptr, int atyp, int dtyp) {
     return (struct Attack *)0;
 }
 
-bool attacktype(struct MonsterType *ptr, int atyp) {
+bool attacktype(MonsterType *ptr, int atyp) {
     return attacktype_fordmg(ptr, atyp, AD_ANY) ? TRUE : FALSE;
 }
 
 #endif /* OVL0 */
 #ifdef OVLB
 
-bool poly_when_stoned(struct MonsterType *ptr) {
+bool poly_when_stoned(MonsterType *ptr) {
     return((bool)(is_golem(ptr) && ptr != &mons[PM_STONE_GOLEM] &&
 	    !(mvitals[PM_STONE_GOLEM].mvflags & G_GENOD)));
 	    /* allow G_EXTINCT */
 }
 
 /* returns TRUE if monster is drain-life resistant */
-bool resists_drli(struct Monster *mon) {
-	struct MonsterType *ptr = mon->data;
+bool resists_drli(Monster *mon) {
+	MonsterType *ptr = mon->data;
 	Object *wep = ((mon == &youmonst) ? uwep : mon->weapon());
 
 	return (bool)(is_undead(ptr) || is_demon(ptr) || is_were(ptr) ||
@@ -60,8 +60,8 @@ bool resists_drli(struct Monster *mon) {
 }
 
 /* TRUE if monster is magic-missile resistant */
-bool resists_magm(struct Monster *mon) {
-	struct MonsterType *ptr = mon->data;
+bool resists_magm(Monster *mon) {
+	MonsterType *ptr = mon->data;
 	Object *o;
 
 	/* as of 3.2.0:  gray dragons, Angels, Oracle, Yeenoghu */
@@ -82,8 +82,8 @@ bool resists_magm(struct Monster *mon) {
 }
 
 /* TRUE iff monster is resistant to light-induced blindness */
-bool resists_blnd(struct Monster *mon) {
-	struct MonsterType *ptr = mon->data;
+bool resists_blnd(Monster *mon) {
+	MonsterType *ptr = mon->data;
 	bool is_you = (mon == &youmonst);
 	Object *o;
 
@@ -110,7 +110,7 @@ bool resists_blnd(struct Monster *mon) {
 
 /* TRUE iff monster can be blinded by the given attack */
 /* Note: may return TRUE when mdef is blind (e.g. new cream-pie attack) */
-bool can_blnd(struct Monster *magr, struct Monster *mdef, uchar aatyp, Object *obj) {
+bool can_blnd(Monster *magr, Monster *mdef, uchar aatyp, Object *obj) {
 	bool is_you = (mdef == &youmonst);
 	bool check_visor = FALSE;
 	Object *o;
@@ -189,7 +189,7 @@ bool can_blnd(struct Monster *magr, struct Monster *mdef, uchar aatyp, Object *o
 #ifdef OVL0
 
 /* returns TRUE if monster can attack at range */
-bool ranged_attk(struct MonsterType *ptr) {
+bool ranged_attk(MonsterType *ptr) {
 	int i, atyp;
 	long atk_mask = (1L << AT_BREA) | (1L << AT_SPIT) | (1L << AT_GAZE);
 
@@ -209,14 +209,14 @@ bool ranged_attk(struct MonsterType *ptr) {
 }
 
 /* returns TRUE if monster is especially affected by silver weapons */
-bool hates_silver(struct MonsterType* ptr) {
+bool hates_silver(MonsterType* ptr) {
 	return((bool)(is_were(ptr) || ptr->mlet==S_VAMPIRE || is_demon(ptr) ||
 		ptr == &mons[PM_SHADE] ||
 		(ptr->mlet==S_IMP && ptr != &mons[PM_TENGU])));
 }
 
 /* true iff the type of monster pass through iron bars */
-bool passes_bars(struct MonsterType *mptr) {
+bool passes_bars(MonsterType *mptr) {
     return (bool) (passes_walls(mptr) || amorphous(mptr) ||
 		      is_whirly(mptr) || verysmall(mptr) ||
 		      (slithy(mptr) && !bigmonst(mptr)));
@@ -226,7 +226,7 @@ bool passes_bars(struct MonsterType *mptr) {
 #ifdef OVL1
 
 /* returns TRUE if monster can track well */
-bool can_track(struct MonsterType *ptr) {
+bool can_track(MonsterType *ptr) {
 	if (uwep && uwep->oartifact == ART_EXCALIBUR)
 		return TRUE;
 	else
@@ -237,13 +237,13 @@ bool can_track(struct MonsterType *ptr) {
 #ifdef OVLB
 
 /* creature will slide out of armor */
-bool sliparm(struct MonsterType *ptr) {
+bool sliparm(MonsterType *ptr) {
 	return((bool)(is_whirly(ptr) || ptr->msize <= MZ_SMALL ||
 			 noncorporeal(ptr)));
 }
 
 /* creature will break out of armor */
-bool breakarm(struct MonsterType *ptr) {
+bool breakarm(MonsterType *ptr) {
 	return ((bigmonst(ptr) || (ptr->msize > MZ_SMALL && !humanoid(ptr)) ||
 		/* special cases of humanoids that cannot wear body armor */
 		ptr == &mons[PM_MARILITH] || ptr == &mons[PM_WINGED_GARGOYLE])
@@ -253,13 +253,13 @@ bool breakarm(struct MonsterType *ptr) {
 #ifdef OVL1
 
 /* creature sticks other creatures it hits */
-bool sticks(struct MonsterType *ptr) {
+bool sticks(MonsterType *ptr) {
 	return((bool)(dmgtype(ptr,AD_STCK) || dmgtype(ptr,AD_WRAP) ||
 		attacktype(ptr,AT_HUGS)));
 }
 
 /* number of horns this type of monster has on its head */
-int num_horns(struct MonsterType *ptr) {
+int num_horns(MonsterType *ptr) {
     switch (monsndx(ptr)) {
     case PM_HORNED_DEVIL:	/* ? "more than one" */
     case PM_MINOTAUR:
@@ -277,7 +277,7 @@ int num_horns(struct MonsterType *ptr) {
     return 0;
 }
 
-struct Attack * dmgtype_fromattack(struct MonsterType *ptr, int dtyp, int atyp) {
+struct Attack * dmgtype_fromattack(MonsterType *ptr, int dtyp, int atyp) {
     struct Attack *a;
 
     for (a = &ptr->mattk[0]; a < &ptr->mattk[NATTK]; a++)
@@ -287,13 +287,13 @@ struct Attack * dmgtype_fromattack(struct MonsterType *ptr, int dtyp, int atyp) 
     return (struct Attack *)0;
 }
 
-bool dmgtype(struct MonsterType *ptr, int dtyp) {
+bool dmgtype(MonsterType *ptr, int dtyp) {
     return dmgtype_fromattack(ptr, dtyp, AT_ANY) ? TRUE : FALSE;
 }
 
 /* returns the maximum damage a defender can do to the attacker via
  * a passive defense */
-int max_passive_dmg(struct Monster *mdef, struct Monster *magr) {
+int max_passive_dmg(Monster *mdef, Monster *magr) {
     int	i, dmg = 0;
     uchar adtyp;
 
@@ -320,7 +320,7 @@ int max_passive_dmg(struct Monster *mdef, struct Monster *magr) {
 #ifdef OVL0
 
 /* return an index into the mons array */
-int monsndx(struct MonsterType *ptr) {
+int monsndx(MonsterType *ptr) {
 	int	i;
 
 	i = (int)(ptr - &mons[0]);
@@ -451,14 +451,14 @@ int name_to_mon(const char *in_str) {
 #ifdef OVL2
 
 /* returns 3 values (0=male, 1=female, 2=none) */
-int gender(struct Monster *mtmp) {
+int gender(Monster *mtmp) {
 	if (is_neuter(mtmp->data)) return 2;
 	return mtmp->female;
 }
 
 /* Like gender(), but lower animals and such are still "it". */
 /* This is the one we want to use when printing messages. */
-int pronoun_gender(struct Monster *mtmp) {
+int pronoun_gender(Monster *mtmp) {
 	if (is_neuter(mtmp->data) || !canspotmon(mtmp)) return 2;
 	return (humanoid(mtmp->data) || (mtmp->data->geno & G_UNIQ) ||
 		type_is_pname(mtmp->data)) ? (int)mtmp->female : 2;
@@ -468,7 +468,7 @@ int pronoun_gender(struct Monster *mtmp) {
 #ifdef OVLB
 
 /* used for nearby monsters when you go to another level */
-bool levl_follower(struct Monster *mtmp) {
+bool levl_follower(Monster *mtmp) {
 	/* monsters with the Amulet--even pets--won't follow across levels */
 	if (mon_has_amulet(mtmp)) return FALSE;
 
@@ -579,7 +579,7 @@ int big_to_little(int montype) {
  * Returns correct pointer for non-polymorphed and polymorphed
  * player.  It does not return a pointer to player role character.
  */
-const struct MonsterType * raceptr(struct Monster *mtmp) {
+const MonsterType * raceptr(Monster *mtmp) {
     if (mtmp == &youmonst && !Upolyd) return(&mons[urace.malenum]);
     else return(mtmp->data);
 }
@@ -592,7 +592,7 @@ static const char *ooze[4]	= { "ooze", "Ooze", "tremble", "Tremble" };
 static const char *immobile[4]	= { "wiggle", "Wiggle", "pulsate", "Pulsate" };
 static const char *crawl[4]	= { "crawl", "Crawl", "falter", "Falter" };
 
-const char * locomotion(const struct MonsterType *ptr, const char *def) {
+const char * locomotion(const MonsterType *ptr, const char *def) {
 	int capitalize = (*def == highc(*def));
 
 	return (
@@ -608,7 +608,7 @@ const char * locomotion(const struct MonsterType *ptr, const char *def) {
 
 }
 
-const char * stagger(const struct MonsterType *ptr, const char *def) {
+const char * stagger(const MonsterType *ptr, const char *def) {
 	int capitalize = 2 + (*def == highc(*def));
 
 	return (
@@ -625,7 +625,7 @@ const char * stagger(const struct MonsterType *ptr, const char *def) {
 }
 
 /* return a phrase describing the effect of fire attack on a type of monster */
-const char * on_fire(struct MonsterType *mptr, struct Attack *mattk) {
+const char * on_fire(MonsterType *mptr, struct Attack *mattk) {
     const char *what;
 
     switch (monsndx(mptr)) {

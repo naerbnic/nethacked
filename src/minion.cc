@@ -7,11 +7,11 @@
 #include "epri.h"
 
 /* mon summons a monster */
-void msummon(struct Monster *mon) {
-	struct MonsterType *ptr;
+void msummon(Monster *mon) {
+	MonsterType *ptr;
 	int dtype = NON_PM, cnt = 0;
 	aligntyp atyp;
-	struct Monster *mtmp;
+	Monster *mtmp;
 
 	if (mon) {
 	    ptr = mon->data;
@@ -82,7 +82,7 @@ void msummon(struct Monster *mon) {
 }
 
 void summon_minion(aligntyp alignment, bool talk) {
-    struct Monster *mon;
+    Monster *mon;
     int mnum;
 
     switch ((int)alignment) {
@@ -104,7 +104,7 @@ void summon_minion(aligntyp alignment, bool talk) {
     if (mnum == NON_PM) {
 	mon = 0;
     } else if (mons[mnum].pxlth == 0) {
-	struct MonsterType *pm = &mons[mnum];
+	MonsterType *pm = &mons[mnum];
 	mon = makemon(pm, u.ux, u.uy, MM_EMIN);
 	if (mon) {
 	    mon->isminion = TRUE;
@@ -133,7 +133,7 @@ void summon_minion(aligntyp alignment, bool talk) {
 #define Athome	(Inhell && !mtmp->cham)
 
 /* returns 1 if it won't attack. */
-int demon_talk(struct Monster *mtmp) {
+int demon_talk(Monster *mtmp) {
 	long cash, demand, offer;
 
 	if (uwep && uwep->oartifact == ART_EXCALIBUR) {
@@ -195,7 +195,7 @@ int demon_talk(struct Monster *mtmp) {
 	return(1);
 }
 
-long bribe(struct Monster *mtmp) {
+long bribe(Monster *mtmp) {
 	char buf[BUFSZ];
 	long offer;
 #ifdef GOLDOBJ
@@ -270,7 +270,7 @@ int llord() {
 
 int lminion() {
 	int	tryct;
-	struct	MonsterType *ptr;
+	MonsterType *ptr;
 
 	for (tryct = 0; tryct < 20; tryct++) {
 	    ptr = mkclass(S_ANGEL,0);
@@ -283,7 +283,7 @@ int lminion() {
 
 int ndemon(aligntyp atyp) {
 	int	tryct;
-	struct	MonsterType *ptr;
+	MonsterType *ptr;
 
 	for (tryct = 0; tryct < 20; tryct++) {
 	    ptr = mkclass(S_DEMON, 0);

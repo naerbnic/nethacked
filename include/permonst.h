@@ -61,7 +61,7 @@ struct MonsterType {
 # endif
 };
 
-extern struct MonsterType
+extern MonsterType
 		mons[];		/* the master list of monster types */
 
 #define VERY_SLOW 3

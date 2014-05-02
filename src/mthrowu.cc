@@ -92,7 +92,7 @@ int thitu(int tlev, int dam, Object *obj, const char *name) {
 STATIC_OVL int drop_throw(Object *obj, bool ohit, int x, int y) {
 	int retvalu = 1;
 	int create;
-	struct Monster *mtmp;
+	Monster *mtmp;
 	struct trap *t;
 
 	if (obj->otyp == CREAM_PIE || obj->oclass == VENOM_CLASS ||
@@ -131,7 +131,7 @@ STATIC_OVL int drop_throw(Object *obj, bool ohit, int x, int y) {
    return 1 if the object has stopped moving (hit or its range used up) */
 int ohitmon(
     /* accidental target */
-    struct Monster* mtmp, 
+    Monster* mtmp, 
 
     /* missile; might be destroyed by drop_throw */
     Object *otmp,
@@ -217,7 +217,7 @@ int ohitmon(
 		else mondied(mtmp);
 	    }
 
-	    if (can_blnd((struct Monster*)0, mtmp,
+	    if (can_blnd((Monster*)0, mtmp,
 		    (uchar)(otmp->otyp == BLINDING_VENOM ? AT_SPIT : AT_WEAP),
 		    otmp)) {
 		if (vis && mtmp->mcansee)
@@ -238,8 +238,8 @@ int ohitmon(
 	return 0;
 }
 
-void m_throw(struct Monster *mon, int x, int y, int dx, int dy, int range, Object *obj) {
-	struct Monster *mtmp;
+void m_throw(Monster *mon, int x, int y, int dx, int dy, int range, Object *obj) {
+	Monster *mtmp;
 	Object *singleobj;
 	char sym = obj->oclass;
 	int hitu, blindinc = 0;
@@ -381,7 +381,7 @@ void m_throw(struct Monster *mon, int x, int y, int dx, int dy, int range, Objec
 			poisoned(onmbuf, A_STR, knmbuf, -10);
 		    }
 		    if(hitu &&
-		       can_blnd((struct Monster*)0, &youmonst,
+		       can_blnd((Monster*)0, &youmonst,
 				(uchar)(singleobj->otyp == BLINDING_VENOM ?
 					AT_SPIT : AT_WEAP), singleobj)) {
 			blindinc = rnd(25);
@@ -450,7 +450,7 @@ void m_throw(struct Monster *mon, int x, int y, int dx, int dy, int range, Objec
 #ifdef OVLB
 
 /* Remove an item from the monster's inventory and destroy it. */
-void m_useup(struct Monster *mon, Object *obj) {
+void m_useup(Monster *mon, Object *obj) {
 	if (obj->quan > 1L) {
 		obj->quan--;
 		obj->owt = weight(obj);
@@ -469,7 +469,7 @@ void m_useup(struct Monster *mon, Object *obj) {
 #ifdef OVL1
 
 /* monster attempts ranged weapon attack against player */
-void thrwmu(struct Monster *mtmp) {
+void thrwmu(Monster *mtmp) {
 	Object *otmp, *mwep;
 	xchar x, y;
 	schar skill;
@@ -600,7 +600,7 @@ void thrwmu(struct Monster *mtmp) {
 #ifdef OVLB
 
 /* monster spits substance at you */
-int spitmu(struct Monster *mtmp, struct Attack *mattk) {
+int spitmu(Monster *mtmp, struct Attack *mattk) {
 	Object *otmp;
 
 	if(mtmp->mcan) {
@@ -639,7 +639,7 @@ int spitmu(struct Monster *mtmp, struct Attack *mattk) {
 #ifdef OVL1
 
 /* monster breathes at you (ranged) */
-int breamu(struct Monster* mtmp, struct Attack* mattk) {
+int breamu(Monster* mtmp, struct Attack* mattk) {
 	/* if new breath types are added, change AD_ACID to max type */
 	int typ = (mattk->adtyp == AD_RBRE) ? rnd(AD_ACID) : mattk->adtyp ;
 
@@ -694,7 +694,7 @@ bool linedup(xchar ax, xchar ay, xchar bx, xchar by) {
 }
 
 /* is mtmp in position to use ranged attack? */
-bool lined_up(struct Monster *mtmp) {
+bool lined_up(Monster *mtmp) {
 	return(linedup(mtmp->mux,mtmp->muy,mtmp->mx,mtmp->my));
 }
 
@@ -703,7 +703,7 @@ bool lined_up(struct Monster *mtmp) {
 
 /* Check if a monster is carrying a particular item.
  */
-Object * m_carrying(struct Monster *mtmp, int type) {
+Object * m_carrying(Monster *mtmp, int type) {
 	Object *otmp;
 
 	for(otmp = mtmp->minvent; otmp; otmp = otmp->nobj)

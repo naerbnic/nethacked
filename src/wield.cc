@@ -186,10 +186,10 @@ STATIC_OVL int ready_weapon(Object *wep) {
 #endif
 
 	    if (wep->unpaid) {
-		struct Monster *this_shkp;
+		Monster *this_shkp;
 
 		if ((this_shkp = shop_keeper(inside_shop(u.ux, u.uy))) !=
-		    (struct Monster *)0) {
+		    (Monster *)0) {
 		    pline("%s says \"You be careful with my %s!\"",
 			  shkname(this_shkp),
 			  xname(wep));
@@ -562,14 +562,14 @@ void untwoweapon() {
 /* Maybe rust object, or corrode it if acid damage is called for */
 void erode_obj(Object *target, bool acid_dmg, bool fade_scrolls) {
 	int erosion;
-	struct Monster *victim;
+	Monster *victim;
 	bool vismon;
 	bool visobj;
 
 	if (!target)
 	    return;
 	victim = carried(target) ? &youmonst :
-	    mcarried(target) ? target->ocarry : (struct Monster *)0;
+	    mcarried(target) ? target->ocarry : (Monster *)0;
 	vismon = victim && (victim != &youmonst) && canseemon(victim);
 	visobj = !victim && cansee(bhitpos.x, bhitpos.y); /* assume thrown */
 

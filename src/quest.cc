@@ -21,7 +21,7 @@ STATIC_DCL void expulsion(bool);
 STATIC_DCL void chat_with_leader();
 STATIC_DCL void chat_with_nemesis();
 STATIC_DCL void chat_with_guardian();
-STATIC_DCL void prisoner_speaks(struct Monster *);
+STATIC_DCL void prisoner_speaks(Monster *);
 
 
 STATIC_OVL void on_start() {
@@ -242,7 +242,7 @@ STATIC_OVL void chat_with_leader() {
 	}
 }
 
-void leader_speaks(struct Monster *mtmp) {
+void leader_speaks(Monster *mtmp) {
 	/* maybe you attacked leader? */
 	if(!mtmp->mpeaceful) {
 		Qstat(pissed_off) = TRUE;
@@ -286,7 +286,7 @@ STATIC_OVL void chat_with_guardian() {
 	    qt_pager(rn1(5, QT_GUARDTALK));
 }
 
-STATIC_OVL void prisoner_speaks (struct Monster *mtmp) {
+STATIC_OVL void prisoner_speaks (Monster *mtmp) {
 	if (mtmp->data == &mons[PM_PRISONER] &&
 			(mtmp->mstrategy & STRAT_WAITMASK)) {
 	    /* Awaken the prisoner */
@@ -305,7 +305,7 @@ STATIC_OVL void prisoner_speaks (struct Monster *mtmp) {
 	return;
 }
 
-void quest_chat(struct Monster *mtmp) {
+void quest_chat(Monster *mtmp) {
     if (mtmp->m_id == Qstat(leader_m_id)) {
 	chat_with_leader();
 	return;
@@ -318,7 +318,7 @@ void quest_chat(struct Monster *mtmp) {
 	}
 }
 
-void quest_talk(struct Monster *mtmp) {
+void quest_talk(Monster *mtmp) {
     if (mtmp->m_id == Qstat(leader_m_id)) {
 	leader_speaks(mtmp);
 	return;
@@ -330,7 +330,7 @@ void quest_talk(struct Monster *mtmp) {
 	}
 }
 
-void quest_stat_check(struct Monster *mtmp) {
+void quest_stat_check(Monster *mtmp) {
     if(mtmp->data->msound == MS_NEMESIS)
 	Qstat(in_battle) = (mtmp->mcanmove && !mtmp->msleeping &&
 			    monnear(mtmp, u.ux, u.uy));

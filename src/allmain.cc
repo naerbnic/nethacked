@@ -75,7 +75,7 @@ void moveloop() {
 		if (!monscanmove && youmonst.movement < NORMAL_SPEED) {
 		    /* both you and the monsters are out of steam this round */
 		    /* set up for a new turn */
-		    struct Monster *mtmp;
+		    Monster *mtmp;
 		    mcalcdistress();	/* adjust monsters' trap, blind, etc */
 
 		    /* reallocate movement rations to monsters */
@@ -84,7 +84,7 @@ void moveloop() {
 
 		    if(!rn2(u.uevent.udemigod ? 25 :
 			    (depth(&u.uz) > depth(&stronghold_level)) ? 50 : 70))
-			(void) makemon((struct MonsterType *)0, 0, 0, NO_MM_FLAGS);
+			(void) makemon((MonsterType *)0, 0, 0, NO_MM_FLAGS);
 
 		    /* calculate how much time passed. */
 #ifdef STEED
@@ -536,7 +536,7 @@ void welcome(bool new_game) {
 
     pline(new_game ? "%s %s, welcome to NetHack!  You are a%s %s %s."
 		   : "%s %s, the%s %s %s, welcome back to NetHack!",
-	  Hello((struct Monster *) 0), plname, buf, urace.adj,
+	  Hello((Monster *) 0), plname, buf, urace.adj,
 	  (currentgend && urole.name.f) ? urole.name.f : urole.name.m);
 }
 

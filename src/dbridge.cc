@@ -17,7 +17,7 @@
 #ifdef OVLB
 STATIC_DCL void get_wall_for_db(int *, int *);
 STATIC_DCL struct entity *e_at(int, int);
-STATIC_DCL void m_to_e(struct Monster *, int, int, struct entity *);
+STATIC_DCL void m_to_e(Monster *, int, int, struct entity *);
 STATIC_DCL void u_to_e(struct entity *);
 STATIC_DCL void set_entity(int, int, struct entity *);
 STATIC_DCL const char *e_nam(struct entity *);
@@ -202,8 +202,8 @@ bool create_drawbridge(int x, int y, int dir, bool flag) {
 }
 
 struct entity {
-	struct Monster *emon;	  /* youmonst for the player */
-	struct MonsterType *edata;   /* must be non-zero for record to be valid */
+	Monster *emon;	  /* youmonst for the player */
+	MonsterType *edata;   /* must be non-zero for record to be valid */
 	int ex, ey;
 };
 
@@ -228,7 +228,7 @@ struct entity * e_at(int x, int y) {
 	       (struct entity *)0 : &(occupants[entitycnt]));
 }
 
-STATIC_OVL void m_to_e(struct Monster *mtmp, int x, int y, struct entity *etmp) {
+STATIC_OVL void m_to_e(Monster *mtmp, int x, int y, struct entity *etmp) {
 	etmp->emon = mtmp;
 	if (mtmp) {
 		etmp->ex = x;
@@ -238,7 +238,7 @@ STATIC_OVL void m_to_e(struct Monster *mtmp, int x, int y, struct entity *etmp) 
 		else
 			etmp->edata = mtmp->data;
 	} else
-		etmp->edata = (struct MonsterType *)0;
+		etmp->edata = (MonsterType *)0;
 }
 
 STATIC_OVL void u_to_e(struct entity *etmp) {
@@ -254,7 +254,7 @@ STATIC_OVL void set_entity(int x, int y, struct entity *etmp) {
 	else if (MON_AT(x, y))
 		m_to_e(m_at(x, y), x, y, etmp);
 	else
-		etmp->edata = (struct MonsterType *)0;
+		etmp->edata = (MonsterType *)0;
 }
 
 #define is_u(etmp) (etmp->emon == &youmonst)
@@ -365,13 +365,13 @@ STATIC_OVL void e_died(struct entity *etmp, int dest, int how) {
 		    monkilled(etmp->emon, mk_message(dest), mk_corpse(dest));
 		else		/* you caused it */
 		    xkilled(etmp->emon, dest);
-		etmp->edata = (struct MonsterType *)0;
+		etmp->edata = (MonsterType *)0;
 
 		/* dead long worm handling */
 		for (entitycnt = 0; entitycnt < ENTITIES; entitycnt++) {
 		    if (etmp != &(occupants[entitycnt]) &&
 			etmp->emon == occupants[entitycnt].emon)
-			occupants[entitycnt].edata = (struct MonsterType *)0;
+			occupants[entitycnt].edata = (MonsterType *)0;
 		}
 #undef mk_message
 #undef mk_corpse

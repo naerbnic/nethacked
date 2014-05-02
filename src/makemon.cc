@@ -12,7 +12,7 @@
 #include <ctype.h>
 #endif
 
-STATIC_VAR struct Monster zeromonst;
+STATIC_VAR Monster zeromonst;
 
 /* this assumes that a human quest leader or nemesis is an archetype
    of the corresponding role; that isn't so for some roles (tourist
@@ -23,14 +23,14 @@ STATIC_VAR struct Monster zeromonst;
 
 #ifdef OVL0
 STATIC_DCL bool uncommon(int);
-STATIC_DCL int align_shift(struct MonsterType *);
+STATIC_DCL int align_shift(MonsterType *);
 #endif /* OVL0 */
-STATIC_DCL bool wrong_elem_type(struct MonsterType *);
-STATIC_DCL void m_initgrp(struct Monster *,int,int,int);
-STATIC_DCL void m_initthrow(struct Monster *,int,int);
-STATIC_DCL void m_initweap(struct Monster *);
+STATIC_DCL bool wrong_elem_type(MonsterType *);
+STATIC_DCL void m_initgrp(Monster *,int,int,int);
+STATIC_DCL void m_initthrow(Monster *,int,int);
+STATIC_DCL void m_initweap(Monster *);
 #ifdef OVL1
-STATIC_DCL void m_initinv(struct Monster *);
+STATIC_DCL void m_initinv(Monster *);
 #endif /* OVL1 */
 
 extern const int monstr[];
@@ -41,7 +41,7 @@ extern const int monstr[];
 #define tooweak(monindx, lev)	(monstr[monindx] < lev)
 
 #ifdef OVLB
-bool is_home_elemental(struct MonsterType *ptr) {
+bool is_home_elemental(MonsterType *ptr) {
 	if (ptr->mlet == S_ELEMENTAL)
 	    switch (monsndx(ptr)) {
 		case PM_AIR_ELEMENTAL: return Is_airlevel(&u.uz);
@@ -55,7 +55,7 @@ bool is_home_elemental(struct MonsterType *ptr) {
 /*
  * Return true if the given monster cannot exist on this elemental level.
  */
-STATIC_OVL bool wrong_elem_type(struct MonsterType *ptr) {
+STATIC_OVL bool wrong_elem_type(MonsterType *ptr) {
     if (ptr->mlet == S_ELEMENTAL) {
 	return((bool)(!is_home_elemental(ptr)));
     } else if (Is_earthlevel(&u.uz)) {
@@ -74,10 +74,10 @@ STATIC_OVL bool wrong_elem_type(struct MonsterType *ptr) {
 }
 
 /* make a group just like mtmp */
-STATIC_OVL void m_initgrp(struct Monster *mtmp, int x, int y, int n) {
+STATIC_OVL void m_initgrp(Monster *mtmp, int x, int y, int n) {
 	coord mm;
 	int cnt = rnd(n);
-	struct Monster *mon;
+	Monster *mon;
 #if defined(__GNUC__) && (defined(HPUX) || defined(DGUX))
 	/* There is an unresolved problem with several people finding that
 	 * the game hangs eating CPU; if interrupted and restored, the level
@@ -136,7 +136,7 @@ STATIC_OVL void m_initgrp(struct Monster *mtmp, int x, int y, int n) {
 }
 
 STATIC_OVL
-void m_initthrow(struct Monster *mtmp, int otyp, int oquan) {
+void m_initthrow(Monster *mtmp, int otyp, int oquan) {
 	Object *otmp;
 
 	otmp = mksobj(otyp, TRUE, FALSE);
@@ -149,8 +149,8 @@ void m_initthrow(struct Monster *mtmp, int otyp, int oquan) {
 #endif /* OVLB */
 #ifdef OVL2
 
-STATIC_OVL void m_initweap(struct Monster *mtmp) {
-	struct MonsterType *ptr = mtmp->data;
+STATIC_OVL void m_initweap(Monster *mtmp) {
+	MonsterType *ptr = mtmp->data;
 	int mm = monsndx(ptr);
 	Object *otmp;
 
@@ -459,17 +459,17 @@ STATIC_OVL void m_initweap(struct Monster *mtmp) {
  *   Makes up money for monster's inventory.
  *   This will change with silver & copper coins
  */
-void mkmonmoney(struct Monster *mtmp, long amount) {
+void mkmonmoney(Monster *mtmp, long amount) {
     Object *gold = mksobj(GOLD_PIECE, FALSE, FALSE);
     gold->quan = amount;
     add_to_minv(mtmp, gold);
 }
 #endif
 
-STATIC_OVL void m_initinv(struct Monster *mtmp) {
+STATIC_OVL void m_initinv(Monster *mtmp) {
 	int cnt;
 	Object *otmp;
-	struct MonsterType *ptr = mtmp->data;
+	MonsterType *ptr = mtmp->data;
 #ifdef REINCARNATION
 	if (Is_rogue_level(&u.uz)) return;
 #endif
@@ -646,27 +646,27 @@ STATIC_OVL void m_initinv(struct Monster *mtmp) {
 }
 
 /* Note: for long worms, always call cutworm (cutworm calls clone_mon) */
-struct Monster * clone_mon(struct Monster *mon, xchar x, xchar y) {
+Monster * clone_mon(Monster *mon, xchar x, xchar y) {
 	coord mm;
-	struct Monster *m2;
+	Monster *m2;
 
 	/* may be too weak or have been extinguished for population control */
 	if (mon->mhp <= 1 || (mvitals[monsndx(mon->data)].mvflags & G_EXTINCT))
-	    return (struct Monster *)0;
+	    return (Monster *)0;
 
 	if (x == 0) {
 	    mm.x = mon->mx;
 	    mm.y = mon->my;
 	    if (!enexto(&mm, mm.x, mm.y, mon->data) || MON_AT(mm.x, mm.y))
-		return (struct Monster *)0;
+		return (Monster *)0;
 	} else if (!isok(x, y)) {
-	    return (struct Monster *)0;	/* paranoia */
+	    return (Monster *)0;	/* paranoia */
 	} else {
 	    mm.x = x;
 	    mm.y = y;
 	    if (MON_AT(mm.x, mm.y)) {
 		if (!enexto(&mm, mm.x, mm.y, mon->data) || MON_AT(mm.x, mm.y))
-		    return (struct Monster *)0;
+		    return (Monster *)0;
 	    }
 	}
 	m2 = newmonst(0);
@@ -721,7 +721,7 @@ struct Monster * clone_mon(struct Monster *mon, xchar x, xchar y) {
 
 	newsym(m2->mx,m2->my);	/* display the new monster */
 	if (m2->mtame) {
-	    struct Monster *m3;
+	    Monster *m3;
 
 	    if (mon->isminion) {
 		m3 = newmonst(sizeof(struct epri) + mon->mnamelth);
@@ -790,7 +790,7 @@ bool propagate(int mndx, bool tally, bool ghostly) {
  *
  *	In case we make a monster group, only return the one at [x,y].
  */
-struct Monster * makemon(struct MonsterType *ptr, int x, int y, int mmflags) {
+Monster * makemon(MonsterType *ptr, int x, int y, int mmflags) {
 	int mndx, mcham, ct, mitem;
 	bool anymon = (!ptr);
 	bool byyou = (x == u.ux && y == u.uy);
@@ -801,13 +801,13 @@ struct Monster * makemon(struct MonsterType *ptr, int x, int y, int mmflags) {
 	/* if caller wants random location, do it here */
 	if(x == 0 && y == 0) {
 		int tryct = 0;	/* careful with bigrooms */
-		struct Monster fakemon;
+		Monster fakemon;
 
 		fakemon.data = ptr;	/* set up for goodpos */
 		do {
 			x = rn1(COLNO-3,2);
 			y = rn2(ROWNO);
-		} while(!goodpos(x, y, ptr ? &fakemon : (struct Monster *)0, gpflags) ||
+		} while(!goodpos(x, y, ptr ? &fakemon : (Monster *)0, gpflags) ||
 			(!in_mklev && tryct++ < 50 && cansee(x, y)));
 	} else if (byyou && !in_mklev) {
 		coord bypos;
@@ -816,7 +816,7 @@ struct Monster * makemon(struct MonsterType *ptr, int x, int y, int mmflags) {
 			x = bypos.x;
 			y = bypos.y;
 		} else
-			return((struct Monster *)0);
+			return((Monster *)0);
 	}
 
 	/* Does monster already exist at the position? */
@@ -827,16 +827,16 @@ struct Monster * makemon(struct MonsterType *ptr, int x, int y, int mmflags) {
 				x = bypos.x;
 				y = bypos.y;
 			} else
-				return((struct Monster *) 0);
+				return((Monster *) 0);
 		} else 
-			return((struct Monster *) 0);
+			return((Monster *) 0);
 	}
 
 	if(ptr){
 		 mndx = monsndx(ptr);
 		/* if you are to make a specific monster and it has
 		   already been genocided, return */
-		if (mvitals[mndx].mvflags & G_GENOD) return((struct Monster *) 0);
+		if (mvitals[mndx].mvflags & G_GENOD) return((Monster *) 0);
 #if defined(WIZARD) && defined(DEBUG)
 		if (wizard && (mvitals[mndx].mvflags & G_EXTINCT))
 		    pline("Explicitly creating extinct monster %s.",
@@ -849,13 +849,13 @@ struct Monster * makemon(struct MonsterType *ptr, int x, int y, int mmflags) {
 		 * for instance.)
 		 */
 		int tryct = 0;	/* maybe there are no good choices */
-		struct Monster fakemon;
+		Monster fakemon;
 		do {
 			if(!(ptr = rndmonst())) {
 #ifdef DEBUG
 			    pline("Warning: no monster.");
 #endif
-			    return((struct Monster *) 0);	/* no more monsters! */
+			    return((Monster *) 0);	/* no more monsters! */
 			}
 			fakemon.data = ptr;	/* set up for goodpos */
 		} while(!goodpos(x, y, &fakemon, gpflags) && tryct++ < 50);
@@ -1068,10 +1068,10 @@ int mbirth_limit(int mndx) {
 
 /* used for wand/scroll/spell of create monster */
 /* returns TRUE iff you know monsters have been created */
-bool create_critters(int cnt, struct MonsterType *mptr) {
+bool create_critters(int cnt, MonsterType *mptr) {
 	coord c;
 	int x, y;
-	struct Monster *mon;
+	Monster *mon;
 	bool known = FALSE;
 #ifdef WIZARD
 	bool ask = wizard;
@@ -1116,7 +1116,7 @@ STATIC_OVL bool uncommon(int mndx) {
  *	comparing the dungeon alignment and monster alignment.
  *	return an integer in the range of 0-5.
  */
-STATIC_OVL int align_shift(struct MonsterType *ptr) {
+STATIC_OVL int align_shift(MonsterType *ptr) {
     static long oldmoves = 0L;	/* != 1, starting value of moves */
     static s_level *lev;
     int alshift;
@@ -1145,8 +1145,8 @@ static struct {
 } rndmonst_state = { -1, {0} };
 
 /* select a random monster type */
-struct MonsterType * rndmonst() {
-	struct MonsterType *ptr;
+MonsterType * rndmonst() {
+	MonsterType *ptr;
 	int mndx, ct;
 
 	if (u.uz.dnum == quest_dnum && rn2(7) && (ptr = qt_montype()) != 0)
@@ -1170,7 +1170,7 @@ struct MonsterType * rndmonst() {
 #ifdef DEBUG
 		pline("rndmonst: no common mons!");
 #endif
-		return (struct MonsterType *)0;
+		return (MonsterType *)0;
 	    } /* else `mndx' now ready for use below */
 	    zlevel = level_difficulty();
 	    /* determine the level of the weakest monster to make. */
@@ -1214,7 +1214,7 @@ struct MonsterType * rndmonst() {
 #ifdef DEBUG
 	    Norep("rndmonst: choice_count=%d", rndmonst_state.choice_count);
 #endif
-	    return (struct MonsterType *)0;
+	    return (MonsterType *)0;
 	}
 
 /*
@@ -1226,7 +1226,7 @@ struct MonsterType * rndmonst() {
 
 	if (mndx == SPECIAL_PM || uncommon(mndx)) {	/* shouldn't happen */
 	    impossible("rndmonst: bad `mndx' [#%d]", mndx);
-	    return (struct MonsterType *)0;
+	    return (MonsterType *)0;
 	}
 	return &mons[mndx];
 }
@@ -1253,21 +1253,21 @@ void reset_rndmonst(int mndx) {
  *	in that class can be made.
  */
 
-struct MonsterType * mkclass(char class_id, int spc) {
+MonsterType * mkclass(char class_id, int spc) {
 	int	first, last, num = 0;
 	int maxmlev, mask = (G_NOGEN | G_UNIQ) & ~spc;
 
 	maxmlev = level_difficulty() >> 1;
 	if(class_id < 1 || class_id >= MAXMCLASSES) {
 	    impossible("mkclass called with bad class_id!");
-	    return((struct MonsterType *) 0);
+	    return((MonsterType *) 0);
 	}
 /*	Assumption #1:	monsters of a given class_id are contiguous in the
  *			mons[] array.
  */
 	for (first = LOW_PM; first < SPECIAL_PM; first++)
 	    if (mons[first].mlet == class_id) break;
-	if (first == SPECIAL_PM) return (struct MonsterType *) 0;
+	if (first == SPECIAL_PM) return (MonsterType *) 0;
 
 	for (last = first;
 		last < SPECIAL_PM && mons[last].mlet == class_id; last++)
@@ -1279,7 +1279,7 @@ struct MonsterType * mkclass(char class_id, int spc) {
 		num += mons[last].geno & G_FREQ;
 	    }
 
-	if(!num) return((struct MonsterType *) 0);
+	if(!num) return((MonsterType *) 0);
 
 /*	Assumption #2:	monsters of a given class_id are presented in ascending
  *			order of strength.
@@ -1301,7 +1301,7 @@ struct MonsterType * mkclass(char class_id, int spc) {
 }
 
 /* adjust strength of monsters based on u.uz and u.ulevel */
-int adj_lev(struct MonsterType *ptr) {
+int adj_lev(MonsterType *ptr) {
 	int	tmp, tmp2;
 
 	if (ptr == &mons[PM_WIZARD_OF_YENDOR]) {
@@ -1330,15 +1330,15 @@ int adj_lev(struct MonsterType *ptr) {
 #ifdef OVLB
 
 /* `mtmp' might "grow up" into a bigger version */
-struct MonsterType * grow_up(struct Monster *mtmp, struct Monster *victim) {
+MonsterType * grow_up(Monster *mtmp, Monster *victim) {
 	int oldtype, newtype, max_increase, cur_increase,
 	    lev_limit, hp_threshold;
-	struct MonsterType *ptr = mtmp->data;
+	MonsterType *ptr = mtmp->data;
 
 	/* monster died after killing enemy but before calling this function */
 	/* currently possible if killing a gas spore */
 	if (mtmp->mhp <= 0)
-	    return ((struct MonsterType *)0);
+	    return ((MonsterType *)0);
 
 	/* note:  none of the monsters with special hit point calculations
 	   have both little and big forms */
@@ -1398,7 +1398,7 @@ struct MonsterType * grow_up(struct Monster *mtmp, struct Monster *victim) {
 			nonliving(ptr) ? "expires" : "dies");
 		set_mon_data(mtmp, ptr, -1);	/* keep mvitals[] accurate */
 		mondied(mtmp);
-		return (struct MonsterType *)0;
+		return (MonsterType *)0;
 	    }
 	    set_mon_data(mtmp, ptr, 1);		/* preserve intrinsics */
 	    newsym(mtmp->mx, mtmp->my);		/* color may change */
@@ -1419,7 +1419,7 @@ struct MonsterType * grow_up(struct Monster *mtmp, struct Monster *victim) {
 #endif /* OVLB */
 #ifdef OVL1
 
-int mongets(struct Monster *mtmp, int otyp) {
+int mongets(Monster *mtmp, int otyp) {
 	Object *otmp;
 	int spe;
 
@@ -1491,7 +1491,7 @@ int golemhp(int type) {
  *	Alignment vs. yours determines monster's attitude to you.
  *	( some "animal" types are co-aligned, but also hungry )
  */
-bool peace_minded(struct MonsterType *ptr) {
+bool peace_minded(MonsterType *ptr) {
 	aligntyp mal = ptr->maligntyp, ual = u.ualign.type;
 
 	if (always_peaceful(ptr)) return TRUE;
@@ -1531,7 +1531,7 @@ bool peace_minded(struct MonsterType *ptr) {
  *	peaceful monsters
  *   it's never bad to kill a hostile monster, although it may not be good
  */
-void set_malign(struct Monster *mtmp) {
+void set_malign(Monster *mtmp) {
 	schar mal = mtmp->data->maligntyp;
 	bool coaligned;
 
@@ -1588,7 +1588,7 @@ static char syms[] = {
 };
 
 /* KAA, modified by ERS */
-void set_mimic_sym(struct Monster *mtmp) {
+void set_mimic_sym(Monster *mtmp) {
 	int typ, roomno, rt;
 	unsigned appear, ap_type;
 	int s_sym;
@@ -1708,7 +1708,7 @@ void bagotricks(Object *bag) {
 
 	if (!rn2(23)) cnt += rn1(7, 1);
 	while (cnt-- > 0) {
-	    if (makemon((struct MonsterType *)0, u.ux, u.uy, NO_MM_FLAGS))
+	    if (makemon((MonsterType *)0, u.ux, u.uy, NO_MM_FLAGS))
 		gotone = TRUE;
 	}
 	if (gotone) makeknown(BAG_OF_TRICKS);

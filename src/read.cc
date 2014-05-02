@@ -33,7 +33,7 @@ static void p_glow2(Object *,const char *);
 static void randomize(int *, int);
 static void forget_single_object(int);
 static void forget(int);
-static void maybe_tame(struct Monster *,Object *);
+static void maybe_tame(Monster *,Object *);
 
 STATIC_PTR void set_lit(int,int,genericptr_t);
 
@@ -587,7 +587,7 @@ static void forget(int howmuch) {
 }
 
 /* monster is hit by scroll of taming's effect */
-static void maybe_tame(struct Monster *mtmp, Object *sobj) {
+static void maybe_tame(Monster *mtmp, Object *sobj) {
 	if (sobj->cursed) {
 	    setmangry(mtmp);
 	} else {
@@ -809,7 +809,7 @@ int seffects(Object *sobj) {
 	case SCR_SCARE_MONSTER:
 	case SPE_CAUSE_FEAR:
 	    {	int ct = 0;
-		struct Monster *mtmp;
+		Monster *mtmp;
 
 		for(mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
 		    if (mtmp->dead()) continue;
@@ -903,7 +903,7 @@ int seffects(Object *sobj) {
 	case SPE_CREATE_MONSTER:
 	    if (create_critters(1 + ((confused || sobj->cursed) ? 12 : 0) +
 				((sobj->blessed || rn2(73)) ? 0 : rnd(4)),
-			confused ? &mons[PM_ACID_BLOB] : (struct MonsterType *)0))
+			confused ? &mons[PM_ACID_BLOB] : (MonsterType *)0))
 		known = TRUE;
 	    /* no need to flush monsters; we ask for identification only if the
 	     * monsters are not visible
@@ -942,7 +942,7 @@ int seffects(Object *sobj) {
 		    maybe_tame(u.ustuck, sobj);
 		} else {
 		    int i, j, bd = confused ? 5 : 1;
-		    struct Monster *mtmp;
+		    Monster *mtmp;
 
 		    for (i = -bd; i <= bd; i++) for(j = -bd; j <= bd; j++) {
 			if (!isok(u.ux + i, u.uy + j)) continue;
@@ -1129,7 +1129,7 @@ int seffects(Object *sobj) {
 	    	    			!IS_AIR(levl[x][y].typ) &&
 					(x != u.ux || y != u.uy)) {
 			    Object *otmp2;
-			    struct Monster *mtmp;
+			    Monster *mtmp;
 
 	    	    	    /* Make the object(s) */
 	    	    	    otmp2 = mksobj(confused ? ROCK : BOULDER,
@@ -1420,7 +1420,7 @@ static void do_class_genocide() {
 			else
 #ifdef WIZARD	/* to aid in topology testing; remove pesky monsters */
 			  if (wizard && buf[0] == '*') {
-			    struct Monster *mtmp, *mtmp2;
+			    Monster *mtmp, *mtmp2;
 
 			    gonecnt = 0;
 			    for (mtmp = fmon; mtmp; mtmp = mtmp2) {
@@ -1527,7 +1527,7 @@ void do_genocide(int how) {
 	char buf[BUFSZ];
 	int	i, killplayer = 0;
 	int mndx;
-	struct MonsterType *ptr;
+	MonsterType *ptr;
 	const char *which;
 
 	if (how & PLAYER) {
@@ -1733,8 +1733,8 @@ bool cant_create(int *mtype, bool revival) {
 bool create_particular() {
 	char buf[BUFSZ], *bufp, monclass = MAXMCLASSES;
 	int which, tries, i;
-	struct MonsterType *whichpm;
-	struct Monster *mtmp;
+	MonsterType *whichpm;
+	Monster *mtmp;
 	bool madeany = FALSE;
 	bool maketame, makepeaceful, makehostile;
 

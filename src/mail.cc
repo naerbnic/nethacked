@@ -35,7 +35,7 @@
 
 STATIC_DCL bool md_start(coord *);
 STATIC_DCL bool md_stop(coord *, coord *);
-STATIC_DCL bool md_rush(struct Monster *,int,int);
+STATIC_DCL bool md_rush(Monster *,int,int);
 STATIC_DCL void newmail(struct mail_info *);
 
 extern char *viz_rmin, *viz_rmax;	/* line-of-sight limits (vision.c) */
@@ -127,7 +127,7 @@ STATIC_OVL bool md_start(coord *startp) {
      * the hero is not going to see it anyway.  So pick a nearby position.
      */
     if (Blind && !Blind_telepat) {
-	if (!enexto(startp, u.ux, u.uy, (struct MonsterType *) 0))
+	if (!enexto(startp, u.ux, u.uy, (MonsterType *) 0))
 	    return FALSE;	/* no good posiitons */
 	return TRUE;
     }
@@ -170,7 +170,7 @@ retry:
 		    startp->x = viz_rmin[row];
 		
 		} else if (enexto(&testcc, (xchar)viz_rmin[row], row,
-						(struct MonsterType *) 0) &&
+						(MonsterType *) 0) &&
 			   !cansee(testcc.x, testcc.y) &&
 			   couldsee(testcc.x, testcc.y)) {
 		    max_distance = dd;
@@ -185,7 +185,7 @@ retry:
 		    startp->x = viz_rmax[row];
 		
 		} else if (enexto(&testcc, (xchar)viz_rmax[row], row,
-						(struct MonsterType *) 0) &&
+						(MonsterType *) 0) &&
 			   !cansee(testcc.x,testcc.y) &&
 			   couldsee(testcc.x, testcc.y)) {
 
@@ -253,8 +253,8 @@ static const char *mail_text[] = {
  * FALSE if the md gets stuck in a position where there is a monster.  Return
  * TRUE otherwise.
  */
-STATIC_OVL bool md_rush(struct Monster *md, int tx, int ty) {
-    struct Monster *mon;			/* displaced monster */
+STATIC_OVL bool md_rush(Monster *md, int tx, int ty) {
+    Monster *mon;			/* displaced monster */
     int dx, dy;		/* direction counters */
     int fx = md->mx, fy = md->my;	/* current location */
     int nfx = fx, nfy = fy,		/* new location */
@@ -346,7 +346,7 @@ STATIC_OVL bool md_rush(struct Monster *md, int tx, int ty) {
 /* Deliver a scroll of mail. */
 /*ARGSUSED*/
 STATIC_OVL void newmail(struct mail_info *info) {
-    struct Monster *md;
+    Monster *md;
     coord start, stop;
     bool message_seen = FALSE;
 

@@ -8,7 +8,7 @@
 
 #ifdef OVL0
 
-void were_change(struct Monster *mon) {
+void were_change(Monster *mon) {
 	if (!is_were(mon->data))
 	    return;
 
@@ -51,7 +51,7 @@ STATIC_OVL int counter_were(int pm) {
 	}
 }
 
-void new_were(struct Monster *mon) {
+void new_were(Monster *mon) {
 	int pm;
 
 	pm = counter_were(monsndx(mon->data));
@@ -81,14 +81,14 @@ void new_were(struct Monster *mon) {
 
 /* were-creature (even you) summons a horde */
 int were_summon(
-    struct MonsterType* ptr,
+    MonsterType* ptr,
     bool yours,
 
     /* number of visible helpers created */
     int* visible,
     char* genbuf) {
 	int i, typ, pm = monsndx(ptr);
-	struct Monster *mtmp;
+	Monster *mtmp;
 	int total = 0;
 
 	*visible = 0;

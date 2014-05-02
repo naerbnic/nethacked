@@ -15,14 +15,14 @@
 
 #ifdef OVLB
 
-STATIC_DCL bool histemple_at(struct Monster *,xchar,xchar);
-STATIC_DCL bool has_shrine(struct Monster *);
+STATIC_DCL bool histemple_at(Monster *,xchar,xchar);
+STATIC_DCL bool has_shrine(Monster *);
 
 /*
  * Move for priests and shopkeepers.  Called from shk_move() and pri_move().
  * Valid returns are  1: moved  0: didn't  -1: let m_move do it  -2: died.
  */
-int move_special(struct Monster *mtmp, bool in_his_shop, schar appr, bool uondoor, bool avoid, xchar omx, xchar omy, xchar gx, xchar gy) {
+int move_special(Monster *mtmp, bool in_his_shop, schar appr, bool uondoor, bool avoid, xchar omx, xchar omy, xchar gx, xchar gy) {
 	xchar nx,ny,nix,niy;
 	schar i;
 	schar chcnt,cnt;
@@ -120,7 +120,7 @@ char temple_occupied(char *array) {
 #endif /* OVL0 */
 #ifdef OVLB
 
-STATIC_OVL bool histemple_at(struct Monster *priest, xchar x, xchar y) {
+STATIC_OVL bool histemple_at(Monster *priest, xchar x, xchar y) {
 	return((bool)((EPRI(priest)->shroom == *in_rooms(x, y, TEMPLE)) &&
 	       on_level(&(EPRI(priest)->shrlevel), &u.uz)));
 }
@@ -128,7 +128,7 @@ STATIC_OVL bool histemple_at(struct Monster *priest, xchar x, xchar y) {
 /*
  * pri_move: return 1: moved  0: didn't  -1: let m_move do it  -2: died
  */
-int pri_move(struct Monster *priest) {
+int pri_move(Monster *priest) {
 	xchar gx,gy,omx,omy;
 	schar temple;
 	bool avoid = TRUE;
@@ -169,7 +169,7 @@ int pri_move(struct Monster *priest) {
 
 /* exclusively for mktemple() */
 void priestini(d_level *lvl, struct mkroom *sroom, int sx, int sy, bool sanctum) {
-	struct Monster *priest;
+	Monster *priest;
 	Object *otmp;
 	int cnt;
 
@@ -221,7 +221,7 @@ void priestini(d_level *lvl, struct mkroom *sroom, int sx, int sy, bool sanctum)
  *	- caller needs to inhibit Hallucination if it wants to force
  *		the true name even when under that influence
  */
-char * priestname(struct Monster *mon, char *pname) {
+char * priestname(Monster *mon, char *pname) {
 	const char *what = Hallucination ? rndmonnam() : mon->data->mname;
 
 	strcpy(pname, "the ");
@@ -259,11 +259,11 @@ char * priestname(struct Monster *mon, char *pname) {
 	return(pname);
 }
 
-bool p_coaligned(struct Monster *priest) {
+bool p_coaligned(Monster *priest) {
 	return((bool)(u.ualign.type == ((int)EPRI(priest)->shralign)));
 }
 
-STATIC_OVL bool has_shrine(struct Monster *pri) {
+STATIC_OVL bool has_shrine(Monster *pri) {
 	struct rm *lev;
 
 	if(!pri)
@@ -274,8 +274,8 @@ STATIC_OVL bool has_shrine(struct Monster *pri) {
 	return((bool)(EPRI(pri)->shralign == Amask2align(lev->altarmask & ~AM_SHRINE)));
 }
 
-struct Monster * findpriest(char roomno) {
-	struct Monster *mtmp;
+Monster * findpriest(char roomno) {
+	Monster *mtmp;
 
 	for(mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
 	    if (mtmp->dead()) continue;
@@ -283,13 +283,13 @@ struct Monster * findpriest(char roomno) {
 	       histemple_at(mtmp,mtmp->mx,mtmp->my))
 		return(mtmp);
 	}
-	return (struct Monster *)0;
+	return (Monster *)0;
 }
 
 /* called from check_special_room() when the player enters the temple room */
 void intemple(int roomno) {
-	struct Monster *priest = findpriest((char)roomno);
-	bool tended = (priest != (struct Monster *)0);
+	Monster *priest = findpriest((char)roomno);
+	bool tended = (priest != (Monster *)0);
 	bool shrined, sanctum, can_speak;
 	const char *msg1, *msg2;
 	char buf[BUFSZ];
@@ -345,7 +345,7 @@ void intemple(int roomno) {
 			body_part(SPINE)); break;
 		}
 		if(!rn2(5)) {
-		    struct Monster *mtmp;
+		    Monster *mtmp;
 
 		    if(!(mtmp = makemon(&mons[PM_GHOST],u.ux,u.uy,NO_MM_FLAGS)))
 			return;
@@ -363,7 +363,7 @@ void intemple(int roomno) {
        }
 }
 
-void priest_talk(struct Monster *priest) {
+void priest_talk(Monster *priest) {
 	bool coaligned = p_coaligned(priest);
 	bool strayed = (u.ualign.record < 0);
 
@@ -490,17 +490,17 @@ void priest_talk(struct Monster *priest) {
 	}
 }
 
-struct Monster * mk_roamer(struct MonsterType *ptr, aligntyp alignment, xchar x, xchar y, bool peaceful) {
-	struct Monster *roamer;
+Monster * mk_roamer(MonsterType *ptr, aligntyp alignment, xchar x, xchar y, bool peaceful) {
+	Monster *roamer;
 	bool coaligned = (u.ualign.type == alignment);
 
 	if (ptr != &mons[PM_ALIGNED_PRIEST] && ptr != &mons[PM_ANGEL])
-		return((struct Monster *)0);
+		return((Monster *)0);
 	
 	if (MON_AT(x, y)) (void) rloc(m_at(x, y), FALSE);	/* insurance */
 
 	if (!(roamer = makemon(ptr, x, y, NO_MM_FLAGS)))
-		return((struct Monster *)0);
+		return((Monster *)0);
 
 	EPRI(roamer)->shralign = alignment;
 	if (coaligned && !peaceful)
@@ -516,7 +516,7 @@ struct Monster * mk_roamer(struct MonsterType *ptr, aligntyp alignment, xchar x,
 	return(roamer);
 }
 
-void reset_hostility(struct Monster *roamer) {
+void reset_hostility(Monster *roamer) {
 	if(!(roamer->isminion && (roamer->data == &mons[PM_ALIGNED_PRIEST] ||
 				  roamer->data == &mons[PM_ANGEL])))
 	        return;
@@ -528,9 +528,9 @@ void reset_hostility(struct Monster *roamer) {
 	newsym(roamer->mx, roamer->my);
 }
 
-bool in_your_sanctuary(struct Monster *mon, xchar x, xchar y) {
+bool in_your_sanctuary(Monster *mon, xchar x, xchar y) {
 	char roomno;
-	struct Monster *priest;
+	Monster *priest;
 
 	if (mon) {
 	    if (is_minion(mon->data) || is_rider(mon->data)) return FALSE;
@@ -549,7 +549,7 @@ bool in_your_sanctuary(struct Monster *mon, xchar x, xchar y) {
 }
 
 /* when attacking "priest" in his temple */
-void ghod_hitsu(struct Monster *priest) {
+void ghod_hitsu(Monster *priest) {
 	int x, y, ax, ay, roomno = (int)temple_occupied(u.urooms);
 	struct mkroom *troom;
 
@@ -607,7 +607,7 @@ void ghod_hitsu(struct Monster *priest) {
 }
 
 void angry_priest() {
-	struct Monster *priest;
+	Monster *priest;
 	struct rm *lev;
 
 	if ((priest = findpriest(temple_occupied(u.urooms))) != 0) {
@@ -636,7 +636,7 @@ void angry_priest() {
  * and remove them.   This avoids big problems when restoring bones.
  */
 void clearpriests() {
-    struct Monster *mtmp, *mtmp2;
+    Monster *mtmp, *mtmp2;
 
     for(mtmp = fmon; mtmp; mtmp = mtmp2) {
 	mtmp2 = mtmp->nmon;
@@ -646,7 +646,7 @@ void clearpriests() {
 }
 
 /* munge priest-specific structure when restoring -dlc */
-void restpriest(struct Monster *mtmp, bool ghostly) {
+void restpriest(Monster *mtmp, bool ghostly) {
     if(u.uz.dlevel) {
 	if (ghostly)
 	    assign_level(&(EPRI(mtmp)->shrlevel), &u.uz);

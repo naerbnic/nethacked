@@ -475,16 +475,16 @@ typedef struct
     struct rm		locations[COLNO][ROWNO];
 #ifndef MICROPORT_BUG
     Object		*objects[COLNO][ROWNO];
-    struct Monster	*monsters[COLNO][ROWNO];
+    Monster	*monsters[COLNO][ROWNO];
 #else
     Object		*objects[1][ROWNO];
     char		*yuk1[COLNO-1][ROWNO];
-    struct Monster	*monsters[1][ROWNO];
+    Monster	*monsters[1][ROWNO];
     char		*yuk2[COLNO-1][ROWNO];
 #endif
     Object		*objlist;
     Object		*buriedobjlist;
-    struct Monster	*monlist;
+    Monster	*monlist;
     struct damage	*damagelist;
     struct levelflags	flags;
 }

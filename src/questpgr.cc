@@ -378,7 +378,7 @@ void qt_pager(int msgnum) {
 	return;
 }
 
-struct MonsterType * qt_montype() {
+MonsterType * qt_montype() {
 	int qpm;
 
 	if (rn2(5)) {

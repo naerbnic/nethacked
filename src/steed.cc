@@ -24,8 +24,8 @@ void rider_cant_reach() {
 /*** Putting the saddle on ***/
 
 /* Can this monster wear a saddle? */
-bool can_saddle(struct Monster *mtmp) {
-	struct MonsterType *ptr = mtmp->data;
+bool can_saddle(Monster *mtmp) {
+	MonsterType *ptr = mtmp->data;
 
 	return (index(steeds, ptr->mlet) && (ptr->msize >= MZ_MEDIUM) &&
 			(!humanoid(ptr) || ptr->mlet == S_CENTAUR) &&
@@ -35,8 +35,8 @@ bool can_saddle(struct Monster *mtmp) {
 
 
 int use_saddle(Object *otmp) {
-	struct Monster *mtmp;
-	struct MonsterType *ptr;
+	Monster *mtmp;
+	MonsterType *ptr;
 	int chance;
 	const char *s;
 
@@ -151,7 +151,7 @@ int use_saddle(Object *otmp) {
 /*** Riding the monster ***/
 
 /* Can we ride this monster?  Caller should also check can_saddle() */
-bool can_ride(struct Monster *mtmp) {
+bool can_ride(Monster *mtmp) {
 	return (mtmp->mtame && humanoid(youmonst.data) &&
 			!verysmall(youmonst.data) && !bigmonst(youmonst.data) &&
 			(!Underwater || is_swimmer(mtmp->data)));
@@ -176,10 +176,10 @@ int doride() {
 
 
 /* Start riding, with the given monster */
-bool mount_steed(struct Monster *mtmp, bool force) {
+bool mount_steed(Monster *mtmp, bool force) {
 	Object *otmp;
 	char buf[BUFSZ];
-	struct MonsterType *ptr;
+	MonsterType *ptr;
 
 	/* Sanity checks */
 	if (u.usteed) {
@@ -435,7 +435,7 @@ STATIC_OVL bool landing_spot(coord *spot, int reason, int forceit) {
 
 /* Stop riding the current steed */
 void dismount_steed(int reason) {
-	struct Monster *mtmp;
+	Monster *mtmp;
 	Object *otmp;
 	coord cc;
 	const char *verb = "fall";
@@ -516,7 +516,7 @@ void dismount_steed(int reason) {
 	if (!mtmp->dead()) {
 	    place_monster(mtmp, u.ux, u.uy);
 	    if (!u.uswallow && !u.ustuck && have_spot) {
-		struct MonsterType *mdat = mtmp->data;
+		MonsterType *mdat = mtmp->data;
 
 		/* The steed may drop into water/lava */
 		if (!is_flyer(mdat) && !is_floater(mdat) && !is_clinger(mdat)) {
@@ -593,7 +593,7 @@ void dismount_steed(int reason) {
 	return;
 }
 
-void place_monster(struct Monster *mon, int x, int y) {
+void place_monster(Monster *mon, int x, int y) {
     if (mon == u.usteed ||
 	    /* special case is for convoluted vault guard handling */
 	    (mon->dead() && !(mon->isgd && x == 0 && y == 0))) {

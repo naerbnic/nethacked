@@ -260,8 +260,8 @@ E struct You u;
 #include "pm.h"
 #endif
 
-E struct Monster youmonst;	/* init'd and defined in decl.c */
-E struct Monster *mydogs, *migrating_mons;
+E Monster youmonst;	/* init'd and defined in decl.c */
+E Monster *mydogs, *migrating_mons;
 
 E struct mvitals {
 	uchar	born;

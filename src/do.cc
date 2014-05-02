@@ -127,7 +127,7 @@ bool boulder_hits_pool(Object *otmp, int rx, int ry, bool pushing) {
  */
 bool flooreffects(Object *obj, int x, int y, const char *verb) {
 	struct trap *t;
-	struct Monster *mtmp;
+	Monster *mtmp;
 
 	if (obj->where != OBJ_FREE)
 	    panic("flooreffects: obj not free");
@@ -532,7 +532,7 @@ void dropy(Object *obj) {
 		if (is_animal(u.ustuck->data)) {
 		    if (could_poly || could_slime) {
 			(void) newcham(u.ustuck,
-				       could_poly ? (struct MonsterType *)0 :
+				       could_poly ? (MonsterType *)0 :
 				       &mons[PM_GREEN_SLIME],
 				       FALSE, could_slime);
 			delobj(obj);	/* corpse is digested */
@@ -541,7 +541,7 @@ void dropy(Object *obj) {
 			/* Don't leave a cockatrice corpse in a statue */
 			if (!u.uswallow) delobj(obj);
 		    } else if (could_grow) {
-			(void) grow_up(u.ustuck, (struct Monster *)0);
+			(void) grow_up(u.ustuck, (Monster *)0);
 			delobj(obj);	/* corpse is digested */
 		    } else if (could_heal) {
 			u.ustuck->mhp = u.ustuck->mhpmax;
@@ -899,7 +899,7 @@ void goto_level(d_level *newlevel, bool at_stairs, bool falling, bool portal) {
 		was_in_W_tower = In_W_tower(u.ux, u.uy, &u.uz),
 		familiar = FALSE;
 	bool is_new = FALSE;	/* made a is_new level? */
-	struct Monster *mtmp;
+	Monster *mtmp;
 	char whynot[BUFSZ];
 
 	if (dunlev(newlevel) > dunlevs_in_dungeon(newlevel))
@@ -1297,7 +1297,7 @@ void goto_level(d_level *newlevel, bool at_stairs, bool falling, bool portal) {
 }
 
 STATIC_OVL void final_level() {
-	struct Monster *mtmp;
+	Monster *mtmp;
 	Object *otmp;
 	coord mm;
 	int i;
@@ -1414,7 +1414,7 @@ void deferred_goto() {
  * corpse is gone.
  */
 bool revive_corpse(Object *corpse) {
-    struct Monster *mtmp, *mcarry;
+    Monster *mtmp, *mcarry;
     bool is_uwep, chewed;
     xchar where;
     char *cname, cname_buf[BUFSZ];
@@ -1428,7 +1428,7 @@ bool revive_corpse(Object *corpse) {
     mcarry = (where == OBJ_MINVENT) ? corpse->ocarry : 0;
 
     if (where == OBJ_CONTAINED) {
-    	struct Monster *mtmp2 = (struct Monster *)0;
+    	Monster *mtmp2 = (Monster *)0;
 	container = corpse->ocontainer;
     	mtmp2 = get_container_location(container, &container_where, (int *)0);
 	/* container_where is the outermost container's location even if nested */

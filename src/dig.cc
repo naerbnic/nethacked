@@ -51,7 +51,7 @@ STATIC_OVL void mkcavepos(xchar x, xchar y, int dist, bool waslit, bool rockit) 
     lev = &levl[x][y];
 
     if(rockit) {
-	struct Monster *mtmp;
+	Monster *mtmp;
 
 	if(IS_ROCK(lev->typ)) return;
 	if(t_at(x, y)) return; /* don't cover the portal */
@@ -145,7 +145,7 @@ bool is_digging() {
 #define BY_YOU		(&youmonst)
 #define BY_OBJECT	((Monster *)0)
 
-bool dig_check(struct Monster *madeby, bool verbose, int x, int y) {
+bool dig_check(Monster *madeby, bool verbose, int x, int y) {
 	struct trap *ttmp = t_at(x, y);
 	const char *verb = (madeby == BY_YOU && uwep && is_axe(uwep)) ? "chop" : "dig in";
 
@@ -363,7 +363,7 @@ STATIC_OVL int dig() {
 		    pay_for_damage(dmgtxt, FALSE);
 
 		if(Is_earthlevel(&u.uz) && !rn2(3)) {
-		    struct Monster *mtmp;
+		    Monster *mtmp;
 
 		    switch(rn2(2)) {
 		      case 0:
@@ -449,13 +449,13 @@ schar fillholetyp(int x, int y) {
 	return ROOM;
 }
 
-void digactualhole(int x, int y, struct Monster *madeby, int ttyp) {
+void digactualhole(int x, int y, Monster *madeby, int ttyp) {
 	Object *oldobjs, *newobjs;
 	struct trap *ttmp;
 	char surface_type[BUFSZ];
 	struct rm *lev = &levl[x][y];
 	bool shopdoor;
-	struct Monster *mtmp = m_at(x, y);	/* may be madeby */
+	Monster *mtmp = m_at(x, y);	/* may be madeby */
 	bool madeby_u = (madeby == BY_YOU);
 	bool madeby_obj = (madeby == BY_OBJECT);
 	bool at_u = (x == u.ux) && (y == u.uy);
@@ -971,7 +971,7 @@ int use_pick_axe2(Object *obj) {
  * If mtmp is assumed to be a watchman, a watchman is found if mtmp == 0
  * zap == TRUE if wand/spell of digging, FALSE otherwise (chewing)
  */
-void watch_dig(struct Monster *mtmp, xchar x, xchar y, bool zap) {
+void watch_dig(Monster *mtmp, xchar x, xchar y, bool zap) {
 	struct rm *lev = &levl[x][y];
 
 	if (in_town(x, y) &&
@@ -1016,7 +1016,7 @@ void watch_dig(struct Monster *mtmp, xchar x, xchar y, bool zap) {
 #ifdef OVL0
 
 /* Return TRUE if monster died, FALSE otherwise.  Called from m_move(). */
-bool mdig_tunnel(struct Monster *mtmp) {
+bool mdig_tunnel(Monster *mtmp) {
 	struct rm *here;
 	int pile = rnd(12);
 
@@ -1091,7 +1091,7 @@ bool mdig_tunnel(struct Monster *mtmp) {
 /* digging via wand zap or spell cast */
 void zap_dig() {
 	struct rm *room;
-	struct Monster *mtmp;
+	Monster *mtmp;
 	Object *otmp;
 	int zx, zy, digdepth;
 	bool shopdoor, shopwall, maze_dig;
@@ -1135,7 +1135,7 @@ void zap_dig() {
 		    }
 		    newsym(u.ux, u.uy);
 		} else {
-		    watch_dig((struct Monster *)0, u.ux, u.uy, TRUE);
+		    watch_dig((Monster *)0, u.ux, u.uy, TRUE);
 		    (void) dighole(FALSE);
 		}
 	    }
@@ -1163,7 +1163,7 @@ void zap_dig() {
 		    room->typ = DOOR;
 		else if (cansee(zx, zy))
 		    pline_The("door is razed!");
-		watch_dig((struct Monster *)0, zx, zy, TRUE);
+		watch_dig((Monster *)0, zx, zy, TRUE);
 		room->doormask = D_NODOOR;
 		unblock_point(zx,zy); /* vision */
 		digdepth -= 2;
@@ -1202,7 +1202,7 @@ void zap_dig() {
 			add_damage(zx, zy, 200L);
 			shopwall = TRUE;
 		    }
-		    watch_dig((struct Monster *)0, zx, zy, TRUE);
+		    watch_dig((Monster *)0, zx, zy, TRUE);
 		    if (level.flags.is_cavernous_lev && !in_town(zx, zy)) {
 			room->typ = CORR;
 		    } else {
@@ -1384,7 +1384,7 @@ void rot_corpse(genericptr_t arg, long timeout) {
 }
 
 #if 0
-void bury_monst(struct Monster *mtmp) {
+void bury_monst(Monster *mtmp) {
 #ifdef DEBUG
 	pline("bury_monst: %s", mon_nam(mtmp));
 #endif

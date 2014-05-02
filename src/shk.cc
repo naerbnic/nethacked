@@ -17,7 +17,7 @@
 
 #ifdef KOPS
 STATIC_DCL void makekops(coord *);
-STATIC_DCL void call_kops(struct Monster *,bool);
+STATIC_DCL void call_kops(Monster *,bool);
 # ifdef OVLB
 STATIC_DCL void kops_gone(bool);
 # endif /* OVLB */
@@ -30,45 +30,45 @@ extern Object *thrownobj;		/* defined in dothrow.c */
 
 STATIC_VAR long int followmsg;	/* last time of follow message */
 
-STATIC_DCL void setpaid(struct Monster *);
-STATIC_DCL long addupbill(struct Monster *);
-STATIC_DCL void pacify_shk(struct Monster *);
-STATIC_DCL struct bill_x *onbill(Object *, struct Monster *, bool);
-STATIC_DCL struct Monster *next_shkp(struct Monster *, bool);
+STATIC_DCL void setpaid(Monster *);
+STATIC_DCL long addupbill(Monster *);
+STATIC_DCL void pacify_shk(Monster *);
+STATIC_DCL struct bill_x *onbill(Object *, Monster *, bool);
+STATIC_DCL Monster *next_shkp(Monster *, bool);
 STATIC_DCL long shop_debt(struct eshk *);
 STATIC_DCL char *shk_owns(char *,Object *);
 STATIC_DCL char *mon_owns(char *,Object *);
 STATIC_DCL void clear_unpaid(Object *);
-STATIC_DCL long check_credit(long, struct Monster *);
-STATIC_DCL void pay(long, struct Monster *);
-STATIC_DCL long get_cost(Object *, struct Monster *);
-STATIC_DCL long set_cost(Object *, struct Monster *);
+STATIC_DCL long check_credit(long, Monster *);
+STATIC_DCL void pay(long, Monster *);
+STATIC_DCL long get_cost(Object *, Monster *);
+STATIC_DCL long set_cost(Object *, Monster *);
 STATIC_DCL const char *shk_embellish(Object *, long);
-STATIC_DCL long cost_per_charge(struct Monster *,Object *,bool);
-STATIC_DCL long cheapest_item(struct Monster *);
-STATIC_DCL int dopayobj(struct Monster *, struct bill_x *,
+STATIC_DCL long cost_per_charge(Monster *,Object *,bool);
+STATIC_DCL long cheapest_item(Monster *);
+STATIC_DCL int dopayobj(Monster *, struct bill_x *,
 			    Object **, int, bool);
-STATIC_DCL long stolen_container(Object *, struct Monster *, long,
+STATIC_DCL long stolen_container(Object *, Monster *, long,
 				     bool);
 STATIC_DCL long getprice(Object *,bool);
 STATIC_DCL void shk_names_obj(
-    struct Monster *,Object *,const char *,long,const char *);
+    Monster *,Object *,const char *,long,const char *);
 STATIC_DCL Object *bp_to_obj(struct bill_x *);
-STATIC_DCL bool inherits(struct Monster *,int,int);
+STATIC_DCL bool inherits(Monster *,int,int);
 STATIC_DCL void set_repo_loc(struct eshk *);
 STATIC_DCL bool angry_shk_exists();
-STATIC_DCL void rile_shk(struct Monster *);
-STATIC_DCL void rouse_shk(struct Monster *,bool);
-STATIC_DCL void remove_damage(struct Monster *, bool);
-STATIC_DCL void sub_one_frombill(Object *, struct Monster *);
+STATIC_DCL void rile_shk(Monster *);
+STATIC_DCL void rouse_shk(Monster *,bool);
+STATIC_DCL void remove_damage(Monster *, bool);
+STATIC_DCL void sub_one_frombill(Object *, Monster *);
 STATIC_DCL void add_one_tobill(Object *, bool);
 STATIC_DCL void dropped_container(
-    Object *, struct Monster *, bool);
+    Object *, Monster *, bool);
 STATIC_DCL void add_to_billobjs(Object *);
 STATIC_DCL void bill_box_content(Object *, bool, bool,
-				     struct Monster *);
+				     Monster *);
 #ifdef OVL1
-static bool rob_shop(struct Monster *);
+static bool rob_shop(Monster *);
 #endif
 
 #ifdef OVLB
@@ -92,7 +92,7 @@ static bool rob_shop(struct Monster *);
     Returns the amount actually paid, so we can know
     if the monster kept the change.
  */
-long money2mon(struct Monster *mon, long amount) {
+long money2mon(Monster *mon, long amount) {
     Object *ygold = findgold(invent);
 
     if (amount <= 0) {
@@ -120,7 +120,7 @@ long money2mon(struct Monster *mon, long amount) {
     Used when the shopkeeper pay for items, and when
     the priest gives you money for an ale.
  */
-void money2u(struct Monster *mon, long amount) {
+void money2u(Monster *mon, long amount) {
     Object *mongold = findgold(mon->minvent);
 
     if (amount <= 0) {
@@ -147,7 +147,7 @@ void money2u(struct Monster *mon, long amount) {
 
 #endif /* GOLDOBJ */
 
-STATIC_OVL struct Monster * next_shkp(struct Monster *shkp, bool withbill) {
+STATIC_OVL Monster * next_shkp(Monster *shkp, bool withbill) {
 	for (; shkp; shkp = shkp->nmon) {
 	    if (shkp->dead()) continue;
 	    if (shkp->isshk && (ESHK(shkp)->billct || !withbill)) break;
@@ -164,12 +164,12 @@ STATIC_OVL struct Monster * next_shkp(struct Monster *shkp, bool withbill) {
 }
 
 /* called in do_name.c */
-char * shkname(struct Monster *mtmp) {
+char * shkname(Monster *mtmp) {
 	return(ESHK(mtmp)->shknam);
 }
 
 /* called in mon.c */
-void shkgone(struct Monster *mtmp) {
+void shkgone(Monster *mtmp) {
 	struct eshk *eshk = ESHK(mtmp);
 	struct mkroom *sroom = &rooms[eshk->shoproom - ROOMOFFSET];
 	Object *otmp;
@@ -180,7 +180,7 @@ void shkgone(struct Monster *mtmp) {
 	/*       even when the shk dies on a different level.] */
 	if (on_level(&eshk->shoplevel, &u.uz)) {
 	    remove_damage(mtmp, TRUE);
-	    sroom->resident = (struct Monster *)0;
+	    sroom->resident = (Monster *)0;
 	    if (!search_special(ANY_SHOP))
 		level.flags.has_shop = 0;
 
@@ -201,13 +201,13 @@ void shkgone(struct Monster *mtmp) {
 	}
 }
 
-void set_residency(struct Monster *shkp, bool zero_out) {
+void set_residency(Monster *shkp, bool zero_out) {
 	if (on_level(&(ESHK(shkp)->shoplevel), &u.uz))
 	    rooms[ESHK(shkp)->shoproom - ROOMOFFSET].resident =
-		(zero_out)? (struct Monster *)0 : shkp;
+		(zero_out)? (Monster *)0 : shkp;
 }
 
-void replshk(struct Monster *mtmp, struct Monster *mtmp2) {
+void replshk(Monster *mtmp, Monster *mtmp2) {
 	rooms[ESHK(mtmp2)->shoproom - ROOMOFFSET].resident = mtmp2;
 	if (inhishop(mtmp) && *u.ushops == ESHK(mtmp)->shoproom) {
 		ESHK(mtmp2)->bill_p = &(ESHK(mtmp2)->bill[0]);
@@ -215,7 +215,7 @@ void replshk(struct Monster *mtmp, struct Monster *mtmp2) {
 }
 
 /* do shopkeeper specific structure munging -dlc */
-void restshk(struct Monster *shkp, bool ghostly) {
+void restshk(Monster *shkp, bool ghostly) {
     if (u.uz.dlevel) {
 	struct eshk *eshkp = ESHK(shkp);
 
@@ -246,9 +246,9 @@ STATIC_OVL void clear_unpaid(Object *list) {
 #ifdef OVLB
 
 /* either you paid or left the shop or the shopkeeper died */
-STATIC_OVL void setpaid(struct Monster *shkp) {
+STATIC_OVL void setpaid(Monster *shkp) {
 	Object *obj;
-	struct Monster *mtmp;
+	Monster *mtmp;
 
 	/* FIXME: object handling should be limited to
 	   items which are on this particular shk's bill */
@@ -274,7 +274,7 @@ STATIC_OVL void setpaid(struct Monster *shkp) {
 	}
 }
 
-STATIC_OVL long addupbill(struct Monster *shkp) {
+STATIC_OVL long addupbill(Monster *shkp) {
 	int ct = ESHK(shkp)->billct;
 	struct bill_x *bp = ESHK(shkp)->bill_p;
 	long total = 0L;
@@ -290,7 +290,7 @@ STATIC_OVL long addupbill(struct Monster *shkp) {
 #ifdef OVL1
 
 #ifdef KOPS
-STATIC_OVL void call_kops(struct Monster *shkp, bool nearshop) {
+STATIC_OVL void call_kops(Monster *shkp, bool nearshop) {
 	/* Keystone Kops srt@ucla */
 	bool nokops;
 
@@ -350,7 +350,7 @@ char inside_shop(xchar x, xchar y) {
 }
 
 void u_left_shop(char *leavestring, bool newlev) {
-	struct Monster *shkp;
+	Monster *shkp;
 	struct eshk *eshkp;
 
 	/*
@@ -395,7 +395,7 @@ void u_left_shop(char *leavestring, bool newlev) {
 
 /* robbery from outside the shop via telekinesis or grappling hook */
 void remote_burglary(xchar x, xchar y) {
-	struct Monster *shkp;
+	Monster *shkp;
 	struct eshk *eshkp;
 
 	shkp = shop_keeper(*in_rooms(x, y, SHOPBASE));
@@ -418,7 +418,7 @@ void remote_burglary(xchar x, xchar y) {
 
 /* shop merchandise has been taken; pay for it with any credit available;  
    return false if the debt is fully covered by credit, true otherwise */
-static bool rob_shop(struct Monster *shkp) {
+static bool rob_shop(Monster *shkp) {
 	struct eshk *eshkp;
 	long total;
 
@@ -450,7 +450,7 @@ static bool rob_shop(struct Monster *shkp) {
 void u_entered_shop(char *enterstring) {
 
 	int rt;
-	struct Monster *shkp;
+	Monster *shkp;
 	struct eshk *eshkp;
 	static const char no_shk[] = "This shop appears to be deserted.";
 	static char empty_shops[5];
@@ -568,7 +568,7 @@ void u_entered_shop(char *enterstring) {
    quoted by the shopkeeper and also that they both belong to the same shk.
  */
 bool same_price(Object *obj1, Object *obj2) {
-	struct Monster *shkp1, *shkp2;
+	Monster *shkp1, *shkp2;
 	struct bill_x *bp1 = 0, *bp2 = 0;
 	bool are_mergable = FALSE;
 
@@ -608,7 +608,7 @@ STATIC_OVL long shop_debt(struct eshk *eshkp) {
 
 /* called in response to the `$' command */
 void shopper_financial_report() {
-	struct Monster *shkp, *this_shkp = shop_keeper(inside_shop(u.ux, u.uy));
+	Monster *shkp, *this_shkp = shop_keeper(inside_shop(u.ux, u.uy));
 	struct eshk *eshkp;
 	long amt;
 	int pass;
@@ -643,14 +643,14 @@ void shopper_financial_report() {
 #endif /* OVL1 */
 #ifdef OVLB
 
-int inhishop(struct Monster *mtmp) {
+int inhishop(Monster *mtmp) {
 	return(index(in_rooms(mtmp->mx, mtmp->my, SHOPBASE),
 		     ESHK(mtmp)->shoproom) &&
 		on_level(&(ESHK(mtmp)->shoplevel), &u.uz));
 }
 
-struct Monster * shop_keeper(char rmno) {
-	struct Monster *shkp = rmno >= ROOMOFFSET ?
+Monster * shop_keeper(char rmno) {
+	Monster *shkp = rmno >= ROOMOFFSET ?
 				rooms[rmno - ROOMOFFSET].resident : 0;
 
 	if (shkp) {
@@ -664,7 +664,7 @@ struct Monster * shop_keeper(char rmno) {
 }
 
 bool tended_shop(struct mkroom *sroom) {
-	struct Monster *mtmp = sroom->resident;
+	Monster *mtmp = sroom->resident;
 
 	if (!mtmp)
 		return(FALSE);
@@ -672,7 +672,7 @@ bool tended_shop(struct mkroom *sroom) {
 		return((bool)(inhishop(mtmp)));
 }
 
-STATIC_OVL struct bill_x * onbill(Object *obj, struct Monster *shkp, bool silent) {
+STATIC_OVL struct bill_x * onbill(Object *obj, Monster *shkp, bool silent) {
 	if (shkp) {
 		struct bill_x *bp = ESHK(shkp)->bill_p;
 		int ct = ESHK(shkp)->billct;
@@ -701,7 +701,7 @@ void delete_contents(Object *obj) {
 void obfree(Object *obj, Object *merge) {
 	struct bill_x *bp;
 	struct bill_x *bpm;
-	struct Monster *shkp;
+	Monster *shkp;
 
 	if (obj->otyp == LEASH && obj->leashmon) o_unleash(obj);
 	if (obj->oclass == FOOD_CLASS) food_disappears(obj);
@@ -756,7 +756,7 @@ void obfree(Object *obj, Object *merge) {
 #endif /* OVLB */
 #ifdef OVL3
 
-STATIC_OVL long check_credit(long tmp, struct Monster *shkp) {
+STATIC_OVL long check_credit(long tmp, Monster *shkp) {
 	long credit = ESHK(shkp)->credit;
 
 	if(credit == 0L) return(tmp);
@@ -772,7 +772,7 @@ STATIC_OVL long check_credit(long tmp, struct Monster *shkp) {
 	return(tmp);
 }
 
-STATIC_OVL void pay(long tmp, struct Monster *shkp) {
+STATIC_OVL void pay(long tmp, Monster *shkp) {
 	long robbed = ESHK(shkp)->robbed;
 	long balance = ((tmp <= 0L) ? tmp : check_credit(tmp, shkp));
 
@@ -794,7 +794,7 @@ STATIC_OVL void pay(long tmp, struct Monster *shkp) {
 #ifdef OVLB
 
 /* return shkp to home position */
-void home_shk(struct Monster *shkp, bool killkops) {
+void home_shk(Monster *shkp, bool killkops) {
 	xchar x = ESHK(shkp)->shk.x, y = ESHK(shkp)->shk.y;
 
 	(void) mnearto(shkp, x, y, TRUE);
@@ -811,7 +811,7 @@ void home_shk(struct Monster *shkp, bool killkops) {
 }
 
 STATIC_OVL bool angry_shk_exists() {
-	struct Monster *shkp;
+	Monster *shkp;
 
 	for (shkp = next_shkp(fmon, FALSE);
 		shkp; shkp = next_shkp(shkp->nmon, FALSE))
@@ -820,7 +820,7 @@ STATIC_OVL bool angry_shk_exists() {
 }
 
 /* remove previously applied surcharge from all billed items */
-STATIC_OVL void pacify_shk(struct Monster *shkp) {
+STATIC_OVL void pacify_shk(Monster *shkp) {
 	NOTANGRY(shkp) = TRUE;	/* make peaceful */
 	if (ESHK(shkp)->surcharge) {
 		struct bill_x *bp = ESHK(shkp)->bill_p;
@@ -836,7 +836,7 @@ STATIC_OVL void pacify_shk(struct Monster *shkp) {
 }
 
 /* add aggravation surcharge to all billed items */
-STATIC_OVL void rile_shk(struct Monster *shkp) {
+STATIC_OVL void rile_shk(Monster *shkp) {
 	NOTANGRY(shkp) = FALSE;	/* make angry */
 	if (!ESHK(shkp)->surcharge) {
 		struct bill_x *bp = ESHK(shkp)->bill_p;
@@ -852,7 +852,7 @@ STATIC_OVL void rile_shk(struct Monster *shkp) {
 }
 
 /* wakeup and/or unparalyze shopkeeper */
-STATIC_OVL void rouse_shk(struct Monster *shkp, bool verbosely) {
+STATIC_OVL void rouse_shk(Monster *shkp, bool verbosely) {
 	if (!shkp->mcanmove || shkp->msleeping) {
 	    /* greed induced recovery... */
 	    if (verbosely && canspotmon(shkp))
@@ -864,7 +864,7 @@ STATIC_OVL void rouse_shk(struct Monster *shkp, bool verbosely) {
 	}
 }
 
-void make_happy_shk(struct Monster *shkp, bool silentkops) {
+void make_happy_shk(Monster *shkp, bool silentkops) {
 	bool wasmad = ANGRY(shkp);
 	struct eshk *eshkp = ESHK(shkp);
 
@@ -905,7 +905,7 @@ void make_happy_shk(struct Monster *shkp, bool silentkops) {
 	}
 }
 
-void hot_pursuit(struct Monster *shkp) {
+void hot_pursuit(Monster *shkp) {
 	if(!shkp->isshk) return;
 
 	rile_shk(shkp);
@@ -918,7 +918,7 @@ void hot_pursuit(struct Monster *shkp) {
  * damages something inside the shop.  these conditions
  * must be checked by the calling function.
  */
-void make_angry_shk(struct Monster *shkp, xchar ox, xchar oy) {
+void make_angry_shk(Monster *shkp, xchar ox, xchar oy) {
 	xchar sx, sy;
 	struct eshk *eshkp = ESHK(shkp);
 
@@ -956,7 +956,7 @@ STATIC_VAR const char not_enough_money[];
 #ifdef OVL3
 
 /* delivers the cheapest item on the list */
-STATIC_OVL long cheapest_item(struct Monster *shkp) {
+STATIC_OVL long cheapest_item(Monster *shkp) {
 	int ct = ESHK(shkp)->billct;
 	struct bill_x *bp = ESHK(shkp)->bill_p;
 	long gmin = (bp->price * bp->bquan);
@@ -973,8 +973,8 @@ STATIC_OVL long cheapest_item(struct Monster *shkp) {
 
 int dopay() {
 	struct eshk *eshkp;
-	struct Monster *shkp;
-	struct Monster *nxtm, *resident;
+	Monster *shkp;
+	Monster *nxtm, *resident;
 	long ltmp;
 #ifdef GOLDOBJ
 	long umoney;
@@ -1028,7 +1028,7 @@ int dopay() {
 		    return(0);
 		}
 	} else {
-		struct Monster *mtmp;
+		Monster *mtmp;
 		coord cc;
 		int cx, cy;
 
@@ -1363,7 +1363,7 @@ proceed:
 /*	  0 if not enough money     */
 /*	 -1 if skip this object     */
 /*	 -2 if no money/credit left */
-STATIC_OVL int dopayobj(struct Monster *shkp, struct bill_x *bp, Object **obj_p, int which, bool itemize) {
+STATIC_OVL int dopayobj(Monster *shkp, struct bill_x *bp, Object **obj_p, int which, bool itemize) {
 	Object *obj = *obj_p;
 	long ltmp, quan, save_quan;
 #ifdef GOLDOBJ
@@ -1466,7 +1466,7 @@ static coord repo_location;	/* repossession context */
 
 /* routine called after dying (or quitting) */
 bool paybill(int croaked) {
-	struct Monster *mtmp, *mtmp2, *resident= (struct Monster *)0;
+	Monster *mtmp, *mtmp2, *resident= (Monster *)0;
 	bool taken = FALSE;
 	int numsk = 0;
 
@@ -1501,7 +1501,7 @@ bool paybill(int croaked) {
 	return(taken);
 }
 
-STATIC_OVL bool inherits(struct Monster *shkp, int numsk, int croaked) {
+STATIC_OVL bool inherits(Monster *shkp, int numsk, int croaked) {
 	long loss = 0L;
 #ifdef GOLDOBJ
 	long umoney;
@@ -1671,7 +1671,7 @@ STATIC_OVL Object * bp_to_obj(struct bill_x *bp) {
  */
 Object * find_oid(unsigned id) {
 	Object *obj;
-	struct Monster *mon, *mmtmp[3];
+	Monster *mon, *mmtmp[3];
 	int i;
 
 	/* first check various obj lists directly */
@@ -1695,7 +1695,7 @@ Object * find_oid(unsigned id) {
 #ifdef OVL3
 
 /* calculate the value that the shk will charge for [one of] an object */
-STATIC_OVL long get_cost(Object *obj, struct Monster *shkp) {
+STATIC_OVL long get_cost(Object *obj, Monster *shkp) {
 	long tmp = getprice(obj, FALSE);
 
 	if (!tmp) tmp = 5L;
@@ -1775,7 +1775,7 @@ STATIC_OVL long get_cost(Object *obj, struct Monster *shkp) {
  * of the "top" container is added in the calling functions.
  * a different price quoted for selling as vs. buying.
  */
-long contained_cost(Object *obj, struct Monster *shkp, long price, bool usell, bool unpaid_only) {
+long contained_cost(Object *obj, Monster *shkp, long price, bool usell, bool unpaid_only) {
 	Object *otmp;
 
 	/* the price of contained objects */
@@ -1815,7 +1815,7 @@ long contained_gold(Object *obj) {
 	return(value);
 }
 
-STATIC_OVL void dropped_container(Object *obj, struct Monster *shkp, bool sale) {
+STATIC_OVL void dropped_container(Object *obj, Monster *shkp, bool sale) {
 	Object *otmp;
 
 	/* the "top" container is treated in the calling fn */
@@ -1848,7 +1848,7 @@ void picked_container(Object *obj) {
 #ifdef OVL3
 
 /* calculate how much the shk will pay when buying [all of] an object */
-STATIC_OVL long set_cost(Object *obj, struct Monster *shkp) {
+STATIC_OVL long set_cost(Object *obj, Monster *shkp) {
 	long tmp = getprice(obj, TRUE) * obj->quan;
 
 #ifdef TOURIST
@@ -1884,7 +1884,7 @@ STATIC_OVL long set_cost(Object *obj, struct Monster *shkp) {
 /* called from doinv(invent.c) for inventory of unpaid objects */
 long unpaid_cost(Object *unp_obj) {
 	struct bill_x *bp = (struct bill_x *)0;
-	struct Monster *shkp;
+	Monster *shkp;
 
 	for(shkp = next_shkp(fmon, TRUE); shkp;
 					shkp = next_shkp(shkp->nmon, TRUE))
@@ -1897,7 +1897,7 @@ long unpaid_cost(Object *unp_obj) {
 }
 
 STATIC_OVL void add_one_tobill(Object *obj, bool dummy) {
-	struct Monster *shkp;
+	Monster *shkp;
 	struct bill_x *bp;
 	int bct;
 	char roomno = *u.ushops;
@@ -1947,7 +1947,7 @@ STATIC_OVL void add_to_billobjs(Object *obj) {
 }
 
 /* recursive billing of objects within containers. */
-STATIC_OVL void bill_box_content(Object *obj, bool ininv, bool dummy, struct Monster *shkp) {
+STATIC_OVL void bill_box_content(Object *obj, bool ininv, bool dummy, Monster *shkp) {
 	Object *otmp;
 
 	for (otmp = obj->cobj; otmp; otmp = otmp->nobj) {
@@ -1963,7 +1963,7 @@ STATIC_OVL void bill_box_content(Object *obj, bool ininv, bool dummy, struct Mon
 }
 
 /* shopkeeper tells you what you bought or sold, sometimes partly IDing it */
-STATIC_OVL void shk_names_obj(struct Monster *shkp, Object *obj, const char *fmt, long amt, const char *arg) {
+STATIC_OVL void shk_names_obj(Monster *shkp, Object *obj, const char *fmt, long amt, const char *arg) {
 	char *obj_name, fmtbuf[BUFSZ];
 	bool was_unknown = !obj->dknown;
 
@@ -1992,7 +1992,7 @@ STATIC_OVL void shk_names_obj(struct Monster *shkp, Object *obj, const char *fmt
 }
 
 void addtobill(Object *obj, bool ininv, bool dummy, bool silent) {
-	struct Monster *shkp;
+	Monster *shkp;
 	char roomno = *u.ushops;
 	long ltmp = 0L, cltmp = 0L, gltmp = 0L;
 	bool container = Has_contents(obj);
@@ -2099,7 +2099,7 @@ void splitbill(Object *obj, Object *otmp) {
 	/* otmp has been split off from obj */
 	struct bill_x *bp;
 	long tmp;
-	struct Monster *shkp = shop_keeper(*u.ushops);
+	Monster *shkp = shop_keeper(*u.ushops);
 
 	if(!shkp || !inhishop(shkp)) {
 		impossible("splitbill: no resident shopkeeper??");
@@ -2130,7 +2130,7 @@ void splitbill(Object *obj, Object *otmp) {
 	}
 }
 
-STATIC_OVL void sub_one_frombill(Object *obj, struct Monster *shkp) {
+STATIC_OVL void sub_one_frombill(Object *obj, Monster *shkp) {
 	struct bill_x *bp;
 
 	if((bp = onbill(obj, shkp, FALSE)) != 0) {
@@ -2169,7 +2169,7 @@ STATIC_OVL void sub_one_frombill(Object *obj, struct Monster *shkp) {
 }
 
 /* recursive check of unpaid objects within nested containers. */
-void subfrombill(Object *obj, struct Monster *shkp) {
+void subfrombill(Object *obj, Monster *shkp) {
 	Object *otmp;
 
 	sub_one_frombill(obj, shkp);
@@ -2188,7 +2188,7 @@ void subfrombill(Object *obj, struct Monster *shkp) {
 #endif /*OVLB*/
 #ifdef OVL3
 
-STATIC_OVL long stolen_container(Object *obj, struct Monster *shkp, long price, bool ininv) {
+STATIC_OVL long stolen_container(Object *obj, Monster *shkp, long price, bool ininv) {
 	Object *otmp;
 
 	if(ininv && obj->unpaid)
@@ -2226,7 +2226,7 @@ STATIC_OVL long stolen_container(Object *obj, struct Monster *shkp, long price, 
 
 long stolen_value(Object *obj, xchar x, xchar y, bool peaceful, bool silent) {
 	long value = 0L, gvalue = 0L;
-	struct Monster *shkp = shop_keeper(*in_rooms(x, y, SHOPBASE));
+	Monster *shkp = shop_keeper(*in_rooms(x, y, SHOPBASE));
 
 	if (!shkp || !inhishop(shkp))
 	    return (0L);
@@ -2314,7 +2314,7 @@ void sellobj_state(int deliberate) {
 }
 
 void sellobj(Object *obj, xchar x, xchar y) {
-	struct Monster *shkp;
+	Monster *shkp;
 	struct eshk *eshkp;
 	long ltmp = 0L, cltmp = 0L, gltmp = 0L, offer;
 	bool saleitem, cgold = FALSE, container = Has_contents(obj);
@@ -2531,7 +2531,7 @@ int doinvbill(int mode) {
 #ifdef	__SASC
 	void sasc_bug(Object *, unsigned);
 #endif
-	struct Monster *shkp;
+	Monster *shkp;
 	struct eshk *eshkp;
 	struct bill_x *bp, *end_bp;
 	Object *obj;
@@ -2646,8 +2646,8 @@ STATIC_OVL long getprice(Object *obj, bool shk_buying) {
 }
 
 /* shk catches thrown pick-axe */
-struct Monster * shkcatch(Object *obj, xchar x, xchar y) {
-	struct Monster *shkp;
+Monster * shkcatch(Object *obj, xchar x, xchar y) {
+	Monster *shkp;
 
 	if (!(shkp = shop_keeper(inside_shop(x, y))) ||
 	    !inhishop(shkp)) return(0);
@@ -2673,7 +2673,7 @@ struct Monster * shkcatch(Object *obj, xchar x, xchar y) {
 		(void) mpickobj(shkp, obj);
 		return shkp;
 	}
-	return (struct Monster *)0;
+	return (Monster *)0;
 }
 
 void add_damage(xchar x, xchar y, long cost) {
@@ -2681,7 +2681,7 @@ void add_damage(xchar x, xchar y, long cost) {
 	char *shops;
 
 	if (IS_DOOR(levl[x][y].typ)) {
-	    struct Monster *mtmp;
+	    Monster *mtmp;
 
 	    /* Don't schedule for repair unless it's a real shop entrance */
 	    for (shops = in_rooms(x, y, SHOPBASE); *shops; shops++)
@@ -2720,7 +2720,7 @@ void add_damage(xchar x, xchar y, long cost) {
  * telling that.
  */
 STATIC_OVL
-void remove_damage(struct Monster *shkp, bool croaked) {
+void remove_damage(Monster *shkp, bool croaked) {
 	struct damage *tmp_dam, *tmp2_dam;
 	bool did_repair = FALSE, saw_door = FALSE;
 	bool saw_floor = FALSE, stop_picking = FALSE;
@@ -2811,10 +2811,10 @@ void remove_damage(struct Monster *shkp, bool croaked) {
  * 0: repair postponed, 1: silent repair (no messages), 2: normal repair
  * 3: untrap
  */
-int repair_damage(struct Monster *shkp, struct damage *tmp_dam, bool catchup) {
+int repair_damage(Monster *shkp, struct damage *tmp_dam, bool catchup) {
 	xchar x, y, i;
 	xchar litter[9];
-	struct Monster *mtmp;
+	Monster *mtmp;
 	Object *otmp;
 	struct trap *ttmp;
 
@@ -2938,7 +2938,7 @@ int repair_damage(struct Monster *shkp, struct damage *tmp_dam, bool catchup) {
 /*
  * shk_move: return 1: moved  0: didn't  -1: let m_move do it  -2: died
  */
-int shk_move(struct Monster *shkp) {
+int shk_move(Monster *shkp) {
 	xchar gx,gy,omx,omy;
 	int udist;
 	schar appr;
@@ -3046,7 +3046,7 @@ int shk_move(struct Monster *shkp) {
 }
 
 /* called after shopkeeper moves, in case the move causes re-entry into shop */
-void after_shk_move(struct Monster *shkp) {
+void after_shk_move(Monster *shkp) {
 	struct eshk *eshkp = ESHK(shkp);
 
 	if (eshkp->bill_p == (struct bill_x *) -1000 && inhishop(shkp)) {
@@ -3060,13 +3060,13 @@ void after_shk_move(struct Monster *shkp) {
 #ifdef OVLB
 
 /* for use in levl_follower (mondata.c) */
-bool is_fshk(struct Monster *mtmp) {
+bool is_fshk(Monster *mtmp) {
 	return((bool)(mtmp->isshk && ESHK(mtmp)->following));
 }
 
 /* You are digging in the shop. */
 void shopdig(int fall) {
-    struct Monster *shkp = shop_keeper(*u.ushops);
+    Monster *shkp = shop_keeper(*u.ushops);
     int lang;
     const char *grabs = "grabs";
 
@@ -3175,7 +3175,7 @@ STATIC_OVL void makekops(coord *mm) {
 #endif	/* KOPS */
 
 void pay_for_damage(const char *dmgstr, bool cant_mollify) {
-	struct Monster *shkp = (struct Monster *)0;
+	Monster *shkp = (Monster *)0;
 	char shops_affected[5];
 	bool uinshp = (*u.ushops != '\0');
 	char qbuf[80];
@@ -3199,7 +3199,7 @@ void pay_for_damage(const char *dmgstr, bool cant_mollify) {
 	    strcpy(shops_affected,
 		   in_rooms(tmp_dam->place.x, tmp_dam->place.y, SHOPBASE));
 	    for (shp = shops_affected; *shp; shp++) {
-		struct Monster *tmp_shk;
+		Monster *tmp_shk;
 		unsigned int shk_distance;
 
 		if (!(tmp_shk = shop_keeper(*shp)))
@@ -3328,7 +3328,7 @@ getcad:
 #ifdef OVL0
 /* called in dokick.c when we kick an object that might be in a store */
 bool costly_spot(xchar x, xchar y) {
-	struct Monster *shkp;
+	Monster *shkp;
 
 	if (!level.flags.has_shop) return FALSE;
 	shkp = shop_keeper(*in_rooms(x, y, SHOPBASE));
@@ -3345,7 +3345,7 @@ bool costly_spot(xchar x, xchar y) {
    contains shop goods and shopkeeper is willing & able to speak */
 Object * shop_object(xchar x, xchar y) {
     Object *otmp;
-    struct Monster *shkp;
+    Monster *shkp;
 
     if(!(shkp = shop_keeper(*in_rooms(x, y, SHOPBASE))) || !inhishop(shkp))
 	return nullptr;
@@ -3366,7 +3366,7 @@ void price_quote(Object *first_obj) {
     long cost;
     int cnt = 0;
     winid tmpwin;
-    struct Monster *shkp = shop_keeper(inside_shop(u.ux, u.uy));
+    Monster *shkp = shop_keeper(inside_shop(u.ux, u.uy));
 
     tmpwin = create_nhwindow(NHW_MENU);
     putstr(tmpwin, 0, "Fine goods for sale:");
@@ -3374,7 +3374,7 @@ void price_quote(Object *first_obj) {
     for (otmp = first_obj; otmp; otmp = otmp->nexthere) {
 	if (otmp->oclass == COIN_CLASS) continue;
 	cost = (otmp->no_charge || otmp == uball || otmp == uchain) ? 0L :
-		get_cost(otmp, (struct Monster *)0);
+		get_cost(otmp, (Monster *)0);
 	if (Has_contents(otmp))
 	    cost += contained_cost(otmp, shkp, 0L, FALSE, FALSE);
 	if (!cost) {
@@ -3393,7 +3393,7 @@ void price_quote(Object *first_obj) {
 	    pline("%s!", buf);	/* buf still contains the string */
 	} else {
 	    /* print cost in slightly different format, so can't reuse buf */
-	    cost = get_cost(first_obj, (struct Monster *)0);
+	    cost = get_cost(first_obj, (Monster *)0);
 	    if (Has_contents(first_obj))
 		cost += contained_cost(first_obj, shkp, 0L, FALSE, FALSE);
 	    pline("%s, price %ld %s%s%s", doname(first_obj),
@@ -3447,7 +3447,7 @@ const char *Izchak_speaks[]={
     "%s comments about the Valley of the Dead as being a gateway."
 };
 
-void shk_chat(struct Monster *shkp) {
+void shk_chat(Monster *shkp) {
 	struct eshk *eshk;
 #ifdef GOLDOBJ
 	long shkmoney;
@@ -3513,7 +3513,7 @@ void shk_chat(struct Monster *shkp) {
 #ifdef KOPS
 STATIC_OVL void kops_gone(bool silent) {
 	int cnt = 0;
-	struct Monster *mtmp, *mtmp2;
+	Monster *mtmp, *mtmp2;
 
 	for (mtmp = fmon; mtmp; mtmp = mtmp2) {
 	    mtmp2 = mtmp->nmon;
@@ -3531,7 +3531,7 @@ STATIC_OVL void kops_gone(bool silent) {
 #endif /*OVLB*/
 #ifdef OVL3
 
-STATIC_OVL long cost_per_charge(struct Monster *shkp, Object *otmp, bool altusage) {
+STATIC_OVL long cost_per_charge(Monster *shkp, Object *otmp, bool altusage) {
 	long tmp = 0L;
 
 	if(!shkp || !inhishop(shkp)) return(0L); /* insurance */
@@ -3587,7 +3587,7 @@ STATIC_OVL long cost_per_charge(struct Monster *shkp, Object *otmp, bool altusag
  * when an object is completely used.
  */
 void check_unpaid_usage(Object *otmp, bool altusage) {
-	struct Monster *shkp;
+	Monster *shkp;
 	const char *fmt, *arg1, *arg2;
 	long tmp;
 
@@ -3625,7 +3625,7 @@ void check_unpaid(Object *otmp) {
 
 void costly_gold(xchar x, xchar y, long amount) {
 	long delta;
-	struct Monster *shkp;
+	Monster *shkp;
 	struct eshk *eshkp;
 
 	if(!costly_spot(x, y)) return;
@@ -3658,7 +3658,7 @@ void costly_gold(xchar x, xchar y, long amount) {
 /* x,y should always be a door */
 bool block_door(xchar x, xchar y) {
 	int roomno = *in_rooms(x, y, SHOPBASE);
-	struct Monster *shkp;
+	Monster *shkp;
 
 	if(roomno < 0 || !IS_SHOP(roomno)) return(FALSE);
 	if(!IS_DOOR(levl[x][y].typ)) return(FALSE);
@@ -3688,7 +3688,7 @@ bool block_door(xchar x, xchar y) {
 bool block_entry(xchar x, xchar y) {
 	xchar sx, sy;
 	int roomno;
-	struct Monster *shkp;
+	Monster *shkp;
 
 	if(!(IS_DOOR(levl[u.ux][u.uy].typ) &&
 		levl[u.ux][u.uy].doormask == D_BROKEN)) return(FALSE);
@@ -3735,7 +3735,7 @@ char * Shk_Your(char *buf, Object *obj) {
 }
 
 STATIC_OVL char * shk_owns(char *buf, Object *obj) {
-	struct Monster *shkp;
+	Monster *shkp;
 	xchar x, y;
 
 	if (get_obj_location(obj, &x, &y, 0) &&

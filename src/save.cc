@@ -19,7 +19,7 @@ STATIC_DCL void bputc(int);
 STATIC_DCL void savelevchn(int,int);
 STATIC_DCL void savedamage(int,int);
 STATIC_DCL void saveobjchn(int,Object *,int);
-STATIC_DCL void savemonchn(int,struct Monster *,int);
+STATIC_DCL void savemonchn(int,Monster *,int);
 STATIC_DCL void savetrapchn(int,struct trap *,int);
 STATIC_DCL void savegamestate(int,int);
 #ifdef GCC_WARN
@@ -152,9 +152,9 @@ int dosave0() {
 	/* these pointers are no longer valid, and at least u.usteed
 	 * may mislead place_monster() on other levels
 	 */
-	u.ustuck = (struct Monster *)0;
+	u.ustuck = (Monster *)0;
 #ifdef STEED
-	u.usteed = (struct Monster *)0;
+	u.usteed = (Monster *)0;
 #endif
 
 	for(ltmp = (xchar)1; ltmp <= maxledgerno(); ltmp++) {
@@ -671,11 +671,11 @@ STATIC_OVL void saveobjchn(int fd, Object *otmp, int mode) {
 	    bwrite(fd, (genericptr_t) &minusone, sizeof(int));
 }
 
-STATIC_OVL void savemonchn(int fd, struct Monster *mtmp, int mode) {
-	struct Monster *mtmp2;
+STATIC_OVL void savemonchn(int fd, Monster *mtmp, int mode) {
+	Monster *mtmp2;
 	unsigned int xl;
 	int minusone = -1;
-	struct MonsterType *monbegin = &mons[0];
+	MonsterType *monbegin = &mons[0];
 
 	if (perform_bwrite(mode))
 	    bwrite(fd, (genericptr_t) &monbegin, sizeof(monbegin));
@@ -685,7 +685,7 @@ STATIC_OVL void savemonchn(int fd, struct Monster *mtmp, int mode) {
 	    if (perform_bwrite(mode)) {
 		xl = mtmp->mxlth + mtmp->mnamelth;
 		bwrite(fd, (genericptr_t) &xl, sizeof(int));
-		bwrite(fd, (genericptr_t) mtmp, xl + sizeof(struct Monster));
+		bwrite(fd, (genericptr_t) mtmp, xl + sizeof(Monster));
 	    }
 	    if (mtmp->minvent)
 		saveobjchn(fd,mtmp->minvent,mode);

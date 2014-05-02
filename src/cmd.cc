@@ -137,8 +137,8 @@ STATIC_PTR int wiz_migrate_mons();
 #endif
 STATIC_DCL void count_obj(Object *, long *, long *, bool, bool);
 STATIC_DCL void obj_chain(winid, const char *, Object *, long *, long *);
-STATIC_DCL void mon_invent_chain(winid, const char *, struct Monster *, long *, long *);
-STATIC_DCL void mon_chain(winid, const char *, struct Monster *, long *, long *);
+STATIC_DCL void mon_invent_chain(winid, const char *, Monster *, long *, long *);
+STATIC_DCL void mon_chain(winid, const char *, Monster *, long *, long *);
 STATIC_DCL void contained(winid, const char *, long *, long *);
 STATIC_PTR int wiz_show_stats();
 #  ifdef PORT_DEBUG
@@ -439,7 +439,7 @@ STATIC_PTR int domonability() {
 	else if (is_mind_flayer(youmonst.data)) return domindblast();
 	else if (u.umonnum == PM_GREMLIN) {
 	    if(IS_FOUNTAIN(levl[u.ux][u.uy].typ)) {
-		if (split_mon(&youmonst, (struct Monster *)0))
+		if (split_mon(&youmonst, (Monster *)0))
 		    dryup(u.ux, u.uy, TRUE);
 	    } else There("is no fountain here.");
 	} else if (is_unicorn(youmonst.data)) {
@@ -1960,10 +1960,10 @@ STATIC_OVL void obj_chain(winid win, const char *src, Object *chain, long *total
 	putstr(win, 0, buf);
 }
 
-STATIC_OVL void mon_invent_chain(winid win, const char *src, struct Monster *chain, long *total_count, long *total_size) {
+STATIC_OVL void mon_invent_chain(winid win, const char *src, Monster *chain, long *total_count, long *total_size) {
 	char buf[BUFSZ];
 	long count = 0, size = 0;
-	struct Monster *mon;
+	Monster *mon;
 
 	for (mon = chain; mon; mon = mon->nmon)
 	    count_obj(mon->minvent, &count, &size, TRUE, FALSE);
@@ -1976,7 +1976,7 @@ STATIC_OVL void mon_invent_chain(winid win, const char *src, struct Monster *cha
 STATIC_OVL void contained(winid win, const char *src, long *total_count, long *total_size) {
 	char buf[BUFSZ];
 	long count = 0, size = 0;
-	struct Monster *mon;
+	Monster *mon;
 
 	count_obj(invent, &count, &size, FALSE, TRUE);
 	count_obj(fobj, &count, &size, FALSE, TRUE);
@@ -1994,14 +1994,14 @@ STATIC_OVL void contained(winid win, const char *src, long *total_count, long *t
 	putstr(win, 0, buf);
 }
 
-STATIC_OVL void mon_chain(winid win, const char *src, struct Monster *chain, long *total_count, long *total_size) {
+STATIC_OVL void mon_chain(winid win, const char *src, Monster *chain, long *total_count, long *total_size) {
 	char buf[BUFSZ];
 	long count, size;
-	struct Monster *mon;
+	Monster *mon;
 
 	for (count = size = 0, mon = chain; mon; mon = mon->nmon) {
 	    count++;
-	    size += sizeof(struct Monster) + mon->mxlth + mon->mnamelth;
+	    size += sizeof(Monster) + mon->mxlth + mon->mnamelth;
 	}
 	*total_count += count;
 	*total_size += size;
@@ -2046,7 +2046,7 @@ static int wiz_show_stats() {
 
 	putstr(win, 0, "");
 	putstr(win, 0, "");
-	sprintf(buf, "Monsters, size %d", (int) sizeof(struct Monster));
+	sprintf(buf, "Monsters, size %d", (int) sizeof(Monster));
 	putstr(win, 0, buf);
 	putstr(win, 0, "");
 
@@ -2077,8 +2077,8 @@ void sanity_check() {
 static int wiz_migrate_mons() {
 	int mcount = 0;
 	char inbuf[BUFSZ];
-	struct MonsterType *ptr;
-	struct Monster *mtmp;
+	MonsterType *ptr;
+	Monster *mtmp;
 	d_level tolevel;
 	getlin("How many random monsters to migrate? [0]", inbuf);
 	if (*inbuf == '\033') return 0;

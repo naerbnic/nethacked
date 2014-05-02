@@ -379,7 +379,7 @@ STATIC_OVL void fixup_special() {
 	croom = &rooms[0]; /* only one room on the medusa level */
 	for (tryct = rnd(4); tryct; tryct--) {
 	    x = somex(croom); y = somey(croom);
-	    if (goodpos(x, y, (struct Monster *)0, 0)) {
+	    if (goodpos(x, y, (Monster *)0, 0)) {
 		otmp = mk_tt_object(STATUE, x, y);
 		while (otmp && (poly_when_stoned(&mons[otmp->corpsenm]) ||
 				pm_resistance(&mons[otmp->corpsenm],MR_STONE))) {
@@ -392,7 +392,7 @@ STATIC_OVL void fixup_special() {
 	if (rn2(2))
 	    otmp = mk_tt_object(STATUE, somex(croom), somey(croom));
 	else /* Medusa statues don't contain books */
-	    otmp = mkcorpstat(STATUE, (struct Monster *)0, (struct MonsterType *)0,
+	    otmp = mkcorpstat(STATUE, (Monster *)0, (MonsterType *)0,
 			      somex(croom), somey(croom), FALSE);
 	if (otmp) {
 	    while (pm_resistance(&mons[otmp->corpsenm],MR_STONE)
@@ -428,7 +428,7 @@ STATIC_OVL void fixup_special() {
 
 	create_secret_door(croom, W_ANY);
     } else if(on_level(&u.uz, &orcus_level)) {
-	   struct Monster *mtmp, *mtmp2;
+	   Monster *mtmp, *mtmp2;
 
 	   /* it's a ghost town, get rid of shopkeepers */
 	    for(mtmp = fmon; mtmp; mtmp = mtmp2) {
@@ -601,7 +601,7 @@ void makemaz(const char *s) {
 	}
 	for(x = rn1(5,7); x; x--) {
 		mazexy(&mm);
-		(void) makemon((struct MonsterType *) 0, mm.x, mm.y, NO_MM_FLAGS);
+		(void) makemon((MonsterType *) 0, mm.x, mm.y, NO_MM_FLAGS);
 	}
 	for(x = rn1(6,7); x; x--) {
 		mazexy(&mm);
@@ -873,7 +873,7 @@ void movebubbles() {
 			    b->cons = cons;
 			}
 			if (MON_AT(x,y)) {
-			    struct Monster *mon = m_at(x,y);
+			    Monster *mon = m_at(x,y);
 			    struct container *cons = (struct container *)
 				alloc(sizeof(struct container));
 
@@ -1228,7 +1228,7 @@ STATIC_OVL void mv_bubble(struct bubble *b, int dx, int dy, bool ini) {
 		}
 
 		case CONS_MON: {
-		    struct Monster *mon = (struct Monster *) cons->list;
+		    Monster *mon = (Monster *) cons->list;
 		    (void) mnearto(mon, cons->x, cons->y, TRUE);
 		    break;
 		}

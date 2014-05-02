@@ -893,7 +893,7 @@ int dosummon() {
 }
 
 int dogaze() {
-	struct Monster *mtmp;
+	Monster *mtmp;
 	int looked = 0;
 	char qbuf[QBUFSZ];
 	int i;
@@ -1035,7 +1035,7 @@ int dohide() {
 }
 
 int domindblast() {
-	struct Monster *mtmp, *nmon;
+	Monster *mtmp, *nmon;
 
 	if (u.uen < 10) {
 	    You("concentrate but lack the energy to maintain doing so.");
@@ -1088,7 +1088,7 @@ void skinback(bool silently) {
 #endif /* OVLB */
 #ifdef OVL1
 
-const char * mbodypart(struct Monster *mon, int part) {
+const char * mbodypart(Monster *mon, int part) {
 	static const char
 	*humanoid_parts[] = { "arm", "eye", "face", "finger",
 		"fingertip", "foot", "hand", "handed", "head", "leg",
@@ -1142,7 +1142,7 @@ const char * mbodypart(struct Monster *mon, int part) {
 		S_ORC, S_GIANT,		/* quest nemeses */
 		'\0'		/* string terminator; assert( S_xxx != 0 ); */
 	};
-	struct MonsterType *mptr = mon->data;
+	MonsterType *mptr = mon->data;
 
 	if (part == HAND || part == HANDED) {	/* some special cases */
 	    if (mptr->mlet == S_DOG || mptr->mlet == S_FELINE ||

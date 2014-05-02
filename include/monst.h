@@ -6,6 +6,11 @@
 #define MONST_H
 
 #include "alloc.h"
+#include "permonst.h"
+
+// Forward declarations
+struct Object;
+
 
 /* The weapon_check flag is used two ways:
  * 1) When calling mon_wield_item, is 2-6 depending on what is desired.
@@ -38,8 +43,8 @@
 #include "align.h"
 
 struct Monster {
-	struct Monster *nmon;
-	struct MonsterType *data;
+	Monster *nmon;
+	MonsterType *data;
 	unsigned long m_id;
 	short mnum;		/* permanent monster index number */
 	short movement;		/* movement points (derived from permonst definition and added effects */

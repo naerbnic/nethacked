@@ -16,7 +16,7 @@ static const char *gate_str;
 
 extern bool notonhead;	/* for long worms */
 
-STATIC_DCL void kickdmg(struct Monster *, bool);
+STATIC_DCL void kickdmg(Monster *, bool);
 STATIC_DCL void kick_monster(xchar, xchar);
 STATIC_DCL int kick_object(xchar, xchar);
 STATIC_DCL char *kickstr(char *);
@@ -27,7 +27,7 @@ static Object *kickobj;
 
 static const char kick_passes_thru[] = "kick passes harmlessly through";
 
-STATIC_OVL void kickdmg(struct Monster *mon, bool clumsy) {
+STATIC_OVL void kickdmg(Monster *mon, bool clumsy) {
 	int mdx, mdy;
 	int dmg = ( ACURRSTR + ACURR(A_DEX) + ACURR(A_CON) )/ 15;
 	int kick_skill = P_NONE;
@@ -114,7 +114,7 @@ STATIC_OVL void kickdmg(struct Monster *mon, bool clumsy) {
 
 STATIC_OVL void kick_monster(xchar x, xchar y) {
 	bool clumsy = FALSE;
-	struct Monster *mon = m_at(x, y);
+	Monster *mon = m_at(x, y);
 	int i, j;
 
 	bhitpos.x = x;
@@ -227,7 +227,7 @@ doit:
  *  Return TRUE if caught (the gold taken care of), FALSE otherwise.
  *  The gold object is *not* attached to the fobj chain!
  */
-bool ghitm(struct Monster *mtmp, Object *gold) {
+bool ghitm(Monster *mtmp, Object *gold) {
 	bool msg_given = FALSE;
 
 	if(!likes_gold(mtmp->data) && !mtmp->isshk && !mtmp->ispriest
@@ -330,7 +330,7 @@ bool ghitm(struct Monster *mtmp, Object *gold) {
 /* container is kicked, dropped, thrown or otherwise impacted by player.
  * Assumes container is on floor.  Checks contents for possible damage. */
 void container_impact_dmg(Object *obj) {
-	struct Monster *shkp;
+	Monster *shkp;
 	Object *otmp, *otmp2;
 	long loss = 0L;
 	bool costly, insider;
@@ -386,7 +386,7 @@ void container_impact_dmg(Object *obj) {
 
 STATIC_OVL int kick_object(xchar x, xchar y) {
 	int range;
-	struct Monster *mon, *shkp;
+	Monster *mon, *shkp;
 	struct trap *trap;
 	char bhitroom;
 	bool costly, isgold, slide = FALSE;
@@ -603,7 +603,7 @@ STATIC_OVL char * kickstr(char *buf) {
 int dokick() {
 	int x, y;
 	int avrg_attrib;
-	struct Monster *mtmp;
+	Monster *mtmp;
 	bool no_kick = FALSE;
 	char buf[BUFSZ];
 
@@ -715,7 +715,7 @@ int dokick() {
 	/* objects, non-doors, doors.		 */
 
 	if(MON_AT(x, y)) {
-		struct MonsterType *mdat;
+		MonsterType *mdat;
 
 		mtmp = m_at(x, y);
 		mdat = mtmp->data;
@@ -1125,7 +1125,7 @@ STATIC_OVL void drop_to(coord *cc, schar loc) {
 void impact_drop(Object *missile, xchar x, xchar y, xchar dlev) {
 	schar toloc;
 	Object *obj, *obj2;
-	struct Monster *shkp;
+	Monster *shkp;
 	long oct, dct, price, debit, robbed;
 	bool angry, costly, isrock;
 	coord cc;
@@ -1147,7 +1147,7 @@ void impact_drop(Object *missile, xchar x, xchar y, xchar dlev) {
 	costly = costly_spot(x, y);
 	price = debit = robbed = 0L;
 	angry = FALSE;
-	shkp = (struct Monster *) 0;
+	shkp = (Monster *) 0;
 	/* if 'costly', we must keep a record of ESHK(shkp) before
 	 * it undergoes changes through the calls to stolen_value.
 	 * the angry bit must be reset, if needed, in this fn, since

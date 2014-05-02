@@ -14,17 +14,17 @@
 
 #ifdef OVLB
 
-static int domonnoise(struct Monster *);
+static int domonnoise(Monster *);
 static int dochat();
 
 #endif /* OVLB */
 
 #ifdef OVL0
 
-static int mon_in_room(struct Monster *,int);
+static int mon_in_room(Monster *,int);
 
 /* this easily could be a macro, but it might overtax dumb compilers */
-static int mon_in_room(struct Monster *mon, int rmtyp) {
+static int mon_in_room(Monster *mon, int rmtyp) {
     int rno = levl[mon->mx][mon->my].roomno;
 
     return rooms[rno - ROOMOFFSET].rtype == rmtyp;
@@ -33,7 +33,7 @@ static int mon_in_room(struct Monster *mon, int rmtyp) {
 void dosounds() {
     struct mkroom *sroom;
     int hallu, vx, vy;
-    struct Monster *mtmp;
+    Monster *mtmp;
 
     if (!flags.soundok || u.uswallow || Underwater) return;
 
@@ -252,7 +252,7 @@ static const char * const h_sounds[] = {
     "ululate", "pop", "jingle", "sniffle", "tinkle", "eep"
 };
 
-const char * growl_sound(struct Monster *mtmp) {
+const char * growl_sound(Monster *mtmp) {
 	const char *ret;
 
 	switch (mtmp->data->msound) {
@@ -292,7 +292,7 @@ const char * growl_sound(struct Monster *mtmp) {
 }
 
 /* the sounds of a seriously abused pet, including player attacking it */
-void growl(struct Monster *mtmp) {
+void growl(Monster *mtmp) {
     const char *growl_verb = 0;
 
     if (mtmp->msleeping || !mtmp->mcanmove || !mtmp->data->msound)
@@ -311,7 +311,7 @@ void growl(struct Monster *mtmp) {
 }
 
 /* the sounds of mistreated pets */
-void yelp(struct Monster *mtmp) {
+void yelp(Monster *mtmp) {
     const char *yelp_verb = 0;
 
     if (mtmp->msleeping || !mtmp->mcanmove || !mtmp->data->msound)
@@ -349,7 +349,7 @@ void yelp(struct Monster *mtmp) {
 }
 
 /* the sounds of distressed pets */
-void whimper(struct Monster *mtmp) {
+void whimper(Monster *mtmp) {
     const char *whimper_verb = 0;
 
     if (mtmp->msleeping || !mtmp->mcanmove || !mtmp->data->msound)
@@ -378,7 +378,7 @@ void whimper(struct Monster *mtmp) {
 }
 
 /* pet makes "I'm hungry" noises */
-void beg(struct Monster *mtmp) {
+void beg(Monster *mtmp) {
     if (mtmp->msleeping || !mtmp->mcanmove ||
 	    !(carnivorous(mtmp->data) || herbivorous(mtmp->data)))
 	return;
@@ -393,10 +393,10 @@ void beg(struct Monster *mtmp) {
     }
 }
 
-static int domonnoise(struct Monster *mtmp) {
+static int domonnoise(Monster *mtmp) {
     const char *pline_msg = 0,	/* Monnam(mtmp) will be prepended */
 			*verbl_msg = 0;	/* verbalize() */
-    struct MonsterType *ptr = mtmp->data;
+    MonsterType *ptr = mtmp->data;
     char verbuf[BUFSZ];
 
     /* presumably nearness and sleep checks have already been made */
@@ -799,7 +799,7 @@ int dotalk() {
 }
 
 static int dochat() {
-    struct Monster *mtmp;
+    Monster *mtmp;
     int tx,ty;
     Object *otmp;
 

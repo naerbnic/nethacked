@@ -260,7 +260,7 @@ void outoracle(bool special, bool delphi) {
 	}
 }
 
-int doconsult(struct Monster *oracl) {
+int doconsult(Monster *oracl) {
 #ifdef GOLDOBJ
         long umoney = money_cnt(invent);
 #endif

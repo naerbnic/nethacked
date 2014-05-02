@@ -156,7 +156,7 @@ void vision_init() {
  */
 int does_block(int x, int y, struct rm *lev) {
     Object   *obj;
-    struct Monster *mon;
+    Monster *mon;
 
     /* Features that block . . */
     if (IS_ROCK(lev->typ) || lev->typ == TREE || (IS_DOOR(lev->typ) &&

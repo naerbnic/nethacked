@@ -345,9 +345,9 @@ struct You {
 	long	ucleansed;	/* to record moves when player was cleansed */
 	long	usleep;		/* sleeping; monstermove you last started */
 	int uinvault;
-	struct Monster *ustuck;
+	Monster *ustuck;
 #ifdef STEED
-	struct Monster *usteed;
+	Monster *usteed;
 	long ugallop;
 	int urideturns;
 #endif

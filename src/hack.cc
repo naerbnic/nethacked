@@ -15,7 +15,7 @@ STATIC_DCL int still_chewing(xchar,xchar);
 STATIC_DCL void dosinkfall();
 #endif
 STATIC_DCL bool findtravelpath(bool);
-STATIC_DCL bool monstinroom(struct MonsterType *,int);
+STATIC_DCL bool monstinroom(MonsterType *,int);
 
 STATIC_DCL void move_update(bool);
 
@@ -25,7 +25,7 @@ STATIC_DCL void move_update(bool);
 
 bool revive_nasty(int x, int y, const char *msg) {
     Object *otmp, *otmp2;
-    struct Monster *mtmp;
+    Monster *mtmp;
     coord cc;
     bool revived = FALSE;
 
@@ -59,7 +59,7 @@ STATIC_OVL int moverock() {
     xchar rx, ry, sx, sy;
     Object *otmp;
     struct trap *ttmp;
-    struct Monster *mtmp;
+    Monster *mtmp;
 
     sx = u.ux + u.dx,  sy = u.uy + u.dy;	/* boulder starting position */
     while ((otmp = sobj_at(BOULDER, sx, sy)) != 0) {
@@ -333,7 +333,7 @@ STATIC_OVL int still_chewing(xchar x, xchar y) {
 	    (boulder || IS_TREE(lev->typ)) ? "on a" : "a hole in the",
 	    boulder ? "boulder" :
 	    IS_TREE(lev->typ) ? "tree" : IS_ROCK(lev->typ) ? "rock" : "door");
-	watch_dig((struct Monster *)0, x, y, FALSE);
+	watch_dig((Monster *)0, x, y, FALSE);
 	return 1;
     } else if ((digging.effort += (30 + u.udaminc)) <= 100)  {
 	if (flags.verbose)
@@ -343,7 +343,7 @@ STATIC_OVL int still_chewing(xchar x, xchar y) {
 		IS_TREE(lev->typ) ? "tree" :
 		IS_ROCK(lev->typ) ? "rock" : "door");
 	digging.chew = TRUE;
-	watch_dig((struct Monster *)0, x, y, FALSE);
+	watch_dig((Monster *)0, x, y, FALSE);
 	return 1;
     }
 
@@ -501,7 +501,7 @@ bool may_passwall(xchar x, xchar y) {
 #endif /* OVLB */
 #ifdef OVL1
 
-bool bad_rock(struct MonsterType *mdat, xchar x, xchar y) {
+bool bad_rock(MonsterType *mdat, xchar x, xchar y) {
 	return((bool) ((In_sokoban(&u.uz) && sobj_at(BOULDER,x,y)) ||
 	       (IS_ROCK(levl[x][y].typ)
 		    && (!tunnels(mdat) || needspick(mdat) || !may_dig(x,y))
@@ -828,7 +828,7 @@ found:
 }
 
 void domove() {
-	struct Monster *mtmp;
+	Monster *mtmp;
 	struct rm *tmpr;
 	xchar x,y;
 	struct trap *trap;
@@ -1419,7 +1419,7 @@ void invocation_message() {
 #ifdef OVL2
 
 void spoteffects(bool pick) {
-	struct Monster *mtmp;
+	Monster *mtmp;
 
 	if(u.uinwater) {
 		int was_underwater;
@@ -1526,8 +1526,8 @@ stillinwater:;
 	}
 }
 
-STATIC_OVL bool monstinroom(struct MonsterType *mdat, int roomno) {
-	struct Monster *mtmp;
+STATIC_OVL bool monstinroom(MonsterType *mdat, int roomno) {
+	Monster *mtmp;
 
 	for(mtmp = fmon; mtmp; mtmp = mtmp->nmon)
 		if(!mtmp->dead() && mtmp->data == mdat &&
@@ -1662,7 +1662,7 @@ STATIC_OVL void move_update(bool newlev) {
 }
 
 void check_special_room(bool newlev) {
-	struct Monster *mtmp;
+	Monster *mtmp;
 	char *ptr;
 
 	move_update(newlev);
@@ -1727,7 +1727,7 @@ void check_special_room(bool newlev) {
 		case DELPHI:
 		    if(monstinroom(&mons[PM_ORACLE], roomno))
 			verbalize("%s, %s, welcome to Delphi!",
-					Hello((struct Monster *) 0), plname);
+					Hello((Monster *) 0), plname);
 		    break;
 		case TEMPLE:
 		    intemple(roomno + ROOMOFFSET);
@@ -1858,7 +1858,7 @@ int dopickup() {
 void lookaround() {
     int x, y, i, x0 = 0, y0 = 0, m0 = 1, i0 = 9;
     int corrct = 0, noturn = 0;
-    struct Monster *mtmp;
+    Monster *mtmp;
     struct trap *trap;
 
     /* Grid bugs stop if trying to move diagonal, even if blind.  Maybe */
@@ -1980,7 +1980,7 @@ stop:
 /* react only to monsters that might hit us */
 int monster_nearby() {
 	int x,y;
-	struct Monster *mtmp;
+	Monster *mtmp;
 
 	/* Also see the similar check in dochugw() in monmove.c */
 	for(x = u.ux-1; x <= u.ux+1; x++)

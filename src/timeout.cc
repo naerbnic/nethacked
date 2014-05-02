@@ -395,7 +395,7 @@ void kill_egg(Object *egg) {
 /* timer callback routine: hatch the given egg */
 void hatch_egg(genericptr_t arg, long timeout) {
 	Object *egg;
-	struct Monster *mon, *mon2;
+	Monster *mon, *mon2;
 	coord cc;
 	xchar x, y;
 	bool yours, silent, knows_egg = FALSE;
@@ -406,7 +406,7 @@ void hatch_egg(genericptr_t arg, long timeout) {
 	/* sterilized while waiting */
 	if (egg->corpsenm == NON_PM) return;
 
-	mon = mon2 = (struct Monster *)0;
+	mon = mon2 = (Monster *)0;
 	mnum = big_to_little(egg->corpsenm);
 	/* The identity of one's father is learned, not innate */
 	yours = (egg->spe || (!flags.female && carried(egg) && !rn2(2)));
@@ -1236,7 +1236,7 @@ STATIC_DCL void insert_timer(TimerElement *);
 STATIC_DCL TimerElement *remove_timer(TimerElement **, short,
 								genericptr_t);
 STATIC_DCL void write_timer(int, TimerElement *);
-STATIC_DCL bool mon_is_local(struct Monster *);
+STATIC_DCL bool mon_is_local(Monster *);
 STATIC_DCL bool timer_is_local(TimerElement *);
 STATIC_DCL int maybe_write_timer(int, int, bool);
 
@@ -1540,7 +1540,7 @@ STATIC_OVL void write_timer(int fd, TimerElement *timer) {
 	    else {
 		/* replace monster pointer with id */
 		arg_save = timer->arg;
-		timer->arg = (genericptr_t)((struct Monster *)timer->arg)->m_id;
+		timer->arg = (genericptr_t)((Monster *)timer->arg)->m_id;
 		timer->needs_fixup = 1;
 		bwrite(fd, (genericptr_t)timer, sizeof(TimerElement));
 		timer->arg = arg_save;
@@ -1577,8 +1577,8 @@ bool obj_is_local(Object *obj) {
  * Return TRUE if the given monster will stay on the level when the
  * level is saved.
  */
-STATIC_OVL bool mon_is_local(struct Monster *mon) {
-    struct Monster *curr;
+STATIC_OVL bool mon_is_local(Monster *mon) {
+    Monster *curr;
 
     for (curr = migrating_mons; curr; curr = curr->nmon)
 	if (curr == mon) return FALSE;
@@ -1598,7 +1598,7 @@ STATIC_OVL bool timer_is_local(TimerElement *timer) {
 	case TIMER_LEVEL:	return TRUE;
 	case TIMER_GLOBAL:	return FALSE;
 	case TIMER_OBJECT:	return obj_is_local((Object *)timer->arg);
-	case TIMER_MONSTER:	return mon_is_local((struct Monster *)timer->arg);
+	case TIMER_MONSTER:	return mon_is_local((Monster *)timer->arg);
     }
     panic("timer_is_local");
     return FALSE;

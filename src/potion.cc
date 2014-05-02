@@ -261,7 +261,7 @@ bool make_hallucinated(long xtime, bool talk, long mask) {
 }
 
 STATIC_OVL void ghost_from_bottle() {
-	struct Monster *mtmp = makemon(&mons[PM_GHOST], u.ux, u.uy, NO_MM_FLAGS);
+	Monster *mtmp = makemon(&mons[PM_GHOST], u.ux, u.uy, NO_MM_FLAGS);
 
 	if (!mtmp) {
 		pline("This bottle turns out to be empty.");
@@ -895,7 +895,7 @@ const char * bottlename() {
 	return bottlenames[rn2(SIZE(bottlenames))];
 }
 
-void potionhit(struct Monster *mon, Object *obj, bool your_fault) {
+void potionhit(Monster *mon, Object *obj, bool your_fault) {
 	const char *botlnam = bottlename();
 	bool isyou = (mon == &youmonst);
 	int distance;
@@ -1047,7 +1047,7 @@ void potionhit(struct Monster *mon, Object *obj, bool your_fault) {
 		    }
 		} else if(mon->data == &mons[PM_GREMLIN]) {
 		    angermon = FALSE;
-		    (void)split_mon(mon, (struct Monster *)0);
+		    (void)split_mon(mon, (Monster *)0);
 		} else if(mon->data == &mons[PM_IRON_GOLEM]) {
 		    if (canseemon(mon))
 			pline("%s rusts.", Monnam(mon));
@@ -1099,7 +1099,7 @@ void potionhit(struct Monster *mon, Object *obj, bool your_fault) {
 		   !objects[obj->otyp].oc_uname && cansee(mon->mx,mon->my))
 		docall(obj);
 	if(*u.ushops && obj->unpaid) {
-	        struct Monster *shkp =
+	        Monster *shkp =
 			shop_keeper(*in_rooms(u.ux, u.uy, SHOPBASE));
 
 		if(!shkp)
@@ -1217,7 +1217,7 @@ void potionbreathe(Object *obj) {
 		break;
 	case POT_WATER:
 		if(u.umonnum == PM_GREMLIN) {
-		    (void)split_mon(&youmonst, (struct Monster *)0);
+		    (void)split_mon(&youmonst, (Monster *)0);
 		} else if (u.ulycn >= LOW_PM) {
 		    /* vapor from [un]holy water will trigger
 		       transformation but won't cure lycanthropy */
@@ -1868,7 +1868,7 @@ poof:
 
 
 void djinni_from_bottle(Object *obj) {
-	struct Monster *mtmp;
+	Monster *mtmp;
 	int chance;
 
 	if(!(mtmp = makemon(&mons[PM_DJINNI], u.ux, u.uy, NO_MM_FLAGS))){
@@ -1912,14 +1912,14 @@ void djinni_from_bottle(Object *obj) {
 
 /* clone a gremlin or mold (2nd arg non-null implies heat as the trigger);
    hit points are cut in half (odd HP stays with original) */
-struct Monster *
+Monster *
 split_mon(
     /* monster being split */
-    struct Monster* mon,
+    Monster* mon,
 
     /* optional attacker whose heat triggered it */
-    struct Monster* mtmp) {
-	struct Monster *mtmp2;
+    Monster* mtmp) {
+	Monster *mtmp2;
 	char reason[BUFSZ];
 
 	reason[0] = '\0';

@@ -131,8 +131,8 @@ static int check_control(char *);
 static char *without_control(char *);
 static bool d_filter(char *);
 static bool h_filter(char *);
-static bool ranged_attk(struct MonsterType*);
-static int mstrength(struct MonsterType *);
+static bool ranged_attk(MonsterType*);
+static int mstrength(MonsterType *);
 static void build_savebones_compat_string();
 
 static bool qt_comment(char *);
@@ -432,7 +432,7 @@ static void make_version() {
 	 */
 	version.struct_sizes = (((unsigned long)sizeof (struct flag)  << 24) |
 				((unsigned long)sizeof (Object)   << 17) |
-				((unsigned long)sizeof (struct Monster) << 10) |
+				((unsigned long)sizeof (Monster) << 10) |
 				((unsigned long)sizeof (struct You)));
 	return;
 }
@@ -1128,7 +1128,7 @@ recheck:
 }
 
 /* returns TRUE if monster can attack at range */
-static bool ranged_attk(struct MonsterType *ptr) {
+static bool ranged_attk(MonsterType *ptr) {
 	int	i, j;
 	int atk_mask = (1<<AT_BREA) | (1<<AT_SPIT) | (1<<AT_GAZE);
 
@@ -1144,7 +1144,7 @@ static bool ranged_attk(struct MonsterType *ptr) {
  * an approximation of monster strength.  It uses a similar method of
  * determination as "experience()" to arrive at the strength.
  */
-static int mstrength(struct MonsterType *ptr)
+static int mstrength(MonsterType *ptr)
 {
 	int	i, tmp2, n, tmp = ptr->mlevel;
 
@@ -1198,7 +1198,7 @@ static int mstrength(struct MonsterType *ptr)
 }
 
 void do_monstr() {
-    struct MonsterType *ptr;
+    MonsterType *ptr;
     int i, j;
 
     /*

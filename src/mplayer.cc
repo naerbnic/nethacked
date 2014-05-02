@@ -7,8 +7,8 @@
 #include "hack.h"
 
 STATIC_DCL const char *dev_name();
-STATIC_DCL void get_mplname(struct Monster *, char *);
-STATIC_DCL void mk_mplayer_armor(struct Monster *, short);
+STATIC_DCL void get_mplname(Monster *, char *);
+STATIC_DCL void mk_mplayer_armor(Monster *, short);
 
 /* These are the names of those who
  * contributed to the development of NetHack 3.2/3.3/3.4.
@@ -42,7 +42,7 @@ static const char *developers[] = {
 /* return a randomly chosen developer name */
 STATIC_OVL const char * dev_name() {
 	int i, m = 0, n = SIZE(developers);
-	struct Monster *mtmp;
+	Monster *mtmp;
 	bool match;
 
 	do {
@@ -63,7 +63,7 @@ STATIC_OVL const char * dev_name() {
 	return(developers[i]);
 }
 
-STATIC_OVL void get_mplname(struct Monster *mtmp, char *nam) {
+STATIC_OVL void get_mplname(Monster *mtmp, char *nam) {
 	bool fmlkind = is_female(mtmp->data);
 	const char *devnam;
 
@@ -84,7 +84,7 @@ STATIC_OVL void get_mplname(struct Monster *mtmp, char *nam) {
 			    (bool)mtmp->female));
 }
 
-STATIC_OVL void mk_mplayer_armor(struct Monster *mon, short typ) {
+STATIC_OVL void mk_mplayer_armor(Monster *mon, short typ) {
 	Object *obj;
 
 	if (typ == STRANGE_OBJECT) return;
@@ -100,12 +100,12 @@ STATIC_OVL void mk_mplayer_armor(struct Monster *mon, short typ) {
 	(void) mpickobj(mon, obj);
 }
 
-struct Monster * mk_mplayer(struct MonsterType *ptr, xchar x, xchar y, bool special) {
-	struct Monster *mtmp;
+Monster * mk_mplayer(MonsterType *ptr, xchar x, xchar y, bool special) {
+	Monster *mtmp;
 	char nam[PL_NSIZ];
 
 	if(!is_mplayer(ptr))
-		return((struct Monster *)0);
+		return((Monster *)0);
 
 	if(MON_AT(x, y))
 		(void) rloc(m_at(x, y), FALSE); /* insurance */
@@ -275,7 +275,7 @@ struct Monster * mk_mplayer(struct MonsterType *ptr, xchar x, xchar y, bool spec
  */
 void create_mplayers(int num, bool special) {
 	int pm, x, y;
-	struct Monster fakemon;
+	Monster fakemon;
 
 	while(num) {
 		int tryct = 0;
@@ -298,7 +298,7 @@ void create_mplayers(int num, bool special) {
 	}
 }
 
-void mplayer_talk(struct Monster *mtmp) {
+void mplayer_talk(Monster *mtmp) {
 	static const char *same_class_msg[3] = {
 		"I can't win, and neither will you!",
 		"You don't deserve to win!",

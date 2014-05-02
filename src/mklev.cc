@@ -356,7 +356,7 @@ STATIC_OVL void dosdoor(xchar x, xchar y, struct mkroom *aroom, int type) {
 		levl[x][y].doormask = (shdoor ? D_ISOPEN : D_NODOOR);
 #endif
 	    if(levl[x][y].doormask & D_TRAPPED) {
-		struct Monster *mtmp;
+		Monster *mtmp;
 
 		if (level_difficulty() >= 9 && !rn2(5) &&
 		   !((mvitals[PM_SMALL_MIMIC].mvflags & G_GONE) &&
@@ -495,7 +495,7 @@ STATIC_OVL void clear_level_structures() {
 		*lev++ = zerorm;
 #ifdef MICROPORT_BUG
 		level.objects[x][y] = nullptr;
-		level.monsters[x][y] = (struct Monster *)0;
+		level.monsters[x][y] = (Monster *)0;
 #endif
 	    }
 	}
@@ -505,7 +505,7 @@ STATIC_OVL void clear_level_structures() {
 #endif
 	level.objlist = nullptr;
 	level.buriedobjlist = nullptr;
-	level.monlist = (struct Monster *)0;
+	level.monlist = (Monster *)0;
 	level.damagelist = (struct damage *)0;
 
 	level.flags.nfountains = 0;
@@ -545,7 +545,7 @@ STATIC_OVL void makelevel() {
 	struct mkroom *croom, *troom;
 	int tryct;
 	int x, y;
-	struct Monster *tmonst;	/* always put a web with a spider */
+	Monster *tmonst;	/* always put a web with a spider */
 	branch *branchp;
 	int room_threshold;
 
@@ -701,7 +701,7 @@ skip0:
 
 		if(u.uhave.amulet || !rn2(3)) {
 		    x = somex(croom); y = somey(croom);
-		    tmonst = makemon((struct MonsterType *) 0, x,y,NO_MM_FLAGS);
+		    tmonst = makemon((MonsterType *) 0, x,y,NO_MM_FLAGS);
 		    if (tmonst && tmonst->data == &mons[PM_GIANT_SPIDER] &&
 			    !occupied(x, y))
 			(void) maketrap(x, y, WEB);
@@ -728,8 +728,8 @@ skip0:
 
 		/* put statues inside */
 		if(!rn2(20))
-		    (void) mkcorpstat(STATUE, (struct Monster *)0,
-				      (struct MonsterType *)0,
+		    (void) mkcorpstat(STATUE, (Monster *)0,
+				      (MonsterType *)0,
 				      somex(croom), somey(croom), TRUE);
 		/* put box/chest inside;
 		 *  40% chance for at least 1 box, regardless of number

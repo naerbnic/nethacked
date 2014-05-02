@@ -196,9 +196,9 @@ int getpos(coord *cc, bool force, const char *goal) {
     return result;
 }
 
-struct Monster * christen_monst(struct Monster *mtmp, const char *name) {
+Monster * christen_monst(Monster *mtmp, const char *name) {
 	int lth;
-	struct Monster *mtmp2;
+	Monster *mtmp2;
 	char buf[PL_PSIZ];
 
 	/* dogname & catname are PL_PSIZ arrays; object names have same limit */
@@ -227,7 +227,7 @@ int do_mname() {
 	char buf[BUFSZ];
 	coord cc;
 	int cx,cy;
-	struct Monster *mtmp;
+	Monster *mtmp;
 	char qbuf[QBUFSZ];
 
 	if (Hallucination) {
@@ -550,7 +550,7 @@ const char * rndghostname() {
  * options works, since those are special cases.
  */
 char* x_monnam(
-    struct Monster* mtmp, 
+    Monster* mtmp, 
     int article,
 /* ARTICLE_NONE, ARTICLE_THE, ARTICLE_A: obvious
  * ARTICLE_YOUR: "your" on pets, "the" on everything else
@@ -570,7 +570,7 @@ char* x_monnam(
 #else
 	static char buf[BUFSZ];
 #endif
-	struct MonsterType *mdat = mtmp->data;
+	MonsterType *mdat = mtmp->data;
 	bool do_hallu, do_invis, do_it, do_saddle;
 	bool name_at_start, has_adjectives;
 	char *bp;
@@ -734,7 +734,7 @@ char* x_monnam(
 #endif /* OVL0 */
 #ifdef OVLB
 
-char * l_monnam(struct Monster *mtmp) {
+char * l_monnam(Monster *mtmp) {
 	return(x_monnam(mtmp, ARTICLE_NONE, (char *)0, 
 		mtmp->mnamelth ? SUPPRESS_SADDLE : 0, TRUE));
 }
@@ -742,7 +742,7 @@ char * l_monnam(struct Monster *mtmp) {
 #endif /* OVLB */
 #ifdef OVL0
 
-char * mon_nam(struct Monster *mtmp) {
+char * mon_nam(Monster *mtmp) {
 	return(x_monnam(mtmp, ARTICLE_THE, (char *)0,
 		mtmp->mnamelth ? SUPPRESS_SADDLE : 0, FALSE));
 }
@@ -751,20 +751,20 @@ char * mon_nam(struct Monster *mtmp) {
  * can always see the monster--used for probing and for monsters aggravating
  * the player with a cursed potion of invisibility
  */
-char * noit_mon_nam(struct Monster *mtmp) {
+char * noit_mon_nam(Monster *mtmp) {
 	return(x_monnam(mtmp, ARTICLE_THE, (char *)0,
 		mtmp->mnamelth ? (SUPPRESS_SADDLE|SUPPRESS_IT) :
 		    SUPPRESS_IT, FALSE));
 }
 
-char * Monnam(struct Monster *mtmp) {
+char * Monnam(Monster *mtmp) {
 	char *bp = mon_nam(mtmp);
 
 	*bp = highc(*bp);
 	return(bp);
 }
 
-char * noit_Monnam(struct Monster *mtmp) {
+char * noit_Monnam(Monster *mtmp) {
 	char *bp = noit_mon_nam(mtmp);
 
 	*bp = highc(*bp);
@@ -772,12 +772,12 @@ char * noit_Monnam(struct Monster *mtmp) {
 }
 
 /* monster's own name */
-char * m_monnam(struct Monster *mtmp) {
+char * m_monnam(Monster *mtmp) {
 	return x_monnam(mtmp, ARTICLE_NONE, (char *)0, EXACT_NAME, FALSE);
 }
 
 /* pet name: "your little dog" */
-char * y_monnam(struct Monster *mtmp) {
+char * y_monnam(Monster *mtmp) {
 	int prefix, suppression_flag;
 
 	prefix = mtmp->mtame ? ARTICLE_YOUR : ARTICLE_THE;
@@ -794,7 +794,7 @@ char * y_monnam(struct Monster *mtmp) {
 #endif /* OVL0 */
 #ifdef OVLB
 
-char * Adjmonnam(struct Monster *mtmp, const char *adj) {
+char * Adjmonnam(Monster *mtmp, const char *adj) {
 	char *bp = x_monnam(mtmp, ARTICLE_THE, adj,
 		mtmp->mnamelth ? SUPPRESS_SADDLE : 0, FALSE);
 
@@ -802,12 +802,12 @@ char * Adjmonnam(struct Monster *mtmp, const char *adj) {
 	return(bp);
 }
 
-char * a_monnam(struct Monster *mtmp) {
+char * a_monnam(Monster *mtmp) {
 	return x_monnam(mtmp, ARTICLE_A, (char *)0,
 		mtmp->mnamelth ? SUPPRESS_SADDLE : 0, FALSE);
 }
 
-char * Amonnam(struct Monster *mtmp) {
+char * Amonnam(Monster *mtmp) {
 	char *bp = a_monnam(mtmp);
 
 	*bp = highc(*bp);
@@ -816,7 +816,7 @@ char * Amonnam(struct Monster *mtmp) {
 
 /* used for monster ID by the '/', ';', and 'C' commands to block remote
    identification of the endgame altars via their attending priests */
-char * distant_monnam(struct Monster *mon, int article, char *outbuf) {
+char * distant_monnam(Monster *mon, int article, char *outbuf) {
     /* high priest(ess)'s identity is concealed on the Astral Plane,
        unless you're adjacent (overridden for hallucination which does
        its own obfuscation) */
@@ -964,7 +964,7 @@ static const char * const coynames[] = {
 	"Nemesis Riduclii","Canis latrans"
 };
 	
-char * coyotename(struct Monster *mtmp, char *buf) {
+char * coyotename(Monster *mtmp, char *buf) {
     if (mtmp && buf) {
 	sprintf(buf, "%s - %s",
 	    x_monnam(mtmp, ARTICLE_NONE, (char *)0, 0, TRUE),

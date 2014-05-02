@@ -993,7 +993,7 @@ int doengrave() {
 			 */
 		    Your("%s dull.", aobjnam(otmp, "get"));
 		    if (otmp->unpaid) {
-			struct Monster *shkp = shop_keeper(*u.ushops);
+			Monster *shkp = shop_keeper(*u.ushops);
 			if (shkp) {
 			    You("damage it, you pay for it!");
 			    bill_dummy_object(otmp);
@@ -1137,7 +1137,7 @@ void rloc_engr(struct engr *ep) {
 	    tx = rn1(COLNO-3,2);
 	    ty = rn2(ROWNO);
 	} while (engr_at(tx, ty) ||
-		!goodpos(tx, ty, (struct Monster *)0, 0));
+		!goodpos(tx, ty, (Monster *)0, 0));
 
 	ep->engr_x = tx;
 	ep->engr_y = ty;

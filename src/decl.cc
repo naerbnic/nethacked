@@ -123,7 +123,7 @@ struct mkroom *upstairs_room, *dnstairs_room, *sstairs_room;
 
 dlevel_t level;		/* level map */
 struct trap *ftrap = (struct trap *)0;
-struct Monster youmonst = DUMMY;
+Monster youmonst = DUMMY;
 struct flag flags = DUMMY;
 struct instance_flags iflags = DUMMY;
 struct You u = DUMMY;
@@ -187,9 +187,9 @@ char catname[PL_PSIZ] = DUMMY;
 char horsename[PL_PSIZ] = DUMMY;
 char preferred_pet;	/* '\0', 'c', 'd', 'n' (none) */
 /* monsters that went down/up together with @ */
-struct Monster *mydogs = (struct Monster *)0;
+Monster *mydogs = (Monster *)0;
 /* monsters that are moving to another dungeon level */
-struct Monster *migrating_mons = (struct Monster *)0;
+Monster *migrating_mons = (Monster *)0;
 
 struct mvitals mvitals[NUMMONS];
 

@@ -5,12 +5,14 @@
 #ifndef OBJ_H
 #define OBJ_H
 
+// Forward declarations
 struct Object;
+struct Monster;
 
 union vptrs {
 	    Object *v_nexthere;	/* floor location lists */
 	    Object *v_ocontainer;	/* point back to container */
-	    struct Monster *v_ocarry;	/* point back to carrying monst */
+	    Monster *v_ocarry;	/* point back to carrying monst */
 };
 
 struct Object {

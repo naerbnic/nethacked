@@ -124,9 +124,9 @@ static const char kebabable[] = {
  *	hitval returns an integer representing the "to hit" bonuses
  *	of "otmp" against the monster.
  */
-int hitval(Object *otmp, struct Monster *mon) {
+int hitval(Object *otmp, Monster *mon) {
 	int	tmp = 0;
-	struct MonsterType *ptr = mon->data;
+	MonsterType *ptr = mon->data;
 	bool Is_weapon = (otmp->oclass == WEAPON_CLASS || is_weptool(otmp));
 
 	if (Is_weapon)
@@ -191,9 +191,9 @@ int hitval(Object *otmp, struct Monster *mon) {
  *	dmgval returns an integer representing the damage bonuses
  *	of "otmp" against the monster.
  */
-int dmgval(Object *otmp, struct Monster *mon) {
+int dmgval(Object *otmp, Monster *mon) {
 	int tmp = 0, otyp = otmp->otyp;
-	struct MonsterType *ptr = mon->data;
+	MonsterType *ptr = mon->data;
 	bool Is_weapon = (otmp->oclass == WEAPON_CLASS || is_weptool(otmp));
 
 	if (otyp == CREAM_PIE) return 0;
@@ -312,10 +312,10 @@ int dmgval(Object *otmp, struct Monster *mon) {
 #endif /* OVLB */
 #ifdef OVL0
 
-STATIC_DCL Object *oselect(struct Monster *,int);
+STATIC_DCL Object *oselect(Monster *,int);
 #define Oselect(x)	if ((otmp = oselect(mtmp, x)) != 0) return(otmp);
 
-STATIC_OVL Object * oselect(struct Monster *mtmp, int x) {
+STATIC_OVL Object * oselect(Monster *mtmp, int x) {
 	Object *otmp;
 
 	for (otmp = mtmp->minvent; otmp; otmp = otmp->nobj) {
@@ -346,7 +346,7 @@ static const int pwep[] =
 static Object *propellor;
 
 /* select a ranged weapon for the monster */
-Object * select_rwep(struct Monster *mtmp) {
+Object * select_rwep(Monster *mtmp) {
 	Object *otmp;
 	int i;
 
@@ -471,7 +471,7 @@ static const short hwep[] = {
 	};
 
 /* select a hand to hand weapon for the monster */
-Object * select_hwep(struct Monster *mtmp) {
+Object * select_hwep(Monster *mtmp) {
 	Object *otmp;
 	int i;
 	bool strong = strongmonst(mtmp->data);
@@ -509,7 +509,7 @@ Object * select_hwep(struct Monster *mtmp) {
 /* Called after polymorphing a monster, robbing it, etc....  Monsters
  * otherwise never unwield stuff on their own.  Might print message.
  */
-void possibly_unwield(struct Monster *mon, bool polyspot) {
+void possibly_unwield(Monster *mon, bool polyspot) {
 	Object *obj, *mw_tmp;
 
 	if (!(mw_tmp = mon->weapon()))
@@ -560,7 +560,7 @@ void possibly_unwield(struct Monster *mon, bool polyspot) {
 /* Let a monster try to wield a weapon, based on mon->weapon_check.
  * Returns 1 if the monster took time to do it, 0 if it did not.
  */
-int mon_wield_item(struct Monster *mon) {
+int mon_wield_item(Monster *mon) {
 	Object *obj;
 
 	/* This case actually should never happen */
@@ -1292,7 +1292,7 @@ void skill_init(const struct def_skill *class_skill) {
 	}
 }
 
-void setmnotwielded(struct Monster *mon, Object *obj) {
+void setmnotwielded(Monster *mon, Object *obj) {
   if (!obj) {
     return;
   }

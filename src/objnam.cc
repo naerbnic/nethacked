@@ -742,7 +742,7 @@ char * doname(Object *obj) {
   if (obj->unpaid) {
     xchar ox, oy;
     long quotedprice = unpaid_cost(obj);
-    struct Monster *shkp = (struct Monster *) 0;
+    Monster *shkp = (Monster *) 0;
 
     if (Has_contents(obj)
         && get_obj_location(obj, &ox, &oy, BURIED_TOO | CONTAINED_TOO)
@@ -2669,7 +2669,7 @@ const char * cloak_simple_name(Object *cloak) {
     return "cloak";
 }
 
-const char * mimic_obj_name(struct Monster *mtmp) {
+const char * mimic_obj_name(Monster *mtmp) {
 	if (mtmp->m_ap_type == M_AP_OBJECT && mtmp->mappearance != STRANGE_OBJECT) {
     int idx = objects[mtmp->mappearance].oc_descr_idx;
 		if (mtmp->mappearance == GOLD_PIECE) return "gold";

@@ -16,12 +16,12 @@ extern const int monstr[];
 #ifdef OVLB
 
 STATIC_DCL short which_arti(int);
-STATIC_DCL bool mon_has_arti(struct Monster *,short);
-STATIC_DCL struct Monster *other_mon_has_arti(struct Monster *,short);
+STATIC_DCL bool mon_has_arti(Monster *,short);
+STATIC_DCL Monster *other_mon_has_arti(Monster *,short);
 STATIC_DCL Object *on_ground(short);
 STATIC_DCL bool you_have(int);
-STATIC_DCL long target_on(int,struct Monster *);
-STATIC_DCL long strategy(struct Monster *);
+STATIC_DCL long target_on(int,Monster *);
+STATIC_DCL long strategy(Monster *);
 
 static const int nasties[] = {
 	PM_COCKATRICE, PM_ETTIN, PM_STALKER, PM_MINOTAUR, PM_RED_DRAGON,
@@ -50,7 +50,7 @@ static const unsigned wizapp[] = {
 /* If you've found the Amulet, make the Wizard appear after some time */
 /* Also, give hints about portal locations, if amulet is worn/wielded -dlc */
 void amulet() {
-	struct Monster *mtmp;
+	Monster *mtmp;
 	struct trap *ttmp;
 	Object *amu;
 
@@ -93,7 +93,7 @@ void amulet() {
 #endif /* OVL0 */
 #ifdef OVLB
 
-int mon_has_amulet(struct Monster *mtmp) {
+int mon_has_amulet(Monster *mtmp) {
 	Object *otmp;
 
 	for(otmp = mtmp->minvent; otmp; otmp = otmp->nobj)
@@ -101,7 +101,7 @@ int mon_has_amulet(struct Monster *mtmp) {
 	return(0);
 }
 
-int mon_has_special(struct Monster *mtmp) {
+int mon_has_special(Monster *mtmp) {
 	Object *otmp;
 
 	for(otmp = mtmp->minvent; otmp; otmp = otmp->nobj)
@@ -140,7 +140,7 @@ STATIC_OVL short which_arti(int mask) {
  *	since bell, book, candle, and amulet are all objects, not really
  *	artifacts right now.	[MRS]
  */
-STATIC_OVL bool mon_has_arti(struct Monster *mtmp, short otyp) {
+STATIC_OVL bool mon_has_arti(Monster *mtmp, short otyp) {
 	Object *otmp;
 
 	for(otmp = mtmp->minvent; otmp; otmp = otmp->nobj) {
@@ -154,15 +154,15 @@ STATIC_OVL bool mon_has_arti(struct Monster *mtmp, short otyp) {
 
 }
 
-STATIC_OVL struct Monster * other_mon_has_arti(struct Monster *mtmp, short otyp) {
-	struct Monster *mtmp2;
+STATIC_OVL Monster * other_mon_has_arti(Monster *mtmp, short otyp) {
+	Monster *mtmp2;
 
 	for(mtmp2 = fmon; mtmp2; mtmp2 = mtmp2->nmon)
 	    /* no need for !DEADMONSTER check here since they have no inventory */
 	    if(mtmp2 != mtmp)
 		if(mon_has_arti(mtmp2, otyp)) return(mtmp2);
 
-	return((struct Monster *)0);
+	return((Monster *)0);
 }
 
 STATIC_OVL Object * on_ground(short otyp) {
@@ -189,10 +189,10 @@ STATIC_OVL bool you_have(int mask) {
 	return(0);
 }
 
-STATIC_OVL long target_on(int mask, struct Monster *mtmp) {
+STATIC_OVL long target_on(int mask, Monster *mtmp) {
 	short	otyp;
 	Object *otmp;
-	struct Monster *mtmp2;
+	Monster *mtmp2;
 
 	if(!M_Wants(mask))	return(STRAT_NONE);
 
@@ -208,7 +208,7 @@ STATIC_OVL long target_on(int mask, struct Monster *mtmp) {
 	return(STRAT_NONE);
 }
 
-STATIC_OVL long strategy(struct Monster *mtmp) {
+STATIC_OVL long strategy(Monster *mtmp) {
 	long strat, dstrat;
 
 	if (!is_covetous(mtmp->data) ||
@@ -264,7 +264,7 @@ STATIC_OVL long strategy(struct Monster *mtmp) {
 	return(dstrat);
 }
 
-int tactics(struct Monster *mtmp) {
+int tactics(Monster *mtmp) {
 	long strat = strategy(mtmp);
 
 	mtmp->mstrategy = (mtmp->mstrategy & STRAT_WAITMASK) | strat;
@@ -340,7 +340,7 @@ int tactics(struct Monster *mtmp) {
 }
 
 void aggravate() {
-	struct Monster *mtmp;
+	Monster *mtmp;
 
 	for(mtmp = fmon; mtmp; mtmp = mtmp->nmon)
 	    if (!mtmp->dead()) {
@@ -353,7 +353,7 @@ void aggravate() {
 }
 
 void clonewiz() {
-	struct Monster *mtmp2;
+	Monster *mtmp2;
 
 	if ((mtmp2 = makemon(&mons[PM_WIZARD_OF_YENDOR],
 				u.ux, u.uy, NO_MM_FLAGS)) != 0) {
@@ -377,15 +377,15 @@ int pick_nasty() {
 
 /* create some nasty monsters, aligned or neutral with the caster */
 /* a null caster defaults to a chaotic caster (e.g. the wizard) */
-int nasty(struct Monster *mcast) {
-    struct Monster	*mtmp;
+int nasty(Monster *mcast) {
+    Monster	*mtmp;
     int	i, j, tmp;
     int castalign = (mcast ? mcast->data->maligntyp : -1);
     coord bypos;
     int count=0;
 
     if(!rn2(10) && Inhell) {
-	msummon((struct Monster *) 0);	/* summons like WoY */
+	msummon((Monster *) 0);	/* summons like WoY */
 	count++;
     } else {
 	tmp = (u.ulevel > 3) ? u.ulevel/3 : 1; /* just in case -- rph */
@@ -412,7 +412,7 @@ int nasty(struct Monster *mcast) {
 		    mtmp->msleeping = mtmp->mpeaceful = mtmp->mtame = 0;
 		    set_malign(mtmp);
 		} else /* GENOD? */
-		    mtmp = makemon((struct MonsterType *)0,
+		    mtmp = makemon((MonsterType *)0,
 					bypos.x, bypos.y, NO_MM_FLAGS);
 		if(mtmp && (mtmp->data->maligntyp == 0 ||
 		            sgn(mtmp->data->maligntyp) == sgn(castalign)) ) {
@@ -426,7 +426,7 @@ int nasty(struct Monster *mcast) {
 
 /*	Let's resurrect the wizard, for some unexpected fun.	*/
 void resurrect() {
-	struct Monster *mtmp, **mmtmp;
+	Monster *mtmp, **mmtmp;
 	long elapsed;
 	const char *verb;
 
@@ -487,7 +487,7 @@ void intervene() {
 			break;
 	    case 3:	aggravate();
 			break;
-	    case 4:	(void)nasty((struct Monster *)0);
+	    case 4:	(void)nasty((Monster *)0);
 			break;
 	    case 5:	resurrect();
 			break;
@@ -548,7 +548,7 @@ const char * const random_malediction[] = {
 };
 
 /* Insult or intimidate the player */
-void cuss(struct Monster *mtmp) {
+void cuss(Monster *mtmp) {
 	if (mtmp->iswiz) {
 	    if (!rn2(5))  /* typical bad guy action */
 		pline("%s laughs fiendishly.", Monnam(mtmp));

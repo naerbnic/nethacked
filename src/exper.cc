@@ -32,8 +32,8 @@ STATIC_OVL int enermod(int en) {
 }
 
 /* return # of exp points for mtmp after nk killed */
-int experience(struct Monster* mtmp, int nk) {
-	struct MonsterType *ptr = mtmp->data;
+int experience(Monster* mtmp, int nk) {
+	MonsterType *ptr = mtmp->data;
 	int	i, tmp, tmp2;
 
 	tmp = 1 + mtmp->m_lev * mtmp->m_lev;

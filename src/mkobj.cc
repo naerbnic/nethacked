@@ -10,7 +10,7 @@
 STATIC_DCL void mkbox_cnts(Object *);
 STATIC_DCL void obj_timer_checks(Object *, xchar, xchar, int);
 STATIC_DCL void container_weight(Object *);
-STATIC_DCL Object *save_mtraits(Object *, struct Monster *);
+STATIC_DCL Object *save_mtraits(Object *, Monster *);
 #ifdef WIZARD
 STATIC_DCL const char *where_name(int);
 STATIC_DCL void check_contained(Object *,const char *);
@@ -181,7 +181,7 @@ STATIC_OVL void mkbox_cnts(Object *box) {
 
 /* select a random, common monster type */
 int rndmonnum() {
-	struct MonsterType *ptr;
+	MonsterType *ptr;
 	int	i;
 
 	/* Plan A: get a level-appropriate common monster */
@@ -818,7 +818,7 @@ Object * mkgold(long amount, int x, int y) {
  * yet still allow restoration of the original monster upon
  * resurrection.
  */
-Object * mkcorpstat(int objtype, struct Monster *mtmp, struct MonsterType *ptr, int x, int y, bool init) {
+Object * mkcorpstat(int objtype, Monster *mtmp, MonsterType *ptr, int x, int y, bool init) {
 	Object *otmp;
 
 	if (objtype != CORPSE && objtype != STATUE)
@@ -878,21 +878,21 @@ Object * obj_attach_mid(Object *obj, unsigned mid) {
     return otmp;
 }
 
-static Object * save_mtraits(Object *obj, struct Monster *mtmp) {
+static Object * save_mtraits(Object *obj, Monster *mtmp) {
 	Object *otmp;
 	int lth, namelth;
 
-	lth = sizeof(struct Monster) + mtmp->mxlth + mtmp->mnamelth;
+	lth = sizeof(Monster) + mtmp->mxlth + mtmp->mnamelth;
 	namelth = obj->onamelth ? strlen(ONAME(obj)) + 1 : 0;
 	otmp = realloc_obj(obj, lth, (genericptr_t) mtmp, namelth, ONAME(obj));
 	if (otmp && otmp->oxlth) {
-		struct Monster *mtmp2 = (struct Monster *)otmp->oextra;
+		Monster *mtmp2 = (Monster *)otmp->oextra;
 		if (mtmp->data) mtmp2->mnum = monsndx(mtmp->data);
 		/* invalidate pointers */
 		/* m_id is needed to know if this is a revived quest leader */
 		/* but m_id must be cleared when loading bones */
-		mtmp2->nmon     = (struct Monster *)0;
-		mtmp2->data     = (struct MonsterType *)0;
+		mtmp2->nmon     = (Monster *)0;
+		mtmp2->data     = (MonsterType *)0;
 		mtmp2->minvent  = nullptr;
 		otmp->oattached = OATTACHED_MONST;	/* mark it */
 	}
@@ -902,17 +902,17 @@ static Object * save_mtraits(Object *obj, struct Monster *mtmp) {
 /* returns a pointer to a new monst structure based on
  * the one contained within the obj.
  */
-struct Monster * get_mtraits(Object *obj, bool copyof) {
-	struct Monster *mtmp = (struct Monster *)0;
-	struct Monster *mnew = (struct Monster *)0;
+Monster * get_mtraits(Object *obj, bool copyof) {
+	Monster *mtmp = (Monster *)0;
+	Monster *mnew = (Monster *)0;
 
 	if (obj->oxlth && obj->oattached == OATTACHED_MONST)
-		mtmp = (struct Monster *)obj->oextra;
+		mtmp = (Monster *)obj->oextra;
 	if (mtmp) {
 	    if (copyof) {
 		int lth = mtmp->mxlth + mtmp->mnamelth;
 		mnew = newmonst(lth);
-		lth += sizeof(struct Monster);
+		lth += sizeof(Monster);
 		(void) memcpy((genericptr_t)mnew,
 				(genericptr_t)mtmp, lth);
 	    } else {
@@ -938,10 +938,10 @@ Object * mk_tt_object(int objtype, int x, int y) {
 }
 
 /* make a new corpse or statue, uninitialized if a statue (i.e. no books) */
-Object * mk_named_object(int objtype, struct MonsterType *ptr, int x, int y, const char *nm) {
+Object * mk_named_object(int objtype, MonsterType *ptr, int x, int y, const char *nm) {
 	Object *otmp;
 
-	otmp = mkcorpstat(objtype, (struct Monster *)0, ptr,
+	otmp = mkcorpstat(objtype, (Monster *)0, ptr,
 				x, y, (bool)(objtype != STATUE));
 	if (nm)
 		otmp = oname(otmp, nm);
@@ -1123,7 +1123,7 @@ void remove_object(Object *otmp) {
 }
 
 /* throw away all of a monster's inventory */
-void discard_minvent(struct Monster *mtmp) {
+void discard_minvent(Monster *mtmp) {
     Object *otmp;
 
     while ((otmp = mtmp->minvent) != 0) {
@@ -1228,7 +1228,7 @@ void extract_nexthere(Object *obj, Object **head_ptr) {
  * in the inventory, then the passed obj is deleted and 1 is returned.
  * Otherwise 0 is returned.
  */
-int add_to_minv(struct Monster *mon, Object *obj) {
+int add_to_minv(Monster *mon, Object *obj) {
     Object *otmp;
 
     if (obj->where != OBJ_FREE)
@@ -1331,7 +1331,7 @@ void dealloc_obj(Object *obj) {
 void obj_sanity_check() {
     int x, y;
     Object *obj;
-    struct Monster *mon;
+    Monster *mon;
     const char *mesg;
     char obj_address[20], mon_address[20];  /* room for formatted pointers */
 

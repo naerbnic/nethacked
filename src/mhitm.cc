@@ -19,17 +19,17 @@ static Object *otmp;
 static const char brief_feeling[] =
 	"have a %s feeling for a moment, then it passes.";
 
-STATIC_DCL char *mon_nam_too(char *,struct Monster *,struct Monster *);
-STATIC_DCL void mrustm(struct Monster *, struct Monster *, Object *);
-STATIC_DCL int hitmm(struct Monster *,struct Monster *,struct Attack *);
-STATIC_DCL int gazemm(struct Monster *,struct Monster *,struct Attack *);
-STATIC_DCL int gulpmm(struct Monster *,struct Monster *,struct Attack *);
-STATIC_DCL int explmm(struct Monster *,struct Monster *,struct Attack *);
-STATIC_DCL int mdamagem(struct Monster *,struct Monster *,struct Attack *);
-STATIC_DCL void mswingsm(struct Monster *, struct Monster *, Object *);
-STATIC_DCL void noises(struct Monster *,struct Attack *);
-STATIC_DCL void missmm(struct Monster *,struct Monster *,struct Attack *);
-STATIC_DCL int passivemm(struct Monster *, struct Monster *, bool, int);
+STATIC_DCL char *mon_nam_too(char *,Monster *,Monster *);
+STATIC_DCL void mrustm(Monster *, Monster *, Object *);
+STATIC_DCL int hitmm(Monster *,Monster *,struct Attack *);
+STATIC_DCL int gazemm(Monster *,Monster *,struct Attack *);
+STATIC_DCL int gulpmm(Monster *,Monster *,struct Attack *);
+STATIC_DCL int explmm(Monster *,Monster *,struct Attack *);
+STATIC_DCL int mdamagem(Monster *,Monster *,struct Attack *);
+STATIC_DCL void mswingsm(Monster *, Monster *, Object *);
+STATIC_DCL void noises(Monster *,struct Attack *);
+STATIC_DCL void missmm(Monster *,Monster *,struct Attack *);
+STATIC_DCL int passivemm(Monster *, Monster *, bool, int);
 
 /* Needed for the special case of monsters wielding vorpal blades (rare).
  * If we use this a lot it should probably be a parameter to mdamagem()
@@ -39,7 +39,7 @@ static int dieroll;
 
 /* returns mon_nam(mon) relative to other_mon; normal name unless they're
    the same, in which case the reference is to {him|her|it} self */
-STATIC_OVL char * mon_nam_too(char *outbuf, struct Monster *mon, struct Monster *other_mon) {
+STATIC_OVL char * mon_nam_too(char *outbuf, Monster *mon, Monster *other_mon) {
 	strcpy(outbuf, mon_nam(mon));
 	if (mon == other_mon)
 	    switch (pronoun_gender(mon)) {
@@ -50,7 +50,7 @@ STATIC_OVL char * mon_nam_too(char *outbuf, struct Monster *mon, struct Monster 
 	return outbuf;
 }
 
-STATIC_OVL void noises(struct Monster *magr, struct Attack *mattk) {
+STATIC_OVL void noises(Monster *magr, struct Attack *mattk) {
 	bool farq = (distu(magr->mx, magr->my) > 15);
 
 	if(flags.soundok && (farq != far_noise || moves-noisetime > 10)) {
@@ -63,7 +63,7 @@ STATIC_OVL void noises(struct Monster *magr, struct Attack *mattk) {
 }
 
 STATIC_OVL
-void missmm(struct Monster *magr, struct Monster *mdef, struct Attack *mattk) {
+void missmm(Monster *magr, Monster *mdef, struct Attack *mattk) {
 	const char *fmt;
 	char buf[BUFSZ], mdef_name[BUFSZ];
 
@@ -93,8 +93,8 @@ void missmm(struct Monster *magr, struct Monster *mdef, struct Attack *mattk) {
  *  digest the hero.
  */
 /* have monsters fight each other */
-int fightm(struct Monster *mtmp) {
-	struct Monster *mon, *nmon;
+int fightm(Monster *mtmp) {
+	Monster *mon, *nmon;
 	int result, has_u_swallowed;
 #ifdef LINT
 	nmon = 0;
@@ -179,7 +179,7 @@ int fightm(struct Monster *mtmp) {
  *
  * In the case of exploding monsters, the monster dies as well.
  */
-int mattackm(struct Monster *magr, struct Monster *mdef) {
+int mattackm(Monster *magr, Monster *mdef) {
     int		    i,		/* loop counter */
 		    tmp,	/* amour class difference */
 		    strike,	/* hit this attack */
@@ -187,7 +187,7 @@ int mattackm(struct Monster *magr, struct Monster *mdef) {
 		    struck = 0,	/* hit at least once */
 		    res[NATTK];	/* results of all attacks */
     struct Attack   *mattk, alt_attk;
-    struct MonsterType *pa, *pd;
+    MonsterType *pa, *pd;
 
     if (!magr || !mdef) return(MM_MISS);		/* mike@genat */
     if (!magr->mcanmove || magr->msleeping) return(MM_MISS);
@@ -363,7 +363,7 @@ int mattackm(struct Monster *magr, struct Monster *mdef) {
 }
 
 /* Returns the result of mdamagem(). */
-STATIC_OVL int hitmm(struct Monster *magr, struct Monster *mdef, struct Attack *mattk) {
+STATIC_OVL int hitmm(Monster *magr, Monster *mdef, struct Attack *mattk) {
 	if(vis){
 		int compat;
 		char buf[BUFSZ], mdef_name[BUFSZ];
@@ -416,7 +416,7 @@ STATIC_OVL int hitmm(struct Monster *magr, struct Monster *mdef, struct Attack *
 }
 
 /* Returns the same values as mdamagem(). */
-STATIC_OVL int gazemm(struct Monster *magr, struct Monster *mdef, struct Attack *mattk) {
+STATIC_OVL int gazemm(Monster *magr, Monster *mdef, struct Attack *mattk) {
 	char buf[BUFSZ];
 
 	if(vis) {
@@ -461,7 +461,7 @@ STATIC_OVL int gazemm(struct Monster *magr, struct Monster *mdef, struct Attack 
 }
 
 /* Returns the same values as mattackm(). */
-STATIC_OVL int gulpmm(struct Monster *magr, struct Monster *mdef, struct Attack *mattk) {
+STATIC_OVL int gulpmm(Monster *magr, Monster *mdef, struct Attack *mattk) {
 	xchar	ax, ay, dx, dy;
 	int	status;
 	char buf[BUFSZ];
@@ -525,7 +525,7 @@ STATIC_OVL int gulpmm(struct Monster *magr, struct Monster *mdef, struct Attack 
 	return status;
 }
 
-STATIC_OVL int explmm(struct Monster *magr, struct Monster *mdef, struct Attack *mattk) {
+STATIC_OVL int explmm(Monster *magr, Monster *mdef, struct Attack *mattk) {
 	int result;
 
 	if (magr->mcan)
@@ -552,10 +552,10 @@ STATIC_OVL int explmm(struct Monster *magr, struct Monster *mdef, struct Attack 
 /*
  *  See comment at top of mattackm(), for return values.
  */
-STATIC_OVL int mdamagem(struct Monster *magr, struct Monster *mdef, struct Attack *mattk) {
+STATIC_OVL int mdamagem(Monster *magr, Monster *mdef, struct Attack *mattk) {
 	Object *obj;
 	char buf[BUFSZ];
-	struct MonsterType *pa = magr->data, *pd = mdef->data;
+	MonsterType *pa = magr->data, *pd = mdef->data;
 	int armpro, num, tmp = d((int)mattk->damn, (int)mattk->damd);
 	bool cancelled;
 
@@ -1110,11 +1110,11 @@ STATIC_OVL int mdamagem(struct Monster *magr, struct Monster *mdef, struct Attac
 		/* various checks similar to dog_eat and meatobj.
 		 * after monkilled() to provide better message ordering */
 		if (mdef->cham != CHAM_ORDINARY) {
-		    (void) newcham(magr, (struct MonsterType *)0, FALSE, TRUE);
+		    (void) newcham(magr, (MonsterType *)0, FALSE, TRUE);
 		} else if (mdef->data == &mons[PM_GREEN_SLIME]) {
 		    (void) newcham(magr, &mons[PM_GREEN_SLIME], FALSE, TRUE);
 		} else if (mdef->data == &mons[PM_WRAITH]) {
-		    (void) grow_up(magr, (struct Monster *)0);
+		    (void) grow_up(magr, (Monster *)0);
 		    /* don't grow up twice */
 		    return (MM_DEF_DIED | (magr->mhp > 0 ? 0 : MM_AGR_DIED));
 		} else if (mdef->data == &mons[PM_NURSE]) {
@@ -1133,7 +1133,7 @@ STATIC_OVL int mdamagem(struct Monster *magr, struct Monster *mdef, struct Attac
 #ifdef OVL0
 
 /* returns 1 if monster doesn't attack */
-int noattacks(struct MonsterType *ptr) {
+int noattacks(MonsterType *ptr) {
 	int i;
 
 	for(i = 0; i < NATTK; i++)
@@ -1143,7 +1143,7 @@ int noattacks(struct MonsterType *ptr) {
 }
 
 /* `mon' is hit by a sleep attack; return 1 if it's affected, 0 otherwise */
-int sleep_monst(struct Monster *mon, int amt, int how) {
+int sleep_monst(Monster *mon, int amt, int how) {
 	if (resists_sleep(mon) ||
 		(how >= 0 && resist(mon, (char)how, 0, NOTELL))) {
 	    shieldeff(mon->mx, mon->my);
@@ -1161,7 +1161,7 @@ int sleep_monst(struct Monster *mon, int amt, int how) {
 }
 
 /* sleeping grabber releases, engulfer doesn't; don't use for paralysis! */
-void slept_monst(struct Monster *mon) {
+void slept_monst(Monster *mon) {
 	if ((mon->msleeping || !mon->mcanmove) && mon == u.ustuck &&
 		!sticks(youmonst.data) && !u.uswallow) {
 	    pline("%s grip relaxes.", s_suffix(Monnam(mon)));
@@ -1172,7 +1172,7 @@ void slept_monst(struct Monster *mon) {
 #endif /* OVL0 */
 #ifdef OVLB
 
-STATIC_OVL void mrustm(struct Monster *magr, struct Monster *mdef, Object *obj) {
+STATIC_OVL void mrustm(Monster *magr, Monster *mdef, Object *obj) {
 	bool is_acid;
 
 	if (!magr || !mdef || !obj) return; /* just in case */
@@ -1205,7 +1205,7 @@ STATIC_OVL void mrustm(struct Monster *magr, struct Monster *mdef, Object *obj) 
 	}
 }
 
-STATIC_OVL void mswingsm(struct Monster *magr, struct Monster *mdef, Object *otemp) {
+STATIC_OVL void mswingsm(Monster *magr, Monster *mdef, Object *otemp) {
 	char buf[BUFSZ];
 	if (!flags.verbose || Blind || !mon_visible(magr)) return;
 	strcpy(buf, mon_nam(mdef));
@@ -1218,9 +1218,9 @@ STATIC_OVL void mswingsm(struct Monster *magr, struct Monster *mdef, Object *ote
  * Passive responses by defenders.  Does not replicate responses already
  * handled above.  Returns same values as mattackm.
  */
-STATIC_OVL int passivemm(struct Monster *magr, struct Monster *mdef, bool mhit, int mdead) {
-	struct MonsterType *mddat = mdef->data;
-	struct MonsterType *madat = magr->data;
+STATIC_OVL int passivemm(Monster *magr, Monster *mdef, bool mhit, int mdead) {
+	MonsterType *mddat = mdef->data;
+	MonsterType *madat = magr->data;
 	char buf[BUFSZ];
 	int i, tmp;
 

@@ -12,7 +12,7 @@ extern char bones[];	/* from files.c */
 STATIC_DCL bool no_bones_level(d_level *);
 STATIC_DCL void goodfruit(int);
 STATIC_DCL void resetobjs(Object *,bool);
-STATIC_DCL void drop_upon_death(struct Monster *, Object *);
+STATIC_DCL void drop_upon_death(Monster *, Object *);
 
 STATIC_OVL bool no_bones_level(d_level *lev) {
 	extern d_level save_dlevel;		/* in do.c */
@@ -107,7 +107,7 @@ STATIC_OVL void resetobjs(Object *ochain, bool restore) {
 	}
 }
 
-STATIC_OVL void drop_upon_death(struct Monster *mtmp, Object *cont) {
+STATIC_OVL void drop_upon_death(Monster *mtmp, Object *cont) {
 	Object *otmp;
 
 	uswapwep = 0; /* ensure curse() won't cause swapwep to drop twice */
@@ -175,8 +175,8 @@ bool can_make_bones() {
 void savebones(Object *corpse) {
 	int fd, x, y;
 	struct trap *ttmp;
-	struct Monster *mtmp;
-	struct MonsterType *mptr;
+	Monster *mtmp;
+	MonsterType *mptr;
 	struct fruit *f;
 	char c, *bonesid;
 	char whynot[BUFSZ];
@@ -233,12 +233,12 @@ void savebones(Object *corpse) {
 		otmp = mk_named_object(STATUE, &mons[u.umonnum],
 				       u.ux, u.uy, plname);
 
-		drop_upon_death((struct Monster *)0, otmp);
+		drop_upon_death((Monster *)0, otmp);
 		if (!otmp) return;	/* couldn't make statue */
-		mtmp = (struct Monster *)0;
+		mtmp = (Monster *)0;
 	} else if (u.ugrave_arise < LOW_PM) {
 		/* drop everything */
-		drop_upon_death((struct Monster *)0, nullptr);
+		drop_upon_death((Monster *)0, nullptr);
 		/* trick makemon() into allowing monster creation
 		 * on your location
 		 */
@@ -255,7 +255,7 @@ void savebones(Object *corpse) {
 		mtmp = makemon(&mons[u.ugrave_arise], u.ux, u.uy, NO_MM_FLAGS);
 		in_mklev = FALSE;
 		if (!mtmp) {
-			drop_upon_death((struct Monster *)0, nullptr);
+			drop_upon_death((Monster *)0, nullptr);
 			return;
 		}
 		mtmp = christen_monst(mtmp, plname);
@@ -368,7 +368,7 @@ int getbones() {
 #endif
 			trickery(errbuf);
 		} else {
-			struct Monster *mtmp;
+			Monster *mtmp;
 
 			getlev(fd, 0, 0, TRUE);
 

@@ -121,9 +121,9 @@
 #include "hack.h"
 #include "region.h"
 
-STATIC_DCL void display_monster(xchar,xchar,struct Monster *,int,xchar);
+STATIC_DCL void display_monster(xchar,xchar,Monster *,int,xchar);
 STATIC_DCL int swallow_to_glyph(int, int);
-STATIC_DCL void display_warning(struct Monster *);
+STATIC_DCL void display_warning(Monster *);
 
 STATIC_DCL int check_pos(int, int, int);
 #ifdef WA_VERBOSE
@@ -333,7 +333,7 @@ void map_location(int x, int y, int show) {
 STATIC_OVL void
 display_monster(
     xchar x, xchar y, 	/* display position */
-    struct Monster* mon, /* monster to display */
+    Monster* mon, /* monster to display */
     int sightflags,   /* 1 if the monster is physically seen */
     				/* 2 if detected using Detect_monsters */
     xchar worm_tail) {	/* mon is actually a worm tail */
@@ -426,7 +426,7 @@ display_monster(
  *
  * Do not call for worm tails.
  */
-STATIC_OVL void display_warning(struct Monster *mon) {
+STATIC_OVL void display_warning(Monster *mon) {
     int x = mon->mx, y = mon->my;
     int wl = (int) (mon->m_lev / 4);
     int glyph;
@@ -459,7 +459,7 @@ STATIC_OVL void display_warning(struct Monster *mon) {
 void feel_location(xchar x, xchar y) {
     struct rm *lev = &(levl[x][y]);
     Object *boulder;
-    struct Monster *mon;
+    Monster *mon;
 
     /* If the hero's memory of an invisible monster is accurate, we want to keep
      * him from detecting the same monster over and over again on each turn.
@@ -594,7 +594,7 @@ void feel_location(xchar x, xchar y) {
  * Possibly put a new glyph at the given location.
  */
 void newsym(int x, int y) {
-    struct Monster *mon;
+    Monster *mon;
     struct rm *lev = &(levl[x][y]);
     int see_it;
     xchar worm_tail;
@@ -1012,7 +1012,7 @@ void under_ground(int mode) {
  *	  sit.c]
  */
 void see_monsters() {
-    struct Monster *mon;
+    Monster *mon;
 
     for (mon = fmon; mon; mon = mon->nmon) {
 	if (mon->dead()) continue;
@@ -1032,7 +1032,7 @@ void see_monsters() {
  * changes.
  */
 void set_mimic_blocking() {
-    struct Monster *mon;
+    Monster *mon;
 
     for (mon = fmon; mon; mon = mon->nmon) {
 	if (mon->dead()) continue;

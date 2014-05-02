@@ -7,22 +7,22 @@
 #include "hack.h"
 #include "vault.h"
 
-STATIC_DCL struct Monster *findgd();
+STATIC_DCL Monster *findgd();
 
 #define g_monnam(mtmp) \
 	x_monnam(mtmp, ARTICLE_NONE, (char *)0, SUPPRESS_IT, FALSE)
 
 #ifdef OVLB
 
-STATIC_DCL bool clear_fcorr(struct Monster *,bool);
-STATIC_DCL void restfakecorr(struct Monster *);
-STATIC_DCL bool in_fcorridor(struct Monster *,int,int);
+STATIC_DCL bool clear_fcorr(Monster *,bool);
+STATIC_DCL void restfakecorr(Monster *);
+STATIC_DCL bool in_fcorridor(Monster *,int,int);
 STATIC_DCL void move_gold(Object *,int);
-STATIC_DCL void wallify_vault(struct Monster *);
+STATIC_DCL void wallify_vault(Monster *);
 
-STATIC_OVL bool clear_fcorr(struct Monster *grd, bool forceshow) {
+STATIC_OVL bool clear_fcorr(Monster *grd, bool forceshow) {
 	int fcx, fcy, fcbeg;
-	struct Monster *mtmp;
+	Monster *mtmp;
 
 	if (!on_level(&(EGD(grd)->gdlevel), &u.uz)) return TRUE;
 
@@ -57,13 +57,13 @@ STATIC_OVL bool clear_fcorr(struct Monster *grd, bool forceshow) {
 	return(TRUE);
 }
 
-STATIC_OVL void restfakecorr(struct Monster *grd) {
+STATIC_OVL void restfakecorr(Monster *grd) {
 	/* it seems you left the corridor - let the guard disappear */
 	if(clear_fcorr(grd, FALSE)) mongone(grd);
 }
 
 /* called in mon.c */
-bool grddead(struct Monster *grd) {
+bool grddead(Monster *grd) {
 	bool dispose = clear_fcorr(grd, TRUE);
 
 	if(!dispose) {
@@ -78,7 +78,7 @@ bool grddead(struct Monster *grd) {
 	return(dispose);
 }
 
-STATIC_OVL bool in_fcorridor(struct Monster *grd, int x, int y) {
+STATIC_OVL bool in_fcorridor(Monster *grd, int x, int y) {
 	int fci;
 
 	for(fci = EGD(grd)->fcbeg; fci < EGD(grd)->fcend; fci++)
@@ -89,13 +89,13 @@ STATIC_OVL bool in_fcorridor(struct Monster *grd, int x, int y) {
 }
 
 STATIC_OVL
-struct Monster * findgd() {
-	struct Monster *mtmp;
+Monster * findgd() {
+	Monster *mtmp;
 
 	for(mtmp = fmon; mtmp; mtmp = mtmp->nmon)
 	    if(mtmp->isgd && !mtmp->dead() && on_level(&(EGD(mtmp)->gdlevel), &u.uz))
 		return(mtmp);
-	return((struct Monster *)0);
+	return((Monster *)0);
 }
 
 #endif /* OVLB */
@@ -114,7 +114,7 @@ void invault() {
 #ifdef BSD_43_BUG
     int dummy;		/* hack to avoid schain botch */
 #endif
-    struct Monster *guard;
+    Monster *guard;
     int trycount, vaultroom = (int)vault_occupied(u.urooms);
 
     if(!vaultroom) {
@@ -343,13 +343,13 @@ STATIC_OVL void move_gold(Object *gold, int vroom) {
 	newsym(nx,ny);
 }
 
-STATIC_OVL void wallify_vault(struct Monster *grd) {
+STATIC_OVL void wallify_vault(Monster *grd) {
 	int x, y, typ;
 	int vlt = EGD(grd)->vroom;
 	char tmp_viz;
 	xchar lox = rooms[vlt].lx - 1, hix = rooms[vlt].hx + 1,
 	      loy = rooms[vlt].ly - 1, hiy = rooms[vlt].hy + 1;
-	struct Monster *mon;
+	Monster *mon;
 	Object *gold;
 	struct trap *trap;
 	bool fixed = FALSE;
@@ -408,7 +408,7 @@ STATIC_OVL void wallify_vault(struct Monster *grd) {
 /*
  * return  1: guard moved,  0: guard didn't,  -1: let m_move do it,  -2: died
  */
-int gd_move(struct Monster *grd) {
+int gd_move(Monster *grd) {
 	int x, y, nx, ny, m, n;
 	int dx, dy, gx, gy, fci;
 	uchar typ;
@@ -711,7 +711,7 @@ cleanup:
 
 /* Routine when dying or quitting with a vault guard around */
 void paygd() {
-	struct Monster *grd = findgd();
+	Monster *grd = findgd();
 #ifndef GOLDOBJ
 	Object *gold;
 #else
@@ -782,10 +782,10 @@ long hidden_gold() {
 
 /* prevent "You hear footsteps.." when inappropriate */
 bool gd_sound() {
-	struct Monster *grd = findgd();
+	Monster *grd = findgd();
 
 	if (vault_occupied(u.urooms)) return(FALSE);
-	else return((bool)(grd == (struct Monster *)0));
+	else return((bool)(grd == (Monster *)0));
 }
 
 #endif /* OVLB */

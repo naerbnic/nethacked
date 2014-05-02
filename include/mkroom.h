@@ -6,6 +6,7 @@
 #define MKROOM_H
 
 #include <vector>
+#include "monst.h"
 
 /* mkroom.h - types and structures for room and shop initialization */
 
@@ -17,7 +18,7 @@ struct mkroom {
 	schar fdoor;		/* index for the first door of the room */
 	bool irregular;	/* true if room is non-rectangular */
         std::vector<struct mkroom *> subrooms;  /* Subrooms pointers */
-	struct Monster *resident; /* priest/shopkeeper/guard for this room */
+	Monster *resident; /* priest/shopkeeper/guard for this room */
 };
 
 struct shclass {

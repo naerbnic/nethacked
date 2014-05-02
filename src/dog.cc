@@ -11,7 +11,7 @@
 
 STATIC_DCL int pet_type();
 
-void initedog(struct Monster *mtmp) {
+void initedog(Monster *mtmp) {
 	mtmp->mtame = is_domestic(mtmp->data) ? 10 : 5;
 	mtmp->mpeaceful = 1;
 	mtmp->mavenge = 0;
@@ -42,9 +42,9 @@ STATIC_OVL int pet_type() {
 	    return (rn2(2) ? PM_KITTEN : PM_LITTLE_DOG);
 }
 
-struct Monster * make_familiar(Object *otmp, xchar x, xchar y, bool quietly) {
-	struct MonsterType *pm;
-	struct Monster *mtmp = 0;
+Monster * make_familiar(Object *otmp, xchar x, xchar y, bool quietly) {
+	MonsterType *pm;
+	Monster *mtmp = 0;
 	int chance, trycnt = 100;
 
 	do {
@@ -81,10 +81,10 @@ struct Monster * make_familiar(Object *otmp, xchar x, xchar y, bool quietly) {
 	    }
 	} while (!mtmp && --trycnt > 0);
 
-	if (!mtmp) return (struct Monster *)0;
+	if (!mtmp) return (Monster *)0;
 
 	if (is_pool(mtmp->mx, mtmp->my) && minliquid(mtmp))
-		return (struct Monster *)0;
+		return (Monster *)0;
 
 	initedog(mtmp);
 	mtmp->msleeping = 0;
@@ -116,8 +116,8 @@ struct Monster * make_familiar(Object *otmp, xchar x, xchar y, bool quietly) {
 	return mtmp;
 }
 
-struct Monster * makedog() {
-	struct Monster *mtmp;
+Monster * makedog() {
+	Monster *mtmp;
 #ifdef STEED
 	Object *otmp;
 #endif
@@ -125,7 +125,7 @@ struct Monster * makedog() {
 	int   pettype;
 	static int petname_used = 0;
 
-	if (preferred_pet == 'n') return((struct Monster *) 0);
+	if (preferred_pet == 'n') return((Monster *) 0);
 
 	pettype = pet_type();
 	if (pettype == PM_LITTLE_DOG)
@@ -146,7 +146,7 @@ struct Monster * makedog() {
 
 	mtmp = makemon(&mons[pettype], u.ux, u.uy, MM_EDOG);
 
-	if(!mtmp) return((struct Monster *) 0); /* pets were genocided */
+	if(!mtmp) return((Monster *) 0); /* pets were genocided */
 
 #ifdef STEED
 	/* Horses already wear a saddle */
@@ -171,7 +171,7 @@ struct Monster * makedog() {
 /* record `last move time' for all monsters prior to level save so that
    mon_arrive() can catch up for lost time when they're restored later */
 void update_mlstmv() {
-	struct Monster *mon;
+	Monster *mon;
 
 	/* monst->mlstmv used to be updated every time `monst' actually moved,
 	   but that is no longer the case so we just do a blanket assignment */
@@ -180,7 +180,7 @@ void update_mlstmv() {
 }
 
 void losedogs() {
-	struct Monster *mtmp, *mtmp0 = 0, *mtmp2;
+	Monster *mtmp, *mtmp0 = 0, *mtmp2;
 
 	while ((mtmp = mydogs) != 0) {
 		mydogs = mtmp->nmon;
@@ -201,7 +201,7 @@ void losedogs() {
 }
 
 /* called from resurrect() in addition to losedogs() */
-void mon_arrive(struct Monster *mtmp, bool with_you) {
+void mon_arrive(Monster *mtmp, bool with_you) {
 	struct trap *t;
 	xchar xlocale, ylocale, xyloc, xyflags, wander;
 	int num_segs;
@@ -361,7 +361,7 @@ void mon_arrive(struct Monster *mtmp, bool with_you) {
 			get_obj_location(obj, &xlocale, &ylocale, 0);
 		    }
 		}
-		corpse = mkcorpstat(CORPSE, (struct Monster *)0, mtmp->data,
+		corpse = mkcorpstat(CORPSE, (Monster *)0, mtmp->data,
 				xlocale, ylocale, FALSE);
 #ifndef GOLDOBJ
 		if (mtmp->mgold) {
@@ -378,7 +378,7 @@ void mon_arrive(struct Monster *mtmp, bool with_you) {
 }
 
 /* heal monster for time spent elsewhere */
-void mon_catchup_elapsed_time(struct Monster *mtmp, long nmv) {
+void mon_catchup_elapsed_time(Monster *mtmp, long nmv) {
 	int imv = 0;	/* avoid zillions of casts and lint warnings */
 
 #if defined(DEBUG) || defined(BETA)
@@ -459,7 +459,7 @@ void mon_catchup_elapsed_time(struct Monster *mtmp, long nmv) {
 
 /* called when you move to another level */
 void keepdogs(bool pets_only) {
-	struct Monster *mtmp, *mtmp2;
+	Monster *mtmp, *mtmp2;
 	Object *obj;
 	int num_segs;
 	bool stay_behind;
@@ -556,7 +556,7 @@ void keepdogs(bool pets_only) {
 #endif /* OVL2 */
 #ifdef OVLB
 
-void migrate_to_level(struct Monster *mtmp, xchar tolev, xchar xyloc, coord *cc) {
+void migrate_to_level(Monster *mtmp, xchar tolev, xchar xyloc, coord *cc) {
 	Object *obj;
 	d_level new_lev;
 	xchar xyflags;
@@ -611,10 +611,10 @@ void migrate_to_level(struct Monster *mtmp, xchar tolev, xchar xyloc, coord *cc)
 
 /* return quality of food; the lower the better */
 /* fungi will eat even tainted food */
-int dogfood(struct Monster *mon, Object *obj) {
+int dogfood(Monster *mon, Object *obj) {
 	bool carni = carnivorous(mon->data);
 	bool herbi = herbivorous(mon->data);
-	struct MonsterType *fptr = &mons[obj->corpsenm];
+	MonsterType *fptr = &mons[obj->corpsenm];
 	bool starving;
 
 	if (is_quest_artifact(obj) || obj_resists(obj, 0, 95))
@@ -706,20 +706,20 @@ int dogfood(struct Monster *mon, Object *obj) {
 #endif /* OVL1 */
 #ifdef OVLB
 
-struct Monster * tamedog(struct Monster *mtmp, Object *obj) {
-	struct Monster *mtmp2;
+Monster * tamedog(Monster *mtmp, Object *obj) {
+	Monster *mtmp2;
 
 	/* The Wiz, Medusa and the quest nemeses aren't even made peaceful. */
 	if (mtmp->iswiz || mtmp->data == &mons[PM_MEDUSA]
 				|| (mtmp->data->mflags3 & M3_WANTSARTI))
-		return((struct Monster *)0);
+		return((Monster *)0);
 
 	/* worst case, at least it'll be peaceful. */
 	mtmp->mpeaceful = 1;
 	set_malign(mtmp);
 	if(flags.moonphase == FULL_MOON && night() && rn2(6) && obj
 						&& mtmp->data->mlet == S_DOG)
-		return((struct Monster *)0);
+		return((Monster *)0);
 
 	/* If we cannot tame it, at least it's no longer afraid. */
 	mtmp->mflee = 0;
@@ -758,7 +758,7 @@ struct Monster * tamedog(struct Monster *mtmp, Object *obj) {
 		   food and also implies that the object has been deleted */
 		return mtmp;
 	    } else
-		return (struct Monster *)0;
+		return (Monster *)0;
 	}
 
 	if (mtmp->mtame || !mtmp->mcanmove ||
@@ -766,10 +766,10 @@ struct Monster * tamedog(struct Monster *mtmp, Object *obj) {
 	    mtmp->isshk || mtmp->isgd || mtmp->ispriest || mtmp->isminion ||
 	    is_covetous(mtmp->data) || is_human(mtmp->data) ||
 	    (is_demon(mtmp->data) && !is_demon(youmonst.data)) ||
-	    (obj && dogfood(mtmp, obj) >= MANFOOD)) return (struct Monster *)0;
+	    (obj && dogfood(mtmp, obj) >= MANFOOD)) return (Monster *)0;
 
 	if (mtmp->m_id == quest_status.leader_m_id)
-	    return((struct Monster *)0);
+	    return((Monster *)0);
 
 	/* make a new monster which has the pet extension */
 	mtmp2 = newmonst(sizeof(struct edog) + mtmp->mnamelth);
@@ -804,7 +804,7 @@ struct Monster * tamedog(struct Monster *mtmp, Object *obj) {
  * If you abused the pet at all while alive, it revives untame.
  * If the pet wasn't abused and was very tame, it might revive tame.
  */
-void wary_dog(struct Monster *mtmp, bool was_dead) {
+void wary_dog(Monster *mtmp, bool was_dead) {
     struct edog *edog;
     bool quietly = was_dead;
 
@@ -866,7 +866,7 @@ void wary_dog(struct Monster *mtmp, bool was_dead) {
     }
 }
 
-void abuse_dog(struct Monster *mtmp) {
+void abuse_dog(Monster *mtmp) {
 	if (!mtmp->mtame) return;
 
 	if (Aggravate_monster || Conflict) mtmp->mtame /=2;
