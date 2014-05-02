@@ -230,7 +230,7 @@ void savebones(Object *corpse) {
 		Object *otmp;
 
 		/* embed your possessions in your statue */
-		otmp = mk_named_object(STATUE, &mons[player.umonnum],
+		otmp = MakeNamedCorpseOrStatue(STATUE, &mons[player.umonnum],
 				       player.ux, player.uy, plname);
 
 		drop_upon_death((Monster *)0, otmp);

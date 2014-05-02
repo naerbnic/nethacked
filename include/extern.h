@@ -327,7 +327,7 @@ E const char *rndcolor();
 #ifdef REINCARNATION
 E const char *roguename();
 #endif
-E Object *realloc_obj(
+E Object *ReallocateExtraObjectSpace(
     Object *, int, genericptr_t, int, const char *);
 E char *coyotename(Monster *,char *);
 
@@ -951,9 +951,9 @@ E Object *MakeGold(long,int,int);
 E Object *MakeCorpseOrStatue(
     int,Monster *,MonsterType *,int,int,bool);
 E Object *AttachMonsterIdToObject(Object *, unsigned);
-E Monster *get_mtraits(Object *, bool);
-E Object *mk_tt_object(int,int,int);
-E Object *mk_named_object(
+E Monster *NewMonsterFromObject(Object *, bool);
+E Object *NewTopTenObject(int,int,int);
+E Object *MakeNamedCorpseOrStatue(
     int,MonsterType *,int,int,const char *);
 E Object *rnd_treefruit_at(int, int);
 E void StartCorpseTimeout(Object *);

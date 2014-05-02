@@ -305,7 +305,7 @@ void fill_zoo(struct mkroom *sroom) {
 			break;
 		    case MORGUE:
 			if(!rn2(5))
-			    (void) mk_tt_object(CORPSE, sx, sy);
+			    (void) NewTopTenObject(CORPSE, sx, sy);
 			if(!rn2(10))	/* lots of treasure buried with dead */
 			    (void) MakeSpecificObjectAt((rn2(3)) ? LARGE_BOX : CHEST,
 					     sx, sy, TRUE, FALSE);
@@ -324,7 +324,7 @@ void fill_zoo(struct mkroom *sroom) {
 			break;
 		    case COCKNEST:
 			if(!rn2(3)) {
-			    Object *sobj = mk_tt_object(STATUE, sx, sy);
+			    Object *sobj = NewTopTenObject(STATUE, sx, sy);
 
 			    if (sobj) {
 				for (i = rn2(5); i; i--)

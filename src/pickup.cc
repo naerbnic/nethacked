@@ -1986,7 +1986,7 @@ STATIC_OVL void observe_quantum_cat(Object *box) {
 	    pline("%s inside the box is still alive!", Monnam(livecat));
 	(void) christen_monst(livecat, sc);
     } else {
-	deadcat = mk_named_object(CORPSE, &mons[PM_HOUSECAT],
+	deadcat = MakeNamedCorpseOrStatue(CORPSE, &mons[PM_HOUSECAT],
 				  box->ox, box->oy, sc);
 	if (deadcat) {
 	    obj_extract_self(deadcat);

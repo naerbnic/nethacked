@@ -328,7 +328,7 @@ void do_oname(Object *obj) {
 /*
  * Allocate a new and possibly larger storage space for an obj.
  */
-Object * realloc_obj(Object *obj, int oextra_size, genericptr_t oextra_src, int oname_size, const char *name) {
+Object * ReallocateExtraObjectSpace(Object *obj, int oextra_size, genericptr_t oextra_src, int oname_size, const char *name) {
 	Object *otmp;
 
 	otmp = newobj(oextra_size + oname_size);
@@ -412,7 +412,7 @@ Object * oname(Object *obj, const char *name) {
 		/* no need to replace entire object */
 		if (lth) strcpy(ONAME(obj), name);
 	} else {
-		obj = realloc_obj(obj, obj->oxlth,
+		obj = ReallocateExtraObjectSpace(obj, obj->oxlth,
 			      (genericptr_t)obj->oextra, lth, name);
 	}
 	if (lth) artifact_exists(obj, name, TRUE);

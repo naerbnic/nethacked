@@ -1181,7 +1181,7 @@ int dosacrifice() {
 	    else useupf(otmp, 1L);
 	    return(1);
 	} else if (otmp->oxlth && otmp->oattached == OATTACHED_MONST
-		    && ((mtmp = get_mtraits(otmp, FALSE)) != (Monster *)0)
+		    && ((mtmp = NewMonsterFromObject(otmp, FALSE)) != (Monster *)0)
 		    && mtmp->mtame) {
 	    /* mtmp is a temporary pointer to a tame monster's attributes,
 	     * not a real monster */

@@ -380,7 +380,7 @@ STATIC_OVL void fixup_special() {
 	for (tryct = rnd(4); tryct; tryct--) {
 	    x = somex(croom); y = somey(croom);
 	    if (goodpos(x, y, (Monster *)0, 0)) {
-		otmp = mk_tt_object(STATUE, x, y);
+		otmp = NewTopTenObject(STATUE, x, y);
 		while (otmp && (poly_when_stoned(&mons[otmp->corpsenm]) ||
 				pm_resistance(&mons[otmp->corpsenm],MR_STONE))) {
 		    otmp->corpsenm = PickRandomMonsterTypeIndex();
@@ -390,7 +390,7 @@ STATIC_OVL void fixup_special() {
 	}
 
 	if (rn2(2))
-	    otmp = mk_tt_object(STATUE, somex(croom), somey(croom));
+	    otmp = NewTopTenObject(STATUE, somex(croom), somey(croom));
 	else /* Medusa statues don't contain books */
 	    otmp = MakeCorpseOrStatue(STATUE, (Monster *)0, (MonsterType *)0,
 			      somex(croom), somey(croom), FALSE);

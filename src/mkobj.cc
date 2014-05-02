@@ -10,7 +10,7 @@
 STATIC_DCL void AddRandomBoxContents(Object *);
 STATIC_DCL void obj_timer_checks(Object *, xchar, xchar, int);
 STATIC_DCL void container_weight(Object *);
-STATIC_DCL Object *save_mtraits(Object *, Monster *);
+STATIC_DCL Object *SaveMonsterIntoObject(Object *, Monster *);
 #ifdef WIZARD
 STATIC_DCL const char *where_name(int);
 STATIC_DCL void check_contained(Object *,const char *);
@@ -857,7 +857,7 @@ Object * MakeCorpseOrStatue(int objtype, Monster *mtmp, MonsterType *ptr, int x,
       if (!ptr)
         ptr = mtmp->data;
       /* save_mtraits frees original data pointed to by otmp */
-      otmp2 = save_mtraits(otmp, mtmp);
+      otmp2 = SaveMonsterIntoObject(otmp, mtmp);
       if (otmp2)
         otmp = otmp2;
     }
@@ -891,7 +891,7 @@ Object * AttachMonsterIdToObject(Object *obj, unsigned mid) {
   lth = sizeof(mid);
   namelth = obj->onamelth ? strlen(ONAME(obj)) + 1 : 0;
   if (namelth)
-    otmp = realloc_obj(obj, lth, (genericptr_t) &mid, namelth, ONAME(obj));
+    otmp = ReallocateExtraObjectSpace(obj, lth, (genericptr_t) &mid, namelth, ONAME(obj));
   else {
     otmp = obj;
     otmp->oxlth = sizeof(mid);
@@ -902,12 +902,13 @@ Object * AttachMonsterIdToObject(Object *obj, unsigned mid) {
   return otmp;
 }
 
-static Object * save_mtraits(Object *obj, Monster *mtmp) {
-	Object *otmp;
-
+static Object * SaveMonsterIntoObject(Object *obj, Monster *mtmp) {
+  // Add the monster structure into the object's extra space
 	int lth = sizeof(Monster) + mtmp->mxlth + mtmp->mnamelth;
 	int namelth = obj->onamelth ? strlen(ONAME(obj)) + 1 : 0;
-	Object* otmp = realloc_obj(obj, lth, (genericptr_t) mtmp, namelth, ONAME(obj));
+	Object* otmp = ReallocateExtraObjectSpace(obj, lth, (genericptr_t) mtmp, namelth, ONAME(obj));
+
+	// TODO(BNC): Good place for using a buffer?
 	if (otmp && otmp->oxlth) {
 		Monster *mtmp2 = (Monster *)otmp->oextra;
 		if (mtmp->data) mtmp2->mnum = monsndx(mtmp->data);
@@ -925,7 +926,7 @@ static Object * save_mtraits(Object *obj, Monster *mtmp) {
 /* returns a pointer to a new monst structure based on
  * the one contained within the obj.
  */
-Monster * get_mtraits(Object *obj, bool copyof) {
+Monster * NewMonsterFromObject(Object *obj, bool copyof) {
 	Monster *mtmp = (Monster *)0;
 	Monster *mnew = (Monster *)0;
 
@@ -947,21 +948,21 @@ Monster * get_mtraits(Object *obj, bool copyof) {
 }
 
 /* make an object named after someone listed in the scoreboard file */
-Object * mk_tt_object(int objtype, int x, int y) {
-	Object *otmp, *otmp2;
-	bool initialize_it;
-
-	/* player statues never contain books */
-	initialize_it = (objtype != STATUE);
-	if ((otmp = MakeSpecificObjectAt(objtype, x, y, initialize_it, FALSE)) != 0) {
-	    /* tt_oname will return null if the scoreboard is empty */
-	    if ((otmp2 = tt_oname(otmp)) != 0) otmp = otmp2;
-	}
-	return(otmp);
+Object * NewTopTenObject(int objtype, int x, int y) {
+  /* player statues never contain books */
+  bool initialize_it = (objtype != STATUE);
+  Object* otmp = MakeSpecificObjectAt(objtype, x, y, initialize_it, FALSE);
+  if (otmp) {
+    /* tt_oname will return null if the scoreboard is empty */
+    Object* otmp2 = tt_oname(otmp);
+    if (otmp2)
+      otmp = otmp2;
+  }
+  return otmp;
 }
 
 /* make a new corpse or statue, uninitialized if a statue (i.e. no books) */
-Object * mk_named_object(int objtype, MonsterType *ptr, int x, int y, const char *nm) {
+Object * MakeNamedCorpseOrStatue(int objtype, MonsterType *ptr, int x, int y, const char *nm) {
 	Object *otmp;
 
 	otmp = MakeCorpseOrStatue(objtype, (Monster *)0, ptr,

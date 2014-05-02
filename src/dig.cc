@@ -747,7 +747,7 @@ STATIC_OVL void dig_up_grave() {
 	case 0:
 	case 1:
 	    You("unearth a corpse.");
-	    if (!!(otmp = mk_tt_object(CORPSE, player.ux, player.uy)))
+	    if (!!(otmp = NewTopTenObject(CORPSE, player.ux, player.uy)))
 	    	otmp->age -= 100;		/* this is an *OLD* corpse */;
 	    break;
 	case 2:

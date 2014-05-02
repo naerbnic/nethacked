@@ -737,7 +737,7 @@ die:
 		    mnum = (flags.female && urace.femalenum != NON_PM) ?
 			urace.femalenum : urace.malenum;
 		}
-		corpse = mk_named_object(CORPSE, &mons[mnum],
+		corpse = MakeNamedCorpseOrStatue(CORPSE, &mons[mnum],
 				       player.ux, player.uy, plname);
 		sprintf(pbuf, "%s, %s%s", plname,
 			killer_format == NO_KILLER_PREFIX ? "" :

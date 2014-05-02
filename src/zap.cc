@@ -446,9 +446,9 @@ Monster * montraits(Object *obj, coord *cc) {
 	Monster *mtmp2 = (Monster *)0;
 
 	if (obj->oxlth && (obj->oattached == OATTACHED_MONST))
-		mtmp2 = get_mtraits(obj, TRUE);
+		mtmp2 = NewMonsterFromObject(obj, TRUE);
 	if (mtmp2) {
-		/* save_mtraits() validated mtmp2->mnum */
+		/* SaveMonsterIntoObject() validated mtmp2->mnum */
 		mtmp2->data = &mons[mtmp2->mnum];
 		if (mtmp2->mhpmax <= 0 && !is_rider(mtmp2->data))
 			return (Monster *)0;
