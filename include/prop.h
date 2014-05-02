@@ -77,7 +77,7 @@
 
 /*** Where the properties come from ***/
 /* Definitions were moved here from obj.h and you.h */
-struct prop {
+struct Property {
 	/*** Properties conveyed by objects ***/
 	long extrinsic;
 	/* Armor */

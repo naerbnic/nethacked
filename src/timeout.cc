@@ -153,7 +153,7 @@ void burn_away_slime() {
 #ifdef OVL0
 
 void nh_timeout() {
-	struct prop *upp;
+	struct Property *upp;
 	int sleeptime;
 	int m_idx;
 	int baseluck = (flags.moonphase == FULL_MOON) ? 1 : 0;

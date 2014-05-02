@@ -261,7 +261,7 @@ struct Player {
 	int	 uhunger;	/* refd only in eat.c and shk.c */
 	unsigned uhs;		/* hunger state - see eat.c */
 
-	struct prop uprops[LAST_PROP+1];
+	struct Property uprops[LAST_PROP+1];
 
 	unsigned umconf;
 	char usick_cause[PL_PSIZ+20]; /* sizeof "unicorn horn named "+1 */
