@@ -1132,7 +1132,7 @@ int seffects(Object *sobj) {
 			    Monster *mtmp;
 
 	    	    	    /* Make the object(s) */
-	    	    	    otmp2 = mksobj(confused ? ROCK : BOULDER,
+	    	    	    otmp2 = MakeSpecificObject(confused ? ROCK : BOULDER,
 	    	    	    		FALSE, FALSE);
 	    	    	    if (!otmp2) continue;  /* Shouldn't happen */
 	    	    	    otmp2->quan = confused ? rn1(5,2) : 1;
@@ -1187,7 +1187,7 @@ int seffects(Object *sobj) {
 		    Object *otmp2;
 
 		    /* Okay, _you_ write this without repeating the code */
-		    otmp2 = mksobj(confused ? ROCK : BOULDER,
+		    otmp2 = MakeSpecificObject(confused ? ROCK : BOULDER,
 				FALSE, FALSE);
 		    if (!otmp2) break;
 		    otmp2->quan = confused ? rn1(5,2) : 1;

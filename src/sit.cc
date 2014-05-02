@@ -286,7 +286,7 @@ int dosit() {
 			return 0;
 		}
 
-		uegg = mksobj(EGG, FALSE, FALSE);
+		uegg = MakeSpecificObject(EGG, FALSE, FALSE);
 		uegg->spe = 1;
 		uegg->quan = 1;
 		uegg->owt = weight(uegg);

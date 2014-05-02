@@ -154,7 +154,7 @@ found:
 	/* KMH, conduct */
 	player.uconduct.literate++;
 
-	new_obj = mksobj(i, FALSE, FALSE);
+	new_obj = MakeSpecificObject(i, FALSE, FALSE);
 	new_obj->bknown = (paper->bknown && pen->bknown);
 
 	/* shk imposes a flat rate per use, not based on actual charges used */

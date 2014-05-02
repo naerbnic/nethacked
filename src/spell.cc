@@ -764,7 +764,7 @@ int spelleffects(int spell, bool atme) {
 	flags.botl = 1;
 	exercise(A_WIS, TRUE);
 	/* pseudo is a temporary "false" object containing the spell stats */
-	pseudo = mksobj(spellid(spell), FALSE, FALSE);
+	pseudo = MakeSpecificObject(spellid(spell), FALSE, FALSE);
 	pseudo->blessed = pseudo->cursed = 0;
 	pseudo->quan = 20L;			/* do not let useup get it */
 	/*

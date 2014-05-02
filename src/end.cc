@@ -939,7 +939,7 @@ die:
 
 		    if (count == 0L) continue;
 		    if (objects[typ].oc_class != GEM_CLASS || typ <= LAST_GEM) {
-			otmp = mksobj(typ, FALSE, FALSE);
+			otmp = MakeSpecificObject(typ, FALSE, FALSE);
 			makeknown(otmp->otyp);
 			otmp->known = 1;	/* for fake amulets */
 			otmp->dknown = 1;	/* seen it (blindness fix) */

@@ -139,7 +139,7 @@ STATIC_OVL
 void m_initthrow(Monster *mtmp, int otyp, int oquan) {
 	Object *otmp;
 
-	otmp = mksobj(otyp, TRUE, FALSE);
+	otmp = MakeSpecificObject(otyp, TRUE, FALSE);
 	otmp->quan = (long) rn1(oquan, 3);
 	otmp->owt = weight(otmp);
 	if (otyp == ORCISH_ARROW) otmp->opoisoned = TRUE;
@@ -234,7 +234,7 @@ STATIC_OVL void m_initweap(Monster *mtmp) {
 		    }
 		} else if (ptr->msound == MS_PRIEST ||
 			quest_mon_represents_role(ptr,PM_PRIEST)) {
-		    otmp = mksobj(MACE, FALSE, FALSE);
+		    otmp = MakeSpecificObject(MACE, FALSE, FALSE);
 		    if(otmp) {
 			otmp->spe = rnd(3);
 			if(!rn2(2)) curse(otmp);
@@ -248,7 +248,7 @@ STATIC_OVL void m_initweap(Monster *mtmp) {
 		    int spe2;
 
 		    /* create minion stuff; can't use mongets */
-		    otmp = mksobj(LONG_SWORD, FALSE, FALSE);
+		    otmp = MakeSpecificObject(LONG_SWORD, FALSE, FALSE);
 
 		    /* maybe make it special */
 		    if (!rn2(20) || is_lord(ptr))
@@ -260,7 +260,7 @@ STATIC_OVL void m_initweap(Monster *mtmp) {
 		    otmp->spe = max(otmp->spe, spe2);
 		    (void) mpickobj(mtmp, otmp);
 
-		    otmp = mksobj(!rn2(4) || is_lord(ptr) ?
+		    otmp = MakeSpecificObject(!rn2(4) || is_lord(ptr) ?
 				  SHIELD_OF_REFLECTION : LARGE_SHIELD,
 				  FALSE, FALSE);
 		    otmp->cursed = FALSE;
@@ -460,7 +460,7 @@ STATIC_OVL void m_initweap(Monster *mtmp) {
  *   This will change with silver & copper coins
  */
 void mkmonmoney(Monster *mtmp, long amount) {
-    Object *gold = mksobj(GOLD_PIECE, FALSE, FALSE);
+    Object *gold = MakeSpecificObject(GOLD_PIECE, FALSE, FALSE);
     gold->quan = amount;
     add_to_minv(mtmp, gold);
 }
@@ -570,7 +570,7 @@ STATIC_OVL void m_initinv(Monster *mtmp) {
 			(void) mongets(mtmp, WAN_DIGGING);
 		} else if (is_giant(ptr)) {
 		    for (cnt = rn2((int)(mtmp->m_lev / 2)); cnt; cnt--) {
-			otmp = mksobj(rnd_class(DILITHIUM_CRYSTAL,LUCKSTONE-1),
+			otmp = MakeSpecificObject(rnd_class(DILITHIUM_CRYSTAL,LUCKSTONE-1),
 				      FALSE, FALSE);
 			otmp->quan = (long) rn1(2, 3);
 			otmp->owt = weight(otmp);
@@ -580,7 +580,7 @@ STATIC_OVL void m_initinv(Monster *mtmp) {
 		break;
 	    case S_WRAITH:
 		if (ptr == &mons[PM_NAZGUL]) {
-			otmp = mksobj(RIN_INVISIBILITY, FALSE, FALSE);
+			otmp = MakeSpecificObject(RIN_INVISIBILITY, FALSE, FALSE);
 			curse(otmp);
 			(void) mpickobj(mtmp, otmp);
 		}
@@ -589,7 +589,7 @@ STATIC_OVL void m_initinv(Monster *mtmp) {
 		if (ptr == &mons[PM_MASTER_LICH] && !rn2(13))
 			(void)mongets(mtmp, (rn2(7) ? ATHAME : WAN_NOTHING));
 		else if (ptr == &mons[PM_ARCH_LICH] && !rn2(3)) {
-			otmp = mksobj(rn2(3) ? ATHAME : QUARTERSTAFF,
+			otmp = MakeSpecificObject(rn2(3) ? ATHAME : QUARTERSTAFF,
 				      TRUE, rn2(13) ? FALSE : TRUE);
 			if (otmp->spe < 2) otmp->spe = rnd(3);
 			if (!rn2(4)) otmp->oerodeproof = 1;
@@ -601,7 +601,7 @@ STATIC_OVL void m_initinv(Monster *mtmp) {
 		break;
 	    case S_QUANTMECH:
 		if (!rn2(20)) {
-			otmp = mksobj(LARGE_BOX, FALSE, FALSE);
+			otmp = MakeSpecificObject(LARGE_BOX, FALSE, FALSE);
 			otmp->spe = 1; /* flag for special box */
 			otmp->owt = weight(otmp);
 			(void) mpickobj(mtmp, otmp);
@@ -1424,7 +1424,7 @@ int mongets(Monster *mtmp, int otyp) {
 	int spe;
 
 	if (!otyp) return 0;
-	otmp = mksobj(otyp, TRUE, FALSE);
+	otmp = MakeSpecificObject(otyp, TRUE, FALSE);
 	if (otmp) {
 	    if (mtmp->data->mlet == S_DEMON) {
 		/* demons never get blessed objects */

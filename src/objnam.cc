@@ -2008,7 +2008,7 @@ Object * readobjnam(char *bp, Object *no_wish, bool from_user) {
 		flags.botl=1;
 		return (&zeroobj);
 #else
-                otmp = mksobj(GOLD_PIECE, FALSE, FALSE);
+                otmp = MakeSpecificObject(GOLD_PIECE, FALSE, FALSE);
 		otmp->quan = cnt;
                 otmp->owt = weight(otmp);
 		flags.botl=1;
@@ -2362,7 +2362,7 @@ typfnd:
 	    typ = OIL_LAMP;
 
 	if(typ) {
-		otmp = mksobj(typ, TRUE, FALSE);
+		otmp = MakeSpecificObject(typ, TRUE, FALSE);
 	} else {
 		otmp = MakeRandomObjectOfClass(oclass, FALSE);
 		if (otmp) typ = otmp->otyp;
@@ -2425,7 +2425,7 @@ typfnd:
 			/* Fall through */
 		case SKELETON_KEY: case CHEST: case LARGE_BOX:
 		case HEAVY_IRON_BALL: case IRON_CHAIN: case STATUE:
-			/* otmp->cobj already done in mksobj() */
+			/* otmp->cobj already done in MakeSpecificObject() */
 				break;
 #ifdef MAIL
 		case SCR_MAIL: otmp->spe = 1; break;

@@ -614,13 +614,13 @@ int spitmu(Monster *mtmp, struct Attack *mattk) {
 		switch (mattk->adtyp) {
 		    case AD_BLND:
 		    case AD_DRST:
-			otmp = mksobj(BLINDING_VENOM, TRUE, FALSE);
+			otmp = MakeSpecificObject(BLINDING_VENOM, TRUE, FALSE);
 			break;
 		    default:
 			impossible("bad attack type in spitmu");
 				/* fall through */
 		    case AD_ACID:
-			otmp = mksobj(ACID_VENOM, TRUE, FALSE);
+			otmp = MakeSpecificObject(ACID_VENOM, TRUE, FALSE);
 			break;
 		}
 		if(!rn2(BOLT_LIM-distmin(mtmp->mx,mtmp->my,mtmp->mux,mtmp->muy))) {

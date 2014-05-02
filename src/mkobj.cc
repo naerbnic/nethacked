@@ -83,7 +83,7 @@ Object * MakeRandomObjectOfClassAt(char let, int x, int y, bool artif) {
 }
 
 Object * MakeSpecificObjectAt(int otyp, int x, int y, bool init, bool artif) {
-	Object* otmp = mksobj(otyp, init, artif);
+	Object* otmp = MakeSpecificObject(otyp, init, artif);
 	place_object(otmp, x, y);
 	return(otmp);
 }
@@ -110,7 +110,7 @@ Object * MakeRandomObjectOfClass(char oclass, bool artif) {
   if (objects[i].oc_class != oclass || !OBJ_NAME(objects[i]))
     panic("probtype error, oclass=%d i=%d", (int) oclass, i);
 
-  return (mksobj(i, TRUE, artif));
+  return (MakeSpecificObject(i, TRUE, artif));
 }
 
 STATIC_OVL void AddRandomBoxContents(Object *box) {
@@ -134,7 +134,7 @@ STATIC_OVL void AddRandomBoxContents(Object *box) {
 
 	for (n = rn2(n+1); n > 0; n--) {
 	    if (box->otyp == ICE_BOX) {
-		if (!(otmp = mksobj(CORPSE, TRUE, TRUE))) continue;
+		if (!(otmp = MakeSpecificObject(CORPSE, TRUE, TRUE))) continue;
 		/* Note: setting age to 0 is correct.  Age has a different
 		 * from usual meaning for objects stored in ice boxes. -KAA
 		 */
@@ -320,7 +320,7 @@ static const char dknowns[] = {
 		GEM_CLASS, SPBOOK_CLASS, WEAPON_CLASS, TOOL_CLASS, 0
 };
 
-Object * mksobj(int otyp, bool init, bool artif) {
+Object * MakeSpecificObject(int otyp, bool init, bool artif) {
 	int mndx, tryct;
 	Object *otmp;
 	char let = objects[otyp].oc_class;
@@ -819,7 +819,7 @@ Object * mkcorpstat(int objtype, Monster *mtmp, MonsterType *ptr, int x, int y, 
 	if (objtype != CORPSE && objtype != STATUE)
 	    impossible("making corpstat type %d", objtype);
 	if (x == 0 && y == 0) {		/* special case - random placement */
-		otmp = mksobj(objtype, init, FALSE);
+		otmp = MakeSpecificObject(objtype, init, FALSE);
 		if (otmp) rloco(otmp);
 	} else
 		otmp = MakeSpecificObjectAt(objtype, x, y, init, FALSE);
@@ -832,7 +832,7 @@ Object * mkcorpstat(int objtype, Monster *mtmp, MonsterType *ptr, int x, int y, 
 		otmp2 = save_mtraits(otmp, mtmp);
 		if (otmp2) otmp = otmp2;
 	    }
-	    /* use the corpse or statue produced by mksobj() as-is
+	    /* use the corpse or statue produced by MakeSpecificObject() as-is
 	       unless `ptr' is non-null */
 	    if (ptr) {
 		int old_corpsenm = otmp->corpsenm;

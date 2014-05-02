@@ -604,7 +604,7 @@ void dotrap(Trap *trap, unsigned trflags) {
 		trap->once = 1;
 		seetrap(trap);
 		pline("An arrow shoots out at you!");
-		otmp = mksobj(ARROW, TRUE, FALSE);
+		otmp = MakeSpecificObject(ARROW, TRUE, FALSE);
 		otmp->quan = 1L;
 		otmp->owt = weight(otmp);
 		otmp->opoisoned = 0;
@@ -631,7 +631,7 @@ void dotrap(Trap *trap, unsigned trflags) {
 		trap->once = 1;
 		seetrap(trap);
 		pline("A little dart shoots out at you!");
-		otmp = mksobj(DART, TRUE, FALSE);
+		otmp = MakeSpecificObject(DART, TRUE, FALSE);
 		otmp->quan = 1L;
 		otmp->owt = weight(otmp);
 		if (!rn2(6)) otmp->opoisoned = 1;
@@ -1540,7 +1540,7 @@ STATIC_OVL int mkroll_launch(Trap *ttmp, xchar x, xchar y, short otyp, long ocou
 		cc.x = bcc.x = x;
 		cc.y = bcc.y = y;
 	} else {
-		otmp = mksobj(otyp, TRUE, FALSE);
+		otmp = MakeSpecificObject(otyp, TRUE, FALSE);
 		otmp->quan = ocount;
 		otmp->owt = weight(otmp);
 		place_object(otmp, cc.x, cc.y);
@@ -1664,7 +1664,7 @@ int mintrap(Monster *mtmp) {
 			    break;
 			}
 			trap->once = 1;
-			otmp = mksobj(ARROW, TRUE, FALSE);
+			otmp = MakeSpecificObject(ARROW, TRUE, FALSE);
 			otmp->quan = 1L;
 			otmp->owt = weight(otmp);
 			otmp->opoisoned = 0;
@@ -1681,7 +1681,7 @@ int mintrap(Monster *mtmp) {
 			    break;
 			}
 			trap->once = 1;
-			otmp = mksobj(DART, TRUE, FALSE);
+			otmp = MakeSpecificObject(DART, TRUE, FALSE);
 			otmp->quan = 1L;
 			otmp->owt = weight(otmp);
 			if (!rn2(6)) otmp->opoisoned = 1;
@@ -1698,7 +1698,7 @@ int mintrap(Monster *mtmp) {
 			    break;
 			}
 			trap->once = 1;
-			otmp = mksobj(ROCK, TRUE, FALSE);
+			otmp = MakeSpecificObject(ROCK, TRUE, FALSE);
 			otmp->quan = 1L;
 			otmp->owt = weight(otmp);
 			if (in_sight) seetrap(trap);
@@ -2913,7 +2913,7 @@ STATIC_OVL int untrap_prob(Trap *ttmp) {
 
 /* Replace trap with object(s).  Helge Hafting */
 STATIC_OVL void cnv_trap_obj(int otyp, int cnt, Trap *ttmp) {
-	Object *otmp = mksobj(otyp, TRUE, FALSE);
+	Object *otmp = MakeSpecificObject(otyp, TRUE, FALSE);
 	otmp->quan=cnt;
 	otmp->owt = weight(otmp);
 	/* Only dart traps are capable of being poisonous */

@@ -944,7 +944,7 @@ E int rndmonnum();
 E Object *splitobj(Object *,long);
 E void replace_object(Object *,Object *);
 E void bill_dummy_object(Object *);
-E Object *mksobj(int,bool,bool);
+E Object *MakeSpecificObject(int,bool,bool);
 E int bcsign(Object *);
 E int weight(Object *);
 E Object *mkgold(long,int,int);

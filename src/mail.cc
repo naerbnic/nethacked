@@ -362,7 +362,7 @@ STATIC_OVL void newmail(struct mail_info *info) {
     verbalize("%s, %s!  %s.", Hello(md), plname, info->display_txt);
 
     if (info->message_typ) {
-	Object *obj = mksobj(SCR_MAIL, FALSE, FALSE);
+	Object *obj = MakeSpecificObject(SCR_MAIL, FALSE, FALSE);
 	if (distu(md->mx,md->my) > 2)
 	    verbalize("Catch!");
 	display_nhwindow(WIN_MESSAGE, FALSE);

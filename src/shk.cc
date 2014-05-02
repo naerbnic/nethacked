@@ -2839,7 +2839,7 @@ int repair_damage(Monster *shkp, struct damage *tmp_dam, bool catchup) {
 		    return(0);
 	    if (ttmp->ttyp == LANDMINE || ttmp->ttyp == BEAR_TRAP) {
 		/* convert to an object */
-		otmp = mksobj((ttmp->ttyp == LANDMINE) ? LAND_MINE :
+		otmp = MakeSpecificObject((ttmp->ttyp == LANDMINE) ? LAND_MINE :
 				BEARTRAP, TRUE, FALSE);
 		otmp->quan= 1;
 		otmp->owt = weight(otmp);

@@ -135,7 +135,7 @@ Object * mk_artifact(Object *otmp, aligntyp alignment) {
 	    a = &artilist[m];
 
 	    /* make an appropriate object if necessary, then christen it */
-make_artif: if (by_align) otmp = mksobj((int)a->otyp, TRUE, FALSE);
+make_artif: if (by_align) otmp = MakeSpecificObject((int)a->otyp, TRUE, FALSE);
 	    otmp = oname(otmp, a->name);
 	    otmp->oartifact = m;
 	    artiexist[m] = TRUE;
@@ -1233,7 +1233,7 @@ STATIC_OVL int arti_invoke(Object *obj) {
 	    enlightenment(0);
 	    break;
 	case CREATE_AMMO: {
-	    Object *otmp = mksobj(ARROW, TRUE, FALSE);
+	    Object *otmp = MakeSpecificObject(ARROW, TRUE, FALSE);
 
 	    if (!otmp) {
               /* you had the property from some other source too */

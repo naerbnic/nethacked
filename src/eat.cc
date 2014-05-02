@@ -2324,7 +2324,7 @@ Object * floorfood(const char *verb, int corpsecheck) {
 		if ((c = yn_function(qbuf, ynqchars, 'n')) == 'y') {
 		    player.utrap = player.utraptype = 0;
 		    deltrap(ttmp);
-		    return mksobj(BEARTRAP, TRUE, FALSE);
+		    return MakeSpecificObject(BEARTRAP, TRUE, FALSE);
 		} else if (c == 'q') {
 		    return nullptr;
 		}

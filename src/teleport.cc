@@ -580,7 +580,7 @@ void level_tele() {
 				    "Destination is earth level");
 				if (!player.uhave.amulet) {
 					Object *obj;
-					obj = mksobj(AMULET_OF_YENDOR,
+					obj = MakeSpecificObject(AMULET_OF_YENDOR,
 							TRUE, FALSE);
 					if (obj) {
 						obj = addinv(obj);

@@ -1342,7 +1342,7 @@ STATIC_OVL void final_level() {
 		    mtmp->mhp = mtmp->mhpmax =
 					d((int)mtmp->m_lev,10) + 30 + rnd(30);
 		    if ((otmp = select_hwep(mtmp)) == 0) {
-			otmp = mksobj(SILVER_SABER, FALSE, FALSE);
+			otmp = MakeSpecificObject(SILVER_SABER, FALSE, FALSE);
 			if (mpickobj(mtmp, otmp))
 			    panic("merged weapon?");
 		    }

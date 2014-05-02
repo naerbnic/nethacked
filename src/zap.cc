@@ -1159,7 +1159,7 @@ Object * poly_obj(Object *obj, int id) {
 		  objects[obj->otyp].oc_magic != objects[otmp->otyp].oc_magic);
 	} else {
 	    /* literally replace obj with this new thing */
-	    otmp = mksobj(id, FALSE, FALSE);
+	    otmp = MakeSpecificObject(id, FALSE, FALSE);
 	/* Actually more things use corpsenm but they polymorph differently */
 #define USES_CORPSENM(typ) ((typ)==CORPSE || (typ)==STATUE || (typ)==FIGURINE)
 	    if (USES_CORPSENM(obj->otyp) && USES_CORPSENM(id))

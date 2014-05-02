@@ -886,7 +886,7 @@ STATIC_OVL void ini_inv(struct trobj *trop) {
 				    break;
 				}
 			}
-			obj = mksobj(otyp, TRUE, FALSE);
+			obj = MakeSpecificObject(otyp, TRUE, FALSE);
 		} else {	/* UNDEF_TYP */
 			static short nocreate = STRANGE_OBJECT;
 			static short nocreate2 = STRANGE_OBJECT;

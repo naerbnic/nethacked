@@ -663,7 +663,7 @@ STATIC_OVL void gcrownu() {
 	    !carrying(SPE_FINGER_OF_DEATH)) {
 	class_gift = SPE_FINGER_OF_DEATH;
  make_splbk:
-	obj = mksobj(class_gift, TRUE, FALSE);
+	obj = MakeSpecificObject(class_gift, TRUE, FALSE);
 	bless(obj);
 	obj->bknown = TRUE;
 	at_your_feet("A spellbook");
@@ -705,7 +705,7 @@ STATIC_OVL void gcrownu() {
 	    Your("%s goes snicker-snack!", xname(obj));
 	    obj->dknown = TRUE;
 	} else if (!already_exists) {
-	    obj = mksobj(LONG_SWORD, FALSE, FALSE);
+	    obj = MakeSpecificObject(LONG_SWORD, FALSE, FALSE);
 	    obj = oname(obj, artiname(ART_VORPAL_BLADE));
 	    obj->spe = 1;
 	    at_your_feet("A sword");
@@ -728,7 +728,7 @@ STATIC_OVL void gcrownu() {
 	    Your("%s hums ominously!", swordbuf);
 	    obj->dknown = TRUE;
 	} else if (!already_exists) {
-	    obj = mksobj(RUNESWORD, FALSE, FALSE);
+	    obj = MakeSpecificObject(RUNESWORD, FALSE, FALSE);
 	    obj = oname(obj, artiname(ART_STORMBRINGER));
 	    at_your_feet(An(swordbuf));
 	    obj->spe = 1;

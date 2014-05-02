@@ -831,7 +831,7 @@ STATIC_OVL void mineralize() {
 		  levl[x+1][y].typ   == STONE && levl[x-1][y].typ   == STONE &&
 		  levl[x+1][y+1].typ == STONE && levl[x-1][y+1].typ == STONE) {
 		if (rn2(1000) < goldprob) {
-		    if ((otmp = mksobj(GOLD_PIECE, FALSE, FALSE)) != 0) {
+		    if ((otmp = MakeSpecificObject(GOLD_PIECE, FALSE, FALSE)) != 0) {
 			otmp->ox = x,  otmp->oy = y;
 			otmp->quan = 1L + rnd(goldprob * 3);
 			otmp->owt = weight(otmp);

@@ -640,7 +640,7 @@ Object * g_at(int x, int y) {
 Object * mkgoldobj(long q) {
 	Object *otmp;
 
-	otmp = mksobj(GOLD_PIECE, FALSE, FALSE);
+	otmp = MakeSpecificObject(GOLD_PIECE, FALSE, FALSE);
 	player.ugold -= q;
 	otmp->quan = q;
 	otmp->owt = weight(otmp);

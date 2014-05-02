@@ -359,7 +359,7 @@ void clonewiz() {
 				player.ux, player.uy, NO_MM_FLAGS)) != 0) {
 	    mtmp2->msleeping = mtmp2->mtame = mtmp2->mpeaceful = 0;
 	    if (!player.uhave.amulet && rn2(2)) {  /* give clone a fake */
-		(void) add_to_minv(mtmp2, mksobj(FAKE_AMULET_OF_YENDOR,
+		(void) add_to_minv(mtmp2, MakeSpecificObject(FAKE_AMULET_OF_YENDOR,
 					TRUE, FALSE));
 	    }
 	    mtmp2->m_ap_type = M_AP_MONSTER;

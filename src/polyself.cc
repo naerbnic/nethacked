@@ -746,7 +746,7 @@ int dospit() {
 	Object *otmp;
 
 	if (!getdir((char *)0)) return(0);
-	otmp = mksobj(player.umonnum==PM_COBRA ? BLINDING_VENOM : ACID_VENOM,
+	otmp = MakeSpecificObject(player.umonnum==PM_COBRA ? BLINDING_VENOM : ACID_VENOM,
 			TRUE, FALSE);
 	otmp->spe = 1; /* to indicate it's yours */
 	throwit(otmp, 0L, FALSE);

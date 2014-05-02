@@ -150,7 +150,7 @@ Monster * makedog() {
 
 #ifdef STEED
 	/* Horses already wear a saddle */
-	if (pettype == PM_PONY && !!(otmp = mksobj(SADDLE, TRUE, FALSE))) {
+	if (pettype == PM_PONY && !!(otmp = MakeSpecificObject(SADDLE, TRUE, FALSE))) {
 	    if (mpickobj(mtmp, otmp))
 		panic("merged saddle?");
 	    mtmp->misc_worn_check |= W_SADDLE;

@@ -1564,7 +1564,7 @@ void monstone(Monster *mdef) {
 #ifndef GOLDOBJ
 		if (mdef->mgold) {
 			Object *au;
-			au = mksobj(GOLD_PIECE, FALSE, FALSE);
+			au = MakeSpecificObject(GOLD_PIECE, FALSE, FALSE);
 			au->quan = mdef->mgold;
 			au->owt = weight(au);
 			(void) add_to_container(otmp, au);

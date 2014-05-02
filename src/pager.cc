@@ -226,7 +226,7 @@ STATIC_OVL MonsterType * lookat(int x, int y, char *buf, char *monbuf) {
 
 	if (!otmp || otmp->otyp != glyph_to_obj(glyph)) {
 	    if (glyph_to_obj(glyph) != STRANGE_OBJECT) {
-		otmp = mksobj(glyph_to_obj(glyph), FALSE, FALSE);
+		otmp = MakeSpecificObject(glyph_to_obj(glyph), FALSE, FALSE);
 		if (otmp->oclass == COIN_CLASS)
 		    otmp->quan = 2L; /* to force pluralization */
 		else if (otmp->otyp == SLIME_MOLD)

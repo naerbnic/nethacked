@@ -88,7 +88,7 @@ STATIC_OVL void mk_mplayer_armor(Monster *mon, short typ) {
 	Object *obj;
 
 	if (typ == STRANGE_OBJECT) return;
-	obj = mksobj(typ, FALSE, FALSE);
+	obj = MakeSpecificObject(typ, FALSE, FALSE);
 	if (!rn2(3)) obj->oerodeproof = 1;
 	if (!rn2(3)) curse(obj);
 	if (!rn2(3)) bless(obj);
@@ -212,7 +212,7 @@ Monster * mk_mplayer(MonsterType *ptr, xchar x, xchar y, bool special) {
 	    }
 
 	    if (weapon != STRANGE_OBJECT) {
-		otmp = mksobj(weapon, TRUE, FALSE);
+		otmp = MakeSpecificObject(weapon, TRUE, FALSE);
 		otmp->spe = (special ? rn1(5,4) : rn2(4));
 		if (!rn2(3)) otmp->oerodeproof = 1;
 		else if (!rn2(2)) otmp->greased = 1;

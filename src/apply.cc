@@ -1322,7 +1322,7 @@ STATIC_OVL void use_tinning_kit(Object *obj) {
 	}
 	consume_obj_charge(obj, TRUE);
 
-	if ((can = mksobj(TIN, FALSE, FALSE)) != 0) {
+	if ((can = MakeSpecificObject(TIN, FALSE, FALSE)) != 0) {
 	    static const char you_buy_it[] = "You tin it, you bought it!";
 
 	    can->corpsenm = corpse->corpsenm;

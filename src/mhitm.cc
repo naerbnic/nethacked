@@ -618,7 +618,7 @@ STATIC_OVL int mdamagem(Monster *magr, Monster *mdef, struct Attack *mattk) {
 		num = monsndx(mdef->data);
 		if (magr->mtame && !magr->isminion &&
 		    !(mvitals[num].mvflags & G_NOCORPSE)) {
-		    Object *virtualcorpse = mksobj(CORPSE, FALSE, FALSE);
+		    Object *virtualcorpse = MakeSpecificObject(CORPSE, FALSE, FALSE);
 		    int nutrit;
 
 		    virtualcorpse->corpsenm = num;
