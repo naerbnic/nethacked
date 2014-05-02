@@ -1703,7 +1703,7 @@ STATIC_OVL void use_grease(Object *obj) {
 	update_inventory();
 }
 
-static struct Trapinfo {
+static struct TrapInfo {
 	Object *tobj;
 	xchar tx, ty;
 	int time_needed;
