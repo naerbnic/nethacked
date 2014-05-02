@@ -359,7 +359,7 @@ void m_dowear(struct Monster *mon, bool creation) {
 	if (!cantweararm(mon->data) || mon->data->msize == MZ_SMALL)
 	    m_dowear_type(mon, W_ARMC, creation, FALSE);
 	m_dowear_type(mon, W_ARMH, creation, FALSE);
-	if (!MON_WEP(mon) || !bimanual(MON_WEP(mon)))
+	if (!mon->weapon() || !bimanual(mon->weapon()))
 	    m_dowear_type(mon, W_ARMS, creation, FALSE);
 	m_dowear_type(mon, W_ARMG, creation, FALSE);
 	if (!slithy(mon->data) && mon->data->mlet != S_CENTAUR)
@@ -530,7 +530,7 @@ void clear_bypasses() {
 	for (otmp = migrating_objs; otmp; otmp = otmp->nobj)
 	    otmp->bypass = 0;
 	for (mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
-	    if (DEADMONSTER(mtmp)) continue;
+	    if (mtmp->dead()) continue;
 	    for (otmp = mtmp->minvent; otmp; otmp = otmp->nobj)
 		otmp->bypass = 0;
 	}
@@ -635,7 +635,7 @@ void mon_break_armor(struct Monster *mon, bool polyspot) {
 	    if ((otmp = which_armor(mon, W_ARMG)) != 0) {
 		if (vis)
 		    pline("%s drops %s gloves%s!", Monnam(mon), ppronoun,
-					MON_WEP(mon) ? " and weapon" : "");
+					mon->weapon() ? " and weapon" : "");
 		if (polyspot) bypass_obj(otmp);
 		m_lose_armor(mon, otmp);
 	    }

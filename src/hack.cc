@@ -1530,7 +1530,7 @@ STATIC_OVL bool monstinroom(struct permonst *mdat, int roomno) {
 	struct Monster *mtmp;
 
 	for(mtmp = fmon; mtmp; mtmp = mtmp->nmon)
-		if(!DEADMONSTER(mtmp) && mtmp->data == mdat &&
+		if(!mtmp->dead() && mtmp->data == mdat &&
 		   index(in_rooms(mtmp->mx, mtmp->my, 0), roomno + ROOMOFFSET))
 			return(TRUE);
 	return(FALSE);
@@ -1766,7 +1766,7 @@ void check_special_room(bool newlev) {
 		}
 		if (rt == COURT || rt == SWAMP || rt == MORGUE || rt == ZOO)
 		    for(mtmp = fmon; mtmp; mtmp = mtmp->nmon)
-			if (!DEADMONSTER(mtmp) && !Stealth && !rn2(3)) mtmp->msleeping = 0;
+			if (!mtmp->dead() && !Stealth && !rn2(3)) mtmp->msleeping = 0;
 	    }
 	}
 

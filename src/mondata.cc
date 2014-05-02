@@ -52,7 +52,7 @@ bool poly_when_stoned(struct permonst *ptr) {
 /* returns TRUE if monster is drain-life resistant */
 bool resists_drli(struct Monster *mon) {
 	struct permonst *ptr = mon->data;
-	struct Object *wep = ((mon == &youmonst) ? uwep : MON_WEP(mon));
+	struct Object *wep = ((mon == &youmonst) ? uwep : mon->weapon());
 
 	return (bool)(is_undead(ptr) || is_demon(ptr) || is_were(ptr) ||
 			 ptr == &mons[PM_DEATH] ||
@@ -69,7 +69,7 @@ bool resists_magm(struct Monster *mon) {
 		dmgtype(ptr, AD_RBRE))	/* Chromatic Dragon */
 	    return TRUE;
 	/* check for magic resistance granted by wielded weapon */
-	o = (mon == &youmonst) ? uwep : MON_WEP(mon);
+	o = (mon == &youmonst) ? uwep : mon->weapon();
 	if (o && o->oartifact && defends(AD_MAGM, o))
 	    return TRUE;
 	/* check for magic resistance granted by worn or carried items */
@@ -97,7 +97,7 @@ bool resists_blnd(struct Monster *mon) {
 	if (dmgtype_fromattack(ptr, AD_BLND, AT_EXPL) ||
 		dmgtype_fromattack(ptr, AD_BLND, AT_GAZE))
 	    return TRUE;
-	o = is_you ? uwep : MON_WEP(mon);
+	o = is_you ? uwep : mon->weapon();
 	if (o && o->oartifact && defends(AD_BLND, o))
 	    return TRUE;
 	o = is_you ? invent : mon->minvent;

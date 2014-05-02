@@ -310,7 +310,7 @@ STATIC_OVL void use_magic_whistle(struct Object *obj) {
 		You(whistle_str, Hallucination ? "normal" : "strange");
 		for(mtmp = fmon; mtmp; mtmp = nextmon) {
 		    nextmon = mtmp->nmon; /* trap might kill mon */
-		    if (DEADMONSTER(mtmp)) continue;
+		    if (mtmp->dead()) continue;
 		    if (mtmp->mtame) {
 			if (mtmp->mtrapped) {
 			    /* no longer in previous trap (affects mintrap) */
@@ -473,7 +473,7 @@ bool next_to_u() {
 	struct Object *otmp;
 
 	for(mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
-		if (DEADMONSTER(mtmp)) continue;
+		if (mtmp->dead()) continue;
 		if(mtmp->mleashed) {
 			if (distu(mtmp->mx,mtmp->my) > 2) mnexto(mtmp);
 			if (distu(mtmp->mx,mtmp->my) > 2) {
@@ -506,7 +506,7 @@ void check_leash(xchar x, xchar y) {
 	for (otmp = invent; otmp; otmp = otmp->nobj) {
 	    if (otmp->otyp != LEASH || otmp->leashmon == 0) continue;
 	    for (mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
-		if (DEADMONSTER(mtmp)) continue;
+		if (mtmp->dead()) continue;
 		if ((int)mtmp->m_id == otmp->leashmon) break; 
 	    }
 	    if (!mtmp) {
@@ -2119,7 +2119,7 @@ STATIC_OVL int use_whip(struct Object *obj) {
 	   pline("A monster is there that you couldn't see.");
 	   map_invisible(rx, ry);
 	}
-	otmp = MON_WEP(mtmp);	/* can be null */
+	otmp = mtmp->weapon();	/* can be null */
 	if (otmp) {
 	    char onambuf[BUFSZ];
 	    const char *mon_hand;

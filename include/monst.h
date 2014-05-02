@@ -189,11 +189,4 @@ struct Monster {
 #define MSLOW 1		/* slow monster */
 #define MFAST 2		/* speeded monster */
 
-#define NAME(mtmp)	((mtmp)->name())
-
-#define MON_WEP(mon)	((mon)->weapon())
-#define MON_NOWEP(mon)	((mon)->ResetWeapon())
-
-#define DEADMONSTER(mon)	((mon)->dead())
-
 #endif /* MONST_H */

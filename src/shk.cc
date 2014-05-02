@@ -149,7 +149,7 @@ void money2u(struct Monster *mon, long amount) {
 
 STATIC_OVL struct Monster * next_shkp(struct Monster *shkp, bool withbill) {
 	for (; shkp; shkp = shkp->nmon) {
-	    if (DEADMONSTER(shkp)) continue;
+	    if (shkp->dead()) continue;
 	    if (shkp->isshk && (ESHK(shkp)->billct || !withbill)) break;
 	}
 

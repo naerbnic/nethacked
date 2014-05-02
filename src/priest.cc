@@ -278,7 +278,7 @@ struct Monster * findpriest(char roomno) {
 	struct Monster *mtmp;
 
 	for(mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
-	    if (DEADMONSTER(mtmp)) continue;
+	    if (mtmp->dead()) continue;
 	    if(mtmp->ispriest && (EPRI(mtmp)->shroom == roomno) &&
 	       histemple_at(mtmp,mtmp->mx,mtmp->my))
 		return(mtmp);
@@ -640,7 +640,7 @@ void clearpriests() {
 
     for(mtmp = fmon; mtmp; mtmp = mtmp2) {
 	mtmp2 = mtmp->nmon;
-	if (!DEADMONSTER(mtmp) && mtmp->ispriest && !on_level(&(EPRI(mtmp)->shrlevel), &u.uz))
+	if (!mtmp->dead() && mtmp->ispriest && !on_level(&(EPRI(mtmp)->shrlevel), &u.uz))
 	    mongone(mtmp);
     }
 }

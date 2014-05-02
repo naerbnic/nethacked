@@ -2935,7 +2935,7 @@ STATIC_OVL int zhitm(struct Monster *mon, int type, int nd, struct Object **ootm
 		    break;
 		}
 		tmp = d(nd,6);
-		if (!rn2(6)) erode_obj(MON_WEP(mon), TRUE, TRUE);
+		if (!rn2(6)) erode_obj(mon->weapon(), TRUE, TRUE);
 		if (!rn2(6)) erode_armor(mon, TRUE);
 		break;
 	}

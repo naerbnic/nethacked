@@ -264,7 +264,7 @@ STATIC_OVL struct Monster * restmonchn(int fd, bool ghostly) {
 				if (obj->owornmask & W_WEP) break;
 			if (obj) mtmp->mw = obj;
 			else {
-				MON_NOWEP(mtmp);
+				mtmp->ResetWeapon();
 				impossible("bad monster weapon restore");
 			}
 		}

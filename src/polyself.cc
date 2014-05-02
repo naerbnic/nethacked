@@ -923,7 +923,7 @@ int dogaze() {
 	flags.botl = 1;
 
 	for (mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
-	    if (DEADMONSTER(mtmp)) continue;
+	    if (mtmp->dead()) continue;
 	    if (canseemon(mtmp) && couldsee(mtmp->mx, mtmp->my)) {
 		looked++;
 		if (Invis && !perceives(mtmp->data))
@@ -974,13 +974,13 @@ int dogaze() {
 			    (void) destroy_mitem(mtmp, POTION_CLASS, AD_FIRE);
 			if((int) u.ulevel > rn2(25))
 			    (void) destroy_mitem(mtmp, SPBOOK_CLASS, AD_FIRE);
-			if (dmg && !DEADMONSTER(mtmp)) mtmp->mhp -= dmg;
+			if (dmg && !mtmp->dead()) mtmp->mhp -= dmg;
 			if (mtmp->mhp <= 0) killed(mtmp);
 		    }
 		    /* For consistency with passive() in uhitm.c, this only
 		     * affects you if the monster is still alive.
 		     */
-		    if (!DEADMONSTER(mtmp) &&
+		    if (!mtmp->dead() &&
 			  (mtmp->data==&mons[PM_FLOATING_EYE]) && !mtmp->mcan) {
 			if (!Free_action) {
 			    You("are frozen by %s gaze!",
@@ -999,7 +999,7 @@ int dogaze() {
 		     * works on the monster's turn, but for it to *not* have an
 		     * effect would be too weird.
 		     */
-		    if (!DEADMONSTER(mtmp) &&
+		    if (!mtmp->dead() &&
 			    (mtmp->data == &mons[PM_MEDUSA]) && !mtmp->mcan) {
 			pline(
 			 "Gazing at the awake %s is not a very good idea.",
@@ -1050,7 +1050,7 @@ int domindblast() {
 		int u_sen;
 
 		nmon = mtmp->nmon;
-		if (DEADMONSTER(mtmp))
+		if (mtmp->dead())
 			continue;
 		if (distu(mtmp->mx, mtmp->my) > BOLT_LIM * BOLT_LIM)
 			continue;

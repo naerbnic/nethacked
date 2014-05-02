@@ -93,7 +93,7 @@ struct Monster * findgd() {
 	struct Monster *mtmp;
 
 	for(mtmp = fmon; mtmp; mtmp = mtmp->nmon)
-	    if(mtmp->isgd && !DEADMONSTER(mtmp) && on_level(&(EGD(mtmp)->gdlevel), &u.uz))
+	    if(mtmp->isgd && !mtmp->dead() && on_level(&(EGD(mtmp)->gdlevel), &u.uz))
 		return(mtmp);
 	return((struct Monster *)0);
 }
@@ -267,7 +267,7 @@ fnd:
 		setmangry(guard);
 		verbalize("Back from the dead, are you?  I'll remedy that!");
 		/* don't want guard to waste next turn wielding a weapon */
-		if (!MON_WEP(guard)) {
+		if (!guard->weapon()) {
 		    guard->weapon_check = NEED_HTH_WEAPON;
 		    (void) mon_wield_item(guard);
 		}

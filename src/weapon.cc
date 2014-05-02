@@ -424,7 +424,7 @@ struct Object * select_rwep(struct Monster *mtmp) {
 		case P_CROSSBOW:
 		  propellor = (oselect(mtmp, CROSSBOW));
 		}
-		if ((otmp = MON_WEP(mtmp)) && otmp->cursed && otmp != propellor
+		if ((otmp = mtmp->weapon()) && otmp->cursed && otmp != propellor
 				&& mtmp->weapon_check == NO_WEAPON_WANTED)
 			propellor = 0;
 	    }
@@ -440,7 +440,7 @@ struct Object * select_rwep(struct Monster *mtmp) {
 		if (rwep[i] != LOADSTONE) {
 			/* Don't throw a cursed weapon-in-hand or an artifact */
 			if ((otmp = oselect(mtmp, rwep[i])) && !otmp->oartifact
-			    && (!otmp->cursed || otmp != MON_WEP(mtmp)))
+			    && (!otmp->cursed || otmp != mtmp->weapon()))
 				return(otmp);
 		} else for(otmp=mtmp->minvent; otmp; otmp=otmp->nobj) {
 		    if (otmp->otyp == LOADSTONE && !otmp->cursed)
@@ -512,18 +512,18 @@ struct Object * select_hwep(struct Monster *mtmp) {
 void possibly_unwield(struct Monster *mon, bool polyspot) {
 	struct Object *obj, *mw_tmp;
 
-	if (!(mw_tmp = MON_WEP(mon)))
+	if (!(mw_tmp = mon->weapon()))
 		return;
 	for (obj = mon->minvent; obj; obj = obj->nobj)
 		if (obj == mw_tmp) break;
 	if (!obj) { /* The weapon was stolen or destroyed */
-		MON_NOWEP(mon);
+		mon->ResetWeapon();
 		mon->weapon_check = NEED_WEAPON;
 		return;
 	}
 	if (!attacktype(mon->data, AT_WEAP)) {
 		setmnotwielded(mon, mw_tmp);
-		MON_NOWEP(mon);
+		mon->ResetWeapon();
 		mon->weapon_check = NO_WEAPON_WANTED;
 		obj_extract_self(obj);
 		if (cansee(mon->mx, mon->my)) {
@@ -599,7 +599,7 @@ int mon_wield_item(struct Monster *mon) {
 			return 0;
 	}
 	if (obj && obj != &zeroobj) {
-		struct Object *mw_tmp = MON_WEP(mon);
+		struct Object *mw_tmp = mon->weapon();
 		if (mw_tmp && mw_tmp->otyp == obj->otyp) {
 		/* already wielding it */
 			mon->weapon_check = NEED_WEAPON;

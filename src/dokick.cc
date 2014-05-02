@@ -724,7 +724,7 @@ int dokick() {
 		kick_monster(x, y);
 		flags.forcefight = FALSE;
 		/* see comment in attack_checks() */
-		if (!DEADMONSTER(mtmp) &&
+		if (!mtmp->dead() &&
 		    !canspotmon(mtmp) &&
 		    /* check x and y; a monster that evades your kick by
 		       jumping to an unseen square doesn't leave an I behind */
@@ -1051,7 +1051,7 @@ dumb:
 		}
 		if (in_town(x, y))
 		  for(mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
-		    if (DEADMONSTER(mtmp)) continue;
+		    if (mtmp->dead()) continue;
 		    if((mtmp->data == &mons[PM_WATCHMAN] ||
 			mtmp->data == &mons[PM_WATCH_CAPTAIN]) &&
 			couldsee(mtmp->mx, mtmp->my) &&
@@ -1071,7 +1071,7 @@ dumb:
 	    pline("WHAMMM!!!");
 	    if (in_town(x, y))
 		for (mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
-		    if (DEADMONSTER(mtmp)) continue;
+		    if (mtmp->dead()) continue;
 		    if ((mtmp->data == &mons[PM_WATCHMAN] ||
 				mtmp->data == &mons[PM_WATCH_CAPTAIN]) &&
 			    mtmp->mpeaceful && couldsee(mtmp->mx, mtmp->my)) {

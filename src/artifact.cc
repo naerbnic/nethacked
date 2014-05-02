@@ -519,7 +519,7 @@ STATIC_OVL int spec_applies(const struct Artifact *weap, struct Monster *mtmp) {
 			   (ptr->maligntyp == A_NONE ||
 				sgn(ptr->maligntyp) != weap->alignment);
 	} else if (weap->spfx & SPFX_ATTK) {
-	    struct Object *defending_weapon = (yours ? uwep : MON_WEP(mtmp));
+	    struct Object *defending_weapon = (yours ? uwep : mtmp->weapon());
 
 	    if (defending_weapon && defending_weapon->oartifact &&
 		    defends((int)weap->attk.adtyp, defending_weapon))

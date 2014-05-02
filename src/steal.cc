@@ -135,7 +135,7 @@ STATIC_PTR int stealarm() {
 	    if(otmp->o_id == stealoid) {
 		for(mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
 		    if(mtmp->m_id == stealmid) {
-			if(DEADMONSTER(mtmp)) impossible("stealarm(): dead monster stealing"); 
+			if(mtmp->dead()) impossible("stealarm(): dead monster stealing"); 
 			if(!dmgtype(mtmp->data, AD_SITM)) /* polymorphed */
 			    goto botm;
 			if(otmp->unpaid)
@@ -536,7 +536,7 @@ void relobj(struct Monster *mtmp, int show, bool is_pet) {
 	struct Object *otmp;
 	int omx = mtmp->mx, omy = mtmp->my;
 	struct Object *keepobj = 0;
-	struct Object *wep = MON_WEP(mtmp);
+	struct Object *wep = mtmp->weapon();
 	bool item1 = FALSE, item2 = FALSE;
 
 	if (!is_pet || mindless(mtmp->data) || is_animal(mtmp->data))

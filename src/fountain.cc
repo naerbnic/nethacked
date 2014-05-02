@@ -140,7 +140,7 @@ void dryup(xchar x, xchar y, bool isyou) {
 			SET_FOUNTAIN_WARNED(x,y);
 			/* Warn about future fountain use. */
 			for(mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
-			    if (DEADMONSTER(mtmp)) continue;
+			    if (mtmp->dead()) continue;
 			    if ((mtmp->data == &mons[PM_WATCHMAN] ||
 				mtmp->data == &mons[PM_WATCH_CAPTAIN]) &&
 			       couldsee(mtmp->mx, mtmp->my) &&
@@ -309,7 +309,7 @@ void drinkfountain() {
 
 			pline("This water gives you bad breath!");
 			for(mtmp = fmon; mtmp; mtmp = mtmp->nmon)
-			    if(!DEADMONSTER(mtmp))
+			    if(!mtmp->dead())
 				monflee(mtmp, 0, FALSE, FALSE);
 			}
 			break;

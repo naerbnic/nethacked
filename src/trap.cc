@@ -1770,7 +1770,7 @@ int mintrap(struct Monster *mtmp) {
 			    target = which_armor(mtmp, W_ARMS);
 			    if (rust_dmg(target, "shield", 1, TRUE, mtmp))
 				break;
-			    target = MON_WEP(mtmp);
+			    target = mtmp->weapon();
 			    if (target && bimanual(target))
 				erode_obj(target, FALSE, TRUE);
 glovecheck:		    target = which_armor(mtmp, W_ARMG);
@@ -1780,7 +1780,7 @@ glovecheck:		    target = which_armor(mtmp, W_ARMG);
 			    if (in_sight)
 				pline("%s %s's right %s!", A_gush_of_water_hits,
 				    mon_nam(mtmp), mbodypart(mtmp, ARM));
-			    erode_obj(MON_WEP(mtmp), FALSE, TRUE);
+			    erode_obj(mtmp->weapon(), FALSE, TRUE);
 			    goto glovecheck;
 			default:
 			    if (in_sight)
@@ -2143,7 +2143,7 @@ void selftouch(const char *arg) {
 }
 
 void mselftouch(struct Monster *mon, const char *arg, bool byplayer) {
-	struct Object *mwep = MON_WEP(mon);
+	struct Object *mwep = mon->weapon();
 
 	if (mwep && mwep->otyp == CORPSE && touch_petrifies(&mons[mwep->corpsenm])) {
 		if (cansee(mon->mx, mon->my)) {

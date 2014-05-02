@@ -108,7 +108,7 @@ STATIC_OVL void mswings(struct Monster *mtmp, struct Object *otemp) {
 /* return how a poison attack was delivered */
 const char * mpoisons_subj(struct Monster *mtmp, struct Attack *mattk) {
 	if (mattk->aatyp == AT_WEAP) {
-	    struct Object *mwep = (mtmp == &youmonst) ? uwep : MON_WEP(mtmp);
+	    struct Object *mwep = (mtmp == &youmonst) ? uwep : mtmp->weapon();
 	    /* "Foo's attack was poisoned." is pretty lame, but at least
 	       it's better than "sting" when not a stinging attack... */
 	    return (!mwep || !mwep->opoisoned) ? "attack" : "weapon";
@@ -529,7 +529,7 @@ int mattacku(struct Monster *mtmp) {
 		case AT_TUCH:
 		case AT_BUTT:
 		case AT_TENT:
-			if(!range2 && (!MON_WEP(mtmp) || mtmp->mconf || Conflict ||
+			if(!range2 && (!mtmp->weapon() || mtmp->mconf || Conflict ||
 					!touch_petrifies(youmonst.data))) {
 			    if (foundyou) {
 				if(tmp > (j = rnd(20+i))) {
@@ -609,14 +609,14 @@ int mattacku(struct Monster *mtmp) {
 			     * teleported or whatever....
 			     */
 			    if (mtmp->weapon_check == NEED_WEAPON ||
-							!MON_WEP(mtmp)) {
+							!mtmp->weapon()) {
 				mtmp->weapon_check = NEED_HTH_WEAPON;
 				/* mon_wield_item resets weapon_check as
 				 * appropriate */
 				if (mon_wield_item(mtmp) != 0) break;
 			    }
 			    if (foundyou) {
-				otmp = MON_WEP(mtmp);
+				otmp = mtmp->weapon();
 				if(otmp) {
 				    hittmp = hitval(otmp, &youmonst);
 				    tmp += hittmp;
@@ -2396,7 +2396,7 @@ STATIC_OVL int passiveum(struct permonst *olduasmon, struct Monster *mtmp, struc
 		    }
 		} else tmp = 0;
 		if (!rn2(30)) erode_armor(mtmp, TRUE);
-		if (!rn2(6)) erode_obj(MON_WEP(mtmp), TRUE, TRUE);
+		if (!rn2(6)) erode_obj(mtmp->weapon(), TRUE, TRUE);
 		goto assess_dmg;
 	    case AD_STON: /* cockatrice */
 	    {
@@ -2404,7 +2404,7 @@ STATIC_OVL int passiveum(struct permonst *olduasmon, struct Monster *mtmp, struc
 		     wornitems = mtmp->misc_worn_check;
 
 		/* wielded weapon gives same protection as gloves here */
-		if (MON_WEP(mtmp) != 0) wornitems |= W_ARMG;
+		if (mtmp->weapon() != 0) wornitems |= W_ARMG;
 
 		if (!resists_ston(mtmp) && (protector == 0L ||
 			(protector != ~0L &&

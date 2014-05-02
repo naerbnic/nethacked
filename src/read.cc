@@ -812,7 +812,7 @@ int seffects(struct Object *sobj) {
 		struct Monster *mtmp;
 
 		for(mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
-		    if (DEADMONSTER(mtmp)) continue;
+		    if (mtmp->dead()) continue;
 		    if(cansee(mtmp->mx,mtmp->my)) {
 			if(confused || sobj->cursed) {
 			    mtmp->mflee = mtmp->mfrozen = mtmp->msleeping = 0;
@@ -1425,7 +1425,7 @@ static void do_class_genocide() {
 			    gonecnt = 0;
 			    for (mtmp = fmon; mtmp; mtmp = mtmp2) {
 				mtmp2 = mtmp->nmon;
-			    	if (DEADMONSTER(mtmp)) continue;
+			    	if (mtmp->dead()) continue;
 				mongone(mtmp);
 				gonecnt++;
 			    }

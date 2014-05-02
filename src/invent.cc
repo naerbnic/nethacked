@@ -2763,7 +2763,7 @@ struct Object * display_minventory(struct Monster *mon, int dflags, char *title)
 #else
 	if (do_all ? (mon->minvent != 0)
 #endif
-		   : (mon->misc_worn_check || MON_WEP(mon))) {
+		   : (mon->misc_worn_check || mon->weapon())) {
 	    /* Fool the 'weapon in hand' routine into
 	     * displaying 'weapon in claw', etc. properly.
 	     */

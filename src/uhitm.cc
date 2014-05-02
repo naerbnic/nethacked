@@ -599,7 +599,7 @@ STATIC_OVL bool hmon_hitmon(struct Monster *mon, struct Object *obj, int thrown)
 			    (Role_if(PM_SAMURAI) && obj->otyp == KATANA && !uarms)) &&
 			  ((wtype = uwep_skill_type()) != P_NONE &&
 			    P_SKILL(wtype) >= P_SKILLED) &&
-			  ((monwep = MON_WEP(mon)) != 0 &&
+			  ((monwep = mon->weapon()) != 0 &&
 			   !is_flimsy(monwep) &&
 			   !obj_resists(monwep,
 				 50 + 15 * greatest_erosion(obj), 100))) {
@@ -611,7 +611,7 @@ STATIC_OVL bool hmon_hitmon(struct Monster *mon, struct Object *obj, int thrown)
 			 * the percentage chance is (1/20)*(50/100).]
 			 */
 			setmnotwielded(mon,monwep);
-			MON_NOWEP(mon);
+			mon->ResetWeapon();
 			mon->weapon_check = NEED_WEAPON;
 			pline("%s %s %s from the force of your blow!",
 			      s_suffix(Monnam(mon)), xname(monwep),
@@ -949,7 +949,7 @@ STATIC_OVL bool hmon_hitmon(struct Monster *mon, struct Object *obj, int thrown)
 	    if (mon->mhp > tmp) {
 		mhurtle(mon, u.dx, u.dy, 1);
 		mdat = mon->data; /* in case of a polymorph trap */
-		if (DEADMONSTER(mon)) already_killed = TRUE;
+		if (mon->dead()) already_killed = TRUE;
 	    }
 	    hittxt = TRUE;
 	} else
@@ -966,7 +966,7 @@ STATIC_OVL bool hmon_hitmon(struct Monster *mon, struct Object *obj, int thrown)
 		if (mon->mhp > tmp) {
 		    mhurtle(mon, u.dx, u.dy, 1);
 		    mdat = mon->data; /* in case of a polymorph trap */
-		    if (DEADMONSTER(mon)) already_killed = TRUE;
+		    if (mon->dead()) already_killed = TRUE;
 		}
 		hittxt = TRUE;
 	    }
@@ -1206,7 +1206,7 @@ STATIC_OVL void steal_it(struct Monster *mdef, struct Attack *mattk) {
 		mdef->misc_worn_check &= ~unwornmask;
 		if (otmp->owornmask & W_WEP) {
 		    setmnotwielded(mdef,otmp);
-		    MON_NOWEP(mdef);
+		    mdef->ResetWeapon();
 		}
 		otmp->owornmask = 0L;
 		update_mon_intrinsics(mdef, otmp, FALSE, FALSE);

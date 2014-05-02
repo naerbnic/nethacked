@@ -260,9 +260,9 @@ void m_throw(struct Monster *mon, int x, int y, int dx, int dy, int range, struc
 
 	    /* not possibly_unwield, which checks the object's */
 	    /* location, not its existence */
-	    if (MON_WEP(mon) == obj) {
+	    if (mon->weapon() == obj) {
 		    setmnotwielded(mon,obj);
-		    MON_NOWEP(mon);
+		    mon->ResetWeapon();
 	    }
 	    obj_extract_self(obj);
 	    singleobj = obj;
@@ -362,8 +362,8 @@ void m_throw(struct Monster *mon, int x, int y, int dx, int dy, int range, struc
 			    if (is_elf(mon->data) &&
 				objects[singleobj->otyp].oc_skill == P_BOW) {
 				hitv++;
-				if (MON_WEP(mon) &&
-				    MON_WEP(mon)->otyp == ELVEN_BOW)
+				if (mon->weapon() &&
+				    mon->weapon()->otyp == ELVEN_BOW)
 				    hitv++;
 				if(singleobj->otyp == ELVEN_ARROW) dam++;
 			    }
@@ -477,7 +477,7 @@ void thrwmu(struct Monster *mtmp) {
 	const char *onm;
 
 	/* Rearranged beginning so monsters can use polearms not in a line */
-	if (mtmp->weapon_check == NEED_WEAPON || !MON_WEP(mtmp)) {
+	if (mtmp->weapon_check == NEED_WEAPON || !mtmp->weapon()) {
 	    mtmp->weapon_check = NEED_RANGED_WEAPON;
 	    /* mon_wield_item resets weapon_check as appropriate */
 	    if(mon_wield_item(mtmp) != 0) return;
@@ -525,7 +525,7 @@ void thrwmu(struct Monster *mtmp) {
 	    return;
 
 	skill = objects[otmp->otyp].oc_skill;
-	mwep = MON_WEP(mtmp);		/* wielded weapon */
+	mwep = mtmp->weapon();		/* wielded weapon */
 
 	/* Multishot calculations */
 	multishot = 1;

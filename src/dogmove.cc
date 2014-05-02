@@ -24,7 +24,7 @@ STATIC_DCL bool could_reach_item(struct Monster *, xchar,xchar);
 
 STATIC_OVL struct Object * DROPPABLES(struct Monster *mon) {
 	struct Object *obj;
-	struct Object *wep = MON_WEP(mon);
+	struct Object *wep = mon->weapon();
 	bool item1 = FALSE, item2 = FALSE;
 
 	if (is_animal(mon->data) || mindless(mon->data))
@@ -697,13 +697,13 @@ newdogpos:
 		    mtmp->weapon_check != NO_WEAPON_WANTED &&
 		    tunnels(mtmp->data) && needspick(mtmp->data)) {
 		    if (closed_door(nix, niy)) {
-			if (!(mw_tmp = MON_WEP(mtmp)) ||
+			if (!(mw_tmp = mtmp->weapon()) ||
 			    !is_pick(mw_tmp) || !is_axe(mw_tmp))
 			    mtmp->weapon_check = NEED_PICK_OR_AXE;
 		    } else if (IS_TREE(levl[nix][niy].typ)) {
-			if (!(mw_tmp = MON_WEP(mtmp)) || !is_axe(mw_tmp))
+			if (!(mw_tmp = mtmp->weapon()) || !is_axe(mw_tmp))
 			    mtmp->weapon_check = NEED_AXE;
-		    } else if (!(mw_tmp = MON_WEP(mtmp)) || !is_pick(mw_tmp)) {
+		    } else if (!(mw_tmp = mtmp->weapon()) || !is_pick(mw_tmp)) {
 			mtmp->weapon_check = NEED_PICK_AXE;
 		    }
 		    if (mtmp->weapon_check >= NEED_PICK_AXE &&

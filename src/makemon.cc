@@ -791,8 +791,7 @@ bool propagate(int mndx, bool tally, bool ghostly) {
  *	In case we make a monster group, only return the one at [x,y].
  */
 struct Monster * makemon(struct permonst *ptr, int x, int y, int mmflags) {
-	struct Monster *mtmp;
-	int mndx, mcham, ct, mitem, xlth;
+	int mndx, mcham, ct, mitem;
 	bool anymon = (!ptr);
 	bool byyou = (x == u.ux && y == u.uy);
 	bool allow_minvent = ((mmflags & NO_MINVENT) == 0);
@@ -834,7 +833,7 @@ struct Monster * makemon(struct permonst *ptr, int x, int y, int mmflags) {
 	}
 
 	if(ptr){
-		mndx = monsndx(ptr);
+		 mndx = monsndx(ptr);
 		/* if you are to make a specific monster and it has
 		   already been genocided, return */
 		if (mvitals[mndx].mvflags & G_GENOD) return((struct Monster *) 0);
@@ -863,10 +862,10 @@ struct Monster * makemon(struct permonst *ptr, int x, int y, int mmflags) {
 		mndx = monsndx(ptr);
 	}
 	(void) propagate(mndx, countbirth, FALSE);
-	xlth = ptr->pxlth;
+	int xlth = ptr->pxlth;
 	if (mmflags & MM_EDOG) xlth += sizeof(struct edog);
 	else if (mmflags & MM_EMIN) xlth += sizeof(struct emin);
-	mtmp = newmonst(xlth);
+	Monster* mtmp = newmonst(xlth);
 	*mtmp = zeromonst;		/* clear all entries in structure */
 	(void)memset((genericptr_t)mtmp->mextra, 0, xlth);
 	mtmp->nmon = fmon;

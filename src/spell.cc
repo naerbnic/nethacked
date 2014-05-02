@@ -273,7 +273,7 @@ raise_dead:
     } else if(book2->blessed) {
 	for(mtmp = fmon; mtmp; mtmp = mtmp2) {
 	    mtmp2 = mtmp->nmon;		/* tamedog() changes chain */
-	    if (DEADMONSTER(mtmp)) continue;
+	    if (mtmp->dead()) continue;
 
 	    if (is_undead(mtmp->data) && cansee(mtmp->mx, mtmp->my)) {
 		mtmp->mpeaceful = TRUE;

@@ -2,3 +2,4 @@ TODO:
 
 - Delete config1.h
 - Delete unixres.cc
+- Replace the extra fields in the monster with dynamic structures.

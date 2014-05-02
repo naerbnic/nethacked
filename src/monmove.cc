@@ -396,7 +396,7 @@ int dochug(struct Monster *mtmp) {
 		}
 		for(m2=fmon; m2; m2 = nmon) {
 			nmon = m2->nmon;
-			if (DEADMONSTER(m2)) continue;
+			if (m2->dead()) continue;
 			if (m2->mpeaceful == mtmp->mpeaceful) continue;
 			if (mindless(m2->data)) continue;
 			if (m2 == mtmp) continue;
@@ -429,7 +429,7 @@ toofar:
 	     * This may cost the monster an attack, but keeps the monster
 	     * from switching back and forth if carrying both.
 	     */
-	    mw_tmp = MON_WEP(mtmp);
+	    mw_tmp = mtmp->weapon();
 	    if (!(scared && mw_tmp && is_pick(mw_tmp)) &&
 		mtmp->weapon_check == NEED_WEAPON &&
 		!(mtmp->mtrapped && !nearby && select_rwep(mtmp))) {
@@ -919,13 +919,13 @@ not_special:
 		 closed_door(nix, niy)) &&
 		mmoved==1 && can_tunnel && needspick(ptr)) {
 		if (closed_door(nix, niy)) {
-		    if (!(mw_tmp = MON_WEP(mtmp)) ||
+		    if (!(mw_tmp = mtmp->weapon()) ||
 			!is_pick(mw_tmp) || !is_axe(mw_tmp))
 			mtmp->weapon_check = NEED_PICK_OR_AXE;
 		} else if (IS_TREE(levl[nix][niy].typ)) {
-		    if (!(mw_tmp = MON_WEP(mtmp)) || !is_axe(mw_tmp))
+		    if (!(mw_tmp = mtmp->weapon()) || !is_axe(mw_tmp))
 			mtmp->weapon_check = NEED_AXE;
-		} else if (!(mw_tmp = MON_WEP(mtmp)) || !is_pick(mw_tmp)) {
+		} else if (!(mw_tmp = mtmp->weapon()) || !is_pick(mw_tmp)) {
 		    mtmp->weapon_check = NEED_PICK_AXE;
 		}
 		if (mtmp->weapon_check >= NEED_PICK_AXE && mon_wield_item(mtmp))

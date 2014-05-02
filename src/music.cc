@@ -58,7 +58,7 @@ STATIC_OVL void awaken_monsters(int distance) {
 	int distm;
 
 	while(mtmp) {
-	    if (!DEADMONSTER(mtmp)) {
+	    if (!mtmp->dead()) {
 		distm = distu(mtmp->mx, mtmp->my);
 		if (distm < distance) {
 		    mtmp->msleeping = 0;
@@ -82,7 +82,7 @@ STATIC_OVL void put_monsters_to_sleep(int distance) {
 	struct Monster *mtmp = fmon;
 
 	while(mtmp) {
-		if (!DEADMONSTER(mtmp) && distu(mtmp->mx, mtmp->my) < distance &&
+		if (!mtmp->dead() && distu(mtmp->mx, mtmp->my) < distance &&
 			sleep_monst(mtmp, d(10,10), TOOL_CLASS)) {
 		    mtmp->msleeping = 1; /* 10d10 turns + wake_nearby to rouse */
 		    slept_monst(mtmp);
@@ -100,7 +100,7 @@ STATIC_OVL void charm_snakes(int distance) {
 	int could_see_mon, was_peaceful;
 
 	while (mtmp) {
-	    if (!DEADMONSTER(mtmp) && mtmp->data->mlet == S_SNAKE && mtmp->mcanmove &&
+	    if (!mtmp->dead() && mtmp->data->mlet == S_SNAKE && mtmp->mcanmove &&
 		    distu(mtmp->mx, mtmp->my) < distance) {
 		was_peaceful = mtmp->mpeaceful;
 		mtmp->mpeaceful = 1;
@@ -130,7 +130,7 @@ STATIC_OVL void calm_nymphs(int distance) {
 	struct Monster *mtmp = fmon;
 
 	while (mtmp) {
-	    if (!DEADMONSTER(mtmp) && mtmp->data->mlet == S_NYMPH && mtmp->mcanmove &&
+	    if (!mtmp->dead() && mtmp->data->mlet == S_NYMPH && mtmp->mcanmove &&
 		    distu(mtmp->mx, mtmp->my) < distance) {
 		mtmp->msleeping = 0;
 		mtmp->mpeaceful = 1;
@@ -150,7 +150,7 @@ void awaken_soldiers() {
 	struct Monster *mtmp = fmon;
 
 	while(mtmp) {
-	    if (!DEADMONSTER(mtmp) &&
+	    if (!mtmp->dead() &&
 			is_mercenary(mtmp->data) && mtmp->data != &mons[PM_GUARD]) {
 		mtmp->mpeaceful = mtmp->msleeping = mtmp->mfrozen = 0;
 		mtmp->mcanmove = 1;
@@ -176,7 +176,7 @@ STATIC_OVL void charm_monsters(int distance) {
 	} else {
 	    for (mtmp = fmon; mtmp; mtmp = mtmp2) {
 		mtmp2 = mtmp->nmon;
-		if (DEADMONSTER(mtmp)) continue;
+		if (mtmp->dead()) continue;
 
 		if (distu(mtmp->mx, mtmp->my) <= distance) {
 		    if (!resist(mtmp, TOOL_CLASS, 0, NOTELL))

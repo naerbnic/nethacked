@@ -979,7 +979,7 @@ void watch_dig(struct Monster *mtmp, xchar x, xchar y, bool zap) {
 	     IS_WALL(lev->typ) || IS_FOUNTAIN(lev->typ) || IS_TREE(lev->typ))) {
 	    if (!mtmp) {
 		for(mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
-		    if (DEADMONSTER(mtmp)) continue;
+		    if (mtmp->dead()) continue;
 		    if ((mtmp->data == &mons[PM_WATCHMAN] ||
 			 mtmp->data == &mons[PM_WATCH_CAPTAIN]) &&
 			mtmp->mcansee && m_canseeu(mtmp) &&
@@ -1373,9 +1373,9 @@ void rot_corpse(genericptr_t arg, long timeout) {
 		stop_occupation();
 	    }
 	} else if (obj->where == OBJ_MINVENT && obj->owornmask) {
-	    if (obj == MON_WEP(obj->ocarry)) {
+	    if (obj == obj->ocarry->weapon()) {
 		setmnotwielded(obj->ocarry,obj);
-		MON_NOWEP(obj->ocarry);
+		obj->ocarry->ResetWeapon();
 	    }
 	}
 	rot_organic(arg, timeout);

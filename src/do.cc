@@ -874,11 +874,7 @@ void save_currentstate() {
 		int fd = currentlevel_rewrite();
 		if(fd < 0) return;
 		bufon(fd);
-	  ErrMsg("Before save state (%d)", fd);
-	  usleep(1000000);
 		savelev(fd,ledger_no(&u.uz), WRITE_SAVE);
-	  ErrMsg("After save state");
-	  usleep(1000000);
 		bclose(fd);
 	}
 
@@ -1282,7 +1278,7 @@ void goto_level(d_level *newlevel, bool at_stairs, bool falling, bool portal) {
 		You("penetrated a high security area!");
 		pline("An alarm sounds!");
 		for(mtmp = fmon; mtmp; mtmp = mtmp->nmon)
-		    if (!DEADMONSTER(mtmp) && mtmp->msleeping) mtmp->msleeping = 0;
+		    if (!mtmp->dead() && mtmp->msleeping) mtmp->msleeping = 0;
 	}
 
 	if (on_level(&u.uz, &astral_level))
@@ -1308,7 +1304,7 @@ STATIC_OVL void final_level() {
 
 	/* reset monster hostility relative to player */
 	for (mtmp = fmon; mtmp; mtmp = mtmp->nmon)
-	    if (!DEADMONSTER(mtmp)) reset_hostility(mtmp);
+	    if (!mtmp->dead()) reset_hostility(mtmp);
 
 	/* create some player-monsters */
 	create_mplayers(rn1(4, 3), TRUE);

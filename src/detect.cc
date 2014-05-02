@@ -153,7 +153,7 @@ int gold_detect(struct Object *sobj) {
 
     /* look for gold carried by monsters (might be in a container) */
     for (mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
-    	if (DEADMONSTER(mtmp)) continue;	/* probably not needed in this case but... */
+    	if (mtmp->dead()) continue;	/* probably not needed in this case but... */
 #ifndef GOLDOBJ
 	if (mtmp->mgold || monsndx(mtmp->data) == PM_GOLD_GOLEM) {
 #else
@@ -230,7 +230,7 @@ outgoldmap:
 	}
     }
     for (mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
-    	if (DEADMONSTER(mtmp)) continue;	/* probably overkill here */
+    	if (mtmp->dead()) continue;	/* probably overkill here */
 #ifndef GOLDOBJ
 	if (mtmp->mgold || monsndx(mtmp->data) == PM_GOLD_GOLEM) {
 #else
@@ -286,7 +286,7 @@ int food_detect(struct Object *sobj) {
 	    else ct++;
 	}
     for (mtmp = fmon; mtmp && !ct; mtmp = mtmp->nmon) {
-	/* no DEADMONSTER(mtmp) check needed since dmons never have inventory */
+	/* no mtmp->dead() check needed since dmons never have inventory */
 	for (obj = mtmp->minvent; obj; obj = obj->nobj)
 	    if (o_in(obj, oclass)) {
 		ct++;
@@ -338,7 +338,7 @@ int food_detect(struct Object *sobj) {
 		map_object(temp,1);
 	    }
 	for (mtmp = fmon; mtmp; mtmp = mtmp->nmon)
-	    /* no DEADMONSTER(mtmp) check needed since dmons never have inventory */
+	    /* no mtmp->dead() check needed since dmons never have inventory */
 	    for (obj = mtmp->minvent; obj; obj = obj->nobj)
 		if ((temp = o_in(obj, oclass)) != 0) {
 		    temp->ox = mtmp->mx;
@@ -425,7 +425,7 @@ int object_detect(struct Object *detector, int class_id) {
     }
 
     for (mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
-	if (DEADMONSTER(mtmp)) continue;
+	if (mtmp->dead()) continue;
 	for (obj = mtmp->minvent; obj; obj = obj->nobj) {
 	    if ((!class_id && !boulder) || o_in(obj, class_id) || o_in(obj, boulder)) ct++;
 	    if (do_dknown) do_dknown_of(obj);
@@ -496,7 +496,7 @@ int object_detect(struct Object *detector, int class_id) {
 
     /* Objects in the monster's inventory override floor objects. */
     for (mtmp = fmon ; mtmp ; mtmp = mtmp->nmon) {
-	if (DEADMONSTER(mtmp)) continue;
+	if (mtmp->dead()) continue;
 	for (obj = mtmp->minvent; obj; obj = obj->nobj)
 	    if ((!class_id && !boulder) ||
 		 (otmp = o_in(obj, class_id)) || (otmp = o_in(obj, boulder))) {
@@ -562,7 +562,7 @@ int monster_detect(struct Object *otmp, int mclass) {
      * with positive hit-points to know for sure.
      */
     for (mtmp = fmon; mtmp; mtmp = mtmp->nmon)
-    	if (!DEADMONSTER(mtmp)) {
+    	if (!mtmp->dead()) {
 		mcnt++;
 		break;
 	}
@@ -578,7 +578,7 @@ int monster_detect(struct Object *otmp, int mclass) {
 
 	cls();
 	for (mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
-	    if (DEADMONSTER(mtmp)) continue;
+	    if (mtmp->dead()) continue;
 	    if (!mclass || mtmp->data->mlet == mclass ||
 		(mtmp->data == &mons[PM_LONG_WORM] && mclass == S_WORM_TAIL))
 		    if (mtmp->mx > 0) {

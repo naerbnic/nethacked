@@ -1441,7 +1441,7 @@ int use_offensive(struct Monster *mtmp) {
 			if (Half_spell_damage) num = (num+1) / 2;
 			else losehp(num, "scroll of fire", KILLED_BY_AN);
 			for(mtmp2 = fmon; mtmp2; mtmp2 = mtmp2->nmon) {
-			   if(DEADMONSTER(mtmp2)) continue;
+			   if(mtmp2->dead()) continue;
 			   if(mtmp == mtmp2) continue;
 			   if(dist2(mtmp2->mx,mtmp2->my,mtmp->mx,mtmp->my) < 3){
 				if (resists_fire(mtmp2)) continue;
@@ -1585,7 +1585,7 @@ bool find_misc(struct Monster *mtmp) {
 			m.has_misc = MUSE_POT_GAIN_LEVEL;
 		}
 		nomore(MUSE_BULLWHIP);
-		if(obj->otyp == BULLWHIP && (MON_WEP(mtmp) == obj) &&
+		if(obj->otyp == BULLWHIP && (mtmp->weapon() == obj) &&
 		   distu(mtmp->mx,mtmp->my)==1 && uwep && !mtmp->mpeaceful) {
 			m.misc = obj;
 			m.has_misc = MUSE_BULLWHIP;
@@ -1981,7 +1981,7 @@ bool mon_reflects(struct Monster *mon, const char *str) {
 		makeknown(SHIELD_OF_REFLECTION);
 	    }
 	    return TRUE;
-	} else if (arti_reflects(MON_WEP(mon))) {
+	} else if (arti_reflects(mon->weapon())) {
 	    /* due to wielded artifact weapon */
 	    if (str)
 		pline(str, s_suffix(mon_nam(mon)), "weapon");

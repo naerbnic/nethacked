@@ -80,7 +80,7 @@ void amulet() {
 		return;
 	/* find Wizard, and wake him if necessary */
 	for(mtmp = fmon; mtmp; mtmp = mtmp->nmon)
-	    if (!DEADMONSTER(mtmp) && mtmp->iswiz && mtmp->msleeping && !rn2(40)) {
+	    if (!mtmp->dead() && mtmp->iswiz && mtmp->msleeping && !rn2(40)) {
 		mtmp->msleeping = 0;
 		if (distu(mtmp->mx,mtmp->my) > 2)
 		    You(
@@ -343,7 +343,7 @@ void aggravate() {
 	struct Monster *mtmp;
 
 	for(mtmp = fmon; mtmp; mtmp = mtmp->nmon)
-	    if (!DEADMONSTER(mtmp)) {
+	    if (!mtmp->dead()) {
 		mtmp->msleeping = 0;
 		if(!mtmp->mcanmove && !rn2(5)) {
 			mtmp->mfrozen = 0;

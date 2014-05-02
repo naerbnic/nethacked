@@ -513,7 +513,7 @@ void dismount_steed(int reason) {
 		(void) rloc(mtmp, FALSE);
 	    return;
 	}
-	if (!DEADMONSTER(mtmp)) {
+	if (!mtmp->dead()) {
 	    place_monster(mtmp, u.ux, u.uy);
 	    if (!u.uswallow && !u.ustuck && have_spot) {
 		struct permonst *mdat = mtmp->data;
@@ -554,7 +554,7 @@ void dismount_steed(int reason) {
 	     * falling into the hole).
 	     */
 		/* [ALI] No need to move the player if the steed died. */
-		if (!DEADMONSTER(mtmp)) {
+		if (!mtmp->dead()) {
 		    /* Keep steed here, move the player to cc;
 		     * teleds() clears u.utrap
 		     */
@@ -596,7 +596,7 @@ void dismount_steed(int reason) {
 void place_monster(struct Monster *mon, int x, int y) {
     if (mon == u.usteed ||
 	    /* special case is for convoluted vault guard handling */
-	    (DEADMONSTER(mon) && !(mon->isgd && x == 0 && y == 0))) {
+	    (mon->dead() && !(mon->isgd && x == 0 && y == 0))) {
 	impossible("placing %s onto map?",
 		   (mon == u.usteed) ? "steed" : "defunct monster");
 	return;

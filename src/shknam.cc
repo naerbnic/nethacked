@@ -310,7 +310,7 @@ STATIC_OVL void nameshk(struct Monster *shk, const char * const *nlp) {
 
 		/* is name already in use on this level? */
 		for (mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
-		    if (DEADMONSTER(mtmp) || (mtmp == shk) || !mtmp->isshk) continue;
+		    if (mtmp->dead() || (mtmp == shk) || !mtmp->isshk) continue;
 		    if (strcmp(ESHK(mtmp)->shknam, shname)) continue;
 		    break;
 		}

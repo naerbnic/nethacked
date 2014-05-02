@@ -118,7 +118,7 @@ int fightm(struct Monster *mtmp) {
 	     * happen if the monster attacked a cockatrice bare-handedly, for
 	     * instance.
 	     */
-	    if(mon != mtmp && !DEADMONSTER(mon)) {
+	    if(mon != mtmp && !mon->dead()) {
 		if(monnear(mtmp,mon->mx,mon->my)) {
 		    if(!u.uswallow && (mtmp == u.ustuck)) {
 			if(!rn2(4)) {
@@ -239,12 +239,12 @@ int mattackm(struct Monster *magr, struct Monster *mdef) {
 	attk = 1;
 	switch (mattk->aatyp) {
 	    case AT_WEAP:		/* "hand to hand" attacks */
-		if (magr->weapon_check == NEED_WEAPON || !MON_WEP(magr)) {
+		if (magr->weapon_check == NEED_WEAPON || !magr->weapon()) {
 		    magr->weapon_check = NEED_HTH_WEAPON;
 		    if (mon_wield_item(magr) != 0) return 0;
 		}
 		possibly_unwield(magr, FALSE);
-		otmp = MON_WEP(magr);
+		otmp = magr->weapon();
 
 		if (otmp) {
 		    if (vis) mswingsm(magr, mdef, otmp);
@@ -753,7 +753,7 @@ STATIC_OVL int mdamagem(struct Monster *magr, struct Monster *mdef, struct Attac
 		    pline("It burns %s!", mon_nam(mdef));
 		}
 		if (!rn2(30)) erode_armor(mdef, TRUE);
-		if (!rn2(6)) erode_obj(MON_WEP(mdef), TRUE, TRUE);
+		if (!rn2(6)) erode_obj(mdef->weapon(), TRUE, TRUE);
 		break;
 	    case AD_RUST:
 		if (magr->mcan) break;

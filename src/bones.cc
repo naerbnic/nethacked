@@ -205,7 +205,7 @@ void savebones(struct Object *corpse) {
 	unleash_all();
 	/* in case these characters are not in their home bases */
 	for (mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
-	    if (DEADMONSTER(mtmp)) continue;
+	    if (mtmp->dead()) continue;
 	    mptr = mtmp->data;
 	    if (mtmp->iswiz || mptr == &mons[PM_MEDUSA] ||
 		    mptr->msound == MS_NEMESIS || mptr->msound == MS_LEADER ||
