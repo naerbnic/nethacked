@@ -84,6 +84,8 @@ static bool write_maze(int,specialmaze *);
 static bool write_rooms(int,splev *);
 static void init_obj_classes();
 
+void raw_panic(const char* v, ...);
+
 struct NameMapping {
   NameMapping(string const& name, int type) : name(name), type(type) {}
   string name;
@@ -988,7 +990,7 @@ bool write_level_file(char *filename, splev *room_level, specialmaze *maze_level
 	    if (!write_maze(fout, maze_level))
 		return FALSE;
 	} else
-	    panic("write_level_file");
+	    raw_panic("write_level_file");
 
 	(void) close(fout);
 	return TRUE;

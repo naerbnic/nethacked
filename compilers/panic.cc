@@ -12,9 +12,9 @@
 
 /*VARARGS1*/
 bool panicking;
-void panic(char const*,...);
+void raw_panic(char const*,...);
 
-void panic(char const* str, ...) {
+void raw_panic(char const* str, ...) {
   va_list args;
   va_start(args, str);
 	if(panicking)
