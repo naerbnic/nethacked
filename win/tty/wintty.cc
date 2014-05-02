@@ -74,7 +74,7 @@ struct window_procs tty_procs = {
     tty_nh_poskey,
     tty_nhbell,
     tty_doprev_message,
-    tty_yn_function,
+    TtyAskYesNoQuestion,
     tty_getlin,
     tty_get_ext_cmd,
     tty_number_pad,

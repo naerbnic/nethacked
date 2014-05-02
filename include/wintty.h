@@ -193,7 +193,7 @@ E int tty_nhgetch();
 E int tty_nh_poskey(int *, int *, int *);
 E void tty_nhbell();
 E int tty_doprev_message();
-E char tty_yn_function(const char *, const char *, char);
+E char TtyAskYesNoQuestion(const char *, const char *, char);
 E void tty_getlin(const char *,char *);
 E int tty_get_ext_cmd();
 E void tty_number_pad(int);
