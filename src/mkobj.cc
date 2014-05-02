@@ -89,7 +89,6 @@ Object * MakeSpecificObjectAt(int otyp, int x, int y, bool init, bool artif) {
 }
 
 Object * MakeRandomObjectOfClass(char oclass, bool artif) {
-  int tprob, prob = rnd(1000);
 
   if (oclass == RANDOM_CLASS) {
     const struct ItemClassProbability *iprobs =
@@ -98,12 +97,13 @@ Object * MakeRandomObjectOfClass(char oclass, bool artif) {
 #endif
         Inhell ? kHellProbabilities : kMakeObjProbabilities;
 
-    for (tprob = rnd(100); (tprob -= iprobs->iprob) > 0; iprobs++)
+    for (int tprob = rnd(100); (tprob -= iprobs->iprob) > 0; iprobs++)
       ;
     oclass = iprobs->iclass;
   }
 
   int i = bases[(int) oclass];
+  int prob = rnd(1000);
   while ((prob -= objects[i].oc_prob) > 0)
     i++;
 
