@@ -841,7 +841,7 @@ STATIC_OVL void mineralize() {
 		}
 		if (rn2(1000) < gemprob) {
 		    for (cnt = rnd(2 + dunlev(&player.uz) / 3); cnt > 0; cnt--)
-			if ((otmp = MakeRandomObjectOfClass(GEM_CLASS, FALSE)) != 0) {
+			if ((otmp = MakeRandomObject(GEM_CLASS, FALSE)) != 0) {
 			    if (otmp->otyp == ROCK) {
 				dealloc_obj(otmp);	/* discard it */
 			    } else {
@@ -1285,7 +1285,7 @@ static void mkgrave(struct mkroom *croom) {
 	/* Possibly fill it with objects */
 	if (!rn2(3)) (void) mkgold(0L, m.x, m.y);
 	for (tryct = rn2(5); tryct; tryct--) {
-	    otmp = MakeRandomObjectOfClass(RANDOM_CLASS, TRUE);
+	    otmp = MakeRandomObject(RANDOM_CLASS, TRUE);
 	    if (!otmp) return;
 	    curse(otmp);
 	    otmp->ox = m.x;

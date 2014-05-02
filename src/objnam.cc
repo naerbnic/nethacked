@@ -2364,7 +2364,7 @@ typfnd:
 	if(typ) {
 		otmp = MakeSpecificObject(typ, TRUE, FALSE);
 	} else {
-		otmp = MakeRandomObjectOfClass(oclass, FALSE);
+		otmp = MakeRandomObject(oclass, FALSE);
 		if (otmp) typ = otmp->otyp;
 	}
 

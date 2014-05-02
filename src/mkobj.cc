@@ -77,7 +77,7 @@ const struct ItemClassProbability kHellProbabilities[] = {
 };
 
 Object * MakeRandomObjectOfClassAt(char let, int x, int y, bool artif) {
-	Object *otmp = MakeRandomObjectOfClass(let, artif);
+	Object *otmp = MakeRandomObject(let, artif);
 	place_object(otmp, x, y);
 	return(otmp);
 }
@@ -88,8 +88,7 @@ Object * MakeSpecificObjectAt(int otyp, int x, int y, bool init, bool artif) {
 	return(otmp);
 }
 
-Object * MakeRandomObjectOfClass(char oclass, bool artif) {
-
+Object * MakeRandomObject(char oclass, bool artif) {
   if (oclass == RANDOM_CLASS) {
     const struct ItemClassProbability *iprobs =
 #ifdef REINCARNATION
@@ -114,64 +113,82 @@ Object * MakeRandomObjectOfClass(char oclass, bool artif) {
 }
 
 STATIC_OVL void AddRandomBoxContents(Object *box) {
-	int n;
-	Object *otmp;
+  int n;
 
-	box->cobj = (Object *) 0;
+  box->cobj = (Object *) 0;
 
-	switch (box->otyp) {
-	case ICE_BOX:		n = 20; break;
-	case CHEST:		n = 5; break;
-	case LARGE_BOX:		n = 3; break;
-	case SACK:
-	case OILSKIN_SACK:
-				/* initial inventory: sack starts out empty */
-				if (moves <= 1 && !in_mklev) { n = 0; break; }
-				/*else FALLTHRU*/
-	case BAG_OF_HOLDING:	n = 1; break;
-	default:		n = 0; break;
-	}
+  switch (box->otyp) {
+    case ICE_BOX:
+      n = 20;
+      break;
+    case CHEST:
+      n = 5;
+      break;
+    case LARGE_BOX:
+      n = 3;
+      break;
+    case SACK:
+    case OILSKIN_SACK:
+      /* initial inventory: sack starts out empty */
+      if (moves <= 1 && !in_mklev) {
+        n = 0;
+        break;
+      }
+      /*else FALLTHRU*/
+    case BAG_OF_HOLDING:
+      n = 1;
+      break;
+    default:
+      n = 0;
+      break;
+  }
 
-	for (n = rn2(n+1); n > 0; n--) {
-	    if (box->otyp == ICE_BOX) {
-		if (!(otmp = MakeSpecificObject(CORPSE, TRUE, TRUE))) continue;
-		/* Note: setting age to 0 is correct.  Age has a different
-		 * from usual meaning for objects stored in ice boxes. -KAA
-		 */
-		otmp->age = 0L;
-		if (otmp->timed) {
-		    (void) stop_timer(ROT_CORPSE, (genericptr_t)otmp);
-		    (void) stop_timer(REVIVE_MON, (genericptr_t)otmp);
-		}
-	    } else {
-		int tprob;
-		const struct ItemClassProbability *iprobs = kBoxProbabilities;
+  for (n = rn2(n + 1); n > 0; n--) {
+    Object *otmp;
+    if (box->otyp == ICE_BOX) {
+      if (!(otmp = MakeSpecificObject(CORPSE, TRUE, TRUE)))
+        continue;
+      /* Note: setting age to 0 is correct.  Age has a different
+       * from usual meaning for objects stored in ice boxes. -KAA
+       */
+      otmp->age = 0L;
+      if (otmp->timed) {
+        stop_timer(ROT_CORPSE, (genericptr_t) otmp);
+        stop_timer(REVIVE_MON, (genericptr_t) otmp);
+      }
+    } else {
+      int tprob;
+      const struct ItemClassProbability *iprobs = kBoxProbabilities;
 
-		for (tprob = rnd(100); (tprob -= iprobs->iprob) > 0; iprobs++)
-		    ;
-		if (!(otmp = MakeRandomObjectOfClass(iprobs->iclass, TRUE))) continue;
+      for (tprob = rnd(100); (tprob -= iprobs->iprob) > 0; iprobs++)
+        ;
+      if (!(otmp = MakeRandomObject(iprobs->iclass, TRUE)))
+        continue;
 
-		/* handle a couple of special cases */
-		if (otmp->oclass == COIN_CLASS) {
-		    /* 2.5 x level's usual amount; weight adjusted below */
-		    otmp->quan = (long)(rnd(level_difficulty()+2) * rnd(75));
-		    otmp->owt = weight(otmp);
-		} else while (otmp->otyp == ROCK) {
-		    otmp->otyp = rnd_class(DILITHIUM_CRYSTAL, LOADSTONE);
-		    if (otmp->quan > 2L) otmp->quan = 1L;
-		    otmp->owt = weight(otmp);
-		}
-		if (box->otyp == BAG_OF_HOLDING) {
-		    if (Is_mbag(otmp)) {
-			otmp->otyp = SACK;
-			otmp->spe = 0;
-			otmp->owt = weight(otmp);
-		    } else while (otmp->otyp == WAN_CANCELLATION)
-			    otmp->otyp = rnd_class(WAN_LIGHT, WAN_LIGHTNING);
-		}
-	    }
-	    (void) add_to_container(box, otmp);
-	}
+      /* handle a couple of special cases */
+      if (otmp->oclass == COIN_CLASS) {
+        /* 2.5 x level's usual amount; weight adjusted below */
+        otmp->quan = (long) (rnd(level_difficulty() + 2) * rnd(75));
+        otmp->owt = weight(otmp);
+      } else
+        while (otmp->otyp == ROCK) {
+          otmp->otyp = rnd_class(DILITHIUM_CRYSTAL, LOADSTONE);
+          if (otmp->quan > 2L)
+            otmp->quan = 1L;
+          otmp->owt = weight(otmp);
+        }
+      if (box->otyp == BAG_OF_HOLDING) {
+        if (Is_mbag(otmp)) {
+          otmp->otyp = SACK;
+          otmp->spe = 0;
+          otmp->owt = weight(otmp);
+        } else
+          while (otmp->otyp == WAN_CANCELLATION)
+            otmp->otyp = rnd_class(WAN_LIGHT, WAN_LIGHTNING);
+      }
+    }
+    add_to_container(box, otmp);
+  }
 }
 
 /* select a random, common monster type */
@@ -562,8 +579,8 @@ Object * MakeSpecificObject(int otyp, bool init, bool artif) {
 			otmp->corpsenm = rndmonnum();
 			if (!verysmall(&mons[otmp->corpsenm]) &&
 				rn2(level_difficulty()/2 + 10) > 10)
-			    (void) add_to_container(otmp,
-						    MakeRandomObjectOfClass(SPBOOK_CLASS,FALSE));
+			    add_to_container(otmp,
+						    MakeRandomObject(SPBOOK_CLASS,FALSE));
 		}
 		break;
 	case COIN_CLASS:
@@ -634,7 +651,7 @@ void start_corpse_timeout(Object *body) {
 	}
 
 	if (body->norevive) body->norevive = 0;
-	(void) start_timer(when, TIMER_OBJECT, action, (genericptr_t)body);
+	start_timer(when, TIMER_OBJECT, action, (genericptr_t)body);
 }
 
 void bless(Object *otmp) {
@@ -648,7 +665,7 @@ void bless(Object *otmp) {
 	else if (otmp->otyp == BAG_OF_HOLDING)
 	    otmp->owt = weight(otmp);
 	else if (otmp->otyp == FIGURINE && otmp->timed)
-		(void) stop_timer(FIG_TRANSFORM, (genericptr_t) otmp);
+		stop_timer(FIG_TRANSFORM, (genericptr_t) otmp);
 	return;
 }
 
@@ -693,7 +710,7 @@ void uncurse(Object *otmp) {
 	else if (otmp->otyp == BAG_OF_HOLDING)
 	    otmp->owt = weight(otmp);
 	else if (otmp->otyp == FIGURINE && otmp->timed)
-	    (void) stop_timer(FIG_TRANSFORM, (genericptr_t) otmp);
+	    stop_timer(FIG_TRANSFORM, (genericptr_t) otmp);
 	return;
 }
 
@@ -866,7 +883,7 @@ Object * obj_attach_mid(Object *obj, unsigned mid) {
     else {
 	otmp = obj;
 	otmp->oxlth = sizeof(mid);
-	(void) memcpy((genericptr_t)otmp->oextra, (genericptr_t)&mid,
+	memcpy((genericptr_t)otmp->oextra, (genericptr_t)&mid,
 								sizeof(mid));
     }
     if (otmp && otmp->oxlth) otmp->oattached = OATTACHED_M_ID;	/* mark it */
@@ -908,7 +925,7 @@ Monster * get_mtraits(Object *obj, bool copyof) {
 		int lth = mtmp->mxlth + mtmp->mnamelth;
 		mnew = newmonst(lth);
 		lth += sizeof(Monster);
-		(void) memcpy((genericptr_t)mnew,
+		memcpy((genericptr_t)mnew,
 				(genericptr_t)mtmp, lth);
 	    } else {
 	      /* Never insert this returned pointer into mon chains! */
@@ -1099,7 +1116,7 @@ STATIC_OVL void obj_timer_checks(Object *otmp, xchar x, xchar y, int force) {
     }
     /* now re-start the timer with the appropriate modifications */
     if (restart_timer)
-	(void) start_timer(tleft, TIMER_OBJECT, action, (genericptr_t)otmp);
+	start_timer(tleft, TIMER_OBJECT, action, (genericptr_t)otmp);
 }
 
 #undef ON_ICE

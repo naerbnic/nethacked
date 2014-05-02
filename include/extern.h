@@ -939,7 +939,7 @@ E const char *waterbody_name(xchar,xchar);
 
 E Object *MakeRandomObjectOfClassAt(char,int,int,bool);
 E Object *MakeSpecificObjectAt(int,int,int,bool,bool);
-E Object *MakeRandomObjectOfClass(char,bool);
+E Object *MakeRandomObject(char,bool);
 E int rndmonnum();
 E Object *splitobj(Object *,long);
 E void replace_object(Object *,Object *);

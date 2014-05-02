@@ -1628,7 +1628,7 @@ int dodip() {
 			case 4:
 				{
 				  Object *otmp;
-				  otmp = MakeRandomObjectOfClass(POTION_CLASS,FALSE);
+				  otmp = MakeRandomObject(POTION_CLASS,FALSE);
 				  obj->otyp = otmp->otyp;
 				  obfree(otmp, nullptr);
 				}

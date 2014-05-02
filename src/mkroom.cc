@@ -329,7 +329,7 @@ void fill_zoo(struct mkroom *sroom) {
 			    if (sobj) {
 				for (i = rn2(5); i; i--)
 				    (void) add_to_container(sobj,
-						MakeRandomObjectOfClass(RANDOM_CLASS, FALSE));
+						MakeRandomObject(RANDOM_CLASS, FALSE));
 				sobj->owt = weight(sobj);
 			    }
 			}
