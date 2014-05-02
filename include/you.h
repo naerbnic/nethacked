@@ -229,7 +229,7 @@ extern const struct Align aligns[];	/* table of available alignments */
 
 
 /*** Information about the player ***/
-struct You {
+struct Player {
 	xchar ux, uy;
 	schar dx, dy, dz;	/* direction of move (or zap or ... ) */
 	schar di;		/* direction of FF */

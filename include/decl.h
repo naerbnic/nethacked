@@ -253,7 +253,7 @@ E Object *billobjs;
 E Object zeroobj;		/* init'd and defined in decl.c */
 
 #include "you.h"
-E struct You u;
+E struct Player u;
 
 #include "onames.h"
 #ifndef PM_H		/* (pm.h has already been included via youprop.h) */

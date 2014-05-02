@@ -126,7 +126,7 @@ Trap *ftrap = (Trap *)0;
 Monster youmonst = DUMMY;
 struct flag flags = DUMMY;
 struct instance_flags iflags = DUMMY;
-struct You u = DUMMY;
+struct Player u = DUMMY;
 
 Object *invent = nullptr,
 	*uwep = nullptr, *uarm = nullptr,

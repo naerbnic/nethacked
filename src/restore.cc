@@ -338,7 +338,7 @@ bool restgamestate(int fd, unsigned int *stuckid, unsigned int *steedid) {
 	if (remember_discover) discover = remember_discover;
 
 	role_init();	/* Reset the initial role, race, gender, and alignment */
-	mread(fd, (genericptr_t) &u, sizeof(struct You));
+	mread(fd, (genericptr_t) &u, sizeof(struct Player));
 	set_uasmon();
 #ifdef CLIPPING
 	cliparound(u.ux, u.uy);
