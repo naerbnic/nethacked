@@ -15,6 +15,8 @@ int locknum = 0;		/* max num of simultaneous users */
 char *catmore = 0;		/* default pager */
 #endif
 
+// Keeps the base indexes of the first item of that class in
+// the objects[] array.
 int bases[MAXOCLASSES] = DUMMY;
 
 int multi = 0;

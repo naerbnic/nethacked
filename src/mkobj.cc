@@ -77,17 +77,13 @@ const struct ItemClassProbability kHellProbabilities[] = {
 };
 
 Object * mkobj_at(char let, int x, int y, bool artif) {
-	Object *otmp;
-
-	otmp = mkobj(let, artif);
+	Object *otmp = mkobj(let, artif);
 	place_object(otmp, x, y);
 	return(otmp);
 }
 
 Object * mksobj_at(int otyp, int x, int y, bool init, bool artif) {
-	Object *otmp;
-
-	otmp = mksobj(otyp, init, artif);
+	Object* otmp = mksobj(otyp, init, artif);
 	place_object(otmp, x, y);
 	return(otmp);
 }
