@@ -792,7 +792,7 @@ void destroy_drawbridge(int x, int y) {
 		lev1->typ = lava ? LAVAPOOL : MOAT;
 		lev1->drawbridgemask = 0;
 		if ((otmp = sobj_at(BOULDER,x,y)) != 0) {
-		    obj_extract_self(otmp);
+		    RemoveObjectFromStorage(otmp);
 		    (void) flooreffects(otmp,x,y,"fall");
 		}
 	} else {

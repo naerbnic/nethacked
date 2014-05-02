@@ -496,8 +496,8 @@ STATIC_OVL void m_lose_armor(Monster *mon, Object *obj) {
 	    update_mon_intrinsics(mon, obj, FALSE, FALSE);
 	obj->owornmask = 0L;
 
-	obj_extract_self(obj);
-	place_object(obj, mon->mx, mon->my);
+	RemoveObjectFromStorage(obj);
+	PlaceObject(obj, mon->mx, mon->my);
 	/* call stackobj() if we ever drop anything that can merge */
 	newsym(mon->mx, mon->my);
 }

@@ -298,8 +298,8 @@ STATIC_OVL int dig() {
 			fracture_rock(obj);
 			if ((bobj = sobj_at(BOULDER, dpx, dpy)) != 0) {
 			    /* another boulder here, restack it to the top */
-			    obj_extract_self(bobj);
-			    place_object(bobj, dpx, dpy);
+			    RemoveObjectFromStorage(bobj);
+			    PlaceObject(bobj, dpx, dpy);
 			}
 			digtxt = "The boulder falls apart.";
 		} else if (lev->typ == STONE || lev->typ == SCORR ||
@@ -317,7 +317,7 @@ STATIC_OVL int dig() {
 			if (IS_TREE(lev->typ)) {
 			    digtxt = "You cut down the tree.";
 			    lev->typ = ROOM;
-			    if (!rn2(5)) (void) rnd_treefruit_at(dpx, dpy);
+			    if (!rn2(5)) (void) MakeRandomTreefruitAt(dpx, dpy);
 			} else {
 			    digtxt = "You succeed in cutting away some rock.";
 			    lev->typ = CORR;
@@ -1071,7 +1071,7 @@ bool mdig_tunnel(Monster *mtmp) {
 	} else if (IS_TREE(here->typ)) {
 	    here->typ = ROOM;
 	    if (pile && pile < 5)
-		(void) rnd_treefruit_at(mtmp->mx, mtmp->my);
+		(void) MakeRandomTreefruitAt(mtmp->mx, mtmp->my);
 	} else {
 	    here->typ = CORR;
 	    if (pile && pile < 5)
@@ -1258,7 +1258,7 @@ Object * bury_an_obj(Object *otmp) {
 	if (otmp->lamplit && otmp->otyp != POT_OIL)
 		end_burn(otmp, TRUE);
 
-	obj_extract_self(otmp);
+	RemoveObjectFromStorage(otmp);
 
 	under_ice = is_ice(otmp->ox, otmp->oy);
 	if (otmp->otyp == ROCK && !under_ice) {
@@ -1306,10 +1306,10 @@ void unearth_objs(int x, int y) {
 	for (otmp = level.buriedobjlist; otmp; otmp = otmp2) {
 		otmp2 = otmp->nobj;
 		if (otmp->ox == x && otmp->oy == y) {
-		    obj_extract_self(otmp);
+		    RemoveObjectFromStorage(otmp);
 		    if (otmp->timed)
 			(void) stop_timer(ROT_ORGANIC, (genericptr_t)otmp);
-		    place_object(otmp, x, y);
+		    PlaceObject(otmp, x, y);
 		    stackobj(otmp);
 		}
 	}
@@ -1339,7 +1339,7 @@ void rot_organic(genericptr_t arg, long timeout) {
 	       that Has_contents(obj) will eventually become false. */
 	    (void)bury_an_obj(obj->cobj);
 	}
-	obj_extract_self(obj);
+	RemoveObjectFromStorage(obj);
 	obfree(obj, nullptr);
 }
 

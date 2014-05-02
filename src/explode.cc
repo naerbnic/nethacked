@@ -418,7 +418,7 @@ long scatter(int sx, int sy, int blastforce, unsigned int scflags, Object *obj) 
 	    } else {
 		obj = nullptr; /* all used */
 	    }
-	    obj_extract_self(otmp);
+	    RemoveObjectFromStorage(otmp);
 	    used_up = FALSE;
 
 	    /* 9 in 10 chance of fracturing boulders or statues */
@@ -428,11 +428,11 @@ long scatter(int sx, int sy, int blastforce, unsigned int scflags, Object *obj) 
 		if (otmp->otyp == BOULDER) {
 		    pline("%s apart.", Tobjnam(otmp, "break"));
 		    fracture_rock(otmp);
-		    place_object(otmp, sx, sy);
+		    PlaceObject(otmp, sx, sy);
 		    if ((otmp = sobj_at(BOULDER, sx, sy)) != 0) {
 			/* another boulder here, restack it to the top */
-			obj_extract_self(otmp);
-			place_object(otmp, sx, sy);
+			RemoveObjectFromStorage(otmp);
+			PlaceObject(otmp, sx, sy);
 		    }
 		} else {
 		    Trap *trap;
@@ -441,7 +441,7 @@ long scatter(int sx, int sy, int blastforce, unsigned int scflags, Object *obj) 
 			    deltrap(trap);
 		    pline("%s.", Tobjnam(otmp, "crumble"));
 		    (void) break_statue(otmp);
-		    place_object(otmp, sx, sy);	/* put fragments on floor */
+		    PlaceObject(otmp, sx, sy);	/* put fragments on floor */
 		}
 		used_up = TRUE;
 
@@ -532,7 +532,7 @@ long scatter(int sx, int sy, int blastforce, unsigned int scflags, Object *obj) 
 		if (stmp->obj) {
 			if ( x!=sx || y!=sy )
 			    total += stmp->obj->quan;
-			place_object(stmp->obj, x, y);
+			PlaceObject(stmp->obj, x, y);
 			stackobj(stmp->obj);
 		}
 		free((genericptr_t)stmp);

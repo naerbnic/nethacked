@@ -284,7 +284,7 @@ STATIC_OVL int dog_invent(Monster *mtmp, struct edog *edog, int udist) {
 			    if (cansee(omx, omy) && flags.verbose)
 				pline("%s picks up %s.", Monnam(mtmp),
 				    distant_name(obj, doname));
-			    obj_extract_self(obj);
+			    RemoveObjectFromStorage(obj);
 			    newsym(omx,omy);
 			    (void) mpickobj(mtmp,obj);
 			    if (attacktype(mtmp->data, AT_WEAP) &&

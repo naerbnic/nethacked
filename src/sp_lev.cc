@@ -922,7 +922,7 @@ STATIC_OVL void create_object(object *o, struct mkroom *croom) {
 		    impossible("create_object: no container");
 		    break;
 		}
-		remove_object(otmp);
+		RemoveObjectFromFloor(otmp);
 		(void) add_to_container(container, otmp);
 		goto o_done;		/* don't stack, but do other cleanup */
 	    /* container */
@@ -960,7 +960,7 @@ STATIC_OVL void create_object(object *o, struct mkroom *croom) {
 	    while(was->minvent) {
 		obj = was->minvent;
 		obj->owornmask = 0;
-		obj_extract_self(obj);
+		RemoveObjectFromStorage(obj);
 		(void) add_to_container(otmp, obj);
 	    }
 	    otmp->owt = GetWeight(otmp);

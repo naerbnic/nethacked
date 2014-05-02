@@ -81,7 +81,7 @@ STATIC_OVL void find_lev_obj() {
 	/* Set level.objects (as well as reversing the chain back again) */
 	while ((otmp = fobjtmp) != 0) {
 		fobjtmp = otmp->nobj;
-		place_object(otmp, otmp->ox, otmp->oy);
+		PlaceObject(otmp, otmp->ox, otmp->oy);
 	}
 }
 
@@ -99,7 +99,7 @@ void inven_inuse(bool quietly) {
 		if (!otmp->in_use) {
 		    impossible("inven_inuse: !in_use gold in inventory");
 		}
-		extract_nobj(otmp, &invent);
+		ExtractObjectFromList(otmp, &invent);
 		otmp->in_use = FALSE;
 		dealloc_obj(otmp);
 	    } else

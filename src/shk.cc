@@ -134,7 +134,7 @@ void money2u(Monster *mon, long amount) {
     }
 
     if (mongold->quan > amount) mongold = SplitObject(mongold, amount);
-    obj_extract_self(mongold);
+    RemoveObjectFromStorage(mongold);
 
     if (!merge_choice(invent, mongold) && inv_cnt() >= 52) {
 	You("have no room for the money!");
@@ -263,7 +263,7 @@ STATIC_OVL void setpaid(Monster *shkp) {
 		clear_unpaid(mtmp->minvent);
 
 	while ((obj = billobjs) != 0) {
-		obj_extract_self(obj);
+		RemoveObjectFromStorage(obj);
 		dealloc_obj(obj);
 	}
 	if(shkp) {
@@ -692,7 +692,7 @@ void delete_contents(Object *obj) {
 	Object *curr;
 
 	while ((curr = obj->cobj) != 0) {
-	    obj_extract_self(curr);
+	    RemoveObjectFromStorage(curr);
 	    obfree(curr, nullptr);
 	}
 }
@@ -1450,7 +1450,7 @@ STATIC_OVL int dopayobj(Monster *shkp, struct bill_x *bp, Object **obj_p, int wh
 		bp->useup = 0;
 		buy = PAY_SOME;
 	    } else {	/* completely used-up, so get rid of it */
-		obj_extract_self(obj);
+		RemoveObjectFromStorage(obj);
 	     /* assert( obj == *obj_p ); */
 		dealloc_obj(obj);
 		*obj_p = 0;	/* destroy pointer to freed object */
@@ -1647,8 +1647,8 @@ void finish_paybill() {
 	    otmp->owornmask = 0L;	/* perhaps we should call setnotworn? */
 	    otmp->lamplit = 0;		/* avoid "goes out" msg from freeinv */
 	    if (rn2(5)) Curse(otmp);	/* normal bones treatment for invent */
-	    obj_extract_self(otmp);
-	    place_object(otmp, ox, oy);
+	    RemoveObjectFromStorage(otmp);
+	    PlaceObject(otmp, ox, oy);
 	}
 }
 
@@ -2896,12 +2896,12 @@ int repair_damage(Monster *shkp, struct damage *tmp_dam, bool catchup) {
 	    while ((otmp = level.objects[x][y]) != 0)
 		/* Don't mess w/ boulders -- just merge into wall */
 		if ((otmp->otyp == BOULDER) || (otmp->otyp == ROCK)) {
-		    obj_extract_self(otmp);
+		    RemoveObjectFromStorage(otmp);
 		    obfree(otmp, nullptr);
 		} else {
 		    while (!(litter[i = rn2(9)] & INSHOP));
-			remove_object(otmp);
-			place_object(otmp, x+horiz(i), y+vert(i));
+			RemoveObjectFromFloor(otmp);
+			PlaceObject(otmp, x+horiz(i), y+vert(i));
 			litter[i] |= NEED_UPDATE;
 		}
 	}

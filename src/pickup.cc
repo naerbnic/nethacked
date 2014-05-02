@@ -1345,7 +1345,7 @@ int pickup_object(Object *obj, long count, bool telekinesis) {
  * Gold never reaches this routine unless GOLDOBJ is defined.
  */
 Object * pick_obj(Object *otmp) {
-	obj_extract_self(otmp);
+	RemoveObjectFromStorage(otmp);
 	if (!player.uswallow && otmp != uball && costly_spot(otmp->ox, otmp->oy)) {
 	    char saveushops[5], fakeshop[2];
 
@@ -1663,7 +1663,7 @@ int loot_mon(Monster *mtmp, int *passed_info, bool *prev_loot) {
 		    /* the attempt costs you time */
 			return (1);
 		}
-		obj_extract_self(otmp);
+		RemoveObjectFromStorage(otmp);
 		if ((unwornmask = otmp->owornmask) != 0L) {
 		    mtmp->misc_worn_check &= ~unwornmask;
 		    otmp->owornmask = 0L;
@@ -1906,7 +1906,7 @@ STATIC_PTR int out_container(Object *obj) {
 	    obj = SplitObject(obj, count);
 
 	/* Remove the object from the list. */
-	obj_extract_self(obj);
+	RemoveObjectFromStorage(obj);
 	current_container->owt = GetWeight(current_container);
 
 	if (Icebox && !age_is_relative(obj)) {
@@ -1989,7 +1989,7 @@ STATIC_OVL void observe_quantum_cat(Object *box) {
 	deadcat = MakeNamedCorpseOrStatue(CORPSE, &mons[PM_HOUSECAT],
 				  box->ox, box->oy, sc);
 	if (deadcat) {
-	    obj_extract_self(deadcat);
+	    RemoveObjectFromStorage(deadcat);
 	    (void) add_to_container(box, deadcat);
 	}
 	pline_The("%s inside the box is dead!",
@@ -2048,7 +2048,7 @@ int use_container(Object *obj, int held) {
 	for (curr = obj->cobj; curr; curr = otmp) {
 	    otmp = curr->nobj;
 	    if (Is_mbag(obj) && obj->cursed && !rn2(13)) {
-		obj_extract_self(curr);
+		RemoveObjectFromStorage(curr);
 		loss += mbag_item_gone(held, curr);
 		used = 1;
 	    } else {

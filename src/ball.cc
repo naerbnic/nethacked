@@ -106,11 +106,11 @@ void placebc() {
     else {
 	/* ball might rust -- already checked when carried */
 	(void) flooreffects(uball, player.ux, player.uy, "");
-	place_object(uball, player.ux, player.uy);
+	PlaceObject(uball, player.ux, player.uy);
 	player.bc_order = BCPOS_CHAIN;
     }
 
-    place_object(uchain, player.ux, player.uy);
+    PlaceObject(uchain, player.ux, player.uy);
 
     player.bglyph = player.cglyph = levl[player.ux][player.uy].glyph;   /* pick up glyph */
 
@@ -121,13 +121,13 @@ void unplacebc() {
     if (player.uswallow) return;	/* ball&chain not placed while swallowed */
 
     if (!carried(uball)) {
-	obj_extract_self(uball);
+	RemoveObjectFromStorage(uball);
 	if (Blind && (player.bc_felt & BC_BALL))		/* drop glyph */
 	    levl[uball->ox][uball->oy].glyph = player.bglyph;
 
 	newsym(uball->ox,uball->oy);
     }
-    obj_extract_self(uchain);
+    RemoveObjectFromStorage(uchain);
     if (Blind && (player.bc_felt & BC_CHAIN))		/* drop glyph */
 	levl[uchain->ox][uchain->oy].glyph = player.cglyph;
 
@@ -177,29 +177,29 @@ void set_bc(int already_blind) {
      *  would be beneath them.  Then put the ball&chain back.  This is pretty
      *  disgusting, but it will work.
      */
-    remove_object(uchain);
-    if (ball_on_floor) remove_object(uball);
+    RemoveObjectFromFloor(uchain);
+    if (ball_on_floor) RemoveObjectFromFloor(uball);
 
     newsym(uchain->ox, uchain->oy);
     player.cglyph = levl[uchain->ox][uchain->oy].glyph;
 
     if (player.bc_order == BCPOS_DIFFER) {		/* different locations */
-	place_object(uchain, uchain->ox, uchain->oy);
+	PlaceObject(uchain, uchain->ox, uchain->oy);
 	newsym(uchain->ox, uchain->oy);
 	if (ball_on_floor) {
 	    newsym(uball->ox, uball->oy);		/* see under ball */
 	    player.bglyph = levl[uball->ox][uball->oy].glyph;
-	    place_object(uball,  uball->ox, uball->oy);
+	    PlaceObject(uball,  uball->ox, uball->oy);
 	    newsym(uball->ox, uball->oy);		/* restore ball */
 	}
     } else {
 	player.bglyph = player.cglyph;
 	if (player.bc_order == BCPOS_CHAIN) {
-	    place_object(uball,  uball->ox, uball->oy);
-	    place_object(uchain, uchain->ox, uchain->oy);
+	    PlaceObject(uball,  uball->ox, uball->oy);
+	    PlaceObject(uchain, uchain->ox, uchain->oy);
 	} else {
-	    place_object(uchain, uchain->ox, uchain->oy);
-	    place_object(uball,  uball->ox, uball->oy);
+	    PlaceObject(uchain, uchain->ox, uchain->oy);
+	    PlaceObject(uball,  uball->ox, uball->oy);
 	}
 	newsym(uball->ox, uball->oy);
     }
@@ -303,10 +303,10 @@ void move_bc(int before, int control, xchar ballx, xchar bally, xchar chainx, xc
 		player.bc_order = bc_order();
 	    }
 
-	    remove_object(uchain);
+	    RemoveObjectFromFloor(uchain);
 	    newsym(uchain->ox, uchain->oy);
 	    if (!carried(uball)) {
-		remove_object(uball);
+		RemoveObjectFromFloor(uball);
 		newsym(uball->ox,  uball->oy);
 	    }
 	} else {
@@ -315,11 +315,11 @@ void move_bc(int before, int control, xchar ballx, xchar bally, xchar chainx, xc
 	    if ((control & BC_CHAIN) ||
 				(!control && player.bc_order == BCPOS_CHAIN)) {
 		/* If the chain moved or nothing moved & chain on top. */
-		if (on_floor) place_object(uball,  ballx, bally);
-		place_object(uchain, chainx, chainy);	/* chain on top */
+		if (on_floor) PlaceObject(uball,  ballx, bally);
+		PlaceObject(uchain, chainx, chainy);	/* chain on top */
 	    } else {
-		place_object(uchain, chainx, chainy);
-		if (on_floor) place_object(uball,  ballx, bally);
+		PlaceObject(uchain, chainx, chainy);
+		if (on_floor) PlaceObject(uball,  ballx, bally);
 							    /* ball on top */
 	    }
 	    newsym(chainx, chainy);

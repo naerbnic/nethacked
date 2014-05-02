@@ -986,7 +986,7 @@ STATIC_OVL void pleased(aligntyp g_align) {
 		otmp->otyp = rnd_class(bases[SPBOOK_CLASS], SPE_BLANK_PAPER);
 	    }
 	    Bless(otmp);
-	    place_object(otmp, player.ux, player.uy);
+	    PlaceObject(otmp, player.ux, player.uy);
 	    break;
 	}
 	default:	impossible("Confused deity!");
@@ -1118,7 +1118,7 @@ int dosacrifice() {
 	feel_cockatrice(otmp, TRUE);
 
 	if (otmp->corpsenm == PM_ACID_BLOB
-		|| (monstermoves <= peek_at_iced_corpse_age(otmp) + 50)) {
+		|| (monstermoves <= PeekAtIcedCorpseAge(otmp) + 50)) {
 	    value = monstr[otmp->corpsenm] + 1;
 	    if (otmp->oeaten)
 		value = eaten_stat(value, otmp);

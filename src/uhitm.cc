@@ -778,7 +778,7 @@ STATIC_OVL bool hmon_hitmon(Monster *mon, Object *obj, int thrown) {
 				obj->spe = 0;
 				obj->known = obj->dknown = obj->bknown = 0;
 				obj->owt = GetWeight(obj);
-				if (thrown) place_object(obj, mon->mx, mon->my);
+				if (thrown) PlaceObject(obj, mon->mx, mon->my);
 			    } else {
 				pline("Splat!");
 				useup_eggs(obj);
@@ -1201,7 +1201,7 @@ STATIC_OVL void steal_it(Monster *mdef, struct Attack *mattk) {
 	while ((otmp = mdef->minvent) != 0) {
 	    if (!Upolyd) break;		/* no longer have ability to steal */
 	    /* take the object away from the monster */
-	    obj_extract_self(otmp);
+	    RemoveObjectFromStorage(otmp);
 	    if ((unwornmask = otmp->owornmask) != 0L) {
 		mdef->misc_worn_check &= ~unwornmask;
 		if (otmp->owornmask & W_WEP) {
@@ -1376,7 +1376,7 @@ int damageum(Monster *mdef, struct Attack *mattk) {
 	        {
 		    Object *mongold = findgold(mdef->minvent);
 	            if (mongold) {
-		        obj_extract_self(mongold);  
+		        RemoveObjectFromStorage(mongold);  
 		        if (merge_choice(invent, mongold) || inv_cnt() < 52) {
 			    addinv(mongold);
 			    Your("purse feels heavier.");

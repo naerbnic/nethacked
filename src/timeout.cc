@@ -553,7 +553,7 @@ void hatch_egg(genericptr_t arg, long timeout) {
 		useup(egg);
 	    } else {
 		/* free egg here because we use it above */
-		obj_extract_self(egg);
+		RemoveObjectFromStorage(egg);
 		obfree(egg, nullptr);
 	    }
 	    if (redraw) newsym(x, y);
@@ -725,7 +725,7 @@ void burn_object(genericptr_t arg, long timeout) {
 		    obj->spe = 0;	/* no more candles */
 		} else if (Is_candle(obj) || obj->otyp == POT_OIL) {
 		    /* get rid of candles and burning oil potions */
-		    obj_extract_self(obj);
+		    RemoveObjectFromStorage(obj);
 		    obfree(obj, nullptr);
 		    obj = (Object *) 0;
 		}
@@ -765,7 +765,7 @@ void burn_object(genericptr_t arg, long timeout) {
 			}
 		    }
 		    end_burn(obj, FALSE);	/* turn off light source */
-		    obj_extract_self(obj);
+		    RemoveObjectFromStorage(obj);
 		    obfree(obj, nullptr);
 		    obj = (Object *) 0;
 		    break;
@@ -941,7 +941,7 @@ void burn_object(genericptr_t arg, long timeout) {
 			if (menorah) {
 			    obj->spe = 0;
 			} else {
-			    obj_extract_self(obj);
+			    RemoveObjectFromStorage(obj);
 			    obfree(obj, nullptr);
 			    obj = (Object *) 0;
 			}

@@ -1045,7 +1045,7 @@ Monster * makemon(MonsterType *ptr, int x, int y, int mmflags) {
 	    m_dowear(mtmp, TRUE);
 	} else {
 	    /* no initial inventory is allowed */
-	    if (mtmp->minvent) discard_minvent(mtmp);
+	    if (mtmp->minvent) DiscardMonsterInventory(mtmp);
 	    mtmp->minvent = nullptr;    /* caller expects this */
 	}
 	if ((ptr->mflags3 & M3_WAITMASK) && !(mmflags & MM_NOWAIT)) {

@@ -531,7 +531,7 @@ static void add_erosion_words(Object *obj, char *prefix) {
 		       iscrys ? "fixed " :
 		       is_rustprone(obj) ? "rustproof " :
 		       is_corrodeable(obj) ? "corrodeproof " :	/* "stainless"? */
-		       is_flammable(obj) ? "fireproof " : "");
+		       IsFlammable(obj) ? "fireproof " : "");
 }
 
 char * doname(Object *obj) {
@@ -798,7 +798,7 @@ bool not_fully_identified(Object *otmp) {
     else	/* lack of `rknown' only matters for vulnerable objects */
 	return (bool)(is_rustprone(otmp) ||
 			 is_corrodeable(otmp) ||
-			 is_flammable(otmp));
+			 IsFlammable(otmp));
 }
 
 char * corpse_xname(Object *otmp, bool ignore_oquan) {
@@ -2371,9 +2371,9 @@ typfnd:
 	if (islit &&
 		(typ == OIL_LAMP || typ == MAGIC_LAMP || typ == BRASS_LANTERN ||
 		 Is_candle(otmp) || typ == POT_OIL)) {
-	    place_object(otmp, player.ux, player.uy);  /* make it viable light source */
+	    PlaceObject(otmp, player.ux, player.uy);  /* make it viable light source */
 	    begin_burn(otmp, FALSE);
-	    obj_extract_self(otmp);	 /* now release it for caller's use */
+	    RemoveObjectFromStorage(otmp);	 /* now release it for caller's use */
 	}
 
 	if(cnt > 0 && objects[typ].oc_merge && oclass != SPBOOK_CLASS &&
@@ -2539,9 +2539,9 @@ typfnd:
 
 	/* set eroded */
 	if (is_damageable(otmp) || otmp->otyp == CRYSKNIFE) {
-	    if (eroded && (is_flammable(otmp) || is_rustprone(otmp)))
+	    if (eroded && (IsFlammable(otmp) || is_rustprone(otmp)))
 		    otmp->oeroded = eroded;
-	    if (eroded2 && (is_corrodeable(otmp) || is_rottable(otmp)))
+	    if (eroded2 && (is_corrodeable(otmp) || IsRottable(otmp)))
 		    otmp->oeroded2 = eroded2;
 
 	    /* set erodeproof */

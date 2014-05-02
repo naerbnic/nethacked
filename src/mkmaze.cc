@@ -859,7 +859,7 @@ void movebubbles() {
 				alloc(sizeof(struct container));
 
 			    while ((otmp = level.objects[x][y]) != 0) {
-				remove_object(otmp);
+				RemoveObjectFromFloor(otmp);
 				otmp->ox = otmp->oy = 0;
 				otmp->nexthere = olist;
 				olist = otmp;
@@ -1222,7 +1222,7 @@ STATIC_OVL void mv_bubble(struct bubble *b, int dx, int dy, bool ini) {
 
 		    for (olist=(Object *)cons->list; olist; olist=otmp) {
 			otmp = olist->nexthere;
-			place_object(olist, cons->x, cons->y);
+			PlaceObject(olist, cons->x, cons->y);
 		    }
 		    break;
 		}

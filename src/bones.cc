@@ -112,7 +112,7 @@ STATIC_OVL void drop_upon_death(Monster *mtmp, Object *cont) {
 
 	uswapwep = 0; /* ensure Curse() won't cause swapwep to drop twice */
 	while ((otmp = invent) != 0) {
-		obj_extract_self(otmp);
+		RemoveObjectFromStorage(otmp);
 		obj_no_longer_held(otmp);
 
 		otmp->owornmask = 0;
@@ -128,7 +128,7 @@ STATIC_OVL void drop_upon_death(Monster *mtmp, Object *cont) {
 		else if (cont)
 			(void) add_to_container(cont, otmp);
 		else
-			place_object(otmp, player.ux, player.uy);
+			PlaceObject(otmp, player.ux, player.uy);
 	}
 #ifndef GOLDOBJ
 	if(player.ugold) {

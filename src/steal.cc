@@ -99,7 +99,7 @@ void stealgold(Monster *mtmp) {
         ygold = findgold(invent);
 
 	if (fgold && ( !ygold || fgold->quan > ygold->quan || !rn2(5))) {
-            obj_extract_self(fgold);
+            RemoveObjectFromStorage(fgold);
 	    add_to_minv(mtmp, fgold);
 	    newsym(player.ux, player.uy);
 	    pline("%s quickly snatches some gold from between your %s!",
@@ -509,7 +509,7 @@ STATIC_OVL void mdrop_obj(Monster *mon, Object *obj, bool verbosely) {
     if (verbosely && cansee(omx, omy))
 	pline("%s drops %s.", Monnam(mon), distant_name(obj, doname));
     if (!flooreffects(obj, omx, omy, "fall")) {
-	place_object(obj, omx, omy);
+	PlaceObject(obj, omx, omy);
 	stackobj(obj);
     }
 }
@@ -525,7 +525,7 @@ void mdrop_special_objs(Monster *mon) {
 	/* the Amulet, invocation tools, and Rider corpses resist even when
 	   artifacts and ordinary objects are given 0% resistance chance */
 	if (obj_resists(obj, 0, 0)) {
-	    obj_extract_self(obj);
+	    RemoveObjectFromStorage(obj);
 	    mdrop_obj(mon, obj, FALSE);
 	}
     }
@@ -545,7 +545,7 @@ void relobj(Monster *mtmp, int show, bool is_pet) {
 		item1 = TRUE;
 
 	while ((otmp = mtmp->minvent) != 0) {
-		obj_extract_self(otmp);
+		RemoveObjectFromStorage(otmp);
 		/* special case: pick-axe and unicorn horn are non-worn */
 		/* items that we also want pets to keep 1 of */
 		/* (It is a coincidence that these can also be wielded.) */

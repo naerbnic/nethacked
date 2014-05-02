@@ -525,7 +525,7 @@ void possibly_unwield(Monster *mon, bool polyspot) {
 		setmnotwielded(mon, mw_tmp);
 		mon->ResetWeapon();
 		mon->weapon_check = NO_WEAPON_WANTED;
-		obj_extract_self(obj);
+		RemoveObjectFromStorage(obj);
 		if (cansee(mon->mx, mon->my)) {
 		    pline("%s drops %s.", Monnam(mon),
 			  distant_name(obj, doname));
@@ -534,7 +534,7 @@ void possibly_unwield(Monster *mon, bool polyspot) {
 		/* might be dropping object into water or lava */
 		if (!flooreffects(obj, mon->mx, mon->my, "drop")) {
 		    if (polyspot) bypass_obj(obj);
-		    place_object(obj, mon->mx, mon->my);
+		    PlaceObject(obj, mon->mx, mon->my);
 		    stackobj(obj);
 		}
 		return;

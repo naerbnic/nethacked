@@ -836,7 +836,7 @@ STATIC_OVL void mineralize() {
 			otmp->quan = 1L + rnd(goldprob * 3);
 			otmp->owt = GetWeight(otmp);
 			if (!rn2(3)) add_to_buried(otmp);
-			else place_object(otmp, x, y);
+			else PlaceObject(otmp, x, y);
 		    }
 		}
 		if (rn2(1000) < gemprob) {
@@ -847,7 +847,7 @@ STATIC_OVL void mineralize() {
 			    } else {
 				otmp->ox = x,  otmp->oy = y;
 				if (!rn2(3)) add_to_buried(otmp);
-				else place_object(otmp, x, y);
+				else PlaceObject(otmp, x, y);
 			    }
 		    }
 		}
@@ -1382,7 +1382,7 @@ STATIC_OVL void mkinvpos(xchar x, xchar y, int dist) {
 	    fracture_rock(otmp);
 	    make_rocks = FALSE;		/* don't bother with more rocks */
 	} else {
-	    obj_extract_self(otmp);
+	    RemoveObjectFromStorage(otmp);
 	    obfree(otmp, nullptr);
 	}
     }

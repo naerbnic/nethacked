@@ -334,11 +334,11 @@ fnd:
 STATIC_OVL void move_gold(Object *gold, int vroom) {
 	xchar nx, ny;
 
-	remove_object(gold);
+	RemoveObjectFromFloor(gold);
 	newsym(gold->ox, gold->oy);
 	nx = rooms[vroom].lx + rn2(2);
 	ny = rooms[vroom].ly + rn2(2);
-	place_object(gold, nx, ny);
+	PlaceObject(gold, nx, ny);
 	stackobj(gold);
 	newsym(nx,ny);
 }
@@ -553,7 +553,7 @@ letknow:
 		    grd->mgold += gold->quan;
 		    delobj(gold);
 #else
-		    obj_extract_self(gold);
+		    RemoveObjectFromStorage(gold);
 		    add_to_minv(grd, gold);
 #endif
 		    newsym(m,n);
@@ -753,14 +753,14 @@ void paygd() {
 	    make_grave(gx, gy, buf);
 	}
 #ifndef GOLDOBJ
-	place_object(gold = mkgoldobj(player.ugold), gx, gy);
+	PlaceObject(gold = mkgoldobj(player.ugold), gx, gy);
 	stackobj(gold);
 #else
         for (coins = invent; coins; coins = nextcoins) {
             nextcoins = coins->nobj;
 	    if (objects[coins->otyp].oc_class == COIN_CLASS) {
 	        freeinv(coins);
-                place_object(coins, gx, gy);
+                PlaceObject(coins, gx, gy);
 		stackobj(coins);
 	    }
         }

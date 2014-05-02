@@ -1089,7 +1089,7 @@ void rloco(Object *obj) {
 	    if (revive_corpse(obj)) return;
 	}
 
-	obj_extract_self(obj);
+	RemoveObjectFromStorage(obj);
 	otx = obj->ox;
 	oty = obj->oy;
 	restricted_fall = (otx == 0 && dndest.lx);
@@ -1121,7 +1121,7 @@ void rloco(Object *obj) {
 	    }
 	    newsym(otx, oty);	/* update old location */
 	}
-	place_object(obj, tx, ty);
+	PlaceObject(obj, tx, ty);
 	newsym(tx, ty);
 }
 

@@ -550,7 +550,7 @@ void dropy(Object *obj) {
 		}
 	    }
 	} else  {
-	    place_object(obj, player.ux, player.uy);
+	    PlaceObject(obj, player.ux, player.uy);
 	    if (obj == uball)
 		drop_ball(player.ux,player.uy);
 	    else

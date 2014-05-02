@@ -96,7 +96,7 @@ pick_move:
 			if (cansee(mtmp->mx,mtmp->my))
 			    pline("%s picks up %s.", Monnam(mtmp),
 				distant_name(ib,doname));
-			obj_extract_self(ib);
+			RemoveObjectFromStorage(ib);
 			(void) mpickobj(mtmp, ib);
 		}
 		return(1);

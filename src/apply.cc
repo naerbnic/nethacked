@@ -1068,7 +1068,7 @@ STATIC_OVL void light_cocktail(Object *obj) {
 	if (obj->quan > 1L) {
 	    obj = SplitObject(obj, 1L);
 	    begin_burn(obj, FALSE);	/* burn before free to get position */
-	    obj_extract_self(obj);	/* free from inv */
+	    RemoveObjectFromStorage(obj);	/* free from inv */
 
 	    /* shouldn't merge */
 	    obj = hold_another_object(obj, "You drop %s!",
@@ -1571,7 +1571,7 @@ void fig_transform(genericptr_t arg, long timeout) {
 	    }
 	}
 	/* free figurine now */
-	obj_extract_self(figurine);
+	RemoveObjectFromStorage(figurine);
 	obfree(figurine, nullptr);
 	if (redraw) newsym(cc.x, cc.y);
 }
@@ -2143,7 +2143,7 @@ STATIC_OVL int use_whip(Object *obj) {
 		gotit = FALSE;	/* can't pull it free */
 	    }
 	    if (gotit) {
-		obj_extract_self(otmp);
+		RemoveObjectFromStorage(otmp);
 		possibly_unwield(mtmp, FALSE);
 		setmnotwielded(mtmp,otmp);
 
@@ -2152,7 +2152,7 @@ STATIC_OVL int use_whip(Object *obj) {
 		    /* to floor near you */
 		    You("yank %s %s to the %s!", s_suffix(mon_nam(mtmp)),
 			onambuf, surface(player.ux, player.uy));
-		    place_object(otmp, player.ux, player.uy);
+		    PlaceObject(otmp, player.ux, player.uy);
 		    stackobj(otmp);
 		    break;
 		case 3:
@@ -2171,7 +2171,7 @@ STATIC_OVL int use_whip(Object *obj) {
 			    pline_The("%s hits you as you try to snatch it!",
 				the(onambuf));
 			}
-			place_object(otmp, player.ux, player.uy);
+			PlaceObject(otmp, player.ux, player.uy);
 			stackobj(otmp);
 			break;
 		    }
@@ -2198,7 +2198,7 @@ STATIC_OVL int use_whip(Object *obj) {
 		    You("yank %s from %s %s!", the(onambuf),
 			s_suffix(mon_nam(mtmp)), mon_hand);
 		    obj_no_longer_held(otmp);
-		    place_object(otmp, mtmp->mx, mtmp->my);
+		    PlaceObject(otmp, mtmp->mx, mtmp->my);
 		    stackobj(otmp);
 		    break;
 		}
@@ -2331,7 +2331,7 @@ STATIC_OVL int use_cream_pie(Object *obj) {
 		verbalize("You used it, you bought it!");
 		CreateBillDummyObject(obj);
 	}
-	obj_extract_self(obj);
+	RemoveObjectFromStorage(obj);
 	delobj(obj);
 	return(0);
 }

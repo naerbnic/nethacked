@@ -177,7 +177,7 @@ int merged(Object **potmp, Object **pobj) {
 		else otmp->owt += obj->owt;
 		if(!otmp->onamelth && obj->onamelth)
 			otmp = *potmp = oname(otmp, ONAME(obj));
-		obj_extract_self(obj);
+		RemoveObjectFromStorage(obj);
 
 		/* really should merge the timeouts */
 		if (obj->lamplit) obj_merge_light_sources(obj, otmp);
@@ -389,20 +389,20 @@ Object * hold_another_object(Object *obj, const char *drop_fmt, const char *drop
 	    bool wasUpolyd = Upolyd;
 
 	    /* in case touching this object turns out to be fatal */
-	    place_object(obj, player.ux, player.uy);
+	    PlaceObject(obj, player.ux, player.uy);
 
 	    if (!touch_artifact(obj, &youmonst)) {
-		obj_extract_self(obj);	/* remove it from the floor */
+		RemoveObjectFromStorage(obj);	/* remove it from the floor */
 		dropy(obj);		/* now put it back again :-) */
 		return obj;
 	    } else if (wasUpolyd && !Upolyd) {
 		/* loose your grip if you revert your form */
 		if (drop_fmt) pline(drop_fmt, drop_arg);
-		obj_extract_self(obj);
+		RemoveObjectFromStorage(obj);
 		dropy(obj);
 		return obj;
 	    }
-	    obj_extract_self(obj);
+	    RemoveObjectFromStorage(obj);
 	    if (crysknife) {
 		obj->otyp = CRYSKNIFE;
 		obj->oerodeproof = oerode;
@@ -520,7 +520,7 @@ void freeinv_core(Object *obj) {
 
 /* remove an object from the hero's inventory */
 void freeinv(Object *obj) {
-	extract_nobj(obj, &invent);
+	ExtractObjectFromList(obj, &invent);
 	freeinv_core(obj);
 	update_inventory();
 }
@@ -558,7 +558,7 @@ void delobj(Object *obj) {
 		return;
 	}
 	update_map = (obj->where == OBJ_FLOOR);
-	obj_extract_self(obj);
+	RemoveObjectFromStorage(obj);
 	if (update_map) newsym(obj->ox, obj->oy);
 	obfree(obj, (Object *) 0);	/* frees contents also */
 }
@@ -2673,14 +2673,14 @@ int doorganize() {
 	 * don't use freeinv/addinv to avoid double-touching artifacts,
 	 * dousing lamps, losing luck, cursing loadstone, etc.
 	 */
-	extract_nobj(obj, &invent);
+	ExtractObjectFromList(obj, &invent);
 
 	for (otmp = invent; otmp;)
 		if (merged(&otmp,&obj)) {
 			adj_type = "Merging:";
 			obj = otmp;
 			otmp = otmp->nobj;
-			extract_nobj(obj, &invent);
+			ExtractObjectFromList(obj, &invent);
 		} else {
 			if (otmp->invlet == let) {
 				adj_type = "Swapping:";
@@ -2792,7 +2792,7 @@ Object * display_minventory(Monster *mon, int dflags, char *title) {
 			do_all ? allow_all : worn_wield_only);
 
 #ifndef GOLDOBJ
-	    if (do_gold) obj_extract_self(&m_gold);
+	    if (do_gold) RemoveObjectFromStorage(&m_gold);
 #endif
 
 	    set_uasmon();

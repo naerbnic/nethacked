@@ -121,12 +121,12 @@ bool rust_dmg(Object *otmp, const char *ostr, int type, bool print, Monster *vic
 
 	if (!otmp) return(FALSE);
 	switch(type) {
-		case 0: vulnerable = is_flammable(otmp);
+		case 0: vulnerable = IsFlammable(otmp);
 			break;
 		case 1: vulnerable = is_rustprone(otmp);
 			grprot = TRUE;
 			break;
-		case 2: vulnerable = is_rottable(otmp);
+		case 2: vulnerable = IsRottable(otmp);
 			is_primary = FALSE;
 			break;
 		case 3: vulnerable = is_corrodeable(otmp);
@@ -250,7 +250,7 @@ Trap * maketrap(int x, int y, int typ) {
 		while(mtmp->minvent) {
 		    otmp = mtmp->minvent;
 		    otmp->owornmask = 0;
-		    obj_extract_self(otmp);
+		    RemoveObjectFromStorage(otmp);
 		    (void) add_to_container(statue, otmp);
 		}
 		statue->owt = GetWeight(statue);
@@ -449,7 +449,7 @@ Monster * animate_statue(Object *statue, xchar x, xchar y, int cause, int *fail_
 	    mon = christen_monst(mon, ONAME(statue));
 	/* transfer any statue contents to monster's inventory */
 	while ((item = statue->cobj) != 0) {
-	    obj_extract_self(item);
+	    RemoveObjectFromStorage(item);
 	    (void) add_to_minv(mon, item);
 	}
 	m_dowear(mon, TRUE);
@@ -529,8 +529,8 @@ STATIC_OVL bool keep_saddle_with_steedcorpse(unsigned steed_mid, Object *objchn,
 				/* move saddle */
 				xchar x,y;
 				if (get_obj_location(objchn, &x, &y, 0)) {
-					obj_extract_self(saddle);
-					place_object(saddle, x, y);
+					RemoveObjectFromStorage(saddle);
+					PlaceObject(saddle, x, y);
 					stackobj(saddle);
 				}
 				return TRUE;
@@ -615,7 +615,7 @@ void dotrap(Trap *trap, unsigned trflags) {
 		if (thitu(8, dmgval(otmp, &youmonst), otmp, "arrow")) {
 		    obfree(otmp, nullptr);
 		} else {
-		    place_object(otmp, player.ux, player.uy);
+		    PlaceObject(otmp, player.ux, player.uy);
 		    if (!Blind) otmp->dknown = 1;
 		    stackobj(otmp);
 		    newsym(player.ux, player.uy);
@@ -644,7 +644,7 @@ void dotrap(Trap *trap, unsigned trflags) {
 			poisoned("dart", A_CON, "little dart", -10);
 		    obfree(otmp, nullptr);
 		} else {
-		    place_object(otmp, player.ux, player.uy);
+		    PlaceObject(otmp, player.ux, player.uy);
 		    if (!Blind) otmp->dknown = 1;
 		    stackobj(otmp);
 		    newsym(player.ux, player.uy);
@@ -1288,12 +1288,12 @@ int launch_obj(short otyp, int x1, int y1, int x2, int y2, int style) {
 	}
 
 	if (otmp->quan == 1L) {
-	    obj_extract_self(otmp);
+	    RemoveObjectFromStorage(otmp);
 	    singleobj = otmp;
 	    otmp = (Object *) 0;
 	} else {
 	    singleobj = SplitObject(otmp, 1L);
-	    obj_extract_self(singleobj);
+	    RemoveObjectFromStorage(singleobj);
 	}
 	newsym(x1,y1);
 	/* in case you're using a pick-axe to chop the boulder that's being
@@ -1387,7 +1387,7 @@ int launch_obj(short otyp, int x1, int y1, int x2, int y2, int style) {
 					" The rolling boulder triggers a land mine." : "");
 				deltrap(t);
 				del_engr_at(bhitpos.x,bhitpos.y);
-				place_object(singleobj, bhitpos.x, bhitpos.y);
+				PlaceObject(singleobj, bhitpos.x, bhitpos.y);
 				singleobj->otrapped = 0;
 				fracture_rock(singleobj);
 				(void)scatter(bhitpos.x,bhitpos.y, 4,
@@ -1451,11 +1451,11 @@ int launch_obj(short otyp, int x1, int y1, int x2, int y2, int style) {
 
 			You_hear("a loud crash%s!",
 				cansee(bhitpos.x, bhitpos.y) ? bmsg : "");
-			obj_extract_self(otmp2);
+			RemoveObjectFromStorage(otmp2);
 			/* pass off the otrapped flag to the next boulder */
 			otmp2->otrapped = singleobj->otrapped;
 			singleobj->otrapped = 0;
-			place_object(singleobj, bhitpos.x, bhitpos.y);
+			PlaceObject(singleobj, bhitpos.x, bhitpos.y);
 			singleobj = otmp2;
 			otmp2 = nullptr;
 			wake_nearto(bhitpos.x, bhitpos.y, 10*10);
@@ -1481,7 +1481,7 @@ int launch_obj(short otyp, int x1, int y1, int x2, int y2, int style) {
 	tmp_at(DISP_END, 0);
 	if (!used_up) {
 		singleobj->otrapped = 0;
-		place_object(singleobj, x2,y2);
+		PlaceObject(singleobj, x2,y2);
 		newsym(x2,y2);
 		return 1;
 	} else
@@ -1543,7 +1543,7 @@ STATIC_OVL int mkroll_launch(Trap *ttmp, xchar x, xchar y, short otyp, long ocou
 		otmp = MakeSpecificObject(otyp, TRUE, FALSE);
 		otmp->quan = ocount;
 		otmp->owt = GetWeight(otmp);
-		place_object(otmp, cc.x, cc.y);
+		PlaceObject(otmp, cc.x, cc.y);
 		stackobj(otmp);
 	}
 	ttmp->launch.x = cc.x;
@@ -2208,7 +2208,7 @@ void fill_pit(int x, int y) {
 	if ((t = t_at(x, y)) &&
 	    ((t->ttyp == PIT) || (t->ttyp == SPIKED_PIT)) &&
 	    (otmp = sobj_at(BOULDER, x, y))) {
-		obj_extract_self(otmp);
+		RemoveObjectFromStorage(otmp);
 		(void) flooreffects(otmp, x, y, "settle");
 	}
 }
@@ -2526,9 +2526,9 @@ int fire_damage(Object *chain, bool force, bool here, xchar x, xchar y) {
 		if (in_sight) pline("Its contents fall out.");
 		for (otmp = obj->cobj; otmp; otmp = ncobj) {
 		    ncobj = otmp->nobj;
-		    obj_extract_self(otmp);
+		    RemoveObjectFromStorage(otmp);
 		    if (!flooreffects(otmp, x, y, ""))
-			place_object(otmp, x, y);
+			PlaceObject(otmp, x, y);
 		}
 	    }
 	    delobj(obj);
@@ -2561,7 +2561,7 @@ int fire_damage(Object *chain, bool force, bool here, xchar x, xchar y) {
 		      destroy_strings[dindx*3 + 1] : destroy_strings[dindx*3]);
 	    delobj(obj);
 	    retval++;
-	} else if (is_flammable(obj) && obj->oeroded < MAX_ERODE &&
+	} else if (IsFlammable(obj) && obj->oeroded < MAX_ERODE &&
 		   !(obj->oerodeproof || (obj->blessed && !rnl(4)))) {
 	    if (in_sight) {
 		pline("%s %s%s.", Yname2(obj), otense(obj, "burn"),
@@ -2919,7 +2919,7 @@ STATIC_OVL void cnv_trap_obj(int otyp, int cnt, Trap *ttmp) {
 	/* Only dart traps are capable of being poisonous */
 	if (otyp != DART)
 	    otmp->opoisoned = 0;
-	place_object(otmp, ttmp->tx, ttmp->ty);
+	PlaceObject(otmp, ttmp->tx, ttmp->ty);
 	/* Sell your own traps only... */
 	if (ttmp->madeby_u) sellobj(otmp, ttmp->tx, ttmp->ty);
 	stackobj(otmp);
@@ -3726,7 +3726,7 @@ STATIC_OVL bool thitm(int tlev, Monster *mon, Object *obj, int d_override, bool 
 		}
 	}
 	if (obj && (!strike || d_override)) {
-		place_object(obj, mon->mx, mon->my);
+		PlaceObject(obj, mon->mx, mon->my);
 		stackobj(obj);
 	} else if (obj) dealloc_obj(obj);
 

@@ -368,7 +368,7 @@ void container_impact_dmg(Object *obj) {
 		if (otmp->quan > 1L)
 		    useup(otmp);
 		else {
-		    obj_extract_self(otmp);
+		    RemoveObjectFromStorage(otmp);
 		    obfree(otmp, (Object *) 0);
 		}
 	    }
@@ -474,13 +474,13 @@ STATIC_OVL int kick_object(xchar x, xchar y) {
 		pline("%s %s loose.",
 		      The(distant_name(kickobj, xname)),
 		      otense(kickobj, "come"));
-	    obj_extract_self(kickobj);
+	    RemoveObjectFromStorage(kickobj);
 	    newsym(x, y);
 	    if (costly && (!costly_spot(player.ux, player.uy) ||
 		    !index(player.urooms, *in_rooms(x, y, SHOPBASE))))
 		addtobill(kickobj, FALSE, FALSE, FALSE);
 	    if (!flooreffects(kickobj, player.ux, player.uy, "fall")) {
-		place_object(kickobj, player.ux, player.uy);
+		PlaceObject(kickobj, player.ux, player.uy);
 		stackobj(kickobj);
 		newsym(player.ux, player.uy);
 	    }
@@ -532,7 +532,7 @@ STATIC_OVL int kick_object(xchar x, xchar y) {
 	    pline("Whee!  %s %s across the %s.", Doname2(kickobj),
 		  otense(kickobj, "slide"), surface(x,y));
 
-	obj_extract_self(kickobj);
+	RemoveObjectFromStorage(kickobj);
 	(void) snuff_candle(kickobj);
 	newsym(x, y);
 	mon = bhit(player.dx, player.dy, range, KICKED_WEAPON,
@@ -571,7 +571,7 @@ STATIC_OVL int kick_object(xchar x, xchar y) {
 	}
 
 	if(flooreffects(kickobj,bhitpos.x,bhitpos.y,"fall")) return(1);
-	place_object(kickobj, bhitpos.x, bhitpos.y);
+	PlaceObject(kickobj, bhitpos.x, bhitpos.y);
 	stackobj(kickobj);
 	newsym(kickobj->ox, kickobj->oy);
 	return(1);
@@ -876,7 +876,7 @@ int dokick() {
 			goto ouch;
 		    }
 		    if (rn2(15) && !(maploc->looted & TREE_LOOTED) &&
-			  (treefruit = rnd_treefruit_at(x, y))) {
+			  (treefruit = MakeRandomTreefruitAt(x, y))) {
 			long nfruit = 8L-rnl(7), nfall;
 			short frtype = treefruit->otyp;
 			treefruit->quan = nfruit;
@@ -1173,7 +1173,7 @@ void impact_drop(Object *missile, xchar x, xchar y, xchar dlev) {
 		/* boulders can fall too, but rarely & never due to rocks */
 		if((isrock && obj->otyp == BOULDER) ||
 		   rn2(obj->otyp == BOULDER ? 30 : 3)) continue;
-		obj_extract_self(obj);
+		RemoveObjectFromStorage(obj);
 
 		if(costly) {
 		    price += stolen_value(obj, x, y,
@@ -1326,7 +1326,7 @@ bool ship_object(Object *otmp, xchar x, xchar y, bool shop_floor_obj) {
 		result = "splat";
 	    }
 	    You_hear("a muffled %s.",result);
-	    obj_extract_self(otmp);
+	    RemoveObjectFromStorage(otmp);
 	    obfree(otmp, (Object *) 0);
 	    return TRUE;
 	}
@@ -1363,7 +1363,7 @@ void obj_delivery() {
 	    otmp2 = otmp->nobj;
 	    if (otmp->ox != player.uz.dnum || otmp->oy != player.uz.dlevel) continue;
 
-	    obj_extract_self(otmp);
+	    RemoveObjectFromStorage(otmp);
 	    where = otmp->owornmask;		/* destination code */
 	    otmp->owornmask = 0L;
 
@@ -1381,7 +1381,7 @@ void obj_delivery() {
 				break;
 	    }
 	    if (nx > 0) {
-		place_object(otmp, nx, ny);
+		PlaceObject(otmp, nx, ny);
 		stackobj(otmp);
 		(void)scatter(nx, ny, rnd(2), 0, otmp);
 	    } else {		/* random location */

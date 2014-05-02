@@ -320,7 +320,7 @@ int tactics(Monster *mtmp) {
 				    Monnam(mtmp),
 				    (distu(mtmp->mx, mtmp->my) <= 5) ?
 				     doname(otmp) : distant_name(otmp, doname));
-			    obj_extract_self(otmp);
+			    RemoveObjectFromStorage(otmp);
 			    (void) mpickobj(mtmp, otmp);
 			    return(1);
 			} else return(0);

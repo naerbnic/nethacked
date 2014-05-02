@@ -760,7 +760,7 @@ int meatobj(Monster *mtmp) {
 		    /* contents of eaten containers become engulfed; this
 		       is arbitrary, but otherwise g.cubes are too powerful */
 		    while ((otmp3 = otmp->cobj) != 0) {
-			obj_extract_self(otmp3);
+			RemoveObjectFromStorage(otmp3);
 			if (otmp->otyp == ICE_BOX && otmp3->otyp == CORPSE) {
 			    otmp3->age = monstermoves - otmp3->age;
 			    StartCorpseTimeout(otmp3);
@@ -792,7 +792,7 @@ int meatobj(Monster *mtmp) {
 			    distant_name(otmp,doname));
 		} else if (ecount == 2)
 			sprintf(buf, "%s engulfs several objects.", Monnam(mtmp));
-		obj_extract_self(otmp);
+		RemoveObjectFromStorage(otmp);
 		(void) mpickobj(mtmp, otmp);	/* slurp */
 	    }
 	    /* Engulf & devour is instant, so don't set meating */
@@ -819,7 +819,7 @@ void mpickgold(Monster *mtmp) {
 	mtmp->mgold += gold->quan;
 	delobj(gold);
 #else
-        obj_extract_self(gold);
+        RemoveObjectFromStorage(gold);
         add_to_minv(mtmp, gold);
 #endif
 	if (cansee(mtmp->mx, mtmp->my) ) {
@@ -859,7 +859,7 @@ bool mpickstuff(Monster *mtmp, const char *str) {
 			pline("%s picks up %s.", Monnam(mtmp),
 			      (distu(mtmp->mx, mtmp->my) <= 5) ?
 				doname(otmp) : distant_name(otmp, doname));
-		obj_extract_self(otmp);
+		RemoveObjectFromStorage(otmp);
 		/* unblock point after extract, before pickup */
 		if (otmp->otyp == BOULDER)
 		    unblock_point(otmp->ox,otmp->oy);	/* vision */
@@ -1504,7 +1504,7 @@ void mongone(Monster *mdef) {
 	   can't remove them from the game */
 	mdrop_special_objs(mdef);
 	/* release rest of monster's inventory--it is removed from game */
-	discard_minvent(mdef);
+	DiscardMonsterInventory(mdef);
 #ifndef GOLDOBJ
 	mdef->mgold = 0L;
 #endif
@@ -1531,7 +1531,7 @@ void monstone(Monster *mdef) {
 		oldminvent = 0;
 		/* some objects may end up outside the statue */
 		while ((obj = mdef->minvent) != 0) {
-		    obj_extract_self(obj);
+		    RemoveObjectFromStorage(obj);
 		    if (obj->owornmask)
 			update_mon_intrinsics(mdef, obj, FALSE, TRUE);
 		    obj_no_longer_held(obj);
@@ -1544,7 +1544,7 @@ void monstone(Monster *mdef) {
 #endif
 				obj_resists(obj, 0, 0)) {
 			if (flooreffects(obj, x, y, "fall")) continue;
-			place_object(obj, x, y);
+			PlaceObject(obj, x, y);
 		    } else {
 			if (obj->lamplit) end_burn(obj, TRUE);
 			obj->nobj = oldminvent;
@@ -2401,10 +2401,10 @@ int newcham(Monster *mtmp, MonsterType *mdat, bool polyspot, bool msg) {
 		    /* this keeps otmp from being polymorphed in the
 		       same zap that the monster that held it is polymorphed */
 		    if (polyspot) bypass_obj(otmp);
-		    obj_extract_self(otmp);
+		    RemoveObjectFromStorage(otmp);
 		    /* probably ought to give some "drop" message here */
 		    if (flooreffects(otmp, mtmp->mx, mtmp->my, "")) continue;
-		    place_object(otmp, mtmp->mx, mtmp->my);
+		    PlaceObject(otmp, mtmp->mx, mtmp->my);
 		}
 	    }
 	}

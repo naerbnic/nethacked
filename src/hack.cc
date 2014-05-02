@@ -130,8 +130,8 @@ STATIC_OVL int moverock() {
 		switch(ttmp->ttyp) {
 		case LANDMINE:
 		    if (rn2(10)) {
-			obj_extract_self(otmp);
-			place_object(otmp, rx, ry);
+			RemoveObjectFromStorage(otmp);
+			PlaceObject(otmp, rx, ry);
 			unblock_point(sx, sy);
 			newsym(sx, sy);
 			pline("KAABLAMM!!!  %s %s land mine.",
@@ -146,13 +146,13 @@ STATIC_OVL int moverock() {
 		    break;
 		case SPIKED_PIT:
 		case PIT:
-		    obj_extract_self(otmp);
+		    RemoveObjectFromStorage(otmp);
 		    /* vision kludge to get messages right;
 		       the pit will temporarily be seen even
 		       if this is one among multiple boulders */
 		    if (!Blind) viz_array[ry][rx] |= IN_SIGHT;
 		    if (!flooreffects(otmp, rx, ry, "fall")) {
-			place_object(otmp, rx, ry);
+			PlaceObject(otmp, rx, ry);
 		    }
 		    if (mtmp && !Blind) newsym(rx, ry);
 		    continue;
@@ -192,7 +192,7 @@ STATIC_OVL int moverock() {
 
 			if (newlev == depth(&player.uz) || In_endgame(&player.uz))
 			    continue;
-			obj_extract_self(otmp);
+			RemoveObjectFromStorage(otmp);
 			add_to_migration(otmp);
 			get_level(&dest, newlev);
 			otmp->ox = dest.dnum;
@@ -211,8 +211,8 @@ STATIC_OVL int moverock() {
 	     * when level is restored.
 	     */
 	    if (otmp != fobj) {
-		remove_object(otmp);
-		place_object(otmp, otmp->ox, otmp->oy);
+		RemoveObjectFromFloor(otmp);
+		PlaceObject(otmp, otmp->ox, otmp->oy);
 	    }
 
 	    {
@@ -427,9 +427,9 @@ STATIC_OVL int still_chewing(xchar x, xchar y) {
 
 void movobj(Object *obj, xchar ox, xchar oy) {
 	/* optimize by leaving on the fobj chain? */
-	remove_object(obj);
+	RemoveObjectFromFloor(obj);
 	newsym(obj->ox, obj->oy);
-	place_object(obj, ox, oy);
+	PlaceObject(obj, ox, oy);
 	newsym(ox, oy);
 }
 

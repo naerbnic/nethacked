@@ -263,7 +263,7 @@ do_pit:		    chasm = maketrap(x,y,PIT);
 			      ((x == player.ux) && (y == player.uy)) ? " below you" : "");
 			if (mtmp)
 				mtmp->mtrapped = 0;
-			obj_extract_self(otmp);
+			RemoveObjectFromStorage(otmp);
 			(void) flooreffects(otmp, x, y, "");
 			break;
 		    }

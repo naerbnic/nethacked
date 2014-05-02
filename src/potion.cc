@@ -1707,7 +1707,7 @@ int dodip() {
 		if (catch_lit(obj)) {
 		    /* catch_lit does all the work if true */
 		} else if (obj->oerodeproof || obj_resists(obj, 5, 95) ||
-			   !is_flammable(obj) || obj->oclass == FOOD_CLASS) {
+			   !IsFlammable(obj) || obj->oclass == FOOD_CLASS) {
 		    pline("%s %s to burn for a moment.",
 			  Yname2(obj), otense(obj, "seem"));
 		} else {
@@ -1717,7 +1717,7 @@ int dodip() {
 			    obj->oeroded == MAX_ERODE ? "destroys" : "damages",
 			    yname(obj));
 		    if (obj->oeroded == MAX_ERODE) {
-			obj_extract_self(obj);
+			RemoveObjectFromStorage(obj);
 			obfree(obj, nullptr);
 			obj = (Object *) 0;
 		    } else {
@@ -1847,7 +1847,7 @@ int dodip() {
 			docall(&fakeobj);
 		    }
 		}
-		obj_extract_self(singlepotion);
+		RemoveObjectFromStorage(singlepotion);
 		singlepotion = hold_another_object(singlepotion,
 					"You juggle and drop %s!",
 					doname(singlepotion), (const char *)0);

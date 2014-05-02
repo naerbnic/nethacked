@@ -1187,7 +1187,7 @@ STATIC_OVL int eatcorpse(Object *otmp) {
 	if (!vegetarian(&mons[mnum])) violated_vegetarian();
 
 	if (mnum != PM_LIZARD && mnum != PM_LICHEN) {
-		long age = peek_at_iced_corpse_age(otmp);
+		long age = PeekAtIcedCorpseAge(otmp);
 
 		rotted = (monstermoves - age)/(10L + rn2(20));
 		if (otmp->cursed) rotted += 2L;
@@ -1681,7 +1681,7 @@ STATIC_OVL int edibility_prompts(Object *otmp) {
 			youmonst.data != &mons[PM_GREEN_SLIME]);
 
 		if (cadaver && mnum != PM_LIZARD && mnum != PM_LICHEN) {
-			long age = peek_at_iced_corpse_age(otmp);
+			long age = PeekAtIcedCorpseAge(otmp);
 			/* worst case rather than random
 			   in this calculation to force prompt */
 			rotted = (monstermoves - age)/(10L + 0 /* was rn2(20) */);

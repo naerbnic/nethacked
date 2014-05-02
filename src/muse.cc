@@ -1367,7 +1367,7 @@ int use_offensive(Monster *mtmp) {
 	    	    	    }
 	    	    	    /* Drop the rock/boulder to the floor */
 	    	    	    if (!flooreffects(otmp2, x, y, "fall")) {
-	    	    	    	place_object(otmp2, x, y);
+	    	    	    	PlaceObject(otmp2, x, y);
 	    	    	    	stackobj(otmp2);
 	    	    	    	newsym(x, y);  /* map the rock */
 	    	    	    }
@@ -1404,7 +1404,7 @@ int use_offensive(Monster *mtmp) {
 		    } else
 			dmg = 0;
 		    if (!flooreffects(otmp2, player.ux, player.uy, "fall")) {
-			place_object(otmp2, player.ux, player.uy);
+			PlaceObject(otmp2, player.ux, player.uy);
 			stackobj(otmp2);
 			newsym(player.ux, player.uy);
 		    }
@@ -1815,7 +1815,7 @@ skipmsg:
 			case 1:		/* onto floor beneath mon */
 			    pline("%s yanks %s from your %s!", Monnam(mtmp),
 				  the_weapon, hand);
-			    place_object(obj, mtmp->mx, mtmp->my);
+			    PlaceObject(obj, mtmp->mx, mtmp->my);
 			    break;
 			case 2:		/* onto floor beneath you */
 			    pline("%s yanks %s to the %s!", Monnam(mtmp),

@@ -111,7 +111,7 @@ STATIC_OVL int drop_throw(Object *obj, bool ohit, int x, int y) {
 			objgone = ship_object(obj, x, y, FALSE);
 		if (!objgone) {
 			if (!flooreffects(obj,x,y,"fall")) { /* don't double-dip on damage */
-			    place_object(obj, x, y);
+			    PlaceObject(obj, x, y);
 			    if (!mtmp && x == player.ux && y == player.uy)
 				mtmp = &youmonst;
 			    if (mtmp && ohit)
@@ -230,7 +230,7 @@ int ohitmon(
 
 	    objgone = drop_throw(otmp, 1, bhitpos.x, bhitpos.y);
 	    if (!objgone && range == -1) {  /* special case */
-		    obj_extract_self(otmp); /* free it for motion again */
+		    RemoveObjectFromStorage(otmp); /* free it for motion again */
 		    return 0;
 	    }
 	    return 1;
@@ -264,12 +264,12 @@ void m_throw(Monster *mon, int x, int y, int dx, int dy, int range, Object *obj)
 		    setmnotwielded(mon,obj);
 		    mon->ResetWeapon();
 	    }
-	    obj_extract_self(obj);
+	    RemoveObjectFromStorage(obj);
 	    singleobj = obj;
 	    obj = (Object *) 0;
 	} else {
 	    singleobj = SplitObject(obj, 1L);
-	    obj_extract_self(singleobj);
+	    RemoveObjectFromStorage(singleobj);
 	}
 
 	singleobj->owornmask = 0; /* threw one of multiple weapons in hand? */
@@ -455,7 +455,7 @@ void m_useup(Monster *mon, Object *obj) {
 		obj->quan--;
 		obj->owt = GetWeight(obj);
 	} else {
-		obj_extract_self(obj);
+		RemoveObjectFromStorage(obj);
 		possibly_unwield(mon, FALSE);
 		if (obj->owornmask) {
 		    mon->misc_worn_check &= ~obj->owornmask;

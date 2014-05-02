@@ -1174,7 +1174,7 @@ int seffects(Object *sobj) {
 	    	    	    }
 	    	    	    /* Drop the rock/boulder to the floor */
 	    	    	    if (!flooreffects(otmp2, x, y, "fall")) {
-	    	    	    	place_object(otmp2, x, y);
+	    	    	    	PlaceObject(otmp2, x, y);
 	    	    	    	stackobj(otmp2);
 	    	    	    	newsym(x, y);  /* map the rock */
 	    	    	    }
@@ -1211,7 +1211,7 @@ int seffects(Object *sobj) {
 			dmg = 0;
 		    /* Must be before the losehp(), for bones files */
 		    if (!flooreffects(otmp2, player.ux, player.uy, "fall")) {
-			place_object(otmp2, player.ux, player.uy);
+			PlaceObject(otmp2, player.ux, player.uy);
 			stackobj(otmp2);
 			newsym(player.ux, player.uy);
 		    }
@@ -1696,7 +1696,7 @@ void punish(Object *sobj) {
 void unpunish() {
 	Object *savechain = uchain;
 
-	obj_extract_self(uchain);
+	RemoveObjectFromStorage(uchain);
 	newsym(uchain->ox,uchain->oy);
 	setworn(nullptr, W_CHAIN);
 	dealloc_obj(savechain);

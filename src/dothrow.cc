@@ -1044,7 +1044,7 @@ void throwit(Object *obj, long wep_mask, bool twoweap) {
 		    return;
 		}
 		thrownobj = (Object*)0;
-		place_object(obj, bhitpos.x, bhitpos.y);
+		PlaceObject(obj, bhitpos.x, bhitpos.y);
 		if(*player.ushops && obj != uball)
 		    check_shop_obj(obj, bhitpos.x, bhitpos.y, FALSE);
 
@@ -1676,7 +1676,7 @@ STATIC_OVL int throw_gold(Object *obj) {
 	if(flooreffects(obj,bhitpos.x,bhitpos.y,"fall")) return(1);
 	if(player.dz > 0)
 		pline_The("gold hits the %s.", surface(bhitpos.x,bhitpos.y));
-	place_object(obj,bhitpos.x,bhitpos.y);
+	PlaceObject(obj,bhitpos.x,bhitpos.y);
 	if(*player.ushops) sellobj(obj, bhitpos.x, bhitpos.y);
 	stackobj(obj);
 	newsym(bhitpos.x,bhitpos.y);

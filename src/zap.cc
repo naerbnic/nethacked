@@ -246,8 +246,8 @@ int bhitm(Monster *mtmp, Object *otmp) {
 			mtmp->misc_worn_check &= ~obj->owornmask;
 			update_mon_intrinsics(mtmp, obj, FALSE, FALSE);
 			obj->owornmask = 0L;
-			obj_extract_self(obj);
-			place_object(obj, mtmp->mx, mtmp->my);
+			RemoveObjectFromStorage(obj);
+			PlaceObject(obj, mtmp->mx, mtmp->my);
 			/* call stackobj() if we ever drop anything that can merge */
 			newsym(mtmp->mx, mtmp->my);
 #endif
@@ -683,7 +683,7 @@ Monster * revive(Object *obj) {
 				m_useup(obj->ocarry, obj);
 				break;
 			    case OBJ_CONTAINED:
-				obj_extract_self(obj);
+				RemoveObjectFromStorage(obj);
 				obfree(obj, (Object *) 0);
 				break;
 			    default:
@@ -1218,8 +1218,8 @@ Object * poly_obj(Object *obj, int id) {
 	otmp->blessed = obj->blessed;
 	otmp->oeroded = obj->oeroded;
 	otmp->oeroded2 = obj->oeroded2;
-	if (!is_flammable(otmp) && !is_rustprone(otmp)) otmp->oeroded = 0;
-	if (!is_corrodeable(otmp) && !is_rottable(otmp)) otmp->oeroded2 = 0;
+	if (!IsFlammable(otmp) && !is_rustprone(otmp)) otmp->oeroded = 0;
+	if (!is_corrodeable(otmp) && !IsRottable(otmp)) otmp->oeroded2 = 0;
 	if (is_damageable(otmp))
 	    otmp->oerodeproof = obj->oerodeproof;
 
@@ -1571,8 +1571,8 @@ makecorpse:			if (mons[obj->corpsenm].geno &
 				 * Drop the contents, poly_obj looses them.
 				 */
 				while ((item = obj->cobj) != 0) {
-				    obj_extract_self(item);
-				    place_object(item, oox, ooy);
+				    RemoveObjectFromStorage(item);
+				    PlaceObject(item, oox, ooy);
 				}
 				obj = poly_obj(obj, CORPSE);
 				break;
@@ -3271,7 +3271,7 @@ void buzz(int type, int nd, xchar sx, xchar sy, int dx, int dy) {
 			for (otmp = mon->minvent; otmp; otmp = otmp2) {
 			    otmp2 = otmp->nobj;
 			    if (!oresist_disintegration(otmp)) {
-				obj_extract_self(otmp);
+				RemoveObjectFromStorage(otmp);
 				obfree(otmp, nullptr);
 			    }
 			}
@@ -3405,7 +3405,7 @@ void melt_ice(xchar x, xchar y) {
 #endif
 	    lev->icedpool = 0;
 	}
-	obj_ice_effects(x, y, FALSE);
+	ApplyIceEffectsAt(x, y, FALSE);
 	unearth_objs(x, y);
 	if (Underwater) vision_recalc(1);
 	newsym(x,y);
@@ -3413,7 +3413,7 @@ void melt_ice(xchar x, xchar y) {
 	if ((otmp = sobj_at(BOULDER, x, y)) != 0) {
 	    if (cansee(x,y)) pline("%s settles...", An(xname(otmp)));
 	    do {
-		obj_extract_self(otmp);	/* boulder isn't being pushed */
+		RemoveObjectFromStorage(otmp);	/* boulder isn't being pushed */
 		if (!boulder_hits_pool(otmp, x, y, FALSE))
 		    impossible("melt_ice: no pool?");
 		/* try again if there's another boulder and pool didn't fill */
@@ -3531,7 +3531,7 @@ int zap_over_floor(xchar x, xchar y, int type, bool *shopdamage) {
 			}
 		    }
 		}
-		obj_ice_effects(x,y,TRUE);
+		ApplyIceEffectsAt(x,y,TRUE);
 	}
 	if(closed_door(x, y)) {
 		int new_doormask = -1;
@@ -3636,8 +3636,8 @@ void fracture_rock(Object *obj) {
 	obj->oxlth = 0;			/* no extra data */
 	obj->oattached = OATTACHED_NOTHING;
 	if (obj->where == OBJ_FLOOR) {
-		obj_extract_self(obj);		/* move rocks back on top */
-		place_object(obj, obj->ox, obj->oy);
+		RemoveObjectFromStorage(obj);		/* move rocks back on top */
+		PlaceObject(obj, obj->ox, obj->oy);
 		if(!does_block(obj->ox,obj->oy,&levl[obj->ox][obj->oy]))
 	    		unblock_point(obj->ox,obj->oy);
 		if(cansee(obj->ox,obj->oy))
@@ -3656,8 +3656,8 @@ bool break_statue(Object *obj) {
 	    return FALSE;
 	/* drop any objects contained inside the statue */
 	while ((item = obj->cobj) != 0) {
-	    obj_extract_self(item);
-	    place_object(item, obj->ox, obj->oy);
+	    RemoveObjectFromStorage(item);
+	    PlaceObject(item, obj->ox, obj->oy);
 	}
 	if (Role_if(PM_ARCHEOLOGIST) && !flags.mon_moving && (obj->spe & STATUE_HISTORIC)) {
 	    You_feel("guilty about damaging such a historic statue.");

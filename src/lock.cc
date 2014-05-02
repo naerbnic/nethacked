@@ -168,7 +168,7 @@ int forcelock() {
 
 	    /* Put the contents on ground at the hero's feet. */
 	    while ((otmp = xlock.box->cobj) != 0) {
-		obj_extract_self(otmp);
+		RemoveObjectFromStorage(otmp);
 		if(!rn2(3) || otmp->oclass == POTION_CLASS) {
 		    chest_shatter_msg(otmp);
 		    if (costly)
@@ -184,7 +184,7 @@ int forcelock() {
 		    otmp->age = monstermoves - otmp->age; /* actual age */
 		    StartCorpseTimeout(otmp);
 		}
-		place_object(otmp, player.ux, player.uy);
+		PlaceObject(otmp, player.ux, player.uy);
 		stackobj(otmp);
 	    }
 

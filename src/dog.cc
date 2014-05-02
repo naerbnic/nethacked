@@ -349,13 +349,13 @@ void mon_arrive(Monster *mtmp, bool with_you) {
 		 */
 	    	Object *obj, *corpse;
 		while ((obj = mtmp->minvent) != 0) {
-		    obj_extract_self(obj);
+		    RemoveObjectFromStorage(obj);
 		    obj_no_longer_held(obj);
 		    if (obj->owornmask & W_WEP)
 			setmnotwielded(mtmp,obj);
 		    obj->owornmask = 0L;
 		    if (xlocale && ylocale)
-			    place_object(obj, xlocale, ylocale);
+			    PlaceObject(obj, xlocale, ylocale);
 		    else {
 		    	rloco(obj);
 			get_obj_location(obj, &xlocale, &ylocale, 0);
@@ -630,7 +630,7 @@ int dogfood(Monster *mon, Object *obj) {
 	    /* Ghouls only eat old corpses... yum! */
 	    if (mon->data == &mons[PM_GHOUL])
 		return (obj->otyp == CORPSE &&
-			peek_at_iced_corpse_age(obj) + 50L <= monstermoves) ?
+			PeekAtIcedCorpseAge(obj) + 50L <= monstermoves) ?
 				DOGFOOD : TABU;
 
 	    if (!carni && !herbi)
@@ -652,7 +652,7 @@ int dogfood(Monster *mon, Object *obj) {
 			return POISON;
 		    return (carni ? CADAVER : MANFOOD);
 		case CORPSE:
-		   if ((peek_at_iced_corpse_age(obj) + 50L <= monstermoves
+		   if ((PeekAtIcedCorpseAge(obj) + 50L <= monstermoves
 					    && obj->corpsenm != PM_LIZARD
 					    && obj->corpsenm != PM_LICHEN
 					    && mon->data->mlet != S_FUNGUS) ||
@@ -751,7 +751,7 @@ Monster * tamedog(Monster *mtmp, Object *obj) {
 		} else if (cansee(mtmp->mx,mtmp->my))
 		    pline("%s.", Tobjnam(obj, "stop"));
 		/* dog_eat expects a floor object */
-		place_object(obj, mtmp->mx, mtmp->my);
+		PlaceObject(obj, mtmp->mx, mtmp->my);
 		(void) dog_eat(mtmp, obj, mtmp->mx, mtmp->my, FALSE);
 		/* eating might have killed it, but that doesn't matter here;
 		   a non-null result suppresses "miss" message for thrown
@@ -782,7 +782,7 @@ Monster * tamedog(Monster *mtmp, Object *obj) {
 
 	if (obj) {		/* thrown food */
 	    /* defer eating until the edog extension has been set up */
-	    place_object(obj, mtmp2->mx, mtmp2->my);	/* put on floor */
+	    PlaceObject(obj, mtmp2->mx, mtmp2->my);	/* put on floor */
 	    /* devour the food (might grow into larger, genocided monster) */
 	    if (dog_eat(mtmp2, obj, mtmp2->mx, mtmp2->my, TRUE) == 2)
 		return mtmp2;		/* oops, it died... */

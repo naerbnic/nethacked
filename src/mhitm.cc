@@ -938,7 +938,7 @@ STATIC_OVL int mdamagem(Monster *magr, Monster *mdef, struct Attack *mattk) {
                 {
 		    Object *gold = findgold(mdef->minvent);
 		    if (!gold) break;
-                    obj_extract_self(gold);
+                    RemoveObjectFromStorage(gold);
 		    add_to_minv(magr, gold);
                 }
 #endif
@@ -990,7 +990,7 @@ STATIC_OVL int mdamagem(Monster *magr, Monster *mdef, struct Attack *mattk) {
 				/* "You can no longer ride <steed>." */
 				dismount_steed(DISMOUNT_POLY);
 #endif
-			obj_extract_self(otmp);
+			RemoveObjectFromStorage(otmp);
 			if (otmp->owornmask) {
 				mdef->misc_worn_check &= ~otmp->owornmask;
 				if (otmp->owornmask & W_WEP)

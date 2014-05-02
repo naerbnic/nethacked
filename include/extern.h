@@ -955,28 +955,28 @@ E Monster *NewMonsterFromObject(Object *, bool);
 E Object *NewTopTenObject(int,int,int);
 E Object *MakeNamedCorpseOrStatue(
     int,MonsterType *,int,int,const char *);
-E Object *rnd_treefruit_at(int, int);
+E Object *MakeRandomTreefruitAt(int, int);
 E void StartCorpseTimeout(Object *);
 E void Bless(Object *);
 E void Unbless(Object *);
 E void Curse(Object *);
 E void Uncurse(Object *);
 E void BlessOrCurse(Object *,int);
-E bool is_flammable(Object *);
-E bool is_rottable(Object *);
-E void place_object(Object *,int,int);
-E void remove_object(Object *);
-E void discard_minvent(Monster *);
-E void obj_extract_self(Object *);
-E void extract_nobj(Object *, Object **);
+E bool IsFlammable(Object *);
+E bool IsRottable(Object *);
+E void PlaceObject(Object *,int,int);
+E void RemoveObjectFromFloor(Object *);
+E void DiscardMonsterInventory(Monster *);
+E void RemoveObjectFromStorage(Object *);
+E void ExtractObjectFromList(Object *, Object **);
 E void extract_nexthere(Object *, Object **);
 E int add_to_minv(Monster *, Object *);
 E Object *add_to_container(Object *, Object *);
 E void add_to_migration(Object *);
 E void add_to_buried(Object *);
 E void dealloc_obj(Object *);
-E void obj_ice_effects(int, int, bool);
-E long peek_at_iced_corpse_age(Object *);
+E void ApplyIceEffectsAt(int, int, bool);
+E long PeekAtIcedCorpseAge(Object *);
 #ifdef WIZARD
 E void obj_sanity_check();
 #endif

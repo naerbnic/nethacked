@@ -8,7 +8,7 @@
 #include "prop.h"
 
 STATIC_DCL void AddRandomBoxContents(Object *);
-STATIC_DCL void obj_timer_checks(Object *, xchar, xchar, int);
+STATIC_DCL void UpdateObjectTimerState(Object *, xchar, xchar, int);
 STATIC_DCL void container_weight(Object *);
 STATIC_DCL Object *SaveMonsterIntoObject(Object *, Monster *);
 #ifdef WIZARD
@@ -78,13 +78,13 @@ const struct ItemClassProbability kHellProbabilities[] = {
 
 Object * MakeRandomObjectAt(char let, int x, int y, bool artif) {
 	Object *otmp = MakeRandomObject(let, artif);
-	place_object(otmp, x, y);
+	PlaceObject(otmp, x, y);
 	return(otmp);
 }
 
 Object * MakeSpecificObjectAt(int otyp, int x, int y, bool init, bool artif) {
 	Object* otmp = MakeSpecificObject(otyp, init, artif);
-	place_object(otmp, x, y);
+	PlaceObject(otmp, x, y);
 	return(otmp);
 }
 
@@ -256,7 +256,7 @@ Object * SplitObject(Object *obj, long num) {
  * the caller to provide a valid context for the swap.  When done, obj will
  * still exist, but not on any chain.
  *
- * Note:  Don't use use obj_extract_self() -- we are doing an in-place swap,
+ * Note:  Don't use use RemoveObjectFromStorage() -- we are doing an in-place swap,
  * not actually moving something.
  */
 void ReplaceObject(Object *obj, Object *otmp) {
@@ -268,19 +268,19 @@ void ReplaceObject(Object *obj, Object *otmp) {
     case OBJ_INVENT:
       otmp->nobj = obj->nobj;
       obj->nobj = otmp;
-      extract_nobj(obj, &invent);
+      ExtractObjectFromList(obj, &invent);
       break;
     case OBJ_CONTAINED:
       otmp->nobj = obj->nobj;
       otmp->ocontainer = obj->ocontainer;
       obj->nobj = otmp;
-      extract_nobj(obj, &obj->ocontainer->cobj);
+      ExtractObjectFromList(obj, &obj->ocontainer->cobj);
       break;
     case OBJ_MINVENT:
       otmp->nobj = obj->nobj;
       otmp->ocarry = obj->ocarry;
       obj->nobj = otmp;
-      extract_nobj(obj, &obj->ocarry->minvent);
+      ExtractObjectFromList(obj, &obj->ocarry->minvent);
       break;
     case OBJ_FLOOR:
       otmp->nobj = obj->nobj;
@@ -289,7 +289,7 @@ void ReplaceObject(Object *obj, Object *otmp) {
       otmp->oy = obj->oy;
       obj->nobj = otmp;
       obj->nexthere = otmp;
-      extract_nobj(obj, &fobj);
+      ExtractObjectFromList(obj, &fobj);
       extract_nexthere(obj, &level.objects[obj->ox][obj->oy]);
       break;
     default:
@@ -804,7 +804,7 @@ int GetWeight(Object *obj) {
 
 static int treefruits[] = {APPLE,ORANGE,PEAR,BANANA,EUCALYPTUS_LEAF};
 
-Object * rnd_treefruit_at(int x, int y) {
+Object * MakeRandomTreefruitAt(int x, int y) {
 	return MakeSpecificObjectAt(treefruits[rn2(SIZE(treefruits))], x, y, TRUE, FALSE);
 }
 
@@ -972,7 +972,7 @@ Object * MakeNamedCorpseOrStatue(int objtype, MonsterType *ptr, int x, int y, co
 	return(otmp);
 }
 
-bool is_flammable(Object *otmp) {
+bool IsFlammable(Object *otmp) {
 	int otyp = otmp->otyp;
 	int omat = objects[otyp].oc_material;
 
@@ -982,7 +982,7 @@ bool is_flammable(Object *otmp) {
 	return((bool)((omat <= WOOD && omat != LIQUID) || omat == PLASTIC));
 }
 
-bool is_rottable(Object *otmp) {
+bool IsRottable(Object *otmp) {
 	int otyp = otmp->otyp;
 
 	return((bool)(objects[otyp].oc_material <= WOOD &&
@@ -995,34 +995,36 @@ bool is_rottable(Object *otmp) {
  */
 
 /* put the object at the given location */
-void place_object(Object *otmp, int x, int y) {
-    Object *otmp2 = level.objects[x][y];
+void PlaceObject(Object *otmp, int x, int y) {
+  Object *otmp2 = level.objects[x][y];
 
-    if (otmp->where != OBJ_FREE)
-	panic("place_object: obj not free");
+  if (otmp->where != OBJ_FREE)
+    panic("place_object: obj not free");
 
-    obj_no_longer_held(otmp);
-    if (otmp->otyp == BOULDER) block_point(x,y);	/* vision */
+  obj_no_longer_held(otmp);
+  if (otmp->otyp == BOULDER)
+    block_point(x, y); /* vision */
 
-    /* obj goes under boulders */
-    if (otmp2 && (otmp2->otyp == BOULDER)) {
-	otmp->nexthere = otmp2->nexthere;
-	otmp2->nexthere = otmp;
-    } else {
-	otmp->nexthere = otmp2;
-	level.objects[x][y] = otmp;
-    }
+  /* obj goes under boulders */
+  if (otmp2 && (otmp2->otyp == BOULDER)) {
+    otmp->nexthere = otmp2->nexthere;
+    otmp2->nexthere = otmp;
+  } else {
+    otmp->nexthere = otmp2;
+    level.objects[x][y] = otmp;
+  }
 
-    /* set the new object's location */
-    otmp->ox = x;
-    otmp->oy = y;
+  /* set the new object's location */
+  otmp->ox = x;
+  otmp->oy = y;
 
-    otmp->where = OBJ_FLOOR;
+  otmp->where = OBJ_FLOOR;
 
-    /* add to floor chain */
-    otmp->nobj = fobj;
-    fobj = otmp;
-    if (otmp->timed) obj_timer_checks(otmp, x, y, 0);
+  /* add to floor chain */
+  otmp->nobj = fobj;
+  fobj = otmp;
+  if (otmp->timed)
+    UpdateObjectTimerState(otmp, x, y, 0);
 }
 
 #define ON_ICE(a) ((a)->recharged)
@@ -1031,19 +1033,22 @@ void place_object(Object *otmp, int x, int y) {
 /* If ice was affecting any objects correct that now
  * Also used for starting ice effects too. [zap.c]
  */
-void obj_ice_effects(int x, int y, bool do_buried) {
-	Object *otmp;
+void ApplyIceEffectsAt(int x, int y, bool do_buried) {
+  Object *otmp;
 
-	for (otmp = level.objects[x][y]; otmp; otmp = otmp->nexthere) {
-		if (otmp->timed) obj_timer_checks(otmp, x, y, 0);
-	}
-	if (do_buried) {
-	    for (otmp = level.buriedobjlist; otmp; otmp = otmp->nobj) {
- 		if (otmp->ox == x && otmp->oy == y) {
-			if (otmp->timed) obj_timer_checks(otmp, x, y, 0);
-		}
-	    }
-	}
+  for (otmp = level.objects[x][y]; otmp; otmp = otmp->nexthere) {
+    if (otmp->timed)
+      UpdateObjectTimerState(otmp, x, y, 0);
+  }
+  if (do_buried) {
+    for (otmp = level.buriedobjlist; otmp; otmp = otmp->nobj) {
+      if (otmp->ox == x && otmp->oy == y) {
+        if (otmp->timed) {
+          UpdateObjectTimerState(otmp, x, y, 0);
+        }
+      }
+    }
+  }
 }
 
 /*
@@ -1053,107 +1058,109 @@ void obj_ice_effects(int x, int y, bool do_buried) {
  * rot timers pertaining to the object don't have to be stopped and
  * restarted etc.
  */
-long peek_at_iced_corpse_age(Object *otmp) {
-    long age, retval = otmp->age;
+long PeekAtIcedCorpseAge(Object *otmp) {
+  long retval = otmp->age;
 
-    if (otmp->otyp == CORPSE && ON_ICE(otmp)) {
-	/* Adjust the age; must be same as obj_timer_checks() for off ice*/
-	age = monstermoves - otmp->age;
-	retval = otmp->age + (age / ROT_ICE_ADJUSTMENT);
+  if (otmp->otyp == CORPSE && ON_ICE(otmp)) {
+    /* Adjust the age; must be same as UpdateObjectTimerState() for off ice*/
+    long age = monstermoves - otmp->age;
+    retval = otmp->age + (age / ROT_ICE_ADJUSTMENT);
 #ifdef DEBUG_EFFECTS
-	pline_The("%s age has ice modifications:otmp->age = %ld, returning %ld.",
-		s_suffix(doname(otmp)),otmp->age, retval);
-	pline("Effective age of corpse: %ld.",
-		monstermoves - retval);
+    pline_The("%s age has ice modifications:otmp->age = %ld, returning %ld.",
+        s_suffix(doname(otmp)),otmp->age, retval);
+    pline("Effective age of corpse: %ld.",
+        monstermoves - retval);
 #endif
-    }
-    return retval;
+  }
+  return retval;
 }
 
-STATIC_OVL void obj_timer_checks(Object *otmp, xchar x, xchar y, int force) {
-    long tleft = 0L;
-    short action = ROT_CORPSE;
-    bool restart_timer = FALSE;
-    bool on_floor = (otmp->where == OBJ_FLOOR);
-    bool buried = (otmp->where == OBJ_BURIED);
+STATIC_OVL void UpdateObjectTimerState(Object *otmp, xchar x, xchar y, int force) {
+  long tleft = 0L;
+  short action = ROT_CORPSE;
+  bool restart_timer = FALSE;
+  bool on_floor = (otmp->where == OBJ_FLOOR);
+  bool buried = (otmp->where == OBJ_BURIED);
 
-    /* Check for corpses just placed on or in ice */
-    if (otmp->otyp == CORPSE && (on_floor || buried) && is_ice(x,y)) {
-	tleft = stop_timer(action, (genericptr_t)otmp);
-	if (tleft == 0L) {
-		action = REVIVE_MON;
-		tleft = stop_timer(action, (genericptr_t)otmp);
-	}
-	if (tleft != 0L) {
-	    long age;
-
-	    tleft = tleft - monstermoves;
-	    /* mark the corpse as being on ice */
-	    ON_ICE(otmp) = 1;
-#ifdef DEBUG_EFFECTS
-	    pline("%s is now on ice at %d,%d.", The(xname(otmp)),x,y);
-#endif
-	    /* Adjust the time remaining */
-	    tleft *= ROT_ICE_ADJUSTMENT;
-	    restart_timer = TRUE;
-	    /* Adjust the age; must be same as in obj_ice_age() */
-	    age = monstermoves - otmp->age;
-	    otmp->age = monstermoves - (age * ROT_ICE_ADJUSTMENT);
-	}
+  /* Check for corpses just placed on or in ice */
+  if (otmp->otyp == CORPSE && (on_floor || buried) && is_ice(x, y)) {
+    tleft = stop_timer(action, (genericptr_t) otmp);
+    if (tleft == 0L) {
+      action = REVIVE_MON;
+      tleft = stop_timer(action, (genericptr_t) otmp);
     }
-    /* Check for corpses coming off ice */
-    else if ((force < 0) ||
-	     (otmp->otyp == CORPSE && ON_ICE(otmp) &&
-	     ((on_floor && !is_ice(x,y)) || !on_floor))) {
-	tleft = stop_timer(action, (genericptr_t)otmp);
-	if (tleft == 0L) {
-		action = REVIVE_MON;
-		tleft = stop_timer(action, (genericptr_t)otmp);
-	}
-	if (tleft != 0L) {
-		long age;
+    if (tleft != 0L) {
+      long age;
 
-		tleft = tleft - monstermoves;
-		ON_ICE(otmp) = 0;
+      tleft = tleft - monstermoves;
+      /* mark the corpse as being on ice */
+      ON_ICE(otmp) = 1;
 #ifdef DEBUG_EFFECTS
-	    	pline("%s is no longer on ice at %d,%d.", The(xname(otmp)),x,y);
+      pline("%s is now on ice at %d,%d.", The(xname(otmp)),x,y);
 #endif
-		/* Adjust the remaining time */
-		tleft /= ROT_ICE_ADJUSTMENT;
-		restart_timer = TRUE;
-		/* Adjust the age */
-		age = monstermoves - otmp->age;
-		otmp->age = otmp->age + (age / ROT_ICE_ADJUSTMENT);
-	}
+      /* Adjust the time remaining */
+      tleft *= ROT_ICE_ADJUSTMENT;
+      restart_timer = TRUE;
+      /* Adjust the age; must be same as in obj_ice_age() */
+      age = monstermoves - otmp->age;
+      otmp->age = monstermoves - (age * ROT_ICE_ADJUSTMENT);
     }
-    /* now re-start the timer with the appropriate modifications */
-    if (restart_timer)
-	start_timer(tleft, TIMER_OBJECT, action, (genericptr_t)otmp);
+  }
+  /* Check for corpses coming off ice */
+  else if ((force < 0)
+      || (otmp->otyp == CORPSE && ON_ICE(otmp)
+          && ((on_floor && !is_ice(x, y)) || !on_floor))) {
+    tleft = stop_timer(action, (genericptr_t) otmp);
+    if (tleft == 0L) {
+      action = REVIVE_MON;
+      tleft = stop_timer(action, (genericptr_t) otmp);
+    }
+    if (tleft != 0L) {
+      long age;
+
+      tleft = tleft - monstermoves;
+      ON_ICE(otmp) = 0;
+#ifdef DEBUG_EFFECTS
+      pline("%s is no longer on ice at %d,%d.", The(xname(otmp)),x,y);
+#endif
+      /* Adjust the remaining time */
+      tleft /= ROT_ICE_ADJUSTMENT;
+      restart_timer = TRUE;
+      /* Adjust the age */
+      age = monstermoves - otmp->age;
+      otmp->age = otmp->age + (age / ROT_ICE_ADJUSTMENT);
+    }
+  }
+  /* now re-start the timer with the appropriate modifications */
+  if (restart_timer)
+    start_timer(tleft, TIMER_OBJECT, action, (genericptr_t) otmp);
 }
 
 #undef ON_ICE
 #undef ROT_ICE_ADJUSTMENT
 
-void remove_object(Object *otmp) {
-    xchar x = otmp->ox;
-    xchar y = otmp->oy;
+void RemoveObjectFromFloor(Object *otmp) {
+  xchar x = otmp->ox;
+  xchar y = otmp->oy;
 
-    if (otmp->where != OBJ_FLOOR)
-	panic("remove_object: obj not on floor");
-    if (otmp->otyp == BOULDER) unblock_point(x,y); /* vision */
-    extract_nexthere(otmp, &level.objects[x][y]);
-    extract_nobj(otmp, &fobj);
-    if (otmp->timed) obj_timer_checks(otmp,x,y,0);
+  if (otmp->where != OBJ_FLOOR)
+    panic("remove_object: obj not on floor");
+  if (otmp->otyp == BOULDER)
+    unblock_point(x, y); /* vision */
+  extract_nexthere(otmp, &level.objects[x][y]);
+  ExtractObjectFromList(otmp, &fobj);
+  if (otmp->timed)
+    UpdateObjectTimerState(otmp, x, y, 0);
 }
 
 /* throw away all of a monster's inventory */
-void discard_minvent(Monster *mtmp) {
-    Object *otmp;
+void DiscardMonsterInventory(Monster *mtmp) {
+  Object *otmp;
 
-    while ((otmp = mtmp->minvent) != 0) {
-	obj_extract_self(otmp);
-	obfree(otmp, nullptr);	/* dealloc_obj() isn't sufficient */
-    }
+  while ((otmp = mtmp->minvent) != 0) {
+    RemoveObjectFromStorage(otmp);
+    obfree(otmp, nullptr); /* dealloc_obj() isn't sufficient */
+  }
 }
 
 /*
@@ -1172,55 +1179,56 @@ void discard_minvent(Monster *mtmp) {
  *	OBJ_BURIED	level.buriedobjs chain
  *	OBJ_ONBILL	on billobjs chain
  */
-void obj_extract_self(Object *obj) {
-    switch (obj->where) {
-	case OBJ_FREE:
-	    break;
-	case OBJ_FLOOR:
-	    remove_object(obj);
-	    break;
-	case OBJ_CONTAINED:
-	    extract_nobj(obj, &obj->ocontainer->cobj);
-	    container_weight(obj->ocontainer);
-	    break;
-	case OBJ_INVENT:
-	    freeinv(obj);
-	    break;
-	case OBJ_MINVENT:
-	    extract_nobj(obj, &obj->ocarry->minvent);
-	    break;
-	case OBJ_MIGRATING:
-	    extract_nobj(obj, &migrating_objs);
-	    break;
-	case OBJ_BURIED:
-	    extract_nobj(obj, &level.buriedobjlist);
-	    break;
-	case OBJ_ONBILL:
-	    extract_nobj(obj, &billobjs);
-	    break;
-	default:
-	    panic("obj_extract_self");
-	    break;
-    }
+void RemoveObjectFromStorage(Object *obj) {
+  switch (obj->where) {
+    case OBJ_FREE:
+      break;
+    case OBJ_FLOOR:
+      RemoveObjectFromFloor(obj);
+      break;
+    case OBJ_CONTAINED:
+      ExtractObjectFromList(obj, &obj->ocontainer->cobj);
+      container_weight(obj->ocontainer);
+      break;
+    case OBJ_INVENT:
+      freeinv(obj);
+      break;
+    case OBJ_MINVENT:
+      ExtractObjectFromList(obj, &obj->ocarry->minvent);
+      break;
+    case OBJ_MIGRATING:
+      ExtractObjectFromList(obj, &migrating_objs);
+      break;
+    case OBJ_BURIED:
+      ExtractObjectFromList(obj, &level.buriedobjlist);
+      break;
+    case OBJ_ONBILL:
+      ExtractObjectFromList(obj, &billobjs);
+      break;
+    default:
+      panic("obj_extract_self");
+      break;
+  }
 }
 
 
 /* Extract the given object from the chain, following nobj chain. */
-void extract_nobj(Object *obj, Object **head_ptr) {
-    Object *curr, *prev;
+void ExtractObjectFromList(Object *obj, Object **head_ptr) {
+  Object *prev;
 
-    curr = *head_ptr;
-    for (prev = (Object *) 0; curr; prev = curr, curr = curr->nobj) {
-	if (curr == obj) {
-	    if (prev)
-		prev->nobj = curr->nobj;
-	    else
-		*head_ptr = curr->nobj;
-	    break;
-	}
+  Object* curr = *head_ptr;
+  for (prev = (Object *) 0; curr; prev = curr, curr = curr->nobj) {
+    if (curr == obj) {
+      if (prev)
+        prev->nobj = curr->nobj;
+      else
+        *head_ptr = curr->nobj;
+      break;
     }
-    if (!curr) panic("extract_nobj: object lost");
-    obj->where = OBJ_FREE;
+  }
+  if (!curr)
+    panic("extract_nobj: object lost");
+  obj->where = OBJ_FREE;
 }
 
 
