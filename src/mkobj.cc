@@ -882,32 +882,32 @@ Object * MakeCorpseOrStatue(int objtype, Monster *mtmp, MonsterType *ptr, int x,
  * Attach a monster id to an object, to provide
  * a lasting association between the two.
  */
-Object * obj_attach_mid(Object *obj, unsigned mid) {
-    Object *otmp;
-    int lth, namelth;
+Object * AttachMonsterIdToObject(Object *obj, unsigned mid) {
+  Object *otmp;
+  int lth, namelth;
 
-    if (!mid || !obj) return nullptr;
-    lth = sizeof(mid);
-    namelth = obj->onamelth ? strlen(ONAME(obj)) + 1 : 0;
-    if (namelth)
-	otmp = realloc_obj(obj, lth, (genericptr_t) &mid, namelth, ONAME(obj));
-    else {
-	otmp = obj;
-	otmp->oxlth = sizeof(mid);
-	memcpy((genericptr_t)otmp->oextra, (genericptr_t)&mid,
-								sizeof(mid));
-    }
-    if (otmp && otmp->oxlth) otmp->oattached = OATTACHED_M_ID;	/* mark it */
-    return otmp;
+  if (!mid || !obj)
+    return nullptr;
+  lth = sizeof(mid);
+  namelth = obj->onamelth ? strlen(ONAME(obj)) + 1 : 0;
+  if (namelth)
+    otmp = realloc_obj(obj, lth, (genericptr_t) &mid, namelth, ONAME(obj));
+  else {
+    otmp = obj;
+    otmp->oxlth = sizeof(mid);
+    memcpy((genericptr_t) otmp->oextra, (genericptr_t) &mid, sizeof(mid));
+  }
+  if (otmp && otmp->oxlth)
+    otmp->oattached = OATTACHED_M_ID; /* mark it */
+  return otmp;
 }
 
 static Object * save_mtraits(Object *obj, Monster *mtmp) {
 	Object *otmp;
-	int lth, namelth;
 
-	lth = sizeof(Monster) + mtmp->mxlth + mtmp->mnamelth;
-	namelth = obj->onamelth ? strlen(ONAME(obj)) + 1 : 0;
-	otmp = realloc_obj(obj, lth, (genericptr_t) mtmp, namelth, ONAME(obj));
+	int lth = sizeof(Monster) + mtmp->mxlth + mtmp->mnamelth;
+	int namelth = obj->onamelth ? strlen(ONAME(obj)) + 1 : 0;
+	Object* otmp = realloc_obj(obj, lth, (genericptr_t) mtmp, namelth, ONAME(obj));
 	if (otmp && otmp->oxlth) {
 		Monster *mtmp2 = (Monster *)otmp->oextra;
 		if (mtmp->data) mtmp2->mnum = monsndx(mtmp->data);

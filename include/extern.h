@@ -950,7 +950,7 @@ E int GetWeight(Object *);
 E Object *MakeGold(long,int,int);
 E Object *MakeCorpseOrStatue(
     int,Monster *,MonsterType *,int,int,bool);
-E Object *obj_attach_mid(Object *, unsigned);
+E Object *AttachMonsterIdToObject(Object *, unsigned);
 E Monster *get_mtraits(Object *, bool);
 E Object *mk_tt_object(int,int,int);
 E Object *mk_named_object(

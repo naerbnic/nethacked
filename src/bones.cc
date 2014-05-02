@@ -248,7 +248,7 @@ void savebones(Object *corpse) {
 		if (!mtmp) return;
 		mtmp = christen_monst(mtmp, plname);
 		if (corpse)
-			(void) obj_attach_mid(corpse, mtmp->m_id); 
+			(void) AttachMonsterIdToObject(corpse, mtmp->m_id); 
 	} else {
 		/* give your possessions to the monster you become */
 		in_mklev = TRUE;
