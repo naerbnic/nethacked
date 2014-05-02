@@ -297,7 +297,7 @@ schar find_roll_to_hit(struct Monster *mtmp) {
 /* u.dx and u.dy must be set */
 bool attack(struct Monster *mtmp) {
 	schar tmp;
-	struct permonst *mdat = mtmp->data;
+	struct MonsterType *mdat = mtmp->data;
 
 	/* This section of code provides protection against accidentally
 	 * hitting peaceful (like '@') and tame (like 'd') monsters.
@@ -495,7 +495,7 @@ bool			/* general "damage monster" routine */ hmon(struct Monster *mon, struct O
 /* guts of hmon() */
 STATIC_OVL bool hmon_hitmon(struct Monster *mon, struct Object *obj, int thrown) {
 	int tmp;
-	struct permonst *mdat = mon->data;
+	struct MonsterType *mdat = mon->data;
 	int barehand_silver_rings = 0;
 	/* The basic reason we need all these booleans is that we don't want
 	 * a "hit" message when a monster dies, so we have to know how much
@@ -1142,7 +1142,7 @@ STATIC_OVL int	/* 1: joust hit; 0: ordinary hit; -1: joust but break lance */ jo
  */
 STATIC_OVL void demonpet() {
 	int i;
-	struct permonst *pm;
+	struct MonsterType *pm;
 	struct Monster *dtmp;
 
 	pline("Some hell-p has arrived!");
@@ -1241,7 +1241,7 @@ STATIC_OVL void steal_it(struct Monster *mdef, struct Attack *mattk) {
 }
 
 int damageum(struct Monster *mdef, struct Attack *mattk) {
-	struct permonst *pd = mdef->data;
+	struct MonsterType *pd = mdef->data;
 	int	tmp = d((int)mattk->damn, (int)mattk->damd);
 	int armpro;
 	bool negated;
@@ -2075,7 +2075,7 @@ use_weapon:
 /*	Special (passive) attacks on you by monsters done here.		*/
 
 int passive(struct Monster *mon, bool mhit, int malive, uchar aatyp) {
-	struct permonst *ptr = mon->data;
+	struct MonsterType *ptr = mon->data;
 	int i, tmp;
 
 	for(i = 0; ; i++) {
@@ -2278,7 +2278,7 @@ int passive(struct Monster *mon, bool mhit, int malive, uchar aatyp) {
  * Assumes the attack was successful.
  */
 void passive_obj(struct Monster *mon, struct Object *obj, struct Attack *mattk) {
-	struct permonst *ptr = mon->data;
+	struct MonsterType *ptr = mon->data;
 	int i;
 
 	/* if caller hasn't specified an object, use uwep, uswapwep or uarmg */

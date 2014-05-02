@@ -81,7 +81,6 @@
 #define ESCAPED		14
 #define ASCENDED	15
 
-#include "align.h"
 #include "dungeon.h"
 #include "monsym.h"
 #include "mkroom.h"

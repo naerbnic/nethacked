@@ -1142,7 +1142,7 @@ const char * mbodypart(struct Monster *mon, int part) {
 		S_ORC, S_GIANT,		/* quest nemeses */
 		'\0'		/* string terminator; assert( S_xxx != 0 ); */
 	};
-	struct permonst *mptr = mon->data;
+	struct MonsterType *mptr = mon->data;
 
 	if (part == HAND || part == HANDED) {	/* some special cases */
 	    if (mptr->mlet == S_DOG || mptr->mlet == S_FELINE ||

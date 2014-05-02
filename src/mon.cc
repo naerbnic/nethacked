@@ -51,7 +51,7 @@ STATIC_DCL void warn_effects();
 STATIC_VAR short cham_to_pm[];
 #else
 STATIC_DCL struct Object *make_corpse(struct Monster *);
-STATIC_DCL void m_detach(struct Monster *, struct permonst *);
+STATIC_DCL void m_detach(struct Monster *, struct MonsterType *);
 STATIC_DCL void lifesaved_monster(struct Monster *);
 
 /* convert the monster index of an undead to its living counterpart */
@@ -109,7 +109,7 @@ int genus(int mndx, int mode) {
 	case PM_WARRIOR:     mndx = mode ? PM_VALKYRIE  : PM_HUMAN; break;
 	default:
 		if (mndx >= LOW_PM && mndx < NUMMONS) {
-			struct permonst *ptr = &mons[mndx];
+			struct MonsterType *ptr = &mons[mndx];
 			if (is_human(ptr))      mndx = PM_HUMAN;
 			else if (is_elf(ptr))   mndx = PM_ELF;
 			else if (is_dwarf(ptr)) mndx = PM_DWARF;
@@ -159,7 +159,7 @@ STATIC_VAR short cham_to_pm[] = {
  * etc....
  */
 STATIC_OVL struct Object * make_corpse(struct Monster *mtmp) {
-	struct permonst *mdat = mtmp->data;
+	struct MonsterType *mdat = mtmp->data;
 	int num;
 	struct Object *obj = nullptr;
 	int x = mtmp->mx, y = mtmp->my;
@@ -515,7 +515,7 @@ void mcalcdistress() {
 
 	/* possibly polymorph shapechangers and lycanthropes */
 	if (mtmp->cham && !rn2(6))
-	    (void) newcham(mtmp, (struct permonst *)0, FALSE, FALSE);
+	    (void) newcham(mtmp, (struct MonsterType *)0, FALSE, FALSE);
 	were_change(mtmp);
 
 	/* gradually time out temporary problems */
@@ -637,7 +637,7 @@ int movemon() {
  */
 int meatmetal(struct Monster *mtmp) {
 	struct Object *otmp;
-	struct permonst *ptr;
+	struct MonsterType *ptr;
 	int poly, grow, heal, mstone;
 
 	/* If a pet, eating is handled separately, in dog.c */
@@ -690,7 +690,7 @@ int meatmetal(struct Monster *mtmp) {
 			delobj(otmp);
 			ptr = mtmp->data;
 			if (poly) {
-			    if (newcham(mtmp, (struct permonst *)0,
+			    if (newcham(mtmp, (struct MonsterType *)0,
 					FALSE, FALSE))
 				ptr = mtmp->data;
 			} else if (grow) {
@@ -703,7 +703,7 @@ int meatmetal(struct Monster *mtmp) {
 				if (canseemon(mtmp))
 				    pline("%s turns to stone!", Monnam(mtmp));
 				monstone(mtmp);
-				ptr = (struct permonst *)0;
+				ptr = (struct MonsterType *)0;
 			    }
 			} else if (heal) {
 			    mtmp->mhp = mtmp->mhpmax;
@@ -724,7 +724,7 @@ int meatmetal(struct Monster *mtmp) {
 /* for gelatinous cubes */
 int meatobj(struct Monster *mtmp) {
 	struct Object *otmp, *otmp2;
-	struct permonst *ptr;
+	struct MonsterType *ptr;
 	int poly, grow, heal, count = 0, ecount = 0;
 	char buf[BUFSZ];
 
@@ -774,7 +774,7 @@ int meatobj(struct Monster *mtmp) {
 		delobj(otmp);		/* munch */
 		ptr = mtmp->data;
 		if (poly) {
-		    if (newcham(mtmp, (struct permonst *)0, FALSE, FALSE))
+		    if (newcham(mtmp, (struct MonsterType *)0, FALSE, FALSE))
 			ptr = mtmp->data;
 		} else if (grow) {
 		    ptr = grow_up(mtmp, (struct Monster *)0);
@@ -915,7 +915,7 @@ int max_mon_load(struct Monster *mtmp) {
 /* for restricting monsters' object-pickup */
 bool can_carry(struct Monster *mtmp, struct Object *otmp) {
 	int otyp = otmp->otyp, newload = otmp->owt;
-	struct permonst *mdat = mtmp->data;
+	struct MonsterType *mdat = mtmp->data;
 
 	if (notake(mdat)) return FALSE;		/* can't carry anything */
 
@@ -953,7 +953,7 @@ bool can_carry(struct Monster *mtmp, struct Object *otmp) {
 
 /* return number of acceptable neighbour positions */
 int mfndpos(struct Monster *mon, coord *poss, long *info, long flag) {
-	struct permonst *mdat = mon->data;
+	struct MonsterType *mdat = mon->data;
 	xchar x,y,nx,ny;
 	int cnt = 0;
 	uchar ntyp;
@@ -1268,7 +1268,7 @@ void relmon(struct Monster *mon) {
 }
 
 /* remove effects of mtmp from other data structures */
-STATIC_OVL void m_detach(struct Monster *mtmp, struct permonst *mptr) {
+STATIC_OVL void m_detach(struct Monster *mtmp, struct MonsterType *mptr) {
 	if (mtmp->mleashed) m_unleash(mtmp, FALSE);
 	    /* to prevent an infinite relobj-flooreffects-hmon-killed loop */
 	mtmp->mtrapped = 0;
@@ -1336,7 +1336,7 @@ STATIC_OVL void lifesaved_monster(struct Monster *mtmp) {
 }
 
 void mondead(struct Monster *mtmp) {
-	struct permonst *mptr;
+	struct MonsterType *mptr;
 	int tmp;
 
 	if(mtmp->isgd) {
@@ -1417,7 +1417,7 @@ void mondead(struct Monster *mtmp) {
 
 /* TRUE if corpse might be dropped, magr may die if mon was swallowed */
 bool corpse_chance(struct Monster *mon, struct Monster *magr, bool was_swallowed) {
-	struct permonst *mdat = mon->data;
+	struct MonsterType *mdat = mon->data;
 	int i, tmp;
 
 	if (mdat == &mons[PM_VLAD_THE_IMPALER] || mdat->mlet == S_LICH) {
@@ -1646,7 +1646,7 @@ void xkilled(
  */
     int dest) {
 	int tmp, x = mtmp->mx, y = mtmp->my;
-	struct permonst *mdat;
+	struct MonsterType *mdat;
 	int mndx;
 	struct Object *otmp;
 	struct trap *t;
@@ -1960,7 +1960,7 @@ void m_respond(struct Monster *mtmp) {
 	    if (!rn2(13))
 		(void) makemon(&mons[PM_PURPLE_WORM], 0, 0, NO_MM_FLAGS);
 	    else
-		(void) makemon((struct permonst *)0, 0, 0, NO_MM_FLAGS);
+		(void) makemon((struct MonsterType *)0, 0, 0, NO_MM_FLAGS);
 
 	}
 	aggravate();
@@ -1998,7 +1998,7 @@ void setmangry(struct Monster *mtmp) {
 	if (!flags.mon_moving &&	/* should always be the case here */
 		mtmp->data == &mons[quest_info(MS_LEADER)]) {
 	    struct Monster *mon;
-	    struct permonst *q_guardian = &mons[quest_info(MS_GUARDIAN)];
+	    struct MonsterType *q_guardian = &mons[quest_info(MS_GUARDIAN)];
 	    int got_mad = 0;
 
 	    /* guardians will sense this attack even if they can't see it */
@@ -2227,10 +2227,10 @@ STATIC_OVL int select_newcham_form(struct Monster *mon) {
 }
 
 /* make a chameleon look like a new monster; returns 1 if it actually changed */
-int newcham(struct Monster *mtmp, struct permonst *mdat, bool polyspot, bool msg) {
+int newcham(struct Monster *mtmp, struct MonsterType *mdat, bool polyspot, bool msg) {
 	int mhp, hpn, hpd;
 	int mndx, tryct;
-	struct permonst *olddata = mtmp->data;
+	struct MonsterType *olddata = mtmp->data;
 	char oldname[BUFSZ];
 
 	if (msg) {
@@ -2518,7 +2518,7 @@ void kill_genocided_monsters() {
 	    mndx = monsndx(mtmp->data);
 	    if ((mvitals[mndx].mvflags & G_GENOD) || kill_cham[mtmp->cham]) {
 		if (mtmp->cham && !kill_cham[mtmp->cham])
-		    (void) newcham(mtmp, (struct permonst *)0, FALSE, FALSE);
+		    (void) newcham(mtmp, (struct MonsterType *)0, FALSE, FALSE);
 		else
 		    mondead(mtmp);
 	    }

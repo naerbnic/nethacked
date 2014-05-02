@@ -12,8 +12,8 @@
 
 STATIC_DCL bool is_swallow_sym(int);
 STATIC_DCL int append_str(char *, const char *);
-STATIC_DCL struct permonst * lookat(int, int, char *, char *);
-STATIC_DCL void checkfile(char *,struct permonst *,bool,bool);
+STATIC_DCL struct MonsterType * lookat(int, int, char *, char *);
+STATIC_DCL void checkfile(char *,struct MonsterType *,bool,bool);
 STATIC_DCL int do_look(bool);
 STATIC_DCL bool help_menu(int *);
 #ifdef PORT_HELP
@@ -48,9 +48,9 @@ STATIC_OVL int append_str(char *buf, const char *new_str) {
  * Return the name of the glyph found at (x,y).
  * If not hallucinating and the glyph is a monster, also monster data.
  */
-STATIC_OVL struct permonst * lookat(int x, int y, char *buf, char *monbuf) {
+STATIC_OVL struct MonsterType * lookat(int x, int y, char *buf, char *monbuf) {
     struct Monster *mtmp = (struct Monster *) 0;
-    struct permonst *pm = (struct permonst *) 0;
+    struct MonsterType *pm = (struct MonsterType *) 0;
     int glyph;
 
     buf[0] = monbuf[0] = 0;
@@ -275,7 +275,7 @@ STATIC_OVL struct permonst * lookat(int x, int y, char *buf, char *monbuf) {
 	break;
     }
 
-    return ((pm && !Hallucination) ? pm : (struct permonst *) 0);
+    return ((pm && !Hallucination) ? pm : (struct MonsterType *) 0);
 }
 
 /*
@@ -288,7 +288,7 @@ STATIC_OVL struct permonst * lookat(int x, int y, char *buf, char *monbuf) {
  *	 lcase() for data.base lookup so that we can have a clean key.
  *	 Therefore, we create a copy of inp _just_ for data.base lookup.
  */
-STATIC_OVL void checkfile(char *inp, struct permonst *pm, bool user_typed_name, bool without_asking) {
+STATIC_OVL void checkfile(char *inp, struct MonsterType *pm, bool user_typed_name, bool without_asking) {
     dlb *fp;
     char buf[BUFSZ], newstr[BUFSZ];
     char *ep, *dbase_str;
@@ -306,7 +306,7 @@ STATIC_OVL void checkfile(char *inp, struct permonst *pm, bool user_typed_name, 
      * for Angel and angel, make the lookup string the same for both
      * user_typed_name and picked name.
      */
-    if (pm != (struct permonst *) 0 && !user_typed_name)
+    if (pm != (struct MonsterType *) 0 && !user_typed_name)
 	dbase_str = strcpy(newstr, pm->mname);
     else dbase_str = strcpy(newstr, inp);
     (void) lcase(dbase_str);
@@ -444,7 +444,7 @@ const char what_is_an_unknown_object[] = "an unknown object";
 STATIC_OVL int do_look(bool quick) {
     char    out_str[BUFSZ], look_buf[BUFSZ];
     const char *x_str, *firstmatch = 0;
-    struct permonst *pm = 0;
+    struct MonsterType *pm = 0;
     int     i, ans = 0;
     int     sym;		/* typed symbol or converted glyph */
     int	    found;		/* count of matching syms found */
@@ -489,7 +489,7 @@ STATIC_OVL int do_look(bool quick) {
     do {
 	/* Reset some variables. */
 	need_to_look = FALSE;
-	pm = (struct permonst *)0;
+	pm = (struct MonsterType *)0;
 	skipped_venom = 0;
 	found = 0;
 	out_str[0] = '\0';

@@ -675,7 +675,7 @@ STATIC_OVL void savemonchn(int fd, struct Monster *mtmp, int mode) {
 	struct Monster *mtmp2;
 	unsigned int xl;
 	int minusone = -1;
-	struct permonst *monbegin = &mons[0];
+	struct MonsterType *monbegin = &mons[0];
 
 	if (perform_bwrite(mode))
 	    bwrite(fd, (genericptr_t) &monbegin, sizeof(monbegin));

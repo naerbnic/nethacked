@@ -392,7 +392,7 @@ STATIC_OVL void fixup_special() {
 	if (rn2(2))
 	    otmp = mk_tt_object(STATUE, somex(croom), somey(croom));
 	else /* Medusa statues don't contain books */
-	    otmp = mkcorpstat(STATUE, (struct Monster *)0, (struct permonst *)0,
+	    otmp = mkcorpstat(STATUE, (struct Monster *)0, (struct MonsterType *)0,
 			      somex(croom), somey(croom), FALSE);
 	if (otmp) {
 	    while (pm_resistance(&mons[otmp->corpsenm],MR_STONE)
@@ -601,7 +601,7 @@ void makemaz(const char *s) {
 	}
 	for(x = rn1(5,7); x; x--) {
 		mazexy(&mm);
-		(void) makemon((struct permonst *) 0, mm.x, mm.y, NO_MM_FLAGS);
+		(void) makemon((struct MonsterType *) 0, mm.x, mm.y, NO_MM_FLAGS);
 	}
 	for(x = rn1(6,7); x; x--) {
 		mazexy(&mm);

@@ -220,7 +220,7 @@ STATIC_OVL struct Monster * restmonchn(int fd, bool ghostly) {
 	struct Monster *mtmp, *mtmp2 = 0;
 	struct Monster *first = (struct Monster *)0;
 	int xl;
-	struct permonst *monbegin;
+	struct MonsterType *monbegin;
 	bool moved;
 
 	/* get the original base address */

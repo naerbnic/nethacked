@@ -126,7 +126,7 @@ static const char kebabable[] = {
  */
 int hitval(struct Object *otmp, struct Monster *mon) {
 	int	tmp = 0;
-	struct permonst *ptr = mon->data;
+	struct MonsterType *ptr = mon->data;
 	bool Is_weapon = (otmp->oclass == WEAPON_CLASS || is_weptool(otmp));
 
 	if (Is_weapon)
@@ -193,7 +193,7 @@ int hitval(struct Object *otmp, struct Monster *mon) {
  */
 int dmgval(struct Object *otmp, struct Monster *mon) {
 	int tmp = 0, otyp = otmp->otyp;
-	struct permonst *ptr = mon->data;
+	struct MonsterType *ptr = mon->data;
 	bool Is_weapon = (otmp->oclass == WEAPON_CLASS || is_weptool(otmp));
 
 	if (otyp == CREAM_PIE) return 0;

@@ -12,7 +12,7 @@ STATIC_VAR struct Object *otmp;
 STATIC_DCL void urustm(struct Monster *, struct Object *);
 # ifdef OVL1
 STATIC_DCL bool u_slip_free(struct Monster *,struct Attack *);
-STATIC_DCL int passiveum(struct permonst *,struct Monster *,struct Attack *);
+STATIC_DCL int passiveum(struct MonsterType *,struct Monster *,struct Attack *);
 # endif /* OVL1 */
 
 #ifdef OVLB
@@ -21,7 +21,7 @@ STATIC_DCL void mayberem(struct Object *, const char *);
 # endif
 #endif /* OVLB */
 
-STATIC_DCL bool diseasemu(struct permonst *);
+STATIC_DCL bool diseasemu(struct MonsterType *);
 STATIC_DCL int hitmu(struct Monster *,struct Attack *);
 STATIC_DCL int gulpmu(struct Monster *,struct Attack *);
 STATIC_DCL int explmu(struct Monster *,struct Attack *,bool);
@@ -198,7 +198,7 @@ STATIC_OVL void wildmiss(struct Monster *mtmp, struct Attack *mattk) {
 		Monnam(mtmp));
 }
 
-void expels(struct Monster *mtmp, struct permonst *mdat, bool message) {
+void expels(struct Monster *mtmp, struct MonsterType *mdat, bool message) {
 	if (message) {
 		if (is_animal(mdat))
 			You("get regurgitated!");
@@ -244,7 +244,7 @@ void expels(struct Monster *mtmp, struct permonst *mdat, bool message) {
 #ifdef OVL0
 
 /* select a monster's next attack, possibly substituting for its usual one */
-struct Attack * getmattk(struct permonst *mptr, int indx, int prev_result[], struct Attack *alt_attk_buf) {
+struct Attack * getmattk(struct MonsterType *mptr, int indx, int prev_result[], struct Attack *alt_attk_buf) {
     struct Attack *attk = &mptr->mattk[indx];
 
     /* prevent a monster with two consecutive disease or hunger attacks
@@ -274,7 +274,7 @@ struct Attack * getmattk(struct permonst *mptr, int indx, int prev_result[], str
 int mattacku(struct Monster *mtmp) {
 	struct	Attack	*mattk, alt_attk;
 	int	i, j, tmp, sum[NATTK];
-	struct	permonst *mdat = mtmp->data;
+	struct MonsterType *mdat = mtmp->data;
 	bool ranged = (distu(mtmp->mx, mtmp->my) > 3);
 		/* Is it near you?  Affects your actions */
 	bool range2 = !monnear(mtmp, mtmp->mux, mtmp->muy);
@@ -728,7 +728,7 @@ STATIC_OVL void hurtarmor(int attk) {
 #endif /* OVLB */
 #ifdef OVL1
 
-STATIC_OVL bool diseasemu(struct permonst *mdat) {
+STATIC_OVL bool diseasemu(struct MonsterType *mdat) {
 	if (Sick_resistance) {
 		You_feel("a slight illness.");
 		return FALSE;
@@ -821,11 +821,11 @@ int magic_negation(struct Monster *mon) {
  *	       attacking you
  */
 STATIC_OVL int hitmu(struct Monster *mtmp, struct Attack *mattk) {
-	struct permonst *mdat = mtmp->data;
+	struct MonsterType *mdat = mtmp->data;
 	int uncancelled, ptmp;
 	int dmg, armpro, permdmg;
 	char	 buf[BUFSZ];
-	struct permonst *olduasmon = youmonst.data;
+	struct MonsterType *olduasmon = youmonst.data;
 	int res;
 
 	if (!canspotmon(mtmp))
@@ -2039,7 +2039,7 @@ STATIC_OVL void urustm(struct Monster *mon, struct Object *obj) {
  *	   2 if wrong gender for nymph */
 int could_seduce(struct Monster* magr, struct Monster* mdef,
     struct Attack* mattk) {
-	struct permonst *pagr;
+	struct MonsterType *pagr;
 	bool agrinvis, defperc;
 	xchar genagr, gendef;
 
@@ -2369,7 +2369,7 @@ STATIC_OVL void mayberem(struct Object *obj, const char *str) {
 
 #ifdef OVL1
 
-STATIC_OVL int passiveum(struct permonst *olduasmon, struct Monster *mtmp, struct Attack *mattk) {
+STATIC_OVL int passiveum(struct MonsterType *olduasmon, struct Monster *mtmp, struct Attack *mattk) {
 	int i, tmp;
 
 	for (i = 0; ; i++) {

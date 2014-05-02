@@ -570,7 +570,7 @@ char* x_monnam(
 #else
 	static char buf[BUFSZ];
 #endif
-	struct permonst *mdat = mtmp->data;
+	struct MonsterType *mdat = mtmp->data;
 	bool do_hallu, do_invis, do_it, do_saddle;
 	bool name_at_start, has_adjectives;
 	char *bp;

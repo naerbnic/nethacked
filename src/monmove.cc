@@ -260,7 +260,7 @@ STATIC_OVL int m_arrival(struct Monster *mon) {
  * code. --KAA
  */
 int dochug(struct Monster *mtmp) {
-	struct permonst *mdat;
+	struct MonsterType *mdat;
 	int tmp=0;
 	int inrange, nearby, scared;
 #ifdef GOLDOBJ
@@ -562,7 +562,7 @@ int m_move(struct Monster *mtmp, int after) {
 	bool can_open=0, can_unlock=0, doorbuster=0;
 	bool uses_items=0, setlikes=0;
 	bool avoid=FALSE;
-	struct permonst *ptr;
+	struct MonsterType *ptr;
 	struct Monster *mtoo;
 	schar mmoved = 0;	/* not strictly nec.: chi >= 0 will do */
 	long info[9];

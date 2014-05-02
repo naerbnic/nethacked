@@ -21,7 +21,7 @@ bool m_using = FALSE;
  * don't know not to read scrolls, etc....
  */
 
-STATIC_DCL struct permonst *muse_newcham_mon(struct Monster *);
+STATIC_DCL struct MonsterType *muse_newcham_mon(struct Monster *);
 STATIC_DCL int precheck(struct Monster *,struct Object *);
 STATIC_DCL void mzapmsg(struct Monster *,struct Object *,bool);
 STATIC_DCL void mreadmsg(struct Monster *,struct Object *);
@@ -659,21 +659,21 @@ mon_tele:
 	case MUSE_WAN_CREATE_MONSTER:
 	    {	coord cc;
 		    /* pm: 0 => random, eel => aquatic, croc => amphibious */
-		struct permonst *pm = !is_pool(mtmp->mx, mtmp->my) ? 0 :
+		struct MonsterType *pm = !is_pool(mtmp->mx, mtmp->my) ? 0 :
 			     &mons[u.uinwater ? PM_GIANT_EEL : PM_CROCODILE];
 		struct Monster *mon;
 
 		if (!enexto(&cc, mtmp->mx, mtmp->my, pm)) return 0;
 		mzapmsg(mtmp, otmp, FALSE);
 		otmp->spe--;
-		mon = makemon((struct permonst *)0, cc.x, cc.y, NO_MM_FLAGS);
+		mon = makemon((struct MonsterType *)0, cc.x, cc.y, NO_MM_FLAGS);
 		if (mon && canspotmon(mon) && oseen)
 		    makeknown(WAN_CREATE_MONSTER);
 		return 2;
 	    }
 	case MUSE_SCR_CREATE_MONSTER:
 	    {	coord cc;
-		struct permonst *pm = 0, *fish = 0;
+		struct MonsterType *pm = 0, *fish = 0;
 		int cnt = 1;
 		struct Monster *mon;
 		bool known = FALSE;
@@ -877,7 +877,7 @@ mon_tele:
 }
 
 int rnd_defensive_item(struct Monster *mtmp) {
-	struct permonst *pm = mtmp->data;
+	struct MonsterType *pm = mtmp->data;
 	int difficulty = monstr[(monsndx(pm))];
 	int trycnt = 0;
 
@@ -1486,7 +1486,7 @@ int use_offensive(struct Monster *mtmp) {
 }
 
 int rnd_offensive_item(struct Monster *mtmp) {
-	struct permonst *pm = mtmp->data;
+	struct MonsterType *pm = mtmp->data;
 	int difficulty = monstr[(monsndx(pm))];
 
 	if(is_animal(pm) || attacktype(pm, AT_EXPL) || mindless(mtmp->data)
@@ -1532,7 +1532,7 @@ int rnd_offensive_item(struct Monster *mtmp) {
 
 bool find_misc(struct Monster *mtmp) {
 	struct Object *obj;
-	struct permonst *mdat = mtmp->data;
+	struct MonsterType *mdat = mtmp->data;
 	int x = mtmp->mx, y = mtmp->my;
 	struct trap *t;
 	int xx, yy;
@@ -1640,7 +1640,7 @@ bool find_misc(struct Monster *mtmp) {
 
 /* type of monster to polymorph into; defaults to one suitable for the
    current level rather than the totally arbitrary choice of newcham() */
-static struct permonst * muse_newcham_mon(struct Monster *mon) {
+static struct MonsterType * muse_newcham_mon(struct Monster *mon) {
 	struct Object *m_armr;
 
 	if ((m_armr = which_armor(mon, W_ARM)) != 0) {
@@ -1768,7 +1768,7 @@ skipmsg:
 		if (mtmp->wormno) worm_move(mtmp);
 		newsym(trapx, trapy);
 
-		(void) newcham(mtmp, (struct permonst *)0, FALSE, FALSE);
+		(void) newcham(mtmp, (struct MonsterType *)0, FALSE, FALSE);
 		return 2;
 	case MUSE_BULLWHIP:
 		/* attempt to disarm hero */
@@ -1862,7 +1862,7 @@ STATIC_OVL void you_aggravate(struct Monster *mtmp) {
 }
 
 int rnd_misc_item(struct Monster *mtmp) {
-	struct permonst *pm = mtmp->data;
+	struct MonsterType *pm = mtmp->data;
 	int difficulty = monstr[(monsndx(pm))];
 
 	if(is_animal(pm) || attacktype(pm, AT_EXPL) || mindless(mtmp->data)

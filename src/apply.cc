@@ -2424,7 +2424,7 @@ STATIC_OVL int use_grapple(struct Object *obj) {
 	case 2:	/* Monster */
 	    if ((mtmp = m_at(cc.x, cc.y)) == (struct Monster *)0) break;
 	    if (verysmall(mtmp->data) && !rn2(4) &&
-			enexto(&cc, u.ux, u.uy, (struct permonst *)0)) {
+			enexto(&cc, u.ux, u.uy, (struct MonsterType *)0)) {
 		You("pull in %s!", mon_nam(mtmp));
 		mtmp->mundetected = 0;
 		rloc_to(mtmp, cc.x, cc.y);
@@ -2570,7 +2570,7 @@ STATIC_OVL int do_break_wand(struct Object *obj) {
 	    continue;
 	} else if(obj->otyp == WAN_CREATE_MONSTER) {
 	    /* u.ux,u.uy creates it near you--x,y might create it in rock */
-	    (void) makemon((struct permonst *)0, u.ux, u.uy, NO_MM_FLAGS);
+	    (void) makemon((struct MonsterType *)0, u.ux, u.uy, NO_MM_FLAGS);
 	    continue;
 	} else {
 	    if (x == u.ux && y == u.uy) {

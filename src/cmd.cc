@@ -2077,7 +2077,7 @@ void sanity_check() {
 static int wiz_migrate_mons() {
 	int mcount = 0;
 	char inbuf[BUFSZ];
-	struct permonst *ptr;
+	struct MonsterType *ptr;
 	struct Monster *mtmp;
 	d_level tolevel;
 	getlin("How many random monsters to migrate? [0]", inbuf);

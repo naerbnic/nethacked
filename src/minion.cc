@@ -8,7 +8,7 @@
 
 /* mon summons a monster */
 void msummon(struct Monster *mon) {
-	struct permonst *ptr;
+	struct MonsterType *ptr;
 	int dtype = NON_PM, cnt = 0;
 	aligntyp atyp;
 	struct Monster *mtmp;
@@ -104,7 +104,7 @@ void summon_minion(aligntyp alignment, bool talk) {
     if (mnum == NON_PM) {
 	mon = 0;
     } else if (mons[mnum].pxlth == 0) {
-	struct permonst *pm = &mons[mnum];
+	struct MonsterType *pm = &mons[mnum];
 	mon = makemon(pm, u.ux, u.uy, MM_EMIN);
 	if (mon) {
 	    mon->isminion = TRUE;
@@ -270,7 +270,7 @@ int llord() {
 
 int lminion() {
 	int	tryct;
-	struct	permonst *ptr;
+	struct	MonsterType *ptr;
 
 	for (tryct = 0; tryct < 20; tryct++) {
 	    ptr = mkclass(S_ANGEL,0);
@@ -283,7 +283,7 @@ int lminion() {
 
 int ndemon(aligntyp atyp) {
 	int	tryct;
-	struct	permonst *ptr;
+	struct	MonsterType *ptr;
 
 	for (tryct = 0; tryct < 20; tryct++) {
 	    ptr = mkclass(S_DEMON, 0);

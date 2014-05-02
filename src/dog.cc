@@ -43,7 +43,7 @@ STATIC_OVL int pet_type() {
 }
 
 struct Monster * make_familiar(struct Object *otmp, xchar x, xchar y, bool quietly) {
-	struct permonst *pm;
+	struct MonsterType *pm;
 	struct Monster *mtmp = 0;
 	int chance, trycnt = 100;
 
@@ -614,7 +614,7 @@ void migrate_to_level(struct Monster *mtmp, xchar tolev, xchar xyloc, coord *cc)
 int dogfood(struct Monster *mon, struct Object *obj) {
 	bool carni = carnivorous(mon->data);
 	bool herbi = herbivorous(mon->data);
-	struct permonst *fptr = &mons[obj->corpsenm];
+	struct MonsterType *fptr = &mons[obj->corpsenm];
 	bool starving;
 
 	if (is_quest_artifact(obj) || obj_resists(obj, 0, 95))

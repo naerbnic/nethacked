@@ -84,7 +84,7 @@ void moveloop() {
 
 		    if(!rn2(u.uevent.udemigod ? 25 :
 			    (depth(&u.uz) > depth(&stronghold_level)) ? 50 : 70))
-			(void) makemon((struct permonst *)0, 0, 0, NO_MM_FLAGS);
+			(void) makemon((struct MonsterType *)0, 0, 0, NO_MM_FLAGS);
 
 		    /* calculate how much time passed. */
 #ifdef STEED

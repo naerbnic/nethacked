@@ -15,7 +15,7 @@ STATIC_DCL int still_chewing(xchar,xchar);
 STATIC_DCL void dosinkfall();
 #endif
 STATIC_DCL bool findtravelpath(bool);
-STATIC_DCL bool monstinroom(struct permonst *,int);
+STATIC_DCL bool monstinroom(struct MonsterType *,int);
 
 STATIC_DCL void move_update(bool);
 
@@ -501,7 +501,7 @@ bool may_passwall(xchar x, xchar y) {
 #endif /* OVLB */
 #ifdef OVL1
 
-bool bad_rock(struct permonst *mdat, xchar x, xchar y) {
+bool bad_rock(struct MonsterType *mdat, xchar x, xchar y) {
 	return((bool) ((In_sokoban(&u.uz) && sobj_at(BOULDER,x,y)) ||
 	       (IS_ROCK(levl[x][y].typ)
 		    && (!tunnels(mdat) || needspick(mdat) || !may_dig(x,y))
@@ -1526,7 +1526,7 @@ stillinwater:;
 	}
 }
 
-STATIC_OVL bool monstinroom(struct permonst *mdat, int roomno) {
+STATIC_OVL bool monstinroom(struct MonsterType *mdat, int roomno) {
 	struct Monster *mtmp;
 
 	for(mtmp = fmon; mtmp; mtmp = mtmp->nmon)

@@ -548,7 +548,7 @@ void bypass_obj(struct Object *obj) {
 
 void mon_break_armor(struct Monster *mon, bool polyspot) {
 	struct Object *otmp;
-	struct permonst *mdat = mon->data;
+	struct MonsterType *mdat = mon->data;
 	bool vis = cansee(mon->mx, mon->my);
 	bool handless_or_tiny = (nohands(mdat) || verysmall(mdat));
 	const char *pronoun = mhim(mon),
@@ -723,7 +723,7 @@ static int extra_pref(struct Monster *mon, struct Object *obj) {
  *	-1 If the race/object combination is unacceptable.
  */
 int racial_exception(struct Monster *mon, struct Object *obj) {
-    const struct permonst *ptr = raceptr(mon);
+    const struct MonsterType *ptr = raceptr(mon);
 
     /* Acceptable Exceptions: */
     /* Allow hobbits to wear elven armor - LoTR */

@@ -187,7 +187,7 @@ int mattackm(struct Monster *magr, struct Monster *mdef) {
 		    struck = 0,	/* hit at least once */
 		    res[NATTK];	/* results of all attacks */
     struct Attack   *mattk, alt_attk;
-    struct permonst *pa, *pd;
+    struct MonsterType *pa, *pd;
 
     if (!magr || !mdef) return(MM_MISS);		/* mike@genat */
     if (!magr->mcanmove || magr->msleeping) return(MM_MISS);
@@ -555,7 +555,7 @@ STATIC_OVL int explmm(struct Monster *magr, struct Monster *mdef, struct Attack 
 STATIC_OVL int mdamagem(struct Monster *magr, struct Monster *mdef, struct Attack *mattk) {
 	struct Object *obj;
 	char buf[BUFSZ];
-	struct permonst *pa = magr->data, *pd = mdef->data;
+	struct MonsterType *pa = magr->data, *pd = mdef->data;
 	int armpro, num, tmp = d((int)mattk->damn, (int)mattk->damd);
 	bool cancelled;
 
@@ -1110,7 +1110,7 @@ STATIC_OVL int mdamagem(struct Monster *magr, struct Monster *mdef, struct Attac
 		/* various checks similar to dog_eat and meatobj.
 		 * after monkilled() to provide better message ordering */
 		if (mdef->cham != CHAM_ORDINARY) {
-		    (void) newcham(magr, (struct permonst *)0, FALSE, TRUE);
+		    (void) newcham(magr, (struct MonsterType *)0, FALSE, TRUE);
 		} else if (mdef->data == &mons[PM_GREEN_SLIME]) {
 		    (void) newcham(magr, &mons[PM_GREEN_SLIME], FALSE, TRUE);
 		} else if (mdef->data == &mons[PM_WRAITH]) {
@@ -1133,7 +1133,7 @@ STATIC_OVL int mdamagem(struct Monster *magr, struct Monster *mdef, struct Attac
 #ifdef OVL0
 
 /* returns 1 if monster doesn't attack */
-int noattacks(struct permonst *ptr) {
+int noattacks(struct MonsterType *ptr) {
 	int i;
 
 	for(i = 0; i < NATTK; i++)
@@ -1219,8 +1219,8 @@ STATIC_OVL void mswingsm(struct Monster *magr, struct Monster *mdef, struct Obje
  * handled above.  Returns same values as mattackm.
  */
 STATIC_OVL int passivemm(struct Monster *magr, struct Monster *mdef, bool mhit, int mdead) {
-	struct permonst *mddat = mdef->data;
-	struct permonst *madat = magr->data;
+	struct MonsterType *mddat = mdef->data;
+	struct MonsterType *madat = magr->data;
 	char buf[BUFSZ];
 	int i, tmp;
 

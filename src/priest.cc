@@ -490,7 +490,7 @@ void priest_talk(struct Monster *priest) {
 	}
 }
 
-struct Monster * mk_roamer(struct permonst *ptr, aligntyp alignment, xchar x, xchar y, bool peaceful) {
+struct Monster * mk_roamer(struct MonsterType *ptr, aligntyp alignment, xchar x, xchar y, bool peaceful) {
 	struct Monster *roamer;
 	bool coaligned = (u.ualign.type == alignment);
 

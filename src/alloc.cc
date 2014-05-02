@@ -13,8 +13,6 @@
 char *fmt_ptr(const void*,char *);
 #endif
 
-long *alloc(unsigned int);
-
 
 long* alloc(unsigned int lth)
 {

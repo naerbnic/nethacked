@@ -25,7 +25,7 @@ void rider_cant_reach() {
 
 /* Can this monster wear a saddle? */
 bool can_saddle(struct Monster *mtmp) {
-	struct permonst *ptr = mtmp->data;
+	struct MonsterType *ptr = mtmp->data;
 
 	return (index(steeds, ptr->mlet) && (ptr->msize >= MZ_MEDIUM) &&
 			(!humanoid(ptr) || ptr->mlet == S_CENTAUR) &&
@@ -36,7 +36,7 @@ bool can_saddle(struct Monster *mtmp) {
 
 int use_saddle(struct Object *otmp) {
 	struct Monster *mtmp;
-	struct permonst *ptr;
+	struct MonsterType *ptr;
 	int chance;
 	const char *s;
 
@@ -179,7 +179,7 @@ int doride() {
 bool mount_steed(struct Monster *mtmp, bool force) {
 	struct Object *otmp;
 	char buf[BUFSZ];
-	struct permonst *ptr;
+	struct MonsterType *ptr;
 
 	/* Sanity checks */
 	if (u.usteed) {
@@ -516,7 +516,7 @@ void dismount_steed(int reason) {
 	if (!mtmp->dead()) {
 	    place_monster(mtmp, u.ux, u.uy);
 	    if (!u.uswallow && !u.ustuck && have_spot) {
-		struct permonst *mdat = mtmp->data;
+		struct MonsterType *mdat = mtmp->data;
 
 		/* The steed may drop into water/lava */
 		if (!is_flyer(mdat) && !is_floater(mdat) && !is_clinger(mdat)) {

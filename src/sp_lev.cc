@@ -692,7 +692,7 @@ STATIC_OVL void create_monster(monster *m, struct mkroom *croom) {
     char class_id;
     aligntyp amask;
     coord cc;
-    struct permonst *pm;
+    struct MonsterType *pm;
     unsigned g_mvflags;
 
     if (rn2(100) < m->chance) {
@@ -715,14 +715,14 @@ STATIC_OVL void create_monster(monster *m, struct mkroom *croom) {
 		(m->align < 0 ? ralign[-m->align-1] : m->align);
 
 	if (!class_id)
-	    pm = (struct permonst *) 0;
+	    pm = (struct MonsterType *) 0;
 	else if (m->id != NON_PM) {
 	    pm = &mons[m->id];
 	    g_mvflags = (unsigned) mvitals[monsndx(pm)].mvflags;
 	    if ((pm->geno & G_UNIQ) && (g_mvflags & G_EXTINCT))
 		goto m_done;
 	    else if (g_mvflags & G_GONE)	/* genocided or extinct */
-		pm = (struct permonst *) 0;	/* make random monster */
+		pm = (struct MonsterType *) 0;	/* make random monster */
 	} else {
 	    pm = mkclass(class_id,G_NOGEN);
 	    /* if we can't get a specific monster type (pm == 0) then the
@@ -730,7 +730,7 @@ STATIC_OVL void create_monster(monster *m, struct mkroom *croom) {
 	}
 	if (In_mines(&u.uz) && pm && your_race(pm) &&
 			(Race_if(PM_DWARF) || Race_if(PM_GNOME)) && rn2(3))
-	    pm = (struct permonst *) 0;
+	    pm = (struct MonsterType *) 0;
 
 	x = m->x;
 	y = m->y;
@@ -2474,7 +2474,7 @@ STATIC_OVL bool load_maze(dlb *fd) {
 	    }
 	    for(x = rnd((int) (12 * mapfact) / 100); x; x--) {
 		    maze1xy(&mm, WET|DRY);
-		    (void) makemon((struct permonst *) 0, mm.x, mm.y, NO_MM_FLAGS);
+		    (void) makemon((struct MonsterType *) 0, mm.x, mm.y, NO_MM_FLAGS);
 	    }
 	    for(x = rn2((int) (15 * mapfact) / 100); x; x--) {
 		    maze1xy(&mm, DRY);

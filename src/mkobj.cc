@@ -181,7 +181,7 @@ STATIC_OVL void mkbox_cnts(struct Object *box) {
 
 /* select a random, common monster type */
 int rndmonnum() {
-	struct permonst *ptr;
+	struct MonsterType *ptr;
 	int	i;
 
 	/* Plan A: get a level-appropriate common monster */
@@ -818,7 +818,7 @@ struct Object * mkgold(long amount, int x, int y) {
  * yet still allow restoration of the original monster upon
  * resurrection.
  */
-struct Object * mkcorpstat(int objtype, struct Monster *mtmp, struct permonst *ptr, int x, int y, bool init) {
+struct Object * mkcorpstat(int objtype, struct Monster *mtmp, struct MonsterType *ptr, int x, int y, bool init) {
 	struct Object *otmp;
 
 	if (objtype != CORPSE && objtype != STATUE)
@@ -892,7 +892,7 @@ static struct Object * save_mtraits(struct Object *obj, struct Monster *mtmp) {
 		/* m_id is needed to know if this is a revived quest leader */
 		/* but m_id must be cleared when loading bones */
 		mtmp2->nmon     = (struct Monster *)0;
-		mtmp2->data     = (struct permonst *)0;
+		mtmp2->data     = (struct MonsterType *)0;
 		mtmp2->minvent  = nullptr;
 		otmp->oattached = OATTACHED_MONST;	/* mark it */
 	}
@@ -938,7 +938,7 @@ struct Object * mk_tt_object(int objtype, int x, int y) {
 }
 
 /* make a new corpse or statue, uninitialized if a statue (i.e. no books) */
-struct Object * mk_named_object(int objtype, struct permonst *ptr, int x, int y, const char *nm) {
+struct Object * mk_named_object(int objtype, struct MonsterType *ptr, int x, int y, const char *nm) {
 	struct Object *otmp;
 
 	otmp = mkcorpstat(objtype, (struct Monster *)0, ptr,

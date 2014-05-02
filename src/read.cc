@@ -903,7 +903,7 @@ int seffects(struct Object *sobj) {
 	case SPE_CREATE_MONSTER:
 	    if (create_critters(1 + ((confused || sobj->cursed) ? 12 : 0) +
 				((sobj->blessed || rn2(73)) ? 0 : rnd(4)),
-			confused ? &mons[PM_ACID_BLOB] : (struct permonst *)0))
+			confused ? &mons[PM_ACID_BLOB] : (struct MonsterType *)0))
 		known = TRUE;
 	    /* no need to flush monsters; we ask for identification only if the
 	     * monsters are not visible
@@ -1527,7 +1527,7 @@ void do_genocide(int how) {
 	char buf[BUFSZ];
 	int	i, killplayer = 0;
 	int mndx;
-	struct permonst *ptr;
+	struct MonsterType *ptr;
 	const char *which;
 
 	if (how & PLAYER) {
@@ -1733,7 +1733,7 @@ bool cant_create(int *mtype, bool revival) {
 bool create_particular() {
 	char buf[BUFSZ], *bufp, monclass = MAXMCLASSES;
 	int which, tries, i;
-	struct permonst *whichpm;
+	struct MonsterType *whichpm;
 	struct Monster *mtmp;
 	bool madeany = FALSE;
 	bool maketame, makepeaceful, makehostile;

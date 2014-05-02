@@ -379,7 +379,7 @@ void fall_through(bool td) {
  * the statue's location... ???
  */
 struct Monster * animate_statue(struct Object *statue, xchar x, xchar y, int cause, int *fail_reason) {
-	struct permonst *mptr;
+	struct MonsterType *mptr;
 	struct Monster *mon = 0;
 	struct Object *item;
 	coord cc;
@@ -1150,7 +1150,7 @@ glovecheck:		(void) rust_dmg(uarmg, "gauntlets", 1, TRUE, &youmonst);
 #ifdef STEED
 STATIC_OVL int steedintrap(struct trap *trap, struct Object *otmp) {
 	struct Monster *mtmp = u.usteed;
-	struct permonst *mptr;
+	struct MonsterType *mptr;
 	int tt;
 	bool in_sight;
 	bool trapkilled = FALSE;
@@ -1208,7 +1208,7 @@ STATIC_OVL int steedintrap(struct trap *trap, struct Object *otmp) {
 		case POLY_TRAP: 
 		    if (!resists_magm(mtmp)) {
 			if (!resist(mtmp, WAND_CLASS, 0, NOTELL)) {
-			(void) newcham(mtmp, (struct permonst *)0,
+			(void) newcham(mtmp, (struct MonsterType *)0,
 				       FALSE, FALSE);
 			if (!can_saddle(mtmp) || !can_ride(mtmp)) {
 				dismount_steed(DISMOUNT_POLY);
@@ -1580,7 +1580,7 @@ STATIC_OVL bool isclearpath(coord *cc, int distance, schar dx, schar dy) {
 int mintrap(struct Monster *mtmp) {
 	struct trap *trap = t_at(mtmp->mx, mtmp->my);
 	bool trapkilled = FALSE;
-	struct permonst *mptr = mtmp->data;
+	struct MonsterType *mptr = mtmp->data;
 	struct Object *otmp;
 
 	if (!trap) {
@@ -2054,7 +2054,7 @@ glovecheck:		    target = which_armor(mtmp, W_ARMG);
 		    if (resists_magm(mtmp)) {
 			shieldeff(mtmp->mx, mtmp->my);
 		    } else if (!resist(mtmp, WAND_CLASS, 0, NOTELL)) {
-			(void) newcham(mtmp, (struct permonst *)0,
+			(void) newcham(mtmp, (struct MonsterType *)0,
 				       FALSE, FALSE);
 			if (in_sight) seetrap(trap);
 		    }
@@ -2408,7 +2408,7 @@ STATIC_OVL void domagictrap() {
 	  }  else
 		You_hear("a deafening roar!");
 	  while(cnt--)
-		(void) makemon((struct permonst *) 0, u.ux, u.uy, NO_MM_FLAGS);
+		(void) makemon((struct MonsterType *) 0, u.ux, u.uy, NO_MM_FLAGS);
 	}
 	else
 	  switch (fate) {

@@ -89,7 +89,7 @@ void monst_init();
  * unconsciously. Use your common sense.
  */
 
-struct permonst mons[] = {
+struct MonsterType mons[] = {
 /*
  * ants
  */

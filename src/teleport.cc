@@ -20,7 +20,7 @@ STATIC_DCL void mvault_tele(struct Monster *);
  * call it to generate new monster positions with fake monster structures.
  */
 bool goodpos(int x, int y, struct Monster *mtmp, unsigned gpflags) {
-	struct permonst *mdat = NULL;
+	struct MonsterType *mdat = NULL;
 	bool ignorewater = ((gpflags & MM_IGNOREWATER) != 0);
 
 	if (!isok(x, y)) return FALSE;
@@ -90,11 +90,11 @@ bool goodpos(int x, int y, struct Monster *mtmp, unsigned gpflags) {
  * If there is more than one valid positon in the ring, choose one randomly.
  * Return TRUE and the position chosen when successful, FALSE otherwise.
  */
-bool enexto(coord *cc, xchar xx, xchar yy, struct permonst *mdat) {
+bool enexto(coord *cc, xchar xx, xchar yy, struct MonsterType *mdat) {
 	return enexto_core(cc, xx, yy, mdat, 0);
 }
 
-bool enexto_core(coord *cc, xchar xx, xchar yy, struct permonst *mdat, unsigned entflags) {
+bool enexto_core(coord *cc, xchar xx, xchar yy, struct MonsterType *mdat, unsigned entflags) {
 #define MAX_GOOD 15
     coord good[MAX_GOOD], *good_ptr;
     int x, y, range, i;
@@ -1018,7 +1018,7 @@ void mtele_trap(struct Monster *mtmp, struct trap *trap, int in_sight) {
 /* return 0 if still on level, 3 if not */
 int mlevel_tele_trap(struct Monster *mtmp, struct trap *trap, bool force_it, int in_sight) {
 	int tt = trap->ttyp;
-	struct permonst *mptr = mtmp->data;
+	struct MonsterType *mptr = mtmp->data;
 
 	if (mtmp == u.ustuck)	/* probably a vortex */
 	    return 0;		/* temporary? kludge */

@@ -39,7 +39,7 @@
 
 struct Monster {
 	struct Monster *nmon;
-	struct permonst *data;
+	struct MonsterType *data;
 	unsigned long m_id;
 	short mnum;		/* permanent monster index number */
 	short movement;		/* movement points (derived from permonst definition and added effects */

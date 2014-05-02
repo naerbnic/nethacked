@@ -715,7 +715,7 @@ int dokick() {
 	/* objects, non-doors, doors.		 */
 
 	if(MON_AT(x, y)) {
-		struct permonst *mdat;
+		struct MonsterType *mdat;
 
 		mtmp = m_at(x, y);
 		mdat = mtmp->data;

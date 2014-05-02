@@ -36,7 +36,7 @@ constexpr int NATTK = 6;
 
 constexpr int WT_HUMAN = 1450;
 
-struct permonst {
+struct MonsterType {
 	const char	*mname;			/* full name */
 	char		mlet;			/* symbol */
 	schar		mlevel,			/* base monster level */
@@ -61,7 +61,7 @@ struct permonst {
 # endif
 };
 
-extern struct permonst
+extern struct MonsterType
 		mons[];		/* the master list of monster types */
 
 #define VERY_SLOW 3

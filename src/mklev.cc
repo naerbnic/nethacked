@@ -701,7 +701,7 @@ skip0:
 
 		if(u.uhave.amulet || !rn2(3)) {
 		    x = somex(croom); y = somey(croom);
-		    tmonst = makemon((struct permonst *) 0, x,y,NO_MM_FLAGS);
+		    tmonst = makemon((struct MonsterType *) 0, x,y,NO_MM_FLAGS);
 		    if (tmonst && tmonst->data == &mons[PM_GIANT_SPIDER] &&
 			    !occupied(x, y))
 			(void) maketrap(x, y, WEB);
@@ -729,7 +729,7 @@ skip0:
 		/* put statues inside */
 		if(!rn2(20))
 		    (void) mkcorpstat(STATUE, (struct Monster *)0,
-				      (struct permonst *)0,
+				      (struct MonsterType *)0,
 				      somex(croom), somey(croom), TRUE);
 		/* put box/chest inside;
 		 *  40% chance for at least 1 box, regardless of number

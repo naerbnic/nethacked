@@ -244,7 +244,7 @@ STATIC_OVL void mkshobj_at(
 {
 	struct Monster *mtmp;
 	int atype;
-	struct permonst *ptr;
+	struct MonsterType *ptr;
 
 	if (rn2(100) < depth(&u.uz) &&
 		!MON_AT(sx, sy) && (ptr = mkclass(S_MIMIC,0)) &&

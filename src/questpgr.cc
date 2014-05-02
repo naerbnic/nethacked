@@ -378,7 +378,7 @@ void qt_pager(int msgnum) {
 	return;
 }
 
-struct permonst * qt_montype() {
+struct MonsterType * qt_montype() {
 	int qpm;
 
 	if (rn2(5)) {

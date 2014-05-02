@@ -100,7 +100,7 @@ STATIC_OVL void mk_mplayer_armor(struct Monster *mon, short typ) {
 	(void) mpickobj(mon, obj);
 }
 
-struct Monster * mk_mplayer(struct permonst *ptr, xchar x, xchar y, bool special) {
+struct Monster * mk_mplayer(struct MonsterType *ptr, xchar x, xchar y, bool special) {
 	struct Monster *mtmp;
 	char nam[PL_NSIZ];
 

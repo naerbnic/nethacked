@@ -495,7 +495,7 @@ int touch_artifact(struct Object *obj, struct Monster *mon) {
 
 /* decide whether an artifact's special attacks apply against mtmp */
 STATIC_OVL int spec_applies(const struct Artifact *weap, struct Monster *mtmp) {
-	struct permonst *ptr;
+	struct MonsterType *ptr;
 	bool yours;
 
 	if(!(weap->spfx & (SPFX_DBONUS | SPFX_ATTK)))
@@ -665,7 +665,7 @@ static const char * const mb_verb[2][4] = {
 
 /* called when someone is being hit by Magicbane */
 STATIC_OVL bool Mb_hit(struct Monster *magr, struct Monster *mdef, struct Object *mb, int *dmgptr, int dieroll, bool vis, char *hittee) {
-    struct permonst *old_uasmon;
+    struct MonsterType *old_uasmon;
     const char *verb;
     bool youattack = (magr == &youmonst),
 	    youdefend = (mdef == &youmonst),

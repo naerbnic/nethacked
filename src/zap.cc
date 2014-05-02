@@ -192,7 +192,7 @@ int bhitm(struct Monster *mtmp, struct Object *otmp) {
 			/* flags.bypasses = TRUE; ## for make_corpse() */
 			/* no corpse after system shock */
 			xkilled(mtmp, 3);
-		    } else if (newcham(mtmp, (struct permonst *)0,
+		    } else if (newcham(mtmp, (struct MonsterType *)0,
 				       (otyp != POT_POLYMORPH), FALSE)) {
 			if (!Hallucination && canspotmon(mtmp))
 			    makeknown(otyp);
@@ -1012,7 +1012,7 @@ STATIC_OVL void polyuse(struct Object *objhdr, int mat, int minwt) {
  * a golem of the kind okind.
  */
 STATIC_OVL void create_polymon(struct Object *obj, int okind) {
-	struct permonst *mdat = (struct permonst *)0;
+	struct MonsterType *mdat = (struct MonsterType *)0;
 	struct Monster *mtmp;
 	const char *material;
 	int pm_index;
@@ -1709,7 +1709,7 @@ void zapnodir(struct Object *obj) {
 			break;
 		case WAN_CREATE_MONSTER:
 			known = create_critters(rn2(23) ? 1 : rn1(7,2),
-					(struct permonst *)0);
+					(struct MonsterType *)0);
 			break;
 		case WAN_WISHING:
 			known = TRUE;

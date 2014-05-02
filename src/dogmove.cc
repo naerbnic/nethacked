@@ -180,7 +180,7 @@ int dog_eat(struct Monster *mtmp, struct Object * obj, int x, int y, bool devour
 	    delobj(obj);
 
 	if (poly) {
-	    (void) newcham(mtmp, (struct permonst *)0, FALSE,
+	    (void) newcham(mtmp, (struct MonsterType *)0, FALSE,
 			   cansee(mtmp->mx, mtmp->my));
 	}
 	/* limit "instant" growth to prevent potential abuse */

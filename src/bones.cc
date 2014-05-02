@@ -176,7 +176,7 @@ void savebones(struct Object *corpse) {
 	int fd, x, y;
 	struct trap *ttmp;
 	struct Monster *mtmp;
-	struct permonst *mptr;
+	struct MonsterType *mptr;
 	struct fruit *f;
 	char c, *bonesid;
 	char whynot[BUFSZ];

@@ -412,7 +412,7 @@ int nasty(struct Monster *mcast) {
 		    mtmp->msleeping = mtmp->mpeaceful = mtmp->mtame = 0;
 		    set_malign(mtmp);
 		} else /* GENOD? */
-		    mtmp = makemon((struct permonst *)0,
+		    mtmp = makemon((struct MonsterType *)0,
 					bypos.x, bypos.y, NO_MM_FLAGS);
 		if(mtmp && (mtmp->data->maligntyp == 0 ||
 		            sgn(mtmp->data->maligntyp) == sgn(castalign)) ) {

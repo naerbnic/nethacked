@@ -127,7 +127,7 @@ STATIC_OVL bool md_start(coord *startp) {
      * the hero is not going to see it anyway.  So pick a nearby position.
      */
     if (Blind && !Blind_telepat) {
-	if (!enexto(startp, u.ux, u.uy, (struct permonst *) 0))
+	if (!enexto(startp, u.ux, u.uy, (struct MonsterType *) 0))
 	    return FALSE;	/* no good posiitons */
 	return TRUE;
     }
@@ -170,7 +170,7 @@ retry:
 		    startp->x = viz_rmin[row];
 		
 		} else if (enexto(&testcc, (xchar)viz_rmin[row], row,
-						(struct permonst *) 0) &&
+						(struct MonsterType *) 0) &&
 			   !cansee(testcc.x, testcc.y) &&
 			   couldsee(testcc.x, testcc.y)) {
 		    max_distance = dd;
@@ -185,7 +185,7 @@ retry:
 		    startp->x = viz_rmax[row];
 		
 		} else if (enexto(&testcc, (xchar)viz_rmax[row], row,
-						(struct permonst *) 0) &&
+						(struct MonsterType *) 0) &&
 			   !cansee(testcc.x,testcc.y) &&
 			   couldsee(testcc.x, testcc.y)) {
 
