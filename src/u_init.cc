@@ -902,7 +902,7 @@ STATIC_OVL void ini_inv(struct trobj *trop) {
 		 * one will immediately read it and use the iron ball as a
 		 * weapon.)
 		 */
-			obj = mkobj(trop->trclass, FALSE);
+			obj = MakeRandomObjectOfClass(trop->trclass, FALSE);
 			otyp = obj->otyp;
 			while (otyp == WAN_WISHING
 				|| otyp == nocreate
@@ -936,7 +936,7 @@ STATIC_OVL void ini_inv(struct trobj *trop) {
 				    restricted_spell_discipline(otyp)))
 							) {
 				dealloc_obj(obj);
-				obj = mkobj(trop->trclass, FALSE);
+				obj = MakeRandomObjectOfClass(trop->trclass, FALSE);
 				otyp = obj->otyp;
 			}
 

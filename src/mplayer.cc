@@ -250,7 +250,7 @@ Monster * mk_mplayer(MonsterType *ptr, xchar x, xchar y, bool special) {
 #endif
 		quan = rn2(10);
 		while(quan--)
-		    (void) mpickobj(mtmp, mkobj(RANDOM_CLASS, FALSE));
+		    (void) mpickobj(mtmp, MakeRandomObjectOfClass(RANDOM_CLASS, FALSE));
 	    }
 	    quan = rnd(3);
 	    while(quan--)

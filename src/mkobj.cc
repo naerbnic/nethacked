@@ -77,7 +77,7 @@ const struct ItemClassProbability kHellProbabilities[] = {
 };
 
 Object * mkobj_at(char let, int x, int y, bool artif) {
-	Object *otmp = mkobj(let, artif);
+	Object *otmp = MakeRandomObjectOfClass(let, artif);
 	place_object(otmp, x, y);
 	return(otmp);
 }
@@ -88,7 +88,7 @@ Object * mksobj_at(int otyp, int x, int y, bool init, bool artif) {
 	return(otmp);
 }
 
-Object * mkobj(char oclass, bool artif) {
+Object * MakeRandomObjectOfClass(char oclass, bool artif) {
   int tprob, prob = rnd(1000);
 
   if (oclass == RANDOM_CLASS) {
@@ -149,7 +149,7 @@ STATIC_OVL void mkbox_cnts(Object *box) {
 
 		for (tprob = rnd(100); (tprob -= iprobs->iprob) > 0; iprobs++)
 		    ;
-		if (!(otmp = mkobj(iprobs->iclass, TRUE))) continue;
+		if (!(otmp = MakeRandomObjectOfClass(iprobs->iclass, TRUE))) continue;
 
 		/* handle a couple of special cases */
 		if (otmp->oclass == COIN_CLASS) {
@@ -563,7 +563,7 @@ Object * mksobj(int otyp, bool init, bool artif) {
 			if (!verysmall(&mons[otmp->corpsenm]) &&
 				rn2(level_difficulty()/2 + 10) > 10)
 			    (void) add_to_container(otmp,
-						    mkobj(SPBOOK_CLASS,FALSE));
+						    MakeRandomObjectOfClass(SPBOOK_CLASS,FALSE));
 		}
 		break;
 	case COIN_CLASS:

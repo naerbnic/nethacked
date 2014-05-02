@@ -1154,7 +1154,7 @@ Object * poly_obj(Object *obj, int id) {
 	    otmp = nullptr;
 	    do {
 		if (otmp) delobj(otmp);
-		otmp = mkobj(obj->oclass, FALSE);
+		otmp = MakeRandomObjectOfClass(obj->oclass, FALSE);
 	    } while (--try_limit > 0 &&
 		  objects[obj->otyp].oc_magic != objects[otmp->otyp].oc_magic);
 	} else {

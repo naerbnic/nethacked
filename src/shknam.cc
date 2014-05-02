@@ -176,7 +176,7 @@ static const char * const shkgeneral[] = {
  * each percentage either a generic object type (represented by one of the
  * *_CLASS macros) or a specific object (represented by an onames.h define).
  * In the latter case, prepend it with a unary minus so the code can know
- * (by testing the sign) whether to use mkobj() or mksobj().
+ * (by testing the sign) whether to use MakeRandomObjectOfClass() or mksobj().
  */
 
 const struct shclass shtypes[] = {

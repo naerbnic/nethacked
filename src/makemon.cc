@@ -1683,7 +1683,7 @@ assign_sym:
 			if (s_sym == S_MIMIC_DEF) {
 				appear = STRANGE_OBJECT;
 			} else {
-				otmp = mkobj( (char) s_sym, FALSE );
+				otmp = MakeRandomObjectOfClass( (char) s_sym, FALSE );
 				appear = otmp->otyp;
 				/* make sure container contents are free'ed */
 				obfree(otmp, (Object *) 0);

@@ -2364,7 +2364,7 @@ typfnd:
 	if(typ) {
 		otmp = mksobj(typ, TRUE, FALSE);
 	} else {
-		otmp = mkobj(oclass, FALSE);
+		otmp = MakeRandomObjectOfClass(oclass, FALSE);
 		if (otmp) typ = otmp->otyp;
 	}
 

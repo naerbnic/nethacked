@@ -511,7 +511,7 @@ void drinksink() {
 			}
 			break;
 		case 4: do {
-				otmp = mkobj(POTION_CLASS,FALSE);
+				otmp = MakeRandomObjectOfClass(POTION_CLASS,FALSE);
 				if (otmp->otyp == POT_WATER) {
 					obfree(otmp, nullptr);
 					otmp = (Object *) 0;

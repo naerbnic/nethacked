@@ -971,7 +971,7 @@ STATIC_OVL void pleased(aligntyp g_align) {
 	    at_your_feet("An object");
 	    /* not yet known spells given preference over already known ones */
 	    /* Also, try to grant a spell for which there is a skill slot */
-	    otmp = mkobj(SPBOOK_CLASS, TRUE);
+	    otmp = MakeRandomObjectOfClass(SPBOOK_CLASS, TRUE);
 	    while (--trycnt > 0) {
 		if (otmp->otyp != SPE_BLANK_PAPER) {
 		    for (sp_no = 0; sp_no < MAXSPELL; sp_no++)

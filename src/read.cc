@@ -1675,11 +1675,11 @@ void punish(Object *sobj) {
 	}
 	if (amorphous(youmonst.data) || is_whirly(youmonst.data) || unsolid(youmonst.data)) {
 		pline("A ball and chain appears, then falls away.");
-		dropy(mkobj(BALL_CLASS, TRUE));
+		dropy(MakeRandomObjectOfClass(BALL_CLASS, TRUE));
 		return;
 	}
-	setworn(mkobj(CHAIN_CLASS, TRUE), W_CHAIN);
-	setworn(mkobj(BALL_CLASS, TRUE), W_BALL);
+	setworn(MakeRandomObjectOfClass(CHAIN_CLASS, TRUE), W_CHAIN);
+	setworn(MakeRandomObjectOfClass(BALL_CLASS, TRUE), W_BALL);
 	uball->spe = 1;		/* special ball (see save) */
 
 	/*

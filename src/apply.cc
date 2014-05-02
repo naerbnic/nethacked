@@ -2815,13 +2815,13 @@ int doapply() {
 
 		    consume_obj_charge(obj, TRUE);
 		    if (!rn2(13)) {
-			otmp = mkobj(POTION_CLASS, FALSE);
+			otmp = MakeRandomObjectOfClass(POTION_CLASS, FALSE);
 			if (objects[otmp->otyp].oc_magic) do {
 			    otmp->otyp = rnd_class(POT_BOOZE, POT_WATER);
 			} while (otmp->otyp == POT_SICKNESS);
 			what = "A potion";
 		    } else {
-			otmp = mkobj(FOOD_CLASS, FALSE);
+			otmp = MakeRandomObjectOfClass(FOOD_CLASS, FALSE);
 			if (otmp->otyp == FOOD_RATION && !rn2(7))
 			    otmp->otyp = LUMP_OF_ROYAL_JELLY;
 			what = "Some food";
