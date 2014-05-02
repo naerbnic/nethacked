@@ -9,9 +9,6 @@
 
 #define UNIX		/* delete if no fork(), exec() available */
 
-#include "config1.h"	/* should auto-detect MSDOS, MAC, AMIGA, and WIN32 */
-
-
 #define TTY_GRAPHICS	/* good old tty based graphics */
 
 #ifndef DEFAULT_WINDOW_SYS

@@ -138,24 +138,6 @@ E void bot2str(char *);
 
 /* ### cmd.c ### */
 
-#ifdef USE_TRAMPOLI
-#error TRAMPOLIIIII!!!!
-E int doextcmd();
-E int domonability();
-E int doprev_message();
-E int timed_occupation();
-E int wiz_attributes();
-E int enter_explore_mode();
-# ifdef WIZARD
-E int wiz_detect();
-E int wiz_genesis();
-E int wiz_identify();
-E int wiz_level_tele();
-E int wiz_map();
-E int wiz_where();
-E int wiz_wish();
-# endif /* WIZARD */
-#endif /* USE_TRAMPOLI */
 E void reset_occupations();
 E void set_occupation(int (*)(void),const char *,int);
 #ifdef REDO
@@ -220,10 +202,6 @@ E void use_crystal_ball(struct Object *);
 E void do_mapping();
 E void do_vicinity_map();
 E void cvt_sdoor_to_door(struct rm *);
-#ifdef USE_TRAMPOLI
-E void findone(int,int,genericptr_t);
-E void openone(int,int,genericptr_t);
-#endif
 E int findit();
 E int openit();
 E void find_trap(struct trap *);
@@ -234,9 +212,6 @@ E void sokoban_detect();
 /* ### dig.c ### */
 
 E bool is_digging();
-#ifdef USE_TRAMPOLI
-E int dig();
-#endif
 E int holetime();
 E bool dig_check(struct Monster *, bool, int, int);
 E void digactualhole(int,int,struct Monster *,int);
@@ -300,10 +275,6 @@ E void set_wall_state();
 
 /* ### do.c ### */
 
-#ifdef USE_TRAMPOLI
-E int drop(struct Object *);
-E int wipeoff();
-#endif
 E int dodrop();
 E bool boulder_hits_pool(struct Object *,int,int,bool);
 E bool flooreffects(struct Object *,int,int,const char *);
@@ -362,14 +333,6 @@ E char *coyotename(struct Monster *,char *);
 
 /* ### do_wear.c ### */
 
-#ifdef USE_TRAMPOLI
-E int Armor_on();
-E int Boots_on();
-E int Gloves_on();
-E int Helmet_on();
-E int select_off(struct Object *);
-E int take_off();
-#endif
 E void off_msg(struct Object *);
 E void set_wear();
 E bool donning(struct Object *);
@@ -429,9 +392,6 @@ E void wary_dog(struct Monster *, bool);
 E int dog_nutrition(struct Monster *,struct Object *);
 E int dog_eat(struct Monster *,struct Object *,int,int,bool);
 E int dog_move(struct Monster *,int);
-#ifdef USE_TRAMPOLI
-E void wantdoor(int,int,genericptr_t);
-#endif
 
 /* ### dokick.c ### */
 
@@ -516,12 +476,6 @@ E schar print_dungeon(bool,schar *,xchar *);
 
 /* ### eat.c ### */
 
-#ifdef USE_TRAMPOLI
-E int eatmdone();
-E int eatfood();
-E int opentin();
-E int unfaint();
-#endif
 E bool is_edible(struct Object *);
 E void init_uhunger();
 E int Hear_again();
@@ -551,9 +505,6 @@ E bool maybe_finished_meal(bool);
 
 E void done1(int);
 E int done2();
-#ifdef USE_TRAMPOLI
-E void done_intr(int);
-#endif
 E void done_in_by(struct Monster *);
 E void panic(const char *,...) PRINTF_F(1,2);
 E void done(int);
@@ -669,9 +620,6 @@ E void really_close();
 
 E void floating_above(const char *);
 E void dogushforth(int);
-# ifdef USE_TRAMPOLI
-E void gush(int,int,genericptr_t);
-# endif
 E void dryup(xchar,xchar, bool);
 E void drinkfountain();
 E void dipfountain(struct Object *);
@@ -759,9 +707,6 @@ E int midnight();
 E void assigninvlet(struct Object *);
 E struct Object *merge_choice(struct Object *,struct Object *);
 E int merged(struct Object **,struct Object **);
-#ifdef USE_TRAMPOLI
-E int ckunpaid(struct Object *);
-#endif
 E void addinv_core1(struct Object *);
 E void addinv_core2(struct Object *);
 E struct Object *addinv(struct Object *);
@@ -857,10 +802,6 @@ E int wiz_light_sources();
 
 /* ### lock.c ### */
 
-#ifdef USE_TRAMPOLI
-E int forcelock();
-E int picklock();
-#endif
 E bool picking_lock(int *,int *);
 E bool picking_at(int,int);
 E void reset_pick();
@@ -951,9 +892,6 @@ E int lminion();
 
 /* ### mklev.c ### */
 
-#ifdef USE_TRAMPOLI
-E int do_comp(genericptr_t,genericptr_t);
-#endif
 E void sort_rooms();
 E void add_room(int,int,int,int,bool,schar,bool);
 E void add_subroom(struct mkroom *,int,int,int,int,
@@ -1199,9 +1137,6 @@ E bool find_defensive(struct Monster *);
 E int use_defensive(struct Monster *);
 E int rnd_defensive_item(struct Monster *);
 E bool find_offensive(struct Monster *);
-#ifdef USE_TRAMPOLI
-E int mbhitm(struct Monster *,struct Object *);
-#endif
 E int use_offensive(struct Monster *);
 E int rnd_offensive_item(struct Monster *);
 E bool find_misc(struct Monster *);
@@ -1333,11 +1268,6 @@ E void add_valid_menu_class(int);
 E bool allow_all(struct Object *);
 E bool allow_category(struct Object *);
 E bool is_worn_by_type(struct Object *);
-#ifdef USE_TRAMPOLI
-E int ck_bag(struct Object *);
-E int in_container(struct Object *);
-E int out_container(struct Object *);
-#endif
 E int pickup(int);
 E int pickup_object(struct Object *, long, bool);
 E int query_category(const char *, struct Object *, int,
@@ -1421,9 +1351,6 @@ E const char *bottlename();
 
 /* ### pray.c ### */
 
-#ifdef USE_TRAMPOLI
-E int prayer_done();
-#endif
 E int dosacrifice();
 E bool can_pray(bool);
 E int dopray();
@@ -1501,9 +1428,6 @@ E void forget_levels(int);
 E void forget_traps();
 E void forget_map(int);
 E int seffects(struct Object *);
-#ifdef USE_TRAMPOLI
-E void set_lit(int,int,genericptr_t);
-#endif
 E void litroom(bool,struct Object *);
 E void do_genocide(int);
 E void punish(struct Object *);
@@ -1720,9 +1644,6 @@ E bool load_special(const char *);
 
 /* ### spell.c ### */
 
-#ifdef USE_TRAMPOLI
-E int learn();
-#endif
 E int study_book(struct Object *);
 E void book_disappears(struct Object *);
 E void book_substitution(struct Object *,struct Object *);
@@ -1736,9 +1657,6 @@ E void initialspell(struct Object *);
 
 /* ### steal.c ### */
 
-#ifdef USE_TRAMPOLI
-E int stealarm();
-#endif
 #ifdef GOLDOBJ
 E long somegold(long);
 #else
