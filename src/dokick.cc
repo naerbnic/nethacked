@@ -20,10 +20,10 @@ STATIC_DCL void kickdmg(struct Monster *, bool);
 STATIC_DCL void kick_monster(xchar, xchar);
 STATIC_DCL int kick_object(xchar, xchar);
 STATIC_DCL char *kickstr(char *);
-STATIC_DCL void otransit_msg(struct Object *, bool, long);
+STATIC_DCL void otransit_msg(Object *, bool, long);
 STATIC_DCL void drop_to(coord *,schar);
 
-static struct Object *kickobj;
+static Object *kickobj;
 
 static const char kick_passes_thru[] = "kick passes harmlessly through";
 
@@ -227,7 +227,7 @@ doit:
  *  Return TRUE if caught (the gold taken care of), FALSE otherwise.
  *  The gold object is *not* attached to the fobj chain!
  */
-bool ghitm(struct Monster *mtmp, struct Object *gold) {
+bool ghitm(struct Monster *mtmp, Object *gold) {
 	bool msg_given = FALSE;
 
 	if(!likes_gold(mtmp->data) && !mtmp->isshk && !mtmp->ispriest
@@ -329,9 +329,9 @@ bool ghitm(struct Monster *mtmp, struct Object *gold) {
 
 /* container is kicked, dropped, thrown or otherwise impacted by player.
  * Assumes container is on floor.  Checks contents for possible damage. */
-void container_impact_dmg(struct Object *obj) {
+void container_impact_dmg(Object *obj) {
 	struct Monster *shkp;
-	struct Object *otmp, *otmp2;
+	Object *otmp, *otmp2;
 	long loss = 0L;
 	bool costly, insider;
 	xchar x = obj->ox, y = obj->oy;
@@ -369,7 +369,7 @@ void container_impact_dmg(struct Object *obj) {
 		    useup(otmp);
 		else {
 		    obj_extract_self(otmp);
-		    obfree(otmp, (struct Object *) 0);
+		    obfree(otmp, (Object *) 0);
 		}
 	    }
 	}
@@ -868,7 +868,7 @@ int dokick() {
 		if(IS_GRAVE(maploc->typ) || maploc->typ == IRONBARS)
 		    goto ouch;
 		if(IS_TREE(maploc->typ)) {
-		    struct Object *treefruit;
+		    Object *treefruit;
 		    /* nothing, fruit or trouble? 75:23.5:1.5% */
 		    if (rn2(3)) {
 			if ( !rn2(6) && !(mvitals[PM_KILLER_BEE].mvflags & G_GONE) )
@@ -1122,9 +1122,9 @@ STATIC_OVL void drop_to(coord *cc, schar loc) {
 	}
 }
 
-void impact_drop(struct Object *missile, xchar x, xchar y, xchar dlev) {
+void impact_drop(Object *missile, xchar x, xchar y, xchar dlev) {
 	schar toloc;
-	struct Object *obj, *obj2;
+	Object *obj, *obj2;
 	struct Monster *shkp;
 	long oct, dct, price, debit, robbed;
 	bool angry, costly, isrock;
@@ -1240,11 +1240,11 @@ void impact_drop(struct Object *missile, xchar x, xchar y, xchar dlev) {
  * <x,y> is the point of drop.  otmp is _not_ an <x,y> resident:
  * otmp is either a kicked, dropped, or thrown object.
  */
-bool ship_object(struct Object *otmp, xchar x, xchar y, bool shop_floor_obj) {
+bool ship_object(Object *otmp, xchar x, xchar y, bool shop_floor_obj) {
 	schar toloc;
 	xchar ox, oy;
 	coord cc;
-	struct Object *obj;
+	Object *obj;
 	struct trap *t;
 	bool nodrop, unpaid, container, impact = FALSE;
 	long n = 0L;
@@ -1327,7 +1327,7 @@ bool ship_object(struct Object *otmp, xchar x, xchar y, bool shop_floor_obj) {
 	    }
 	    You_hear("a muffled %s.",result);
 	    obj_extract_self(otmp);
-	    obfree(otmp, (struct Object *) 0);
+	    obfree(otmp, (Object *) 0);
 	    return TRUE;
 	}
 
@@ -1355,7 +1355,7 @@ bool ship_object(struct Object *otmp, xchar x, xchar y, bool shop_floor_obj) {
 }
 
 void obj_delivery() {
-	struct Object *otmp, *otmp2;
+	Object *otmp, *otmp2;
 	int nx, ny;
 	long where;
 
@@ -1393,7 +1393,7 @@ void obj_delivery() {
 	}
 }
 
-STATIC_OVL void otransit_msg(struct Object *otmp, bool nodrop, long num) {
+STATIC_OVL void otransit_msg(Object *otmp, bool nodrop, long num) {
 	char obuf[BUFSZ];
 
 	sprintf(obuf, "%s%s",

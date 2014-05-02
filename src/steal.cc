@@ -9,10 +9,10 @@
 STATIC_PTR int stealarm();
 
 #ifdef OVLB
-STATIC_DCL const char *equipname(struct Object *);
-STATIC_DCL void mdrop_obj(struct Monster *,struct Object *,bool);
+STATIC_DCL const char *equipname(Object *);
+STATIC_DCL void mdrop_obj(struct Monster *,Object *,bool);
 
-STATIC_OVL const char * equipname(struct Object *otmp) {
+STATIC_OVL const char * equipname(Object *otmp) {
 	return (
 #ifdef TOURIST
 		(otmp == uarmu) ? "shirt" :
@@ -35,7 +35,7 @@ long		/* actually returns something that fits in an int */ somegold() {
 }
 
 void stealgold(struct Monster *mtmp) {
-	struct Object *gold = g_at(u.ux, u.uy);
+	Object *gold = g_at(u.ux, u.uy);
 	long tmp;
 
 	if (gold && ( !u.ugold || gold->quan > u.ugold || !rn2(5))) {
@@ -79,7 +79,7 @@ be seized without further searching.
 May search containers too.
 Deals in gold only, as leprechauns don't care for lesser coins.
 */
-struct Object * findgold(struct Object *chain) {
+Object * findgold(Object *chain) {
         while (chain && chain->otyp != GOLD_PIECE) chain = chain->nobj;
         return chain;
 }
@@ -88,8 +88,8 @@ struct Object * findgold(struct Object *chain) {
 Steal gold coins only.  Leprechauns don't care for lesser coins.
 */
 void stealgold(struct Monster *mtmp) {
-	struct Object *fgold = g_at(u.ux, u.uy);
-	struct Object *ygold;
+	Object *fgold = g_at(u.ux, u.uy);
+	Object *ygold;
 	long tmp;
 
         /* skip lesser coins on the floor */        
@@ -129,7 +129,7 @@ unsigned int stealmid;		/* monster doing the stealing */
 
 STATIC_PTR int stealarm() {
 	struct Monster *mtmp;
-	struct Object *otmp;
+	Object *otmp;
 
 	for(otmp = invent; otmp; otmp = otmp->nobj) {
 	    if(otmp->o_id == stealoid) {
@@ -159,7 +159,7 @@ botm:   stealoid = 0;
 
 /* An object you're wearing has been taken off by a monster (theft or
    seduction).  Also used if a worn item gets transformed (stone to flesh). */
-void remove_worn_item(struct Object *obj, bool unchain_ball) {
+void remove_worn_item(Object *obj, bool unchain_ball) {
 	if (donning(obj))
 	    cancel_don();
 	if (!obj->owornmask)
@@ -209,7 +209,7 @@ void remove_worn_item(struct Object *obj, bool unchain_ball) {
  * Avoid stealing the object stealoid
  */
 int steal(struct Monster *mtmp, char *objnambuf) {
-	struct Object *otmp;
+	Object *otmp;
 	int tmp, could_petrify, named = 0, armordelay;
 	bool monkey_business; /* true iff an animal is doing the thievery */
 
@@ -404,7 +404,7 @@ gotobj:
 #ifdef OVL1
 
 /* Returns 1 if otmp is free'd, 0 otherwise. */
-int mpickobj(struct Monster *mtmp, struct Object *otmp) {
+int mpickobj(struct Monster *mtmp, Object *otmp) {
     int freed_otmp;
 
 #ifndef GOLDOBJ
@@ -443,7 +443,7 @@ int mpickobj(struct Monster *mtmp, struct Object *otmp) {
 #ifdef OVLB
 
 void stealamulet(struct Monster *mtmp) {
-    struct Object *otmp = nullptr;
+    Object *otmp = nullptr;
     int real=0, fake=0;
 
     /* select the artifact to steal */
@@ -487,7 +487,7 @@ void stealamulet(struct Monster *mtmp) {
 #ifdef OVL0
 
 /* drop one object taken from a (possibly dead) monster's inventory */
-STATIC_OVL void mdrop_obj(struct Monster *mon, struct Object *obj, bool verbosely) {
+STATIC_OVL void mdrop_obj(struct Monster *mon, Object *obj, bool verbosely) {
     int omx = mon->mx, omy = mon->my;
 
     if (obj->owornmask) {
@@ -518,7 +518,7 @@ STATIC_OVL void mdrop_obj(struct Monster *mon, struct Object *obj, bool verbosel
    even leaving the game entirely; when that happens, prevent them from
    taking the Amulet or invocation tools with them */
 void mdrop_special_objs(struct Monster *mon) {
-    struct Object *obj, *otmp;
+    Object *obj, *otmp;
 
     for (obj = mon->minvent; obj; obj = otmp) {
 	otmp = obj->nobj;
@@ -533,10 +533,10 @@ void mdrop_special_objs(struct Monster *mon) {
 
 /* release the objects the creature is carrying */
 void relobj(struct Monster *mtmp, int show, bool is_pet) {
-	struct Object *otmp;
+	Object *otmp;
 	int omx = mtmp->mx, omy = mtmp->my;
-	struct Object *keepobj = 0;
-	struct Object *wep = mtmp->weapon();
+	Object *keepobj = 0;
+	Object *wep = mtmp->weapon();
 	bool item1 = FALSE, item2 = FALSE;
 
 	if (!is_pet || mindless(mtmp->data) || is_animal(mtmp->data))

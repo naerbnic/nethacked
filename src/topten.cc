@@ -1088,14 +1088,14 @@ STATIC_OVL int classmon(char *plch, bool fem) {
  * Get a random player name and class from the high score list,
  * and attach them to an object (for statues or morgue corpses).
  */
-struct Object * tt_oname(struct Object *otmp) {
+Object * tt_oname(Object *otmp) {
 	int rank;
 	int i;
 	struct toptenentry *tt;
 	FILE *rfile;
 	struct toptenentry tt_buf;
 
-	if (!otmp) return((struct Object *) 0);
+	if (!otmp) return((Object *) 0);
 
 	rfile = fopen_datafile(RECORD, "r", SCOREPREFIX);
 	if (!rfile) {
@@ -1117,7 +1117,7 @@ pickentry:
 			rewind(rfile);
 			goto pickentry;
 		}
-		otmp = (struct Object *) 0;
+		otmp = (Object *) 0;
 	} else {
 		/* reset timer in case corpse started out as lizard or troll */
 		if (otmp->otyp == CORPSE) obj_stop_timers(otmp);

@@ -147,14 +147,14 @@ STATIC_DCL int wall_angle(struct rm *);
  * It does NOT take into account that the location is out of sight, or,
  * say, one can see blessed, etc.
  */
-struct Object * vobj_at(xchar x, xchar y) {
-    struct Object *Object = level.objects[x][y];
+Object * vobj_at(xchar x, xchar y) {
+    Object *Object = level.objects[x][y];
 
     while (Object) {
 	if (!Object->oinvis || See_invisible) return Object;
 	Object = Object->nexthere;
     }
-    return ((struct Object *) 0);
+    return ((Object *) 0);
 }
 #endif	/* else vobj_at() is defined in display.h */
 
@@ -234,7 +234,7 @@ void map_trap(struct trap *trap, int show) {
  * Map the given object.  This routine assumes that the hero can physically
  * see the location of the object.  Update the screen if directed.
  */
-void map_object(struct Object *obj, int show) {
+void map_object(Object *obj, int show) {
     int x = obj->ox, y = obj->oy;
     int glyph = obj_to_glyph(obj);
 
@@ -373,7 +373,7 @@ display_monster(
 	    }
 
 	    case M_AP_OBJECT: {
-		struct Object obj;	/* Make a fake object to send	*/
+		Object obj;	/* Make a fake object to send	*/
 				/* to map_object().		*/
 		obj.ox = x;
 		obj.oy = y;
@@ -458,7 +458,7 @@ STATIC_OVL void display_warning(struct Monster *mon) {
  */
 void feel_location(xchar x, xchar y) {
     struct rm *lev = &(levl[x][y]);
-    struct Object *boulder;
+    Object *boulder;
     struct Monster *mon;
 
     /* If the hero's memory of an invisible monster is accurate, we want to keep
@@ -1053,7 +1053,7 @@ void set_mimic_blocking() {
  *	+ hallucinating.
  */
 void see_objects() {
-    struct Object *obj;
+    Object *obj;
     for(obj = fobj; obj; obj = obj->nobj)
 	if (vobj_at(obj->ox,obj->oy) == obj) newsym(obj->ox, obj->oy);
 }

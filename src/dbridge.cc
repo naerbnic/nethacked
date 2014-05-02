@@ -774,7 +774,7 @@ void destroy_drawbridge(int x, int y) {
 	lev2 = &levl[x2][y2];
 	if ((lev1->drawbridgemask & DB_UNDER) == DB_MOAT ||
 	    (lev1->drawbridgemask & DB_UNDER) == DB_LAVA) {
-		struct Object *otmp;
+		Object *otmp;
 		bool lava = (lev1->drawbridgemask & DB_UNDER) == DB_LAVA;
 		if (lev1->typ == DRAWBRIDGE_UP) {
 			if (cansee(x2,y2))

@@ -135,8 +135,8 @@ extern void show_borlandc_stats(winid);
 #ifdef DEBUG_MIGRATING_MONS
 STATIC_PTR int wiz_migrate_mons();
 #endif
-STATIC_DCL void count_obj(struct Object *, long *, long *, bool, bool);
-STATIC_DCL void obj_chain(winid, const char *, struct Object *, long *, long *);
+STATIC_DCL void count_obj(Object *, long *, long *, bool, bool);
+STATIC_DCL void obj_chain(winid, const char *, Object *, long *, long *);
 STATIC_DCL void mon_invent_chain(winid, const char *, struct Monster *, long *, long *);
 STATIC_DCL void mon_chain(winid, const char *, struct Monster *, long *, long *);
 STATIC_DCL void contained(winid, const char *, long *, long *);
@@ -1933,14 +1933,14 @@ static const char templ_str[] = "%-18s %4ld  %6ld";
 static const char count_str[] = "                   count  bytes";
 static const char separator[] = "------------------ -----  ------";
 
-STATIC_OVL void count_obj(struct Object *chain, long *total_count, long *total_size, bool top, bool recurse) {
+STATIC_OVL void count_obj(Object *chain, long *total_count, long *total_size, bool top, bool recurse) {
 	long count, size;
-	struct Object *obj;
+	Object *obj;
 
 	for (count = size = 0, obj = chain; obj; obj = obj->nobj) {
 	    if (top) {
 		count++;
-		size += sizeof(struct Object) + obj->oxlth + obj->onamelth;
+		size += sizeof(Object) + obj->oxlth + obj->onamelth;
 	    }
 	    if (recurse && obj->cobj)
 		count_obj(obj->cobj, total_count, total_size, TRUE, TRUE);
@@ -1949,7 +1949,7 @@ STATIC_OVL void count_obj(struct Object *chain, long *total_count, long *total_s
 	*total_size += size;
 }
 
-STATIC_OVL void obj_chain(winid win, const char *src, struct Object *chain, long *total_count, long *total_size) {
+STATIC_OVL void obj_chain(winid win, const char *src, Object *chain, long *total_count, long *total_size) {
 	char buf[BUFSZ];
 	long count = 0, size = 0;
 
@@ -2021,7 +2021,7 @@ static int wiz_show_stats() {
 	win = create_nhwindow(NHW_TEXT);
 	putstr(win, 0, "Current memory statistics:");
 	putstr(win, 0, "");
-	sprintf(buf, "Objects, size %d", (int) sizeof(struct Object));
+	sprintf(buf, "Objects, size %d", (int) sizeof(Object));
 	putstr(win, 0, buf);
 	putstr(win, 0, "");
 	putstr(win, 0, count_str);

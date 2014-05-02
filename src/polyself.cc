@@ -556,7 +556,7 @@ int polymon(int mntmp) {
 }
 
 STATIC_OVL void break_armor() {
-    struct Object *otmp;
+    Object *otmp;
 
     if (breakarm(youmonst.data)) {
 	if ((otmp = uarm) != 0) {
@@ -660,8 +660,8 @@ STATIC_OVL void break_armor() {
 }
 
 STATIC_OVL void drop_weapon(int alone) {
-    struct Object *otmp;
-    struct Object *otmp2;
+    Object *otmp;
+    Object *otmp2;
 
     if ((otmp = uwep) != 0) {
 	/* !alone check below is currently superfluous but in the
@@ -669,7 +669,7 @@ STATIC_OVL void drop_weapon(int alone) {
 	 * wear gloves but can wield weapons
 	 */
 	if (!alone || cantwield(youmonst.data)) {
-	    struct Object *wep = uwep;
+	    Object *wep = uwep;
 
 	    if (alone) You("find you must drop your weapon%s!",
 			   	u.twoweap ? "s" : "");
@@ -743,7 +743,7 @@ int dobreathe() {
 }
 
 int dospit() {
-	struct Object *otmp;
+	Object *otmp;
 
 	if (!getdir((char *)0)) return(0);
 	otmp = mksobj(u.umonnum==PM_COBRA ? BLINDING_VENOM : ACID_VENOM,

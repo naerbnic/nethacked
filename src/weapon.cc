@@ -124,7 +124,7 @@ static const char kebabable[] = {
  *	hitval returns an integer representing the "to hit" bonuses
  *	of "otmp" against the monster.
  */
-int hitval(struct Object *otmp, struct Monster *mon) {
+int hitval(Object *otmp, struct Monster *mon) {
 	int	tmp = 0;
 	struct MonsterType *ptr = mon->data;
 	bool Is_weapon = (otmp->oclass == WEAPON_CLASS || is_weptool(otmp));
@@ -191,7 +191,7 @@ int hitval(struct Object *otmp, struct Monster *mon) {
  *	dmgval returns an integer representing the damage bonuses
  *	of "otmp" against the monster.
  */
-int dmgval(struct Object *otmp, struct Monster *mon) {
+int dmgval(Object *otmp, struct Monster *mon) {
 	int tmp = 0, otyp = otmp->otyp;
 	struct MonsterType *ptr = mon->data;
 	bool Is_weapon = (otmp->oclass == WEAPON_CLASS || is_weptool(otmp));
@@ -312,11 +312,11 @@ int dmgval(struct Object *otmp, struct Monster *mon) {
 #endif /* OVLB */
 #ifdef OVL0
 
-STATIC_DCL struct Object *oselect(struct Monster *,int);
+STATIC_DCL Object *oselect(struct Monster *,int);
 #define Oselect(x)	if ((otmp = oselect(mtmp, x)) != 0) return(otmp);
 
-STATIC_OVL struct Object * oselect(struct Monster *mtmp, int x) {
-	struct Object *otmp;
+STATIC_OVL Object * oselect(struct Monster *mtmp, int x) {
+	Object *otmp;
 
 	for (otmp = mtmp->minvent; otmp; otmp = otmp->nobj) {
 	    if (otmp->otyp == x &&
@@ -343,11 +343,11 @@ static const int pwep[] =
 	GLAIVE, LUCERN_HAMMER, BEC_DE_CORBIN, FAUCHARD, PARTISAN, LANCE
 };
 
-static struct Object *propellor;
+static Object *propellor;
 
 /* select a ranged weapon for the monster */
-struct Object * select_rwep(struct Monster *mtmp) {
-	struct Object *otmp;
+Object * select_rwep(struct Monster *mtmp) {
+	Object *otmp;
 	int i;
 
 #ifdef KOPS
@@ -471,8 +471,8 @@ static const short hwep[] = {
 	};
 
 /* select a hand to hand weapon for the monster */
-struct Object * select_hwep(struct Monster *mtmp) {
-	struct Object *otmp;
+Object * select_hwep(struct Monster *mtmp) {
+	Object *otmp;
 	int i;
 	bool strong = strongmonst(mtmp->data);
 	bool wearing_shield = (mtmp->misc_worn_check & W_ARMS) != 0;
@@ -510,7 +510,7 @@ struct Object * select_hwep(struct Monster *mtmp) {
  * otherwise never unwield stuff on their own.  Might print message.
  */
 void possibly_unwield(struct Monster *mon, bool polyspot) {
-	struct Object *obj, *mw_tmp;
+	Object *obj, *mw_tmp;
 
 	if (!(mw_tmp = mon->weapon()))
 		return;
@@ -561,7 +561,7 @@ void possibly_unwield(struct Monster *mon, bool polyspot) {
  * Returns 1 if the monster took time to do it, 0 if it did not.
  */
 int mon_wield_item(struct Monster *mon) {
-	struct Object *obj;
+	Object *obj;
 
 	/* This case actually should never happen */
 	if (mon->weapon_check == NO_WEAPON_WANTED) return 0;
@@ -599,7 +599,7 @@ int mon_wield_item(struct Monster *mon) {
 			return 0;
 	}
 	if (obj && obj != &zeroobj) {
-		struct Object *mw_tmp = mon->weapon();
+		Object *mw_tmp = mon->weapon();
 		if (mw_tmp && mw_tmp->otyp == obj->otyp) {
 		/* already wielding it */
 			mon->weapon_check = NEED_WEAPON;
@@ -1071,7 +1071,7 @@ void lose_weapon_skill(int n) {
     }
 }
 
-int weapon_type(struct Object *obj) {
+int weapon_type(Object *obj) {
 	/* KMH -- now uses the object table */
 	int type;
 
@@ -1096,7 +1096,7 @@ int uwep_skill_type() {
  * Return hit bonus/penalty based on skill of weapon.
  * Treat restricted weapons as unskilled.
  */
-int weapon_hit_bonus(struct Object *weapon) {
+int weapon_hit_bonus(Object *weapon) {
     int type, wep_type, skill, bonus = 0;
     static const char bad_skill[] = "weapon_hit_bonus: bad skill %d";
 
@@ -1162,7 +1162,7 @@ int weapon_hit_bonus(struct Object *weapon) {
  * Return damage bonus/penalty based on skill of weapon.
  * Treat restricted weapons as unskilled.
  */
-int weapon_dam_bonus(struct Object *weapon) {
+int weapon_dam_bonus(Object *weapon) {
     int type, wep_type, skill, bonus = 0;
 
     wep_type = weapon_type(weapon);
@@ -1230,7 +1230,7 @@ int weapon_dam_bonus(struct Object *weapon) {
  * maximums.
  */
 void skill_init(const struct def_skill *class_skill) {
-	struct Object *obj;
+	Object *obj;
 	int skmax, skill;
 
 	/* initialize skill array; by default, everything is restricted */
@@ -1292,7 +1292,7 @@ void skill_init(const struct def_skill *class_skill) {
 	}
 }
 
-void setmnotwielded(struct Monster *mon, struct Object *obj) {
+void setmnotwielded(struct Monster *mon, Object *obj) {
   if (!obj) {
     return;
   }

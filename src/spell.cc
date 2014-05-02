@@ -7,7 +7,7 @@
 #include "hack.h"
 
 static schar delay;		/* moves left for this spell */
-static struct Object *book;	/* last/current book being xscribed */
+static Object *book;	/* last/current book being xscribed */
 
 /* spellmenu arguments; 0 thru n-1 used as spl_book[] index when swapping */
 #define SPELLMENU_CAST (-2)
@@ -23,9 +23,9 @@ static struct Object *book;	/* last/current book being xscribed */
 	((char)((spell < 26) ? ('a' + spell) : ('A' + spell - 26)))
 
 STATIC_DCL int spell_let_to_idx(char);
-STATIC_DCL bool cursed_book(struct Object *bp);
-STATIC_DCL bool confused_book(struct Object *);
-STATIC_DCL void deadbook(struct Object *);
+STATIC_DCL bool cursed_book(Object *bp);
+STATIC_DCL bool confused_book(Object *);
+STATIC_DCL void deadbook(Object *);
 STATIC_PTR int learn();
 STATIC_DCL bool getspell(int *);
 STATIC_DCL bool dospellmenu(const char *,int,int *);
@@ -104,7 +104,7 @@ STATIC_OVL int spell_let_to_idx(char ilet) {
 }
 
 /* TRUE: book should be destroyed by caller */
-STATIC_OVL bool cursed_book(struct Object *bp) {
+STATIC_OVL bool cursed_book(Object *bp) {
 	int lev = objects[bp->otyp].oc_level;
 
 	switch(rn2(lev)) {
@@ -171,7 +171,7 @@ STATIC_OVL bool cursed_book(struct Object *bp) {
 }
 
 /* study while confused: returns TRUE if the book is destroyed */
-STATIC_OVL bool confused_book(struct Object *spellbook) {
+STATIC_OVL bool confused_book(Object *spellbook) {
 	bool gone = FALSE;
 
 	if (!rn2(3) && spellbook->otyp != SPE_BOOK_OF_THE_DEAD) {
@@ -193,7 +193,7 @@ STATIC_OVL bool confused_book(struct Object *spellbook) {
 }
 
 /* special effects for The Book of the Dead */
-STATIC_OVL void deadbook(struct Object *book2) {
+STATIC_OVL void deadbook(Object *book2) {
     struct Monster *mtmp, *mtmp2;
     coord mm;
 
@@ -202,7 +202,7 @@ STATIC_OVL void deadbook(struct Object *book2) {
     /* KMH -- Need ->known to avoid "_a_ Book of the Dead" */
     book2->known = 1;
     if(invocation_pos(u.ux, u.uy) && !On_stairs(u.ux, u.uy)) {
-	struct Object *otmp;
+	Object *otmp;
 	bool arti1_primed = FALSE, arti2_primed = FALSE,
 			 arti_cursed = FALSE;
 
@@ -374,7 +374,7 @@ STATIC_PTR int learn() {
 	return(0);
 }
 
-int study_book(struct Object *spellbook) {
+int study_book(Object *spellbook) {
 	int	 booktype = spellbook->otyp;
 	bool confused = (Confusion != 0);
 	bool too_hard = FALSE;
@@ -481,14 +481,14 @@ int study_book(struct Object *spellbook) {
 
 /* a spellbook has been destroyed or the character has changed levels;
    the stored address for the current book is no longer valid */
-void book_disappears(struct Object *obj) {
+void book_disappears(Object *obj) {
 	if (obj == book) book = nullptr;
 }
 
 /* renaming an object usually results in it having a different address;
    so the sequence start reading, get interrupted, name the book, resume
    reading would read the "new" book from scratch */
-void book_substitution(struct Object *old_obj, struct Object *new_obj) {
+void book_substitution(Object *old_obj, Object *new_obj) {
 	if (old_obj == book) book = new_obj;
 }
 
@@ -674,7 +674,7 @@ int spelleffects(int spell, bool atme) {
 	int energy, damage, chance, n, intell;
 	int skill, role_skill;
 	bool confused = (Confusion != 0);
-	struct Object *pseudo;
+	Object *pseudo;
 	coord cc;
 
 	/*
@@ -1205,7 +1205,7 @@ STATIC_OVL int percent_success(int spell) {
 
 
 /* Learn a spell during creation of the initial inventory */
-void initialspell(struct Object *obj) {
+void initialspell(Object *obj) {
 	int i;
 
 	for (i = 0; i < MAXSPELL; i++) {

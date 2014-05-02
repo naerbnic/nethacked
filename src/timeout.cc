@@ -15,8 +15,8 @@ STATIC_DCL void vomiting_dialogue();
 STATIC_DCL void choke_dialogue();
 STATIC_DCL void slime_dialogue();
 STATIC_DCL void slip_or_trip();
-STATIC_DCL void see_lamp_flicker(struct Object *, const char *);
-STATIC_DCL void lantern_message(struct Object *);
+STATIC_DCL void see_lamp_flicker(Object *, const char *);
+STATIC_DCL void lantern_message(Object *);
 STATIC_DCL void cleanup_burn(genericptr_t,long);
 
 #ifdef OVLB
@@ -365,7 +365,7 @@ void fall_asleep(int how_long, bool wakeup_msg) {
 }
 
 /* Attach an egg hatch timeout to the given egg. */
-void attach_egg_hatch_timeout(struct Object *egg) {
+void attach_egg_hatch_timeout(Object *egg) {
 	int i;
 
 	/* stop previous timer, if any */
@@ -387,14 +387,14 @@ void attach_egg_hatch_timeout(struct Object *egg) {
 }
 
 /* prevent an egg from ever hatching */
-void kill_egg(struct Object *egg) {
+void kill_egg(Object *egg) {
 	/* stop previous timer, if any */
 	(void) stop_timer(HATCH_EGG, (genericptr_t) egg);
 }
 
 /* timer callback routine: hatch the given egg */
 void hatch_egg(genericptr_t arg, long timeout) {
-	struct Object *egg;
+	Object *egg;
 	struct Monster *mon, *mon2;
 	coord cc;
 	xchar x, y;
@@ -402,7 +402,7 @@ void hatch_egg(genericptr_t arg, long timeout) {
 	bool cansee_hatchspot = FALSE;
 	int i, mnum, hatchcount = 0;
 
-	egg = (struct Object *) arg;
+	egg = (Object *) arg;
 	/* sterilized while waiting */
 	if (egg->corpsenm == NON_PM) return;
 
@@ -570,7 +570,7 @@ void learn_egg_type(int mnum) {
 }
 
 /* Attach a fig_transform timeout to the given figurine. */
-void attach_fig_transform_timeout(struct Object *figurine) {
+void attach_fig_transform_timeout(Object *figurine) {
 	int i;
 
 	/* stop previous timer, if any */
@@ -587,7 +587,7 @@ void attach_fig_transform_timeout(struct Object *figurine) {
 
 /* give a fumble message */
 STATIC_OVL void slip_or_trip() {
-	struct Object *otmp = vobj_at(u.ux, u.uy);
+	Object *otmp = vobj_at(u.ux, u.uy);
 	const char *what, *pronoun;
 	char buf[BUFSZ];
 	bool on_foot = TRUE;
@@ -669,7 +669,7 @@ STATIC_OVL void slip_or_trip() {
 }
 
 /* Print a lamp flicker message with tailer. */
-STATIC_OVL void see_lamp_flicker(struct Object *obj, const char *tailer) {
+STATIC_OVL void see_lamp_flicker(Object *obj, const char *tailer) {
 	switch (obj->where) {
 	    case OBJ_INVENT:
 	    case OBJ_MINVENT:
@@ -682,7 +682,7 @@ STATIC_OVL void see_lamp_flicker(struct Object *obj, const char *tailer) {
 }
 
 /* Print a dimming message for brass lanterns. */
-STATIC_OVL void lantern_message(struct Object *obj) {
+STATIC_OVL void lantern_message(Object *obj) {
 	/* from adventure */
 	switch (obj->where) {
 	    case OBJ_INVENT:
@@ -705,7 +705,7 @@ STATIC_OVL void lantern_message(struct Object *obj) {
  * See begin_burn() for meanings of obj->age and obj->spe.
  */
 void burn_object(genericptr_t arg, long timeout) {
-	struct Object *obj = (struct Object *) arg;
+	Object *obj = (Object *) arg;
 	bool canseeit, many, menorah, need_newsym;
 	xchar x, y;
 	char whose[BUFSZ];
@@ -727,7 +727,7 @@ void burn_object(genericptr_t arg, long timeout) {
 		    /* get rid of candles and burning oil potions */
 		    obj_extract_self(obj);
 		    obfree(obj, nullptr);
-		    obj = (struct Object *) 0;
+		    obj = (Object *) 0;
 		}
 
 	    } else {
@@ -767,7 +767,7 @@ void burn_object(genericptr_t arg, long timeout) {
 		    end_burn(obj, FALSE);	/* turn off light source */
 		    obj_extract_self(obj);
 		    obfree(obj, nullptr);
-		    obj = (struct Object *) 0;
+		    obj = (Object *) 0;
 		    break;
 
 	    case BRASS_LANTERN:
@@ -943,7 +943,7 @@ void burn_object(genericptr_t arg, long timeout) {
 			} else {
 			    obj_extract_self(obj);
 			    obfree(obj, nullptr);
-			    obj = (struct Object *) 0;
+			    obj = (Object *) 0;
 			}
 			break;
 
@@ -999,7 +999,7 @@ void burn_object(genericptr_t arg, long timeout) {
  *
  * This is a "silent" routine - it should not print anything out.
  */
-void begin_burn(struct Object *obj, bool already_lit) {
+void begin_burn(Object *obj, bool already_lit) {
 	int radius = 3;
 	long turns = 0;
 	bool do_timer = TRUE;
@@ -1088,7 +1088,7 @@ void begin_burn(struct Object *obj, bool already_lit) {
  * Stop a burn timeout on the given object if timer attached.  Darken
  * light source.
  */
-void end_burn(struct Object *obj, bool timer_attached) {
+void end_burn(Object *obj, bool timer_attached) {
 	if (!obj->lamplit) {
 	    impossible("end_burn: obj %s not lit", xname(obj));
 	    return;
@@ -1114,7 +1114,7 @@ void end_burn(struct Object *obj, bool timer_attached) {
  * Cleanup a burning object if timer stopped.
  */
 static void cleanup_burn(genericptr_t arg, long expire_time) {
-    struct Object *obj = (struct Object *)arg;
+    Object *obj = (Object *)arg;
     if (!obj->lamplit) {
 	impossible("cleanup_burn: obj %s not lit", xname(obj));
 	return;
@@ -1333,7 +1333,7 @@ void timer_sanity_check() {
     /* this should be much more complete */
     for (curr = timer_base; curr; curr = curr->next)
 	if (curr->kind == TIMER_OBJECT) {
-	    struct Object *obj = (struct Object *) curr->arg;
+	    Object *obj = (Object *) curr->arg;
 	    if (obj->timed == 0) {
 		pline("timer sanity: untimed obj %s, timer %ld",
 		      fmt_ptr((genericptr_t)obj, obj_address), curr->tid);
@@ -1360,7 +1360,7 @@ void run_timers() {
 	curr = timer_base;
 	timer_base = curr->next;
 
-	if (curr->kind == TIMER_OBJECT) ((struct Object *)(curr->arg))->timed--;
+	if (curr->kind == TIMER_OBJECT) ((Object *)(curr->arg))->timed--;
 	(*timeout_funcs[curr->func_index].f)(curr->arg, curr->timeout);
 	free((genericptr_t) curr);
     }
@@ -1387,7 +1387,7 @@ bool start_timer(long when, short kind, short func_index, genericptr_t arg) {
     insert_timer(gnu);
 
     if (kind == TIMER_OBJECT)	/* increment object's timed count */
-	((struct Object *)arg)->timed++;
+	((Object *)arg)->timed++;
 
     /* should check for duplicates and fail if any */
     return TRUE;
@@ -1407,7 +1407,7 @@ long stop_timer(short func_index, genericptr_t arg) {
     if (doomed) {
 	timeout = doomed->timeout;
 	if (doomed->kind == TIMER_OBJECT)
-	    ((struct Object *)arg)->timed--;
+	    ((Object *)arg)->timed--;
 	if (timeout_funcs[doomed->func_index].cleanup)
 	    (*timeout_funcs[doomed->func_index].cleanup)(arg, timeout);
 	free((genericptr_t) doomed);
@@ -1420,7 +1420,7 @@ long stop_timer(short func_index, genericptr_t arg) {
 /*
  * Move all object timers from src to dest, leaving src untimed.
  */
-void obj_move_timers(struct Object *src, struct Object *dest) {
+void obj_move_timers(Object *src, Object *dest) {
     int count;
     TimerElement *curr;
 
@@ -1439,7 +1439,7 @@ void obj_move_timers(struct Object *src, struct Object *dest) {
 /*
  * Find all object timers and duplicate them for the new object "dest".
  */
-void obj_split_timers(struct Object *src, struct Object *dest) {
+void obj_split_timers(Object *src, Object *dest) {
     TimerElement *curr, *next_timer=0;
 
     for (curr = timer_base; curr; curr = next_timer) {
@@ -1456,7 +1456,7 @@ void obj_split_timers(struct Object *src, struct Object *dest) {
  * Stop all timers attached to this object.  We can get away with this because
  * all object pointers are unique.
  */
-void obj_stop_timers(struct Object *obj) {
+void obj_stop_timers(Object *obj) {
     TimerElement *curr, *prev, *next_timer=0;
 
     for (prev = 0, curr = timer_base; curr; curr = next_timer) {
@@ -1526,7 +1526,7 @@ STATIC_OVL void write_timer(int fd, TimerElement *timer) {
 	    else {
 		/* replace object pointer with id */
 		arg_save = timer->arg;
-		timer->arg = (genericptr_t)((struct Object *)timer->arg)->o_id;
+		timer->arg = (genericptr_t)((Object *)timer->arg)->o_id;
 		timer->needs_fixup = 1;
 		bwrite(fd, (genericptr_t)timer, sizeof(TimerElement));
 		timer->arg = arg_save;
@@ -1559,7 +1559,7 @@ STATIC_OVL void write_timer(int fd, TimerElement *timer) {
  * Return TRUE if the object will stay on the level when the level is
  * saved.
  */
-bool obj_is_local(struct Object *obj) {
+bool obj_is_local(Object *obj) {
     switch (obj->where) {
 	case OBJ_INVENT:
 	case OBJ_MIGRATING:	return FALSE;
@@ -1597,7 +1597,7 @@ STATIC_OVL bool timer_is_local(TimerElement *timer) {
     switch (timer->kind) {
 	case TIMER_LEVEL:	return TRUE;
 	case TIMER_GLOBAL:	return FALSE;
-	case TIMER_OBJECT:	return obj_is_local((struct Object *)timer->arg);
+	case TIMER_OBJECT:	return obj_is_local((Object *)timer->arg);
 	case TIMER_MONSTER:	return mon_is_local((struct Monster *)timer->arg);
     }
     panic("timer_is_local");

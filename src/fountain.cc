@@ -258,7 +258,7 @@ void drinkfountain() {
 			break;
 
 		case 24: /* Curse an item */ {
-			struct Object *obj;
+			Object *obj;
 
 			pline("This water's no good!");
 			morehungry(rn1(20, 11));
@@ -328,7 +328,7 @@ void drinkfountain() {
 	dryup(u.ux, u.uy, TRUE);
 }
 
-void dipfountain(struct Object *obj) {
+void dipfountain(Object *obj) {
 	if (Levitation) {
 		floating_above("fountain");
 		return;
@@ -430,7 +430,7 @@ void dipfountain(struct Object *obj) {
 #else
 			{
 			    long money = money_cnt(invent);
-			    struct Object *otmp;
+			    Object *otmp;
                             if (money > 10) {
 				/* Amount to loose.  Might get rounded up as fountains don't pay change... */
 			        money = somegold(money) / 10; 
@@ -482,7 +482,7 @@ void breaksink(int x, int y) {
 }
 
 void drinksink() {
-	struct Object *otmp;
+	Object *otmp;
 	struct Monster *mtmp;
 
 	if (Levitation) {
@@ -514,7 +514,7 @@ void drinksink() {
 				otmp = mkobj(POTION_CLASS,FALSE);
 				if (otmp->otyp == POT_WATER) {
 					obfree(otmp, nullptr);
-					otmp = (struct Object *) 0;
+					otmp = (Object *) 0;
 				}
 			} while(!otmp);
 			otmp->cursed = otmp->blessed = 0;

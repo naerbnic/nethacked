@@ -274,7 +274,7 @@ void corr(int x, int y) {
 
 void makerogueghost() {
 	struct Monster *ghost;
-	struct Object *ghostobj;
+	Object *ghostobj;
 	struct mkroom *croom;
 	int x,y;
 

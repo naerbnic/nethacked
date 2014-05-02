@@ -14,19 +14,19 @@ extern bool notonhead;
 
 static bool vis, far_noise;
 static long noisetime;
-static struct Object *otmp;
+static Object *otmp;
 
 static const char brief_feeling[] =
 	"have a %s feeling for a moment, then it passes.";
 
 STATIC_DCL char *mon_nam_too(char *,struct Monster *,struct Monster *);
-STATIC_DCL void mrustm(struct Monster *, struct Monster *, struct Object *);
+STATIC_DCL void mrustm(struct Monster *, struct Monster *, Object *);
 STATIC_DCL int hitmm(struct Monster *,struct Monster *,struct Attack *);
 STATIC_DCL int gazemm(struct Monster *,struct Monster *,struct Attack *);
 STATIC_DCL int gulpmm(struct Monster *,struct Monster *,struct Attack *);
 STATIC_DCL int explmm(struct Monster *,struct Monster *,struct Attack *);
 STATIC_DCL int mdamagem(struct Monster *,struct Monster *,struct Attack *);
-STATIC_DCL void mswingsm(struct Monster *, struct Monster *, struct Object *);
+STATIC_DCL void mswingsm(struct Monster *, struct Monster *, Object *);
 STATIC_DCL void noises(struct Monster *,struct Attack *);
 STATIC_DCL void missmm(struct Monster *,struct Monster *,struct Attack *);
 STATIC_DCL int passivemm(struct Monster *, struct Monster *, bool, int);
@@ -465,7 +465,7 @@ STATIC_OVL int gulpmm(struct Monster *magr, struct Monster *mdef, struct Attack 
 	xchar	ax, ay, dx, dy;
 	int	status;
 	char buf[BUFSZ];
-	struct Object *obj;
+	Object *obj;
 
 	if (mdef->data->msize >= MZ_HUGE) return MM_MISS;
 
@@ -553,7 +553,7 @@ STATIC_OVL int explmm(struct Monster *magr, struct Monster *mdef, struct Attack 
  *  See comment at top of mattackm(), for return values.
  */
 STATIC_OVL int mdamagem(struct Monster *magr, struct Monster *mdef, struct Attack *mattk) {
-	struct Object *obj;
+	Object *obj;
 	char buf[BUFSZ];
 	struct MonsterType *pa = magr->data, *pd = mdef->data;
 	int armpro, num, tmp = d((int)mattk->damn, (int)mattk->damd);
@@ -618,7 +618,7 @@ STATIC_OVL int mdamagem(struct Monster *magr, struct Monster *mdef, struct Attac
 		num = monsndx(mdef->data);
 		if (magr->mtame && !magr->isminion &&
 		    !(mvitals[num].mvflags & G_NOCORPSE)) {
-		    struct Object *virtualcorpse = mksobj(CORPSE, FALSE, FALSE);
+		    Object *virtualcorpse = mksobj(CORPSE, FALSE, FALSE);
 		    int nutrit;
 
 		    virtualcorpse->corpsenm = num;
@@ -873,7 +873,7 @@ STATIC_OVL int mdamagem(struct Monster *magr, struct Monster *mdef, struct Attac
 		}
 		break;
 	    case AD_BLND:
-		if (can_blnd(magr, mdef, mattk->aatyp, (struct Object*)0)) {
+		if (can_blnd(magr, mdef, mattk->aatyp, (Object*)0)) {
 		    unsigned rnd_tmp;
 
 		    if (vis && mdef->mcansee)
@@ -936,7 +936,7 @@ STATIC_OVL int mdamagem(struct Monster *magr, struct Monster *mdef, struct Attac
 		 * between mdef's feet...
 		 */
                 {
-		    struct Object *gold = findgold(mdef->minvent);
+		    Object *gold = findgold(mdef->minvent);
 		    if (!gold) break;
                     obj_extract_self(gold);
 		    add_to_minv(magr, gold);
@@ -1172,7 +1172,7 @@ void slept_monst(struct Monster *mon) {
 #endif /* OVL0 */
 #ifdef OVLB
 
-STATIC_OVL void mrustm(struct Monster *magr, struct Monster *mdef, struct Object *obj) {
+STATIC_OVL void mrustm(struct Monster *magr, struct Monster *mdef, Object *obj) {
 	bool is_acid;
 
 	if (!magr || !mdef || !obj) return; /* just in case */
@@ -1205,7 +1205,7 @@ STATIC_OVL void mrustm(struct Monster *magr, struct Monster *mdef, struct Object
 	}
 }
 
-STATIC_OVL void mswingsm(struct Monster *magr, struct Monster *mdef, struct Object *otemp) {
+STATIC_OVL void mswingsm(struct Monster *magr, struct Monster *mdef, Object *otemp) {
 	char buf[BUFSZ];
 	if (!flags.verbose || Blind || !mon_visible(magr)) return;
 	strcpy(buf, mon_nam(mdef));

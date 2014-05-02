@@ -8,7 +8,7 @@
 #include "epri.h"
 
 STATIC_PTR int prayer_done();
-STATIC_DCL struct Object *worst_cursed_item();
+STATIC_DCL Object *worst_cursed_item();
 STATIC_DCL int in_trouble();
 STATIC_DCL void fix_worst_trouble(int);
 STATIC_DCL void angrygods(ALIGNTYP_P);
@@ -22,7 +22,7 @@ STATIC_DCL void god_zaps_you(ALIGNTYP_P);
 STATIC_DCL void fry_by_god(ALIGNTYP_P);
 STATIC_DCL void gods_angry(ALIGNTYP_P);
 STATIC_DCL void gods_upset(ALIGNTYP_P);
-STATIC_DCL void consume_offering(struct Object *);
+STATIC_DCL void consume_offering(Object *);
 STATIC_DCL bool water_prayer(bool);
 STATIC_DCL bool blocked_boulder(int,int);
 
@@ -119,7 +119,7 @@ but that's really hard.
 #define a_align(x,y)	((aligntyp)Amask2align(levl[x][y].altarmask & AM_MASK))
 
 STATIC_OVL int in_trouble() {
-	struct Object *otmp;
+	Object *otmp;
 	int i, j, count=0;
 
 /* Borrowed from eat.c */
@@ -202,8 +202,8 @@ STATIC_OVL int in_trouble() {
 }
 
 /* select an item for TROUBLE_CURSED_ITEMS */
-STATIC_OVL struct Object * worst_cursed_item() {
-    struct Object *otmp;
+STATIC_OVL Object * worst_cursed_item() {
+    Object *otmp;
 
     /* if strained or worse, check for loadstone first */
     if (near_capacity() >= HVY_ENCUMBER) {
@@ -260,7 +260,7 @@ STATIC_OVL struct Object * worst_cursed_item() {
 
 STATIC_OVL void fix_worst_trouble(int trouble) {
 	int i;
-	struct Object *otmp = 0;
+	Object *otmp = 0;
 	const char *what = (const char *)0;
 	static const char leftglow[] = "left ring softly glows",
 				   rightglow[] = "right ring softly glows";
@@ -618,7 +618,7 @@ static void at_your_feet(const char *str) {
 
 #ifdef ELBERETH
 STATIC_OVL void gcrownu() {
-    struct Object *obj;
+    Object *obj;
     bool already_exists, in_hand;
     short class_gift;
     int sp_no;
@@ -911,7 +911,7 @@ STATIC_OVL void pleased(aligntyp g_align) {
 	    flags.botl = 1;
 	    break;
 	case 4: {
-	    struct Object *otmp;
+	    Object *otmp;
 	    int any = 0;
 
 	    if (Blind)
@@ -965,7 +965,7 @@ STATIC_OVL void pleased(aligntyp g_align) {
 	    } /* else FALLTHRU */
 #endif	/*ELBERETH*/
 	case 6:	{
-	    struct Object *otmp;
+	    Object *otmp;
 	    int sp_no, trycnt = u.ulevel + 1;
 
 	    at_your_feet("An object");
@@ -1007,7 +1007,7 @@ STATIC_OVL void pleased(aligntyp g_align) {
  * returns true if it found any water here.
  */
 STATIC_OVL bool water_prayer(bool bless_water) {
-    struct Object* otmp;
+    Object* otmp;
     long changed = 0;
     bool other = FALSE, bc_known = !(Blind || Hallucination);
 
@@ -1056,7 +1056,7 @@ STATIC_OVL void gods_upset(aligntyp g_align) {
 
 static const char sacrifice_types[] = { FOOD_CLASS, AMULET_CLASS, 0 };
 
-STATIC_OVL void consume_offering(struct Object *otmp) {
+STATIC_OVL void consume_offering(Object *otmp) {
     if (Hallucination)
 	switch (rn2(3)) {
 	    case 0:
@@ -1079,7 +1079,7 @@ STATIC_OVL void consume_offering(struct Object *otmp) {
 }
 
 int dosacrifice() {
-    struct Object *otmp;
+    Object *otmp;
     int value = 0;
     int pm;
     aligntyp altaralign = a_align(u.ux,u.uy);
@@ -1782,7 +1782,7 @@ void altar_wrath(int x, int y) {
 
 /* assumes isok() at one space away, but not necessarily at two */
 STATIC_OVL bool blocked_boulder(int dx, int dy) {
-    struct Object *otmp;
+    Object *otmp;
     long count = 0L;
 
     for(otmp = level.objects[u.ux+dx][u.uy+dy]; otmp; otmp = otmp->nexthere) {

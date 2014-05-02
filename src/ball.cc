@@ -141,7 +141,7 @@ void unplacebc() {
  *  hero is being punished.
  */
 STATIC_OVL int bc_order() {
-    struct Object *obj;
+    Object *obj;
 
     if (uchain->ox != uball->ox || uchain->oy != uball->oy || carried(uball)
 		|| u.uswallow)
@@ -705,7 +705,7 @@ void drop_ball(xchar x, xchar y) {
 
 
 STATIC_OVL void litter() {
-	struct Object *otmp = invent, *nextobj;
+	Object *otmp = invent, *nextobj;
 	int capacity = weight_cap();
 
 	while (otmp) {

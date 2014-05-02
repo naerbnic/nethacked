@@ -52,7 +52,7 @@
  */
 
 
-STATIC_DCL int ready_weapon(struct Object *);
+STATIC_DCL int ready_weapon(Object *);
 
 /* used by will_weld() */
 /* probably should be renamed */
@@ -82,8 +82,8 @@ STATIC_DCL int ready_weapon(struct Object *);
  * responsibility to handle that.  It's also the caller's responsibility
  * to print the appropriate messages.
  */
-void setuwep(struct Object *obj) {
-	struct Object *olduwep = uwep;
+void setuwep(Object *obj) {
+	Object *olduwep = uwep;
 
 	if (obj == uwep) return; /* necessary to not set unweapon */
 	/* This message isn't printed in the caller because it happens
@@ -111,7 +111,7 @@ void setuwep(struct Object *obj) {
 	update_inventory();
 }
 
-STATIC_OVL int ready_weapon(struct Object *wep) {
+STATIC_OVL int ready_weapon(Object *wep) {
 	/* Separated function so swapping works easily */
 	int res = 0;
 
@@ -119,7 +119,7 @@ STATIC_OVL int ready_weapon(struct Object *wep) {
 	    /* No weapon */
 	    if (uwep) {
 		You("are empty %s.", body_part(HANDED));
-		setuwep((struct Object *) 0);
+		setuwep((Object *) 0);
 		res++;
 	    } else
 		You("are already empty %s.", body_part(HANDED));
@@ -199,12 +199,12 @@ STATIC_OVL int ready_weapon(struct Object *wep) {
 	return(res);
 }
 
-void setuqwep(struct Object *obj) {
+void setuqwep(Object *obj) {
 	setworn(obj, W_QUIVER);
 	update_inventory();
 }
 
-void setuswapwep(struct Object *obj) {
+void setuswapwep(Object *obj) {
 	setworn(obj, W_SWAPWEP);
 	update_inventory();
 }
@@ -220,7 +220,7 @@ static const char bullets[] =	/* (note: different from dothrow.c) */
 	{ ALL_CLASSES, ALLOW_NONE, GEM_CLASS, WEAPON_CLASS, 0 };
 
 int dowield() {
-	struct Object *wep, *oldwep;
+	Object *wep, *oldwep;
 	int result;
 
 	/* May we attempt this? */
@@ -247,11 +247,11 @@ int dowield() {
 
 	/* Handle no object, or object in other slot */
 	if (wep == &zeroobj)
-		wep = (struct Object *) 0;
+		wep = (Object *) 0;
 	else if (wep == uswapwep)
 		return (doswapweapon());
 	else if (wep == uquiver)
-		setuqwep((struct Object *) 0);
+		setuqwep((Object *) 0);
 	else if (wep->owornmask & (W_ARMOR | W_RING | W_AMUL | W_TOOL
 #ifdef STEED
 			| W_SADDLE
@@ -272,7 +272,7 @@ int dowield() {
 }
 
 int doswapweapon() {
-	struct Object *oldwep, *oldswap;
+	Object *oldwep, *oldswap;
 	int result = 0;
 
 
@@ -290,7 +290,7 @@ int doswapweapon() {
 	/* Unwield your current secondary weapon */
 	oldwep = uwep;
 	oldswap = uswapwep;
-	setuswapwep((struct Object *) 0);
+	setuswapwep((Object *) 0);
 
 	/* Set your new primary weapon */
 	result = ready_weapon(oldswap);
@@ -314,7 +314,7 @@ int doswapweapon() {
 }
 
 int dowieldquiver() {
-	struct Object *newquiver;
+	Object *newquiver;
 	const char *quivee_types = (uslinging() ||
 		  (uswapwep && objects[uswapwep->otyp].oc_skill == P_SLING)) ?
 				  bullets : ready_objs;
@@ -338,7 +338,7 @@ int dowieldquiver() {
 		/* Explicitly nothing */
 		if (uquiver) {
 			You("now have no ammunition readied.");
-			setuqwep(newquiver = (struct Object *) 0);
+			setuqwep(newquiver = (Object *) 0);
 		} else {
 			You("already have no ammunition readied!");
 			return(0);
@@ -364,7 +364,7 @@ int dowieldquiver() {
 
 		/* Check if it's the secondary weapon */
 		if (newquiver == uswapwep) {
-			setuswapwep((struct Object *) 0);
+			setuswapwep((Object *) 0);
 			untwoweapon();
 		}
 
@@ -383,7 +383,7 @@ int dowieldquiver() {
 
 /* used for #rub and for applying pick-axe, whip, grappling hook, or polearm */
 /* (moved from apply.c) */
-bool wield_tool(struct Object *obj, const char *verb) {
+bool wield_tool(Object *obj, const char *verb) {
     const char *what;
     bool more_than_1;
 
@@ -446,7 +446,7 @@ bool wield_tool(struct Object *obj, const char *verb) {
 }
 
 int can_twoweapon() {
-	struct Object *otmp;
+	Object *otmp;
 
 #define NOT_WEAPON(obj) (!is_weptool(obj) && obj->oclass != WEAPON_CLASS)
 	if (!could_twoweap(youmonst.data)) {
@@ -490,7 +490,7 @@ int can_twoweapon() {
 
 void drop_uswapwep() {
 	char str[BUFSZ];
-	struct Object *obj = uswapwep;
+	Object *obj = uswapwep;
 
 	/* Avoid trashing makeplural's static buffer */
 	strcpy(str, makeplural(body_part(HAND)));
@@ -560,7 +560,7 @@ void untwoweapon() {
 }
 
 /* Maybe rust object, or corrode it if acid damage is called for */
-void erode_obj(struct Object *target, bool acid_dmg, bool fade_scrolls) {
+void erode_obj(Object *target, bool acid_dmg, bool fade_scrolls) {
 	int erosion;
 	struct Monster *victim;
 	bool vismon;
@@ -644,7 +644,7 @@ void erode_obj(struct Object *target, bool acid_dmg, bool fade_scrolls) {
 	}
 }
 
-int chwepon(struct Object *otmp, int amount) {
+int chwepon(Object *otmp, int amount) {
 	const char *color = hcolor((amount < 0) ? NH_BLACK : NH_BLUE);
 	const char *xtime;
 	int otyp = STRANGE_OBJECT;
@@ -729,7 +729,7 @@ int chwepon(struct Object *otmp, int amount) {
 	return(1);
 }
 
-int welded(struct Object *obj) {
+int welded(Object *obj) {
 	if (obj && obj == uwep && will_weld(obj)) {
 		obj->bknown = TRUE;
 		return 1;
@@ -737,7 +737,7 @@ int welded(struct Object *obj) {
 	return 0;
 }
 
-void weldmsg(struct Object *obj) {
+void weldmsg(Object *obj) {
 	long savewornmask;
 
 	savewornmask = obj->owornmask;

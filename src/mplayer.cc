@@ -85,7 +85,7 @@ STATIC_OVL void get_mplname(struct Monster *mtmp, char *nam) {
 }
 
 STATIC_OVL void mk_mplayer_armor(struct Monster *mon, short typ) {
-	struct Object *obj;
+	Object *obj;
 
 	if (typ == STRANGE_OBJECT) return;
 	obj = mksobj(typ, FALSE, FALSE);
@@ -122,7 +122,7 @@ struct Monster * mk_mplayer(struct MonsterType *ptr, xchar x, xchar y, bool spec
 	    short shield = !rn2(8) ? STRANGE_OBJECT :
 	    		rnd_class(ELVEN_SHIELD, SHIELD_OF_REFLECTION);
 	    int quan;
-	    struct Object *otmp;
+	    Object *otmp;
 
 	    mtmp->m_lev = (special ? rn1(16,15) : rnd(16));
 	    mtmp->mhp = mtmp->mhpmax = d((int)mtmp->m_lev,10) +

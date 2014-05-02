@@ -155,7 +155,7 @@ void vision_init() {
  * sight.
  */
 int does_block(int x, int y, struct rm *lev) {
-    struct Object   *obj;
+    Object   *obj;
     struct Monster *mon;
 
     /* Features that block . . */

@@ -18,7 +18,7 @@ extern const int monstr[];
 STATIC_DCL short which_arti(int);
 STATIC_DCL bool mon_has_arti(struct Monster *,short);
 STATIC_DCL struct Monster *other_mon_has_arti(struct Monster *,short);
-STATIC_DCL struct Object *on_ground(short);
+STATIC_DCL Object *on_ground(short);
 STATIC_DCL bool you_have(int);
 STATIC_DCL long target_on(int,struct Monster *);
 STATIC_DCL long strategy(struct Monster *);
@@ -52,7 +52,7 @@ static const unsigned wizapp[] = {
 void amulet() {
 	struct Monster *mtmp;
 	struct trap *ttmp;
-	struct Object *amu;
+	Object *amu;
 
 #if 0		/* caller takes care of this check */
 	if (!u.uhave.amulet)
@@ -94,7 +94,7 @@ void amulet() {
 #ifdef OVLB
 
 int mon_has_amulet(struct Monster *mtmp) {
-	struct Object *otmp;
+	Object *otmp;
 
 	for(otmp = mtmp->minvent; otmp; otmp = otmp->nobj)
 		if(otmp->otyp == AMULET_OF_YENDOR) return(1);
@@ -102,7 +102,7 @@ int mon_has_amulet(struct Monster *mtmp) {
 }
 
 int mon_has_special(struct Monster *mtmp) {
-	struct Object *otmp;
+	Object *otmp;
 
 	for(otmp = mtmp->minvent; otmp; otmp = otmp->nobj)
 		if(otmp->otyp == AMULET_OF_YENDOR ||
@@ -141,7 +141,7 @@ STATIC_OVL short which_arti(int mask) {
  *	artifacts right now.	[MRS]
  */
 STATIC_OVL bool mon_has_arti(struct Monster *mtmp, short otyp) {
-	struct Object *otmp;
+	Object *otmp;
 
 	for(otmp = mtmp->minvent; otmp; otmp = otmp->nobj) {
 	    if(otyp) {
@@ -165,8 +165,8 @@ STATIC_OVL struct Monster * other_mon_has_arti(struct Monster *mtmp, short otyp)
 	return((struct Monster *)0);
 }
 
-STATIC_OVL struct Object * on_ground(short otyp) {
-	struct Object *otmp;
+STATIC_OVL Object * on_ground(short otyp) {
+	Object *otmp;
 
 	for (otmp = fobj; otmp; otmp = otmp->nobj)
 	    if (otyp) {
@@ -191,7 +191,7 @@ STATIC_OVL bool you_have(int mask) {
 
 STATIC_OVL long target_on(int mask, struct Monster *mtmp) {
 	short	otyp;
-	struct Object *otmp;
+	Object *otmp;
 	struct Monster *mtmp2;
 
 	if(!M_Wants(mask))	return(STRAT_NONE);
@@ -299,7 +299,7 @@ int tactics(struct Monster *mtmp) {
 		xchar tx = STRAT_GOALX(strat),
 		      ty = STRAT_GOALY(strat);
 		int   targ = strat & STRAT_GOAL;
-		struct Object *otmp;
+		Object *otmp;
 
 		if(!targ) { /* simply wants you to close */
 		    return(0);

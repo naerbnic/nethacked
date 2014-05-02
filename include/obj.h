@@ -14,13 +14,13 @@ union vptrs {
 };
 
 struct Object {
-	struct Object *nobj;
+	Object *nobj;
 	union vptrs v;
 #define nexthere	v.v_nexthere
 #define ocontainer	v.v_ocontainer
 #define ocarry		v.v_ocarry
 
-	struct Object *cobj;	/* contents list for containers */
+	Object *cobj;	/* contents list for containers */
 	unsigned long o_id;
 	xchar ox,oy;
 	short otyp;		/* object class number */

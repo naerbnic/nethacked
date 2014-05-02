@@ -8,7 +8,7 @@
 
 #ifdef OVLB
 
-STATIC_DCL void do_oname(struct Object *);
+STATIC_DCL void do_oname(Object *);
 static void getpos_help(bool,const char *);
 
 extern const char what_is_an_unknown_object[];		/* from pager.c */
@@ -292,7 +292,7 @@ int do_mname() {
  * when obj is in the inventory.
  */
 STATIC_OVL
-void do_oname(struct Object *obj) {
+void do_oname(Object *obj) {
 	char buf[BUFSZ], qbuf[QBUFSZ];
 	const char *aname;
 	short objtyp;
@@ -328,8 +328,8 @@ void do_oname(struct Object *obj) {
 /*
  * Allocate a new and possibly larger storage space for an obj.
  */
-struct Object * realloc_obj(struct Object *obj, int oextra_size, genericptr_t oextra_src, int oname_size, const char *name) {
-	struct Object *otmp;
+Object * realloc_obj(Object *obj, int oextra_size, genericptr_t oextra_src, int oname_size, const char *name) {
+	Object *otmp;
 
 	otmp = newobj(oextra_size + oname_size);
 	*otmp = *obj;	/* the cobj pointer is copied to otmp */
@@ -369,7 +369,7 @@ struct Object * realloc_obj(struct Object *obj, int oextra_size, genericptr_t oe
 
 	/* fix ocontainer pointers */
 	if (Has_contents(obj)) {
-		struct Object *inside;
+		Object *inside;
 
 		for(inside = obj->cobj; inside; inside = inside->nobj)
 			inside->ocontainer = otmp;
@@ -391,7 +391,7 @@ struct Object * realloc_obj(struct Object *obj, int oextra_size, genericptr_t oe
 	return otmp;
 }
 
-struct Object * oname(struct Object *obj, const char *name) {
+Object * oname(Object *obj, const char *name) {
 	int lth;
 	char buf[PL_PSIZ];
 
@@ -431,7 +431,7 @@ static const char callable[] = {
 	GEM_CLASS, SPBOOK_CLASS, ARMOR_CLASS, TOOL_CLASS, 0 };
 
 int ddocall() {
-	struct Object *obj;
+	Object *obj;
 #ifdef REDO
 	char	ch;
 #endif
@@ -474,9 +474,9 @@ int ddocall() {
 	return 0;
 }
 
-void docall(struct Object *obj) {
+void docall(Object *obj) {
 	char buf[BUFSZ], qbuf[QBUFSZ];
-	struct Object otemp;
+	Object otemp;
 	char **str1;
 
 	if (!obj->dknown) return; /* probably blind */

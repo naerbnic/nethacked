@@ -110,7 +110,7 @@ bool stoned = FALSE;	/* done to monsters hit by 'c' */
 bool unweapon = FALSE;
 bool mrg_to_wielded = FALSE;
 			 /* weapon picked is merged with wielded one */
-struct Object *current_wand = 0;	/* wand currently zapped/applied */
+Object *current_wand = 0;	/* wand currently zapped/applied */
 
 bool in_steed_dismounting = FALSE;
 
@@ -128,7 +128,7 @@ struct flag flags = DUMMY;
 struct instance_flags iflags = DUMMY;
 struct You u = DUMMY;
 
-struct Object *invent = nullptr,
+Object *invent = nullptr,
 	*uwep = nullptr, *uarm = nullptr,
 	*uswapwep = nullptr,
 	*uquiver = nullptr, /* quiver */
@@ -174,12 +174,12 @@ long moves = 1L, monstermoves = 1L;
 long wailmsg = 0L;
 
 /* objects that are moving to another dungeon level */
-struct Object *migrating_objs = nullptr;
+Object *migrating_objs = nullptr;
 /* objects not yet paid for */
-struct Object *billobjs = nullptr;
+Object *billobjs = nullptr;
 
 /* used to zero all elements of a struct obj */
-struct Object zeroobj = DUMMY;
+Object zeroobj = DUMMY;
 
 /* originally from dog.c */
 char dogname[PL_PSIZ] = DUMMY;

@@ -161,7 +161,7 @@ STATIC_OVL const char * intermed() {
 	return (urole.intermed);
 }
 
-bool is_quest_artifact(struct Object *otmp) {
+bool is_quest_artifact(Object *otmp) {
 	return((bool)(otmp->oartifact == urole.questarti));
 }
 

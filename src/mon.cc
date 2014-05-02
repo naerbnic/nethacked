@@ -19,7 +19,7 @@ STATIC_DCL long mm_aggression(struct Monster *,struct Monster *);
 #ifdef OVL2
 STATIC_DCL int pick_animal();
 STATIC_DCL int select_newcham_form(struct Monster *);
-STATIC_DCL void kill_eggs(struct Object *);
+STATIC_DCL void kill_eggs(Object *);
 #endif
 
 #ifdef REINCARNATION
@@ -50,7 +50,7 @@ STATIC_DCL void warn_effects();
 #ifndef OVLB
 STATIC_VAR short cham_to_pm[];
 #else
-STATIC_DCL struct Object *make_corpse(struct Monster *);
+STATIC_DCL Object *make_corpse(struct Monster *);
 STATIC_DCL void m_detach(struct Monster *, struct MonsterType *);
 STATIC_DCL void lifesaved_monster(struct Monster *);
 
@@ -158,10 +158,10 @@ STATIC_VAR short cham_to_pm[] = {
  * G_NOCORPSE set in order to prevent wishing for one, finding tins of one,
  * etc....
  */
-STATIC_OVL struct Object * make_corpse(struct Monster *mtmp) {
+STATIC_OVL Object * make_corpse(struct Monster *mtmp) {
 	struct MonsterType *mdat = mtmp->data;
 	int num;
-	struct Object *obj = nullptr;
+	Object *obj = nullptr;
 	int x = mtmp->mx, y = mtmp->my;
 	int mndx = monsndx(mdat);
 
@@ -636,7 +636,7 @@ int movemon() {
  * has young and old forms).
  */
 int meatmetal(struct Monster *mtmp) {
-	struct Object *otmp;
+	Object *otmp;
 	struct MonsterType *ptr;
 	int poly, grow, heal, mstone;
 
@@ -723,7 +723,7 @@ int meatmetal(struct Monster *mtmp) {
 
 /* for gelatinous cubes */
 int meatobj(struct Monster *mtmp) {
-	struct Object *otmp, *otmp2;
+	Object *otmp, *otmp2;
 	struct MonsterType *ptr;
 	int poly, grow, heal, count = 0, ecount = 0;
 	char buf[BUFSZ];
@@ -756,7 +756,7 @@ int meatobj(struct Monster *mtmp) {
 		    if (mtmp->mhp > mtmp->mhpmax) mtmp->mhp = mtmp->mhpmax;
 		}
 		if (Has_contents(otmp)) {
-		    struct Object *otmp3;
+		    Object *otmp3;
 		    /* contents of eaten containers become engulfed; this
 		       is arbitrary, but otherwise g.cubes are too powerful */
 		    while ((otmp3 = otmp->cobj) != 0) {
@@ -810,7 +810,7 @@ int meatobj(struct Monster *mtmp) {
 }
 
 void mpickgold(struct Monster *mtmp) {
-    struct Object *gold;
+    Object *gold;
     int mat_idx;
 
     if ((gold = g_at(mtmp->mx, mtmp->my)) != 0) {
@@ -834,7 +834,7 @@ void mpickgold(struct Monster *mtmp) {
 #ifdef OVL2
 
 bool mpickstuff(struct Monster *mtmp, const char *str) {
-	struct Object *otmp, *otmp2;
+	Object *otmp, *otmp2;
 
 /*	prevent shopkeepers from leaving the door of their shop */
 	if(mtmp->isshk && inhishop(mtmp)) return FALSE;
@@ -877,7 +877,7 @@ bool mpickstuff(struct Monster *mtmp, const char *str) {
 
 int curr_mon_load(struct Monster *mtmp) {
 	int curload = 0;
-	struct Object *obj;
+	Object *obj;
 
 	for(obj = mtmp->minvent; obj; obj = obj->nobj) {
 		if(obj->otyp != BOULDER || !throws_rocks(mtmp->data))
@@ -913,7 +913,7 @@ int max_mon_load(struct Monster *mtmp) {
 }
 
 /* for restricting monsters' object-pickup */
-bool can_carry(struct Monster *mtmp, struct Object *otmp) {
+bool can_carry(struct Monster *mtmp, Object *otmp) {
 	int otyp = otmp->otyp, newload = otmp->owt;
 	struct MonsterType *mdat = mtmp->data;
 
@@ -973,7 +973,7 @@ int mfndpos(struct Monster *mon, coord *poss, long *info, long flag) {
 	lavaok = is_flyer(mdat) || is_clinger(mdat) || likes_lava(mdat);
 	thrudoor = ((flag & (ALLOW_WALL|BUSTDOOR)) != 0L);
 	if (flag & ALLOW_DIG) {
-	    struct Object *mw_tmp;
+	    Object *mw_tmp;
 
 	    /* need to be specific about what can currently be dug */
 	    if (!needspick(mdat)) {
@@ -1209,7 +1209,7 @@ void dmonsfree() {
 
 /* called when monster is moved to larger structure */
 void replmon(struct Monster *mtmp, struct Monster *mtmp2) {
-    struct Object *otmp;
+    Object *otmp;
 
     /* transfer the monster's inventory */
     for (otmp = mtmp2->minvent; otmp; otmp = otmp->nobj) {
@@ -1287,9 +1287,9 @@ STATIC_OVL void m_detach(struct Monster *mtmp, struct MonsterType *mptr) {
 }
 
 /* find the worn amulet of life saving which will save a monster */
-struct Object * mlifesaver(struct Monster *mon) {
+Object * mlifesaver(struct Monster *mon) {
 	if (!nonliving(mon->data)) {
-	    struct Object *otmp = which_armor(mon, W_AMUL);
+	    Object *otmp = which_armor(mon, W_AMUL);
 
 	    if (otmp && otmp->otyp == AMULET_OF_LIFE_SAVING)
 		return otmp;
@@ -1298,7 +1298,7 @@ struct Object * mlifesaver(struct Monster *mon) {
 }
 
 STATIC_OVL void lifesaved_monster(struct Monster *mtmp) {
-	struct Object *lifesave = mlifesaver(mtmp);
+	Object *lifesave = mlifesaver(mtmp);
 
 	if (lifesave) {
 		/* not canseemon; amulets are on the head, so you don't want */
@@ -1513,7 +1513,7 @@ void mongone(struct Monster *mdef) {
 
 /* drop a statue or rock and remove monster */
 void monstone(struct Monster *mdef) {
-	struct Object *otmp, *obj, *oldminvent;
+	Object *otmp, *obj, *oldminvent;
 	xchar x = mdef->mx, y = mdef->my;
 	bool wasinside = FALSE;
 
@@ -1563,7 +1563,7 @@ void monstone(struct Monster *mdef) {
 		}
 #ifndef GOLDOBJ
 		if (mdef->mgold) {
-			struct Object *au;
+			Object *au;
 			au = mksobj(GOLD_PIECE, FALSE, FALSE);
 			au->quan = mdef->mgold;
 			au->owt = weight(au);
@@ -1648,7 +1648,7 @@ void xkilled(
 	int tmp, x = mtmp->mx, y = mtmp->my;
 	struct MonsterType *mdat;
 	int mndx;
-	struct Object *otmp;
+	Object *otmp;
 	struct trap *t;
 	bool redisp = FALSE;
 	bool wasinside = u.uswallow && (u.ustuck == mtmp);
@@ -2195,7 +2195,7 @@ STATIC_OVL int select_newcham_form(struct Monster *mon) {
 		break;
 	    case CHAM_ORDINARY:
 	      {
-		struct Object *m_armr = which_armor(mon, W_ARM);
+		Object *m_armr = which_armor(mon, W_ARM);
 
 		if (m_armr && Is_dragon_scales(m_armr))
 		    mndx = Dragon_scales_to_pm(m_armr) - mons;
@@ -2393,7 +2393,7 @@ int newcham(struct Monster *mtmp, struct MonsterType *mdat, bool polyspot, bool 
 	 */
 	/* former giants can't continue carrying boulders */
 	if (mtmp->minvent && !throws_rocks(mdat)) {
-	    struct Object *otmp, *otmp2;
+	    Object *otmp, *otmp2;
 
 	    for (otmp = mtmp->minvent; otmp; otmp = otmp2) {
 		otmp2 = otmp->nobj;
@@ -2465,8 +2465,8 @@ bool dead_species(int m_idx, bool egg) {
 }
 
 /* kill off any eggs of genocided monsters */
-STATIC_OVL void kill_eggs(struct Object *obj_list) {
-	struct Object *otmp;
+STATIC_OVL void kill_eggs(Object *obj_list) {
+	Object *otmp;
 
 	for (otmp = obj_list; otmp; otmp = otmp->nobj)
 	    if (otmp->otyp == EGG) {

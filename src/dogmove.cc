@@ -17,14 +17,14 @@ STATIC_DCL bool dog_hunger(struct Monster *,struct edog *);
 STATIC_DCL int dog_invent(struct Monster *,struct edog *,int);
 STATIC_DCL int dog_goal(struct Monster *,struct edog *,int,int,int);
 
-STATIC_DCL struct Object *DROPPABLES(struct Monster *);
+STATIC_DCL Object *DROPPABLES(struct Monster *);
 STATIC_DCL bool can_reach_location(struct Monster *,xchar,xchar,
     xchar,xchar);
 STATIC_DCL bool could_reach_item(struct Monster *, xchar,xchar);
 
-STATIC_OVL struct Object * DROPPABLES(struct Monster *mon) {
-	struct Object *obj;
-	struct Object *wep = mon->weapon();
+STATIC_OVL Object * DROPPABLES(struct Monster *mon) {
+	Object *obj;
+	Object *wep = mon->weapon();
 	bool item1 = FALSE, item2 = FALSE;
 
 	if (is_animal(mon->data) || mindless(mon->data))
@@ -58,14 +58,14 @@ STATIC_PTR void wantdoor(int, int, genericptr_t);
 
 #ifdef OVLB
 STATIC_OVL bool cursed_object_at(int x, int y) {
-	struct Object *otmp;
+	Object *otmp;
 
 	for(otmp = level.objects[x][y]; otmp; otmp = otmp->nexthere)
 		if (otmp->cursed) return TRUE;
 	return FALSE;
 }
 
-int dog_nutrition(struct Monster *mtmp, struct Object *obj) {
+int dog_nutrition(struct Monster *mtmp, Object *obj) {
 	int nutrit;
 
 	/*
@@ -111,7 +111,7 @@ int dog_nutrition(struct Monster *mtmp, struct Object *obj) {
 }
 
 /* returns 2 if pet dies, otherwise 1 */
-int dog_eat(struct Monster *mtmp, struct Object * obj, int x, int y, bool devour) {
+int dog_eat(struct Monster *mtmp, Object * obj, int x, int y, bool devour) {
 	struct edog *edog = EDOG(mtmp);
 	bool poly = FALSE, grow = FALSE, heal = FALSE;
 	int nutrit;
@@ -241,7 +241,7 @@ STATIC_OVL bool dog_hunger(struct Monster *mtmp, struct edog *edog) {
  */
 STATIC_OVL int dog_invent(struct Monster *mtmp, struct edog *edog, int udist) {
 	int omx, omy;
-	struct Object *obj;
+	Object *obj;
 
 	if (mtmp->msleeping || !mtmp->mcanmove) return(0);
 
@@ -307,7 +307,7 @@ STATIC_OVL int dog_invent(struct Monster *mtmp, struct edog *edog, int udist) {
 STATIC_OVL int dog_goal(struct Monster *mtmp, struct edog *edog, int after, int udist, int whappr) {
 	int omx, omy;
 	bool in_masters_sight, dog_has_minvent;
-	struct Object *obj;
+	Object *obj;
 	xchar otyp;
 	int appr;
 
@@ -452,7 +452,7 @@ int dog_move(struct Monster *mtmp, int after) {
 	int appr, whappr, udist;
 	int i, j, k;
 	struct edog *edog = EDOG(mtmp);
-	struct Object *obj = (struct Object *) 0;
+	Object *obj = (Object *) 0;
 	xchar otyp;
 	bool has_edog, cursemsg[9], do_eat = FALSE;
 	xchar nix, niy;		/* position mtmp is (considering) moving to */
@@ -679,7 +679,7 @@ int dog_move(struct Monster *mtmp, int after) {
 	}
 newdogpos:
 	if (nix != omx || niy != omy) {
-		struct Object *mw_tmp;
+		Object *mw_tmp;
 
 		if (info[chi] & ALLOW_U) {
 			if (mtmp->mleashed) { /* play it safe */

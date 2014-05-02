@@ -24,7 +24,7 @@ STATIC_DCL void move_update(bool);
 #ifdef OVL2
 
 bool revive_nasty(int x, int y, const char *msg) {
-    struct Object *otmp, *otmp2;
+    Object *otmp, *otmp2;
     struct Monster *mtmp;
     coord cc;
     bool revived = FALSE;
@@ -57,7 +57,7 @@ bool revive_nasty(int x, int y, const char *msg) {
 
 STATIC_OVL int moverock() {
     xchar rx, ry, sx, sy;
-    struct Object *otmp;
+    Object *otmp;
     struct trap *ttmp;
     struct Monster *mtmp;
 
@@ -307,7 +307,7 @@ STATIC_OVL int moverock() {
  */
 STATIC_OVL int still_chewing(xchar x, xchar y) {
     struct rm *lev = &levl[x][y];
-    struct Object *boulder = sobj_at(BOULDER,x,y);
+    Object *boulder = sobj_at(BOULDER,x,y);
     const char *digtxt = (char *)0, *dmgtxt = (char *)0;
 
     if (digging.down)		/* not continuing previous dig (w/ pick-axe) */
@@ -425,7 +425,7 @@ STATIC_OVL int still_chewing(xchar x, xchar y) {
 #endif /* OVL2 */
 #ifdef OVLB
 
-void movobj(struct Object *obj, xchar ox, xchar oy) {
+void movobj(Object *obj, xchar ox, xchar oy) {
 	/* optimize by leaving on the fobj chain? */
 	remove_object(obj);
 	newsym(obj->ox, obj->oy);
@@ -437,7 +437,7 @@ void movobj(struct Object *obj, xchar ox, xchar oy) {
 static const char fell_on_sink[] = "fell onto a sink";
 
 STATIC_OVL void dosinkfall() {
-	struct Object *obj;
+	Object *obj;
 
 	if (is_floater(youmonst.data) || (HLevitation & FROMOUTSIDE)) {
 	    You("wobble unsteadily for a moment.");
@@ -655,7 +655,7 @@ bool test_move(int ux, int uy, int dx, int dy, int mode) {
 	    } else
 		if (moverock() < 0) return FALSE;
 	} else if (mode == TEST_TRAV) {
-	    struct Object* obj;
+	    Object* obj;
 
 	    /* don't pick two boulders in a row, unless there's a way thru */
 	    if (sobj_at(BOULDER,ux,uy) && !In_sokoban(&u.uz)) {
@@ -1398,7 +1398,7 @@ void invocation_message() {
 	/* a special clue-msg when on the Invocation position */
 	if(invocation_pos(u.ux, u.uy) && !On_stairs(u.ux, u.uy)) {
 	    char buf[BUFSZ];
-	    struct Object *otmp = carrying(CANDELABRUM_OF_INVOCATION);
+	    Object *otmp = carrying(CANDELABRUM_OF_INVOCATION);
 
 	    nomul(0, 0);		/* stop running or travelling */
 #ifdef STEED
@@ -2121,7 +2121,7 @@ static int wc;	/* current weight_cap(); valid after call to inv_weight() */
 /* returns how far beyond the normal capacity the player is currently. */
 /* inv_weight() is negative if the player is below normal capacity. */
 int inv_weight() {
-	struct Object *otmp = invent;
+	Object *otmp = invent;
 	int wt = 0;
 
 #ifndef GOLDOBJ
@@ -2185,7 +2185,7 @@ bool check_capacity(const char *str) {
 #ifdef OVLB
 
 int inv_cnt() {
-	struct Object *otmp = invent;
+	Object *otmp = invent;
 	int ct = 0;
 
 	while(otmp){
@@ -2200,7 +2200,7 @@ int inv_cnt() {
 /* Intended use is for your or some monsters inventory, */
 /* now that u.gold/m.gold is gone.*/
 /* Counting money in a container might be possible too. */
-long money_cnt(struct Object *otmp) {
+long money_cnt(Object *otmp) {
         while(otmp) {
 	        /* Must change when silver & copper is implemented: */
  	        if (otmp->oclass == COIN_CLASS) return otmp->quan;

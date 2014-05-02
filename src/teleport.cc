@@ -334,7 +334,7 @@ STATIC_OVL void vault_tele() {
 }
 
 bool teleport_pet(struct Monster *mtmp, bool force_it) {
-	struct Object *otmp;
+	Object *otmp;
 
 #ifdef STEED
 	if (mtmp == u.usteed)
@@ -579,7 +579,7 @@ void level_tele() {
 				sprintf(buf,
 				    "Destination is earth level");
 				if (!u.uhave.amulet) {
-					struct Object *obj;
+					Object *obj;
 					obj = mksobj(AMULET_OF_YENDOR,
 							TRUE, FALSE);
 					if (obj) {
@@ -1080,7 +1080,7 @@ int mlevel_tele_trap(struct Monster *mtmp, struct trap *trap, bool force_it, int
 }
 
 
-void rloco(struct Object *obj) {
+void rloco(Object *obj) {
 	xchar tx, ty, otx, oty;
 	bool restricted_fall;
 	int try_limit = 4000;

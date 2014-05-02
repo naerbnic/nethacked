@@ -218,7 +218,7 @@ E bool in_mklev;
 E bool stoned;
 E bool unweapon;
 E bool mrg_to_wielded;
-E struct Object *current_wand;
+E Object *current_wand;
 
 E bool in_steed_dismounting;
 
@@ -238,7 +238,7 @@ E const char def_monsyms[MAXMCLASSES];	/* default class symbols */
 E uchar monsyms[MAXMCLASSES];		/* current class symbols */
 
 #include "obj.h"
-E struct Object *invent,
+E Object *invent,
 	*uarm, *uarmc, *uarmh, *uarms, *uarmg, *uarmf,
 #ifdef TOURIST
 	*uarmu,				/* under-wear, so to speak */
@@ -246,11 +246,11 @@ E struct Object *invent,
 	*uskin, *uamul, *uleft, *uright, *ublindf,
 	*uwep, *uswapwep, *uquiver;
 
-E struct Object *uchain;		/* defined only when punished */
-E struct Object *uball;
-E struct Object *migrating_objs;
-E struct Object *billobjs;
-E struct Object zeroobj;		/* init'd and defined in decl.c */
+E Object *uchain;		/* defined only when punished */
+E Object *uball;
+E Object *migrating_objs;
+E Object *billobjs;
+E Object zeroobj;		/* init'd and defined in decl.c */
 
 #include "you.h"
 E struct You u;

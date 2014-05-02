@@ -151,8 +151,8 @@ STATIC_OVL void expulsion(bool seal) {
    completion text hasn't been given yet, give it now.  Otherwise
    give another message about the character keeping the artifact
    and using the magic portal to return to the dungeon. */
-void finish_quest(struct Object *obj) {
-	struct Object *otmp;
+void finish_quest(Object *obj) {
+	Object *otmp;
 
 	if (u.uhave.amulet) {	/* unlikely but not impossible */
 	    qt_pager(QT_HASAMULET);
@@ -195,7 +195,7 @@ STATIC_OVL void chat_with_leader() {
 
 /*	Rule 3: You've got the artifact and are back to return it. */
 	  else if(u.uhave.questart) {
-	    struct Object *otmp;
+	    Object *otmp;
 
 	    for (otmp = invent; otmp; otmp = otmp->nobj)
 		if (is_quest_artifact(otmp)) break;

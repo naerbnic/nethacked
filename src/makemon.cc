@@ -137,7 +137,7 @@ STATIC_OVL void m_initgrp(struct Monster *mtmp, int x, int y, int n) {
 
 STATIC_OVL
 void m_initthrow(struct Monster *mtmp, int otyp, int oquan) {
-	struct Object *otmp;
+	Object *otmp;
 
 	otmp = mksobj(otyp, TRUE, FALSE);
 	otmp->quan = (long) rn1(oquan, 3);
@@ -152,7 +152,7 @@ void m_initthrow(struct Monster *mtmp, int otyp, int oquan) {
 STATIC_OVL void m_initweap(struct Monster *mtmp) {
 	struct MonsterType *ptr = mtmp->data;
 	int mm = monsndx(ptr);
-	struct Object *otmp;
+	Object *otmp;
 
 #ifdef REINCARNATION
 	if (Is_rogue_level(&u.uz)) return;
@@ -460,7 +460,7 @@ STATIC_OVL void m_initweap(struct Monster *mtmp) {
  *   This will change with silver & copper coins
  */
 void mkmonmoney(struct Monster *mtmp, long amount) {
-    struct Object *gold = mksobj(GOLD_PIECE, FALSE, FALSE);
+    Object *gold = mksobj(GOLD_PIECE, FALSE, FALSE);
     gold->quan = amount;
     add_to_minv(mtmp, gold);
 }
@@ -468,7 +468,7 @@ void mkmonmoney(struct Monster *mtmp, long amount) {
 
 STATIC_OVL void m_initinv(struct Monster *mtmp) {
 	int cnt;
-	struct Object *otmp;
+	Object *otmp;
 	struct MonsterType *ptr = mtmp->data;
 #ifdef REINCARNATION
 	if (Is_rogue_level(&u.uz)) return;
@@ -678,7 +678,7 @@ struct Monster * clone_mon(struct Monster *mon, xchar x, xchar y) {
 	m2->mx = mm.x;
 	m2->my = mm.y;
 
-	m2->minvent = (struct Object *) 0; /* objects don't clone */
+	m2->minvent = (Object *) 0; /* objects don't clone */
 	m2->mleashed = FALSE;
 #ifndef GOLDOBJ
 	m2->mgold = 0L;
@@ -1420,7 +1420,7 @@ struct MonsterType * grow_up(struct Monster *mtmp, struct Monster *victim) {
 #ifdef OVL1
 
 int mongets(struct Monster *mtmp, int otyp) {
-	struct Object *otmp;
+	Object *otmp;
 	int spe;
 
 	if (!otyp) return 0;
@@ -1592,7 +1592,7 @@ void set_mimic_sym(struct Monster *mtmp) {
 	int typ, roomno, rt;
 	unsigned appear, ap_type;
 	int s_sym;
-	struct Object *otmp;
+	Object *otmp;
 	int mx, my;
 
 	if (!mtmp) return;
@@ -1686,7 +1686,7 @@ assign_sym:
 				otmp = mkobj( (char) s_sym, FALSE );
 				appear = otmp->otyp;
 				/* make sure container contents are free'ed */
-				obfree(otmp, (struct Object *) 0);
+				obfree(otmp, (Object *) 0);
 			}
 		}
 	}
@@ -1695,7 +1695,7 @@ assign_sym:
 }
 
 /* release a monster from a bag of tricks */
-void bagotricks(struct Object *bag) {
+void bagotricks(Object *bag) {
     if (!bag || bag->otyp != BAG_OF_TRICKS) {
 	impossible("bad bag o' tricks");
     } else if (bag->spe < 1) {

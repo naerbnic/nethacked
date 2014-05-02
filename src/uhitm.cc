@@ -9,9 +9,9 @@
 STATIC_DCL bool known_hitum(struct Monster *,int *,struct Attack *);
 STATIC_DCL void steal_it(struct Monster *, struct Attack *);
 STATIC_DCL bool hitum(struct Monster *,int,struct Attack *);
-STATIC_DCL bool hmon_hitmon(struct Monster *,struct Object *,int);
+STATIC_DCL bool hmon_hitmon(struct Monster *,Object *,int);
 #ifdef STEED
-STATIC_DCL int joust(struct Monster *,struct Object *);
+STATIC_DCL int joust(struct Monster *,Object *);
 #endif
 STATIC_DCL void demonpet();
 STATIC_DCL bool m_slips_free(struct Monster *mtmp,struct Attack *mattk);
@@ -21,7 +21,7 @@ STATIC_DCL void end_engulf();
 STATIC_DCL int gulpum(struct Monster *,struct Attack *);
 STATIC_DCL bool hmonas(struct Monster *,int);
 STATIC_DCL void nohandglow(struct Monster *);
-STATIC_DCL bool shade_aware(struct Object *);
+STATIC_DCL bool shade_aware(Object *);
 
 extern bool notonhead;	/* for long worms */
 /* The below might become a parameter instead if we use it a lot */
@@ -35,7 +35,7 @@ static bool override_confirmation = FALSE;
 /* This is not static because it is also used for monsters rusting monsters */
 void hurtmarmor(struct Monster *mdef, int attk) {
 	int	hurt;
-	struct Object *target;
+	Object *target;
 
 	switch(attk) {
 	    /* 0 is burning, which we should never be called with */
@@ -91,7 +91,7 @@ void hurtmarmor(struct Monster *mdef, int attk) {
 }
 
 /* FALSE means it's OK to attack */
-bool attack_checks(struct Monster *mtmp, struct Object *wep) {
+bool attack_checks(struct Monster *mtmp, Object *wep) {
 	char qbuf[QBUFSZ];
 #ifdef PARANOID
 	char buf[BUFSZ];
@@ -168,7 +168,7 @@ bool attack_checks(struct Monster *mtmp, struct Object *wep) {
 		return(FALSE);
 	    }
 	    if (!(Blind ? Blind_telepat : Unblind_telepat)) {
-		struct Object *obj;
+		Object *obj;
 
 		if (Blind || (is_pool(mtmp->mx,mtmp->my) && !Underwater))
 		    pline("Wait!  There's a hidden monster there!");
@@ -479,7 +479,7 @@ STATIC_OVL bool hitum(struct Monster *mon, int tmp, struct Attack *uattk) {
 }
 
 /* return TRUE if mon still alive */
-bool			/* general "damage monster" routine */ hmon(struct Monster *mon, struct Object *obj, int thrown) {
+bool			/* general "damage monster" routine */ hmon(struct Monster *mon, Object *obj, int thrown) {
 	bool result, anger_guards;
 
 	anger_guards = (mon->mpeaceful &&
@@ -493,7 +493,7 @@ bool			/* general "damage monster" routine */ hmon(struct Monster *mon, struct O
 }
 
 /* guts of hmon() */
-STATIC_OVL bool hmon_hitmon(struct Monster *mon, struct Object *obj, int thrown) {
+STATIC_OVL bool hmon_hitmon(struct Monster *mon, Object *obj, int thrown) {
 	int tmp;
 	struct MonsterType *mdat = mon->data;
 	int barehand_silver_rings = 0;
@@ -513,7 +513,7 @@ STATIC_OVL bool hmon_hitmon(struct Monster *mon, struct Object *obj, int thrown)
 	int jousting = 0;
 #endif
 	int wtype;
-	struct Object *monwep;
+	Object *monwep;
 	char yourbuf[BUFSZ];
 	char unconventional[BUFSZ];	/* substituted for word "attack" in msg */
 	char saved_oname[BUFSZ];
@@ -578,7 +578,7 @@ STATIC_OVL bool hmon_hitmon(struct Monster *mon, struct Object *obj, int thrown)
 			      shk_your(yourbuf, obj), xname(obj));
 			if (!more_than_1) uwepgone();	/* set unweapon */
 			useup(obj);
-			if (!more_than_1) obj = (struct Object *) 0;
+			if (!more_than_1) obj = (Object *) 0;
 			hittxt = TRUE;
 			if (mdat != &mons[PM_SHADE])
 			    tmp++;
@@ -689,7 +689,7 @@ STATIC_OVL bool hmon_hitmon(struct Monster *mon, struct Object *obj, int thrown)
 				shk_your(yourbuf, obj));
 			    change_luck(-2);
 			    useup(obj);
-			    obj = (struct Object *) 0;
+			    obj = (Object *) 0;
 			    unarmed = FALSE;	/* avoid obj==0 confusion */
 			    get_dmg_bonus = FALSE;
 			    hittxt = TRUE;
@@ -883,7 +883,7 @@ STATIC_OVL bool hmon_hitmon(struct Monster *mon, struct Object *obj, int thrown)
 	}
 
 	if (valid_weapon_attack) {
-	    struct Object *wep;
+	    Object *wep;
 
 	    /* to be valid a projectile must have had the correct projector */
 	    wep = PROJECTILE(obj) ? uwep : obj;
@@ -1051,7 +1051,7 @@ STATIC_OVL bool hmon_hitmon(struct Monster *mon, struct Object *obj, int thrown)
 	return((bool)(destroyed ? FALSE : TRUE));
 }
 
-STATIC_OVL bool shade_aware(struct Object *obj) {
+STATIC_OVL bool shade_aware(Object *obj) {
 	if (!obj) return FALSE;
 	/*
 	 * The things in this list either
@@ -1072,7 +1072,7 @@ STATIC_OVL bool shade_aware(struct Object *obj) {
 /* check whether slippery clothing protects from hug or wrap attack */
 /* [currently assumes that you are the attacker] */
 STATIC_OVL bool m_slips_free(struct Monster *mdef, struct Attack *mattk) {
-	struct Object *obj;
+	Object *obj;
 
 	if (mattk->adtyp == AD_DRIN) {
 	    /* intelligence drain attacks the head */
@@ -1110,7 +1110,7 @@ STATIC_OVL bool m_slips_free(struct Monster *mdef, struct Attack *mattk) {
 }
 
 /* used when hitting a monster with a lance while mounted */
-STATIC_OVL int	/* 1: joust hit; 0: ordinary hit; -1: joust but break lance */ joust(struct Monster *mon, struct Object *obj) {
+STATIC_OVL int	/* 1: joust hit; 0: ordinary hit; -1: joust but break lance */ joust(struct Monster *mon, Object *obj) {
     int skill_rating, joust_dieroll;
 
     if (Fumbling || Stunned) return 0;
@@ -1166,7 +1166,7 @@ STATIC_OVL void demonpet() {
  * will need to be smarter about whether to break out of the theft loop.
  */
 STATIC_OVL void steal_it(struct Monster *mdef, struct Attack *mattk) {
-	struct Object *otmp, *stealoid, **minvent_ptr;
+	Object *otmp, *stealoid, **minvent_ptr;
 	long unwornmask;
 
 	if (!mdef->minvent) return;		/* nothing to take */
@@ -1374,7 +1374,7 @@ int damageum(struct Monster *mdef, struct Attack *mattk) {
                 /* This you as a leprechaun, so steal
                    real gold only, no lesser coins */
 	        {
-		    struct Object *mongold = findgold(mdef->minvent);
+		    Object *mongold = findgold(mdef->minvent);
 	            if (mongold) {
 		        obj_extract_self(mongold);  
 		        if (merge_choice(invent, mongold) || inv_cnt() < 52) {
@@ -1404,7 +1404,7 @@ int damageum(struct Monster *mdef, struct Attack *mattk) {
 		}
 		break;
 	    case AD_BLND:
-		if (can_blnd(&youmonst, mdef, mattk->aatyp, (struct Object*)0)) {
+		if (can_blnd(&youmonst, mdef, mattk->aatyp, (Object*)0)) {
 		    if(!Blind && mdef->mcansee)
 			pline("%s is blinded.", Monnam(mdef));
 		    mdef->mcansee = 0;
@@ -1691,7 +1691,7 @@ STATIC_OVL void end_engulf() {
 STATIC_OVL int gulpum(struct Monster *mdef, struct Attack *mattk) {
 	int tmp;
 	int dam = d((int)mattk->damn, (int)mattk->damd);
-	struct Object *otmp;
+	Object *otmp;
 	/* Not totally the same as for real monsters.  Specifically, these
 	 * don't take multiple moves.  (It's just too hard, for too little
 	 * result, to program monsters which attack from inside you, which
@@ -2110,7 +2110,7 @@ int passive(struct Monster *mon, bool mhit, int malive, uchar aatyp) {
 			(void)rust_dmg(uarmf, xname(uarmf), 3, TRUE, &youmonst);
 		} else if (aatyp == AT_WEAP || aatyp == AT_CLAW ||
 			   aatyp == AT_MAGC || aatyp == AT_TUCH)
-		    passive_obj(mon, (struct Object*)0, &(ptr->mattk[i]));
+		    passive_obj(mon, (Object*)0, &(ptr->mattk[i]));
 	    }
 	    exercise(A_STR, FALSE);
 	    break;
@@ -2144,7 +2144,7 @@ int passive(struct Monster *mon, bool mhit, int malive, uchar aatyp) {
 			(void)rust_dmg(uarmf, xname(uarmf), 1, TRUE, &youmonst);
 		} else if (aatyp == AT_WEAP || aatyp == AT_CLAW ||
 			   aatyp == AT_MAGC || aatyp == AT_TUCH)
-		    passive_obj(mon, (struct Object*)0, &(ptr->mattk[i]));
+		    passive_obj(mon, (Object*)0, &(ptr->mattk[i]));
 	    }
 	    break;
 	  case AD_CORR:
@@ -2154,7 +2154,7 @@ int passive(struct Monster *mon, bool mhit, int malive, uchar aatyp) {
 			(void)rust_dmg(uarmf, xname(uarmf), 3, TRUE, &youmonst);
 		} else if (aatyp == AT_WEAP || aatyp == AT_CLAW ||
 			   aatyp == AT_MAGC || aatyp == AT_TUCH)
-		    passive_obj(mon, (struct Object*)0, &(ptr->mattk[i]));
+		    passive_obj(mon, (Object*)0, &(ptr->mattk[i]));
 	    }
 	    break;
 	  case AD_MAGM:
@@ -2169,7 +2169,7 @@ int passive(struct Monster *mon, bool mhit, int malive, uchar aatyp) {
 	    break;
 	  case AD_ENCH:	/* KMH -- remove enchantment (disenchanter) */
 	    if (mhit) {
-		struct Object *obj = nullptr;
+		Object *obj = nullptr;
 
 		if (aatyp == AT_KICK) {
 		    obj = uarmf;
@@ -2277,7 +2277,7 @@ int passive(struct Monster *mon, bool mhit, int malive, uchar aatyp) {
  * Special (passive) attacks on an attacking object by monsters done here.
  * Assumes the attack was successful.
  */
-void passive_obj(struct Monster *mon, struct Object *obj, struct Attack *mattk) {
+void passive_obj(struct Monster *mon, Object *obj, struct Attack *mattk) {
 	struct MonsterType *ptr = mon->data;
 	int i;
 
@@ -2386,7 +2386,7 @@ STATIC_OVL void nohandglow(struct Monster *mon) {
 	u.umconf--;
 }
 
-int flash_hits_mon(struct Monster *mtmp, struct Object *otmp) {
+int flash_hits_mon(struct Monster *mtmp, Object *otmp) {
 	int tmp, amt, res = 0, useeit = canseemon(mtmp);
 
 	if (mtmp->msleeping) {

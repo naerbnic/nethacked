@@ -222,7 +222,7 @@ STATIC_OVL struct MonsterType * lookat(int x, int y, char *buf, char *monbuf) {
 	}
     }
     else if (glyph_is_object(glyph)) {
-	struct Object *otmp = vobj_at(x,y);
+	Object *otmp = vobj_at(x,y);
 
 	if (!otmp || otmp->otyp != glyph_to_obj(glyph)) {
 	    if (glyph_to_obj(glyph) != STRANGE_OBJECT) {

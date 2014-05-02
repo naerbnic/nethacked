@@ -1222,7 +1222,7 @@ STATIC_OVL FILE * fopen_wizkit_file() {
 void read_wizkit() {
 	FILE *fp;
 	char *ep, buf[BUFSZ];
-	struct Object *otmp;
+	Object *otmp;
 	bool bad_items = FALSE, skip = FALSE;
 
 	if (!wizard || !(fp = fopen_wizkit_file())) return;

@@ -15,7 +15,7 @@ static const char beverages[] = { POTION_CLASS, 0 };
 STATIC_DCL long itimeout(long);
 STATIC_DCL long itimeout_incr(long,int);
 STATIC_DCL void ghost_from_bottle();
-STATIC_DCL short mixtype(struct Object *,struct Object *);
+STATIC_DCL short mixtype(Object *,Object *);
 
 /* force `val' to be within valid range for intrinsic timeout value */
 STATIC_OVL long itimeout(long val) {
@@ -282,7 +282,7 @@ STATIC_OVL void ghost_from_bottle() {
 /* "Quaffing is like drinking, except you spill more."  -- Terry Pratchett
  */
 int dodrink() {
-	struct Object *otmp;
+	Object *otmp;
 	const char *potion_descr;
 
 	if (Strangled) {
@@ -339,7 +339,7 @@ int dodrink() {
 	return dopotion(otmp);
 }
 
-int dopotion(struct Object *otmp) {
+int dopotion(Object *otmp) {
 	int retval;
 
 	otmp->in_use = TRUE;
@@ -362,7 +362,7 @@ int dopotion(struct Object *otmp) {
 	return(1);
 }
 
-int peffects(struct Object *otmp) {
+int peffects(Object *otmp) {
 	int i, ii, lim;
 
 	switch(otmp->otyp){
@@ -870,7 +870,7 @@ void healup(int nhp, int nxtra, bool curesick, bool cureblind) {
 	return;
 }
 
-void strange_feeling(struct Object *obj, const char *txt) {
+void strange_feeling(Object *obj, const char *txt) {
 	if (flags.beginner || !txt)
 		You("have a %s feeling for a moment, then it passes.",
 		Hallucination ? "normal" : "strange");
@@ -895,7 +895,7 @@ const char * bottlename() {
 	return bottlenames[rn2(SIZE(bottlenames))];
 }
 
-void potionhit(struct Monster *mon, struct Object *obj, bool your_fault) {
+void potionhit(struct Monster *mon, Object *obj, bool your_fault) {
 	const char *botlnam = bottlename();
 	bool isyou = (mon == &youmonst);
 	int distance;
@@ -1114,7 +1114,7 @@ void potionhit(struct Monster *mon, struct Object *obj, bool your_fault) {
 }
 
 /* vapors are inhaled or get in your eyes */
-void potionbreathe(struct Object *obj) {
+void potionbreathe(Object *obj) {
 	int i, ii, isdone, kn = 0;
 
 	switch(obj->otyp) {
@@ -1252,7 +1252,7 @@ void potionbreathe(struct Object *obj) {
 }
 
 /* returns the potion type when o1 is dipped in o2 */
-STATIC_OVL short mixtype(struct Object* o1, struct Object* o2) {
+STATIC_OVL short mixtype(Object* o1, Object* o2) {
 	/* cut down on the number of cases below */
 	if (o1->oclass == POTION_CLASS &&
 	    (o2->otyp == POT_GAIN_LEVEL ||
@@ -1262,7 +1262,7 @@ STATIC_OVL short mixtype(struct Object* o1, struct Object* o2) {
 	     o2->otyp == POT_FULL_HEALING ||
 	     o2->otyp == POT_ENLIGHTENMENT ||
 	     o2->otyp == POT_FRUIT_JUICE)) {
-		struct Object *swp;
+		Object *swp;
 
 		swp = o1; o1 = o2; o2 = swp;
 	}
@@ -1347,7 +1347,7 @@ STATIC_OVL short mixtype(struct Object* o1, struct Object* o2) {
 
 
 /* returns TRUE if something happened (potion should be used up) */
-bool get_wet(struct Object* obj) {
+bool get_wet(Object* obj) {
 	char Your_buf[BUFSZ];
 
 	if (snuff_lit(obj)) return(TRUE);
@@ -1449,8 +1449,8 @@ bool get_wet(struct Object* obj) {
 }
 
 int dodip() {
-	struct Object *potion, *obj;
-	struct Object *singlepotion;
+	Object *potion, *obj;
+	Object *singlepotion;
 	const char *tmp;
 	uchar here;
 	char allowall[2];
@@ -1627,7 +1627,7 @@ int dodip() {
 				break;
 			case 4:
 				{
-				  struct Object *otmp;
+				  Object *otmp;
 				  otmp = mkobj(POTION_CLASS,FALSE);
 				  obj->otyp = otmp->otyp;
 				  obfree(otmp, nullptr);
@@ -1719,7 +1719,7 @@ int dodip() {
 		    if (obj->oeroded == MAX_ERODE) {
 			obj_extract_self(obj);
 			obfree(obj, nullptr);
-			obj = (struct Object *) 0;
+			obj = (Object *) 0;
 		    } else {
 			/* we know it's carried */
 			if (obj->unpaid) {
@@ -1839,7 +1839,7 @@ int dodip() {
 			      newbuf);
 		    if(!objects[old_otyp].oc_uname &&
 			!objects[old_otyp].oc_name_known && old_dknown) {
-			struct Object fakeobj;
+			Object fakeobj;
 			fakeobj = zeroobj;
 			fakeobj.dknown = 1;
 			fakeobj.otyp = old_otyp;
@@ -1867,7 +1867,7 @@ poof:
 }
 
 
-void djinni_from_bottle(struct Object *obj) {
+void djinni_from_bottle(Object *obj) {
 	struct Monster *mtmp;
 	int chance;
 

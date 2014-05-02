@@ -264,7 +264,7 @@ int dochug(struct Monster *mtmp) {
 	int tmp=0;
 	int inrange, nearby, scared;
 #ifdef GOLDOBJ
-        struct Object *ygold = 0, *lepgold = 0;
+        Object *ygold = 0, *lepgold = 0;
 #endif
 
 /*	Pre-movement adjustments	*/
@@ -420,7 +420,7 @@ toofar:
 	if((!mtmp->mpeaceful || Conflict) && inrange &&
 	   dist2(mtmp->mx, mtmp->my, mtmp->mux, mtmp->muy) <= 8
 	   && attacktype(mdat, AT_WEAP)) {
-	    struct Object *mw_tmp;
+	    Object *mw_tmp;
 
 	    /* The scared check is necessary.  Otherwise a monster that is
 	     * one square near the player but fleeing into a wall would keep	
@@ -568,7 +568,7 @@ int m_move(struct Monster *mtmp, int after) {
 	long info[9];
 	long flag;
 	int  omx = mtmp->mx, omy = mtmp->my;
-	struct Object *mw_tmp;
+	Object *mw_tmp;
 
 	if(mtmp->mtrapped) {
 	    int i = mintrap(mtmp);
@@ -677,7 +677,7 @@ not_special:
 		appr = 0;
 	else {
 #ifdef GOLDOBJ
-		struct Object *lepgold, *ygold;
+		Object *lepgold, *ygold;
 #endif
 		bool should_see = (couldsee(omx, omy) &&
 				      (levl[gx][gy].lit ||
@@ -747,7 +747,7 @@ not_special:
 #define SQSRCHRADIUS	5
 
       { int minr = SQSRCHRADIUS;	/* not too far away */
-	struct Object *otmp;
+	Object *otmp;
 	int xx, yy;
 	int oomx, oomy, lmx, lmy;
 
@@ -1259,7 +1259,7 @@ found_you:
 }
 
 bool can_ooze(struct Monster *mtmp) {
-	struct Object *chain, *obj;
+	Object *chain, *obj;
 
 	if (!amorphous(mtmp->data)) return FALSE;
 	if (mtmp == &youmonst) {

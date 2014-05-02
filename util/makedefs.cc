@@ -431,7 +431,7 @@ static void make_version() {
 	 * Value used for compiler (word size/field alignment/padding) check.
 	 */
 	version.struct_sizes = (((unsigned long)sizeof (struct flag)  << 24) |
-				((unsigned long)sizeof (struct Object)   << 17) |
+				((unsigned long)sizeof (Object)   << 17) |
 				((unsigned long)sizeof (struct Monster) << 10) |
 				((unsigned long)sizeof (struct You)));
 	return;

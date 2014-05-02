@@ -15,7 +15,7 @@ static bool did_dig_msg;
 STATIC_DCL bool rm_waslit();
 STATIC_DCL void mkcavepos(xchar,xchar,int,bool,bool);
 STATIC_DCL void mkcavearea(bool);
-STATIC_DCL int dig_typ(struct Object *,xchar,xchar);
+STATIC_DCL int dig_typ(Object *,xchar,xchar);
 STATIC_DCL int dig();
 STATIC_DCL schar fillholetyp(int, int);
 STATIC_DCL void dig_up_grave();
@@ -122,7 +122,7 @@ STATIC_OVL void mkcavearea(bool rockit) {
 }
 
 /* When digging into location <x,y>, what are you actually digging into? */
-STATIC_OVL int dig_typ(struct Object *otmp, xchar x, xchar y) {
+STATIC_OVL int dig_typ(Object *otmp, xchar x, xchar y) {
 	bool ispick = is_pick(otmp);
 
 	return (ispick && sobj_at(STATUE, x, y) ? DIGTYP_STATUE :
@@ -281,7 +281,7 @@ STATIC_OVL int dig() {
 
 	if (digging.effort > 100) {
 		const char *digtxt, *dmgtxt = (const char*) 0;
-		struct Object *obj;
+		Object *obj;
 		bool shopedge = *in_rooms(dpx, dpy, SHOPBASE);
 
 		if ((obj = sobj_at(STATUE, dpx, dpy)) != 0) {
@@ -293,7 +293,7 @@ STATIC_OVL int dig() {
 				 */
 				digtxt = (char *)0;
 		} else if ((obj = sobj_at(BOULDER, dpx, dpy)) != 0) {
-			struct Object *bobj;
+			Object *bobj;
 
 			fracture_rock(obj);
 			if ((bobj = sobj_at(BOULDER, dpx, dpy)) != 0) {
@@ -450,7 +450,7 @@ schar fillholetyp(int x, int y) {
 }
 
 void digactualhole(int x, int y, struct Monster *madeby, int ttyp) {
-	struct Object *oldobjs, *newobjs;
+	Object *oldobjs, *newobjs;
 	struct trap *ttmp;
 	char surface_type[BUFSZ];
 	struct rm *lev = &levl[x][y];
@@ -617,7 +617,7 @@ void digactualhole(int x, int y, struct Monster *madeby, int ttyp) {
 bool dighole(bool pit_only) {
 	struct trap *ttmp = t_at(u.ux, u.uy);
 	struct rm *lev = &levl[u.ux][u.uy];
-	struct Object *boulder_here;
+	Object *boulder_here;
 	schar typ;
 	bool nohole = !Can_dig_down(&u.uz);
 
@@ -728,7 +728,7 @@ bool dighole(bool pit_only) {
 }
 
 STATIC_OVL void dig_up_grave() {
-	struct Object *otmp;
+	Object *otmp;
 
 	/* Grave-robbing is frowned upon... */
 	exercise(A_WIS, FALSE);
@@ -771,7 +771,7 @@ STATIC_OVL void dig_up_grave() {
 	return;
 }
 
-int use_pick_axe(struct Object *obj) {
+int use_pick_axe(Object *obj) {
 	bool ispick;
 	char dirsyms[12];
 	char qbuf[QBUFSZ];
@@ -821,7 +821,7 @@ int use_pick_axe(struct Object *obj) {
 /*       the "In what direction do you want to dig?" query.        */
 /*       use_pick_axe2() uses the existing u.dx, u.dy and u.dz    */
 
-int use_pick_axe2(struct Object *obj) {
+int use_pick_axe2(Object *obj) {
 	int rx, ry;
 	struct rm *lev;
 	int dig_target;
@@ -1092,7 +1092,7 @@ bool mdig_tunnel(struct Monster *mtmp) {
 void zap_dig() {
 	struct rm *room;
 	struct Monster *mtmp;
-	struct Object *otmp;
+	Object *otmp;
 	int zx, zy, digdepth;
 	bool shopdoor, shopwall, maze_dig;
 	/*
@@ -1230,8 +1230,8 @@ void zap_dig() {
 
 /* move objects from fobj/nexthere lists to buriedobjlist, keeping position */
 /* information */
-struct Object * bury_an_obj(struct Object *otmp) {
-	struct Object *otmp2;
+Object * bury_an_obj(Object *otmp) {
+	Object *otmp2;
 	bool under_ice;
 
 #ifdef DEBUG
@@ -1282,7 +1282,7 @@ struct Object * bury_an_obj(struct Object *otmp) {
 }
 
 void bury_objs(int x, int y) {
-	struct Object *otmp, *otmp2;
+	Object *otmp, *otmp2;
 
 #ifdef DEBUG
 	if(level.objects[x][y] != nullptr)
@@ -1298,7 +1298,7 @@ void bury_objs(int x, int y) {
 
 /* move objects from buriedobjlist to fobj/nexthere lists */
 void unearth_objs(int x, int y) {
-	struct Object *otmp, *otmp2;
+	Object *otmp, *otmp2;
 
 #ifdef DEBUG
 	pline("unearth_objs: at %d, %d", x, y);
@@ -1328,7 +1328,7 @@ void unearth_objs(int x, int y) {
  */
 /* ARGSUSED */
 void rot_organic(genericptr_t arg, long timeout) {
-	struct Object *obj = (struct Object *) arg;
+	Object *obj = (Object *) arg;
 
 	while (Has_contents(obj)) {
 	    /* We don't need to place contained object on the floor
@@ -1348,7 +1348,7 @@ void rot_organic(genericptr_t arg, long timeout) {
  */
 void rot_corpse(genericptr_t arg, long timeout) {
 	xchar x = 0, y = 0;
-	struct Object *obj = (struct Object *) arg;
+	Object *obj = (Object *) arg;
 	bool on_floor = obj->where == OBJ_FLOOR,
 		in_invent = obj->where == OBJ_INVENT;
 
@@ -1459,7 +1459,7 @@ void escape_tomb() {
 	}
 }
 
-void bury_obj(struct Object *otmp) {
+void bury_obj(Object *otmp) {
 
 #ifdef DEBUG
 	pline("bury_obj");

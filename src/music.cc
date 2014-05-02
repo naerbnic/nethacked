@@ -36,17 +36,17 @@ STATIC_DCL void charm_snakes(int);
 STATIC_DCL void calm_nymphs(int);
 STATIC_DCL void charm_monsters(int);
 STATIC_DCL void do_earthquake(int);
-STATIC_DCL int do_improvisation(struct Object *);
+STATIC_DCL int do_improvisation(Object *);
 
 #ifdef UNIX386MUSIC
 STATIC_DCL int atconsole();
-STATIC_DCL void speaker(struct Object *,char *);
+STATIC_DCL void speaker(Object *,char *);
 #endif
 #ifdef VPIX_MUSIC
 extern int sco_flag_console;	/* will need changing if not _M_UNIX */
 STATIC_DCL void playinit();
 STATIC_DCL void playstring(char *,size_t);
-STATIC_DCL void speaker(struct Object *,char *);
+STATIC_DCL void speaker(Object *,char *);
 #endif
 
 /*
@@ -172,7 +172,7 @@ STATIC_OVL void charm_monsters(int distance) {
 
 	if (u.uswallow) {
 	    if (!resist(u.ustuck, TOOL_CLASS, 0, NOTELL))
-		(void) tamedog(u.ustuck, (struct Object *) 0);
+		(void) tamedog(u.ustuck, (Object *) 0);
 	} else {
 	    for (mtmp = fmon; mtmp; mtmp = mtmp2) {
 		mtmp2 = mtmp->nmon;
@@ -180,7 +180,7 @@ STATIC_OVL void charm_monsters(int distance) {
 
 		if (distu(mtmp->mx, mtmp->my) <= distance) {
 		    if (!resist(mtmp, TOOL_CLASS, 0, NOTELL))
-			(void) tamedog(mtmp, (struct Object *) 0);
+			(void) tamedog(mtmp, (Object *) 0);
 		}
 	    }
 	}
@@ -194,7 +194,7 @@ STATIC_OVL void charm_monsters(int distance) {
 STATIC_OVL void do_earthquake(int force) {
 	int x,y;
 	struct Monster *mtmp;
-	struct Object *otmp;
+	Object *otmp;
 	struct trap *chasm;
 	int start_x, start_y, end_x, end_y;
 
@@ -325,10 +325,10 @@ do_pit:		    chasm = maketrap(x,y,PIT);
  * The player is trying to extract something from his/her instrument.
  */
 
-STATIC_OVL int do_improvisation(struct Object *instr) {
+STATIC_OVL int do_improvisation(Object *instr) {
 	int damage, do_spec = !Confusion;
 #if defined(VPIX_MUSIC)
-	struct Object itmp;
+	Object itmp;
 
 	itmp = *instr;
 	/* if won't yield special effect, make sound of mundane counterpart */
@@ -436,7 +436,7 @@ STATIC_OVL int do_improvisation(struct Object *instr) {
  * So you want music...
  */
 
-int do_play_instrument(struct Object *instr) {
+int do_play_instrument(Object *instr) {
     char buf[BUFSZ], c = 'y';
     char *s;
     int x,y;
@@ -567,7 +567,7 @@ STATIC_OVL int atconsole() {
      return(!strcmp(termtype, "AT386") || !strcmp(termtype, "xterm"));
 }
 
-STATIC_OVL void speaker(struct Object *instr, char *buf) {
+STATIC_OVL void speaker(Object *instr, char *buf) {
     /*
      * For this to work, you need to have installed the PD speaker-control
      * driver for PC-compatible UNIX boxes that I (esr@snark.thyrsus.com)
@@ -642,7 +642,7 @@ int	ticks;
 #include "interp.c"	/* from snd86unx.shr */
 
 
-STATIC_OVL void speaker(struct Object *instr, char *buf) {
+STATIC_OVL void speaker(Object *instr, char *buf) {
     /* emit a prefix to modify instrumental `timbre' */
     playinit();
     switch (instr->otyp)

@@ -778,7 +778,7 @@ skip0:
  */
 STATIC_OVL void mineralize() {
 	s_level *sp;
-	struct Object *otmp;
+	Object *otmp;
 	int goldprob, gemprob, x, y, cnt;
 
 
@@ -1267,7 +1267,7 @@ STATIC_OVL void mkaltar(struct mkroom *croom) {
 static void mkgrave(struct mkroom *croom) {
 	coord m;
 	int tryct = 0;
-	struct Object *otmp;
+	Object *otmp;
 	bool dobell = !rn2(10);
 
 
@@ -1359,7 +1359,7 @@ void mkinvokearea() {
  */
 STATIC_OVL void mkinvpos(xchar x, xchar y, int dist) {
     struct trap *ttmp;
-    struct Object *otmp;
+    Object *otmp;
     bool make_rocks;
     struct rm *lev = &levl[x][y];
 

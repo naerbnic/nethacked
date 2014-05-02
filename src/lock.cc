@@ -10,7 +10,7 @@ STATIC_PTR int forcelock();
 /* at most one of `door' and `box' should be non-null at any given time */
 STATIC_VAR struct xlock_s {
 	struct rm  *door;
-	struct Object *box;
+	Object *box;
 	int picktyp, chance, usedtime;
 } xlock;
 
@@ -18,7 +18,7 @@ STATIC_VAR struct xlock_s {
 
 STATIC_DCL const char *lock_action();
 STATIC_DCL bool obstructed(int,int);
-STATIC_DCL void chest_shatter_msg(struct Object *);
+STATIC_DCL void chest_shatter_msg(Object *);
 
 bool picking_lock(int *x, int *y) {
 	if (occupation == picklock) {
@@ -121,7 +121,7 @@ STATIC_PTR
 /* try to force a locked chest */
 int forcelock() {
 
-	struct Object *otmp;
+	Object *otmp;
 
 	if((xlock.box->ox != u.ux) || (xlock.box->oy != u.uy))
 		return((xlock.usedtime = 0));		/* you or it moved */
@@ -175,7 +175,7 @@ int forcelock() {
 		        loss += stolen_value(otmp, u.ux, u.uy,
 					     (bool)shkp->mpeaceful, TRUE);
 		    if (otmp->quan == 1L) {
-			obfree(otmp, (struct Object *) 0);
+			obfree(otmp, (Object *) 0);
 			continue;
 		    }
 		    useup(otmp);
@@ -211,11 +211,11 @@ void reset_pick() {
 #ifdef OVLB
 
 /* pick a lock with a given object */
-int pick_lock(struct Object *pick) {
+int pick_lock(Object *pick) {
 	int picktyp, c, ch;
 	coord cc;
 	struct rm	*door;
-	struct Object	*otmp;
+	Object	*otmp;
 	char qbuf[QBUFSZ];
 
 	picktyp = pick->otyp;
@@ -449,7 +449,7 @@ int pick_lock(struct Object *pick) {
 
 /* try to force a chest with your weapon */
 int doforce() {
-	struct Object *otmp;
+	Object *otmp;
 	int c, picktyp;
 	char qbuf[QBUFSZ];
 
@@ -706,7 +706,7 @@ int doclose() {
 }
 
 /* returns true if something happened */
-bool			/* box obj was hit with spell effect otmp */ boxlock(struct Object *obj, struct Object *otmp) {
+bool			/* box obj was hit with spell effect otmp */ boxlock(Object *obj, Object *otmp) {
 	bool res = 0;
 
 	switch(otmp->otyp) {
@@ -740,7 +740,7 @@ bool			/* box obj was hit with spell effect otmp */ boxlock(struct Object *obj, 
 }
 
 /* returns true if something happened */
-bool			/* Door/secret door was hit with spell effect otmp */ doorlock(struct Object *otmp, int x, int y) {
+bool			/* Door/secret door was hit with spell effect otmp */ doorlock(Object *otmp, int x, int y) {
 	struct rm *door = &levl[x][y];
 	bool res = TRUE;
 	int loudness = 0;
@@ -880,7 +880,7 @@ bool			/* Door/secret door was hit with spell effect otmp */ doorlock(struct Obj
 	return res;
 }
 
-STATIC_OVL void chest_shatter_msg(struct Object *otmp) {
+STATIC_OVL void chest_shatter_msg(Object *otmp) {
 	const char *disposition;
 	const char *thing;
 	long save_Blinded;

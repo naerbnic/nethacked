@@ -376,7 +376,7 @@ void explode(int x, int y, int type, int dam, char olet, int expltype) {
 
 struct scatter_chain {
 	struct scatter_chain *next;	/* pointer to next scatter item	*/
-	struct Object *obj;		/* pointer to the object	*/
+	Object *obj;		/* pointer to the object	*/
 	xchar ox;			/* location of			*/
 	xchar oy;			/*	item			*/
 	schar dx;			/* direction of			*/
@@ -396,8 +396,8 @@ struct scatter_chain {
  */
 
 /* returns number of scattered objects */
-long scatter(int sx, int sy, int blastforce, unsigned int scflags, struct Object *obj) {
-	struct Object *otmp;
+long scatter(int sx, int sy, int blastforce, unsigned int scflags, Object *obj) {
+	Object *otmp;
 	int tmp;
 	int farthest = 0;
 	uchar typ;

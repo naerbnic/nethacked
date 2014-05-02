@@ -11,8 +11,8 @@ extern char bones[];	/* from files.c */
 
 STATIC_DCL bool no_bones_level(d_level *);
 STATIC_DCL void goodfruit(int);
-STATIC_DCL void resetobjs(struct Object *,bool);
-STATIC_DCL void drop_upon_death(struct Monster *, struct Object *);
+STATIC_DCL void resetobjs(Object *,bool);
+STATIC_DCL void drop_upon_death(struct Monster *, Object *);
 
 STATIC_OVL bool no_bones_level(d_level *lev) {
 	extern d_level save_dlevel;		/* in do.c */
@@ -46,8 +46,8 @@ STATIC_OVL void goodfruit(int id) {
 	}
 }
 
-STATIC_OVL void resetobjs(struct Object *ochain, bool restore) {
-	struct Object *otmp;
+STATIC_OVL void resetobjs(Object *ochain, bool restore) {
+	Object *otmp;
 
 	for (otmp = ochain; otmp; otmp = otmp->nobj) {
 		if (otmp->cobj)
@@ -107,8 +107,8 @@ STATIC_OVL void resetobjs(struct Object *ochain, bool restore) {
 	}
 }
 
-STATIC_OVL void drop_upon_death(struct Monster *mtmp, struct Object *cont) {
-	struct Object *otmp;
+STATIC_OVL void drop_upon_death(struct Monster *mtmp, Object *cont) {
+	Object *otmp;
 
 	uswapwep = 0; /* ensure curse() won't cause swapwep to drop twice */
 	while ((otmp = invent) != 0) {
@@ -172,7 +172,7 @@ bool can_make_bones() {
 }
 
 /* save bones and possessions of a deceased adventurer */
-void savebones(struct Object *corpse) {
+void savebones(Object *corpse) {
 	int fd, x, y;
 	struct trap *ttmp;
 	struct Monster *mtmp;
@@ -227,7 +227,7 @@ void savebones(struct Object *corpse) {
 
 	/* dispose of your possessions, usually cursed */
 	if (u.ugrave_arise == (NON_PM - 1)) {
-		struct Object *otmp;
+		Object *otmp;
 
 		/* embed your possessions in your statue */
 		otmp = mk_named_object(STATUE, &mons[u.umonnum],

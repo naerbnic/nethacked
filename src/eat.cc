@@ -22,28 +22,28 @@ STATIC_PTR int opentin();
 STATIC_PTR int unfaint();
 
 #ifdef OVLB
-STATIC_DCL const char *food_xname(struct Object *,bool);
-STATIC_DCL void choke(struct Object *);
+STATIC_DCL const char *food_xname(Object *,bool);
+STATIC_DCL void choke(Object *);
 STATIC_DCL void recalc_wt();
-STATIC_DCL struct Object *touchfood(struct Object *);
+STATIC_DCL Object *touchfood(Object *);
 STATIC_DCL void do_reset_eat();
 STATIC_DCL void done_eating(bool);
 STATIC_DCL void cprefx(int);
 STATIC_DCL int intrinsic_possible(int,struct MonsterType *);
 STATIC_DCL void givit(int,struct MonsterType *);
 STATIC_DCL void cpostfx(int);
-STATIC_DCL void start_tin(struct Object *);
-STATIC_DCL int eatcorpse(struct Object *);
-STATIC_DCL void start_eating(struct Object *);
-STATIC_DCL void fprefx(struct Object *);
-STATIC_DCL void accessory_has_effect(struct Object *);
-STATIC_DCL void fpostfx(struct Object *);
+STATIC_DCL void start_tin(Object *);
+STATIC_DCL int eatcorpse(Object *);
+STATIC_DCL void start_eating(Object *);
+STATIC_DCL void fprefx(Object *);
+STATIC_DCL void accessory_has_effect(Object *);
+STATIC_DCL void fpostfx(Object *);
 STATIC_DCL int bite();
-STATIC_DCL int edibility_prompts(struct Object *);
-STATIC_DCL int rottenfood(struct Object *);
+STATIC_DCL int edibility_prompts(Object *);
+STATIC_DCL int rottenfood(Object *);
 STATIC_DCL void eatspecial();
-STATIC_DCL void eataccessory(struct Object *);
-STATIC_DCL const char *foodword(struct Object *);
+STATIC_DCL void eataccessory(Object *);
+STATIC_DCL const char *foodword(Object *);
 STATIC_DCL bool maybe_cannibal(int,bool);
 
 char msgbuf[BUFSZ];
@@ -97,7 +97,7 @@ const char *hu_stat[] = {
  * Decide whether a particular object can be eaten by the possibly
  * polymorphed character.  Not used for monster checks.
  */
-bool is_edible(struct Object *obj) {
+bool is_edible(Object *obj) {
 	/* protect invocation tools but not Rider corpses (handled elsewhere)*/
      /* if (obj->oclass != FOOD_CLASS && obj_resists(obj, 0, 0)) */
 	if (objects[obj->otyp].oc_unique)
@@ -150,12 +150,12 @@ static const struct { const char *txt; int nut; } tintxts[] = {
 #define TTSZ	SIZE(tintxts)
 
 static struct {
-	struct	Object *tin;
+	Object *tin;
 	int	usedtime, reqtime;
 } tin;
 
 static struct {
-	struct	Object *piece;	/* the thing being eaten, or last thing that
+	Object *piece;	/* the thing being eaten, or last thing that
 				 * was partially eaten, unless that thing was
 				 * a tin, which uses the tin structure above,
 				 * in which case this should be 0 */
@@ -190,7 +190,7 @@ int eatmdone() {
 }
 
 /* ``[the(] singular(food, xname) [)]'' with awareness of unique monsters */
-STATIC_OVL const char * food_xname(struct Object *food, bool the_pfx) {
+STATIC_OVL const char * food_xname(Object *food, bool the_pfx) {
 	const char *result;
 	int mnum = food->corpsenm;
 
@@ -215,7 +215,7 @@ STATIC_OVL const char * food_xname(struct Object *food, bool the_pfx) {
  *		  11/10/89: if hard, rarely vomit anyway, for slim chance.
  */
 /* To a full belly all food is bad. (It.) */
-STATIC_OVL void choke(struct Object* food) {
+STATIC_OVL void choke(Object* food) {
 	/* only happens if you were satiated */
 	if (u.uhs != SATIATED) {
 		if (!food || food->otyp != AMULET_OF_STRANGULATION)
@@ -267,7 +267,7 @@ STATIC_OVL void choke(struct Object* food) {
 
 /* modify object wt. depending on time spent consuming it */
 STATIC_OVL void recalc_wt() {
-	struct Object *piece = victual.piece;
+	Object *piece = victual.piece;
 
 #ifdef DEBUG
 	debugpline("Old weight = %d", piece->owt);
@@ -294,7 +294,7 @@ void reset_eat() {
 	return;
 }
 
-STATIC_OVL struct Object * touchfood(struct Object *otmp) {
+STATIC_OVL Object * touchfood(Object *otmp) {
 	if (otmp->quan > 1L) {
 	    if(!carried(otmp))
 		(void) splitobj(otmp, otmp->quan - 1L);
@@ -338,7 +338,7 @@ STATIC_OVL struct Object * touchfood(struct Object *otmp) {
  * do_reset_eat() at the beginning of eatfood()) and check for null pointers
  * in do_reset_eat().
  */
-void food_disappears(struct Object *obj) {
+void food_disappears(Object *obj) {
 	if (obj == victual.piece) victual.piece = nullptr;
 	if (obj->timed) obj_stop_timers(obj);
 }
@@ -346,7 +346,7 @@ void food_disappears(struct Object *obj) {
 /* renaming an object usually results in it having a different address;
    so the sequence start eating/opening, get interrupted, name the food,
    resume eating/opening would restart from scratch */
-void food_substitution(struct Object *old_obj, struct Object *new_obj) {
+void food_substitution(Object *old_obj, Object *new_obj) {
 	if (old_obj == victual.piece) victual.piece = new_obj;
 	if (old_obj == tin.tin) tin.tin = new_obj;
 }
@@ -406,7 +406,7 @@ STATIC_OVL void done_eating(bool message) {
 
 	if (carried(victual.piece)) useup(victual.piece);
 	else useupf(victual.piece, 1L);
-	victual.piece = (struct Object *) 0;
+	victual.piece = (Object *) 0;
 	victual.fullwarn = victual.eating = victual.doreset = FALSE;
 }
 
@@ -1072,12 +1072,12 @@ int opentin() {
 use_me:
 	if (carried(tin.tin)) useup(tin.tin);
 	else useupf(tin.tin, 1L);
-	tin.tin = (struct Object *) 0;
+	tin.tin = (Object *) 0;
 	return(0);
 }
 
 /* called when starting to open a tin */
-STATIC_OVL void start_tin(struct Object *otmp) {
+STATIC_OVL void start_tin(Object *otmp) {
 	int tmp;
 
 	if (metallivorous(youmonst.data)) {
@@ -1140,7 +1140,7 @@ int Hear_again() {
 }
 
 /* called on the "first bite" of rotten food */
-STATIC_OVL int rottenfood(struct Object *obj) {
+STATIC_OVL int rottenfood(Object *obj) {
 	pline("Blecch!  Rotten %s!", foodword(obj));
 	if(!rn2(4)) {
 		if (Hallucination) You_feel("rather trippy.");
@@ -1174,7 +1174,7 @@ STATIC_OVL int rottenfood(struct Object *obj) {
 }
 
 /* called when a corpse is selected as food */
-STATIC_OVL int eatcorpse(struct Object *otmp) {
+STATIC_OVL int eatcorpse(Object *otmp) {
 	int tp = 0, mnum = otmp->corpsenm;
 	long rotted = 0L;
 	bool uniq = !!(mons[mnum].geno & G_UNIQ);
@@ -1274,7 +1274,7 @@ STATIC_OVL int eatcorpse(struct Object *otmp) {
 }
 
 /* called as you start to eat */
-STATIC_OVL void start_eating(struct Object *otmp) {
+STATIC_OVL void start_eating(Object *otmp) {
 #ifdef DEBUG
 	debugpline("start_eating: %lx (victual = %lx)", otmp, victual.piece);
 	debugpline("reqtime = %d", victual.reqtime);
@@ -1310,7 +1310,7 @@ STATIC_OVL void start_eating(struct Object *otmp) {
  * called on "first bite" of (non-corpse) food.
  * used for non-rotten non-tin non-corpse food
  */
-STATIC_OVL void fprefx(struct Object *otmp) {
+STATIC_OVL void fprefx(Object *otmp) {
 	switch(otmp->otyp) {
 	    case FOOD_RATION:
 		if(u.uhunger <= 200)
@@ -1382,12 +1382,12 @@ STATIC_OVL void fprefx(struct Object *otmp) {
 	}
 }
 
-STATIC_OVL void accessory_has_effect(struct Object *otmp) {
+STATIC_OVL void accessory_has_effect(Object *otmp) {
 	pline("Magic spreads through your body as you digest the %s.",
 	    otmp->oclass == RING_CLASS ? "ring" : "amulet");
 }
 
-STATIC_OVL void eataccessory(struct Object *otmp) {
+STATIC_OVL void eataccessory(Object *otmp) {
 	int typ = otmp->otyp;
 	long oldprop;
 
@@ -1518,7 +1518,7 @@ STATIC_OVL void eataccessory(struct Object *otmp) {
 
 /* called after eating non-food */
 STATIC_OVL void eatspecial() {
-	struct Object *otmp = victual.piece;
+	Object *otmp = victual.piece;
 
 	/* lesshungry wants an occupation to handle choke messages correctly */
 	set_occupation(eatfood, "eating non-food", 0);
@@ -1579,7 +1579,7 @@ static const char *foodwords[] = {
 	"plastic", "glass", "rich food", "stone"
 };
 
-STATIC_OVL const char * foodword(struct Object *otmp) {
+STATIC_OVL const char * foodword(Object *otmp) {
 	if (otmp->oclass == FOOD_CLASS) return "food";
 	if (otmp->oclass == GEM_CLASS &&
 	    objects[otmp->otyp].oc_material == GLASS &&
@@ -1589,7 +1589,7 @@ STATIC_OVL const char * foodword(struct Object *otmp) {
 }
 
 /* called after consuming (non-corpse) food */
-STATIC_OVL void fpostfx(struct Object* otmp) {
+STATIC_OVL void fpostfx(Object* otmp) {
 	switch(otmp->otyp) {
 	    case SPRIG_OF_WOLFSBANE:
 		if (u.ulycn >= LOW_PM || is_were(youmonst.data))
@@ -1652,7 +1652,7 @@ STATIC_OVL void fpostfx(struct Object* otmp) {
  * return 1 if the food was dangerous and you chose to stop.
  * return 2 if the food was dangerous and you chose to eat it anyway.
  */
-STATIC_OVL int edibility_prompts(struct Object *otmp) {
+STATIC_OVL int edibility_prompts(Object *otmp) {
 	/* blessed food detection granted you a one-use
 	   ability to detect food that is unfit for consumption
 	   or dangerous and avoid it. */
@@ -1779,7 +1779,7 @@ STATIC_OVL int edibility_prompts(struct Object *otmp) {
 int
 doeat()		/* generic "eat" command funtion (see cmd.c) */
 {
-	struct Object *otmp;
+	Object *otmp;
 	int basenutrit;			/* nutrition of full item */
 	bool dont_start = FALSE;
 	
@@ -2294,8 +2294,8 @@ void newuhs(bool incr) {
  * in inventory.
  */
 /* get food from floor or pack */
-struct Object * floorfood(const char *verb, int corpsecheck) {
-	struct Object *otmp;
+Object * floorfood(const char *verb, int corpsecheck) {
+	Object *otmp;
 	char qbuf[QBUFSZ];
 	char c;
 	bool feeding = (!strcmp(verb, "eat"));
@@ -2311,7 +2311,7 @@ struct Object * floorfood(const char *verb, int corpsecheck) {
 	    goto skipfloor;
 
 	if (feeding && metallivorous(youmonst.data)) {
-	    struct Object *gold;
+	    Object *gold;
 	    struct trap *ttmp = t_at(u.ux, u.uy);
 
 	    if (ttmp && ttmp->tseen && ttmp->ttyp == BEAR_TRAP) {
@@ -2358,7 +2358,7 @@ struct Object * floorfood(const char *verb, int corpsecheck) {
 			if((c = yn_function(qbuf,ynqchars,'n')) == 'y')
 				return(otmp);
 			else if(c == 'q')
-				return((struct Object *) 0);
+				return((Object *) 0);
 		}
 	}
 
@@ -2384,7 +2384,7 @@ void vomit() {
 	nomul(-2, "vomiting");
 }
 
-int eaten_stat(int base, struct Object *obj) {
+int eaten_stat(int base, Object *obj) {
 	long uneaten_amt, full_amount;
 
 	uneaten_amt = (long)obj->oeaten;
@@ -2402,7 +2402,7 @@ int eaten_stat(int base, struct Object *obj) {
 }
 
 /* reduce obj's oeaten field, making sure it never hits or passes 0 */
-void consume_oeaten(struct Object *obj, int amt) {
+void consume_oeaten(Object *obj, int amt) {
     /*
      * This is a hack to try to squelch several long standing mystery
      * food bugs.  A better solution would be to rewrite the entire

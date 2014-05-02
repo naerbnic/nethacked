@@ -16,9 +16,9 @@ STATIC_DCL char *strprepend(char *,const char *);
 static bool wishymatch(const char *,const char *,bool);
 #endif
 static char *nextobuf();
-static void add_erosion_words(struct Object *, char *);
+static void add_erosion_words(Object *, char *);
 #ifdef SORTLOOT
-char * xname2(struct Object *, bool);
+char * xname2(Object *, bool);
 #endif
 
 struct Jitem {
@@ -171,7 +171,7 @@ char * simple_typename(int otyp) {
     return bufp;
 }
 
-bool obj_is_pname(struct Object *obj) {
+bool obj_is_pname(Object *obj) {
     return((bool)(obj->dknown && obj->known && obj->onamelth &&
 		     /* Since there aren't any objects which are both
 		        artifacts and unique, the last check is redundant. */
@@ -185,7 +185,7 @@ bool obj_is_pname(struct Object *obj) {
  * frequently used, it'd probably be better to pass a parameter to xname()
  * or doname() instead.
  */
-char * distant_name(struct Object* obj, char* (*func)(Object*)) {
+char * distant_name(Object* obj, char* (*func)(Object*)) {
 	char *str;
 
 	long save_Blinded = Blinded;
@@ -213,13 +213,13 @@ char * fruitname(bool juice) {
 #endif /* OVLB */
 #ifdef OVL1
 
-char *xname(struct Object* obj)
+char *xname(Object* obj)
 #ifdef SORTLOOT
 {
 	return xname2(obj, FALSE);
 }
 
-char * xname2(struct Object* obj, bool ignore_oquan)
+char * xname2(Object* obj, bool ignore_oquan)
 #endif
 {
 	char *buf;
@@ -473,7 +473,7 @@ nameit:
 }
 
 /* xname() output augmented for multishot missile feedback */
-char * mshot_xname(struct Object *obj) {
+char * mshot_xname(Object *obj) {
     char tmpbuf[BUFSZ];
     char *onm = xname(obj);
 
@@ -492,7 +492,7 @@ char * mshot_xname(struct Object *obj) {
 #ifdef OVL0
 
 /* used for naming "the unique_item" instead of "a unique_item" */
-bool the_unique_obj(struct Object *obj) {
+bool the_unique_obj(Object *obj) {
     if (!obj->dknown)
 	return FALSE;
     else if (obj->otyp == FAKE_AMULET_OF_YENDOR && !obj->known)
@@ -502,7 +502,7 @@ bool the_unique_obj(struct Object *obj) {
 			 (obj->known || obj->otyp == AMULET_OF_YENDOR));
 }
 
-static void add_erosion_words(struct Object *obj, char *prefix) {
+static void add_erosion_words(Object *obj, char *prefix) {
 	bool iscrys = (obj->otyp == CRYSKNIFE);
 
 
@@ -534,7 +534,7 @@ static void add_erosion_words(struct Object *obj, char *prefix) {
 		       is_flammable(obj) ? "fireproof " : "");
 }
 
-char * doname(struct Object *obj) {
+char * doname(Object *obj) {
   bool ispoisoned = FALSE;
   char prefix[PREFIX];
   char tmpbuf[PREFIX + 1];
@@ -768,7 +768,7 @@ char * doname(struct Object *obj) {
 #ifdef OVLB
 
 /* used from invent.c */
-bool not_fully_identified(struct Object *otmp) {
+bool not_fully_identified(Object *otmp) {
 #ifdef GOLDOBJ
     /* gold doesn't have any interesting attributes [yet?] */
     if (otmp->oclass == COIN_CLASS) return FALSE;	/* always fully ID'd */
@@ -801,7 +801,7 @@ bool not_fully_identified(struct Object *otmp) {
 			 is_flammable(otmp));
 }
 
-char * corpse_xname(struct Object *otmp, bool ignore_oquan) {
+char * corpse_xname(Object *otmp, bool ignore_oquan) {
 	char *nambuf = nextobuf();
 
 	sprintf(nambuf, "%s corpse", mons[otmp->corpsenm].mname);
@@ -813,13 +813,13 @@ char * corpse_xname(struct Object *otmp, bool ignore_oquan) {
 }
 
 /* xname, unless it's a corpse, then corpse_xname(obj, FALSE) */
-char * cxname(struct Object *obj) {
+char * cxname(Object *obj) {
 	if (obj->otyp == CORPSE)
 	    return corpse_xname(obj, FALSE);
 	return xname(obj);
 }
 #ifdef SORTLOOT
-char * cxname2(struct Object *obj) {
+char * cxname2(Object *obj) {
 	if (obj->otyp == CORPSE)
 	    return corpse_xname(obj, TRUE);
 	return xname2(obj, TRUE);
@@ -827,8 +827,8 @@ char * cxname2(struct Object *obj) {
 #endif /* SORTLOOT */
 
 /* treat an object as fully ID'd when it might be used as reason for death */
-char * killer_xname(struct Object *obj) {
-    struct Object save_obj;
+char * killer_xname(Object *obj) {
+    Object save_obj;
     unsigned save_ocknown;
     char *buf, *save_ocuname;
 
@@ -868,7 +868,7 @@ char * killer_xname(struct Object *obj) {
  * Used if only one of a collection of objects is named (e.g. in eat.c).
  */
 const char *
-singular(struct Object* otmp, char* (*func)(Object*)) {
+singular(Object* otmp, char* (*func)(Object*)) {
 	long savequan;
 	char *nam;
 
@@ -968,7 +968,7 @@ char * The(const char *str) {
 }
 
 /* returns "count cxname(otmp)" or just cxname(otmp) if count == 1 */
-char * aobjnam(struct Object *otmp, const char *verb) {
+char * aobjnam(Object *otmp, const char *verb) {
 	char *bp = cxname(otmp);
 	char prefix[PREFIX];
 
@@ -985,7 +985,7 @@ char * aobjnam(struct Object *otmp, const char *verb) {
 }
 
 /* like aobjnam, but prepend "The", not count, and use xname */
-char * Tobjnam(struct Object *otmp, const char *verb) {
+char * Tobjnam(Object *otmp, const char *verb) {
 	char *bp = The(xname(otmp));
 
 	if(verb) {
@@ -996,7 +996,7 @@ char * Tobjnam(struct Object *otmp, const char *verb) {
 }
 
 /* return form of the verb (input plural) if xname(otmp) were the subject */
-char * otense(struct Object *otmp, const char *verb) {
+char * otense(Object *otmp, const char *verb) {
 	char *buf;
 
 	/*
@@ -1117,7 +1117,7 @@ char * vtense(const char *subj, const char *verb) {
 }
 
 /* capitalized variant of doname() */
-char * Doname2(struct Object *obj) {
+char * Doname2(Object *obj) {
 	char *s = doname(obj);
 
 	*s = highc(*s);
@@ -1125,7 +1125,7 @@ char * Doname2(struct Object *obj) {
 }
 
 /* returns "your xname(obj)" or "Foobar's xname(obj)" or "the xname(obj)" */
-char * yname(struct Object *obj) {
+char * yname(Object *obj) {
 	char *outbuf = nextobuf();
 	char *s = shk_your(outbuf, obj);	/* assert( s == outbuf ); */
 	int space_left = BUFSZ - strlen(s) - sizeof " ";
@@ -1134,7 +1134,7 @@ char * yname(struct Object *obj) {
 }
 
 /* capitalized variant of yname() */
-char * Yname2(struct Object *obj) {
+char * Yname2(Object *obj) {
 	char *s = yname(obj);
 
 	*s = highc(*s);
@@ -1145,7 +1145,7 @@ char * Yname2(struct Object *obj) {
  * or "Foobar's simple_typename(obj->otyp)"
  * or "the simple_typename(obj-otyp)"
  */
-char * ysimple_name(struct Object *obj) {
+char * ysimple_name(Object *obj) {
 	char *outbuf = nextobuf();
 	char *s = shk_your(outbuf, obj);	/* assert( s == outbuf ); */
 	int space_left = BUFSZ - strlen(s) - sizeof " ";
@@ -1154,7 +1154,7 @@ char * ysimple_name(struct Object *obj) {
 }
 
 /* capitalized variant of ysimple_name() */
-char * Ysimple_name2(struct Object *obj) {
+char * Ysimple_name2(Object *obj) {
 	char *s = ysimple_name(obj);
 
 	*s = highc(*s);
@@ -1658,10 +1658,10 @@ struct alt_spellings {
  * return null.
  * If from_user is false, we're reading from the wizkit, nothing was typed in.
  */
-struct Object * readobjnam(char *bp, struct Object *no_wish, bool from_user) {
+Object * readobjnam(char *bp, Object *no_wish, bool from_user) {
 	char *p;
 	int i;
-	struct Object *otmp;
+	Object *otmp;
 	int cnt, spe, spesgn, typ, very, rechrg;
 	int blessed, uncursed, iscursed, ispoisoned, isgreased;
 	int eroded, eroded2, erodeproof;
@@ -2605,7 +2605,7 @@ typfnd:
 #endif
 	    ) {
 	    artifact_exists(otmp, ONAME(otmp), FALSE);
-	    obfree(otmp, (struct Object *) 0);
+	    obfree(otmp, (Object *) 0);
 	    otmp = &zeroobj;
 	    pline("For a moment, you feel %s in your %s, but it disappears!",
 		  something,
@@ -2652,7 +2652,7 @@ STATIC_OVL const char * Japanese_item_name(int i) {
 	return (const char *)0;
 }
 
-const char * cloak_simple_name(struct Object *cloak) {
+const char * cloak_simple_name(Object *cloak) {
     if (cloak) {
 	switch (cloak->otyp) {
 	case ROBE:

@@ -34,9 +34,9 @@ STATIC_PTR void done_intr(int);
 static void done_hangup(int);
 #endif
 STATIC_DCL void disclose(int,bool);
-STATIC_DCL void get_valuables(struct Object *);
+STATIC_DCL void get_valuables(Object *);
 STATIC_DCL void sort_valuables(struct valuable_data *,int);
-STATIC_DCL void artifact_score(struct Object *,bool,winid);
+STATIC_DCL void artifact_score(Object *,bool,winid);
 STATIC_DCL void savelife(int);
 void list_vanquished(char,bool);
 #ifdef DUMP_LOG
@@ -393,7 +393,7 @@ STATIC_OVL void disclose(int how, bool taken) {
 #ifdef DUMP_LOG
 			bool want_disp = (c == 'y')? TRUE: FALSE;
 #endif
-			struct Object *obj;
+			Object *obj;
 
 			for (obj = invent; obj; obj = obj->nobj) {
 			    makeknown(obj->otyp);
@@ -487,8 +487,8 @@ STATIC_OVL void savelife(int how) {
  * Get valuables from the given list.  Revised code: the list always remains
  * intact.
  */
-STATIC_OVL void get_valuables(struct Object *list) {
-    struct Object *obj;
+STATIC_OVL void get_valuables(Object *list) {
+    Object *obj;
     int i;
 
     /* find amulets and gems, ignoring all artifacts */
@@ -536,9 +536,9 @@ STATIC_OVL void sort_valuables(struct valuable_data list[], int size) {
 }
 
 /* called twice; first to calculate total, then to list relevant items */
-STATIC_OVL void artifact_score(struct Object *list, bool counting, winid endwin) {
+STATIC_OVL void artifact_score(Object *list, bool counting, winid endwin) {
     char pbuf[BUFSZ];
-    struct Object *otmp;
+    Object *otmp;
     long value, points;
     short dummy;	/* object type returned by artifact_name() */
 
@@ -583,7 +583,7 @@ void done(int how) {
 	char kilbuf[BUFSZ], pbuf[BUFSZ];
 	winid endwin = WIN_ERR;
 	bool bones_ok, have_windows = iflags.window_inited;
-	struct Object *corpse = nullptr;
+	Object *corpse = nullptr;
 	long umoney;
 	int i;
 
@@ -874,7 +874,7 @@ die:
 
 	if (how == ESCAPED || how == ASCENDED) {
 	    struct Monster *mtmp;
-	    struct Object *otmp;
+	    Object *otmp;
 	    struct val_list *val;
 	    int i;
 
@@ -1033,21 +1033,21 @@ die:
 
 
 void container_contents(
-    struct Object* list, bool identified, bool all_containers)
+    Object* list, bool identified, bool all_containers)
 #ifdef DUMP_LOG
 {
 	do_containerconts(list, identified, all_containers, FALSE, TRUE);
 }
 
 void do_containerconts(
-    struct Object* list, bool identified, bool all_containers,
+    Object* list, bool identified, bool all_containers,
     bool want_dump, bool want_disp)
 #endif
 /* The original container_contents function */
 {
-	struct Object *box, *obj;
+	Object *box, *obj;
 #ifdef SORTLOOT
-	struct Object **oarray;
+	Object **oarray;
 	int i,j,n;
 	char *invlet;
 #endif /* SORTLOOT */
@@ -1067,7 +1067,7 @@ void do_containerconts(
 		    /* count the number of items */
 		    for (n = 0, obj = box->cobj; obj; obj = obj->nobj) n++;
 		    /* Make a temporary array to store the objects sorted */
-		    oarray = (struct Object **) alloc(n*sizeof(struct Object*));
+		    oarray = (Object **) alloc(n*sizeof(Object*));
 
 		    /* Add objects to the array */
 		    i = 0;

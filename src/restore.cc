@@ -18,11 +18,11 @@ static int mgetc();
 STATIC_DCL void find_lev_obj();
 STATIC_DCL void restlevchn(int);
 STATIC_DCL void restdamage(int,bool);
-STATIC_DCL struct Object *restobjchn(int,bool,bool);
+STATIC_DCL Object *restobjchn(int,bool,bool);
 STATIC_DCL struct Monster *restmonchn(int,bool);
 STATIC_DCL struct fruit *loadfruitchn(int);
 STATIC_DCL void freefruitchn(struct fruit *);
-STATIC_DCL void ghostfruit(struct Object *);
+STATIC_DCL void ghostfruit(Object *);
 STATIC_DCL bool restgamestate(int, unsigned int *, unsigned int *);
 STATIC_DCL void restlevelstate(unsigned int, unsigned int);
 STATIC_DCL int restlevelfile(int,xchar);
@@ -58,8 +58,8 @@ static long omoves;
 
 /* Recalculate level.objects[x][y], since this info was not saved. */
 STATIC_OVL void find_lev_obj() {
-	struct Object *fobjtmp = nullptr;
-	struct Object *otmp;
+	Object *fobjtmp = nullptr;
+	Object *otmp;
 	int x,y;
 
 	for(x=0; x<COLNO; x++) for(y=0; y<ROWNO; y++)
@@ -89,7 +89,7 @@ STATIC_OVL void find_lev_obj() {
  * infamous "HUP" cheat) get used up here.
  */
 void inven_inuse(bool quietly) {
-	struct Object *otmp, *otmp2;
+	Object *otmp, *otmp2;
 
 	for (otmp = invent; otmp; otmp = otmp2) {
 	    otmp2 = otmp->nobj;
@@ -170,9 +170,9 @@ STATIC_OVL void restdamage(int fd, bool ghostly) {
 	free((genericptr_t)tmp_dam);
 }
 
-STATIC_OVL struct Object * restobjchn(int fd, bool ghostly, bool frozen) {
-	struct Object *otmp, *otmp2 = 0;
-	struct Object *first = nullptr;
+STATIC_OVL Object * restobjchn(int fd, bool ghostly, bool frozen) {
+	Object *otmp, *otmp2 = 0;
+	Object *first = nullptr;
 	int xl;
 
 	while(1) {
@@ -182,7 +182,7 @@ STATIC_OVL struct Object * restobjchn(int fd, bool ghostly, bool frozen) {
 		if(!first) first = otmp;
 		else otmp2->nobj = otmp;
 		mread(fd, (genericptr_t) otmp,
-					(unsigned) xl + sizeof(struct Object));
+					(unsigned) xl + sizeof(Object));
 		if (ghostly) {
 		    unsigned nid = flags.ident++;
 		    add_id_mapping(otmp->o_id, nid);
@@ -198,7 +198,7 @@ STATIC_OVL struct Object * restobjchn(int fd, bool ghostly, bool frozen) {
 
 		/* get contents of a container or statue */
 		if (Has_contents(otmp)) {
-		    struct Object *otmp3;
+		    Object *otmp3;
 		    otmp->cobj = restobjchn(fd, ghostly, Is_IceBox(otmp));
 		    /* restore container back pointers */
 		    for (otmp3 = otmp->cobj; otmp3; otmp3 = otmp3->nobj)
@@ -251,14 +251,14 @@ STATIC_OVL struct Monster * restmonchn(int fd, bool ghostly) {
 			}
 		}
 		if(mtmp->minvent) {
-			struct Object *obj;
+			Object *obj;
 			mtmp->minvent = restobjchn(fd, ghostly, FALSE);
 			/* restore monster back pointer */
 			for (obj = mtmp->minvent; obj; obj = obj->nobj)
 				obj->ocarry = mtmp;
 		}
 		if (mtmp->mw) {
-			struct Object *obj;
+			Object *obj;
 
 			for(obj = mtmp->minvent; obj; obj = obj->nobj)
 				if (obj->owornmask & W_WEP) break;
@@ -305,7 +305,7 @@ STATIC_OVL void freefruitchn(struct fruit *flist) {
 	}
 }
 
-STATIC_OVL void ghostfruit(struct Object *otmp) {
+STATIC_OVL void ghostfruit(Object *otmp) {
 	struct fruit *oldf;
 
 	for (oldf = oldfruit; oldf; oldf = oldf->nextf)
@@ -319,7 +319,7 @@ STATIC_OVL
 bool restgamestate(int fd, unsigned int *stuckid, unsigned int *steedid) {
 	/* discover is actually flags.explore */
 	bool remember_discover = discover;
-	struct Object *otmp;
+	Object *otmp;
 	int uid;
 
 	mread(fd, (genericptr_t) &uid, sizeof uid);
@@ -461,7 +461,7 @@ int dorecover(int fd) {
 	unsigned int stuckid = 0, steedid = 0;	/* not a */
 	xchar ltmp;
 	int rtmp;
-	struct Object *otmp;
+	Object *otmp;
 
 #ifdef STORE_PLNAME_IN_FILE
 	mread(fd, (genericptr_t) plname, PL_NSIZ);
@@ -835,7 +835,7 @@ bool lookup_id_mapping(unsigned long gid, unsigned long *nidp) {
 }
 
 STATIC_OVL void reset_oattached_mids(bool ghostly) {
-    struct Object *otmp;
+    Object *otmp;
     unsigned long oldid, nid;
     for (otmp = fobj; otmp; otmp = otmp->nobj) {
 	if (ghostly && otmp->oattached == OATTACHED_MONST && otmp->oxlth) {

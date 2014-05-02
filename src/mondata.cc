@@ -52,7 +52,7 @@ bool poly_when_stoned(struct MonsterType *ptr) {
 /* returns TRUE if monster is drain-life resistant */
 bool resists_drli(struct Monster *mon) {
 	struct MonsterType *ptr = mon->data;
-	struct Object *wep = ((mon == &youmonst) ? uwep : mon->weapon());
+	Object *wep = ((mon == &youmonst) ? uwep : mon->weapon());
 
 	return (bool)(is_undead(ptr) || is_demon(ptr) || is_were(ptr) ||
 			 ptr == &mons[PM_DEATH] ||
@@ -62,7 +62,7 @@ bool resists_drli(struct Monster *mon) {
 /* TRUE if monster is magic-missile resistant */
 bool resists_magm(struct Monster *mon) {
 	struct MonsterType *ptr = mon->data;
-	struct Object *o;
+	Object *o;
 
 	/* as of 3.2.0:  gray dragons, Angels, Oracle, Yeenoghu */
 	if (dmgtype(ptr, AD_MAGM) || ptr == &mons[PM_BABY_GRAY_DRAGON] ||
@@ -85,7 +85,7 @@ bool resists_magm(struct Monster *mon) {
 bool resists_blnd(struct Monster *mon) {
 	struct MonsterType *ptr = mon->data;
 	bool is_you = (mon == &youmonst);
-	struct Object *o;
+	Object *o;
 
 	if (is_you ? (Blind || u.usleep) :
 		(mon->mblinded || !mon->mcansee || !haseyes(ptr) ||
@@ -110,10 +110,10 @@ bool resists_blnd(struct Monster *mon) {
 
 /* TRUE iff monster can be blinded by the given attack */
 /* Note: may return TRUE when mdef is blind (e.g. new cream-pie attack) */
-bool can_blnd(struct Monster *magr, struct Monster *mdef, uchar aatyp, struct Object *obj) {
+bool can_blnd(struct Monster *magr, struct Monster *mdef, uchar aatyp, Object *obj) {
 	bool is_you = (mdef == &youmonst);
 	bool check_visor = FALSE;
-	struct Object *o;
+	Object *o;
 	const char *s;
 
 	/* no eyes protect against all attacks for now */

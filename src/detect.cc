@@ -14,7 +14,7 @@
 
 extern bool known;	/* from read.c */
 
-STATIC_DCL void do_dknown_of(struct Object *);
+STATIC_DCL void do_dknown_of(Object *);
 STATIC_DCL bool check_map_spot(int,int,char,unsigned);
 STATIC_DCL bool clear_stale_map(char,unsigned);
 STATIC_DCL void sense_trap(struct trap *,xchar,xchar,int);
@@ -23,9 +23,9 @@ STATIC_PTR void findone(int,int,genericptr_t);
 STATIC_PTR void openone(int,int,genericptr_t);
 
 /* Recursively search obj for an object in class_id oclass and return 1st found */
-struct Object * o_in(struct Object* obj, char oclass) {
-    struct Object* otmp;
-    struct Object *temp;
+Object * o_in(Object* obj, char oclass) {
+    Object* otmp;
+    Object *temp;
 
     if (obj->oclass == oclass) return obj;
 
@@ -39,9 +39,9 @@ struct Object * o_in(struct Object* obj, char oclass) {
 }
 
 /* Recursively search obj for an object made of specified material and return 1st found */
-struct Object * o_material(struct Object* obj, unsigned material) {
-    struct Object* otmp;
-    struct Object *temp;
+Object * o_material(Object* obj, unsigned material) {
+    Object* otmp;
+    Object *temp;
 
     if (objects[obj->otyp].oc_material == material) return obj;
 
@@ -54,8 +54,8 @@ struct Object * o_material(struct Object* obj, unsigned material) {
     return nullptr;
 }
 
-STATIC_OVL void do_dknown_of(struct Object *obj) {
-    struct Object *otmp;
+STATIC_OVL void do_dknown_of(Object *obj) {
+    Object *otmp;
 
     obj->dknown = 1;
     if (Has_contents(obj)) {
@@ -67,7 +67,7 @@ STATIC_OVL void do_dknown_of(struct Object *obj) {
 /* Check whether the location has an outdated object displayed on it. */
 STATIC_OVL bool check_map_spot(int x, int y, char oclass, unsigned material) {
 	int glyph;
-	struct Object *otmp;
+	Object *otmp;
 	struct Monster *mtmp;
 
 	glyph = glyph_at(x,y);
@@ -141,11 +141,11 @@ STATIC_OVL bool clear_stale_map(char oclass, unsigned material) {
 }
 
 /* look for gold, on the floor or in monsters' possession */
-int gold_detect(struct Object *sobj) {
-    struct Object *obj;
+int gold_detect(Object *sobj) {
+    Object *obj;
     struct Monster *mtmp;
     int uw = u.uinwater;
-    struct Object *temp;
+    Object *temp;
     bool stale;
 
     known = stale = clear_stale_map(COIN_CLASS,
@@ -236,7 +236,7 @@ outgoldmap:
 #else
 	if (findgold(mtmp->minvent) || monsndx(mtmp->data) == PM_GOLD_GOLEM) {
 #endif
-	    struct Object gold;
+	    Object gold;
 
 	    gold.otyp = GOLD_PIECE;
 	    gold.ox = mtmp->mx;
@@ -269,8 +269,8 @@ outgoldmap:
 
 /* returns 1 if nothing was detected		*/
 /* returns 0 if something was detected		*/
-int food_detect(struct Object *sobj) {
-    struct Object *obj;
+int food_detect(Object *sobj) {
+    Object *obj;
     struct Monster *mtmp;
     int ct = 0, ctu = 0;
     bool confused = (Confusion || (sobj && sobj->cursed)), stale;
@@ -325,7 +325,7 @@ int food_detect(struct Object *sobj) {
 		u.uedibility = 1;
 	}
     } else {
-	struct Object *temp;
+	Object *temp;
 	known = TRUE;
 	cls();
 	u.uinwater = 0;
@@ -372,7 +372,7 @@ int food_detect(struct Object *sobj) {
  *	1 - nothing was detected
  *	0 - something was detected
  */
-int object_detect(struct Object *detector, int class_id) {
+int object_detect(Object *detector, int class_id) {
     int x, y;
     char stuff[BUFSZ];
     int is_cursed = (detector && detector->cursed);
@@ -380,7 +380,7 @@ int object_detect(struct Object *detector, int class_id) {
 				    detector->oclass == SPBOOK_CLASS) &&
 			detector->blessed);
     int ct = 0, ctu = 0;
-    struct Object *obj, *otmp = nullptr;
+    Object *obj, *otmp = nullptr;
     struct Monster *mtmp;
     int uw = u.uinwater;
     int sym, boulder = 0;
@@ -509,7 +509,7 @@ int object_detect(struct Object *detector, int class_id) {
 	/* Allow a mimic to override the detected objects it is carrying. */
 	if (is_cursed && mtmp->m_ap_type == M_AP_OBJECT &&
 		(!class_id || class_id == objects[mtmp->mappearance].oc_class)) {
-	    struct Object temp;
+	    Object temp;
 
 	    temp.otyp = mtmp->mappearance;	/* needed for obj_to_glyph() */
 	    temp.ox = mtmp->mx;
@@ -521,7 +521,7 @@ int object_detect(struct Object *detector, int class_id) {
 #else
 	} else if (findgold(mtmp->minvent) && (!class_id || class_id == COIN_CLASS)) {
 #endif
-	    struct Object gold;
+	    Object gold;
 
 	    gold.otyp = GOLD_PIECE;
 	    gold.ox = mtmp->mx;
@@ -551,7 +551,7 @@ int object_detect(struct Object *detector, int class_id) {
  * Returns 1 if nothing was detected.
  * Returns 0 if something was detected.
  */
-int monster_detect(struct Object *otmp, int mclass) {
+int monster_detect(Object *otmp, int mclass) {
     struct Monster *mtmp;
     int mcnt = 0;
 
@@ -611,7 +611,7 @@ int monster_detect(struct Object *otmp, int mclass) {
 
 STATIC_OVL void sense_trap(struct trap *trap, xchar x, xchar y, int src_cursed) {
     if (Hallucination || src_cursed) {
-	struct Object obj;			/* fake object */
+	Object obj;			/* fake object */
 	if (trap) {
 	    obj.ox = trap->tx;
 	    obj.oy = trap->ty;
@@ -640,9 +640,9 @@ STATIC_OVL void sense_trap(struct trap *trap, xchar x, xchar y, int src_cursed) 
 /* returns 1 if nothing was detected		*/
 /* returns 0 if something was detected		*/
 /* sobj is null if crystal ball, *scroll if gold detection scroll */
-int trap_detect(struct Object *sobj) {
+int trap_detect(Object *sobj) {
     struct trap *ttmp;
-    struct Object *obj;
+    Object *obj;
     int door;
     int uw = u.uinwater;
     bool found = FALSE;
@@ -743,7 +743,7 @@ static const struct {
   { "the Wizard of Yendor's tower", &wiz1_level },
 };
 
-void use_crystal_ball(struct Object *obj) {
+void use_crystal_ball(Object *obj) {
     char ch;
     int oops;
 
@@ -986,7 +986,7 @@ STATIC_PTR void findone(int zx, int zy, genericptr_t num) {
 
 STATIC_PTR void openone(int zx, int zy, genericptr_t num) {
 	struct trap *ttmp;
-	struct Object *otmp;
+	Object *otmp;
 
 	if(OBJ_AT(zx, zy)) {
 		for(otmp = level.objects[zx][zy];
@@ -1199,7 +1199,7 @@ int dosearch() {
 void sokoban_detect() {
 	int x, y;
 	struct trap *ttmp;
-	struct Object *obj;
+	Object *obj;
 
 	/* Map the background and boulders */
 	for (x = 1; x < COLNO; x++)

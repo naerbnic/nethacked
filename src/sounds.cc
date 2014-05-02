@@ -801,7 +801,7 @@ int dotalk() {
 static int dochat() {
     struct Monster *mtmp;
     int tx,ty;
-    struct Object *otmp;
+    Object *otmp;
 
     if (is_silent(youmonst.data)) {
 	pline("As %s, you cannot speak.", an(youmonst.data->mname));

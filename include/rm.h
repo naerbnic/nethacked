@@ -474,16 +474,16 @@ typedef struct
 {
     struct rm		locations[COLNO][ROWNO];
 #ifndef MICROPORT_BUG
-    struct Object		*objects[COLNO][ROWNO];
+    Object		*objects[COLNO][ROWNO];
     struct Monster	*monsters[COLNO][ROWNO];
 #else
-    struct Object		*objects[1][ROWNO];
+    Object		*objects[1][ROWNO];
     char		*yuk1[COLNO-1][ROWNO];
     struct Monster	*monsters[1][ROWNO];
     char		*yuk2[COLNO-1][ROWNO];
 #endif
-    struct Object		*objlist;
-    struct Object		*buriedobjlist;
+    Object		*objlist;
+    Object		*buriedobjlist;
     struct Monster	*monlist;
     struct damage	*damagelist;
     struct levelflags	flags;

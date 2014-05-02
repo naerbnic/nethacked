@@ -133,9 +133,9 @@ struct Monster {
 #ifndef GOLDOBJ
 	long mgold;
 #endif
-	struct Object *minvent;
+	Object *minvent;
 
-	struct Object *mw;
+	Object *mw;
 	long misc_worn_check;
 	xchar weapon_check;
 

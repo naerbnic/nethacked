@@ -373,7 +373,7 @@ STATIC_OVL void fixup_special() {
 
     /* Still need to add some stuff to level file */
     if (Is_medusa_level(&u.uz)) {
-	struct Object *otmp;
+	Object *otmp;
 	int tryct;
 
 	croom = &rooms[0]; /* only one room on the medusa level */
@@ -854,7 +854,7 @@ void movebubbles() {
 
 			/* pick up objects, monsters, hero, and traps */
 			if (OBJ_AT(x,y)) {
-			    struct Object *olist = (struct Object *) 0, *otmp;
+			    Object *olist = (Object *) 0, *otmp;
 			    struct container *cons = (struct container *)
 				alloc(sizeof(struct container));
 
@@ -1218,9 +1218,9 @@ STATIC_OVL void mv_bubble(struct bubble *b, int dx, int dy, bool ini) {
 
 	    switch(cons->what) {
 		case CONS_OBJ: {
-		    struct Object *olist, *otmp;
+		    Object *olist, *otmp;
 
-		    for (olist=(struct Object *)cons->list; olist; olist=otmp) {
+		    for (olist=(Object *)cons->list; olist; olist=otmp) {
 			otmp = olist->nexthere;
 			place_object(olist, cons->x, cons->y);
 		    }

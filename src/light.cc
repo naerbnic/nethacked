@@ -89,7 +89,7 @@ void del_light_source(int type, genericptr_t id) {
        has only been partially restored during a level change
        (in particular: chameleon vs prot. from shape changers) */
     switch (type) {
-    case LS_OBJECT:	tmp_id = (genericptr_t)(((struct Object *)id)->o_id);
+    case LS_OBJECT:	tmp_id = (genericptr_t)(((Object *)id)->o_id);
 			break;
     case LS_MONSTER:	tmp_id = (genericptr_t)(((struct Monster *)id)->m_id);
 			break;
@@ -131,7 +131,7 @@ void do_light_sources(char **cs_rows) {
 	 * vision recalc.
 	 */
 	if (ls->type == LS_OBJECT) {
-	    if (get_obj_location((struct Object *) ls->id, &ls->x, &ls->y, 0))
+	    if (get_obj_location((Object *) ls->id, &ls->x, &ls->y, 0))
 		ls->flags |= LSF_SHOW;
 	} else if (ls->type == LS_MONSTER) {
 	    if (get_mon_location((struct Monster *) ls->id, &ls->x, &ls->y, 0))
@@ -232,7 +232,7 @@ void save_light_sources(int fd, int mode, int range) {
 	    } else
 	    switch (curr->type) {
 	    case LS_OBJECT:
-		is_global = !obj_is_local((struct Object *)curr->id);
+		is_global = !obj_is_local((Object *)curr->id);
 		break;
 	    case LS_MONSTER:
 		is_global = !mon_is_local((struct Monster *)curr->id);
@@ -321,7 +321,7 @@ STATIC_OVL int maybe_write_ls(int fd, int range, bool write_it) {
 	}
 	switch (ls->type) {
 	case LS_OBJECT:
-	    is_global = !obj_is_local((struct Object *)ls->id);
+	    is_global = !obj_is_local((Object *)ls->id);
 	    break;
 	case LS_MONSTER:
 	    is_global = !mon_is_local((struct Monster *)ls->id);
@@ -345,7 +345,7 @@ STATIC_OVL int maybe_write_ls(int fd, int range, bool write_it) {
 /* Write a light source structure to disk. */
 STATIC_OVL void write_ls(int fd, light_source *ls) {
     genericptr_t arg_save;
-    struct Object *otmp;
+    Object *otmp;
     struct Monster *mtmp;
 
     if (ls->type == LS_OBJECT || ls->type == LS_MONSTER) {
@@ -355,7 +355,7 @@ STATIC_OVL void write_ls(int fd, light_source *ls) {
 	    /* replace object pointer with id for write, then put back */
 	    arg_save = ls->id;
 	    if (ls->type == LS_OBJECT) {
-		otmp = (struct Object *)ls->id;
+		otmp = (Object *)ls->id;
 		ls->id = (genericptr_t)otmp->o_id;
 #ifdef DEBUG
 		if (find_oid((unsigned)ls->id) != otmp)
@@ -380,7 +380,7 @@ STATIC_OVL void write_ls(int fd, light_source *ls) {
 }
 
 /* Change light source's ID from src to dest. */
-void obj_move_light_source(struct Object *src, struct Object *dest) {
+void obj_move_light_source(Object *src, Object *dest) {
     light_source *ls;
 
     for (ls = light_base; ls; ls = ls->next)
@@ -401,7 +401,7 @@ bool any_light_source() {
  */
 void snuff_light_source(int x, int y) {
     light_source *ls;
-    struct Object *obj;
+    Object *obj;
 
     for (ls = light_base; ls; ls = ls->next)
 	/*
@@ -410,7 +410,7 @@ void snuff_light_source(int x, int y) {
 	updated with the last vision update?  [Is that recent enough???]
 	*/
 	if (ls->type == LS_OBJECT && ls->x == x && ls->y == y) {
-	    obj = (struct Object *) ls->id;
+	    obj = (Object *) ls->id;
 	    if (obj_is_burning(obj)) {
 		/* The only way to snuff Sunsword is to unwield it.  Darkness
 		 * scrolls won't affect it.  (If we got here because it was
@@ -430,19 +430,19 @@ void snuff_light_source(int x, int y) {
 }
 
 /* Return TRUE if object sheds any light at all. */
-bool obj_sheds_light(struct Object *obj) {
+bool obj_sheds_light(Object *obj) {
     /* so far, only burning objects shed light */
     return obj_is_burning(obj);
 }
 
 /* Return TRUE if sheds light AND will be snuffed by end_burn(). */
-bool obj_is_burning(struct Object *obj) {
+bool obj_is_burning(Object *obj) {
     return (obj->lamplit &&
 		(obj->otyp == MAGIC_LAMP || ignitable(obj) || artifact_light(obj)));
 }
 
 /* copy the light source(s) attachted to src, and attach it/them to dest */
-void obj_split_light_source(struct Object *src, struct Object *dest) {
+void obj_split_light_source(Object *src, Object *dest) {
     light_source *ls, *new_ls;
 
     for (ls = light_base; ls; ls = ls->next)
@@ -469,7 +469,7 @@ void obj_split_light_source(struct Object *src, struct Object *dest) {
 
 /* light source `src' has been folded into light source `dest';
    used for merging lit candles and adding candle(s) to lit candelabrum */
-void obj_merge_light_sources(struct Object *src, struct Object *dest) {
+void obj_merge_light_sources(Object *src, Object *dest) {
     light_source *ls;
 
     /* src == dest implies adding to candelabrum */
@@ -485,7 +485,7 @@ void obj_merge_light_sources(struct Object *src, struct Object *dest) {
 
 /* Candlelight is proportional to the number of candles;
    minimum range is 2 rather than 1 for playability. */
-int candle_light_range(struct Object *obj) {
+int candle_light_range(Object *obj) {
     int radius;
 
     if (obj->otyp == CANDELABRUM_OF_INVOCATION) {

@@ -7,16 +7,16 @@
 #include "hack.h"
 #include "prop.h"
 
-STATIC_DCL void mkbox_cnts(struct Object *);
-STATIC_DCL void obj_timer_checks(struct Object *, xchar, xchar, int);
-STATIC_DCL void container_weight(struct Object *);
-STATIC_DCL struct Object *save_mtraits(struct Object *, struct Monster *);
+STATIC_DCL void mkbox_cnts(Object *);
+STATIC_DCL void obj_timer_checks(Object *, xchar, xchar, int);
+STATIC_DCL void container_weight(Object *);
+STATIC_DCL Object *save_mtraits(Object *, struct Monster *);
 #ifdef WIZARD
 STATIC_DCL const char *where_name(int);
-STATIC_DCL void check_contained(struct Object *,const char *);
+STATIC_DCL void check_contained(Object *,const char *);
 #endif
 
-extern struct Object *thrownobj;		/* defined in dothrow.c */
+extern Object *thrownobj;		/* defined in dothrow.c */
 
 /*#define DEBUG_EFFECTS*/	/* show some messages for debugging */
 
@@ -76,23 +76,23 @@ const struct icp hellprobs[] = {
 { 4, AMULET_CLASS}
 };
 
-struct Object * mkobj_at(char let, int x, int y, bool artif) {
-	struct Object *otmp;
+Object * mkobj_at(char let, int x, int y, bool artif) {
+	Object *otmp;
 
 	otmp = mkobj(let, artif);
 	place_object(otmp, x, y);
 	return(otmp);
 }
 
-struct Object * mksobj_at(int otyp, int x, int y, bool init, bool artif) {
-	struct Object *otmp;
+Object * mksobj_at(int otyp, int x, int y, bool init, bool artif) {
+	Object *otmp;
 
 	otmp = mksobj(otyp, init, artif);
 	place_object(otmp, x, y);
 	return(otmp);
 }
 
-struct Object * mkobj(char oclass, bool artif) {
+Object * mkobj(char oclass, bool artif) {
   int tprob, prob = rnd(1000);
 
   if (oclass == RANDOM_CLASS) {
@@ -118,11 +118,11 @@ struct Object * mkobj(char oclass, bool artif) {
   return (mksobj(i, TRUE, artif));
 }
 
-STATIC_OVL void mkbox_cnts(struct Object *box) {
+STATIC_OVL void mkbox_cnts(Object *box) {
 	int n;
-	struct Object *otmp;
+	Object *otmp;
 
-	box->cobj = (struct Object *) 0;
+	box->cobj = (Object *) 0;
 
 	switch (box->otyp) {
 	case ICE_BOX:		n = 20; break;
@@ -203,8 +203,8 @@ int rndmonnum() {
  * has its wornmask cleared and is positioned just following the original
  * in the nobj chain (and nexthere chain when on the floor).
  */
-struct Object * splitobj(struct Object *obj, long num) {
-	struct Object *otmp;
+Object * splitobj(Object *obj, long num) {
+	Object *otmp;
 
 	if (obj->cobj || num <= 0L || obj->quan <= num)
 	    panic("splitobj");	/* can't split containers */
@@ -244,7 +244,7 @@ struct Object * splitobj(struct Object *obj, long num) {
  * Note:  Don't use use obj_extract_self() -- we are doing an in-place swap,
  * not actually moving something.
  */
-void replace_object(struct Object *obj, struct Object *otmp) {
+void replace_object(Object *obj, Object *otmp) {
     otmp->where = obj->where;
     switch (obj->where) {
     case OBJ_FREE:
@@ -297,8 +297,8 @@ void replace_object(struct Object *obj, struct Object *otmp) {
  * Note that check_unpaid_usage() should be used instead for partial
  * usage of an object.
  */
-void bill_dummy_object(struct Object *otmp) {
-	struct Object *dummy;
+void bill_dummy_object(Object *otmp) {
+	Object *dummy;
 
 	if (otmp->unpaid)
 	    subfrombill(otmp, shop_keeper(*u.ushops));
@@ -325,9 +325,9 @@ static const char dknowns[] = {
 		GEM_CLASS, SPBOOK_CLASS, WEAPON_CLASS, TOOL_CLASS, 0
 };
 
-struct Object * mksobj(int otyp, bool init, bool artif) {
+Object * mksobj(int otyp, bool init, bool artif) {
 	int mndx, tryct;
-	struct Object *otmp;
+	Object *otmp;
 	char let = objects[otyp].oc_class;
 
 	otmp = newobj(0);
@@ -597,7 +597,7 @@ struct Object * mksobj(int otyp, bool init, bool artif) {
  * Start a corpse decay or revive timer.
  * This takes the age of the corpse into consideration as of 3.4.0.
  */
-void start_corpse_timeout(struct Object *body) {
+void start_corpse_timeout(Object *body) {
 	long when; 		/* rot away when this old */
 	long corpse_age;	/* age of corpse          */
 	int rot_adjust;
@@ -642,7 +642,7 @@ void start_corpse_timeout(struct Object *body) {
 	(void) start_timer(when, TIMER_OBJECT, action, (genericptr_t)body);
 }
 
-void bless(struct Object *otmp) {
+void bless(Object *otmp) {
 #ifdef GOLDOBJ
 	if (otmp->oclass == COIN_CLASS) return;
 #endif
@@ -657,7 +657,7 @@ void bless(struct Object *otmp) {
 	return;
 }
 
-void unbless(struct Object *otmp) {
+void unbless(Object *otmp) {
 	otmp->blessed = 0;
 	if (carried(otmp) && confers_luck(otmp))
 	    set_moreluck();
@@ -665,7 +665,7 @@ void unbless(struct Object *otmp) {
 	    otmp->owt = weight(otmp);
 }
 
-void curse(struct Object *otmp) {
+void curse(Object *otmp) {
 #ifdef GOLDOBJ
 	if (otmp->oclass == COIN_CLASS) return;
 #endif
@@ -691,7 +691,7 @@ void curse(struct Object *otmp) {
 	return;
 }
 
-void uncurse(struct Object *otmp) {
+void uncurse(Object *otmp) {
 	otmp->cursed = 0;
 	if (carried(otmp) && confers_luck(otmp))
 	    set_moreluck();
@@ -702,7 +702,7 @@ void uncurse(struct Object *otmp) {
 	return;
 }
 
-void blessorcurse(struct Object *otmp, int chance) {
+void blessorcurse(Object *otmp, int chance) {
 	if(otmp->blessed || otmp->cursed) return;
 
 	if(!rn2(chance)) {
@@ -715,7 +715,7 @@ void blessorcurse(struct Object *otmp, int chance) {
 	return;
 }
 
-int bcsign(struct Object *otmp) {
+int bcsign(Object *otmp) {
 	return(!!otmp->blessed - !!otmp->cursed);
 }
 
@@ -727,13 +727,13 @@ int bcsign(struct Object *otmp) {
  *	   of the code messes with a contained object and doesn't update the
  *	   container's weight.
  */
-int weight(struct Object *obj) {
+int weight(Object *obj) {
 	int wt = objects[obj->otyp].oc_weight;
 
 	if (obj->otyp == LARGE_BOX && obj->spe == 1) /* Schroedinger's Cat */
 		wt += mons[PM_HOUSECAT].cwt;
 	if (Is_container(obj) || obj->otyp == STATUE) {
-		struct Object *contents;
+		Object *contents;
 		int cwt = 0;
 
 		if (obj->otyp == STATUE && obj->corpsenm >= LOW_PM)
@@ -784,12 +784,12 @@ int weight(struct Object *obj) {
 
 static int treefruits[] = {APPLE,ORANGE,PEAR,BANANA,EUCALYPTUS_LEAF};
 
-struct Object * rnd_treefruit_at(int x, int y) {
+Object * rnd_treefruit_at(int x, int y) {
 	return mksobj_at(treefruits[rn2(SIZE(treefruits))], x, y, TRUE, FALSE);
 }
 
-struct Object * mkgold(long amount, int x, int y) {
-    struct Object *gold = g_at(x,y);
+Object * mkgold(long amount, int x, int y) {
+    Object *gold = g_at(x,y);
 
     if (amount <= 0L)
 	amount = (long)(1 + rnd(level_difficulty()+2) * rnd(30));
@@ -818,8 +818,8 @@ struct Object * mkgold(long amount, int x, int y) {
  * yet still allow restoration of the original monster upon
  * resurrection.
  */
-struct Object * mkcorpstat(int objtype, struct Monster *mtmp, struct MonsterType *ptr, int x, int y, bool init) {
-	struct Object *otmp;
+Object * mkcorpstat(int objtype, struct Monster *mtmp, struct MonsterType *ptr, int x, int y, bool init) {
+	Object *otmp;
 
 	if (objtype != CORPSE && objtype != STATUE)
 	    impossible("making corpstat type %d", objtype);
@@ -830,7 +830,7 @@ struct Object * mkcorpstat(int objtype, struct Monster *mtmp, struct MonsterType
 		otmp = mksobj_at(objtype, x, y, init, FALSE);
 	if (otmp) {
 	    if (mtmp) {
-		struct Object *otmp2;
+		Object *otmp2;
 
 		if (!ptr) ptr = mtmp->data;
 		/* save_mtraits frees original data pointed to by otmp */
@@ -859,8 +859,8 @@ struct Object * mkcorpstat(int objtype, struct Monster *mtmp, struct MonsterType
  * Attach a monster id to an object, to provide
  * a lasting association between the two.
  */
-struct Object * obj_attach_mid(struct Object *obj, unsigned mid) {
-    struct Object *otmp;
+Object * obj_attach_mid(Object *obj, unsigned mid) {
+    Object *otmp;
     int lth, namelth;
 
     if (!mid || !obj) return nullptr;
@@ -878,8 +878,8 @@ struct Object * obj_attach_mid(struct Object *obj, unsigned mid) {
     return otmp;
 }
 
-static struct Object * save_mtraits(struct Object *obj, struct Monster *mtmp) {
-	struct Object *otmp;
+static Object * save_mtraits(Object *obj, struct Monster *mtmp) {
+	Object *otmp;
 	int lth, namelth;
 
 	lth = sizeof(struct Monster) + mtmp->mxlth + mtmp->mnamelth;
@@ -902,7 +902,7 @@ static struct Object * save_mtraits(struct Object *obj, struct Monster *mtmp) {
 /* returns a pointer to a new monst structure based on
  * the one contained within the obj.
  */
-struct Monster * get_mtraits(struct Object *obj, bool copyof) {
+struct Monster * get_mtraits(Object *obj, bool copyof) {
 	struct Monster *mtmp = (struct Monster *)0;
 	struct Monster *mnew = (struct Monster *)0;
 
@@ -924,8 +924,8 @@ struct Monster * get_mtraits(struct Object *obj, bool copyof) {
 }
 
 /* make an object named after someone listed in the scoreboard file */
-struct Object * mk_tt_object(int objtype, int x, int y) {
-	struct Object *otmp, *otmp2;
+Object * mk_tt_object(int objtype, int x, int y) {
+	Object *otmp, *otmp2;
 	bool initialize_it;
 
 	/* player statues never contain books */
@@ -938,8 +938,8 @@ struct Object * mk_tt_object(int objtype, int x, int y) {
 }
 
 /* make a new corpse or statue, uninitialized if a statue (i.e. no books) */
-struct Object * mk_named_object(int objtype, struct MonsterType *ptr, int x, int y, const char *nm) {
-	struct Object *otmp;
+Object * mk_named_object(int objtype, struct MonsterType *ptr, int x, int y, const char *nm) {
+	Object *otmp;
 
 	otmp = mkcorpstat(objtype, (struct Monster *)0, ptr,
 				x, y, (bool)(objtype != STATUE));
@@ -948,7 +948,7 @@ struct Object * mk_named_object(int objtype, struct MonsterType *ptr, int x, int
 	return(otmp);
 }
 
-bool is_flammable(struct Object *otmp) {
+bool is_flammable(Object *otmp) {
 	int otyp = otmp->otyp;
 	int omat = objects[otyp].oc_material;
 
@@ -958,7 +958,7 @@ bool is_flammable(struct Object *otmp) {
 	return((bool)((omat <= WOOD && omat != LIQUID) || omat == PLASTIC));
 }
 
-bool is_rottable(struct Object *otmp) {
+bool is_rottable(Object *otmp) {
 	int otyp = otmp->otyp;
 
 	return((bool)(objects[otyp].oc_material <= WOOD &&
@@ -971,8 +971,8 @@ bool is_rottable(struct Object *otmp) {
  */
 
 /* put the object at the given location */
-void place_object(struct Object *otmp, int x, int y) {
-    struct Object *otmp2 = level.objects[x][y];
+void place_object(Object *otmp, int x, int y) {
+    Object *otmp2 = level.objects[x][y];
 
     if (otmp->where != OBJ_FREE)
 	panic("place_object: obj not free");
@@ -1008,7 +1008,7 @@ void place_object(struct Object *otmp, int x, int y) {
  * Also used for starting ice effects too. [zap.c]
  */
 void obj_ice_effects(int x, int y, bool do_buried) {
-	struct Object *otmp;
+	Object *otmp;
 
 	for (otmp = level.objects[x][y]; otmp; otmp = otmp->nexthere) {
 		if (otmp->timed) obj_timer_checks(otmp, x, y, 0);
@@ -1029,7 +1029,7 @@ void obj_ice_effects(int x, int y, bool do_buried) {
  * rot timers pertaining to the object don't have to be stopped and
  * restarted etc.
  */
-long peek_at_iced_corpse_age(struct Object *otmp) {
+long peek_at_iced_corpse_age(Object *otmp) {
     long age, retval = otmp->age;
 
     if (otmp->otyp == CORPSE && ON_ICE(otmp)) {
@@ -1046,7 +1046,7 @@ long peek_at_iced_corpse_age(struct Object *otmp) {
     return retval;
 }
 
-STATIC_OVL void obj_timer_checks(struct Object *otmp, xchar x, xchar y, int force) {
+STATIC_OVL void obj_timer_checks(Object *otmp, xchar x, xchar y, int force) {
     long tleft = 0L;
     short action = ROT_CORPSE;
     bool restart_timer = FALSE;
@@ -1110,7 +1110,7 @@ STATIC_OVL void obj_timer_checks(struct Object *otmp, xchar x, xchar y, int forc
 #undef ON_ICE
 #undef ROT_ICE_ADJUSTMENT
 
-void remove_object(struct Object *otmp) {
+void remove_object(Object *otmp) {
     xchar x = otmp->ox;
     xchar y = otmp->oy;
 
@@ -1124,7 +1124,7 @@ void remove_object(struct Object *otmp) {
 
 /* throw away all of a monster's inventory */
 void discard_minvent(struct Monster *mtmp) {
-    struct Object *otmp;
+    Object *otmp;
 
     while ((otmp = mtmp->minvent) != 0) {
 	obj_extract_self(otmp);
@@ -1148,7 +1148,7 @@ void discard_minvent(struct Monster *mtmp) {
  *	OBJ_BURIED	level.buriedobjs chain
  *	OBJ_ONBILL	on billobjs chain
  */
-void obj_extract_self(struct Object *obj) {
+void obj_extract_self(Object *obj) {
     switch (obj->where) {
 	case OBJ_FREE:
 	    break;
@@ -1182,11 +1182,11 @@ void obj_extract_self(struct Object *obj) {
 
 
 /* Extract the given object from the chain, following nobj chain. */
-void extract_nobj(struct Object *obj, struct Object **head_ptr) {
-    struct Object *curr, *prev;
+void extract_nobj(Object *obj, Object **head_ptr) {
+    Object *curr, *prev;
 
     curr = *head_ptr;
-    for (prev = (struct Object *) 0; curr; prev = curr, curr = curr->nobj) {
+    for (prev = (Object *) 0; curr; prev = curr, curr = curr->nobj) {
 	if (curr == obj) {
 	    if (prev)
 		prev->nobj = curr->nobj;
@@ -1206,11 +1206,11 @@ void extract_nobj(struct Object *obj, struct Object **head_ptr) {
  * This does not set obj->where, this function is expected to be called
  * in tandem with extract_nobj, which does set it.
  */
-void extract_nexthere(struct Object *obj, struct Object **head_ptr) {
-    struct Object *curr, *prev;
+void extract_nexthere(Object *obj, Object **head_ptr) {
+    Object *curr, *prev;
 
     curr = *head_ptr;
-    for (prev = (struct Object *) 0; curr; prev = curr, curr = curr->nexthere) {
+    for (prev = (Object *) 0; curr; prev = curr, curr = curr->nexthere) {
 	if (curr == obj) {
 	    if (prev)
 		prev->nexthere = curr->nexthere;
@@ -1228,8 +1228,8 @@ void extract_nexthere(struct Object *obj, struct Object **head_ptr) {
  * in the inventory, then the passed obj is deleted and 1 is returned.
  * Otherwise 0 is returned.
  */
-int add_to_minv(struct Monster *mon, struct Object *obj) {
-    struct Object *otmp;
+int add_to_minv(struct Monster *mon, Object *obj) {
+    Object *otmp;
 
     if (obj->where != OBJ_FREE)
 	panic("add_to_minv: obj not free");
@@ -1250,8 +1250,8 @@ int add_to_minv(struct Monster *mon, struct Object *obj) {
  * Add obj to container, make sure obj is "free".  Returns (merged) obj.
  * The input obj may be deleted in the process.
  */
-struct Object * add_to_container(struct Object *container, struct Object *obj) {
-    struct Object *otmp;
+Object * add_to_container(Object *container, Object *obj) {
+    Object *otmp;
 
     if (obj->where != OBJ_FREE)
 	panic("add_to_container: obj not free");
@@ -1269,7 +1269,7 @@ struct Object * add_to_container(struct Object *container, struct Object *obj) {
     return (obj);
 }
 
-void add_to_migration(struct Object *obj) {
+void add_to_migration(Object *obj) {
     if (obj->where != OBJ_FREE)
 	panic("add_to_migration: obj not free");
 
@@ -1278,7 +1278,7 @@ void add_to_migration(struct Object *obj) {
     migrating_objs = obj;
 }
 
-void add_to_buried(struct Object *obj) {
+void add_to_buried(Object *obj) {
     if (obj->where != OBJ_FREE)
 	panic("add_to_buried: obj not free");
 
@@ -1288,7 +1288,7 @@ void add_to_buried(struct Object *obj) {
 }
 
 /* Recalculate the weight of this container and all of _its_ containers. */
-STATIC_OVL void container_weight(struct Object *container) {
+STATIC_OVL void container_weight(Object *container) {
     container->owt = weight(container);
     if (container->where == OBJ_CONTAINED)
 	container_weight(container->ocontainer);
@@ -1302,7 +1302,7 @@ STATIC_OVL void container_weight(struct Object *container) {
  * Deallocate the object.  _All_ objects should be run through here for
  * them to be deallocated.
  */
-void dealloc_obj(struct Object *obj) {
+void dealloc_obj(Object *obj) {
     if (obj->where != OBJ_FREE)
 	panic("dealloc_obj: obj not free");
 
@@ -1321,7 +1321,7 @@ void dealloc_obj(struct Object *obj) {
     if (obj_sheds_light(obj))
 	del_light_source(LS_OBJECT, (genericptr_t) obj);
 
-    if (obj == thrownobj) thrownobj = (struct Object*)0;
+    if (obj == thrownobj) thrownobj = (Object*)0;
 
     free((genericptr_t) obj);
 }
@@ -1330,7 +1330,7 @@ void dealloc_obj(struct Object *obj) {
 /* Check all object lists for consistency. */
 void obj_sanity_check() {
     int x, y;
-    struct Object *obj;
+    Object *obj;
     struct Monster *mon;
     const char *mesg;
     char obj_address[20], mon_address[20];  /* room for formatted pointers */
@@ -1432,8 +1432,8 @@ STATIC_OVL const char * where_name(int where) {
 }
 
 /* obj sanity check: check objs contained by container */
-STATIC_OVL void check_contained(struct Object *container, const char *mesg) {
-    struct Object *obj;
+STATIC_OVL void check_contained(Object *container, const char *mesg) {
+    Object *obj;
     char obj1_address[20], obj2_address[20];
 
     for (obj = container->cobj; obj; obj = obj->nobj) {

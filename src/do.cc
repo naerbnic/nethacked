@@ -11,12 +11,12 @@
 
 #ifdef SINKS
 # ifdef OVLB
-STATIC_DCL void trycall(struct Object *);
+STATIC_DCL void trycall(Object *);
 # endif /* OVLB */
-STATIC_DCL void dosinkring(struct Object *);
+STATIC_DCL void dosinkring(Object *);
 #endif /* SINKS */
 
-STATIC_PTR int drop(struct Object *);
+STATIC_PTR int drop(Object *);
 STATIC_PTR int wipeoff();
 
 #ifdef OVL0
@@ -56,7 +56,7 @@ int dodrop() {
  * in a pool, it either fills the pool up or sinks away.  In either case,
  * it's gone for good...  If the destination is not a pool, returns FALSE.
  */
-bool boulder_hits_pool(struct Object *otmp, int rx, int ry, bool pushing) {
+bool boulder_hits_pool(Object *otmp, int rx, int ry, bool pushing) {
 	if (!otmp || otmp->otyp != BOULDER)
 	    impossible("Not a boulder?");
 	else if (!Is_waterlevel(&u.uz) && (is_pool(rx,ry) || is_lava(rx,ry))) {
@@ -125,7 +125,7 @@ bool boulder_hits_pool(struct Object *otmp, int rx, int ry, bool pushing) {
  * called with the object not in any chain.  Returns TRUE if the object goes
  * away.
  */
-bool flooreffects(struct Object *obj, int x, int y, const char *verb) {
+bool flooreffects(Object *obj, int x, int y, const char *verb) {
 	struct trap *t;
 	struct Monster *mtmp;
 
@@ -219,7 +219,7 @@ bool flooreffects(struct Object *obj, int x, int y, const char *verb) {
 #ifdef OVLB
 
 /* obj is an object dropped on an altar */
-void doaltarobj(struct Object *obj) {
+void doaltarobj(Object *obj) {
 	if (Blind)
 		return;
 
@@ -240,7 +240,7 @@ void doaltarobj(struct Object *obj) {
 
 #ifdef SINKS
 STATIC_OVL
-void trycall(struct Object *obj) {
+void trycall(Object *obj) {
 	if(!objects[obj->otyp].oc_name_known &&
 	   !objects[obj->otyp].oc_uname)
 	   docall(obj);
@@ -248,8 +248,8 @@ void trycall(struct Object *obj) {
 
 STATIC_OVL
 /* obj is a ring being dropped over a kitchen sink */
-void dosinkring(struct Object *obj) {
-	struct Object *otmp,*otmp2;
+void dosinkring(Object *obj) {
+	Object *otmp,*otmp2;
 	bool ideed = TRUE;
 
 	You("drop %s down the drain.", doname(obj));
@@ -391,7 +391,7 @@ giveback:
 #ifdef OVL0
 
 /* some common tests when trying to drop or throw items */
-bool canletgo(struct Object *obj, const char *word) {
+bool canletgo(Object *obj, const char *word) {
 	if(obj->owornmask & (W_ARMOR | W_RING | W_AMUL | W_TOOL)){
 		if (*word)
 			Norep("You cannot %s %s you are wearing.",word,
@@ -432,7 +432,7 @@ bool canletgo(struct Object *obj, const char *word) {
 }
 
 STATIC_PTR
-int drop(struct Object *obj) {
+int drop(Object *obj) {
 	if(!obj) return(0);
 	if(!canletgo(obj,"drop"))
 		return(0);
@@ -490,7 +490,7 @@ int drop(struct Object *obj) {
 
 /* Called in several places - may produce output */
 /* eg ship_object() and dropy() -> sellobj() both produce output */
-void dropx(struct Object *obj) {
+void dropx(Object *obj) {
 #ifndef GOLDOBJ
 	if (obj->oclass != COIN_CLASS || obj == invent) freeinv(obj);
 #else
@@ -506,7 +506,7 @@ void dropx(struct Object *obj) {
 	dropy(obj);
 }
 
-void dropy(struct Object *obj) {
+void dropy(Object *obj) {
 	if (obj == uwep) setuwep(nullptr);
 	if (obj == uquiver) setuqwep(nullptr);
 	if (obj == uswapwep) setuswapwep(nullptr);
@@ -564,11 +564,11 @@ void dropy(struct Object *obj) {
 
 /* things that must change when not held; recurse into containers.
    Called for both player and monsters */
-void obj_no_longer_held(struct Object *obj) {
+void obj_no_longer_held(Object *obj) {
 	if (!obj) {
 	    return;
 	} else if ((Is_container(obj) || obj->otyp == STATUE) && obj->cobj) {
-	    struct Object *contents;
+	    Object *contents;
 	    for(contents=obj->cobj; contents; contents=contents->nobj)
 		obj_no_longer_held(contents);
 	}
@@ -603,9 +603,9 @@ int doddrop() {
 STATIC_OVL int menu_drop(int retry) {
     int n, i, n_dropped = 0;
     long cnt;
-    struct Object *otmp, *otmp2;
+    Object *otmp, *otmp2;
 #ifndef GOLDOBJ
-    struct Object *u_gold = 0;
+    Object *u_gold = 0;
 #endif
     menu_item *pick_list;
     bool all_categories = TRUE;
@@ -728,7 +728,7 @@ int dodown() {
 	    if ((HLevitation & I_SPECIAL) || (ELevitation & W_ARTI)) {
 		/* end controlled levitation */
 		if (ELevitation & W_ARTI) {
-		    struct Object *obj;
+		    Object *obj;
 
 		    for(obj = invent; obj; obj = obj->nobj) {
 			if (obj->oartifact &&
@@ -1298,7 +1298,7 @@ void goto_level(d_level *newlevel, bool at_stairs, bool falling, bool portal) {
 
 STATIC_OVL void final_level() {
 	struct Monster *mtmp;
-	struct Object *otmp;
+	Object *otmp;
 	coord mm;
 	int i;
 
@@ -1413,12 +1413,12 @@ void deferred_goto() {
  * Return TRUE if we created a monster for the corpse.  If successful, the
  * corpse is gone.
  */
-bool revive_corpse(struct Object *corpse) {
+bool revive_corpse(Object *corpse) {
     struct Monster *mtmp, *mcarry;
     bool is_uwep, chewed;
     xchar where;
     char *cname, cname_buf[BUFSZ];
-    struct Object *container = nullptr;
+    Object *container = nullptr;
     int container_where = 0;
     
     where = corpse->where;
@@ -1497,7 +1497,7 @@ bool revive_corpse(struct Object *corpse) {
 /* Revive the corpse via a timeout. */
 /*ARGSUSED*/
 void revive_mon(genericptr_t arg, long timeout) {
-    struct Object *body = (struct Object *) arg;
+    Object *body = (Object *) arg;
 
     /* if we succeed, the corpse is gone, otherwise, rot it away */
     if (!revive_corpse(body)) {

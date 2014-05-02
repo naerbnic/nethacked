@@ -7,9 +7,9 @@
 #include "hack.h"
 #include "artifact.h"
 
-STATIC_VAR struct Object *otmp;
+STATIC_VAR Object *otmp;
 
-STATIC_DCL void urustm(struct Monster *, struct Object *);
+STATIC_DCL void urustm(struct Monster *, Object *);
 # ifdef OVL1
 STATIC_DCL bool u_slip_free(struct Monster *,struct Attack *);
 STATIC_DCL int passiveum(struct MonsterType *,struct Monster *,struct Attack *);
@@ -17,7 +17,7 @@ STATIC_DCL int passiveum(struct MonsterType *,struct Monster *,struct Attack *);
 
 #ifdef OVLB
 # ifdef SEDUCE
-STATIC_DCL void mayberem(struct Object *, const char *);
+STATIC_DCL void mayberem(Object *, const char *);
 # endif
 #endif /* OVLB */
 
@@ -26,7 +26,7 @@ STATIC_DCL int hitmu(struct Monster *,struct Attack *);
 STATIC_DCL int gulpmu(struct Monster *,struct Attack *);
 STATIC_DCL int explmu(struct Monster *,struct Attack *,bool);
 STATIC_DCL void missmu(struct Monster *,bool,struct Attack *);
-STATIC_DCL void mswings(struct Monster *,struct Object *);
+STATIC_DCL void mswings(struct Monster *,Object *);
 STATIC_DCL void wildmiss(struct Monster *,struct Attack *);
 
 STATIC_DCL void hurtarmor(int);
@@ -97,7 +97,7 @@ STATIC_OVL void missmu(struct Monster *mtmp, bool nearmiss, struct Attack *mattk
 }
 
 /* monster swings obj */
-STATIC_OVL void mswings(struct Monster *mtmp, struct Object *otemp) {
+STATIC_OVL void mswings(struct Monster *mtmp, Object *otemp) {
 	if (!flags.verbose || Blind || !mon_visible(mtmp))
 		return;
 	pline("%s %s %s %s.", Monnam(mtmp),
@@ -108,7 +108,7 @@ STATIC_OVL void mswings(struct Monster *mtmp, struct Object *otemp) {
 /* return how a poison attack was delivered */
 const char * mpoisons_subj(struct Monster *mtmp, struct Attack *mattk) {
 	if (mattk->aatyp == AT_WEAP) {
-	    struct Object *mwep = (mtmp == &youmonst) ? uwep : mtmp->weapon();
+	    Object *mwep = (mtmp == &youmonst) ? uwep : mtmp->weapon();
 	    /* "Foo's attack was poisoned." is pretty lame, but at least
 	       it's better than "sting" when not a stinging attack... */
 	    return (!mwep || !mwep->opoisoned) ? "attack" : "weapon";
@@ -325,7 +325,7 @@ int mattacku(struct Monster *mtmp) {
 		u.uundetected = 0;
 		if (is_hider(youmonst.data)) {
 		    coord cc; /* maybe we need a unexto() function? */
-		    struct Object *obj;
+		    Object *obj;
 
 		    You("fall from the %s!", ceiling(u.ux,u.uy));
 		    if (enexto(&cc, u.ux, u.uy, youmonst.data)) {
@@ -371,7 +371,7 @@ int mattacku(struct Monster *mtmp) {
 			 * parallelism to work, we can't rephrase it, so we
 			 * zap the "laid by you" momentarily instead.
 			 */
-			struct Object *obj = level.objects[u.ux][u.uy];
+			Object *obj = level.objects[u.ux][u.uy];
 
 			if (obj ||
 			      (youmonst.data->mlet == S_EEL && is_pool(u.ux, u.uy))) {
@@ -741,7 +741,7 @@ STATIC_OVL bool diseasemu(struct MonsterType *mdat) {
 
 /* check whether slippery clothing protects from hug or wrap attack */
 STATIC_OVL bool u_slip_free(struct Monster *mtmp, struct Attack *mattk) {
-	struct Object *obj = (uarmc ? uarmc : uarm);
+	Object *obj = (uarmc ? uarmc : uarm);
 
 #ifdef TOURIST
 	if (!obj) obj = uarmu;
@@ -774,7 +774,7 @@ STATIC_OVL bool u_slip_free(struct Monster *mtmp, struct Attack *mattk) {
 
 /* armor that sufficiently covers the body might be able to block magic */
 int magic_negation(struct Monster *mon) {
-	struct Object *armor;
+	Object *armor;
 	int armpro = 0;
 
 	armor = (mon == &youmonst) ? uarm : which_armor(mon, W_ARM);
@@ -837,7 +837,7 @@ STATIC_OVL int hitmu(struct Monster *mtmp, struct Attack *mattk) {
 	if(mtmp->mundetected && (hides_under(mdat) || mdat->mlet == S_EEL)) {
 	    mtmp->mundetected = 0;
 	    if (!(Blind ? Blind_telepat : Unblind_telepat)) {
-		struct Object *obj;
+		Object *obj;
 		const char *what;
 
 		if ((obj = level.objects[mtmp->mx][mtmp->my]) != 0) {
@@ -985,7 +985,7 @@ STATIC_OVL int hitmu(struct Monster *mtmp, struct Attack *mattk) {
 		}
 		break;
 	    case AD_BLND:
-		if (can_blnd(mtmp, &youmonst, mattk->aatyp, (struct Object*)0)) {
+		if (can_blnd(mtmp, &youmonst, mattk->aatyp, (Object*)0)) {
 		    if (!Blind) pline("%s blinds you!", Monnam(mtmp));
 		    make_blinded(Blinded+(long)dmg,FALSE);
 		    if (!Blind) Your(vision_clears);
@@ -1030,7 +1030,7 @@ dopois:
 		    /* No such thing as mindless players... */
 		    if (ABASE(A_INT) <= ATTRMIN(A_INT)) {
 			int lifesaved = 0;
-			struct Object *wore_amulet = uamul;
+			Object *wore_amulet = uamul;
 
 			while(1) {
 			    /* avoid looping on "die(y/n)?" */
@@ -1497,7 +1497,7 @@ dopois:
 		/* uncancelled is sufficient enough; please
 		   don't make this attack less frequent */
 		if (uncancelled) {
-		    struct Object *obj = some_armor(&youmonst);
+		    Object *obj = some_armor(&youmonst);
 
 		    if (drain_item(obj)) {
 			Your("%s less effective.", aobjnam(obj, "seem"));
@@ -1576,7 +1576,7 @@ STATIC_OVL int gulpmu(struct Monster *mtmp, struct Attack *mattk) {
 	struct trap *t = t_at(u.ux, u.uy);
 	int	tmp = d((int)mattk->damn, (int)mattk->damd);
 	int	tim_tmp;
-	struct Object *otmp2;
+	Object *otmp2;
 	int	i;
 
 	if (!u.uswallow) {	/* swallows you */
@@ -1687,7 +1687,7 @@ STATIC_OVL int gulpmu(struct Monster *mtmp, struct Attack *mattk) {
 		    }
 		    break;
 		case AD_BLND:
-		    if (can_blnd(mtmp, &youmonst, mattk->aatyp, (struct Object*)0)) {
+		    if (can_blnd(mtmp, &youmonst, mattk->aatyp, (Object*)0)) {
 			if(!Blind) {
 			    You_cant("see in here!");
 			    make_blinded((long)tmp,FALSE);
@@ -1997,7 +1997,7 @@ void mdamageu(struct Monster *mtmp, int n) {
 #endif /* OVL1 */
 #ifdef OVLB
 
-STATIC_OVL void urustm(struct Monster *mon, struct Object *obj) {
+STATIC_OVL void urustm(struct Monster *mon, Object *obj) {
 	bool vis;
 	bool is_acid;
 
@@ -2088,7 +2088,7 @@ int could_seduce(struct Monster* magr, struct Monster* mdef,
 #ifdef SEDUCE
 /* Returns 1 if monster teleported */
 int doseduce(struct Monster *mon) {
-	struct Object *ring, *nring;
+	Object *ring, *nring;
 	bool fem = (mon->data == &mons[PM_SUCCUBUS]); /* otherwise incubus */
 	char qbuf[QBUFSZ];
 
@@ -2335,7 +2335,7 @@ int doseduce(struct Monster *mon) {
 	return 1;
 }
 
-STATIC_OVL void mayberem(struct Object *obj, const char *str) {
+STATIC_OVL void mayberem(Object *obj, const char *str) {
 	char qbuf[QBUFSZ];
 
 	if (!obj || !obj->owornmask) return;

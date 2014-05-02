@@ -14,39 +14,39 @@ static const char tools_too[] = { ALL_CLASSES, TOOL_CLASS, POTION_CLASS,
 				  WEAPON_CLASS, WAND_CLASS, GEM_CLASS, 0 };
 
 #ifdef TOURIST
-STATIC_DCL int use_camera(struct Object *);
+STATIC_DCL int use_camera(Object *);
 #endif
-STATIC_DCL int use_towel(struct Object *);
+STATIC_DCL int use_towel(Object *);
 STATIC_DCL bool its_dead(int,int,int *);
-STATIC_DCL int use_stethoscope(struct Object *);
-STATIC_DCL void use_whistle(struct Object *);
-STATIC_DCL void use_magic_whistle(struct Object *);
-STATIC_DCL void use_leash(struct Object *);
-STATIC_DCL int use_mirror(struct Object *);
-STATIC_DCL void use_bell(struct Object **);
-STATIC_DCL void use_candelabrum(struct Object *);
-STATIC_DCL void use_candle(struct Object **);
-STATIC_DCL void use_lamp(struct Object *);
-STATIC_DCL void light_cocktail(struct Object *);
-STATIC_DCL void use_tinning_kit(struct Object *);
-STATIC_DCL void use_figurine(struct Object **);
-STATIC_DCL void use_grease(struct Object *);
-STATIC_DCL void use_trap(struct Object *);
-STATIC_DCL void use_stone(struct Object *);
+STATIC_DCL int use_stethoscope(Object *);
+STATIC_DCL void use_whistle(Object *);
+STATIC_DCL void use_magic_whistle(Object *);
+STATIC_DCL void use_leash(Object *);
+STATIC_DCL int use_mirror(Object *);
+STATIC_DCL void use_bell(Object **);
+STATIC_DCL void use_candelabrum(Object *);
+STATIC_DCL void use_candle(Object **);
+STATIC_DCL void use_lamp(Object *);
+STATIC_DCL void light_cocktail(Object *);
+STATIC_DCL void use_tinning_kit(Object *);
+STATIC_DCL void use_figurine(Object **);
+STATIC_DCL void use_grease(Object *);
+STATIC_DCL void use_trap(Object *);
+STATIC_DCL void use_stone(Object *);
 STATIC_PTR int set_trap();		/* occupation callback */
-STATIC_DCL int use_whip(struct Object *);
-STATIC_DCL int use_pole(struct Object *);
-STATIC_DCL int use_cream_pie(struct Object *);
-STATIC_DCL int use_grapple(struct Object *);
-STATIC_DCL int do_break_wand(struct Object *);
-STATIC_DCL bool figurine_location_checks(struct Object *, coord *, bool);
+STATIC_DCL int use_whip(Object *);
+STATIC_DCL int use_pole(Object *);
+STATIC_DCL int use_cream_pie(Object *);
+STATIC_DCL int use_grapple(Object *);
+STATIC_DCL int do_break_wand(Object *);
+STATIC_DCL bool figurine_location_checks(Object *, coord *, bool);
 STATIC_DCL bool uhave_graystone();
 STATIC_DCL void add_class(char *, char);
 
 static const char no_elbow_room[] = "don't have enough elbow-room to maneuver.";
 
 #ifdef TOURIST
-STATIC_OVL int use_camera(struct Object *obj) {
+STATIC_OVL int use_camera(Object *obj) {
 	struct Monster *mtmp;
 
 	if(Underwater) {
@@ -82,7 +82,7 @@ STATIC_OVL int use_camera(struct Object *obj) {
 }
 #endif
 
-STATIC_OVL int use_towel(struct Object *obj) {
+STATIC_OVL int use_towel(Object *obj) {
 	if(!freehand()) {
 		You("have no free %s!", body_part(HAND));
 		return 0;
@@ -112,7 +112,7 @@ STATIC_OVL int use_towel(struct Object *obj) {
 			    You("push your %s %s.", what,
 				rn2(2) ? "cock-eyed" : "crooked");
 			} else {
-			    struct Object *saved_ublindf = ublindf;
+			    Object *saved_ublindf = ublindf;
 			    You("push your %s off.", what);
 			    Blindf_off(ublindf);
 			    dropx(saved_ublindf);
@@ -150,7 +150,7 @@ STATIC_OVL int use_towel(struct Object *obj) {
 
 /* maybe give a stethoscope message based on floor objects */
 STATIC_OVL bool its_dead(int rx, int ry, int *resp) {
-	struct Object *otmp;
+	Object *otmp;
 	struct trap *ttmp;
 
 	if (!can_reach_floor()) return FALSE;
@@ -188,7 +188,7 @@ static const char hollow_str[] = "a hollow sound.  This must be a secret %s!";
    not take any time; however, unless it did, the stethoscope would be
    almost useless.  As a compromise, one use per turn is free, another
    uses up the turn; this makes curse status have a tangible effect. */
-STATIC_OVL int use_stethoscope(struct Object *obj) {
+STATIC_OVL int use_stethoscope(Object *obj) {
 	static long last_used_move = -1;
 	static short last_used_movement = 0;
 	struct Monster *mtmp;
@@ -294,12 +294,12 @@ STATIC_OVL int use_stethoscope(struct Object *obj) {
 
 static const char whistle_str[] = "produce a %s whistling sound.";
 
-STATIC_OVL void use_whistle(struct Object *obj) {
+STATIC_OVL void use_whistle(Object *obj) {
 	You(whistle_str, obj->cursed ? "shrill" : "high");
 	wake_nearby();
 }
 
-STATIC_OVL void use_magic_whistle(struct Object *obj) {
+STATIC_OVL void use_magic_whistle(Object *obj) {
 	struct Monster *mtmp, *nextmon;
 
 	if(obj->cursed && !rn2(2)) {
@@ -332,7 +332,7 @@ bool um_dist(xchar x, xchar y, xchar n) {
 
 int number_leashed() {
 	int i = 0;
-	struct Object *obj;
+	Object *obj;
 
 	for(obj = invent; obj; obj = obj->nobj)
 		if(obj->otyp == LEASH && obj->leashmon != 0) i++;
@@ -340,7 +340,7 @@ int number_leashed() {
 }
 
 /* otmp is about to be destroyed or stolen */
-void o_unleash(struct Object *otmp) {
+void o_unleash(Object *otmp) {
 	struct Monster *mtmp;
 
 	for(mtmp = fmon; mtmp; mtmp = mtmp->nmon)
@@ -351,7 +351,7 @@ void o_unleash(struct Object *otmp) {
 
 /* mtmp is about to die, or become untame */
 void m_unleash(struct Monster *mtmp, bool feedback) {
-	struct Object *otmp;
+	Object *otmp;
 
 	if (feedback) {
 	    if (canseemon(mtmp))
@@ -368,7 +368,7 @@ void m_unleash(struct Monster *mtmp, bool feedback) {
 
 /* player is about to die (for bones) */
 void unleash_all() {
-	struct Object *otmp;
+	Object *otmp;
 	struct Monster *mtmp;
 
 	for(otmp = invent; otmp; otmp = otmp->nobj)
@@ -380,7 +380,7 @@ void unleash_all() {
 #define MAXLEASHED	2
 
 /* ARGSUSED */
-STATIC_OVL void use_leash(struct Object *obj) {
+STATIC_OVL void use_leash(Object *obj) {
 	coord cc;
 	struct Monster *mtmp;
 	int spotmon;
@@ -452,9 +452,9 @@ STATIC_OVL void use_leash(struct Object *obj) {
 	return;
 }
 
-struct Object *get_mleash(struct Monster *mtmp)
+Object *get_mleash(struct Monster *mtmp)
 {
-	struct Object *otmp;
+	Object *otmp;
 
 	otmp = invent;
 	while(otmp) {
@@ -470,7 +470,7 @@ struct Object *get_mleash(struct Monster *mtmp)
 
 bool next_to_u() {
 	struct Monster *mtmp;
-	struct Object *otmp;
+	Object *otmp;
 
 	for(mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
 		if (mtmp->dead()) continue;
@@ -500,7 +500,7 @@ bool next_to_u() {
 #ifdef OVL0
 
 void check_leash(xchar x, xchar y) {
-	struct Object *otmp;
+	Object *otmp;
 	struct Monster *mtmp;
 
 	for (otmp = invent; otmp; otmp = otmp->nobj) {
@@ -561,7 +561,7 @@ void check_leash(xchar x, xchar y) {
 
 static const char look_str[] = "look %s.";
 
-STATIC_OVL int use_mirror(struct Object *obj) {
+STATIC_OVL int use_mirror(Object *obj) {
 	struct Monster *mtmp;
 	char mlet;
 	bool vis;
@@ -695,8 +695,8 @@ STATIC_OVL int use_mirror(struct Object *obj) {
 	return 1;
 }
 
-STATIC_OVL void use_bell(struct Object **optr) {
-	struct Object *obj = *optr;
+STATIC_OVL void use_bell(Object **optr) {
+	Object *obj = *optr;
 	struct Monster *mtmp;
 	bool wakem = FALSE, learno = FALSE,
 		ordinary = (obj->otyp != BELL_OF_OPENING || !obj->spe),
@@ -795,7 +795,7 @@ STATIC_OVL void use_bell(struct Object **optr) {
 	if (wakem) wake_nearby();
 }
 
-STATIC_OVL void use_candelabrum(struct Object *obj) {
+STATIC_OVL void use_candelabrum(Object *obj) {
 	const char *s = (obj->spe != 1) ? "candles" : "candle";
 
 	if(Underwater) {
@@ -843,9 +843,9 @@ STATIC_OVL void use_candelabrum(struct Object *obj) {
 	begin_burn(obj, FALSE);
 }
 
-STATIC_OVL void use_candle(struct Object **optr) {
-	struct Object *obj = *optr;
-	struct Object *otmp;
+STATIC_OVL void use_candle(Object **optr) {
+	Object *obj = *optr;
+	Object *otmp;
 	const char *s = (obj->quan != 1) ? "candles" : "candle";
 	char qbuf[QBUFSZ];
 
@@ -904,7 +904,7 @@ STATIC_OVL void use_candle(struct Object **optr) {
 	}
 }
 
-bool snuff_candle(struct Object *otmp)  /* call in drop, throw, and put in box, etc. */
+bool snuff_candle(Object *otmp)  /* call in drop, throw, and put in box, etc. */
 {
 	bool candle = Is_candle(otmp);
 
@@ -929,7 +929,7 @@ bool snuff_candle(struct Object *otmp)  /* call in drop, throw, and put in box, 
 /* called when lit lamp is hit by water or put into a container or
    you've been swallowed by a monster; obj might be in transit while
    being thrown or dropped so don't assume that its location is valid */
-bool snuff_lit(struct Object *obj) {
+bool snuff_lit(Object *obj) {
 	xchar x, y;
 
 	if (obj->lamplit) {
@@ -948,7 +948,7 @@ bool snuff_lit(struct Object *obj) {
 
 /* Called when potentially lightable object is affected by fire_damage().
    Return TRUE if object was lit and FALSE otherwise --ALI */
-bool catch_lit(struct Object *obj) {
+bool catch_lit(Object *obj) {
 	xchar x, y;
 
 	if (!obj->lamplit && (obj->otyp == MAGIC_LAMP || ignitable(obj))) {
@@ -981,7 +981,7 @@ bool catch_lit(struct Object *obj) {
 	return FALSE;
 }
 
-STATIC_OVL void use_lamp(struct Object *obj) {
+STATIC_OVL void use_lamp(Object *obj) {
 	char buf[BUFSZ];
 
 	if(Underwater) {
@@ -1029,7 +1029,7 @@ STATIC_OVL void use_lamp(struct Object *obj) {
 	}
 }
 
-STATIC_OVL void light_cocktail(struct Object *obj) {
+STATIC_OVL void light_cocktail(Object *obj) {
 	char buf[BUFSZ];
 
 	if (u.uswallow) {
@@ -1080,7 +1080,7 @@ STATIC_OVL void light_cocktail(struct Object *obj) {
 static const char cuddly[] = { TOOL_CLASS, GEM_CLASS, 0 };
 
 int dorub() {
-	struct Object *obj = getobj(cuddly, "rub");
+	Object *obj = getobj(cuddly, "rub");
 
 	if (obj && obj->oclass == GEM_CLASS) {
 	    if (is_graystone(obj)) {
@@ -1275,14 +1275,14 @@ int jump(int magic) {
 	}
 }
 
-bool tinnable(struct Object *corpse) {
+bool tinnable(Object *corpse) {
 	if (corpse->oeaten) return 0;
 	if (!mons[corpse->corpsenm].cnutrit) return 0;
 	return 1;
 }
 
-STATIC_OVL void use_tinning_kit(struct Object *obj) {
-	struct Object *corpse, *can;
+STATIC_OVL void use_tinning_kit(Object *obj) {
+	Object *corpse, *can;
 
 	/* This takes only 1 move.  If this is to be changed to take many
 	 * moves, we've got to deal with decaying corpses...
@@ -1345,7 +1345,7 @@ STATIC_OVL void use_tinning_kit(struct Object *obj) {
 	} else impossible("Tinning failed.");
 }
 
-void use_unicorn_horn(struct Object *obj) {
+void use_unicorn_horn(Object *obj) {
 #define PROP_COUNT 6		/* number of properties we're dealing with */
 #define ATTR_COUNT (A_MAX*3)	/* number of attribute points we might fix */
 	int idx, val, val_limit,
@@ -1492,7 +1492,7 @@ void use_unicorn_horn(struct Object *obj) {
  * Timer callback routine: turn figurine into monster
  */
 void fig_transform(genericptr_t arg, long timeout) {
-	struct Object *figurine = (struct Object *)arg;
+	Object *figurine = (Object *)arg;
 	struct Monster *mtmp;
 	coord cc;
 	bool cansee_spot, silent, okay_spot;
@@ -1576,7 +1576,7 @@ void fig_transform(genericptr_t arg, long timeout) {
 	if (redraw) newsym(cc.x, cc.y);
 }
 
-STATIC_OVL bool figurine_location_checks(struct Object *obj, coord *cc, bool quietly) {
+STATIC_OVL bool figurine_location_checks(Object *obj, coord *cc, bool quietly) {
 	xchar x,y;
 
 	if (carried(obj) && u.uswallow) {
@@ -1606,8 +1606,8 @@ STATIC_OVL bool figurine_location_checks(struct Object *obj, coord *cc, bool qui
 	return TRUE;
 }
 
-STATIC_OVL void use_figurine(struct Object **optr) {
-	struct Object *obj = *optr;
+STATIC_OVL void use_figurine(Object **optr) {
+	Object *obj = *optr;
 	xchar x, y;
 	coord cc;
 
@@ -1642,8 +1642,8 @@ static const char lubricables[] = { ALL_CLASSES, ALLOW_NONE, 0 };
 static const char need_to_remove_outer_armor[] =
 			"need to remove your %s to grease your %s.";
 
-STATIC_OVL void use_grease(struct Object *obj) {
-	struct Object *otmp;
+STATIC_OVL void use_grease(Object *obj) {
+	Object *otmp;
 	char buf[BUFSZ];
 
 	if (Glib) {
@@ -1704,7 +1704,7 @@ STATIC_OVL void use_grease(struct Object *obj) {
 }
 
 static struct trapinfo {
-	struct Object *tobj;
+	Object *tobj;
 	xchar tx, ty;
 	int time_needed;
 	bool force_bungle;
@@ -1716,8 +1716,8 @@ void reset_trapset() {
 }
 
 /* touchstones - by Ken Arnold */
-STATIC_OVL void use_stone(struct Object *tstone) {
-    struct Object *obj;
+STATIC_OVL void use_stone(Object *tstone) {
+    Object *obj;
     bool do_scratch;
     const char *streak_color, *choices;
     char stonebuf[QBUFSZ];
@@ -1725,7 +1725,7 @@ STATIC_OVL void use_stone(struct Object *tstone) {
     static const char allowall[3] = { COIN_CLASS, ALL_CLASSES, 0 };
     static const char justgems[3] = { ALLOW_NONE, GEM_CLASS, 0 };
 #ifndef GOLDOBJ
-    struct Object goldobj;
+    Object goldobj;
 #endif
 
     /* in case it was acquired while blinded */
@@ -1852,7 +1852,7 @@ STATIC_OVL void use_stone(struct Object *tstone) {
 }
 
 /* Place a landmine/bear trap.  Helge Hafting */
-STATIC_OVL void use_trap(struct Object *otmp) {
+STATIC_OVL void use_trap(Object *otmp) {
 	int ttyp, tmp;
 	const char *what = (char *)0;
 	char buf[BUFSZ];
@@ -1945,7 +1945,7 @@ STATIC_OVL void use_trap(struct Object *otmp) {
 
 STATIC_PTR
 int set_trap() {
-	struct Object *otmp = trapinfo.tobj;
+	Object *otmp = trapinfo.tobj;
 	struct trap *ttmp;
 	int ttyp;
 
@@ -1982,10 +1982,10 @@ int set_trap() {
 	return 0;
 }
 
-STATIC_OVL int use_whip(struct Object *obj) {
+STATIC_OVL int use_whip(Object *obj) {
     char buf[BUFSZ];
     struct Monster *mtmp;
-    struct Object *otmp;
+    Object *otmp;
     int rx, ry, proficient, res = 0;
     const char *msg_slipsfree = "The bullwhip slips free.";
     const char *msg_snap = "Snap!";
@@ -2236,7 +2236,7 @@ static const char
 	cant_reach[] = "can't reach that spot from here.";
 
 /* Distance attacks by pole-weapons */
-STATIC_OVL int use_pole (struct Object *obj) {
+STATIC_OVL int use_pole (Object *obj) {
 	int res = 0, typ, max_range = 4, min_range = 4;
 	coord cc;
 	struct Monster *mtmp;
@@ -2300,7 +2300,7 @@ STATIC_OVL int use_pole (struct Object *obj) {
 	return (1);
 }
 
-STATIC_OVL int use_cream_pie(struct Object *obj) {
+STATIC_OVL int use_cream_pie(Object *obj) {
 	bool wasblind = Blind;
 	bool wascreamed = u.ucreamed;
 	bool several = FALSE;
@@ -2336,11 +2336,11 @@ STATIC_OVL int use_cream_pie(struct Object *obj) {
 	return(0);
 }
 
-STATIC_OVL int use_grapple(struct Object *obj) {
+STATIC_OVL int use_grapple(Object *obj) {
 	int res = 0, typ, max_range = 4, tohit;
 	coord cc;
 	struct Monster *mtmp;
-	struct Object *otmp;
+	Object *otmp;
 
 	/* Are you allowed to use the hook? */
 	if (u.uswallow) {
@@ -2460,7 +2460,7 @@ STATIC_OVL int use_grapple(struct Object *obj) {
 #define BY_OBJECT	((struct Monster *)nullptr)
 
 /* return 1 if the wand is broken, hence some time elapsed */
-STATIC_OVL int do_break_wand(struct Object *obj) {
+STATIC_OVL int do_break_wand(Object *obj) {
     static const char nothing_else_happens[] = "But nothing else happens...";
     int i, x, y;
     struct Monster *mon;
@@ -2616,7 +2616,7 @@ STATIC_OVL int do_break_wand(struct Object *obj) {
 }
 
 STATIC_OVL bool uhave_graystone() {
-	struct Object *otmp;
+	Object *otmp;
 
 	for(otmp = invent; otmp; otmp = otmp->nobj)
 		if(is_graystone(otmp))
@@ -2632,7 +2632,7 @@ STATIC_OVL void add_class(char *cl, char cls) {
 }
 
 int doapply() {
-	struct Object *obj;
+	Object *obj;
 	int res = 1;
 	char class_list[MAXOCLASSES+2];
 
@@ -2810,7 +2810,7 @@ int doapply() {
 		break;
 	case HORN_OF_PLENTY:	/* not a musical instrument */
 		if (obj->spe > 0) {
-		    struct Object *otmp;
+		    Object *otmp;
 		    const char *what;
 
 		    consume_obj_charge(obj, TRUE);
