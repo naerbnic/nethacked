@@ -7,7 +7,7 @@
 #include "hack.h"
 #include "prop.h"
 
-STATIC_DCL void mkbox_cnts(Object *);
+STATIC_DCL void AddRandomBoxContents(Object *);
 STATIC_DCL void obj_timer_checks(Object *, xchar, xchar, int);
 STATIC_DCL void container_weight(Object *);
 STATIC_DCL Object *save_mtraits(Object *, Monster *);
@@ -76,13 +76,13 @@ const struct ItemClassProbability kHellProbabilities[] = {
 { 4, AMULET_CLASS}
 };
 
-Object * mkobj_at(char let, int x, int y, bool artif) {
+Object * MakeRandomObjectOfClassAt(char let, int x, int y, bool artif) {
 	Object *otmp = MakeRandomObjectOfClass(let, artif);
 	place_object(otmp, x, y);
 	return(otmp);
 }
 
-Object * mksobj_at(int otyp, int x, int y, bool init, bool artif) {
+Object * MakeSpecificObjectAt(int otyp, int x, int y, bool init, bool artif) {
 	Object* otmp = mksobj(otyp, init, artif);
 	place_object(otmp, x, y);
 	return(otmp);
@@ -113,7 +113,7 @@ Object * MakeRandomObjectOfClass(char oclass, bool artif) {
   return (mksobj(i, TRUE, artif));
 }
 
-STATIC_OVL void mkbox_cnts(Object *box) {
+STATIC_OVL void AddRandomBoxContents(Object *box) {
 	int n;
 	Object *otmp;
 
@@ -443,7 +443,7 @@ Object * mksobj(int otyp, bool init, bool artif) {
 		case ICE_BOX:
 		case SACK:
 		case OILSKIN_SACK:
-		case BAG_OF_HOLDING:	mkbox_cnts(otmp);
+		case BAG_OF_HOLDING:	AddRandomBoxContents(otmp);
 					break;
 #ifdef TOURIST
 		case EXPENSIVE_CAMERA:
@@ -780,7 +780,7 @@ int weight(Object *obj) {
 static int treefruits[] = {APPLE,ORANGE,PEAR,BANANA,EUCALYPTUS_LEAF};
 
 Object * rnd_treefruit_at(int x, int y) {
-	return mksobj_at(treefruits[rn2(SIZE(treefruits))], x, y, TRUE, FALSE);
+	return MakeSpecificObjectAt(treefruits[rn2(SIZE(treefruits))], x, y, TRUE, FALSE);
 }
 
 Object * mkgold(long amount, int x, int y) {
@@ -791,7 +791,7 @@ Object * mkgold(long amount, int x, int y) {
     if (gold) {
 	gold->quan += amount;
     } else {
-	gold = mksobj_at(GOLD_PIECE, x, y, TRUE, FALSE);
+	gold = MakeSpecificObjectAt(GOLD_PIECE, x, y, TRUE, FALSE);
 	gold->quan = amount;
     }
     gold->owt = weight(gold);
@@ -822,7 +822,7 @@ Object * mkcorpstat(int objtype, Monster *mtmp, MonsterType *ptr, int x, int y, 
 		otmp = mksobj(objtype, init, FALSE);
 		if (otmp) rloco(otmp);
 	} else
-		otmp = mksobj_at(objtype, x, y, init, FALSE);
+		otmp = MakeSpecificObjectAt(objtype, x, y, init, FALSE);
 	if (otmp) {
 	    if (mtmp) {
 		Object *otmp2;
@@ -925,7 +925,7 @@ Object * mk_tt_object(int objtype, int x, int y) {
 
 	/* player statues never contain books */
 	initialize_it = (objtype != STATUE);
-	if ((otmp = mksobj_at(objtype, x, y, initialize_it, FALSE)) != 0) {
+	if ((otmp = MakeSpecificObjectAt(objtype, x, y, initialize_it, FALSE)) != 0) {
 	    /* tt_oname will return null if the scoreboard is empty */
 	    if ((otmp2 = tt_oname(otmp)) != 0) otmp = otmp2;
 	}

@@ -1075,7 +1075,7 @@ bool mdig_tunnel(Monster *mtmp) {
 	} else {
 	    here->typ = CORR;
 	    if (pile && pile < 5)
-		(void) mksobj_at((pile == 1) ? BOULDER : ROCK,
+		(void) MakeSpecificObjectAt((pile == 1) ? BOULDER : ROCK,
 			     mtmp->mx, mtmp->my, TRUE, FALSE);
 	}
 	newsym(mtmp->mx, mtmp->my);
@@ -1128,7 +1128,7 @@ void zap_dig() {
 		    pline("It falls on your %s!", body_part(HEAD));
 		    losehp(rnd((uarmh && is_metallic(uarmh)) ? 2 : 6),
 			   "falling rock", KILLED_BY_AN);
-		    otmp = mksobj_at(ROCK, player.ux, player.uy, FALSE, FALSE);
+		    otmp = MakeSpecificObjectAt(ROCK, player.ux, player.uy, FALSE, FALSE);
 		    if (otmp) {
 			(void)xname(otmp);	/* set dknown, maybe bknown */
 			stackobj(otmp);

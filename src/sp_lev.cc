@@ -866,9 +866,9 @@ STATIC_OVL void create_object(object *o, struct mkroom *croom) {
 	    c = 0;
 
 	if (!c)
-	    otmp = mkobj_at(RANDOM_CLASS, x, y, !named);
+	    otmp = MakeRandomObjectOfClassAt(RANDOM_CLASS, x, y, !named);
 	else if (o->id != -1)
-	    otmp = mksobj_at(o->id, x, y, TRUE, !named);
+	    otmp = MakeSpecificObjectAt(o->id, x, y, TRUE, !named);
 	else {
 	    /*
 	     * The special levels are compiled with the default "text" object
@@ -883,7 +883,7 @@ STATIC_OVL void create_object(object *o, struct mkroom *croom) {
 	    if (oclass == COIN_CLASS)
 		otmp = mkgold(0L, x, y);
 	    else
-		otmp = mkobj_at(oclass, x, y, !named);
+		otmp = MakeRandomObjectOfClassAt(oclass, x, y, !named);
 	}
 
 	if (o->spe != -127)	/* That means NOT RANDOM! */
@@ -1228,7 +1228,7 @@ bool dig_corridor(coord *org, coord *dest, bool nxcor, schar ftyp, schar btyp) {
 		if(ftyp != CORR || rn2(100)) {
 			crm->typ = ftyp;
 			if(nxcor && !rn2(50))
-				(void) mksobj_at(BOULDER, xx, yy, TRUE, FALSE);
+				(void) MakeSpecificObjectAt(BOULDER, xx, yy, TRUE, FALSE);
 		} else {
 			crm->typ = SCORR;
 		}
@@ -2461,12 +2461,12 @@ STATIC_OVL bool load_maze(dlb *fd) {
 	    mapfact = (int) ((mapcount * 100L) / mapcountmax);
 	    for(x = rnd((int) (20 * mapfact) / 100); x; x--) {
 		    maze1xy(&mm, DRY);
-		    (void) mkobj_at(rn2(2) ? GEM_CLASS : RANDOM_CLASS,
+		    (void) MakeRandomObjectOfClassAt(rn2(2) ? GEM_CLASS : RANDOM_CLASS,
 							mm.x, mm.y, TRUE);
 	    }
 	    for(x = rnd((int) (12 * mapfact) / 100); x; x--) {
 		    maze1xy(&mm, DRY);
-		    (void) mksobj_at(BOULDER, mm.x, mm.y, TRUE, FALSE);
+		    (void) MakeSpecificObjectAt(BOULDER, mm.x, mm.y, TRUE, FALSE);
 	    }
 	    for (x = rn2(2); x; x--) {
 		maze1xy(&mm, DRY);

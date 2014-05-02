@@ -937,8 +937,8 @@ E const char *waterbody_name(xchar,xchar);
 
 /* ### mkobj.c ### */
 
-E Object *mkobj_at(char,int,int,bool);
-E Object *mksobj_at(int,int,int,bool,bool);
+E Object *MakeRandomObjectOfClassAt(char,int,int,bool);
+E Object *MakeSpecificObjectAt(int,int,int,bool,bool);
 E Object *MakeRandomObjectOfClass(char,bool);
 E int rndmonnum();
 E Object *splitobj(Object *,long);

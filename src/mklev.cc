@@ -448,9 +448,9 @@ STATIC_OVL void makeniche(int trap_type) {
 		    dosdoor(xx, yy, aroom, rn2(5) ? SDOOR : DOOR);
 		else {
 		    if (!level.flags.noteleport)
-			(void) mksobj_at(SCR_TELEPORTATION,
+			(void) MakeSpecificObjectAt(SCR_TELEPORTATION,
 					 xx, yy+dy, TRUE, FALSE);
-		    if (!rn2(3)) (void) mkobj_at(0, xx, yy+dy, TRUE);
+		    if (!rn2(3)) (void) MakeRandomObjectOfClassAt(0, xx, yy+dy, TRUE);
 		}
 	    }
 	    return;
@@ -737,7 +737,7 @@ skip0:
 		 *  when few rooms; chance for 3 or more is neglible.
 		 */
 		if(!rn2(nroom * 5 / 2))
-		    (void) mksobj_at((rn2(3)) ? LARGE_BOX : CHEST,
+		    (void) MakeSpecificObjectAt((rn2(3)) ? LARGE_BOX : CHEST,
 				     somex(croom), somey(croom), TRUE, FALSE);
 
 		/* maybe make some graffiti */
@@ -758,14 +758,14 @@ skip0:
 	skip_nonrogue:
 #endif
 		if(!rn2(3)) {
-		    (void) mkobj_at(0, somex(croom), somey(croom), TRUE);
+		    (void) MakeRandomObjectOfClassAt(0, somex(croom), somey(croom), TRUE);
 		    tryct = 0;
 		    while(!rn2(5)) {
 			if(++tryct > 100) {
 			    impossible("tryct overflow4");
 			    break;
 			}
-			(void) mkobj_at(0, somex(croom), somey(croom), TRUE);
+			(void) MakeRandomObjectOfClassAt(0, somex(croom), somey(croom), TRUE);
 		    }
 		}
 	}
@@ -788,7 +788,7 @@ STATIC_OVL void mineralize() {
 	    for (y = 1; y < (ROWNO - 1); y++)
 		if ((levl[x][y].typ == POOL && !rn2(10)) ||
 			(levl[x][y].typ == MOAT && !rn2(30)))
-		    (void) mksobj_at(KELP_FROND, x, y, TRUE, FALSE);
+		    (void) MakeSpecificObjectAt(KELP_FROND, x, y, TRUE, FALSE);
 
 	/* determine if it is even allowed;
 	   almost all special levels are excluded */
@@ -1294,7 +1294,7 @@ static void mkgrave(struct mkroom *croom) {
 	}
 
 	/* Leave a bell, in case we accidentally buried someone alive */
-	if (dobell) (void) mksobj_at(BELL, m.x, m.y, TRUE, FALSE);
+	if (dobell) (void) MakeSpecificObjectAt(BELL, m.x, m.y, TRUE, FALSE);
 	return;
 }
 

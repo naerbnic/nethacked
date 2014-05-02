@@ -125,7 +125,7 @@ STATIC_PTR void gush(int x, int y, genericptr_t poolcnt) {
 STATIC_OVL void dofindgem() {
 	if (!Blind) You("spot a gem in the sparkling waters!");
 	else You_feel("a gem here!");
-	(void) mksobj_at(rnd_class(DILITHIUM_CRYSTAL, LUCKSTONE-1),
+	(void) MakeSpecificObjectAt(rnd_class(DILITHIUM_CRYSTAL, LUCKSTONE-1),
 			 player.ux, player.uy, FALSE, FALSE);
 	SET_FOUNTAIN_LOOTED(player.ux,player.uy);
 	newsym(player.ux, player.uy);
@@ -529,7 +529,7 @@ void drinksink() {
 			break;
 		case 5: if (!(levl[player.ux][player.uy].looted & S_LRING)) {
 			    You("find a ring in the sink!");
-			    (void) mkobj_at(RING_CLASS, player.ux, player.uy, TRUE);
+			    (void) MakeRandomObjectOfClassAt(RING_CLASS, player.ux, player.uy, TRUE);
 			    levl[player.ux][player.uy].looted |= S_LRING;
 			    exercise(A_WIS, TRUE);
 			    newsym(player.ux,player.uy);

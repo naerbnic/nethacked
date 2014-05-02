@@ -825,7 +825,7 @@ int dokick() {
 			i = Luck + 1;
 			if(i > 6) i = 6;
 			while(i--)
-			    (void) mksobj_at(rnd_class(DILITHIUM_CRYSTAL,
+			    (void) MakeSpecificObjectAt(rnd_class(DILITHIUM_CRYSTAL,
 					LUCKSTONE-1), x, y, FALSE, TRUE);
 			if (Blind)
 			    You("kick %s loose!", something);
@@ -962,7 +962,7 @@ int dokick() {
 			if(!(maploc->looted & S_LRING)) { /* once per sink */
 			    if (!Blind)
 				You("see a ring shining in its midst.");
-			    (void) mkobj_at(RING_CLASS, x, y, TRUE);
+			    (void) MakeRandomObjectOfClassAt(RING_CLASS, x, y, TRUE);
 			    newsym(x, y);
 			    exercise(A_DEX, TRUE);
 			    exercise(A_WIS, TRUE);	/* a discovery! */

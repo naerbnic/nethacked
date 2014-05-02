@@ -257,9 +257,9 @@ STATIC_OVL void mkshobj_at(
 	} else {
 	    atype = get_shop_item(shp - shtypes);
 	    if (atype < 0)
-		(void) mksobj_at(-atype, sx, sy, TRUE, TRUE);
+		(void) MakeSpecificObjectAt(-atype, sx, sy, TRUE, TRUE);
 	    else
-		(void) mkobj_at(atype, sx, sy, TRUE);
+		(void) MakeRandomObjectOfClassAt(atype, sx, sy, TRUE);
 	}
 }
 

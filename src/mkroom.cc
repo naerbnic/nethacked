@@ -307,19 +307,19 @@ void fill_zoo(struct mkroom *sroom) {
 			if(!rn2(5))
 			    (void) mk_tt_object(CORPSE, sx, sy);
 			if(!rn2(10))	/* lots of treasure buried with dead */
-			    (void) mksobj_at((rn2(3)) ? LARGE_BOX : CHEST,
+			    (void) MakeSpecificObjectAt((rn2(3)) ? LARGE_BOX : CHEST,
 					     sx, sy, TRUE, FALSE);
 			if (!rn2(5))
 			    make_grave(sx, sy, (char *)0);
 			break;
 		    case BEEHIVE:
 			if(!rn2(3))
-			    (void) mksobj_at(LUMP_OF_ROYAL_JELLY,
+			    (void) MakeSpecificObjectAt(LUMP_OF_ROYAL_JELLY,
 					     sx, sy, TRUE, FALSE);
 			break;
 		    case BARRACKS:
 			if(!rn2(20))	/* the payroll and some loot */
-			    (void) mksobj_at((rn2(3)) ? LARGE_BOX : CHEST,
+			    (void) MakeSpecificObjectAt((rn2(3)) ? LARGE_BOX : CHEST,
 					     sx, sy, TRUE, FALSE);
 			break;
 		    case COCKNEST:
@@ -336,7 +336,7 @@ void fill_zoo(struct mkroom *sroom) {
 			break;
 		    case ANTHOLE:
 			if(!rn2(3))
-			    (void) mkobj_at(FOOD_CLASS, sx, sy, FALSE);
+			    (void) MakeRandomObjectOfClassAt(FOOD_CLASS, sx, sy, FALSE);
 			break;
 		}
 	    }
@@ -348,7 +348,7 @@ void fill_zoo(struct mkroom *sroom) {
 		  (void) somexy(sroom, &mm);
 		  (void) mkgold((long) rn1(50 * level_difficulty(),10), mm.x, mm.y);
 		  /* the royal coffers */
-		  chest = mksobj_at(CHEST, mm.x, mm.y, TRUE, FALSE);
+		  chest = MakeSpecificObjectAt(CHEST, mm.x, mm.y, TRUE, FALSE);
 		  chest->spe = 2; /* so it can be found later */
 		  level.flags.has_court = 1;
 		  break;

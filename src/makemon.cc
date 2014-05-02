@@ -924,7 +924,7 @@ Monster * makemon(MonsterType *ptr, int x, int y, int mmflags) {
 		case S_SNAKE:
 			if(in_mklev)
 			    if(x && y)
-				(void) mkobj_at(0, x, y, TRUE);
+				(void) MakeRandomObjectOfClassAt(0, x, y, TRUE);
 			if(hides_under(ptr) && OBJ_AT(x, y))
 			    mtmp->mundetected = TRUE;
 			break;

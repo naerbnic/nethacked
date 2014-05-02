@@ -182,7 +182,7 @@ STATIC_OVL Object * make_corpse(Monster *mtmp) {
 		/* dragons is the same as the order of the scales.	   */
 		if (!rn2(mtmp->mrevived ? 20 : 3)) {
 		    num = GRAY_DRAGON_SCALES + monsndx(mdat) - PM_GRAY_DRAGON;
-		    obj = mksobj_at(num, x, y, FALSE, FALSE);
+		    obj = MakeSpecificObjectAt(num, x, y, FALSE, FALSE);
 		    obj->spe = 0;
 		    obj->cursed = obj->blessed = FALSE;
 		}
@@ -196,10 +196,10 @@ STATIC_OVL Object * make_corpse(Monster *mtmp) {
 			   pline("%s recently regrown horn crumbles to dust.",
 				s_suffix(Monnam(mtmp)));
 		} else
-			(void) mksobj_at(UNICORN_HORN, x, y, TRUE, FALSE);
+			(void) MakeSpecificObjectAt(UNICORN_HORN, x, y, TRUE, FALSE);
 		goto default_1;
 	    case PM_LONG_WORM:
-		(void) mksobj_at(WORM_TOOTH, x, y, TRUE, FALSE);
+		(void) MakeSpecificObjectAt(WORM_TOOTH, x, y, TRUE, FALSE);
 		goto default_1;
 	    case PM_VAMPIRE:
 	    case PM_VAMPIRE_LORD:
@@ -231,17 +231,17 @@ STATIC_OVL Object * make_corpse(Monster *mtmp) {
 	    case PM_IRON_GOLEM:
 		num = d(2,6);
 		while (num--)
-			obj = mksobj_at(IRON_CHAIN, x, y, TRUE, FALSE);
+			obj = MakeSpecificObjectAt(IRON_CHAIN, x, y, TRUE, FALSE);
 		mtmp->mnamelth = 0;
 		break;
 	    case PM_GLASS_GOLEM:
 		num = d(2,4);   /* very low chance of creating all glass gems */
 		while (num--)
-			obj = mksobj_at((LAST_GEM + rnd(9)), x, y, TRUE, FALSE);
+			obj = MakeSpecificObjectAt((LAST_GEM + rnd(9)), x, y, TRUE, FALSE);
 		mtmp->mnamelth = 0;
 		break;
 	    case PM_CLAY_GOLEM:
-		obj = mksobj_at(ROCK, x, y, FALSE, FALSE);
+		obj = MakeSpecificObjectAt(ROCK, x, y, FALSE, FALSE);
 		obj->quan = (long)(rn2(20) + 50);
 		obj->owt = weight(obj);
 		mtmp->mnamelth = 0;
@@ -253,14 +253,14 @@ STATIC_OVL Object * make_corpse(Monster *mtmp) {
 	    case PM_WOOD_GOLEM:
 		num = d(2,4);
 		while(num--) {
-			obj = mksobj_at(QUARTERSTAFF, x, y, TRUE, FALSE);
+			obj = MakeSpecificObjectAt(QUARTERSTAFF, x, y, TRUE, FALSE);
 		}
 		mtmp->mnamelth = 0;
 		break;
 	    case PM_LEATHER_GOLEM:
 		num = d(2,4);
 		while(num--)
-			obj = mksobj_at(LEATHER_ARMOR, x, y, TRUE, FALSE);
+			obj = MakeSpecificObjectAt(LEATHER_ARMOR, x, y, TRUE, FALSE);
 		mtmp->mnamelth = 0;
 		break;
 	    case PM_GOLD_GOLEM:
@@ -271,7 +271,7 @@ STATIC_OVL Object * make_corpse(Monster *mtmp) {
 	    case PM_PAPER_GOLEM:
 		num = rnd(4);
 		while (num--)
-			obj = mksobj_at(SCR_BLANK_PAPER, x, y, TRUE, FALSE);
+			obj = MakeSpecificObjectAt(SCR_BLANK_PAPER, x, y, TRUE, FALSE);
 		mtmp->mnamelth = 0;
 		break;
 	    default_1:
@@ -712,7 +712,7 @@ int meatmetal(Monster *mtmp) {
 		    }
 		    /* Left behind a pile? */
 		    if (rnd(25) < 3)
-			(void)mksobj_at(ROCK, mtmp->mx, mtmp->my, TRUE, FALSE);
+			(void)MakeSpecificObjectAt(ROCK, mtmp->mx, mtmp->my, TRUE, FALSE);
 		    newsym(mtmp->mx, mtmp->my);
 		    return 1;
 		}
@@ -1576,7 +1576,7 @@ void monstone(Monster *mdef) {
 			otmp->spe = 1;
 		otmp->owt = weight(otmp);
 	} else
-		otmp = mksobj_at(ROCK, x, y, TRUE, FALSE);
+		otmp = MakeSpecificObjectAt(ROCK, x, y, TRUE, FALSE);
 
 	stackobj(otmp);
 	/* mondead() already does this, but we must do it before the newsym */
@@ -1714,7 +1714,7 @@ void xkilled(
 
 #ifdef MAIL
 	if(mdat == &mons[PM_MAIL_DAEMON]) {
-		stackobj(mksobj_at(SCR_MAIL, x, y, FALSE, FALSE));
+		stackobj(MakeSpecificObjectAt(SCR_MAIL, x, y, FALSE, FALSE));
 		redisp = TRUE;
 	}
 #endif
@@ -1732,7 +1732,7 @@ void xkilled(
 							) {
 			int typ;
 
-			otmp = mkobj_at(RANDOM_CLASS, x, y, TRUE);
+			otmp = MakeRandomObjectOfClassAt(RANDOM_CLASS, x, y, TRUE);
 			/* Don't create large objects from small monsters */
 			typ = otmp->otyp;
 			if (mdat->msize < MZ_HUMAN && typ != FOOD_RATION

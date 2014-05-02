@@ -661,7 +661,7 @@ void dotrap(Trap *trap, unsigned trflags) {
 
 		    trap->once = 1;
 		    seetrap(trap);
-		    otmp = mksobj_at(ROCK, player.ux, player.uy, TRUE, FALSE);
+		    otmp = MakeSpecificObjectAt(ROCK, player.ux, player.uy, TRUE, FALSE);
 		    otmp->quan = 1L;
 		    otmp->owt = weight(otmp);
 
