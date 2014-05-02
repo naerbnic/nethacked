@@ -20,12 +20,12 @@ extern Object *thrownobj;		/* defined in dothrow.c */
 
 /*#define DEBUG_EFFECTS*/	/* show some messages for debugging */
 
-struct icp {
+struct ItemClassProbability {
     int  iprob;		/* probability of an item type */
     char iclass;	/* item class */
 };
 
-const struct icp mkobjprobs[] = {
+const struct ItemClassProbability kMakeObjProbabilities[] = {
 {10, WEAPON_CLASS},
 {10, ARMOR_CLASS},
 {20, FOOD_CLASS},
@@ -39,7 +39,7 @@ const struct icp mkobjprobs[] = {
 { 1, AMULET_CLASS}
 };
 
-const struct icp boxiprobs[] = {
+const struct ItemClassProbability kBoxProbabilities[] = {
 {18, GEM_CLASS},
 {15, FOOD_CLASS},
 {18, POTION_CLASS},
@@ -52,7 +52,7 @@ const struct icp boxiprobs[] = {
 };
 
 #ifdef REINCARNATION
-const struct icp rogueprobs[] = {
+const struct ItemClassProbability kRogueProbabilities[] = {
 {12, WEAPON_CLASS},
 {12, ARMOR_CLASS},
 {22, FOOD_CLASS},
@@ -63,7 +63,7 @@ const struct icp rogueprobs[] = {
 };
 #endif
 
-const struct icp hellprobs[] = {
+const struct ItemClassProbability kHellProbabilities[] = {
 {20, WEAPON_CLASS},
 {20, ARMOR_CLASS},
 {16, FOOD_CLASS},
@@ -96,12 +96,11 @@ Object * mkobj(char oclass, bool artif) {
   int tprob, prob = rnd(1000);
 
   if (oclass == RANDOM_CLASS) {
-    const struct icp *iprobs =
+    const struct ItemClassProbability *iprobs =
 #ifdef REINCARNATION
-        (Is_rogue_level(&player.uz)) ? (const struct icp *) rogueprobs :
+        (Is_rogue_level(&player.uz)) ? kRogueProbabilities :
 #endif
-        Inhell ?
-            (const struct icp *) hellprobs : (const struct icp *) mkobjprobs;
+        Inhell ? kHellProbabilities : kMakeObjProbabilities;
 
     for (tprob = rnd(100); (tprob -= iprobs->iprob) > 0; iprobs++)
       ;
@@ -150,7 +149,7 @@ STATIC_OVL void mkbox_cnts(Object *box) {
 		}
 	    } else {
 		int tprob;
-		const struct icp *iprobs = boxiprobs;
+		const struct ItemClassProbability *iprobs = kBoxProbabilities;
 
 		for (tprob = rnd(100); (tprob -= iprobs->iprob) > 0; iprobs++)
 		    ;
