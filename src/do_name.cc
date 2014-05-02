@@ -210,7 +210,7 @@ struct Monster * christen_monst(struct Monster *mtmp, const char *name) {
 	}
 	if (lth == mtmp->mnamelth) {
 		/* don't need to allocate a new monst struct */
-		if (lth) strcpy(NAME(mtmp), name);
+		if (lth) strcpy(mtmp->name(), name);
 		return mtmp;
 	}
 	mtmp2 = newmonst(mtmp->mxlth + lth);
@@ -218,7 +218,7 @@ struct Monster * christen_monst(struct Monster *mtmp, const char *name) {
 	(void) memcpy((genericptr_t)mtmp2->mextra,
 		      (genericptr_t)mtmp->mextra, mtmp->mxlth);
 	mtmp2->mnamelth = lth;
-	if (lth) strcpy(NAME(mtmp2), name);
+	if (lth) strcpy(mtmp2->name(), name);
 	replmon(mtmp,mtmp2);
 	return(mtmp2);
 }
@@ -663,7 +663,7 @@ char* x_monnam(
 	    strcat(buf, rndmonnam());
 	    name_at_start = FALSE;
 	} else if (mtmp->mnamelth) {
-	    char *name = NAME(mtmp);
+	    char *name = mtmp->name();
 
 	    if (mdat == &mons[PM_GHOST]) {
 		sprintf(eos(buf), "%s ghost", s_suffix(name));

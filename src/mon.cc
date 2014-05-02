@@ -290,7 +290,7 @@ STATIC_OVL struct Object * make_corpse(struct Monster *mtmp) {
 	if (flags.bypasses) bypass_obj(obj);
 
 	if (mtmp->mnamelth)
-	    obj = oname(obj, NAME(mtmp));
+	    obj = oname(obj, mtmp->name());
 
 	/* Avoid "It was hidden under a green mold corpse!"
 	 *  during Blind combat. An unseen monster referred to as "it"
@@ -1556,7 +1556,7 @@ void monstone(struct Monster *mdef) {
 		   item-conferred attributes */
 		otmp = mkcorpstat(STATUE, KEEPTRAITS(mdef) ? mdef : 0,
 				  mdef->data, x, y, FALSE);
-		if (mdef->mnamelth) otmp = oname(otmp, NAME(mdef));
+		if (mdef->mnamelth) otmp = oname(otmp, mdef->name());
 		while ((obj = oldminvent) != 0) {
 		    oldminvent = obj->nobj;
 		    (void) add_to_container(otmp, obj);
@@ -2274,10 +2274,10 @@ int newcham(struct Monster *mtmp, struct permonst *mdat, bool polyspot, bool msg
 		 * polymorphed, so dropping the rank for mplayers seems
 		 * reasonable.
 		 */
-		char *p = index(NAME(mtmp), ' ');
+		char *p = index(mtmp->name(), ' ');
 		if (p) {
 			*p = '\0';
-			mtmp->mnamelth = p - NAME(mtmp) + 1;
+			mtmp->mnamelth = p - mtmp->name() + 1;
 		}
 	}
 

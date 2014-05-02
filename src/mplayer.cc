@@ -50,7 +50,7 @@ STATIC_OVL const char * dev_name() {
 	    i = rn2(n);
 	    for (mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
 		if(!is_mplayer(mtmp->data)) continue;
-		if(!strncmp(developers[i], NAME(mtmp),
+		if(!strncmp(developers[i], mtmp->name(),
 			               strlen(developers[i]))) {
 		    match = TRUE;
 		    break;

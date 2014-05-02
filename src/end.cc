@@ -248,7 +248,7 @@ void done_in_by(struct Monster *mtmp) {
 
 	if(mtmp->data == &mons[PM_GHOST]) {
 		strcat(buf, "ghost");
-		if (mtmp->mnamelth) sprintf(eos(buf), " of %s", NAME(mtmp));
+		if (mtmp->mnamelth) sprintf(eos(buf), " of %s", mtmp->name());
 	} else if(mtmp->isshk) {
 		sprintf(eos(buf), "%s %s, the shopkeeper",
 			(mtmp->female ? "Ms." : "Mr."), shkname(mtmp));
@@ -261,7 +261,7 @@ void done_in_by(struct Monster *mtmp) {
 	} else {
 		strcat(buf, mtmp->data->mname);
 		if (mtmp->mnamelth)
-		    sprintf(eos(buf), " called %s", NAME(mtmp));
+		    sprintf(eos(buf), " called %s", mtmp->name());
 	}
 
 	if (multi) {

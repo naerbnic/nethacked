@@ -706,7 +706,7 @@ struct Monster * clone_mon(struct Monster *mon, xchar x, xchar y) {
 			     LS_MONSTER, (genericptr_t)m2);
 	if (m2->mnamelth) {
 	    m2->mnamelth = 0; /* or it won't get allocated */
-	    m2 = christen_monst(m2, NAME(mon));
+	    m2 = christen_monst(m2, mon->name());
 	} else if (mon->isshk) {
 	    m2 = christen_monst(m2, shkname(mon));
 	}
@@ -727,7 +727,7 @@ struct Monster * clone_mon(struct Monster *mon, xchar x, xchar y) {
 		m3 = newmonst(sizeof(struct epri) + mon->mnamelth);
 		*m3 = *m2;
 		m3->mxlth = sizeof(struct epri);
-		if (m2->mnamelth) strcpy(NAME(m3), NAME(m2));
+		if (m2->mnamelth) strcpy(m3->name(), m2->name());
 		*(EPRI(m3)) = *(EPRI(mon));
 		replmon(m2, m3);
 		m2 = m3;
