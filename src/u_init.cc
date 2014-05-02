@@ -935,7 +935,7 @@ STATIC_OVL void ini_inv(struct trobj *trop) {
 				    (objects[otyp].oc_level > 3 ||
 				    restricted_spell_discipline(otyp)))
 							) {
-				dealloc_obj(obj);
+				DeallocateObject(obj);
 				obj = MakeRandomObject(trop->trclass, FALSE);
 				otyp = obj->otyp;
 			}

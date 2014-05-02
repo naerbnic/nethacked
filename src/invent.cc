@@ -2782,7 +2782,7 @@ Object * display_minventory(Monster *mon, int dflags, char *title) {
 		m_gold.quan = mon->mgold;  m_gold.dknown = 1;
 		m_gold.where = OBJ_FREE;
 		/* we had better not merge and free this object... */
-		if (add_to_minv(mon, &m_gold))
+		if (AddObjectToMonsterInventory(mon, &m_gold))
 		    panic("display_minventory: static object freed.");
 	    }
 

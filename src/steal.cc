@@ -100,7 +100,7 @@ void stealgold(Monster *mtmp) {
 
 	if (fgold && ( !ygold || fgold->quan > ygold->quan || !rn2(5))) {
             RemoveObjectFromStorage(fgold);
-	    add_to_minv(mtmp, fgold);
+	    AddObjectToMonsterInventory(mtmp, fgold);
 	    newsym(player.ux, player.uy);
 	    pline("%s quickly snatches some gold from between your %s!",
 		    Monnam(mtmp), makeplural(body_part(FOOT)));
@@ -114,7 +114,7 @@ void stealgold(Monster *mtmp) {
 	    tmp = min(tmp, ygold->quan);
             if (tmp < ygold->quan) ygold = SplitObject(ygold, tmp);
             freeinv(ygold);
-            add_to_minv(mtmp, ygold);
+            AddObjectToMonsterInventory(mtmp, ygold);
 	    Your("purse feels lighter.");
 	    if (!tele_restrict(mtmp)) (void) rloc(mtmp, FALSE);
 	    monflee(mtmp, 0, FALSE, FALSE);
@@ -426,11 +426,11 @@ int mpickobj(Monster *mtmp, Object *otmp) {
 	    pline("%s out.", Tobjnam(otmp, "go"));
 	snuff_otmp = TRUE;
     }
-    /* Must do carrying effects on object prior to add_to_minv() */
+    /* Must do carrying effects on object prior to AddObjectToMonsterInventory() */
     carry_obj_effects(otmp);
-    /* add_to_minv() might free otmp [if merged with something else],
+    /* AddObjectToMonsterInventory() might free otmp [if merged with something else],
        so we have to call it after doing the object checks */
-    freed_otmp = add_to_minv(mtmp, otmp);
+    freed_otmp = AddObjectToMonsterInventory(mtmp, otmp);
     /* and we had to defer this until object is in mtmp's inventory */
     if (snuff_otmp) snuff_light_source(mtmp->mx, mtmp->my);
 #ifndef GOLDOBJ
@@ -568,7 +568,7 @@ void relobj(Monster *mtmp, int show, bool is_pet) {
 	/* put kept objects back */
 	while ((otmp = keepobj) != nullptr) {
 	    keepobj = otmp->nobj;
-	    (void) add_to_minv(mtmp, otmp);
+	    (void) AddObjectToMonsterInventory(mtmp, otmp);
 	}
 #ifndef GOLDOBJ
 	if (mtmp->mgold) {

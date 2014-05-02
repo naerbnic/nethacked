@@ -9,11 +9,11 @@
 
 STATIC_DCL void AddRandomBoxContents(Object *);
 STATIC_DCL void UpdateObjectTimerState(Object *, xchar, xchar, int);
-STATIC_DCL void container_weight(Object *);
+STATIC_DCL void RefreshContainerWeight(Object *);
 STATIC_DCL Object *SaveMonsterIntoObject(Object *, Monster *);
 #ifdef WIZARD
-STATIC_DCL const char *where_name(int);
-STATIC_DCL void check_contained(Object *,const char *);
+STATIC_DCL const char *GetWhereName(int);
+STATIC_DCL void CheckObjectIsCorrectlyContained(Object *,const char *);
 #endif
 
 extern Object *thrownobj;		/* defined in dothrow.c */
@@ -187,7 +187,7 @@ STATIC_OVL void AddRandomBoxContents(Object *box) {
             otmp->otyp = rnd_class(WAN_LIGHT, WAN_LIGHTNING);
       }
     }
-    add_to_container(box, otmp);
+    AddObjectToContainer(box, otmp);
   }
 }
 
@@ -582,7 +582,7 @@ Object * MakeSpecificObject(int otyp, bool init, bool artif) {
 			otmp->corpsenm = PickRandomMonsterTypeIndex();
 			if (!verysmall(&mons[otmp->corpsenm]) &&
 				rn2(level_difficulty()/2 + 10) > 10)
-			    add_to_container(otmp,
+			    AddObjectToContainer(otmp,
 						    MakeRandomObject(SPBOOK_CLASS,FALSE));
 		}
 		break;
@@ -1159,7 +1159,7 @@ void DiscardMonsterInventory(Monster *mtmp) {
 
   while ((otmp = mtmp->minvent) != 0) {
     RemoveObjectFromStorage(otmp);
-    obfree(otmp, nullptr); /* dealloc_obj() isn't sufficient */
+    obfree(otmp, nullptr); /* DeallocateObject() isn't sufficient */
   }
 }
 
@@ -1188,7 +1188,7 @@ void RemoveObjectFromStorage(Object *obj) {
       break;
     case OBJ_CONTAINED:
       ExtractObjectFromList(obj, &obj->ocontainer->cobj);
-      container_weight(obj->ocontainer);
+      RefreshContainerWeight(obj->ocontainer);
       break;
     case OBJ_INVENT:
       freeinv(obj);
@@ -1260,48 +1260,49 @@ void extract_nexthere(Object *obj, Object **head_ptr) {
  * in the inventory, then the passed obj is deleted and 1 is returned.
  * Otherwise 0 is returned.
  */
-int add_to_minv(Monster *mon, Object *obj) {
-    Object *otmp;
+int AddObjectToMonsterInventory(Monster *mon, Object *obj) {
+  Object *otmp;
 
-    if (obj->where != OBJ_FREE)
-	panic("add_to_minv: obj not free");
+  if (obj->where != OBJ_FREE)
+    panic("add_to_minv: obj not free");
 
-    /* merge if possible */
-    for (otmp = mon->minvent; otmp; otmp = otmp->nobj)
-	if (merged(&otmp, &obj))
-	    return 1;	/* obj merged and then free'd */
-    /* else insert; don't bother forcing it to end of chain */
-    obj->where = OBJ_MINVENT;
-    obj->ocarry = mon;
-    obj->nobj = mon->minvent;
-    mon->minvent = obj;
-    return 0;	/* obj on mon's inventory chain */
+  /* merge if possible */
+  for (otmp = mon->minvent; otmp; otmp = otmp->nobj)
+    if (merged(&otmp, &obj))
+      return 1; /* obj merged and then free'd */
+  /* else insert; don't bother forcing it to end of chain */
+  obj->where = OBJ_MINVENT;
+  obj->ocarry = mon;
+  obj->nobj = mon->minvent;
+  mon->minvent = obj;
+  return 0; /* obj on mon's inventory chain */
 }
 
 /*
  * Add obj to container, make sure obj is "free".  Returns (merged) obj.
  * The input obj may be deleted in the process.
  */
-Object * add_to_container(Object *container, Object *obj) {
-    Object *otmp;
+Object * AddObjectToContainer(Object *container, Object *obj) {
+  Object *otmp;
 
-    if (obj->where != OBJ_FREE)
-	panic("add_to_container: obj not free");
-    if (container->where != OBJ_INVENT && container->where != OBJ_MINVENT)
-	obj_no_longer_held(obj);
+  if (obj->where != OBJ_FREE)
+    panic("add_to_container: obj not free");
+  if (container->where != OBJ_INVENT && container->where != OBJ_MINVENT)
+    obj_no_longer_held(obj);
 
-    /* merge if possible */
-    for (otmp = container->cobj; otmp; otmp = otmp->nobj)
-	if (merged(&otmp, &obj)) return (otmp);
+  /* merge if possible */
+  for (otmp = container->cobj; otmp; otmp = otmp->nobj)
+    if (merged(&otmp, &obj))
+      return (otmp);
 
-    obj->where = OBJ_CONTAINED;
-    obj->ocontainer = container;
-    obj->nobj = container->cobj;
-    container->cobj = obj;
-    return (obj);
+  obj->where = OBJ_CONTAINED;
+  obj->ocontainer = container;
+  obj->nobj = container->cobj;
+  container->cobj = obj;
+  return (obj);
 }
 
-void add_to_migration(Object *obj) {
+void AddObjectToMigrationList(Object *obj) {
     if (obj->where != OBJ_FREE)
 	panic("add_to_migration: obj not free");
 
@@ -1310,7 +1311,7 @@ void add_to_migration(Object *obj) {
     migrating_objs = obj;
 }
 
-void add_to_buried(Object *obj) {
+void AddToBuriedList(Object *obj) {
     if (obj->where != OBJ_FREE)
 	panic("add_to_buried: obj not free");
 
@@ -1320,137 +1321,134 @@ void add_to_buried(Object *obj) {
 }
 
 /* Recalculate the weight of this container and all of _its_ containers. */
-STATIC_OVL void container_weight(Object *container) {
-    container->owt = GetWeight(container);
-    if (container->where == OBJ_CONTAINED)
-	container_weight(container->ocontainer);
-/*
-    else if (container->where == OBJ_INVENT)
-	recalculate load delay here ???
-*/
+STATIC_OVL void RefreshContainerWeight(Object *container) {
+  container->owt = GetWeight(container);
+  if (container->where == OBJ_CONTAINED)
+    RefreshContainerWeight(container->ocontainer);
+  /*
+   else if (container->where == OBJ_INVENT)
+   recalculate load delay here ???
+   */
 }
 
 /*
  * Deallocate the object.  _All_ objects should be run through here for
  * them to be deallocated.
  */
-void dealloc_obj(Object *obj) {
-    if (obj->where != OBJ_FREE)
-	panic("dealloc_obj: obj not free");
+void DeallocateObject(Object *obj) {
+  if (obj->where != OBJ_FREE)
+    panic("dealloc_obj: obj not free");
 
-    /* free up any timers attached to the object */
-    if (obj->timed)
-	obj_stop_timers(obj);
+  /* free up any timers attached to the object */
+  if (obj->timed)
+    obj_stop_timers(obj);
 
-    /*
-     * Free up any light sources attached to the object.
-     *
-     * We may want to just call del_light_source() without any
-     * checks (requires a code change there).  Otherwise this
-     * list must track all objects that can have a light source
-     * attached to it (and also requires lamplit to be set).
-     */
-    if (obj_sheds_light(obj))
-	del_light_source(LS_OBJECT, (genericptr_t) obj);
+  /*
+   * Free up any light sources attached to the object.
+   *
+   * We may want to just call del_light_source() without any
+   * checks (requires a code change there).  Otherwise this
+   * list must track all objects that can have a light source
+   * attached to it (and also requires lamplit to be set).
+   */
+  if (obj_sheds_light(obj))
+    del_light_source(LS_OBJECT, (genericptr_t) obj);
 
-    if (obj == thrownobj) thrownobj = (Object*)0;
+  if (obj == thrownobj)
+    thrownobj = (Object*) 0;
 
-    free((genericptr_t) obj);
+  free((genericptr_t) obj);
 }
 
 #ifdef WIZARD
 /* Check all object lists for consistency. */
-void obj_sanity_check() {
-    int x, y;
-    Object *obj;
-    Monster *mon;
-    const char *mesg;
-    char obj_address[20], mon_address[20];  /* room for formatted pointers */
+void SanityCheckObjects() {
+  int x, y;
+  Object *obj;
+  Monster *mon;
+  const char *mesg;
+  char obj_address[20], mon_address[20]; /* room for formatted pointers */
 
-    mesg = "fobj sanity";
-    for (obj = fobj; obj; obj = obj->nobj) {
-	if (obj->where != OBJ_FLOOR) {
-	    pline("%s obj %s %s@(%d,%d): %s\n", mesg,
-		fmt_ptr((genericptr_t)obj, obj_address),
-		where_name(obj->where),
-		obj->ox, obj->oy, doname(obj));
-	}
-	check_contained(obj, mesg);
+  mesg = "fobj sanity";
+  for (obj = fobj; obj; obj = obj->nobj) {
+    if (obj->where != OBJ_FLOOR) {
+      pline("%s obj %s %s@(%d,%d): %s\n", mesg,
+          fmt_ptr((genericptr_t) obj, obj_address), GetWhereName(obj->where),
+          obj->ox, obj->oy, doname(obj));
     }
+    CheckObjectIsCorrectlyContained(obj, mesg);
+  }
 
-    mesg = "location sanity";
-    for (x = 0; x < COLNO; x++)
-	for (y = 0; y < ROWNO; y++)
-	    for (obj = level.objects[x][y]; obj; obj = obj->nexthere)
-		if (obj->where != OBJ_FLOOR) {
-		    pline("%s obj %s %s@(%d,%d): %s\n", mesg,
-			fmt_ptr((genericptr_t)obj, obj_address),
-			where_name(obj->where),
-			obj->ox, obj->oy, doname(obj));
-		}
+  mesg = "location sanity";
+  for (x = 0; x < COLNO; x++)
+    for (y = 0; y < ROWNO; y++)
+      for (obj = level.objects[x][y]; obj; obj = obj->nexthere)
+        if (obj->where != OBJ_FLOOR) {
+          pline("%s obj %s %s@(%d,%d): %s\n", mesg,
+              fmt_ptr((genericptr_t) obj, obj_address), GetWhereName(obj->where),
+              obj->ox, obj->oy, doname(obj));
+        }
 
-    mesg = "invent sanity";
-    for (obj = invent; obj; obj = obj->nobj) {
-	if (obj->where != OBJ_INVENT) {
-	    pline("%s obj %s %s: %s\n", mesg,
-		fmt_ptr((genericptr_t)obj, obj_address),
-		where_name(obj->where), doname(obj));
-	}
-	check_contained(obj, mesg);
+  mesg = "invent sanity";
+  for (obj = invent; obj; obj = obj->nobj) {
+    if (obj->where != OBJ_INVENT) {
+      pline("%s obj %s %s: %s\n", mesg,
+          fmt_ptr((genericptr_t) obj, obj_address), GetWhereName(obj->where),
+          doname(obj));
     }
+    CheckObjectIsCorrectlyContained(obj, mesg);
+  }
 
-    mesg = "migrating sanity";
-    for (obj = migrating_objs; obj; obj = obj->nobj) {
-	if (obj->where != OBJ_MIGRATING) {
-	    pline("%s obj %s %s: %s\n", mesg,
-		fmt_ptr((genericptr_t)obj, obj_address),
-		where_name(obj->where), doname(obj));
-	}
-	check_contained(obj, mesg);
+  mesg = "migrating sanity";
+  for (obj = migrating_objs; obj; obj = obj->nobj) {
+    if (obj->where != OBJ_MIGRATING) {
+      pline("%s obj %s %s: %s\n", mesg,
+          fmt_ptr((genericptr_t) obj, obj_address), GetWhereName(obj->where),
+          doname(obj));
     }
+    CheckObjectIsCorrectlyContained(obj, mesg);
+  }
 
-    mesg = "buried sanity";
-    for (obj = level.buriedobjlist; obj; obj = obj->nobj) {
-	if (obj->where != OBJ_BURIED) {
-	    pline("%s obj %s %s: %s\n", mesg,
-		fmt_ptr((genericptr_t)obj, obj_address),
-		where_name(obj->where), doname(obj));
-	}
-	check_contained(obj, mesg);
+  mesg = "buried sanity";
+  for (obj = level.buriedobjlist; obj; obj = obj->nobj) {
+    if (obj->where != OBJ_BURIED) {
+      pline("%s obj %s %s: %s\n", mesg,
+          fmt_ptr((genericptr_t) obj, obj_address), GetWhereName(obj->where),
+          doname(obj));
     }
+    CheckObjectIsCorrectlyContained(obj, mesg);
+  }
 
-    mesg = "bill sanity";
-    for (obj = billobjs; obj; obj = obj->nobj) {
-	if (obj->where != OBJ_ONBILL) {
-	    pline("%s obj %s %s: %s\n", mesg,
-		fmt_ptr((genericptr_t)obj, obj_address),
-		where_name(obj->where), doname(obj));
-	}
-	/* shouldn't be a full container on the bill */
-	if (obj->cobj) {
-	    pline("%s obj %s contains %s! %s\n", mesg,
-		fmt_ptr((genericptr_t)obj, obj_address),
-		something, doname(obj));
-	}
+  mesg = "bill sanity";
+  for (obj = billobjs; obj; obj = obj->nobj) {
+    if (obj->where != OBJ_ONBILL) {
+      pline("%s obj %s %s: %s\n", mesg,
+          fmt_ptr((genericptr_t) obj, obj_address), GetWhereName(obj->where),
+          doname(obj));
     }
+    /* shouldn't be a full container on the bill */
+    if (obj->cobj) {
+      pline("%s obj %s contains %s! %s\n", mesg,
+          fmt_ptr((genericptr_t) obj, obj_address),
+          something, doname(obj));
+    }
+  }
 
-    mesg = "minvent sanity";
-    for (mon = fmon; mon; mon = mon->nmon)
-	for (obj = mon->minvent; obj; obj = obj->nobj) {
-	    if (obj->where != OBJ_MINVENT) {
-		pline("%s obj %s %s: %s\n", mesg,
-			fmt_ptr((genericptr_t)obj, obj_address),
-			where_name(obj->where), doname(obj));
-	    }
-	    if (obj->ocarry != mon) {
-		pline("%s obj %s (%s) not held by mon %s (%s)\n", mesg,
-			fmt_ptr((genericptr_t)obj, obj_address),
-			doname(obj),
-			fmt_ptr((genericptr_t)mon, mon_address),
-			mon_nam(mon));
-	    }
-	    check_contained(obj, mesg);
-	}
+  mesg = "minvent sanity";
+  for (mon = fmon; mon; mon = mon->nmon)
+    for (obj = mon->minvent; obj; obj = obj->nobj) {
+      if (obj->where != OBJ_MINVENT) {
+        pline("%s obj %s %s: %s\n", mesg,
+            fmt_ptr((genericptr_t) obj, obj_address), GetWhereName(obj->where),
+            doname(obj));
+      }
+      if (obj->ocarry != mon) {
+        pline("%s obj %s (%s) not held by mon %s (%s)\n", mesg,
+            fmt_ptr((genericptr_t) obj, obj_address), doname(obj),
+            fmt_ptr((genericptr_t) mon, mon_address), mon_nam(mon));
+      }
+      CheckObjectIsCorrectlyContained(obj, mesg);
+    }
 }
 
 /* This must stay consistent with the defines in obj.h. */
@@ -1459,25 +1457,25 @@ static const char *obj_state_names[NOBJ_STATES] = {
 	"minvent",	"migrating",	"buried",	"onbill"
 };
 
-STATIC_OVL const char * where_name(int where) {
+STATIC_OVL const char * GetWhereName(int where) {
     return (where<0 || where>=NOBJ_STATES) ? "unknown" : obj_state_names[where];
 }
 
 /* obj sanity check: check objs contained by container */
-STATIC_OVL void check_contained(Object *container, const char *mesg) {
-    Object *obj;
-    char obj1_address[20], obj2_address[20];
+STATIC_OVL void CheckObjectIsCorrectlyContained(Object *container,
+    const char *mesg) {
+  Object *obj;
+  char obj1_address[20], obj2_address[20];
 
-    for (obj = container->cobj; obj; obj = obj->nobj) {
-	if (obj->where != OBJ_CONTAINED)
-	    pline("contained %s obj %s: %s\n", mesg,
-		fmt_ptr((genericptr_t)obj, obj1_address),
-		where_name(obj->where));
-	else if (obj->ocontainer != container)
-	    pline("%s obj %s not in container %s\n", mesg,
-		fmt_ptr((genericptr_t)obj, obj1_address),
-		fmt_ptr((genericptr_t)container, obj2_address));
-    }
+  for (obj = container->cobj; obj; obj = obj->nobj) {
+    if (obj->where != OBJ_CONTAINED)
+      pline("contained %s obj %s: %s\n", mesg,
+          fmt_ptr((genericptr_t) obj, obj1_address), GetWhereName(obj->where));
+    else if (obj->ocontainer != container)
+      pline("%s obj %s not in container %s\n", mesg,
+          fmt_ptr((genericptr_t) obj, obj1_address),
+          fmt_ptr((genericptr_t) container, obj2_address));
+  }
 }
 #endif /* WIZARD */
 

@@ -101,7 +101,7 @@ void inven_inuse(bool quietly) {
 		}
 		ExtractObjectFromList(otmp, &invent);
 		otmp->in_use = FALSE;
-		dealloc_obj(otmp);
+		DeallocateObject(otmp);
 	    } else
 #endif /* GOLDOBJ */
 	    if (otmp->in_use) {

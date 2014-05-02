@@ -109,7 +109,7 @@ long money2mon(Monster *mon, long amount) {
     else if (ygold->owornmask)
 	remove_worn_item(ygold, FALSE);		/* quiver */
     freeinv(ygold);
-    add_to_minv(mon, ygold);
+    AddObjectToMonsterInventory(mon, ygold);
     flags.botl = 1;
     return amount;
 }
@@ -264,7 +264,7 @@ STATIC_OVL void setpaid(Monster *shkp) {
 
 	while ((obj = billobjs) != 0) {
 		RemoveObjectFromStorage(obj);
-		dealloc_obj(obj);
+		DeallocateObject(obj);
 	}
 	if(shkp) {
 		ESHK(shkp)->billct = 0;
@@ -751,7 +751,7 @@ void obfree(Object *obj, Object *merge) {
 #endif
 		}
 	}
-	dealloc_obj(obj);
+	DeallocateObject(obj);
 }
 #endif /* OVLB */
 #ifdef OVL3
@@ -1452,7 +1452,7 @@ STATIC_OVL int dopayobj(Monster *shkp, struct bill_x *bp, Object **obj_p, int wh
 	    } else {	/* completely used-up, so get rid of it */
 		RemoveObjectFromStorage(obj);
 	     /* assert( obj == *obj_p ); */
-		dealloc_obj(obj);
+		DeallocateObject(obj);
 		*obj_p = 0;	/* destroy pointer to freed object */
 	    }
 	} else if (itemize)
@@ -3145,7 +3145,7 @@ void shopdig(int fall) {
 		setnotworn(obj);
 		freeinv(obj);
 		subfrombill(obj, shkp);
-		(void) add_to_minv(shkp, obj);	/* may free obj */
+		(void) AddObjectToMonsterInventory(shkp, obj);	/* may free obj */
 	    }
     }
 }

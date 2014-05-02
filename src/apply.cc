@@ -1741,7 +1741,7 @@ STATIC_OVL void use_stone(Object *tstone) {
     if (obj->oclass == COIN_CLASS) {
 	player.ugold += obj->quan;	/* keep botl up to date */
 	goldobj = *obj;
-	dealloc_obj(obj);
+	DeallocateObject(obj);
 	obj = &goldobj;
     }
 #endif

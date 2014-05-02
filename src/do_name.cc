@@ -387,7 +387,7 @@ Object * ReallocateExtraObjectSpace(Object *obj, int oextra_size, genericptr_t o
 	    book_substitution(obj, otmp);	/* read spellbook */
 
 	/* obfree(obj, otmp);	now unnecessary: no pointers on bill */
-	dealloc_obj(obj);	/* let us hope nobody else saved a pointer */
+	DeallocateObject(obj);	/* let us hope nobody else saved a pointer */
 	return otmp;
 }
 

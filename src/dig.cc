@@ -1277,7 +1277,7 @@ Object * bury_an_obj(Object *otmp) {
 	    (void) start_timer((under_ice ? 0L : 250L) + (long)rnd(250),
 			       TIMER_OBJECT, ROT_ORGANIC, (genericptr_t)otmp);
 	}
-	add_to_buried(otmp);
+	AddToBuriedList(otmp);
 	return(otmp2);
 }
 

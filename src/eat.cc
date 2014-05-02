@@ -1532,7 +1532,7 @@ STATIC_OVL void eatspecial() {
 		    useupall(otmp);
 #else
 		if (otmp->where == OBJ_FREE)
-		    dealloc_obj(otmp);
+		    DeallocateObject(otmp);
 #endif
 		else
 		    useupf(otmp, otmp->quan);

@@ -1699,7 +1699,7 @@ void unpunish() {
 	RemoveObjectFromStorage(uchain);
 	newsym(uchain->ox,uchain->oy);
 	setworn(nullptr, W_CHAIN);
-	dealloc_obj(savechain);
+	DeallocateObject(savechain);
 	uball->spe = 0;
 	setworn(nullptr, W_BALL);
 }

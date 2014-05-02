@@ -835,7 +835,7 @@ STATIC_OVL void mineralize() {
 			otmp->ox = x,  otmp->oy = y;
 			otmp->quan = 1L + rnd(goldprob * 3);
 			otmp->owt = GetWeight(otmp);
-			if (!rn2(3)) add_to_buried(otmp);
+			if (!rn2(3)) AddToBuriedList(otmp);
 			else PlaceObject(otmp, x, y);
 		    }
 		}
@@ -843,10 +843,10 @@ STATIC_OVL void mineralize() {
 		    for (cnt = rnd(2 + dunlev(&player.uz) / 3); cnt > 0; cnt--)
 			if ((otmp = MakeRandomObject(GEM_CLASS, FALSE)) != 0) {
 			    if (otmp->otyp == ROCK) {
-				dealloc_obj(otmp);	/* discard it */
+				DeallocateObject(otmp);	/* discard it */
 			    } else {
 				otmp->ox = x,  otmp->oy = y;
-				if (!rn2(3)) add_to_buried(otmp);
+				if (!rn2(3)) AddToBuriedList(otmp);
 				else PlaceObject(otmp, x, y);
 			    }
 		    }
@@ -1290,7 +1290,7 @@ static void mkgrave(struct mkroom *croom) {
 	    Curse(otmp);
 	    otmp->ox = m.x;
 	    otmp->oy = m.y;
-	    add_to_buried(otmp);
+	    AddToBuriedList(otmp);
 	}
 
 	/* Leave a bell, in case we accidentally buried someone alive */

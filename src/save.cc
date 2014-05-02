@@ -663,7 +663,7 @@ STATIC_OVL void saveobjchn(int fd, Object *otmp, int mode) {
 		otmp->where = OBJ_FREE;	/* set to free so dealloc will work */
 		otmp->timed = 0;	/* not timed any more */
 		otmp->lamplit = 0;	/* caller handled lights */
-		dealloc_obj(otmp);
+		DeallocateObject(otmp);
 	    }
 	    otmp = otmp2;
 	}

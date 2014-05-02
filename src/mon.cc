@@ -820,7 +820,7 @@ void mpickgold(Monster *mtmp) {
 	delobj(gold);
 #else
         RemoveObjectFromStorage(gold);
-        add_to_minv(mtmp, gold);
+        AddObjectToMonsterInventory(mtmp, gold);
 #endif
 	if (cansee(mtmp->mx, mtmp->my) ) {
 	    if (flags.verbose && !mtmp->isgd)
@@ -1559,7 +1559,7 @@ void monstone(Monster *mdef) {
 		if (mdef->mnamelth) otmp = oname(otmp, mdef->name());
 		while ((obj = oldminvent) != 0) {
 		    oldminvent = obj->nobj;
-		    (void) add_to_container(otmp, obj);
+		    (void) AddObjectToContainer(otmp, obj);
 		}
 #ifndef GOLDOBJ
 		if (mdef->mgold) {
@@ -1567,7 +1567,7 @@ void monstone(Monster *mdef) {
 			au = MakeSpecificObject(GOLD_PIECE, FALSE, FALSE);
 			au->quan = mdef->mgold;
 			au->owt = GetWeight(au);
-			(void) add_to_container(otmp, au);
+			(void) AddObjectToContainer(otmp, au);
 			mdef->mgold = 0;
 		}
 #endif

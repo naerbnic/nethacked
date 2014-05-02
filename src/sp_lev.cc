@@ -923,7 +923,7 @@ STATIC_OVL void create_object(object *o, struct mkroom *croom) {
 		    break;
 		}
 		RemoveObjectFromFloor(otmp);
-		(void) add_to_container(container, otmp);
+		(void) AddObjectToContainer(container, otmp);
 		goto o_done;		/* don't stack, but do other cleanup */
 	    /* container */
 	    case 2:
@@ -961,7 +961,7 @@ STATIC_OVL void create_object(object *o, struct mkroom *croom) {
 		obj = was->minvent;
 		obj->owornmask = 0;
 		RemoveObjectFromStorage(obj);
-		(void) add_to_container(otmp, obj);
+		(void) AddObjectToContainer(otmp, obj);
 	    }
 	    otmp->owt = GetWeight(otmp);
 	    mongone(was);

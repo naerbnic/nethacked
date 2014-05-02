@@ -1554,7 +1554,7 @@ lootcont:
 gotit:
 		if (coffers) {
 	    verbalize("Thank you for your contribution to reduce the debt.");
-		    (void) add_to_container(coffers, goldob);
+		    (void) AddObjectToContainer(coffers, goldob);
 		    coffers->owt = GetWeight(coffers);
 		} else {
 		    Monster *mon = makemon(courtmon(),
@@ -1571,7 +1571,7 @@ gotit:
 	    } else {
 		dropx(goldob);
 #else
-			add_to_minv(mon, goldob);
+			AddObjectToMonsterInventory(mon, goldob);
 			pline("The exchequer accepts your contribution.");
 		    } else {
 			dropy(goldob);
@@ -1850,7 +1850,7 @@ STATIC_PTR int in_container(Object *obj) {
 	    /* gold in container always needs to be added to credit */
 	    if (floor_container && obj->oclass == COIN_CLASS)
 		sellobj(obj, current_container->ox, current_container->oy);
-	    (void) add_to_container(current_container, obj);
+	    (void) AddObjectToContainer(current_container, obj);
 	    current_container->owt = GetWeight(current_container);
 	}
 	/* gold needs this, and freeinv() many lines above may cause
@@ -1935,7 +1935,7 @@ STATIC_PTR int out_container(Object *obj) {
 
 	if (is_gold) {
 #ifndef GOLDOBJ
-		dealloc_obj(obj);
+		DeallocateObject(obj);
 #endif
 		bot();	/* update character's gold piece count immediately */
 	}
@@ -1990,7 +1990,7 @@ STATIC_OVL void observe_quantum_cat(Object *box) {
 				  box->ox, box->oy, sc);
 	if (deadcat) {
 	    RemoveObjectFromStorage(deadcat);
-	    (void) add_to_container(box, deadcat);
+	    (void) AddObjectToContainer(box, deadcat);
 	}
 	pline_The("%s inside the box is dead!",
 	    Hallucination ? rndmonnam() : "housecat");
@@ -2220,7 +2220,7 @@ ask_again2:
 	    u_gold = invent;
 	    invent = u_gold->nobj;
 	    u_gold->in_use = FALSE;
-	    dealloc_obj(u_gold);
+	    DeallocateObject(u_gold);
 	}
 #endif
 	return used;

@@ -124,9 +124,9 @@ STATIC_OVL void drop_upon_death(Monster *mtmp, Object *cont) {
 
 		if(rn2(5)) Curse(otmp);
 		if (mtmp)
-			(void) add_to_minv(mtmp, otmp);
+			(void) AddObjectToMonsterInventory(mtmp, otmp);
 		else if (cont)
-			(void) add_to_container(cont, otmp);
+			(void) AddObjectToContainer(cont, otmp);
 		else
 			PlaceObject(otmp, player.ux, player.uy);
 	}
@@ -134,7 +134,7 @@ STATIC_OVL void drop_upon_death(Monster *mtmp, Object *cont) {
 	if(player.ugold) {
 		long ugold = player.ugold;
 		if (mtmp) mtmp->mgold = ugold;
-		else if (cont) (void) add_to_container(cont, mkgoldobj(ugold));
+		else if (cont) (void) AddObjectToContainer(cont, mkgoldobj(ugold));
 		else (void)MakeGold(ugold, player.ux, player.uy);
 		player.ugold = ugold;	/* undo mkgoldobj()'s removal */
 	}

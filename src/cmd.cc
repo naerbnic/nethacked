@@ -2069,7 +2069,7 @@ static int wiz_show_stats() {
 }
 
 void sanity_check() {
-	obj_sanity_check();
+	SanityCheckObjects();
 	timer_sanity_check();
 }
 

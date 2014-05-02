@@ -48,7 +48,7 @@ STATIC_OVL int throw_obj(Object *obj, int shotlimit) {
 		if (obj->oclass == COIN_CLASS) {
 		    player.ugold += obj->quan;
 		    flags.botl = 1;
-		    dealloc_obj(obj);
+		    DeallocateObject(obj);
 		}
 		return(0);
 	}
@@ -1616,7 +1616,7 @@ STATIC_OVL int throw_gold(Object *obj) {
 #ifndef GOLDOBJ
 		player.ugold += obj->quan;
 		flags.botl = 1;
-		dealloc_obj(obj);
+		DeallocateObject(obj);
 #endif
 		You("cannot throw gold at yourself.");
 		return(0);
@@ -1630,10 +1630,10 @@ STATIC_OVL int throw_gold(Object *obj) {
 #ifndef GOLDOBJ
 			"The gold disappears", mon_nam(player.ustuck));
 		player.ustuck->mgold += zorks;
-		dealloc_obj(obj);
+		DeallocateObject(obj);
 #else
 			"The money disappears", mon_nam(player.ustuck));
-		add_to_minv(player.ustuck, Object);
+		AddObjectToMonsterInventory(player.ustuck, Object);
 #endif
 		return(1);
 	}

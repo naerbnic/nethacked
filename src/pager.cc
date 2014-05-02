@@ -232,7 +232,7 @@ STATIC_OVL MonsterType * lookat(int x, int y, char *buf, char *monbuf) {
 		else if (otmp->otyp == SLIME_MOLD)
 		    otmp->spe = current_fruit;	/* give the fruit a type */
 		strcpy(buf, distant_name(otmp, xname));
-		dealloc_obj(otmp);
+		DeallocateObject(otmp);
 	    }
 	} else
 	    strcpy(buf, distant_name(otmp, xname));

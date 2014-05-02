@@ -624,7 +624,7 @@ STATIC_OVL int mdamagem(Monster *magr, Monster *mdef, struct Attack *mattk) {
 		    virtualcorpse->corpsenm = num;
 		    virtualcorpse->owt = GetWeight(virtualcorpse);
 		    nutrit = dog_nutrition(magr, virtualcorpse);
-		    dealloc_obj(virtualcorpse);
+		    DeallocateObject(virtualcorpse);
 
 		    /* only 50% nutrition, 25% of normal eating time */
 		    if (magr->meating > 1) magr->meating = (magr->meating+3)/4;
@@ -939,7 +939,7 @@ STATIC_OVL int mdamagem(Monster *magr, Monster *mdef, struct Attack *mattk) {
 		    Object *gold = findgold(mdef->minvent);
 		    if (!gold) break;
                     RemoveObjectFromStorage(gold);
-		    add_to_minv(magr, gold);
+		    AddObjectToMonsterInventory(magr, gold);
                 }
 #endif
 		mdef->mstrategy &= ~STRAT_WAITFORU;
@@ -998,10 +998,10 @@ STATIC_OVL int mdamagem(Monster *magr, Monster *mdef, struct Attack *mattk) {
 				otmp->owornmask = 0L;
 				update_mon_intrinsics(mdef, otmp, FALSE, FALSE);
 			}
-			/* add_to_minv() might free otmp [if it merges] */
+			/* AddObjectToMonsterInventory() might free otmp [if it merges] */
 			if (vis)
 				strcpy(onambuf, doname(otmp));
-			(void) add_to_minv(magr, otmp);
+			(void) AddObjectToMonsterInventory(magr, otmp);
 			if (vis) {
 				strcpy(buf, Monnam(magr));
 				pline("%s steals %s from %s!", buf,

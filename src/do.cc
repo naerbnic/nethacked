@@ -696,7 +696,7 @@ STATIC_OVL int menu_drop(int retry) {
 	u_gold = invent;
 	invent = u_gold->nobj;
 	u_gold->in_use = FALSE;
-	dealloc_obj(u_gold);
+	DeallocateObject(u_gold);
 	update_inventory();
     }
 #endif

@@ -970,15 +970,15 @@ E void DiscardMonsterInventory(Monster *);
 E void RemoveObjectFromStorage(Object *);
 E void ExtractObjectFromList(Object *, Object **);
 E void extract_nexthere(Object *, Object **);
-E int add_to_minv(Monster *, Object *);
-E Object *add_to_container(Object *, Object *);
-E void add_to_migration(Object *);
-E void add_to_buried(Object *);
-E void dealloc_obj(Object *);
+E int AddObjectToMonsterInventory(Monster *, Object *);
+E Object *AddObjectToContainer(Object *, Object *);
+E void AddObjectToMigrationList(Object *);
+E void AddToBuriedList(Object *);
+E void DeallocateObject(Object *);
 E void ApplyIceEffectsAt(int, int, bool);
 E long PeekAtIcedCorpseAge(Object *);
 #ifdef WIZARD
-E void obj_sanity_check();
+E void SanityCheckObjects();
 #endif
 
 /* ### mkroom.c ### */

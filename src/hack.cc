@@ -193,7 +193,7 @@ STATIC_OVL int moverock() {
 			if (newlev == depth(&player.uz) || In_endgame(&player.uz))
 			    continue;
 			RemoveObjectFromStorage(otmp);
-			add_to_migration(otmp);
+			AddObjectToMigrationList(otmp);
 			get_level(&dest, newlev);
 			otmp->ox = dest.dnum;
 			otmp->oy = dest.dlevel;

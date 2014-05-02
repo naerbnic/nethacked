@@ -554,7 +554,7 @@ letknow:
 		    delobj(gold);
 #else
 		    RemoveObjectFromStorage(gold);
-		    add_to_minv(grd, gold);
+		    AddObjectToMonsterInventory(grd, gold);
 #endif
 		    newsym(m,n);
 		} else if (m == x && n == y) {

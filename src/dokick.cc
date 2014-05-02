@@ -316,9 +316,9 @@ bool ghitm(Monster *mtmp, Object *gold) {
 		}
 
 #ifndef GOLDOBJ
-		dealloc_obj(gold);
+		DeallocateObject(gold);
 #else
-		add_to_minv(mtmp, gold);
+		AddObjectToMonsterInventory(mtmp, gold);
 #endif
 		return TRUE;
 	}
@@ -892,7 +892,7 @@ int dokick() {
 			    treefruit->quan = nfruit-nfall;
 			    pline("%ld %s got caught in the branches.",
 				nfruit-nfall, xname(treefruit));
-			    dealloc_obj(treefruit);
+			    DeallocateObject(treefruit);
 			}
 			exercise(A_DEX, TRUE);
 			exercise(A_WIS, TRUE);	/* discovered a new food source! */
@@ -1187,7 +1187,7 @@ void impact_drop(Object *missile, xchar x, xchar y, xchar dlev) {
 			obj->no_charge = 0;
 		}
 
-		add_to_migration(obj);
+		AddObjectToMigrationList(obj);
 		obj->ox = cc.x;
 		obj->oy = cc.y;
 		obj->owornmask = (long)toloc;
@@ -1331,7 +1331,7 @@ bool ship_object(Object *otmp, xchar x, xchar y, bool shop_floor_obj) {
 	    return TRUE;
 	}
 
-	add_to_migration(otmp);
+	AddObjectToMigrationList(otmp);
 	otmp->ox = cc.x;
 	otmp->oy = cc.y;
 	otmp->owornmask = (long)toloc;

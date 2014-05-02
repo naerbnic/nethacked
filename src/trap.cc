@@ -251,7 +251,7 @@ Trap * maketrap(int x, int y, int typ) {
 		    otmp = mtmp->minvent;
 		    otmp->owornmask = 0;
 		    RemoveObjectFromStorage(otmp);
-		    (void) add_to_container(statue, otmp);
+		    (void) AddObjectToContainer(statue, otmp);
 		}
 		statue->owt = GetWeight(statue);
 		mongone(mtmp);
@@ -450,7 +450,7 @@ Monster * animate_statue(Object *statue, xchar x, xchar y, int cause, int *fail_
 	/* transfer any statue contents to monster's inventory */
 	while ((item = statue->cobj) != 0) {
 	    RemoveObjectFromStorage(item);
-	    (void) add_to_minv(mon, item);
+	    (void) AddObjectToMonsterInventory(mon, item);
 	}
 	m_dowear(mon, TRUE);
 	delobj(statue);
@@ -1413,7 +1413,7 @@ int launch_obj(short otyp, int x1, int y1, int x2, int y2, int style) {
 
 				if (newlev == depth(&player.uz) || In_endgame(&player.uz))
 				    continue;
-				add_to_migration(singleobj);
+				AddObjectToMigrationList(singleobj);
 				get_level(&dest, newlev);
 				singleobj->ox = dest.dnum;
 				singleobj->oy = dest.dlevel;
@@ -3728,7 +3728,7 @@ STATIC_OVL bool thitm(int tlev, Monster *mon, Object *obj, int d_override, bool 
 	if (obj && (!strike || d_override)) {
 		PlaceObject(obj, mon->mx, mon->my);
 		stackobj(obj);
-	} else if (obj) dealloc_obj(obj);
+	} else if (obj) DeallocateObject(obj);
 
 	return trapkilled;
 }

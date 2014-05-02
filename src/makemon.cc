@@ -462,7 +462,7 @@ STATIC_OVL void m_initweap(Monster *mtmp) {
 void mkmonmoney(Monster *mtmp, long amount) {
     Object *gold = MakeSpecificObject(GOLD_PIECE, FALSE, FALSE);
     gold->quan = amount;
-    add_to_minv(mtmp, gold);
+    AddObjectToMonsterInventory(mtmp, gold);
 }
 #endif
 
