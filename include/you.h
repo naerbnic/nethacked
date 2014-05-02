@@ -361,8 +361,11 @@ struct Player {
 	struct skills weapon_skills[P_NUM_SKILLS];
 	bool twoweap;		/* KMH -- Using two-weapon combat */
 
+	bool polymorphed() const {
+	  return umonnum != umonster;
+	}
 };	/* end of `struct you' */
 
-#define Upolyd (player.umonnum != player.umonster)
+#define Upolyd (player.polymorphed())
 
 #endif	/* YOU_H */
