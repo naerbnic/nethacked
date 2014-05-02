@@ -650,7 +650,7 @@ static int domonnoise(Monster *mtmp) {
 	    else if (!mtmp->mcansee)
 		verbl_msg = "I can't see!";
 	    else if (mtmp->mtrapped) {
-		struct trap *t = t_at(mtmp->mx, mtmp->my);
+		Trap *t = t_at(mtmp->mx, mtmp->my);
 
 		if (t) t->tseen = 1;
 		verbl_msg = "I'm trapped!";

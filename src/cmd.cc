@@ -516,7 +516,7 @@ STATIC_PTR int wiz_identify() {
 /* ^F command - reveal the level map and any traps on it */
 STATIC_PTR int wiz_map() {
 	if (wizard) {
-	    struct trap *t;
+	    Trap *t;
 	    long save_Hconf = HConfusion,
 		 save_Hhallu = HHallucination;
 

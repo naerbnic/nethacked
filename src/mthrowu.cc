@@ -93,7 +93,7 @@ STATIC_OVL int drop_throw(Object *obj, bool ohit, int x, int y) {
 	int retvalu = 1;
 	int create;
 	Monster *mtmp;
-	struct trap *t;
+	Trap *t;
 
 	if (obj->otyp == CREAM_PIE || obj->oclass == VENOM_CLASS ||
 		    (ohit && obj->otyp == EGG))

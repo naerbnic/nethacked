@@ -2816,7 +2816,7 @@ int repair_damage(Monster *shkp, struct damage *tmp_dam, bool catchup) {
 	xchar litter[9];
 	Monster *mtmp;
 	Object *otmp;
-	struct trap *ttmp;
+	Trap *ttmp;
 
 	if ((monstermoves - tmp_dam->when) < REPAIR_DELAY)
 	    return(0);

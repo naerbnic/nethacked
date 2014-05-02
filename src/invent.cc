@@ -2173,7 +2173,7 @@ const char * dfeature_at(int x, int y, char *buf) {
    don't show them unless obj_cnt is 0 */
 int look_here(int obj_cnt, bool picked_some) {
 	Object *otmp;
-	struct trap *trap;
+	Trap *trap;
 	const char *verb = Blind ? "feel" : "see";
 	const char *dfeature = (char *)0;
 	char fbuf[BUFSZ], fbuf2[BUFSZ];

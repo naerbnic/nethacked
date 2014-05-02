@@ -763,7 +763,7 @@ int doremove() {
 }
 
 int dospinweb() {
-	struct trap *ttmp = t_at(u.ux,u.uy);
+	Trap *ttmp = t_at(u.ux,u.uy);
 
 	if (Levitation || Is_airlevel(&u.uz)
 	    || Underwater || Is_waterlevel(&u.uz)) {

@@ -146,7 +146,7 @@ bool is_digging() {
 #define BY_OBJECT	((Monster *)0)
 
 bool dig_check(Monster *madeby, bool verbose, int x, int y) {
-	struct trap *ttmp = t_at(x, y);
+	Trap *ttmp = t_at(x, y);
 	const char *verb = (madeby == BY_YOU && uwep && is_axe(uwep)) ? "chop" : "dig in";
 
 	if (On_stairs(x, y)) {
@@ -253,7 +253,7 @@ STATIC_OVL int dig() {
 	if (Race_if(PM_DWARF))
 	    digging.effort *= 2;
 	if (digging.down) {
-		struct trap *ttmp;
+		Trap *ttmp;
 
 		if (digging.effort > 250) {
 		    (void) dighole(FALSE);
@@ -451,7 +451,7 @@ schar fillholetyp(int x, int y) {
 
 void digactualhole(int x, int y, Monster *madeby, int ttyp) {
 	Object *oldobjs, *newobjs;
-	struct trap *ttmp;
+	Trap *ttmp;
 	char surface_type[BUFSZ];
 	struct rm *lev = &levl[x][y];
 	bool shopdoor;
@@ -615,7 +615,7 @@ void digactualhole(int x, int y, Monster *madeby, int ttyp) {
 
 /* return TRUE if digging succeeded, FALSE otherwise */
 bool dighole(bool pit_only) {
-	struct trap *ttmp = t_at(u.ux, u.uy);
+	Trap *ttmp = t_at(u.ux, u.uy);
 	struct rm *lev = &levl[u.ux][u.uy];
 	Object *boulder_here;
 	schar typ;
@@ -863,7 +863,7 @@ int use_pick_axe2(Object *obj) {
 		dig_target = dig_typ(obj, rx, ry);
 		if (dig_target == DIGTYP_UNDIGGABLE) {
 			/* ACCESSIBLE or POOL */
-			struct trap *trap = t_at(rx, ry);
+			Trap *trap = t_at(rx, ry);
 
 			if (trap && trap->ttyp == WEB) {
 			    if (!trap->tseen) {

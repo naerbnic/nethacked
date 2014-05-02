@@ -11,22 +11,22 @@ extern const char * const destroy_strings[];	/* from zap.c */
 STATIC_DCL void dofiretrap(Object *);
 STATIC_DCL void domagictrap();
 STATIC_DCL bool emergency_disrobe(bool *);
-STATIC_DCL int untrap_prob(struct trap *ttmp);
-STATIC_DCL void cnv_trap_obj(int, int, struct trap *);
-STATIC_DCL void move_into_trap(struct trap *);
-STATIC_DCL int try_disarm(struct trap *,bool);
-STATIC_DCL void reward_untrap(struct trap *, Monster *);
-STATIC_DCL int disarm_holdingtrap(struct trap *);
-STATIC_DCL int disarm_landmine(struct trap *);
-STATIC_DCL int disarm_squeaky_board(struct trap *);
-STATIC_DCL int disarm_shooting_trap(struct trap *, int);
-STATIC_DCL int try_lift(Monster *, struct trap *, int, bool);
-STATIC_DCL int help_monster_out(Monster *, struct trap *);
+STATIC_DCL int untrap_prob(Trap *ttmp);
+STATIC_DCL void cnv_trap_obj(int, int, Trap *);
+STATIC_DCL void move_into_trap(Trap *);
+STATIC_DCL int try_disarm(Trap *,bool);
+STATIC_DCL void reward_untrap(Trap *, Monster *);
+STATIC_DCL int disarm_holdingtrap(Trap *);
+STATIC_DCL int disarm_landmine(Trap *);
+STATIC_DCL int disarm_squeaky_board(Trap *);
+STATIC_DCL int disarm_shooting_trap(Trap *, int);
+STATIC_DCL int try_lift(Monster *, Trap *, int, bool);
+STATIC_DCL int help_monster_out(Monster *, Trap *);
 STATIC_DCL bool thitm(int,Monster *,Object *,int,bool);
-STATIC_DCL int mkroll_launch(struct trap *,xchar,xchar,short,long);
+STATIC_DCL int mkroll_launch(Trap *,xchar,xchar,short,long);
 STATIC_DCL bool isclearpath(coord *, int, schar, schar);
 #ifdef STEED
-STATIC_OVL int steedintrap(struct trap *, Object *);
+STATIC_OVL int steedintrap(Trap *, Object *);
 STATIC_OVL bool keep_saddle_with_steedcorpse(
     unsigned, Object *, Object *);
 #endif
@@ -216,13 +216,13 @@ void grease_protect(Object *otmp, const char *ostr, Monster *victim) {
 	}
 }
 
-struct trap * maketrap(int x, int y, int typ) {
-	struct trap *ttmp;
+Trap * maketrap(int x, int y, int typ) {
+	Trap *ttmp;
 	struct rm *lev;
 	bool oldplace;
 
 	if ((ttmp = t_at(x,y)) != 0) {
-	    if (ttmp->ttyp == MAGIC_PORTAL) return (struct trap *)0;
+	    if (ttmp->ttyp == MAGIC_PORTAL) return (Trap *)0;
 	    oldplace = TRUE;
 	    if (u.utrap && (x == u.ux) && (y == u.uy) &&
 	      ((u.utraptype == TT_BEARTRAP && typ != BEAR_TRAP) ||
@@ -315,7 +315,7 @@ void fall_through(bool td) {
 	} while(!rn2(4) && newlevel < dunlevs_in_dungeon(&u.uz));
 
 	if(td) {
-	    struct trap *t=t_at(u.ux,u.uy);
+	    Trap *t=t_at(u.ux,u.uy);
 	    seetrap(t);
 	    if (!In_sokoban(&u.uz)) {
 		if (t->ttyp == TRAPDOOR)
@@ -493,7 +493,7 @@ Monster * animate_statue(Object *statue, xchar x, xchar y, int cause, int *fail_
  * statue trap by searching next to it or by trying to break it with a wand
  * or pick-axe.
  */
-Monster * activate_statue_trap(struct trap *trap, xchar x, xchar y, bool shatter) {
+Monster * activate_statue_trap(Trap *trap, xchar x, xchar y, bool shatter) {
 	Monster *mtmp = (Monster *)0;
 	Object *otmp = sobj_at(STATUE, x, y);
 	int fail_reason;
@@ -545,7 +545,7 @@ STATIC_OVL bool keep_saddle_with_steedcorpse(unsigned steed_mid, Object *objchn,
 }
 #endif /*STEED*/
 
-void dotrap(struct trap *trap, unsigned trflags) {
+void dotrap(Trap *trap, unsigned trflags) {
 	int ttype = trap->ttyp;
 	Object *otmp;
 	bool already_seen = trap->tseen;
@@ -1148,7 +1148,7 @@ glovecheck:		(void) rust_dmg(uarmg, "gauntlets", 1, TRUE, &youmonst);
 }
 
 #ifdef STEED
-STATIC_OVL int steedintrap(struct trap *trap, Object *otmp) {
+STATIC_OVL int steedintrap(Trap *trap, Object *otmp) {
 	Monster *mtmp = u.usteed;
 	MonsterType *mptr;
 	int tt;
@@ -1236,7 +1236,7 @@ STATIC_OVL int steedintrap(struct trap *trap, Object *otmp) {
 #endif /*STEED*/
 
 /* some actions common to both player and monsters for triggered landmine */
-void blow_up_landmine(struct trap *trap) {
+void blow_up_landmine(Trap *trap) {
 	(void)scatter(trap->tx, trap->ty, 4,
 		MAY_DESTROY | MAY_HIT | MAY_FRACTURE | VIS_EFFECTS,
 		nullptr);
@@ -1335,7 +1335,7 @@ int launch_obj(short otyp, int x1, int y1, int x2, int y2, int style) {
 
 	/* Set the object in motion */
 	while(dist-- > 0 && !used_up) {
-		struct trap *t;
+		Trap *t;
 		tmp_at(bhitpos.x, bhitpos.y);
 		tmp = delaycnt;
 
@@ -1491,7 +1491,7 @@ int launch_obj(short otyp, int x1, int y1, int x2, int y2, int style) {
 #endif /* OVL3 */
 #ifdef OVLB
 
-void seetrap(struct trap *trap) {
+void seetrap(Trap *trap) {
 	if(!trap->tseen) {
 	    trap->tseen = 1;
 	    newsym(trap->tx, trap->ty);
@@ -1501,7 +1501,7 @@ void seetrap(struct trap *trap) {
 #endif /* OVLB */
 #ifdef OVL3
 
-STATIC_OVL int mkroll_launch(struct trap *ttmp, xchar x, xchar y, short otyp, long ocount) {
+STATIC_OVL int mkroll_launch(Trap *ttmp, xchar x, xchar y, short otyp, long ocount) {
 	Object *otmp;
 	int tmp;
 	schar dx,dy;
@@ -1578,7 +1578,7 @@ STATIC_OVL bool isclearpath(coord *cc, int distance, schar dx, schar dy) {
 #ifdef OVL1
 
 int mintrap(Monster *mtmp) {
-	struct trap *trap = t_at(mtmp->mx, mtmp->my);
+	Trap *trap = t_at(mtmp->mx, mtmp->my);
 	bool trapkilled = FALSE;
 	MonsterType *mptr = mtmp->data;
 	Object *otmp;
@@ -2203,7 +2203,7 @@ void float_up() {
 
 void fill_pit(int x, int y) {
 	Object *otmp;
-	struct trap *t;
+	Trap *t;
 
 	if ((t = t_at(x, y)) &&
 	    ((t->ttyp == PIT) || (t->ttyp == SPIKED_PIT)) &&
@@ -2214,7 +2214,7 @@ void fill_pit(int x, int y) {
 }
 
 int float_down(long hmask, long emask) {
-	struct trap *trap = (struct trap *)0;
+	Trap *trap = (Trap *)0;
 	d_level current_dungeon_level;
 	bool no_msg = FALSE;
 
@@ -2892,7 +2892,7 @@ int dountrap() {
 #ifdef OVL2
 
 /* Probability of disabling a trap.  Helge Hafting */
-STATIC_OVL int untrap_prob(struct trap *ttmp) {
+STATIC_OVL int untrap_prob(Trap *ttmp) {
 	int chance = 3;
 
 	/* Only spiders know how to deal with webs reliably */
@@ -2912,7 +2912,7 @@ STATIC_OVL int untrap_prob(struct trap *ttmp) {
 }
 
 /* Replace trap with object(s).  Helge Hafting */
-STATIC_OVL void cnv_trap_obj(int otyp, int cnt, struct trap *ttmp) {
+STATIC_OVL void cnv_trap_obj(int otyp, int cnt, Trap *ttmp) {
 	Object *otmp = mksobj(otyp, TRUE, FALSE);
 	otmp->quan=cnt;
 	otmp->owt = weight(otmp);
@@ -2928,7 +2928,7 @@ STATIC_OVL void cnv_trap_obj(int otyp, int cnt, struct trap *ttmp) {
 }
 
 /* while attempting to disarm an adjacent trap, we've fallen into it */
-STATIC_OVL void move_into_trap(struct trap *ttmp) {
+STATIC_OVL void move_into_trap(Trap *ttmp) {
 	int bc;
 	xchar x = ttmp->tx, y = ttmp->ty, bx, by, cx, cy;
 	bool unused;
@@ -2952,7 +2952,7 @@ STATIC_OVL void move_into_trap(struct trap *ttmp) {
  * 1: tries and fails
  * 2: succeeds
  */
-STATIC_OVL int try_disarm(struct trap *ttmp, bool force_failure) {
+STATIC_OVL int try_disarm(Trap *ttmp, bool force_failure) {
 	Monster *mtmp = m_at(ttmp->tx,ttmp->ty);
 	int ttype = ttmp->ttyp;
 	bool under_u = (!u.dx && !u.dy);
@@ -3004,7 +3004,7 @@ STATIC_OVL int try_disarm(struct trap *ttmp, bool force_failure) {
 			    if ((mtmp->mhp -= rnd(4)) <= 0) killed(mtmp);
 			} else if (ttype == WEB) {
 			    if (!webmaker(youmonst.data)) {
-				struct trap *ttmp2 = maketrap(u.ux, u.uy, WEB);
+				Trap *ttmp2 = maketrap(u.ux, u.uy, WEB);
 				if (ttmp2) {
 				    pline_The("webbing sticks to you. You're caught too!");
 				    dotrap(ttmp2, NOWEBMSG);
@@ -3034,7 +3034,7 @@ STATIC_OVL int try_disarm(struct trap *ttmp, bool force_failure) {
 	return 2;
 }
 
-STATIC_OVL void reward_untrap(struct trap *ttmp, Monster *mtmp) {
+STATIC_OVL void reward_untrap(Trap *ttmp, Monster *mtmp) {
 	if (!ttmp->madeby_u) {
 	    if (rnl(10) < 8 && !mtmp->mpeaceful &&
 		    !mtmp->msleeping && !mtmp->mfrozen &&
@@ -3054,7 +3054,7 @@ STATIC_OVL void reward_untrap(struct trap *ttmp, Monster *mtmp) {
 }
 
 /* Helge Hafting */
-STATIC_OVL int disarm_holdingtrap(struct trap *ttmp) {
+STATIC_OVL int disarm_holdingtrap(Trap *ttmp) {
 	Monster *mtmp;
 	int fails = try_disarm(ttmp, FALSE);
 
@@ -3084,7 +3084,7 @@ STATIC_OVL int disarm_holdingtrap(struct trap *ttmp) {
 }
 
 /* Helge Hafting */
-STATIC_OVL int disarm_landmine(struct trap *ttmp) {
+STATIC_OVL int disarm_landmine(Trap *ttmp) {
 	int fails = try_disarm(ttmp, FALSE);
 
 	if (fails < 2) return fails;
@@ -3097,7 +3097,7 @@ STATIC_OVL int disarm_landmine(struct trap *ttmp) {
 static const char oil[] = { ALL_CLASSES, TOOL_CLASS, POTION_CLASS, 0 };
 
 /* it may not make much sense to use grease on floor boards, but so what? */
-STATIC_OVL int disarm_squeaky_board(struct trap *ttmp) {
+STATIC_OVL int disarm_squeaky_board(Trap *ttmp) {
 	Object *obj;
 	bool bad_tool;
 	int fails;
@@ -3128,7 +3128,7 @@ STATIC_OVL int disarm_squeaky_board(struct trap *ttmp) {
 }
 
 /* removes traps that shoot arrows, darts, etc. */
-STATIC_OVL int disarm_shooting_trap(struct trap *ttmp, int otyp) {
+STATIC_OVL int disarm_shooting_trap(Trap *ttmp, int otyp) {
 	int fails = try_disarm(ttmp, FALSE);
 
 	if (fails < 2) return fails;
@@ -3139,7 +3139,7 @@ STATIC_OVL int disarm_shooting_trap(struct trap *ttmp, int otyp) {
 
 /* Is the weight too heavy?
  * Formula as in near_capacity() & check_capacity() */
-STATIC_OVL int try_lift(Monster *mtmp, struct trap *ttmp, int wt, bool stuff) {
+STATIC_OVL int try_lift(Monster *mtmp, Trap *ttmp, int wt, bool stuff) {
 	int wc = weight_cap();
 
 	if (((wt * 2) / wc) >= HVY_ENCUMBER) {
@@ -3158,7 +3158,7 @@ STATIC_OVL int try_lift(Monster *mtmp, struct trap *ttmp, int wt, bool stuff) {
 }
 
 /* Help trapped monster (out of a (spiked) pit) */
-STATIC_OVL int help_monster_out(Monster *mtmp, struct trap *ttmp) {
+STATIC_OVL int help_monster_out(Monster *mtmp, Trap *ttmp) {
 	int wt;
 	Object *otmp;
 	bool uprob;
@@ -3249,7 +3249,7 @@ int untrap(bool force) {
 	bool confused = (Confusion > 0 || Hallucination > 0);
 	int x,y;
 	int ch;
-	struct trap *ttmp;
+	Trap *ttmp;
 	Monster *mtmp;
 	bool trap_skipped = FALSE;
 	bool box_here = FALSE;
@@ -3621,20 +3621,20 @@ bool chest_trap(Object *obj, int bodypart, bool disarm) {
 #endif /* OVLB */
 #ifdef OVL0
 
-struct trap * t_at(int x, int y) {
-	struct trap *trap = ftrap;
+Trap * t_at(int x, int y) {
+	Trap *trap = ftrap;
 	while(trap) {
 		if(trap->tx == x && trap->ty == y) return(trap);
 		trap = trap->ntrap;
 	}
-	return((struct trap *)0);
+	return((Trap *)0);
 }
 
 #endif /* OVL0 */
 #ifdef OVLB
 
-void deltrap(struct trap *trap) {
-	struct trap *ttmp;
+void deltrap(Trap *trap) {
+	Trap *ttmp;
 
 	if(trap == ftrap)
 		ftrap = ftrap->ntrap;
@@ -3645,7 +3645,7 @@ void deltrap(struct trap *trap) {
 	dealloc_trap(trap);
 }
 
-bool delfloortrap(struct trap *ttmp) {
+bool delfloortrap(Trap *ttmp) {
 	/* Destroy a trap that emanates from the floor. */
 	/* some of these are arbitrary -dlc */
 	if (ttmp && ((ttmp->ttyp == SQKY_BOARD) ||

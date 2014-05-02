@@ -1536,7 +1536,7 @@ schar print_dungeon(bool bymenu, schar *rlev, xchar *rdgn) {
      */
     else if (Is_earthlevel(&u.uz) || Is_waterlevel(&u.uz)
 				|| Is_firelevel(&u.uz) || Is_airlevel(&u.uz)) {
-	struct trap *trap;
+	Trap *trap;
 	for (trap = ftrap; trap; trap = trap->ntrap)
 	    if (trap->ttyp == MAGIC_PORTAL) break;
 

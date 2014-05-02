@@ -20,7 +20,7 @@ STATIC_DCL void savelevchn(int,int);
 STATIC_DCL void savedamage(int,int);
 STATIC_DCL void saveobjchn(int,Object *,int);
 STATIC_DCL void savemonchn(int,Monster *,int);
-STATIC_DCL void savetrapchn(int,struct trap *,int);
+STATIC_DCL void savetrapchn(int,Trap *,int);
 STATIC_DCL void savegamestate(int,int);
 #ifdef GCC_WARN
 static long nulls[10];
@@ -697,19 +697,19 @@ STATIC_OVL void savemonchn(int fd, Monster *mtmp, int mode) {
 	    bwrite(fd, (genericptr_t) &minusone, sizeof(int));
 }
 
-STATIC_OVL void savetrapchn(int fd, struct trap *trap, int mode) {
-	struct trap *trap2;
+STATIC_OVL void savetrapchn(int fd, Trap *trap, int mode) {
+	Trap *trap2;
 
 	while (trap) {
 	    trap2 = trap->ntrap;
 	    if (perform_bwrite(mode))
-		bwrite(fd, (genericptr_t) trap, sizeof(struct trap));
+		bwrite(fd, (genericptr_t) trap, sizeof(Trap));
 	    if (release_data(mode))
 		dealloc_trap(trap);
 	    trap = trap2;
 	}
 	if (perform_bwrite(mode))
-	    bwrite(fd, (genericptr_t)nulls, sizeof(struct trap));
+	    bwrite(fd, (genericptr_t)nulls, sizeof(Trap));
 }
 
 /* save all the fruit names and ID's; this is used only in saving whole games

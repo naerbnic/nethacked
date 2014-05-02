@@ -258,7 +258,7 @@ bool mount_steed(Monster *mtmp, bool force) {
 	    return (FALSE);
 	}
 	if (mtmp->mtrapped) {
-	    struct trap *t = t_at(mtmp->mx, mtmp->my);
+	    Trap *t = t_at(mtmp->mx, mtmp->my);
 
 	    You_cant("mount %s while %s's trapped in %s.",
 		     mon_nam(mtmp), mhe(mtmp),
@@ -398,7 +398,7 @@ void kick_steed() {
 STATIC_OVL bool landing_spot(coord *spot, int reason, int forceit) {
     int i = 0, x, y, distance, min_distance = -1;
     bool found = FALSE;
-    struct trap *t;
+    Trap *t;
 
     /* avoid known traps (i == 0) and boulders, but allow them as a backup */
     if (reason != DISMOUNT_BYCHOICE || Stunned || Confusion || Fumbling) i = 1;

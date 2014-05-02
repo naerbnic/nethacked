@@ -122,7 +122,7 @@ std::vector<struct mkroom> subrooms;
 struct mkroom *upstairs_room, *dnstairs_room, *sstairs_room;
 
 dlevel_t level;		/* level map */
-struct trap *ftrap = (struct trap *)0;
+Trap *ftrap = (Trap *)0;
 Monster youmonst = DUMMY;
 struct flag flags = DUMMY;
 struct instance_flags iflags = DUMMY;

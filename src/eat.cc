@@ -2312,7 +2312,7 @@ Object * floorfood(const char *verb, int corpsecheck) {
 
 	if (feeding && metallivorous(youmonst.data)) {
 	    Object *gold;
-	    struct trap *ttmp = t_at(u.ux, u.uy);
+	    Trap *ttmp = t_at(u.ux, u.uy);
 
 	    if (ttmp && ttmp->tseen && ttmp->ttyp == BEAR_TRAP) {
 		/* If not already stuck in the trap, perhaps there should

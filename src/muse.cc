@@ -236,7 +236,7 @@ STATIC_OVL void mquaffmsg(Monster *mtmp, Object *otmp) {
  */
 bool find_defensive(Monster *mtmp) {
 	Object *obj = 0;
-	struct trap *t;
+	Trap *t;
 	int x=mtmp->mx, y=mtmp->my;
 	bool stuck = (mtmp == u.ustuck);
 	bool immobile = (mtmp->data->mmove == 0);
@@ -620,7 +620,7 @@ mon_tele:
 		return 2;
 	    }
 	case MUSE_WAN_DIGGING:
-	    {	struct trap *ttmp;
+	    {	Trap *ttmp;
 
 		m_flee(mtmp);
 		mzapmsg(mtmp, otmp, FALSE);
@@ -712,7 +712,7 @@ mon_tele:
 		if (Is_botlevel(&u.uz)) return 0;
 		m_flee(mtmp);
 		if (vis) {
-			struct trap *t;
+			Trap *t;
 			t = t_at(trapx,trapy);
 			pline("%s %s into a %s!", Monnam(mtmp),
 			makeplural(locomotion(mtmp->data, "jump")),
@@ -1534,7 +1534,7 @@ bool find_misc(Monster *mtmp) {
 	Object *obj;
 	MonsterType *mdat = mtmp->data;
 	int x = mtmp->mx, y = mtmp->my;
-	struct trap *t;
+	Trap *t;
 	int xx, yy;
 	bool immobile = (mdat->mmove == 0);
 	bool stuck = (mtmp == u.ustuck);

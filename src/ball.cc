@@ -348,7 +348,7 @@ bool drag_ball(
     xchar* chainx, xchar* chainy,
     bool* cause_delay,
     bool allow_drag) {
-	struct trap *t = (struct trap *)0;
+	Trap *t = (Trap *)0;
 	bool already_in_rock;
 
 	*ballx  = uball->ox;
@@ -630,7 +630,7 @@ void drop_ball(xchar x, xchar y) {
     }
 
     if (x != u.ux || y != u.uy) {
-	struct trap *t;
+	Trap *t;
 	const char *pullmsg = "The ball pulls you out of the %s!";
 
 	if (u.utrap && u.utraptype != TT_INFLOOR) {

@@ -95,7 +95,7 @@ void dogushforth(int drinking) {
 
 STATIC_PTR void gush(int x, int y, genericptr_t poolcnt) {
 	Monster *mtmp;
-	struct trap *ttmp;
+	Trap *ttmp;
 
 	if (((x+y)%2) || (x == u.ux && y == u.uy) ||
 	    (rn2(1 + distmin(u.ux, u.uy, x, y)))  ||

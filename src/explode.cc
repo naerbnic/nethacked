@@ -435,7 +435,7 @@ long scatter(int sx, int sy, int blastforce, unsigned int scflags, Object *obj) 
 			place_object(otmp, sx, sy);
 		    }
 		} else {
-		    struct trap *trap;
+		    Trap *trap;
 
 		    if ((trap = t_at(sx,sy)) && trap->ttyp == STATUE_TRAP)
 			    deltrap(trap);

@@ -17,7 +17,7 @@ extern bool known;	/* from read.c */
 STATIC_DCL void do_dknown_of(Object *);
 STATIC_DCL bool check_map_spot(int,int,char,unsigned);
 STATIC_DCL bool clear_stale_map(char,unsigned);
-STATIC_DCL void sense_trap(struct trap *,xchar,xchar,int);
+STATIC_DCL void sense_trap(Trap *,xchar,xchar,int);
 STATIC_DCL void show_map_spot(int,int);
 STATIC_PTR void findone(int,int,genericptr_t);
 STATIC_PTR void openone(int,int,genericptr_t);
@@ -609,7 +609,7 @@ int monster_detect(Object *otmp, int mclass) {
     return 0;
 }
 
-STATIC_OVL void sense_trap(struct trap *trap, xchar x, xchar y, int src_cursed) {
+STATIC_OVL void sense_trap(Trap *trap, xchar x, xchar y, int src_cursed) {
     if (Hallucination || src_cursed) {
 	Object obj;			/* fake object */
 	if (trap) {
@@ -626,7 +626,7 @@ STATIC_OVL void sense_trap(struct trap *trap, xchar x, xchar y, int src_cursed) 
 	map_trap(trap,1);
 	trap->tseen = 1;
     } else {
-	struct trap temp_trap;		/* fake trap */
+	Trap temp_trap;		/* fake trap */
 	temp_trap.tx = x;
 	temp_trap.ty = y;
 	temp_trap.ttyp = BEAR_TRAP;	/* some kind of trap */
@@ -641,7 +641,7 @@ STATIC_OVL void sense_trap(struct trap *trap, xchar x, xchar y, int src_cursed) 
 /* returns 0 if something was detected		*/
 /* sobj is null if crystal ball, *scroll if gold detection scroll */
 int trap_detect(Object *sobj) {
-    struct trap *ttmp;
+    Trap *ttmp;
     Object *obj;
     int door;
     int uw = u.uinwater;
@@ -686,12 +686,12 @@ outtrapmap:
 
     for (obj = fobj; obj; obj = obj->nobj)
 	if ((obj->otyp==LARGE_BOX || obj->otyp==CHEST) && obj->otrapped)
-	sense_trap((struct trap *)0, obj->ox, obj->oy, sobj && sobj->cursed);
+	sense_trap((Trap *)0, obj->ox, obj->oy, sobj && sobj->cursed);
 
     for (door = 0; door < doorindex; door++) {
 	cc = doors[door];
 	if (levl[cc.x][cc.y].doormask & D_TRAPPED)
-	sense_trap((struct trap *)0, cc.x, cc.y, sobj && sobj->cursed);
+	sense_trap((Trap *)0, cc.x, cc.y, sobj && sobj->cursed);
     }
 
     newsym(u.ux,u.uy);
@@ -943,7 +943,7 @@ void cvt_sdoor_to_door(struct rm *lev) {
 
 
 STATIC_PTR void findone(int zx, int zy, genericptr_t num) {
-	struct trap *ttmp;
+	Trap *ttmp;
 	Monster *mtmp;
 
 	if(levl[zx][zy].typ == SDOOR) {
@@ -985,7 +985,7 @@ STATIC_PTR void findone(int zx, int zy, genericptr_t num) {
 }
 
 STATIC_PTR void openone(int zx, int zy, genericptr_t num) {
-	struct trap *ttmp;
+	Trap *ttmp;
 	Object *otmp;
 
 	if(OBJ_AT(zx, zy)) {
@@ -1059,7 +1059,7 @@ int openit() {
 	return(num);
 }
 
-void find_trap(struct trap *trap) {
+void find_trap(Trap *trap) {
     int tt = what_trap(trap->ttyp);
     bool cleared = FALSE;
 
@@ -1097,7 +1097,7 @@ int dosearch0(int aflag) {
 #else
 	xchar x, y;
 #endif
-	struct trap *trap;
+	Trap *trap;
 	Monster *mtmp;
 
 	if(u.uswallow) {
@@ -1198,7 +1198,7 @@ int dosearch() {
 /* Pre-map the sokoban levels */
 void sokoban_detect() {
 	int x, y;
-	struct trap *ttmp;
+	Trap *ttmp;
 	Object *obj;
 
 	/* Map the background and boulders */

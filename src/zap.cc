@@ -1649,7 +1649,7 @@ int bhitpile(
     Object *otmp, *next_obj;
 
     if (obj->otyp == SPE_FORCE_BOLT || obj->otyp == WAN_STRIKING) {
-	struct trap *t = t_at(tx, ty);
+	Trap *t = t_at(tx, ty);
 
 	/* We can't settle for the default calling sequence of
 	   bhito(otmp) -> break_statue(otmp) -> activate_statue_trap(ox,oy)
@@ -2196,7 +2196,7 @@ STATIC_OVL bool zap_updown(Object *obj) {
 	int x, y, xx, yy, ptmp;
 	Object *otmp;
 	struct engr *e;
-	struct trap *ttmp;
+	Trap *ttmp;
 	char buf[BUFSZ];
 
 	/* some wands have special effects other than normal bhitpile */
@@ -2272,7 +2272,7 @@ STATIC_OVL bool zap_updown(Object *obj) {
 			You_hear("a twang followed by a thud.");
 		}
 		deltrap(ttmp);
-		ttmp = (struct trap *)0;
+		ttmp = (Trap *)0;
 		newsym(x, y);
 	    }
 	    break;
@@ -2699,7 +2699,7 @@ Monster * bhit(
 	    if (weapon == THROWN_WEAPON && range > 0 &&
 		obj->otyp == HEAVY_IRON_BALL) {
 		Object *bobj;
-		struct trap *t;
+		Trap *t;
 		if ((bobj = sobj_at(BOULDER, x, y)) != 0) {
 		    if (cansee(x,y))
 			pline("%s hits %s.",
@@ -3436,7 +3436,7 @@ int zap_over_floor(xchar x, xchar y, int type, bool *shopdamage) {
 	int rangemod = 0;
 
 	if(abstype == ZT_FIRE) {
-	    struct trap *t = t_at(x, y);
+	    Trap *t = t_at(x, y);
 
 	    if (t && t->ttyp == WEB) {
 		/* a burning web is too flimsy to notice if you can't see it */
@@ -3451,7 +3451,7 @@ int zap_over_floor(xchar x, xchar y, int type, bool *shopdamage) {
 		if(lev->typ != POOL) {	/* MOAT or DRAWBRIDGE_UP */
 		    if (cansee(x,y)) msgtxt = "Some water evaporates.";
 		} else {
-		    struct trap *ttmp;
+		    Trap *ttmp;
 
 		    rangemod -= 3;
 		    lev->typ = ROOM;
@@ -3648,7 +3648,7 @@ void fracture_rock(Object *obj) {
 /* handle statue hit by striking/force bolt/pick-axe */
 bool break_statue(Object *obj) {
 	/* [obj is assumed to be on floor, so no get_obj_location() needed] */
-	struct trap *trap = t_at(obj->ox, obj->oy);
+	Trap *trap = t_at(obj->ox, obj->oy);
 	Object *item;
 
 	if (trap && trap->ttyp == STATUE_TRAP &&

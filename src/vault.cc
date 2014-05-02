@@ -351,7 +351,7 @@ STATIC_OVL void wallify_vault(Monster *grd) {
 	      loy = rooms[vlt].ly - 1, hiy = rooms[vlt].hy + 1;
 	Monster *mon;
 	Object *gold;
-	struct trap *trap;
+	Trap *trap;
 	bool fixed = FALSE;
 	bool movedgold = FALSE;
 

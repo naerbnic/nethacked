@@ -622,7 +622,7 @@ int dog_move(Monster *mtmp, int after) {
 		     * if they've seen some trap of that type sometime in the
 		     * past.  (Neither behavior is really realistic.)
 		     */
-		    struct trap *trap;
+		    Trap *trap;
 
 		    if ((info[i] & ALLOW_TRAPS) && (trap = t_at(nx,ny))) {
 			if (mtmp->mleashed) {

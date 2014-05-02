@@ -493,7 +493,7 @@ void forget_map(int howmuch) {
 
 /* Forget all traps on the level. */
 void forget_traps() {
-	struct trap *trap;
+	Trap *trap;
 
 	/* forget all traps (except the one the hero is in :-) */
 	for (trap = ftrap; trap; trap = trap->ntrap)

@@ -259,7 +259,7 @@ STATIC_OVL bool put_lregion_here(xchar x, xchar y, xchar nlx, xchar nly, xchar n
 	    /* Must make do with the only location possible;
 	       avoid failure due to a misplaced trap.
 	       It might still fail if there's a dungeon feature here. */
-	    struct trap *t = t_at(x,y);
+	    Trap *t = t_at(x,y);
 
 	    if (t && t->ttyp != MAGIC_PORTAL) deltrap(t);
 	    if (bad_location(x, y, nlx, nly, nhx, nhy)) return FALSE;
@@ -778,7 +778,7 @@ bound_digging()
 void mkportal(xchar x, xchar y, xchar todnum, xchar todlevel) {
 	/* a portal "trap" must be matched by a */
 	/* portal in the destination dungeon/dlevel */
-	struct trap *ttmp = maketrap(x, y, MAGIC_PORTAL);
+	Trap *ttmp = maketrap(x, y, MAGIC_PORTAL);
 
 	if (!ttmp) {
 		impossible("portal on top of portal??");
@@ -810,7 +810,7 @@ void mkportal(xchar x, xchar y, xchar todnum, xchar todlevel) {
 
 static struct bubble *bbubbles, *ebubbles;
 
-static struct trap *wportal;
+static Trap *wportal;
 static int xmin, ymin, xmax, ymax;	/* level boundaries */
 /* bubble movement boundaries */
 #define bxmin (xmin + 1)
@@ -826,7 +826,7 @@ void movebubbles() {
 	static bool up;
 	struct bubble *b;
 	int x, y, i, j;
-	struct trap *btrap;
+	Trap *btrap;
 	static const struct rm water_pos =
 		{ cmap_to_glyph(S_water), WATER, 0, 0, 0, 0, 0, 0, 0 };
 
@@ -1248,7 +1248,7 @@ STATIC_OVL void mv_bubble(struct bubble *b, int dx, int dy, bool ini) {
 		}
 
 		case CONS_TRAP: {
-		    struct trap *btrap = (struct trap *) cons->list;
+		    Trap *btrap = (Trap *) cons->list;
 		    btrap->tx = cons->x;
 		    btrap->ty = cons->y;
 		    break;

@@ -677,7 +677,7 @@ STATIC_OVL void do_entity(struct entity *etmp) {
 
 void close_drawbridge(int x, int y) {
 	struct rm *lev1, *lev2;
-	struct trap *t;
+	Trap *t;
 	int x2, y2;
 
 	lev1 = &levl[x][y];
@@ -726,7 +726,7 @@ void close_drawbridge(int x, int y) {
 
 void open_drawbridge(int x, int y) {
 	struct rm *lev1, *lev2;
-	struct trap *t;
+	Trap *t;
 	int x2, y2;
 
 	lev1 = &levl[x][y];
@@ -761,7 +761,7 @@ void open_drawbridge(int x, int y) {
 
 void destroy_drawbridge(int x, int y) {
 	struct rm *lev1, *lev2;
-	struct trap *t;
+	Trap *t;
 	int x2, y2;
 	bool e_inview;
 	struct entity *etmp1 = &(occupants[0]), *etmp2 = &(occupants[1]);

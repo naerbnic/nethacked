@@ -202,7 +202,7 @@ void losedogs() {
 
 /* called from resurrect() in addition to losedogs() */
 void mon_arrive(Monster *mtmp, bool with_you) {
-	struct trap *t;
+	Trap *t;
 	xchar xlocale, ylocale, xyloc, xyflags, wander;
 	int num_segs;
 

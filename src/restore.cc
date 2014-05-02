@@ -578,7 +578,7 @@ void trickery(char *reason) {
 }
 
 void getlev(int fd, int pid, xchar lev, bool ghostly) {
-	struct trap *trap;
+	Trap *trap;
 	Monster *mtmp;
 	branch *br;
 	int hpid;
@@ -689,7 +689,7 @@ void getlev(int fd, int pid, xchar lev, bool ghostly) {
 	rest_worm(fd);	/* restore worm information */
 	ftrap = 0;
 	while (trap = newtrap(),
-	       mread(fd, (genericptr_t)trap, sizeof(struct trap)),
+	       mread(fd, (genericptr_t)trap, sizeof(Trap)),
 	       trap->tx != 0) {	/* need "!= 0" to work around DICE 3.0 bug */
 		trap->ntrap = ftrap;
 		ftrap = trap;
@@ -747,7 +747,7 @@ void getlev(int fd, int pid, xchar lev, bool ghostly) {
 		    break;		
 		case BR_PORTAL: /* max of 1 portal per level */
 		    {
-			struct trap *ttmp;
+			Trap *ttmp;
 			for(ttmp = ftrap; ttmp; ttmp = ttmp->ntrap)
 			    if (ttmp->ttyp == MAGIC_PORTAL)
 				break;
@@ -758,7 +758,7 @@ void getlev(int fd, int pid, xchar lev, bool ghostly) {
 		}
 	    } else if (!br) {
 		/* Remove any dangling portals. */
-		struct trap *ttmp;
+		Trap *ttmp;
 		for (ttmp = ftrap; ttmp; ttmp = ttmp->ntrap)
 		    if (ttmp->ttyp == MAGIC_PORTAL) {
 			deltrap(ttmp);

@@ -151,7 +151,7 @@ STATIC_OVL int use_towel(Object *obj) {
 /* maybe give a stethoscope message based on floor objects */
 STATIC_OVL bool its_dead(int rx, int ry, int *resp) {
 	Object *otmp;
-	struct trap *ttmp;
+	Trap *ttmp;
 
 	if (!can_reach_floor()) return FALSE;
 
@@ -1703,7 +1703,7 @@ STATIC_OVL void use_grease(Object *obj) {
 	update_inventory();
 }
 
-static struct trapinfo {
+static struct Trapinfo {
 	Object *tobj;
 	xchar tx, ty;
 	int time_needed;
@@ -1946,7 +1946,7 @@ STATIC_OVL void use_trap(Object *otmp) {
 STATIC_PTR
 int set_trap() {
 	Object *otmp = trapinfo.tobj;
-	struct trap *ttmp;
+	Trap *ttmp;
 	int ttyp;
 
 	if (!otmp || !carried(otmp) ||

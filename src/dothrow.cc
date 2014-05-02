@@ -435,7 +435,7 @@ bool hurtle_step(genericptr_t arg, int x, int y) {
     Object *obj;
     Monster *mon;
     bool may_pass = TRUE;
-    struct trap *ttmp;
+    Trap *ttmp;
     
     if (!isok(x,y)) {
 	You_feel("the spirits holding you back.");

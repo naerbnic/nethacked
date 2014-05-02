@@ -387,7 +387,7 @@ void container_impact_dmg(Object *obj) {
 STATIC_OVL int kick_object(xchar x, xchar y) {
 	int range;
 	Monster *mon, *shkp;
-	struct trap *trap;
+	Trap *trap;
 	char bhitroom;
 	bool costly, isgold, slide = FALSE;
 
@@ -1245,7 +1245,7 @@ bool ship_object(Object *otmp, xchar x, xchar y, bool shop_floor_obj) {
 	xchar ox, oy;
 	coord cc;
 	Object *obj;
-	struct trap *t;
+	Trap *t;
 	bool nodrop, unpaid, container, impact = FALSE;
 	long n = 0L;
 
@@ -1418,7 +1418,7 @@ STATIC_OVL void otransit_msg(Object *otmp, bool nodrop, long num) {
 
 /* migration destination for objects which fall down to next level */
 schar down_gate(xchar x, xchar y) {
-	struct trap *ttmp;
+	Trap *ttmp;
 
 	gate_str = 0;
 	/* this matches the player restriction in goto_level() */

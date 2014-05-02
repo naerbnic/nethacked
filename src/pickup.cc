@@ -366,7 +366,7 @@ int pickup(int what) {
 	    count = 0;
 
 	if (!u.uswallow) {
-		struct trap *ttmp = t_at(u.ux, u.uy);
+		Trap *ttmp = t_at(u.ux, u.uy);
 		/* no auto-pick if no-pick move, nothing there, or in a pool */
 		if (autopickup && (flags.nopick || !OBJ_AT(u.ux, u.uy) ||
 			(is_pool(u.ux, u.uy) && !Underwater) || is_lava(u.ux, u.uy))) {

@@ -1573,7 +1573,7 @@ dopois:
 
 /* monster swallows you, or damage if u.uswallow */
 STATIC_OVL int gulpmu(Monster *mtmp, struct Attack *mattk) {
-	struct trap *t = t_at(u.ux, u.uy);
+	Trap *t = t_at(u.ux, u.uy);
 	int	tmp = d((int)mattk->damn, (int)mattk->damd);
 	int	tim_tmp;
 	Object *otmp2;

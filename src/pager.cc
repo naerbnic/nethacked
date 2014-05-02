@@ -138,7 +138,7 @@ STATIC_OVL MonsterType * lookat(int x, int y, char *buf, char *monbuf) {
 		strcat(buf, ", leashed to you");
 
 	    if (mtmp->mtrapped && cansee(mtmp->mx, mtmp->my)) {
-		struct trap *t = t_at(mtmp->mx, mtmp->my);
+		Trap *t = t_at(mtmp->mx, mtmp->my);
 		int tt = t ? t->ttyp : NO_TRAP;
 
 		/* newsym lets you know of the trap, so mention it here */
@@ -740,7 +740,7 @@ int doquickwhatis() {
 }
 
 int doidtrap() {
-	struct trap *trap;
+	Trap *trap;
 	int x, y, tt;
 
 	if (!getdir("^")) return 0;

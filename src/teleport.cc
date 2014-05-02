@@ -417,7 +417,7 @@ void tele() {
 }
 
 int dotele() {
-	struct trap *trap;
+	Trap *trap;
 
 	trap = t_at(u.ux, u.uy);
 	if (trap && (!trap->tseen || trap->ttyp != TELEP_TRAP))
@@ -765,7 +765,7 @@ void level_tele() {
 	if (u.utotype && !flags.mon_moving) deferred_goto();
 }
 
-void domagicportal(struct trap *ttmp) {
+void domagicportal(Trap *ttmp) {
 	struct d_level target_level;
 
 	if (!next_to_u()) {
@@ -794,7 +794,7 @@ void domagicportal(struct trap *ttmp) {
 		      (char *)0);
 }
 
-void tele_trap(struct trap *trap) {
+void tele_trap(Trap *trap) {
 	if (In_endgame(&u.uz) || Antimagic) {
 		if (Antimagic)
 			shieldeff(u.ux, u.uy);
@@ -809,7 +809,7 @@ void tele_trap(struct trap *trap) {
 		tele();
 }
 
-void level_tele_trap(struct trap *trap) {
+void level_tele_trap(Trap *trap) {
 	You("%s onto a level teleport trap!",
 		      Levitation ? (const char *)"float" :
 				  locomotion(youmonst.data, "step"));
@@ -990,7 +990,7 @@ bool tele_restrict(Monster *mon) {
 	return FALSE;
 }
 
-void mtele_trap(Monster *mtmp, struct trap *trap, int in_sight) {
+void mtele_trap(Monster *mtmp, Trap *trap, int in_sight) {
 	char *monname;
 
 	if (tele_restrict(mtmp)) return;
@@ -1016,7 +1016,7 @@ void mtele_trap(Monster *mtmp, struct trap *trap, int in_sight) {
 }
 
 /* return 0 if still on level, 3 if not */
-int mlevel_tele_trap(Monster *mtmp, struct trap *trap, bool force_it, int in_sight) {
+int mlevel_tele_trap(Monster *mtmp, Trap *trap, bool force_it, int in_sight) {
 	int tt = trap->ttyp;
 	MonsterType *mptr = mtmp->data;
 

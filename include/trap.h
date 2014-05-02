@@ -12,8 +12,8 @@ union vlaunchinfo {
 	coord v_launch2;	/* secondary launch point (for boulders) */
 };
 
-struct trap {
-	struct trap *ntrap;
+struct Trap {
+	Trap *ntrap;
 	xchar tx,ty;
 	d_level dst;	/* destination for portals */
 	coord launch;
@@ -32,8 +32,8 @@ struct trap {
 #define launch2		vl.v_launch2
 };
 
-extern struct trap *ftrap;
-#define newtrap()	(struct trap *) alloc(sizeof(struct trap))
+extern Trap *ftrap;
+#define newtrap()	(Trap *) alloc(sizeof(Trap))
 #define dealloc_trap(trap) free((genericptr_t) (trap))
 
 /* reasons for statue animation */

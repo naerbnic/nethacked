@@ -1106,7 +1106,7 @@ nexttry:	/* eels prefer the water, but if there is no water nearby,
 		 * done in dogmove.c.  In either case, "harmless" traps are
 		 * neither avoided nor marked in info[].
 		 */
-		{ struct trap *ttmp = t_at(nx, ny);
+		{ Trap *ttmp = t_at(nx, ny);
 		    if(ttmp) {
 			if(ttmp->ttyp >= TRAPNUM || ttmp->ttyp == 0)  {
 impossible("A monster looked at a very strange trap of type %d.", ttmp->ttyp);
@@ -1649,7 +1649,7 @@ void xkilled(
 	MonsterType *mdat;
 	int mndx;
 	Object *otmp;
-	struct trap *t;
+	Trap *t;
 	bool redisp = FALSE;
 	bool wasinside = u.uswallow && (u.ustuck == mtmp);
 

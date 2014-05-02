@@ -124,7 +124,7 @@ STATIC_OVL int is_pure(bool talk) {
 STATIC_OVL void expulsion(bool seal) {
     branch *br;
     d_level *dest;
-    struct trap *t;
+    Trap *t;
     int portal_flag;
 
     br = dungeon_branch("The Quest");

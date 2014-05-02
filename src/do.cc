@@ -67,7 +67,7 @@ bool boulder_hits_pool(Object *otmp, int rx, int ry, bool pushing) {
 	    fills_up = lava ? chance == 0 : chance != 0;
 
 	    if (fills_up) {
-		struct trap *ttmp = t_at(rx, ry);
+		Trap *ttmp = t_at(rx, ry);
 
 		if (ltyp == DRAWBRIDGE_UP) {
 		    levl[rx][ry].drawbridgemask &= ~DB_UNDER; /* clear lava */
@@ -126,7 +126,7 @@ bool boulder_hits_pool(Object *otmp, int rx, int ry, bool pushing) {
  * away.
  */
 bool flooreffects(Object *obj, int x, int y, const char *verb) {
-	struct trap *t;
+	Trap *t;
 	Monster *mtmp;
 
 	if (obj->where != OBJ_FREE)
@@ -710,7 +710,7 @@ STATIC_OVL int menu_drop(int retry) {
 static bool at_ladder = FALSE;
 
 int dodown() {
-	struct trap *trap = 0;
+	Trap *trap = 0;
 	bool stairs_down = ((u.ux == xdnstair && u.uy == ydnstair) ||
 		    (u.ux == sstairs.sx && u.uy == sstairs.sy && !sstairs.up)),
 		ladder_down = (u.ux == xdnladder && u.uy == ydnladder);
@@ -1056,7 +1056,7 @@ void goto_level(d_level *newlevel, bool at_stairs, bool falling, bool portal) {
 
 	if (portal && !In_endgame(&u.uz)) {
 	    /* find the portal on the is_new level */
-	    struct trap *ttrap;
+	    Trap *ttrap;
 
 	    for (ttrap = ftrap; ttrap; ttrap = ttrap->ntrap)
 		if (ttrap->ttyp == MAGIC_PORTAL) break;
@@ -1390,7 +1390,7 @@ void deferred_goto() {
 	    if (dfr_pre_msg) pline(dfr_pre_msg);
 	    goto_level(&dest, !!(typmask&1), !!(typmask&2), !!(typmask&4));
 	    if (typmask & 0200) {	/* remove portal */
-		struct trap *t = t_at(u.ux, u.uy);
+		Trap *t = t_at(u.ux, u.uy);
 
 		if (t) {
 		    deltrap(t);

@@ -414,7 +414,7 @@ STATIC_OVL void makeniche(int trap_type) {
 	struct rm *rm;
 	int vct = 8;
 	int dy, xx, yy;
-	struct trap *ttmp;
+	Trap *ttmp;
 
 	if(doorindex < DOORMAX)
 	  while(vct--) {
@@ -1358,7 +1358,7 @@ void mkinvokearea() {
  * Temporarily overrides vision in the name of a nice effect.
  */
 STATIC_OVL void mkinvpos(xchar x, xchar y, int dist) {
-    struct trap *ttmp;
+    Trap *ttmp;
     Object *otmp;
     bool make_rocks;
     struct rm *lev = &levl[x][y];

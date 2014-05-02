@@ -1157,7 +1157,7 @@ static bool write_maze(int fd, specialmaze *maze) {
 	    /* The traps */
 	    Write(fd, &(pt->ntrap), sizeof(pt->ntrap));
 	    for(j=0;j<pt->ntrap;j++) {
-		    Write(fd, pt->traps[j], sizeof(trap));
+		    Write(fd, pt->traps[j], sizeof(Trap));
 		    Free(pt->traps[j]);
 	    }
 	    if (pt->ntrap)
@@ -1273,7 +1273,7 @@ static bool write_rooms(int fd, splev *lev) {
 		/* The traps */
 		Write(fd, &(pt->ntrap), sizeof(pt->ntrap));
 		for(j=0;j<pt->ntrap;j++)
-			Write(fd, pt->traps[j], sizeof(trap));
+			Write(fd, pt->traps[j], sizeof(Trap));
 
 		/* The monsters */
 		if (!write_monsters(fd, &pt->nmonster, &pt->monsters))

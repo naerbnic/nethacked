@@ -144,7 +144,7 @@ STATIC_OVL void drop_upon_death(Monster *mtmp, Object *cont) {
 
 /* check whether bones are feasible */
 bool can_make_bones() {
-	struct trap *ttmp;
+	Trap *ttmp;
 
 	if (ledger_no(&u.uz) <= 0 || ledger_no(&u.uz) > maxledgerno())
 	    return FALSE;
@@ -174,7 +174,7 @@ bool can_make_bones() {
 /* save bones and possessions of a deceased adventurer */
 void savebones(Object *corpse) {
 	int fd, x, y;
-	struct trap *ttmp;
+	Trap *ttmp;
 	Monster *mtmp;
 	MonsterType *mptr;
 	struct fruit *f;

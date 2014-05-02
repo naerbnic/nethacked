@@ -195,7 +195,7 @@ STATIC_OVL void do_earthquake(int force) {
 	int x,y;
 	Monster *mtmp;
 	Object *otmp;
-	struct trap *chasm;
+	Trap *chasm;
 	int start_x, start_y, end_x, end_y;
 
 	start_x = u.ux - (force * 2);

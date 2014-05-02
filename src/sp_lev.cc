@@ -1818,7 +1818,7 @@ STATIC_OVL bool load_rooms(dlb *fd) {
 		    r->traps = NewTab(trap_info, n);
 		while(n--) {
 			r->traps[(int)n] = New(trap_info);
-			Fread((genericptr_t) r->traps[(int)n], 1, sizeof(trap), fd);
+			Fread((genericptr_t) r->traps[(int)n], 1, sizeof(Trap), fd);
 		}
 
 		/* read the monsters */
@@ -1961,7 +1961,7 @@ STATIC_OVL bool load_maze(dlb *fd) {
     fountain tmpfountain;
     engraving tmpengraving;
     xchar   mustfill[(MAXNROFROOMS+1)*2];
-    struct trap *badtrap;
+    Trap *badtrap;
     bool has_bounds;
 
     (void) memset((genericptr_t)&Map[0][0], 0, sizeof Map);

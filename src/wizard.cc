@@ -51,7 +51,7 @@ static const unsigned wizapp[] = {
 /* Also, give hints about portal locations, if amulet is worn/wielded -dlc */
 void amulet() {
 	Monster *mtmp;
-	struct trap *ttmp;
+	Trap *ttmp;
 	Object *amu;
 
 #if 0		/* caller takes care of this check */

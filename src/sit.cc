@@ -35,7 +35,7 @@ void take_gold() {
 
 int dosit() {
 	static const char sit_message[] = "sit on the %s.";
-	struct trap *trap;
+	Trap *trap;
 	int typ = levl[u.ux][u.uy].typ;
 
 

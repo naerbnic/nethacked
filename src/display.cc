@@ -219,7 +219,7 @@ void map_background(xchar x, xchar y, int show) {
  * Map the trap and print it out if directed.  This routine assumes that the
  * hero can physically see the location.
  */
-void map_trap(struct trap *trap, int show) {
+void map_trap(Trap *trap, int show) {
     int x = trap->tx, y = trap->ty;
     int glyph = trap_to_glyph(trap);
 
@@ -270,7 +270,7 @@ void map_invisible(xchar x, xchar y) {
  * to call newsym().
  */
 void unmap_object(int x, int y) {
-    struct trap *trap;
+    Trap *trap;
 
     if (!level.flags.hero_memory) return;
 
@@ -301,7 +301,7 @@ void unmap_object(int x, int y) {
 #define _map_location(x,y,show)						\
 {									\
     Object   *obj;						\
-    struct trap  *trap;					\
+    Trap  *trap;					\
 									\
     if ((obj = vobj_at(x,y)) && !covers_objects(x,y))			\
 	map_object(obj,show);						\
@@ -652,7 +652,7 @@ void newsym(int x, int y) {
 		: (mon_visible(mon)) || tp_sensemon(mon) || MATCH_WARN_OF_MON(mon));
 	    if (mon && (see_it || (!worm_tail && Detect_monsters))) {
 		if (mon->mtrapped) {
-		    struct trap *trap = t_at(x, y);
+		    Trap *trap = t_at(x, y);
 		    int tt = trap ? trap->ttyp : NO_TRAP;
 
 		    /* if monster is in a physical trap, you see the trap too */
@@ -1062,7 +1062,7 @@ void see_objects() {
  * Update hallucinated traps.
  */
 void see_traps() {
-    struct trap *trap;
+    Trap *trap;
     int glyph;
 
     for (trap = ftrap; trap; trap = trap->ntrap) {

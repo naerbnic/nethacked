@@ -58,7 +58,7 @@ bool revive_nasty(int x, int y, const char *msg) {
 STATIC_OVL int moverock() {
     xchar rx, ry, sx, sy;
     Object *otmp;
-    struct trap *ttmp;
+    Trap *ttmp;
     Monster *mtmp;
 
     sx = u.ux + u.dx,  sy = u.uy + u.dy;	/* boulder starting position */
@@ -621,7 +621,7 @@ bool test_move(int ux, int uy, int dx, int dy, int mode) {
      * Avoid water and lava using the usual running rules.
      * (but not u.ux/u.uy because findtravelpath walks toward u.ux/u.uy) */
     if (flags.run == 8 && mode != DO_MOVE && (x != u.ux || y != u.uy)) {
-	struct trap* t = t_at(x, y);
+	Trap* t = t_at(x, y);
 
 	if ((t && t->tseen) ||
 	    (!Levitation && !Flying &&
@@ -831,7 +831,7 @@ void domove() {
 	Monster *mtmp;
 	struct rm *tmpr;
 	xchar x,y;
-	struct trap *trap;
+	Trap *trap;
 	int wtcap;
 	bool on_ice;
 	xchar chainx, chainy, ballx, bally;	/* ball&chain new positions */
@@ -1477,7 +1477,7 @@ stillinwater:;
 		dosinkfall();
 #endif
 	if (!in_steed_dismounting) { /* if dismounting, we'll check again later */
-		struct trap *trap = t_at(u.ux, u.uy);
+		Trap *trap = t_at(u.ux, u.uy);
 		bool pit;
 		pit = (trap && (trap->ttyp == PIT || trap->ttyp == SPIKED_PIT));
 		if (trap && pit)
@@ -1778,7 +1778,7 @@ void check_special_room(bool newlev) {
 
 int dopickup() {
 	int count;
-	struct trap *traphere = t_at(u.ux, u.uy);
+	Trap *traphere = t_at(u.ux, u.uy);
  	/* awful kludge to work around parse()'s pre-decrement */
 	count = (multi || (save_cm && *save_cm == ',')) ? multi + 1 : 0;
 	multi = 0;	/* always reset */
@@ -1859,7 +1859,7 @@ void lookaround() {
     int x, y, i, x0 = 0, y0 = 0, m0 = 1, i0 = 9;
     int corrct = 0, noturn = 0;
     Monster *mtmp;
-    struct trap *trap;
+    Trap *trap;
 
     /* Grid bugs stop if trying to move diagonal, even if blind.  Maybe */
     /* they polymorphed while in the middle of a long move. */
