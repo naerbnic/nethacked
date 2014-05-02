@@ -171,7 +171,7 @@ found:
 	/* we're really going to write now, so calculate cost
 	 */
 	actualcost = rn1(basecost/2,basecost/2);
-	curseval = bcsign(pen) + bcsign(paper);
+	curseval = GetBUCSign(pen) + GetBUCSign(paper);
 	exercise(A_WIS, TRUE);
 	/* dry out marker */
 	if (pen->spe < actualcost) {

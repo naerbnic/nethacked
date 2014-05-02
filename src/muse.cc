@@ -823,7 +823,7 @@ mon_tele:
 		goto mon_tele;
 	case MUSE_POT_HEALING:
 		mquaffmsg(mtmp, otmp);
-		i = d(6 + 2 * bcsign(otmp), 4);
+		i = d(6 + 2 * GetBUCSign(otmp), 4);
 		mtmp->mhp += i;
 		if (mtmp->mhp > mtmp->mhpmax) mtmp->mhp = ++mtmp->mhpmax;
 		if (!otmp->cursed && !mtmp->mcansee) {
@@ -837,7 +837,7 @@ mon_tele:
 		return 2;
 	case MUSE_POT_EXTRA_HEALING:
 		mquaffmsg(mtmp, otmp);
-		i = d(6 + 2 * bcsign(otmp), 8);
+		i = d(6 + 2 * GetBUCSign(otmp), 8);
 		mtmp->mhp += i;
 		if (mtmp->mhp > mtmp->mhpmax)
 			mtmp->mhp = (mtmp->mhpmax += (otmp->blessed ? 5 : 2));
@@ -1434,7 +1434,7 @@ int use_offensive(Monster *mtmp) {
 			(void) destroy_mitem(mtmp, SCROLL_CLASS, AD_FIRE);
 			(void) destroy_mitem(mtmp, SPBOOK_CLASS, AD_FIRE);
 			(void) destroy_mitem(mtmp, POTION_CLASS, AD_FIRE);
-			num = (2*(rn1(3, 3) + 2 * bcsign(otmp)) + 1)/3;
+			num = (2*(rn1(3, 3) + 2 * GetBUCSign(otmp)) + 1)/3;
 			if (Fire_resistance)
 			    You("are not harmed.");
 			burn_away_slime();

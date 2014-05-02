@@ -945,7 +945,7 @@ E Object *SplitObject(Object *,long);
 E void ReplaceObject(Object *,Object *);
 E void CreateBillDummyObject(Object *);
 E Object *MakeSpecificObject(int,bool,bool);
-E int bcsign(Object *);
+E int GetBUCSign(Object *);
 E int GetWeight(Object *);
 E Object *MakeGold(long,int,int);
 E Object *MakeCorpseOrStatue(

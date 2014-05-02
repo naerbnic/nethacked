@@ -132,8 +132,10 @@ STATIC_OVL void AddRandomBoxContents(Object *box) {
       /* initial inventory: sack starts out empty */
       if (moves <= 1 && !in_mklev) {
         n = 0;
-        break;
+      } else {
+        n = 1;
       }
+      break;
       /*else FALLTHRU*/
     case BAG_OF_HOLDING:
       n = 1;
@@ -560,8 +562,8 @@ Object * MakeSpecificObject(int otyp, bool init, bool artif) {
 		if(objects[otmp->otyp].oc_charged) {
 		    BlessOrCurse(otmp, 3);
 		    if(rn2(10)) {
-			if(rn2(10) && bcsign(otmp))
-			    otmp->spe = bcsign(otmp) * rne(3);
+			if(rn2(10) && GetBUCSign(otmp))
+			    otmp->spe = GetBUCSign(otmp) * rne(3);
 			else otmp->spe = rn2(2) ? rne(3) : -rne(3);
 		    }
 		    /* make useless +0 rings much less common */
@@ -734,8 +736,7 @@ void BlessOrCurse(Object *otmp, int chance) {
   return;
 }
 
-// TODO(BNC): What the hell should I call this?
-int bcsign(Object *otmp) {
+int GetBUCSign(Object *otmp) {
 	return(!!otmp->blessed - !!otmp->cursed);
 }
 
@@ -1380,8 +1381,8 @@ void SanityCheckObjects() {
   }
 
   mesg = "location sanity";
-  for (x = 0; x < COLNO; x++)
-    for (y = 0; y < ROWNO; y++)
+  for (int x = 0; x < COLNO; x++)
+    for (int y = 0; y < ROWNO; y++)
       for (obj = level.objects[x][y]; obj; obj = obj->nexthere)
         if (obj->where != OBJ_FLOOR) {
           pline("%s obj %s %s@(%d,%d): %s\n", mesg,

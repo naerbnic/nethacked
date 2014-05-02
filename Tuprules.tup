@@ -6,6 +6,10 @@ CCFLAGS += -Winit-self
 CCFLAGS += -Wpointer-arith
 CCFLAGS += -pipe
 
+# Warnings I want to introduce.
+# CCFLAGS += -Wunused-variable
+CCFLAGS += -Waddress
+
 # Should really fix this one
 CCFLAGS += -Wno-deprecated-writable-strings
 CCFLAGS += -Wno-deprecated-register

@@ -50,7 +50,7 @@ int doread() {
 	if(scroll->otyp == FORTUNE_COOKIE) {
 	    if(flags.verbose)
 		You("break up the cookie and throw away the pieces.");
-	    outrumor(bcsign(scroll), BY_COOKIE);
+	    outrumor(GetBUCSign(scroll), BY_COOKIE);
 	    if (!Blind) player.uconduct.literate++;
 	    useup(scroll);
 	    return(1);
@@ -1075,7 +1075,7 @@ int seffects(Object *sobj) {
 		 * Note: Modifications have been made as of 3.0 to allow for
 		 * some damage under all potential cases.
 		 */
-		cval = bcsign(sobj);
+		cval = GetBUCSign(sobj);
 		if(!objects[sobj->otyp].oc_name_known) more_experienced(0,10);
 		useup(sobj);
 		makeknown(SCR_FIRE);
@@ -1243,8 +1243,8 @@ int seffects(Object *sobj) {
 		    You("smell rotten eggs.");
 		    return 0;
 		}
-		(void) create_gas_cloud(cc.x, cc.y, 3+bcsign(sobj),
-						8+4*bcsign(sobj));
+		(void) create_gas_cloud(cc.x, cc.y, 3+GetBUCSign(sobj),
+						8+4*GetBUCSign(sobj));
 		break;
 	}
 	default:

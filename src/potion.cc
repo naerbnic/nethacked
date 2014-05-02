@@ -394,7 +394,7 @@ int peffects(Object *otmp) {
 	case POT_HALLUCINATION:
 		if (Hallucination || Halluc_resistance) nothing++;
 		(void) make_hallucinated(itimeout_incr(HHallucination,
-					   rn1(200, 600 - 300 * bcsign(otmp))),
+					   rn1(200, 600 - 300 * GetBUCSign(otmp))),
 				  TRUE, 0L);
 		break;
 	case POT_WATER:
@@ -454,7 +454,7 @@ int peffects(Object *otmp) {
 		    make_confused(itimeout_incr(HConfusion, d(3,8)), FALSE);
 		/* the whiskey makes us feel better */
 		if (!otmp->odiluted) healup(1, 0, FALSE, FALSE);
-		player.uhunger += 10 * (2 + bcsign(otmp));
+		player.uhunger += 10 * (2 + GetBUCSign(otmp));
 		newuhs(FALSE);
 		exercise(A_WIS, FALSE);
 		if(otmp->cursed) {
@@ -518,7 +518,7 @@ int peffects(Object *otmp) {
 			  otmp->odiluted ? "reconstituted " : "",
 			  fruitname(TRUE));
 		if (otmp->otyp == POT_FRUIT_JUICE) {
-		    player.uhunger += (otmp->odiluted ? 5 : 10) * (2 + bcsign(otmp));
+		    player.uhunger += (otmp->odiluted ? 5 : 10) * (2 + GetBUCSign(otmp));
 		    newuhs(FALSE);
 		    break;
 		}
@@ -554,7 +554,7 @@ int peffects(Object *otmp) {
 		    else
 			Your("%s are frozen to the %s!",
 			     makeplural(body_part(FOOT)), surface(player.ux, player.uy));
-		    nomul(-(rn1(10, 25 - 12*bcsign(otmp))), "frozen by a potion");
+		    nomul(-(rn1(10, 25 - 12*GetBUCSign(otmp))), "frozen by a potion");
 		    nomovemsg = You_can_move_again;
 		    exercise(A_DEX, FALSE);
 		}
@@ -564,7 +564,7 @@ int peffects(Object *otmp) {
 		    You("yawn.");
 		else {
 		    You("suddenly fall asleep!");
-		    fall_asleep(-rn1(10, 25 - 12*bcsign(otmp)), TRUE);
+		    fall_asleep(-rn1(10, 25 - 12*GetBUCSign(otmp)), TRUE);
 		}
 		break;
 	case POT_MONSTER_DETECTION:
@@ -653,7 +653,7 @@ int peffects(Object *otmp) {
 			pline("Huh, What?  Where am I?");
 		else	nothing++;
 		make_confused(itimeout_incr(HConfusion,
-					    rn1(7, 16 - 8 * bcsign(otmp))),
+					    rn1(7, 16 - 8 * GetBUCSign(otmp))),
 			      FALSE);
 		break;
 	case POT_GAIN_ABILITY:
@@ -695,12 +695,12 @@ int peffects(Object *otmp) {
 			unkn++;
 		}
 		exercise(A_DEX, TRUE);
-		incr_itimeout(&HFast, rn1(10, 100 + 60 * bcsign(otmp)));
+		incr_itimeout(&HFast, rn1(10, 100 + 60 * GetBUCSign(otmp)));
 		break;
 	case POT_BLINDNESS:
 		if(Blind) nothing++;
 		make_blinded(itimeout_incr(Blinded,
-					   rn1(200, 250 - 125 * bcsign(otmp))),
+					   rn1(200, 250 - 125 * GetBUCSign(otmp))),
 			     (bool)!Blind);
 		break;
 	case POT_GAIN_LEVEL:
@@ -737,13 +737,13 @@ int peffects(Object *otmp) {
 		break;
 	case POT_HEALING:
 		You_feel("better.");
-		healup(d(6 + 2 * bcsign(otmp), 4),
+		healup(d(6 + 2 * GetBUCSign(otmp), 4),
 		       !otmp->cursed ? 1 : 0, !!otmp->blessed, !otmp->cursed);
 		exercise(A_CON, TRUE);
 		break;
 	case POT_EXTRA_HEALING:
 		You_feel("much better.");
-		healup(d(6 + 2 * bcsign(otmp), 8),
+		healup(d(6 + 2 * GetBUCSign(otmp), 8),
 		       otmp->blessed ? 5 : !otmp->cursed ? 2 : 0,
 		       !otmp->cursed, TRUE);
 		(void) make_hallucinated(0L,TRUE,0L);
@@ -752,7 +752,7 @@ int peffects(Object *otmp) {
 		break;
 	case POT_FULL_HEALING:
 		You_feel("completely healed.");
-		healup(400, 4+4*bcsign(otmp), !otmp->cursed, TRUE);
+		healup(400, 4+4*GetBUCSign(otmp), !otmp->cursed, TRUE);
 		/* Restore one lost level if blessed */
 		if (otmp->blessed && player.ulevel < player.ulevelmax) {
 		    /* when multiple levels have been lost, drinking

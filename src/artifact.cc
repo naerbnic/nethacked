@@ -1330,7 +1330,7 @@ void arti_speak(Object *obj) {
 	if (!oart || !(oart->spfx & SPFX_SPEAK))
 		return;
 
-	line = getrumor(bcsign(obj), buf, TRUE);
+	line = getrumor(GetBUCSign(obj), buf, TRUE);
 	if (!*line)
 		line = "NetHack rumors file closed for renovation.";
 	pline("%s:", Tobjnam(obj, "whisper"));

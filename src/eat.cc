@@ -1599,7 +1599,7 @@ STATIC_OVL void fpostfx(Object* otmp) {
 		make_blinded((long)player.ucreamed,TRUE);
 		break;
 	    case FORTUNE_COOKIE:
-		outrumor(bcsign(otmp), BY_COOKIE);
+		outrumor(GetBUCSign(otmp), BY_COOKIE);
 		if (!Blind) player.uconduct.literate++;
 		break;
 	    case LUMP_OF_ROYAL_JELLY:
