@@ -7,6 +7,7 @@
 
 #include <string.h>
 #include "buffer.h"
+#include "range.h"
 
 Buffer Buffer::OfBorrowed(void* data, size_t size) {
   if (size == 0) {
