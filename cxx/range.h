@@ -94,7 +94,7 @@ public:
 
   public:
     // We're forced to go in order to get the typing to work right, so...
-    decltype(array_[*iter_])& operator*() {
+    typename std::remove_const<decltype(array_[*iter_])>::type& operator*() {
       return array_[*iter_];
     }
   };
