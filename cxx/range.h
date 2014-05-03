@@ -57,7 +57,7 @@ public:
   }
 
   template <typename ArrayType>
-  ArrayRange<ArrayType, T> Over(ArrayType const& array) const {
+  ArrayRange<ArrayType, T> Over(ArrayType& array) const {
     return ArrayRange<ArrayType, T>(array, *this);
   }
 
@@ -69,13 +69,13 @@ private:
 template <typename ArrayType, typename RangeType>
 class ArrayRange {
 public:
-  ArrayRange(ArrayType const& array, Range<RangeType> range)
+  ArrayRange(ArrayType& array, Range<RangeType> range)
       : array_(array), range_(range) {}
 
   class iterator {
   public:
     iterator(
-        ArrayType const& array,
+        ArrayType& array,
         typename Range<RangeType>::iterator iter)
         : array_(array), iter_(iter) {}
 
@@ -89,7 +89,7 @@ public:
     }
 
   private:
-    ArrayType const& array_;
+    ArrayType& array_;
     typename Range<RangeType>::iterator iter_;
 
   public:
@@ -108,7 +108,7 @@ public:
   }
 
 private:
-  ArrayType const& array_;
+  ArrayType& array_;
   Range<RangeType> range_;
 };
 
