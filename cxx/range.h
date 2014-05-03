@@ -5,7 +5,6 @@
 
 #include <type_traits>
 
-
 template <typename ArrayType, typename RangeType>
 class ArrayRange;
 
@@ -37,20 +36,28 @@ public:
     T i_;
   };
 
-  iterator begin() {
+  T range_start() const {
+    return start_;
+  }
+
+  T range_end() const {
+    return end_;
+  }
+
+  iterator begin() const {
     return iterator(start_);
   }
 
-  iterator end() {
+  iterator end() const {
     return iterator(end_);
   }
 
-  bool contains(T val) {
+  bool contains(T val) const {
     return start_ <= val && val < end_;
   }
 
   template <typename ArrayType>
-  ArrayRange<ArrayType, T> InArray(ArrayType const& array) {
+  ArrayRange<ArrayType, T> Over(ArrayType const& array) const {
     return ArrayRange<ArrayType, T>(array, *this);
   }
 

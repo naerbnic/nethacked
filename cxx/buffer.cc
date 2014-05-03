@@ -11,10 +11,10 @@
 
 Buffer Buffer::OfBorrowed(void* data, size_t size) {
   char const* sarr[] = {"a", "b", "c"};
-  Range<int> r(0, 3);
+  Range<int> r(1, 2);
 
-  for (char const* str : RangeOver(sarr)) {
-    printf(str);
+  for (auto& str : r.Over(sarr)) {
+    str = "d";
   }
   if (size == 0) {
     return Buffer(nullptr, 0, true);
