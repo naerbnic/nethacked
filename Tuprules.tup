@@ -1,3 +1,5 @@
+CXX = /Users/brianchin/clang/bin/clang++
+
 CCFLAGS += -I$(TUP_CWD)/include
 CCFLAGS += -I$(TUP_CWD)/cxx
 CCFLAGS += -std=c++11
@@ -11,12 +13,12 @@ CCFLAGS += -pipe
 CCFLAGS += -Waddress
 
 # Should really fix this one
-CCFLAGS += -Wno-deprecated-writable-strings
+CCFLAGS += -Wno-writable-strings
 CCFLAGS += -Wno-deprecated-register
 CCFLAGS += -Wno-comment
 CCFLAGS += -Wno-format-security
 CCFLAGS += -Wno-int-to-void-pointer-cast
 
-!cc = |> g++ $(CCFLAGS) -c %f -o %o |> %B.o
+!cc = |> $(CXX) $(CCFLAGS) -c %f -o %o |> %B.o
 
 .gitignore

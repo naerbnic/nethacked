@@ -1,5 +1,5 @@
 include_rules
 
-: makedefs.cc ../entitylib/objects.o ../entitylib/monst.o |> g++ $(CCFLAGS) %f -o %o |> makedefs
+: makedefs.cc ../entitylib/objects.o ../entitylib/monst.o |> $(CXX) $(CCFLAGS) %f -o %o |> makedefs
 
-: dlb_main.cc |> g++ $(CCFLAGS) %f -o %o |> dlb
+: dlb_main.cc |> $(CXX) $(CCFLAGS) %f -o %o |> dlb
