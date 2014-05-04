@@ -5,15 +5,6 @@ INCLUDE_DIRECTORIES(BEFORE ${CMAKE_SOURCE_DIR}/include)
 
 LIST(APPEND CMAKE_CXX_FLAGS "-std=c++11 -Wno-deprecated-register")
 
-# Base source files
-ADD_LIBRARY(base
-  src/alloc.cc
-  src/decl.cc
-  src/drawing.cc
-  include/pm.h
-  include/onames.h
-  include/date.h)
-
 ADD_EXECUTABLE(makedefs
   util/makedefs.cc
   entitylib/objects.cc
@@ -35,8 +26,16 @@ RUN_MAKEDEFS(include/pm.h p)
 RUN_MAKEDEFS(include/onames.h o)
 RUN_MAKEDEFS(include/vis_tab.h y include/vis_tab.h)
 RUN_MAKEDEFS(include/date.h u)
+
 RUN_MAKEDEFS(src/monstr.cc m)
 RUN_MAKEDEFS(src/vis_tab.cc z ../src/vis_tab.cc)
+
+RUN_MAKEDEFS(dat/data d)
+RUN_MAKEDEFS(dat/rumors r)
+RUN_MAKEDEFS(dat/quest.dat q)
+RUN_MAKEDEFS(dat/oracles h)
+RUN_MAKEDEFS(options v)
+RUN_MAKEDEFS(dat/dungeon.pdf e)
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
@@ -70,8 +69,27 @@ ADD_LEXER(compilers/dgn_lex.l compilers/dgn_lex.cc compilers/dgn_lex.h)
 ADD_LEXER(compilers/lev_lex.l compilers/lev_lex.cc compilers/lev_lex.h)
 
 ADD_EXECUTABLE(dgn_comp
-  compilers/dgn_parse.cc compilers/dgn_lex.cc compilers/dgn_main.cc)
-TARGET_LINK_LIBRARIES(dgn_comp base)
+  compilers/dgn_parse.cc
+  compilers/dgn_lex.cc
+  compilers/dgn_main.cc
+  src/alloc.cc
+  src/decl.cc
+  src/drawing.cc
+  include/pm.h
+  include/onames.h
+  include/date.h)
+
+ADD_CUSTOM_COMMAND(
+  OUTPUT dat/dungeon
+  COMMAND dgn_comp dungeon.pdf
+  WORKING_DIRECTORY dat
+  DEPENDS dgn_comp)
+
+ADD_CUSTOM_TARGET(dat
+  ALL
+  DEPENDS
+    dat/dungeon)
+
 ADD_EXECUTABLE(lev_comp
   compilers/lev_parse.cc
   compilers/lev_lex.cc
@@ -79,16 +97,12 @@ ADD_EXECUTABLE(lev_comp
   compilers/panic.cc
   entitylib/monst.cc
   entitylib/objects.cc
+  src/alloc.cc
+  src/decl.cc
+  src/drawing.cc
   include/pm.h
   include/onames.h
   include/date.h)
-
-ADD_DEPENDENCIES(lev_comp
-  include/pm.h
-  include/onames.h
-  include/date.h)
-
-TARGET_LINK_LIBRARIES(lev_comp base)
 
 ADD_EXECUTABLE(nethacked
   # Base Source
