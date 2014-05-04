@@ -59,7 +59,7 @@ static	const char	SCCS_Id[] = "@(#)makedefs.cc\t3.4\t2002/02/03";
 #define RUMOR_FILE	"rumors"
 #define DGN_I_FILE	"dungeon.def"
 #define DGN_O_FILE	"dungeon.pdf"
-#define MON_STR_C	"monstr.c"
+#define MON_STR_C	"monstr.cc"
 #define QTXT_I_FILE	"quest.txt"
 #define QTXT_O_FILE	"quest.dat"
 #define VIS_TAB_H	"vis_tab.h"
