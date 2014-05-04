@@ -29,6 +29,8 @@ RUN_MAKEDEFS(include/onames.h o)
 RUN_MAKEDEFS(include/vis_tab.h y include/vis_tab.h)
 RUN_MAKEDEFS(include/date.h u)
 
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
+
 FIND_PACKAGE(BISON)
 
 IF(BISON_FOUND)
