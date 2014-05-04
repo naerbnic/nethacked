@@ -34,7 +34,7 @@ RUN_MAKEDEFS(dat/data d)
 RUN_MAKEDEFS(dat/rumors r)
 RUN_MAKEDEFS(dat/quest.dat q)
 RUN_MAKEDEFS(dat/oracles h)
-RUN_MAKEDEFS(options v)
+RUN_MAKEDEFS(dat/options v)
 RUN_MAKEDEFS(dat/dungeon.pdf e)
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
@@ -83,12 +83,151 @@ ADD_CUSTOM_COMMAND(
   OUTPUT dat/dungeon
   COMMAND dgn_comp dungeon.pdf
   WORKING_DIRECTORY dat
-  DEPENDS dgn_comp)
+  DEPENDS dgn_comp dat/dungeon.pdf)
+
+FUNCTION(COMPILE_LEVEL des_file file_var)
+  ADD_CUSTOM_COMMAND(
+    OUTPUT ${ARGN}
+    COMMAND lev_comp ${CMAKE_SOURCE_DIR}/${des_file}
+    WORKING_DIRECTORY dat
+    DEPENDS lev_comp)
+  SET(${file_var} ${ARGN} PARENT_SCOPE)
+ENDFUNCTION()
+
+# Special Levels
+COMPILE_LEVEL(dat/bigroom.des BIGROOM_FILES
+  dat/bigrm-1.lev
+  dat/bigrm-2.lev
+  dat/bigrm-3.lev
+  dat/bigrm-4.lev
+  dat/bigrm-5.lev)
+
+
+COMPILE_LEVEL(dat/castle.des CASTLE_FILES
+  dat/castle.lev)
+
+COMPILE_LEVEL(dat/endgame.des ENDGAME_FILES
+  dat/earth.lev
+  dat/air.lev
+  dat/water.lev
+  dat/fire.lev
+  dat/astral.lev)
+
+COMPILE_LEVEL(dat/gehennom.des GEHENNOM_FILES
+  dat/asmodeus.lev
+  dat/baalz.lev
+  dat/juiblex.lev
+  dat/orcus.lev
+  dat/sanctum.lev
+  dat/valley.lev)
+
+COMPILE_LEVEL(dat/knox.des KNOX_FILES
+  dat/knox.lev)
+
+COMPILE_LEVEL(dat/medusa.des MEDUSA_FILES
+  dat/medusa-1.lev
+  dat/medusa-2.lev)
+
+COMPILE_LEVEL(dat/mines.des MINES_FILES
+  dat/minefill.lev
+  dat/minetn-1.lev
+  dat/minetn-2.lev
+  dat/minetn-3.lev
+  dat/minetn-4.lev
+  dat/minetn-5.lev
+  dat/minetn-6.lev
+  dat/minetn-7.lev
+  dat/minend-1.lev
+  dat/minend-2.lev
+  dat/minend-3.lev)
+
+COMPILE_LEVEL(dat/oracle.des ORACLE_FILES
+  dat/oracle.lev)
+
+COMPILE_LEVEL(dat/sokoban.des SOKOBAN_FILES
+  dat/soko1-1.lev
+  dat/soko1-2.lev
+  dat/soko2-1.lev
+  dat/soko2-2.lev
+  dat/soko3-1.lev
+  dat/soko3-2.lev
+  dat/soko4-1.lev
+  dat/soko4-2.lev)
+
+COMPILE_LEVEL(dat/tower.des TOWER_FILES
+  dat/tower1.lev
+  dat/tower2.lev
+  dat/tower3.lev)
+
+COMPILE_LEVEL(dat/yendor.des YENDOR_FILES
+  dat/fakewiz1.lev
+  dat/fakewiz2.lev
+  dat/wizard1.lev
+  dat/wizard2.lev
+  dat/wizard3.lev)
+
+FUNCTION(COMPILE_QUEST_LEVEL base_name prefix file_var)
+  COMPILE_LEVEL(dat/${base_name}.des FILES
+    dat/${prefix}-strt.lev
+    dat/${prefix}-loca.lev
+    dat/${prefix}-goal.lev
+    dat/${prefix}-fila.lev
+    dat/${prefix}-filb.lev)
+  SET(${file_var} ${FILES} PARENT_SCOPE)
+ENDFUNCTION()
+
+COMPILE_QUEST_LEVEL(Arch Arc ARC_QUEST_FILES)
+COMPILE_QUEST_LEVEL(Barb Bar BAR_QUEST_FILES)
+COMPILE_QUEST_LEVEL(Caveman Cav CAV_QUEST_FILES)
+COMPILE_QUEST_LEVEL(Healer Hea HEA_QUEST_FILES)
+COMPILE_QUEST_LEVEL(Knight Kni KNI_QUEST_FILES)
+COMPILE_QUEST_LEVEL(Monk Mon MON_QUEST_FILES)
+COMPILE_QUEST_LEVEL(Priest Pri PRI_QUEST_FILES)
+COMPILE_QUEST_LEVEL(Ranger Ran RAN_QUEST_FILES)
+COMPILE_QUEST_LEVEL(Rogue Rog ROG_QUEST_FILES)
+COMPILE_QUEST_LEVEL(Samurai Sam SAM_QUEST_FILES)
+COMPILE_QUEST_LEVEL(Tourist Tou TOU_QUEST_FILES)
+COMPILE_QUEST_LEVEL(Valkyrie Val VAL_QUEST_FILES)
+COMPILE_QUEST_LEVEL(Wizard Wiz WIZ_QUEST_FILES)
+
+SET(DATA_FILES
+  dat/data
+  dat/rumors
+  dat/quest.dat
+  dat/oracles
+  dat/options
+
+  dat/dungeon
+   
+  ${BIGROOM_FILES}
+  ${CASTLE_FILES}
+  ${ENDGAME_FILES}
+  ${GEHENNOM_FILES}
+  ${KNOX_FILES}
+  ${MEDUSA_FILES}
+  ${MINES_FILES}
+  ${ORACLE_FILES}
+  ${SOKOBAN_FILES}
+  ${TOWER_FILES}
+  ${YENDOR_FILES}
+  
+  ${ARC_QUEST_FILES}
+  ${BAR_QUEST_FILES}
+  ${CAV_QUEST_FILES}
+  ${HEA_QUEST_FILES}
+  ${KNI_QUEST_FILES}
+  ${MON_QUEST_FILES}
+  ${PRI_QUEST_FILES}
+  ${RAN_QUEST_FILES}
+  ${ROG_QUEST_FILES}
+  ${SAM_QUEST_FILES}
+  ${TOU_QUEST_FILES}
+  ${VAL_QUEST_FILES}
+  ${WIZ_QUEST_FILES})
 
 ADD_CUSTOM_TARGET(dat
   ALL
-  DEPENDS
-    dat/dungeon)
+  DEPENDS ${DATA_FILES})
 
 ADD_EXECUTABLE(lev_comp
   compilers/lev_parse.cc
@@ -100,6 +239,7 @@ ADD_EXECUTABLE(lev_comp
   src/alloc.cc
   src/decl.cc
   src/drawing.cc
+
   include/pm.h
   include/onames.h
   include/date.h)
@@ -235,4 +375,7 @@ ADD_EXECUTABLE(nethacked
   include/onames.h
   include/date.h)
 
-TARGET_LINK_LIBRARIES(nethacked curses)
+FIND_PACKAGE(CURSES)
+TARGET_LINK_LIBRARIES(nethacked ${CURSES_LIBRARIES})
+
+

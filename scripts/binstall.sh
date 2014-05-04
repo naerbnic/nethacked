@@ -6,9 +6,9 @@ if [ ! $( basename $(pwd) ) = "nethacked" ]; then
 fi
 
 # Make sure we're up to date
-tup || ( echo "Build Failed"; exit 1 )
+make all || ( echo "Build Failed"; exit 1 )
 (cd bin; rm -rf *)
-cp src/nethacked bin/nethack
+cp nethacked bin/nethack
 cp dat/*.lev dat/dungeon bin
 cp sys/unix/nethack.sh bin
 cp dat/quest.dat bin
