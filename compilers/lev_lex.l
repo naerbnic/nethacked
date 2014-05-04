@@ -6,7 +6,7 @@
 #define LEV_LEX_C
 
 #include "hack.h"
-#include "lev_yacc.hh"
+#include "lev_parse.hh"
 #include "sp_lev.h"
 
 /* Most of these don't exist in flex, yywrap is macro and

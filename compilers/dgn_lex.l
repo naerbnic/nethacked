@@ -8,7 +8,7 @@
 
 #include "alloc.h"
 #include "config.h"
-#include "dgn_yacc.hh"
+#include "dgn_parse.hh"
 #include "dgn_file.h"
 
 /*

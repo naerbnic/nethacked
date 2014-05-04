@@ -1,15 +1,15 @@
 include_rules
 
 : panic.cc |> !cc |>
-: dgn_comp.l |> flex -o dgn_lex.cc --header-file=dgn_lex.h %f |> dgn_lex.cc dgn_lex.h
-: dgn_comp.y |> bison -d -o dgn_yacc.cc %f |> dgn_yacc.cc dgn_yacc.hh
+: dgn_lex.l |> flex -o dgn_lex.cc --header-file=dgn_lex.h %f |> dgn_lex.cc dgn_lex.h
+: dgn_parse.y |> bison -d -o dgn_parse.cc %f |> dgn_parse.cc dgn_parse.hh
 
-: lev_comp.l |> flex -o lev_lex.cc --header-file=lev_lex.h %f |> lev_lex.cc lev_lex.h
-: lev_comp.y |> bison -d -o lev_yacc.cc %f |> lev_yacc.cc lev_yacc.hh
+: lev_lex.l |> flex -o lev_lex.cc --header-file=lev_lex.h %f |> lev_lex.cc lev_lex.h
+: lev_parse.y |> bison -d -o lev_parse.cc %f |> lev_parse.cc lev_parse.hh
 
-: foreach dgn_yacc.cc dgn_lex.cc dgn_main.cc | dgn_yacc.hh ../include/pm.h ../include/onames.h ../include/date.h |> !cc |>
-: foreach lev_yacc.cc lev_lex.cc lev_main.cc | lev_yacc.hh ../include/pm.h ../include/onames.h ../include/date.h |> !cc |>
+: foreach dgn_parse.cc dgn_lex.cc dgn_main.cc | dgn_parse.hh ../include/pm.h ../include/onames.h ../include/date.h |> !cc |>
+: foreach lev_parse.cc lev_lex.cc lev_main.cc | lev_parse.hh ../include/pm.h ../include/onames.h ../include/date.h |> !cc |>
 
-: dgn_yacc.o dgn_lex.o dgn_main.o ../src/base.a |> g++ -o %o %f |> dgn_comp
+: dgn_parse.o dgn_lex.o dgn_main.o ../src/base.a |> g++ -o %o %f |> dgn_comp
 
-: lev_yacc.o lev_lex.o lev_main.o panic.o ../src/base.a ../entitylib/monst.o ../entitylib/objects.o |> g++ -o %o %f |> lev_comp
+: lev_parse.o lev_lex.o lev_main.o panic.o ../src/base.a ../entitylib/monst.o ../entitylib/objects.o |> g++ -o %o %f |> lev_comp
