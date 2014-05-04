@@ -7,7 +7,7 @@ fi
 
 # Make sure we're up to date
 make all || ( echo "Build Failed"; exit 1 )
-(cd bin; rm -rf *)
+(mkdir -p bin; cd bin; rm -rf *)
 cp nethacked bin/nethack
 cp dat/*.lev dat/dungeon bin
 cp sys/unix/nethack.sh bin
