@@ -1,403 +1,263 @@
-#	Makefile for NetHack's utility programs.
-#	SCCS Id: @(#)Makefile.utl	3.4	1997/04/19
-
-# newer makes predefine $(MAKE) to 'make' and do smarter processing of
-# recursive make calls if $(MAKE) is used
-# these makes allow $(MAKE) to be overridden by the environment if someone
-# wants to (or has to) use something other than the standard make, so we do
-# not want to unconditionally set $(MAKE) here
-#
-# unfortunately, some older makes do not predefine $(MAKE); if you have one of
-# these, uncomment the following line
-# (you will know that you have one if you get complaints about unable to
-# execute things like 'foo.o')
-# MAKE = make
-
-# if you are using gcc as your compiler,
-#	uncomment the CC definition below if it's not in your environment
-# CC = gcc
-#
-#	For Bull DPX/2 systems at B.O.S. 2.0 or higher use the following:
-#
-# CC = gcc -ansi -D_BULL_SOURCE -D_XOPEN_SOURCE -D_POSIX_SOURCE
-# 
-#	If you are using GCC 2.2.2 or higher on a DPX/2, just use:
-#
-# CC = gcc -ansi
-#
-#	For HP/UX 10.20 with GCC:
-# CC = gcc -D_POSIX_SOURCE
-#
-# if your make doesn't define a default SHELL properly, you may need
-#    the line below (Atari users will need a bourne work-alike)
-# SHELL = /bin/sh
-# for Atari
-# SHELL=E:/GEMINI2/MUPFEL.TTP
-
-# flags may have to be changed as required
-# flags for 286 Xenix:
-# CFLAGS = -Ml2t16 -O -LARGE -I../include
-# LFLAGS = -Ml -F 4000 -SEG 512
-
-# flags for 286 Microport SysV-AT
-# CFLAGS = -DDUMB -Ml -I../include
-# LFLAGS = -Ml
-
-# flags for Atari GCC (3.2.1)
-# CFLAGS = -O -I../include
-# LFLAGS = -s
-# flags for Atari GCC (3.3)
-# CFLAGS = -mshort -O2 -I../include
-# LFLAGS = -mshort -s
-
-# flags for Apollos using their native cc
-# (as long as it claims to be __STDC__ but isn't)
-# CFLAGS = -DAPOLLO -O -I../include
-
-# flags for AIX 3.1 cc on IBM RS/6000 to define
-# a suitable subset of standard libraries
-# (note that there is more info regarding the "-qchars=signed"
-# switch in file Install.unx note 8)
-# CFLAGS = -D_NO_PROTO -D_XOPEN_SOURCE -O -I../include -qchars=signed
-# and for AIX 3.2:
-# CFLAGS = -D_NO_PROTO -D_XOPEN_SOURCE -D_ALL_SOURCE -O -I../include -qchars=signed
-
-# flags for A/UX 2.01 using native cc or c89
-# gcc predefines AUX so that's not needed there
-# CFLAGS = -ZS -D_POSIX_SOURCE -O -I../include -DAUX
-
-# flags for IRIX 4.0.x using native cc
-# SGI cc 3.10 will fail to compile makedefs with -O
-# CFLAGS = -I../include -D__STDC__ -woff 100,293
-
-# flags for Linux
-#   compile normally
-# CFLAGS = -O2 -fomit-frame-pointer -I../include
-# LFLAGS = -L/usr/X11R6/lib
-#   OR compile backwards compatible a.out format
-# CFLAGS = -O2 -b i486-linuxaout -fomit-frame-pointer -I../include
-# LFLAGS = -b i486-linuxaout -L/usr/X11R6/lib
-
-# flags for BeOS using the command line
-# remember to uncomment flex and bison below
-#   BeOS on a Mac/BeBox:
-#CC = mwcc
-#CFLAGS = -I../include
-#   BeOS on Intel:
-# the default values are fine
-
-# flags for debugging:
-# CFLAGS = -g -I../include
-
-CFLAGS = -O -I../include
-LFLAGS =
-
-LIBS =
- 
-# If you are cross-compiling, you must use this:
-#OBJDIR = .
-# otherwise, you can save a little bit of disk space with this:
-OBJDIR = ../src
-
-# yacc/lex programs to use to generate *_comp.h, *_lex.c, and *_yacc.c.
-# if, instead of yacc/lex you have bison/flex, comment/uncomment the following.
-YACC     = yacc
-LEX      = lex
-# YACC     = bison -y
-# YACC     = byacc
-# LEX      = flex
- 
-# these are the names of the output files from YACC/LEX. Under MS-DOS
-# and similar systems, they may differ
-YTABC = y.tab.c
-YTABH = y.tab.h
-LEXYYC = lex.yy.c
-# YTABC = y_tab.c
-# YTABH = y_tab.h
-# LEXYYC = lexyy.c
-
-
-
-# ----------------------------------------
-#
-# Nothing below this line should have to be changed.
-
-# timestamps for primary header files, matching src/Makefile
-CONFIG_H = ../src/config.h-t
-HACK_H	 = ../src/hack.h-t
-
-# utility .c files
-MAKESRC = makedefs.c
-SPLEVSRC = lev_yacc.c lev_lex.c lev_main.c
-DGNCOMPSRC = dgn_yacc.c dgn_lex.c dgn_main.c
-RECOVSRC = recover.c
-DLBSRC = dlb_main.c
-UTILSRCS = $(MAKESRC) panic.c $(SPLEVSRC) $(DGNCOMPSRC) $(RECOVSRC) $(DLBSRC)
-
-# files that define all monsters and objects
-CMONOBJ = ../src/monst.c ../src/objects.c
-OMONOBJ = $(OBJDIR)/monst.o $(OBJDIR)/objects.o
-# files that provide access to NetHack's names
-CNAMING = ../src/drawing.c ../src/decl.c $(CMONOBJ)
-ONAMING = $(OBJDIR)/drawing.o $(OBJDIR)/decl.o $(OMONOBJ)
-# dynamic memory allocation
-CALLOC = ../src/alloc.c panic.c
-OALLOC = $(OBJDIR)/alloc.o panic.o
-
-# object files for makedefs
-MAKEOBJS = makedefs.o $(OMONOBJ)
-
-# object files for special levels compiler
-SPLEVOBJS = lev_yacc.o lev_lex.o lev_main.o $(OALLOC) $(ONAMING)
-
-# object files for dungeon compiler
-DGNCOMPOBJS = dgn_yacc.o dgn_lex.o dgn_main.o $(OALLOC)
-
-# object files for recovery utility
-RECOVOBJS = recover.o
-
-# object files for the data librarian
-DLBOBJS = dlb_main.o $(OBJDIR)/dlb.o $(OALLOC)
-
-# flags for creating distribution versions of sys/share/*_lex.c, using
-# a more portable flex skeleton, which is not included in the distribution.
-# hopefully keeping this out of the section to be edited will keep too
-# many people from being confused by it...
-# FLEXDIST = -L -S../sys/share/flexhack.skl
-FLEXDIST =
-#
-# flags for creating distribution versions of sys/share/*_yacc.c, without
-# line numbers so patches from version to version are practical
-# YACCDIST = -l
-YACCDIST =
-
-
-#	dependencies for makedefs
-#
-makedefs:	$(MAKEOBJS)
-	$(CC) $(LFLAGS) -o makedefs $(MAKEOBJS)
-
-makedefs.o: makedefs.c $(CONFIG_H) ../include/permonst.h \
-		../include/objclass.h ../include/monsym.h \
-		../include/artilist.h ../include/dungeon.h ../include/obj.h \
-		../include/monst.h ../include/you.h ../include/flag.h \
-		../include/dlb.h ../include/patchlevel.h ../include/qtext.h
-
-../include/onames.h: makedefs
-	./makedefs -o
-../include/pm.h: makedefs
-	./makedefs -p
-../src/monstr.c: makedefs
-	./makedefs -m
-../include/vis_tab.h: makedefs
-	./makedefs -z
-# makedefs -z makes both vis_tab.h and vis_tab.c, but writes the .h first
-../src/vis_tab.c: ../include/vis_tab.h
-
-lintdefs:
-	@lint -axbh -I../include -DLINT $(MAKESRC) $(CMONOBJ) | sed '/_flsbuf/d'
-
-
-# we defer this makedefs call to the src Makefile, since it knows all about
-# the main src and include files date.h is a timestamp for
-../include/date.h::
-	@( cd ../src ; $(MAKE) ../include/date.h )
-
-# support code used by several of the utility programs (but not makedefs)
-panic.o:     panic.c $(CONFIG_H)
-
-
-#	dependencies for lev_comp
-#
-lev_comp:  $(SPLEVOBJS)
-	$(CC) $(LFLAGS) -o lev_comp $(SPLEVOBJS) $(LIBS)
-
-lev_yacc.o:  lev_yacc.c $(HACK_H) ../include/sp_lev.h
-lev_main.o:  lev_main.c $(HACK_H) ../include/sp_lev.h ../include/tcap.h \
-		../include/date.h
-
-# see lev_comp.l for WEIRD_LEX discussion
-# egrep will return failure if it doesn't find anything, but we know there
-# is one "_cplusplus" inside a comment
-lev_lex.o:   lev_lex.c $(HACK_H) ../include/lev_comp.h ../include/sp_lev.h
-	@echo $(CC) -c $(CFLAGS) lev_lex.c
-	@$(CC) -c $(CFLAGS) -DWEIRD_LEX=`egrep -c _cplusplus lev_lex.c` lev_lex.c
+# CMAKE generated file: DO NOT EDIT!
+# Generated by "Unix Makefiles" Generator, CMake Version 2.8
 
-../include/lev_comp.h: lev_yacc.c
-
-lev_yacc.c: lev_comp.y
-	$(YACC) $(YACCDIST) -d lev_comp.y
-	mv $(YTABC) lev_yacc.c
-	mv $(YTABH) ../include/lev_comp.h
-
-lev_lex.c: lev_comp.l
-	$(LEX) $(FLEXDIST) lev_comp.l
-	mv $(LEXYYC) lev_lex.c
-
-# with all of extern.h's functions to complain about, we drown in
-# 'defined but not used' without -u
-lintlev:
-	@lint -axhu -I../include -DLINT $(SPLEVSRC) $(CALLOC) $(CNAMING) | sed '/_flsbuf/d'
-
-
-#	dependencies for dgn_comp
-#
-dgn_comp:  $(DGNCOMPOBJS)
-	$(CC) $(LFLAGS) -o dgn_comp $(DGNCOMPOBJS) $(LIBS)
-
-dgn_yacc.o:  dgn_yacc.c $(CONFIG_H) ../include/dgn_file.h ../include/date.h
-dgn_main.o:  dgn_main.c $(CONFIG_H) ../include/dlb.h
-
-# see dgn_comp.l for WEIRD_LEX discussion
-dgn_lex.o:   dgn_lex.c $(CONFIG.H) ../include/dgn_comp.h ../include/dgn_file.h
-	@echo $(CC) -c $(CFLAGS) dgn_lex.c
-	@$(CC) -c $(CFLAGS) -DWEIRD_LEX=`egrep -c _cplusplus dgn_lex.c` dgn_lex.c
-
-
-../include/dgn_comp.h: dgn_yacc.c
-
-dgn_yacc.c: dgn_comp.y
-	$(YACC) $(YACCDIST) -d dgn_comp.y
-	mv $(YTABC) dgn_yacc.c
-	mv $(YTABH) ../include/dgn_comp.h
-
-dgn_lex.c: dgn_comp.l
-	$(LEX) $(FLEXDIST) dgn_comp.l
-	mv $(LEXYYC) dgn_lex.c
-
-# with all of extern.h's functions to complain about, we drown in
-# 'defined but not used' without -u
-lintdgn:
-	@lint -axhu -I../include -DLINT $(DGNCOMPSRC) $(CALLOC) | sed '/_flsbuf/d'
-
-
-#	dependencies for recover
-#
-recover: $(RECOVOBJS)
-	$(CC) $(LFLAGS) -o recover $(RECOVOBJS) $(LIBS)
-
-recover.o: recover.c $(CONFIG_H) ../include/date.h
-
-
-#	dependencies for dlb
-#
-dlb:	$(DLBOBJS)
-	$(CC) $(LFLAGS) -o dlb $(DLBOBJS) $(LIBS)
-
-dlb_main.o: dlb_main.c $(CONFIG_H) ../include/dlb.h ../include/date.h
-	$(CC) $(CFLAGS) -c dlb_main.c
-
-
-
-#	dependencies for tile utilities
-#
-TEXT_IO = tiletext.o tiletxt.o $(ONAMING)
-GIFREADERS = gifread.o $(OALLOC)
-PPMWRITERS = ppmwrite.o $(OALLOC)
-
-tileutils: tilemap gif2txt txt2ppm tile2x11
-
-gif2txt: $(GIFREADERS) $(TEXT_IO)
-	$(CC) $(LFLAGS) -o gif2txt $(GIFREADERS) $(TEXT_IO) $(LIBS)
-txt2ppm: $(PPMWRITERS) $(TEXT_IO)
-	$(CC) $(LFLAGS) -o txt2ppm $(PPMWRITERS) $(TEXT_IO) $(LIBS)
-
-tile2x11: tile2x11.o $(TEXT_IO)
-	$(CC) $(LFLAGS) -o tile2x11 tile2x11.o $(TEXT_IO) $(LIBS)
-
-tile2img.ttp: tile2img.o bitmfile.o $(TEXT_IO)
-	$(CC) $(LFLAGS) -o tile2img.ttp tile2img.o bitmfile.o $(TEXT_IO) $(LIBS)
-
-tile2bmp: tile2bmp.o $(TEXT_IO)
-	$(CC) $(LFLAGS) -o tile2bmp tile2bmp.o $(TEXT_IO)
-
-xpm2img.ttp: xpm2img.o bitmfile.o
-	$(CC) $(LFLAGS) -o xpm2img.ttp xpm2img.o bitmfile.o $(LIBS)
-
-tile2beos: tile2beos.o $(TEXT_IO)
-	$(CC) $(LFLAGS) -o tile2beos tile2beos.o $(TEXT_IO) -lbe
-
-tilemap: ../win/share/tilemap.c $(HACK_H)
-	$(CC) $(CFLAGS) $(LFLAGS) -o tilemap ../win/share/tilemap.c $(LIBS)
-../src/tile.c: tilemap
-	./tilemap
-
-../include/tile.h: ../win/share/tile.h
-	cp ../win/share/tile.h ../include/tile.h
-tiletext.o: ../win/share/tiletext.c $(CONFIG_H) ../include/tile.h
-	$(CC) $(CFLAGS) -c ../win/share/tiletext.c
-tiletxt.o: ../win/share/tilemap.c $(HACK_H)
-	$(CC) $(CFLAGS) -c -DTILETEXT ../win/share/tilemap.c
-	mv tilemap.o tiletxt.o
-
-gifread.o: ../win/share/gifread.c $(CONFIG_H) ../include/tile.h
-	$(CC) $(CFLAGS) -c ../win/share/gifread.c
-ppmwrite.o: ../win/share/ppmwrite.c $(CONFIG_H) ../include/tile.h
-	$(CC) $(CFLAGS) -c ../win/share/ppmwrite.c
-
-tile2bmp.o: ../win/share/tile2bmp.c $(HACK_H) ../include/tile.h
-	$(CC) $(CFLAGS) -c ../win/share/tile2bmp.c
-
-tile2x11.o: ../win/X11/tile2x11.c $(HACK_H) ../include/tile.h \
-						../include/tile2x11.h
-	$(CC) $(CFLAGS) -c ../win/X11/tile2x11.c
-
-tile2img.o: ../win/gem/tile2img.c $(HACK_H) ../include/tile.h \
-						../include/bitmfile.h
-	$(CC) $(CFLAGS) -c ../win/gem/tile2img.c
-xpm2img.o: ../win/gem/xpm2img.c $(HACK_H) ../include/bitmfile.h
-	$(CC) $(CFLAGS) -c ../win/gem/xpm2img.c
-bitmfile.o: ../win/gem/bitmfile.c ../include/bitmfile.h
-	$(CC) $(CFLAGS) -c ../win/gem/bitmfile.c
-
-tile2beos.o: ../win/BeOS/tile2beos.cpp $(HACK_H) ../include/tile.h
-	$(CXX) $(CFLAGS) -c ../win/BeOS/tile2beos.cpp
-
-# using dependencies like
-#	../src/foo::
-#		@( cd ../src ; $(MAKE) foo )
-# would always force foo to be up-to-date according to the src Makefile
-# when it's needed here.  unfortunately, some makes believe this syntax
-# means foo always changes, instead of foo should always be checked.
-# therefore, approximate via config.h dependencies, and hope that anybody
-# changing anything other than basic configuration also knows when not
-# to improvise things not in the instructions, like 'make makedefs' here
-# in util...
-
-# make sure object files from src are available when needed
-#
-$(OBJDIR)/alloc.o: ../src/alloc.c $(CONFIG_H)
-	$(CC) $(CFLAGS) -c ../src/alloc.c -o $@
-$(OBJDIR)/drawing.o: ../src/drawing.c $(CONFIG_H)
-	$(CC) $(CFLAGS) -c ../src/drawing.c -o $@
-$(OBJDIR)/decl.o: ../src/decl.c $(CONFIG_H)
-	$(CC) $(CFLAGS) -c ../src/decl.c -o $@
-$(OBJDIR)/monst.o: ../src/monst.c $(CONFIG_H)
-	$(CC) $(CFLAGS) -c ../src/monst.c -o $@
-$(OBJDIR)/objects.o: ../src/objects.c $(CONFIG_H)
-	$(CC) $(CFLAGS) -c ../src/objects.c -o $@
-$(OBJDIR)/dlb.o: ../src/dlb.c $(HACK_H) ../include/dlb.h
-	$(CC) $(CFLAGS) -c ../src/dlb.c -o $@
-
-# make sure hack.h dependencies get transitive information
-$(HACK_H): $(CONFIG_H)
-	@( cd ../src ; $(MAKE) $(HACK_H) )
-$(CONFIG_H): ../include/config.h
-	@( cd ../src ; $(MAKE) $(CONFIG_H) )
-
-tags: $(UTILSRCS)
-	@ctags -tw $(UTILSRCS)
+# Default target executed when no arguments are given to make.
+default_target: all
+.PHONY : default_target
 
+#=============================================================================
+# Special targets provided by cmake.
+
+# Disable implicit rules so canonical targets will work.
+.SUFFIXES:
+
+# Remove some rules from gmake that .SUFFIXES does not remove.
+SUFFIXES =
+
+.SUFFIXES: .hpux_make_needs_suffix_list
+
+# Suppress display of executed commands.
+$(VERBOSE).SILENT:
+
+# A target that is always out of date.
+cmake_force:
+.PHONY : cmake_force
+
+#=============================================================================
+# Set environment variables for the build.
+
+# The shell in which to execute make rules.
+SHELL = /bin/sh
+
+# The CMake executable.
+CMAKE_COMMAND = /usr/local/Cellar/cmake/2.8.12.2/bin/cmake
+
+# The command to remove a file.
+RM = /usr/local/Cellar/cmake/2.8.12.2/bin/cmake -E remove -f
+
+# Escaping for special characters.
+EQUALS = =
+
+# The program to use to edit the cache.
+CMAKE_EDIT_COMMAND = /usr/local/Cellar/cmake/2.8.12.2/bin/ccmake
+
+# The top-level source directory on which CMake was run.
+CMAKE_SOURCE_DIR = /Users/brianchin/Documents/Projects/game/nethacked
+
+# The top-level build directory on which CMake was run.
+CMAKE_BINARY_DIR = /Users/brianchin/Documents/Projects/game/nethacked
+
+#=============================================================================
+# Targets provided globally by CMake.
+
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
+	/usr/local/Cellar/cmake/2.8.12.2/bin/ccmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : edit_cache
+
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
+.PHONY : edit_cache/fast
+
+# Special rule for the target rebuild_cache
+rebuild_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
+	/usr/local/Cellar/cmake/2.8.12.2/bin/cmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : rebuild_cache
+
+# Special rule for the target rebuild_cache
+rebuild_cache/fast: rebuild_cache
+.PHONY : rebuild_cache/fast
+
+# The main all target
+all: cmake_check_build_system
+	cd /Users/brianchin/Documents/Projects/game/nethacked && $(CMAKE_COMMAND) -E cmake_progress_start /Users/brianchin/Documents/Projects/game/nethacked/CMakeFiles /Users/brianchin/Documents/Projects/game/nethacked/util/CMakeFiles/progress.marks
+	cd /Users/brianchin/Documents/Projects/game/nethacked && $(MAKE) -f CMakeFiles/Makefile2 util/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/brianchin/Documents/Projects/game/nethacked/CMakeFiles 0
+.PHONY : all
+
+# The main clean target
 clean:
-	-rm -f *.o
+	cd /Users/brianchin/Documents/Projects/game/nethacked && $(MAKE) -f CMakeFiles/Makefile2 util/clean
+.PHONY : clean
 
-spotless: clean
-	-rm -f lev_lex.c lev_yacc.c dgn_lex.c dgn_yacc.c
-	-rm -f ../include/lev_comp.h ../include/dgn_comp.h
-	-rm -f ../include/tile.h
-	-rm -f makedefs lev_comp dgn_comp recover dlb
-	-rm -f gif2txt txt2ppm tile2x11 tile2img.ttp xpm2img.ttp tilemap
+# The main clean target
+clean/fast: clean
+.PHONY : clean/fast
 
-tileedit: tileedit.cpp $(TEXT_IO)
-	$(QTDIR)/bin/moc -o tileedit.moc tileedit.h
-	$(CC) -o tileedit -I../include -I$(QTDIR)/include -L$(QTDIR)/lib tileedit.cpp $(TEXT_IO) -lqt
+# Prepare targets for installation.
+preinstall: all
+	cd /Users/brianchin/Documents/Projects/game/nethacked && $(MAKE) -f CMakeFiles/Makefile2 util/preinstall
+.PHONY : preinstall
+
+# Prepare targets for installation.
+preinstall/fast:
+	cd /Users/brianchin/Documents/Projects/game/nethacked && $(MAKE) -f CMakeFiles/Makefile2 util/preinstall
+.PHONY : preinstall/fast
+
+# clear depends
+depend:
+	cd /Users/brianchin/Documents/Projects/game/nethacked && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+.PHONY : depend
+
+# Convenience name for target.
+util/CMakeFiles/dlb.dir/rule:
+	cd /Users/brianchin/Documents/Projects/game/nethacked && $(MAKE) -f CMakeFiles/Makefile2 util/CMakeFiles/dlb.dir/rule
+.PHONY : util/CMakeFiles/dlb.dir/rule
+
+# Convenience name for target.
+dlb: util/CMakeFiles/dlb.dir/rule
+.PHONY : dlb
+
+# fast build rule for target.
+dlb/fast:
+	cd /Users/brianchin/Documents/Projects/game/nethacked && $(MAKE) -f util/CMakeFiles/dlb.dir/build.make util/CMakeFiles/dlb.dir/build
+.PHONY : dlb/fast
+
+# Convenience name for target.
+util/CMakeFiles/makedefs.dir/rule:
+	cd /Users/brianchin/Documents/Projects/game/nethacked && $(MAKE) -f CMakeFiles/Makefile2 util/CMakeFiles/makedefs.dir/rule
+.PHONY : util/CMakeFiles/makedefs.dir/rule
+
+# Convenience name for target.
+makedefs: util/CMakeFiles/makedefs.dir/rule
+.PHONY : makedefs
+
+# fast build rule for target.
+makedefs/fast:
+	cd /Users/brianchin/Documents/Projects/game/nethacked && $(MAKE) -f util/CMakeFiles/makedefs.dir/build.make util/CMakeFiles/makedefs.dir/build
+.PHONY : makedefs/fast
+
+__/entitylib/monst.o: __/entitylib/monst.cc.o
+.PHONY : __/entitylib/monst.o
+
+# target to build an object file
+__/entitylib/monst.cc.o:
+	cd /Users/brianchin/Documents/Projects/game/nethacked && $(MAKE) -f util/CMakeFiles/makedefs.dir/build.make util/CMakeFiles/makedefs.dir/__/entitylib/monst.cc.o
+.PHONY : __/entitylib/monst.cc.o
+
+__/entitylib/monst.i: __/entitylib/monst.cc.i
+.PHONY : __/entitylib/monst.i
+
+# target to preprocess a source file
+__/entitylib/monst.cc.i:
+	cd /Users/brianchin/Documents/Projects/game/nethacked && $(MAKE) -f util/CMakeFiles/makedefs.dir/build.make util/CMakeFiles/makedefs.dir/__/entitylib/monst.cc.i
+.PHONY : __/entitylib/monst.cc.i
+
+__/entitylib/monst.s: __/entitylib/monst.cc.s
+.PHONY : __/entitylib/monst.s
+
+# target to generate assembly for a file
+__/entitylib/monst.cc.s:
+	cd /Users/brianchin/Documents/Projects/game/nethacked && $(MAKE) -f util/CMakeFiles/makedefs.dir/build.make util/CMakeFiles/makedefs.dir/__/entitylib/monst.cc.s
+.PHONY : __/entitylib/monst.cc.s
+
+__/entitylib/objects.o: __/entitylib/objects.cc.o
+.PHONY : __/entitylib/objects.o
+
+# target to build an object file
+__/entitylib/objects.cc.o:
+	cd /Users/brianchin/Documents/Projects/game/nethacked && $(MAKE) -f util/CMakeFiles/makedefs.dir/build.make util/CMakeFiles/makedefs.dir/__/entitylib/objects.cc.o
+.PHONY : __/entitylib/objects.cc.o
+
+__/entitylib/objects.i: __/entitylib/objects.cc.i
+.PHONY : __/entitylib/objects.i
+
+# target to preprocess a source file
+__/entitylib/objects.cc.i:
+	cd /Users/brianchin/Documents/Projects/game/nethacked && $(MAKE) -f util/CMakeFiles/makedefs.dir/build.make util/CMakeFiles/makedefs.dir/__/entitylib/objects.cc.i
+.PHONY : __/entitylib/objects.cc.i
+
+__/entitylib/objects.s: __/entitylib/objects.cc.s
+.PHONY : __/entitylib/objects.s
+
+# target to generate assembly for a file
+__/entitylib/objects.cc.s:
+	cd /Users/brianchin/Documents/Projects/game/nethacked && $(MAKE) -f util/CMakeFiles/makedefs.dir/build.make util/CMakeFiles/makedefs.dir/__/entitylib/objects.cc.s
+.PHONY : __/entitylib/objects.cc.s
+
+dlb_main.o: dlb_main.cc.o
+.PHONY : dlb_main.o
+
+# target to build an object file
+dlb_main.cc.o:
+	cd /Users/brianchin/Documents/Projects/game/nethacked && $(MAKE) -f util/CMakeFiles/dlb.dir/build.make util/CMakeFiles/dlb.dir/dlb_main.cc.o
+.PHONY : dlb_main.cc.o
+
+dlb_main.i: dlb_main.cc.i
+.PHONY : dlb_main.i
+
+# target to preprocess a source file
+dlb_main.cc.i:
+	cd /Users/brianchin/Documents/Projects/game/nethacked && $(MAKE) -f util/CMakeFiles/dlb.dir/build.make util/CMakeFiles/dlb.dir/dlb_main.cc.i
+.PHONY : dlb_main.cc.i
+
+dlb_main.s: dlb_main.cc.s
+.PHONY : dlb_main.s
+
+# target to generate assembly for a file
+dlb_main.cc.s:
+	cd /Users/brianchin/Documents/Projects/game/nethacked && $(MAKE) -f util/CMakeFiles/dlb.dir/build.make util/CMakeFiles/dlb.dir/dlb_main.cc.s
+.PHONY : dlb_main.cc.s
+
+makedefs.o: makedefs.cc.o
+.PHONY : makedefs.o
+
+# target to build an object file
+makedefs.cc.o:
+	cd /Users/brianchin/Documents/Projects/game/nethacked && $(MAKE) -f util/CMakeFiles/makedefs.dir/build.make util/CMakeFiles/makedefs.dir/makedefs.cc.o
+.PHONY : makedefs.cc.o
+
+makedefs.i: makedefs.cc.i
+.PHONY : makedefs.i
+
+# target to preprocess a source file
+makedefs.cc.i:
+	cd /Users/brianchin/Documents/Projects/game/nethacked && $(MAKE) -f util/CMakeFiles/makedefs.dir/build.make util/CMakeFiles/makedefs.dir/makedefs.cc.i
+.PHONY : makedefs.cc.i
+
+makedefs.s: makedefs.cc.s
+.PHONY : makedefs.s
+
+# target to generate assembly for a file
+makedefs.cc.s:
+	cd /Users/brianchin/Documents/Projects/game/nethacked && $(MAKE) -f util/CMakeFiles/makedefs.dir/build.make util/CMakeFiles/makedefs.dir/makedefs.cc.s
+.PHONY : makedefs.cc.s
+
+# Help Target
+help:
+	@echo "The following are some of the valid targets for this Makefile:"
+	@echo "... all (the default if no target is provided)"
+	@echo "... clean"
+	@echo "... depend"
+	@echo "... dlb"
+	@echo "... edit_cache"
+	@echo "... makedefs"
+	@echo "... rebuild_cache"
+	@echo "... __/entitylib/monst.o"
+	@echo "... __/entitylib/monst.i"
+	@echo "... __/entitylib/monst.s"
+	@echo "... __/entitylib/objects.o"
+	@echo "... __/entitylib/objects.i"
+	@echo "... __/entitylib/objects.s"
+	@echo "... dlb_main.o"
+	@echo "... dlb_main.i"
+	@echo "... dlb_main.s"
+	@echo "... makedefs.o"
+	@echo "... makedefs.i"
+	@echo "... makedefs.s"
+.PHONY : help
+
+
+
+#=============================================================================
+# Special targets to cleanup operation of make.
+
+# Special rule to run CMake to check the build system integrity.
+# No rule that depends on this can have commands that come from listfiles
+# because they might be regenerated.
+cmake_check_build_system:
+	cd /Users/brianchin/Documents/Projects/game/nethacked && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+.PHONY : cmake_check_build_system
+
