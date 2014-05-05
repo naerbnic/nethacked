@@ -6,6 +6,7 @@
 
 #include "hack.h"
 #include "lev.h" /* save & restore info */
+#include "range.h"
 
 STATIC_DCL void setgemprobs(d_level *);
 STATIC_DCL void shuffle(int, int, bool);
@@ -172,7 +173,7 @@ void init_objects() {
 STATIC_OVL void shuffle_all() {
   int first, last, oclass;
 
-  for (oclass = 1; oclass < MAXOCLASSES; oclass++) {
+  for (int oclass = 1; oclass < MAXOCLASSES; oclass++) {
     first = bases[oclass];
     last = first + 1;
     while (last < NUM_OBJECTS && objects[last].oc_class == oclass)

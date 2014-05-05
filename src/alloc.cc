@@ -2,6 +2,7 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include <stdlib.h>
 #include "alloc.h"
 
 /* since this file is also used in auxiliary programs, don't include all the

@@ -81,7 +81,7 @@ void getmailstatus() {
 #ifdef AMS
     struct passwd ppasswd;
 
-    (void)memcpy(&ppasswd, getpwuid(getuid()), sizeof(struct passwd));
+    ppasswd = *getpwuid(getuid());
     if (ppasswd.pw_dir) {
       mailbox =
           (char *)alloc((unsigned)strlen(ppasswd.pw_dir) + sizeof(AMS_MAILBOX));

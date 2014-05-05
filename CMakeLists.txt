@@ -7,6 +7,7 @@ LIST(APPEND CMAKE_CXX_FLAGS "-std=c++11 -Wno-deprecated-register")
 
 ADD_EXECUTABLE(makedefs
   util/makedefs.cc
+  cxx/buffer.cc
   entitylib/objects.cc
   entitylib/monst.cc)
 
@@ -38,6 +39,7 @@ RUN_MAKEDEFS(dat/options v)
 RUN_MAKEDEFS(dat/dungeon.pdf e)
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
+INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/cxx)
 
 FIND_PACKAGE(BISON)
 
@@ -75,6 +77,7 @@ ADD_EXECUTABLE(dgn_comp
   src/alloc.cc
   src/decl.cc
   src/drawing.cc
+  cxx/buffer.cc
   include/pm.h
   include/onames.h
   include/date.h)

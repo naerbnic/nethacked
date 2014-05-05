@@ -192,9 +192,7 @@ maze_level	: maze_def flags lev_init messages regions
 					fname, fatal_error);
 			} else {
 				maze.flags = $2;
-				(void) memcpy((genericptr_t)&(maze.init_lev),
-						(genericptr_t)&(init_lev),
-						sizeof(lev_init));
+				maze.init_lev = init_lev;
 				maze.numpart = npart;
 				maze.parts = NewTab(mazepart, npart);
 				for(i=0;i<npart;i++)
@@ -219,10 +217,7 @@ room_level	: level_def flags lev_init messages rreg_init rooms corridors_def
 					fname, fatal_error);
 			} else {
 				special_lev.flags = (long) $2;
-				(void) memcpy(
-					(genericptr_t)&(special_lev.init_lev),
-					(genericptr_t)&(init_lev),
-					sizeof(lev_init));
+				special_lev.init_lev = init_lev;
 				special_lev.nroom = nrooms;
 				special_lev.rooms = NewTab(room, nrooms);
 				for(i=0; i<nrooms; i++)

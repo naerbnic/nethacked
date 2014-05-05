@@ -375,8 +375,7 @@ STATIC_OVL void remove_room(unsigned roomno) {
     /* since the order in the array only matters for making corridors,
      * copy the last room over the one being removed on the assumption
      * that corridors have already been dug. */
-    (void)memcpy((genericptr_t)croom, (genericptr_t)maxroom,
-                 sizeof(struct mkroom));
+    *croom = *maxroom;
 
     /* since maxroom moved, update affected level roomno values */
     oroomno = nroom + ROOMOFFSET;
