@@ -381,7 +381,7 @@ bool attack(Monster *mtmp) {
     unweapon = FALSE;
     if (flags.verbose) {
       if (uwep)
-        You("begin bashing monsters with your %s.", aobjnam(uwep, (char *)0));
+        You("begin bashing monsters with your %s.", aobjnam(uwep, nullptr));
       else if (!cantwield(youmonst.data))
         You("begin %sing monsters with your %s %s.",
             Role_if(PM_MONK) ? "strik" : "bash",
@@ -593,7 +593,7 @@ STATIC_OVL bool hmon_hitmon(Monster *mon, Object *obj, int thrown) {
             uwepgone(); /* set unweapon */
           useup(obj);
           if (!more_than_1)
-            obj = (Object *)0;
+            obj = nullptr;
           hittxt = TRUE;
           if (mdat != &mons[PM_SHADE])
             tmp++;
@@ -701,7 +701,7 @@ STATIC_OVL bool hmon_hitmon(Monster *mon, Object *obj, int thrown) {
               You("break %s mirror.  That's bad luck!", shk_your(yourbuf, obj));
               change_luck(-2);
               useup(obj);
-              obj = (Object *)0;
+              obj = nullptr;
               unarmed = FALSE; /* avoid obj==0 confusion */
               get_dmg_bonus = FALSE;
               hittxt = TRUE;
@@ -1447,7 +1447,7 @@ int damageum(Monster *mdef, struct Attack *mattk) {
       }
       break;
     case AD_BLND:
-      if (can_blnd(&youmonst, mdef, mattk->aatyp, (Object *)0)) {
+      if (can_blnd(&youmonst, mdef, mattk->aatyp, nullptr)) {
         if (!Blind && mdef->mcansee)
           pline("%s is blinded.", Monnam(mdef));
         mdef->mcansee = 0;
@@ -2155,7 +2155,7 @@ int passive(Monster *mon, bool mhit, int malive, uchar aatyp) {
             (void)rust_dmg(uarmf, xname(uarmf), 3, TRUE, &youmonst);
         } else if (aatyp == AT_WEAP || aatyp == AT_CLAW || aatyp == AT_MAGC ||
                    aatyp == AT_TUCH)
-          passive_obj(mon, (Object *)0, &(ptr->mattk[i]));
+          passive_obj(mon, nullptr, &(ptr->mattk[i]));
       }
       exercise(A_STR, FALSE);
       break;
@@ -2189,7 +2189,7 @@ int passive(Monster *mon, bool mhit, int malive, uchar aatyp) {
             (void)rust_dmg(uarmf, xname(uarmf), 1, TRUE, &youmonst);
         } else if (aatyp == AT_WEAP || aatyp == AT_CLAW || aatyp == AT_MAGC ||
                    aatyp == AT_TUCH)
-          passive_obj(mon, (Object *)0, &(ptr->mattk[i]));
+          passive_obj(mon, nullptr, &(ptr->mattk[i]));
       }
       break;
     case AD_CORR:
@@ -2199,7 +2199,7 @@ int passive(Monster *mon, bool mhit, int malive, uchar aatyp) {
             (void)rust_dmg(uarmf, xname(uarmf), 3, TRUE, &youmonst);
         } else if (aatyp == AT_WEAP || aatyp == AT_CLAW || aatyp == AT_MAGC ||
                    aatyp == AT_TUCH)
-          passive_obj(mon, (Object *)0, &(ptr->mattk[i]));
+          passive_obj(mon, nullptr, &(ptr->mattk[i]));
       }
       break;
     case AD_MAGM:
@@ -2454,7 +2454,7 @@ int flash_hits_mon(Monster *mtmp, Object *otmp) {
               amt > mtmp->mhp / 2 ? "wails in agony" : "cries out in pain");
         if ((mtmp->mhp -= amt) <= 0) {
           if (flags.mon_moving)
-            monkilled(mtmp, (char *)0, AD_BLND);
+            monkilled(mtmp, nullptr, AD_BLND);
           else
             killed(mtmp);
         } else if (cansee(mtmp->mx, mtmp->my) && !canspotmon(mtmp)) {

@@ -189,7 +189,7 @@ STATIC_OVL void newman() {
   redist_attr();
   player.uhunger = rn1(500, 500);
   if (Sick)
-    make_sick(0L, (char *)0, FALSE, SICK_ALL);
+    make_sick(0L, nullptr, FALSE, SICK_ALL);
   Stoned = 0;
   delayed_killer = 0;
   if (player.uhp <= 0 || player.uhpmax <= 0) {
@@ -421,7 +421,7 @@ int polymon(int mntmp) {
     You("no longer seem to be petrifying.");
   }
   if (Sick_resistance && Sick) {
-    make_sick(0L, (char *)0, FALSE, SICK_ALL);
+    make_sick(0L, nullptr, FALSE, SICK_ALL);
     You("no longer feel sick.");
   }
   if (Slimed) {
@@ -777,7 +777,7 @@ int dobreathe() {
   player.uen -= 15;
   flags.botl = 1;
 
-  if (!getdir((char *)0))
+  if (!getdir(nullptr))
     return (0);
 
   mattk = attacktype_fordmg(youmonst.data, AT_BREA, AD_ANY);
@@ -792,7 +792,7 @@ int dobreathe() {
 int dospit() {
   Object *otmp;
 
-  if (!getdir((char *)0))
+  if (!getdir(nullptr))
     return (0);
   otmp = MakeSpecificObject(
       player.umonnum == PM_COBRA ? BLINDING_VENOM : ACID_VENOM, TRUE, FALSE);
@@ -937,7 +937,7 @@ int dosummon() {
 
   You("call upon your brethren for help!");
   exercise(A_WIS, TRUE);
-  if (!were_summon(youmonst.data, TRUE, &placeholder, (char *)0))
+  if (!were_summon(youmonst.data, TRUE, &placeholder, nullptr))
     pline("But none arrive.");
   return (1);
 }

@@ -35,7 +35,7 @@ char savename[SAVESIZE]; /* holds relative path of save file from playground */
 
 int main(int argc, char *argv[]) {
   int argno;
-  const char *dir = (char *)0;
+  const char *dir = nullptr;
 
   if (!dir)
     dir = getenv("NETHACKDIR");
@@ -254,7 +254,7 @@ char *exepath(str) char *str;
   int bsize;
 
   if (!str)
-    return (char *)0;
+    return nullptr;
   bsize = EXEPATHBUFSZ;
   tmp = exepathbuf;
   strcpy(tmp, str);

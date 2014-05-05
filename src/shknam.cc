@@ -249,7 +249,7 @@ const struct shclass shtypes[] = {
       {10, -OIL_LAMP},
       {3, -MAGIC_LAMP}},
      shklight},
-    {(char *)0, 0, 0, 0, {{0, 0}, {0, 0}, {0, 0}}, 0}};
+    {nullptr, 0, 0, 0, {{0, 0}, {0, 0}, {0, 0}}, 0}};
 
 #if 0
 /* validate shop probabilities; otherwise incorrect local changes could

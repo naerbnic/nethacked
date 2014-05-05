@@ -42,7 +42,7 @@ STATIC_OVL int throw_obj(Object *obj, int shotlimit) {
 
 /* ask "in what direction?" */
 #ifndef GOLDOBJ
-  if (!getdir((char *)0)) {
+  if (!getdir(nullptr)) {
     if (obj->oclass == COIN_CLASS) {
       player.ugold += obj->quan;
       flags.botl = 1;
@@ -54,7 +54,7 @@ STATIC_OVL int throw_obj(Object *obj, int shotlimit) {
   if (obj->oclass == COIN_CLASS)
     return (throw_gold(obj));
 #else
-  if (!getdir((char *)0)) {
+  if (!getdir(nullptr)) {
     /* obj might need to be merged back into the singular gold object */
     freeinv(Object);
     addinv(Object);
@@ -210,7 +210,7 @@ int dothrow() {
     return 0;
   }
 
-  if (check_capacity((char *)0))
+  if (check_capacity(nullptr))
     return (0);
   obj = getobj(uslinging() ? bullets : toss_objs, "throw");
   /* it is also possible to throw food */
@@ -291,7 +291,7 @@ int dofire() {
     return 0;
   }
 
-  if (check_capacity((char *)0))
+  if (check_capacity(nullptr))
     return (0);
   if (!uquiver) {
     if (!flags.autoquiver) {
@@ -305,7 +305,7 @@ int dofire() {
       return (dothrow());
     } else {
       You("fill your quiver:");
-      prinv((char *)0, uquiver, 0L);
+      prinv(nullptr, uquiver, 0L);
     }
   }
 
@@ -760,7 +760,7 @@ STATIC_OVL bool toss_up(Object *obj, bool hitsroof) {
 
     if (obj->oartifact)
       /* need a fake die roll here; rn1(18,2) avoids 1 and 20 */
-      artimsg = artifact_hit((Monster *)0, &youmonst, obj, &dmg, rn1(18, 2));
+      artimsg = artifact_hit(nullptr, &youmonst, obj, &dmg, rn1(18, 2));
 
     if (!dmg) { /* probably wasn't a weapon; base damage on weight */
       dmg = (int)obj->owt / 100;
@@ -897,7 +897,7 @@ void throwit(Object *obj, long wep_mask, bool twoweap) {
     } else {
       hitfloor(obj);
     }
-    thrownobj = (Object *)0;
+    thrownobj = nullptr;
     return;
 
   } else if (obj->otyp == BOOMERANG && !Underwater) {
@@ -912,7 +912,7 @@ void throwit(Object *obj, long wep_mask, bool twoweap) {
         setworn(obj, wep_mask);
         player.twoweap = twoweap;
       }
-      thrownobj = (Object *)0;
+      thrownobj = nullptr;
       return;
     }
   } else {
@@ -979,7 +979,7 @@ void throwit(Object *obj, long wep_mask, bool twoweap) {
     bool obj_gone;
 
     if (mon->isshk && obj->where == OBJ_MINVENT && obj->ocarry == mon) {
-      thrownobj = (Object *)0;
+      thrownobj = nullptr;
       return; /* alert shk caught it */
     }
     (void)snuff_candle(obj);
@@ -1027,16 +1027,16 @@ void throwit(Object *obj, long wep_mask, bool twoweap) {
           dmg += rnd(3);
           pline(Blind ? "%s your %s!" : "%s back toward you, hitting your %s!",
                 Tobjnam(obj, Blind ? "hit" : "fly"), body_part(ARM));
-          (void)artifact_hit((Monster *)0, &youmonst, obj, &dmg, 0);
+          (void)artifact_hit(nullptr, &youmonst, obj, &dmg, 0);
           losehp(dmg, xname(obj), obj_is_pname(obj) ? KILLED_BY : KILLED_BY_AN);
         }
         if (ship_object(obj, player.ux, player.uy, FALSE)) {
-          thrownobj = (Object *)0;
+          thrownobj = nullptr;
           return;
         }
         dropy(obj);
       }
-      thrownobj = (Object *)0;
+      thrownobj = nullptr;
       return;
     }
 
@@ -1058,15 +1058,15 @@ void throwit(Object *obj, long wep_mask, bool twoweap) {
       if (*player.ushops)
         check_shop_obj(obj, bhitpos.x, bhitpos.y, FALSE);
       (void)mpickobj(mon, obj); /* may merge and free obj */
-      thrownobj = (Object *)0;
+      thrownobj = nullptr;
       return;
     }
     (void)snuff_candle(obj);
     if (!mon && ship_object(obj, bhitpos.x, bhitpos.y, FALSE)) {
-      thrownobj = (Object *)0;
+      thrownobj = nullptr;
       return;
     }
-    thrownobj = (Object *)0;
+    thrownobj = nullptr;
     PlaceObject(obj, bhitpos.x, bhitpos.y);
     if (*player.ushops && obj != uball)
       check_shop_obj(obj, bhitpos.x, bhitpos.y, FALSE);

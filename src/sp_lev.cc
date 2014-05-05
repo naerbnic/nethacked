@@ -759,14 +759,14 @@ STATIC_OVL void create_monster(monster *m, struct mkroom *croom) {
                         : (m->align < 0 ? ralign[-m->align - 1] : m->align);
 
     if (!class_id)
-      pm = (MonsterType *)0;
+      pm = nullptr;
     else if (m->id != NON_PM) {
       pm = &mons[m->id];
       g_mvflags = (unsigned)mvitals[monsndx(pm)].mvflags;
       if ((pm->geno & G_UNIQ) && (g_mvflags & G_EXTINCT))
         goto m_done;
       else if (g_mvflags & G_GONE) /* genocided or extinct */
-        pm = (MonsterType *)0;     /* make random monster */
+        pm = nullptr;     /* make random monster */
     } else {
       pm = mkclass(class_id, G_NOGEN);
       /* if we can't get a specific monster type (pm == 0) then the
@@ -774,7 +774,7 @@ STATIC_OVL void create_monster(monster *m, struct mkroom *croom) {
     }
     if (In_mines(&player.uz) && pm && your_race(pm) &&
         (Race_if(PM_DWARF) || Race_if(PM_GNOME)) && rn2(3))
-      pm = (MonsterType *)0;
+      pm = nullptr;
 
     x = m->x;
     y = m->y;
@@ -1746,13 +1746,13 @@ STATIC_OVL void load_one_monster(dlb *fd, monster *m) {
     Fread((genericptr_t)m->name.str, 1, size, fd);
     m->name.str[size] = '\0';
   } else
-    m->name.str = (char *)0;
+    m->name.str = nullptr;
   if ((size = m->appear_as.len) != 0) {
     m->appear_as.str = (char *)alloc((unsigned)size + 1);
     Fread((genericptr_t)m->appear_as.str, 1, size, fd);
     m->appear_as.str[size] = '\0';
   } else
-    m->appear_as.str = (char *)0;
+    m->appear_as.str = nullptr;
 }
 
 STATIC_OVL void load_one_object(dlb *fd, object *o) {
@@ -1764,7 +1764,7 @@ STATIC_OVL void load_one_object(dlb *fd, object *o) {
     Fread((genericptr_t)o->name.str, 1, size, fd);
     o->name.str[size] = '\0';
   } else
-    o->name.str = (char *)0;
+    o->name.str = nullptr;
 }
 
 STATIC_OVL void load_one_engraving(dlb *fd, engraving *e) {
@@ -1790,13 +1790,13 @@ STATIC_OVL bool load_rooms(dlb *fd) {
   Fread((genericptr_t) & n, 1, sizeof(n), fd); /* nrobjects */
   if (n) {
     Fread((genericptr_t)robjects, sizeof(*robjects), n, fd);
-    sp_lev_shuffle(robjects, (char *)0, (int)n);
+    sp_lev_shuffle(robjects, nullptr, (int)n);
   }
 
   Fread((genericptr_t) & n, 1, sizeof(n), fd); /* nrmonst */
   if (n) {
     Fread((genericptr_t)rmonst, sizeof(*rmonst), n, fd);
-    sp_lev_shuffle(rmonst, (char *)0, (int)n);
+    sp_lev_shuffle(rmonst, nullptr, (int)n);
   }
 
   Fread((genericptr_t) & nrooms, 1, sizeof(nrooms), fd);
@@ -1814,7 +1814,7 @@ STATIC_OVL bool load_rooms(dlb *fd) {
       Fread((genericptr_t)r->name, 1, size, fd);
       r->name[size] = 0;
     } else
-      r->name = (char *)0;
+      r->name = nullptr;
 
     /* Let's see if this room has a parent */
     Fread((genericptr_t) & size, 1, sizeof(size), fd);
@@ -1823,7 +1823,7 @@ STATIC_OVL bool load_rooms(dlb *fd) {
       Fread((genericptr_t)r->parent, 1, size, fd);
       r->parent[size] = 0;
     } else
-      r->parent = (char *)0;
+      r->parent = nullptr;
 
     Fread((genericptr_t) & r->x, 1, sizeof(r->x), fd);
     /* x pos on the grid (1-5) */
@@ -1974,7 +1974,7 @@ STATIC_OVL bool load_rooms(dlb *fd) {
 
   for (i = 0; i < nrooms; i++)
     if (!tmproom[i]->parent)
-      build_room(tmproom[i], (room *)0);
+      build_room(tmproom[i], nullptr);
 
   free_rooms(tmproom, nrooms);
 
@@ -2209,7 +2209,7 @@ STATIC_OVL bool load_maze(dlb *fd) {
         Fread((genericptr_t)tmplregion.rname.str, size, 1, fd);
         tmplregion.rname.str[size] = '\0';
       } else
-        tmplregion.rname.str = (char *)0;
+        tmplregion.rname.str = nullptr;
       if (!tmplregion.in_islev) {
         get_location(&tmplregion.inarea.x1, &tmplregion.inarea.y1, DRY | WET);
         get_location(&tmplregion.inarea.x2, &tmplregion.inarea.y2, DRY | WET);
@@ -2225,7 +2225,7 @@ STATIC_OVL bool load_maze(dlb *fd) {
     /* Random objects */
     if (n) {
       Fread((genericptr_t)robjects, sizeof(*robjects), (int)n, fd);
-      sp_lev_shuffle(robjects, (char *)0, (int)n);
+      sp_lev_shuffle(robjects, nullptr, (int)n);
     }
 
     Fread((genericptr_t) & n, 1, sizeof(n), fd);
@@ -2240,7 +2240,7 @@ STATIC_OVL bool load_maze(dlb *fd) {
     /* Random monsters */
     if (n) {
       Fread((genericptr_t)rmonst, sizeof(*rmonst), (int)n, fd);
-      sp_lev_shuffle(rmonst, (char *)0, (int)n);
+      sp_lev_shuffle(rmonst, nullptr, (int)n);
     }
 
     (void)memset((genericptr_t)mustfill, 0, sizeof(mustfill));
@@ -2588,7 +2588,7 @@ STATIC_OVL bool load_maze(dlb *fd) {
     }
     for (x = rnd((int)(12 * mapfact) / 100); x; x--) {
       maze1xy(&mm, WET | DRY);
-      (void)makemon((MonsterType *)0, mm.x, mm.y, NO_MM_FLAGS);
+      (void)makemon(nullptr, mm.x, mm.y, NO_MM_FLAGS);
     }
     for (x = rn2((int)(15 * mapfact) / 100); x; x--) {
       maze1xy(&mm, DRY);

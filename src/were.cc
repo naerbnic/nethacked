@@ -28,7 +28,7 @@ void were_change(Monster *mon) {
             howler = "jackal";
             break;
           default:
-            howler = (char *)0;
+            howler = nullptr;
             break;
         }
         if (howler)
@@ -133,7 +133,7 @@ int were_summon(MonsterType *ptr, bool yours,
         *visible += 1;
     }
     if (yours && mtmp)
-      (void)tamedog(mtmp, (Object *)0);
+      (void)tamedog(mtmp, nullptr);
   }
   return total;
 }

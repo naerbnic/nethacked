@@ -108,7 +108,7 @@ Monster *mk_mplayer(MonsterType *ptr, xchar x, xchar y, bool special) {
   char nam[PL_NSIZ];
 
   if (!is_mplayer(ptr))
-    return ((Monster *)0);
+    return (nullptr);
 
   if (MON_AT(x, y))
     (void)rloc(m_at(x, y), FALSE); /* insurance */

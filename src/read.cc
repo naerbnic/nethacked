@@ -41,7 +41,7 @@ int doread() {
   bool confused;
 
   known = FALSE;
-  if (check_capacity((char *)0))
+  if (check_capacity(nullptr))
     return (0);
   scroll = getobj(readable, "read");
   if (!scroll)
@@ -623,7 +623,7 @@ static void maybe_tame(Monster *mtmp, Object *sobj) {
     if (mtmp->isshk)
       make_happy_shk(mtmp, FALSE);
     else if (!resist(mtmp, sobj->oclass, 0, NOTELL))
-      (void)tamedog(mtmp, (Object *)0);
+      (void)tamedog(mtmp, nullptr);
   }
 }
 
@@ -925,7 +925,7 @@ int seffects(Object *sobj) {
     case SPE_CREATE_MONSTER:
       if (create_critters(1 + ((confused || sobj->cursed) ? 12 : 0) +
                               ((sobj->blessed || rn2(73)) ? 0 : rnd(4)),
-                          confused ? &mons[PM_ACID_BLOB] : (MonsterType *)0))
+                          confused ? &mons[PM_ACID_BLOB] : nullptr))
         known = TRUE;
       /* no need to flush monsters; we ask for identification only if the
        * monsters are not visible
@@ -1374,7 +1374,7 @@ do_it:
     if (rnum >= 0) {
       for (rx = rooms[rnum].lx - 1; rx <= rooms[rnum].hx + 1; rx++)
         for (ry = rooms[rnum].ly - 1; ry <= rooms[rnum].hy + 1; ry++)
-          set_lit(rx, ry, (genericptr_t)(on ? &is_lit : (char *)0));
+          set_lit(rx, ry, (genericptr_t)(on ? &is_lit : nullptr));
       rooms[rnum].rlit = on;
     }
     /* hallways remain dark on the rogue level */
@@ -1382,7 +1382,7 @@ do_it:
 #endif
     do_clear_area(player.ux, player.uy,
                   (obj && obj->oclass == SCROLL_CLASS && obj->blessed) ? 9 : 5,
-                  set_lit, (genericptr_t)(on ? &is_lit : (char *)0));
+                  set_lit, (genericptr_t)(on ? &is_lit : nullptr));
 
   /*
    *  If we are not blind, then force a redraw on all positions in sight

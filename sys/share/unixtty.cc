@@ -373,7 +373,7 @@ void error(const char *s, ...) {
   va_list args;
   va_start(args, s);
   if (settty_needed)
-    settty((char *)0);
+    settty(nullptr);
   vprintf(s, args);
   putchar('\n');
   va_end(args);

@@ -168,7 +168,7 @@ STATIC_OVL void charm_monsters(int distance) {
 
   if (player.uswallow) {
     if (!resist(player.ustuck, TOOL_CLASS, 0, NOTELL))
-      (void)tamedog(player.ustuck, (Object *)0);
+      (void)tamedog(player.ustuck, nullptr);
   } else {
     for (mtmp = fmon; mtmp; mtmp = mtmp2) {
       mtmp2 = mtmp->nmon;
@@ -177,7 +177,7 @@ STATIC_OVL void charm_monsters(int distance) {
 
       if (distu(mtmp->mx, mtmp->my) <= distance) {
         if (!resist(mtmp, TOOL_CLASS, 0, NOTELL))
-          (void)tamedog(mtmp, (Object *)0);
+          (void)tamedog(mtmp, nullptr);
       }
     }
   }
@@ -374,7 +374,7 @@ STATIC_OVL int do_improvisation(Object *instr) {
       if (do_spec && instr->spe > 0) {
         consume_obj_charge(instr, TRUE);
 
-        if (!getdir((char *)0)) {
+        if (!getdir(nullptr)) {
           pline("%s.", Tobjnam(instr, "vibrate"));
           break;
         } else if (!player.dx && !player.dy && !player.dz) {

@@ -326,7 +326,7 @@ STATIC_OVL void fix_worst_trouble(int trouble) {
       break;
     case TROUBLE_SICK:
       You_feel("better.");
-      make_sick(0L, (char *)0, FALSE, SICK_ALL);
+      make_sick(0L, nullptr, FALSE, SICK_ALL);
       break;
     case TROUBLE_HIT:
       /* "fix all troubles" will keep trying if hero has
@@ -587,7 +587,7 @@ STATIC_OVL void angrygods(aligntyp resp_god) {
       break;
     case 2:
     case 3:
-      godvoice(resp_god, (char *)0);
+      godvoice(resp_god, nullptr);
       pline("\"Thou %s, %s.\"",
             (ugod_is_angry() && resp_god == player.ualign.type)
                 ? "hast strayed from the path"
@@ -595,7 +595,7 @@ STATIC_OVL void angrygods(aligntyp resp_god) {
             youmonst.data->mlet == S_HUMAN ? "mortal" : "creature");
       verbalize("Thou must relearn thy lessons!");
       (void)adjattrib(A_WIS, -1, FALSE);
-      losexp((char *)0);
+      losexp(nullptr);
       break;
     case 6:
       if (!Punished) {
@@ -612,7 +612,7 @@ STATIC_OVL void angrygods(aligntyp resp_god) {
       break;
     case 7:
     case 8:
-      godvoice(resp_god, (char *)0);
+      godvoice(resp_god, nullptr);
       verbalize("Thou durst %s me?",
                 (on_altar() && (a_align(player.ux, player.uy) != resp_god))
                     ? "scorn"
@@ -659,7 +659,7 @@ STATIC_OVL void gcrownu() {
   HShock_resistance |= FROMOUTSIDE;
   HSleep_resistance |= FROMOUTSIDE;
   HPoison_resistance |= FROMOUTSIDE;
-  godvoice(player.ualign.type, (char *)0);
+  godvoice(player.ualign.type, nullptr);
 
   obj = ok_wep(uwep) ? uwep : 0;
   already_exists = in_hand = FALSE; /* lint suppression */
@@ -917,7 +917,7 @@ STATIC_OVL void pleased(aligntyp g_align) {
         /* takes 2 hints to get the music to enter the stronghold */
         if (!player.uevent.uopened_dbridge) {
           if (player.uevent.uheard_tune < 1) {
-            godvoice(g_align, (char *)0);
+            godvoice(g_align, nullptr);
             verbalize("Hark, %s!",
                       youmonst.data->mlet == S_HUMAN ? "mortal" : "creature");
             verbalize("To enter the castle, thou must play the right tune!");
@@ -1247,7 +1247,7 @@ int dosacrifice() {
         useupf(otmp, 1L);
       return (1);
     } else if (otmp->oxlth && otmp->oattached == OATTACHED_MONST &&
-               ((mtmp = NewMonsterFromObject(otmp, FALSE)) != (Monster *)0) &&
+               ((mtmp = NewMonsterFromObject(otmp, FALSE)) != nullptr) &&
                mtmp->mtame) {
       /* mtmp is a temporary pointer to a tame monster's attributes,
        * not a real monster */
@@ -1796,7 +1796,7 @@ const char *a_gname() { return (a_gname_at(player.ux, player.uy)); }
 /* returns the name of an altar's deity */
 const char *a_gname_at(xchar x, xchar y) {
   if (!IS_ALTAR(levl[x][y].typ))
-    return ((char *)0);
+    return (nullptr);
 
   return align_gname(a_align(x, y));
 }

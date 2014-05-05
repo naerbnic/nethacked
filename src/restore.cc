@@ -116,7 +116,7 @@ STATIC_OVL void restlevchn(int fd) {
   int cnt;
   s_level *tmplev, *x;
 
-  sp_levchn = (s_level *)0;
+  sp_levchn = nullptr;
   mread(fd, (genericptr_t) & cnt, sizeof(int));
   for (; cnt > 0; cnt--) {
     tmplev = (s_level *)alloc(sizeof(s_level));
@@ -128,7 +128,7 @@ STATIC_OVL void restlevchn(int fd) {
         ;
       x->next = tmplev;
     }
-    tmplev->next = (s_level *)0;
+    tmplev->next = nullptr;
   }
 }
 
@@ -141,7 +141,7 @@ STATIC_OVL void restdamage(int fd, bool ghostly) {
     return;
   tmp_dam = (struct damage *)alloc(sizeof(struct damage));
   while (--counter >= 0) {
-    char damaged_shops[5], *shp = (char *)0;
+    char damaged_shops[5], *shp = nullptr;
 
     mread(fd, (genericptr_t)tmp_dam, sizeof(*tmp_dam));
     if (ghostly)
@@ -222,7 +222,7 @@ STATIC_OVL Object *restobjchn(int fd, bool ghostly, bool frozen) {
 
 STATIC_OVL Monster *restmonchn(int fd, bool ghostly) {
   Monster *mtmp, *mtmp2 = 0;
-  Monster *first = (Monster *)0;
+  Monster *first = nullptr;
   int xl;
   MonsterType *monbegin;
   bool moved;
@@ -508,9 +508,9 @@ int dorecover(int fd) {
    * afterwards, and in the meantime at least player.usteed may mislead
    * place_monster() on other levels
    */
-  player.ustuck = (Monster *)0;
+  player.ustuck = nullptr;
 #ifdef STEED
-  player.usteed = (Monster *)0;
+  player.usteed = nullptr;
 #endif
 
   while (1) {
@@ -531,7 +531,7 @@ int dorecover(int fd) {
 #else
   (void)lseek(fd, (off_t)0, 0);
 #endif
-  (void)uptodate(fd, (char *)0); /* skip version info */
+  (void)uptodate(fd, nullptr); /* skip version info */
 #ifdef STORE_PLNAME_IN_FILE
   mread(fd, (genericptr_t)plname, PL_NSIZ);
 #endif
@@ -728,7 +728,7 @@ void getlev(int fd, int pid, xchar lev, bool ghostly) {
   /* reset level.monsters for new level */
   for (x = 0; x < COLNO; x++)
     for (y = 0; y < ROWNO; y++)
-      level.monsters[x][y] = (Monster *)0;
+      level.monsters[x][y] = nullptr;
   for (mtmp = level.monlist; mtmp; mtmp = mtmp->nmon) {
     if (mtmp->isshk)
       set_residency(mtmp, FALSE);

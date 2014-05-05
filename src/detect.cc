@@ -730,12 +730,12 @@ outtrapmap:
 
   for (obj = fobj; obj; obj = obj->nobj)
     if ((obj->otyp == LARGE_BOX || obj->otyp == CHEST) && obj->otrapped)
-      sense_trap((Trap *)0, obj->ox, obj->oy, sobj && sobj->cursed);
+      sense_trap(nullptr, obj->ox, obj->oy, sobj && sobj->cursed);
 
   for (door = 0; door < doorindex; door++) {
     cc = doors[door];
     if (levl[cc.x][cc.y].doormask & D_TRAPPED)
-      sense_trap((Trap *)0, cc.x, cc.y, sobj && sobj->cursed);
+      sense_trap(nullptr, cc.x, cc.y, sobj && sobj->cursed);
   }
 
   newsym(player.ux, player.uy);
@@ -847,7 +847,7 @@ void use_crystal_ball(Object *obj) {
 
   if (Hallucination) {
     if (!obj->spe) {
-      pline("All you see is funky %s haze.", hcolor((char *)0));
+      pline("All you see is funky %s haze.", hcolor(nullptr));
     } else {
       switch (rnd(6)) {
         case 1:
@@ -859,7 +859,7 @@ void use_crystal_ball(Object *obj) {
           break;
         case 3:
           pline_The("crystal pulses with sinister %s light!",
-                    hcolor((char *)0));
+                    hcolor(nullptr));
           break;
         case 4:
           You("see goldfish swimming above fluorescent rocks.");
@@ -879,7 +879,7 @@ void use_crystal_ball(Object *obj) {
   /* read a single character */
   if (flags.verbose)
     You("may look for an object or monster symbol.");
-  ch = yn_function("What do you look for?", (char *)0, '\0');
+  ch = yn_function("What do you look for?", nullptr, '\0');
   /* Don't filter out ' ' here; it has a use */
   if ((ch != def_monsyms[S_GHOST]) && index(quitchars, ch)) {
     if (flags.verbose)

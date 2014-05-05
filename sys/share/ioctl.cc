@@ -146,7 +146,7 @@ void setioctls() {
 int dosuspend() {
 #ifdef SIGTSTP
   if (signal(SIGTSTP, SIG_IGN) == SIG_DFL) {
-    suspend_nhwindows((char *)0);
+    suspend_nhwindows(nullptr);
 #ifdef __linux__
     linux_mapon();
 #endif

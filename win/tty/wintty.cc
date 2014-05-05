@@ -600,7 +600,7 @@ void tty_player_selection() {
 give_up: /* Quit */
   if (selected)
     free((genericptr_t)selected);
-  bail((char *)0);
+  bail(nullptr);
   /*NOTREACHED*/
   return;
 }
@@ -722,7 +722,7 @@ winid tty_create_nhwindow(int type) {
   newwin->active = FALSE;
   newwin->curx = newwin->cury = 0;
   newwin->morestr = 0;
-  newwin->mlist = (tty_menu_item *)0;
+  newwin->mlist = nullptr;
   newwin->plist = (tty_menu_item **)0;
   newwin->npages = newwin->plist_size = newwin->nitems = newwin->how = 0;
   switch (type) {
@@ -795,7 +795,7 @@ winid tty_create_nhwindow(int type) {
       }
     } else {
       for (i = 0; i < newwin->maxrow; i++) {
-        newwin->data[i] = (char *)0;
+        newwin->data[i] = nullptr;
         newwin->datlen[i] = 0;
       }
     }
@@ -803,7 +803,7 @@ winid tty_create_nhwindow(int type) {
       newwin->maxrow = 0;
   } else {
     newwin->data = (char **)0;
-    newwin->datlen = (short *)0;
+    newwin->datlen = nullptr;
   }
 
   return newid;
@@ -832,7 +832,7 @@ STATIC_OVL void free_window_info(struct WinDesc *cw, bool free_data) {
     for (i = 0; i < cw->maxrow; i++)
       if (cw->data[i]) {
         free((genericptr_t)cw->data[i]);
-        cw->data[i] = (char *)0;
+        cw->data[i] = nullptr;
         if (cw->datlen)
           cw->datlen[i] = 0;
       }
@@ -841,7 +841,7 @@ STATIC_OVL void free_window_info(struct WinDesc *cw, bool free_data) {
       cw->data = (char **)0;
       if (cw->datlen)
         free((genericptr_t)cw->datlen);
-      cw->datlen = (short *)0;
+      cw->datlen = nullptr;
       cw->rows = 0;
     }
   }
@@ -1799,7 +1799,7 @@ void tty_display_file(const char *fname, bool complain) {
         if (complain)
           raw_printf("Cannot open %s as stdin.", fname);
       } else {
-        (void)execlp(catmore, "page", (char *)0);
+        (void)execlp(catmore, "page", nullptr);
         if (complain)
           raw_printf("Cannot exec %s.", catmore);
       }
@@ -2037,7 +2037,7 @@ int tty_select_menu(winid window, int how, menu_item **menu_list) {
       cw->type != NHW_MENU)
     panic(winpanicstr, window);
 
-  *menu_list = (menu_item *)0;
+  *menu_list = nullptr;
   cw->how = (short)how;
   morc = 0;
   tty_display_nhwindow(window, TRUE);

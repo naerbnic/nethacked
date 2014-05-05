@@ -449,7 +449,7 @@ int doengrave() {
   char *writer;
 
   multi = 0;             /* moves consumed */
-  nomovemsg = (char *)0; /* occupation end message */
+  nomovemsg = nullptr; /* occupation end message */
 
   buf[0] = (char)0;
   ebuf[0] = (char)0;
@@ -485,7 +485,7 @@ int doengrave() {
     You_cant("even hold anything!");
     return (0);
   }
-  if (check_capacity((char *)0))
+  if (check_capacity(nullptr))
     return (0);
 
   /* One may write with finger, or weapon, or wand, or..., or...
@@ -1167,7 +1167,7 @@ void rloc_engr(struct engr *ep) {
       return;
     tx = rn1(COLNO - 3, 2);
     ty = rn2(ROWNO);
-  } while (engr_at(tx, ty) || !goodpos(tx, ty, (Monster *)0, 0));
+  } while (engr_at(tx, ty) || !goodpos(tx, ty, nullptr, 0));
 
   ep->engr_x = tx;
   ep->engr_y = ty;

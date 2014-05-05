@@ -303,7 +303,7 @@ STATIC_OVL Object *make_corpse(Monster *mtmp) {
       mtmp->mnamelth = 0;
       break;
     case PM_STONE_GOLEM:
-      obj = MakeCorpseOrStatue(STATUE, (Monster *)0, mdat, x, y, FALSE);
+      obj = MakeCorpseOrStatue(STATUE, nullptr, mdat, x, y, FALSE);
       break;
     case PM_WOOD_GOLEM:
       num = d(2, 4);
@@ -443,7 +443,7 @@ int minliquid(Monster *mtmp) {
    * function will fail.
    */
   if (mtmp->data == &mons[PM_GREMLIN] && (inpool || infountain) && rn2(3)) {
-    if (split_mon(mtmp, (Monster *)0))
+    if (split_mon(mtmp, nullptr))
       dryup(mtmp->mx, mtmp->my, FALSE);
     if (inpool)
       water_damage(mtmp->minvent, FALSE, FALSE);
@@ -574,7 +574,7 @@ void mcalcdistress() {
 
     /* possibly polymorph shapechangers and lycanthropes */
     if (mtmp->cham && !rn2(6))
-      (void)newcham(mtmp, (MonsterType *)0, FALSE, FALSE);
+      (void)newcham(mtmp, nullptr, FALSE, FALSE);
     were_change(mtmp);
 
     /* gradually time out temporary problems */
@@ -749,10 +749,10 @@ int meatmetal(Monster *mtmp) {
           delobj(otmp);
           ptr = mtmp->data;
           if (poly) {
-            if (newcham(mtmp, (MonsterType *)0, FALSE, FALSE))
+            if (newcham(mtmp, nullptr, FALSE, FALSE))
               ptr = mtmp->data;
           } else if (grow) {
-            ptr = grow_up(mtmp, (Monster *)0);
+            ptr = grow_up(mtmp, nullptr);
           } else if (mstone) {
             if (poly_when_stoned(ptr)) {
               mon_to_stone(mtmp);
@@ -761,7 +761,7 @@ int meatmetal(Monster *mtmp) {
               if (canseemon(mtmp))
                 pline("%s turns to stone!", Monnam(mtmp));
               monstone(mtmp);
-              ptr = (MonsterType *)0;
+              ptr = nullptr;
             }
           } else if (heal) {
             mtmp->mhp = mtmp->mhpmax;
@@ -834,10 +834,10 @@ int meatobj(Monster *mtmp) {
       delobj(otmp); /* munch */
       ptr = mtmp->data;
       if (poly) {
-        if (newcham(mtmp, (MonsterType *)0, FALSE, FALSE))
+        if (newcham(mtmp, nullptr, FALSE, FALSE))
           ptr = mtmp->data;
       } else if (grow) {
-        ptr = grow_up(mtmp, (Monster *)0);
+        ptr = grow_up(mtmp, nullptr);
       } else if (heal) {
         mtmp->mhp = mtmp->mhpmax;
       }
@@ -1158,7 +1158,7 @@ nexttry: /* eels prefer the water, but if there is no water nearby,
           /* attack, into a temple. */
           if (level.flags.has_temple && *in_rooms(nx, ny, TEMPLE) &&
               !*in_rooms(x, y, TEMPLE) &&
-              in_your_sanctuary((Monster *)0, nx, ny)) {
+              in_your_sanctuary(nullptr, nx, ny)) {
             if (!(flag & ALLOW_SANCT))
               continue;
             info[cnt] |= ALLOW_SANCT;
@@ -1334,7 +1334,7 @@ void replmon(Monster *mtmp, Monster *mtmp2) {
 void relmon(Monster *mon) {
   Monster *mtmp;
 
-  if (fmon == (Monster *)0)
+  if (fmon == nullptr)
     panic("relmon: no fmon available.");
 
   remove_monster(mon->mx, mon->my);
@@ -1576,7 +1576,7 @@ void mondied(Monster *mdef) {
   if (mdef->mhp > 0)
     return; /* lifesaved */
 
-  if (corpse_chance(mdef, (Monster *)0, FALSE) &&
+  if (corpse_chance(mdef, nullptr, FALSE) &&
       (accessible(mdef->mx, mdef->my) || is_pool(mdef->mx, mdef->my)))
     (void)make_corpse(mdef);
 }
@@ -1839,7 +1839,7 @@ void xkilled(
      * different from whether or not the corpse is "special";
      * if we want both, we have to specify it explicitly.
      */
-    if (corpse_chance(mtmp, (Monster *)0, FALSE))
+    if (corpse_chance(mtmp, nullptr, FALSE))
       (void)make_corpse(mtmp);
   }
   if (redisp)
@@ -1945,7 +1945,7 @@ void mnexto(Monster *mtmp) {
  *	0 - in most cases.
  */
 bool mnearto(Monster *mtmp, xchar x, xchar y, bool move_other) {
-  Monster *othermon = (Monster *)0;
+  Monster *othermon = nullptr;
   xchar newx, newy;
   coord mm;
 
@@ -2057,7 +2057,7 @@ void m_respond(Monster *mtmp) {
       if (!rn2(13))
         (void)makemon(&mons[PM_PURPLE_WORM], 0, 0, NO_MM_FLAGS);
       else
-        (void)makemon((MonsterType *)0, 0, 0, NO_MM_FLAGS);
+        (void)makemon(nullptr, 0, 0, NO_MM_FLAGS);
     }
     aggravate();
   }
@@ -2344,7 +2344,7 @@ int newcham(Monster *mtmp, MonsterType *mdat, bool polyspot, bool msg) {
   if (msg) {
     /* like Monnam() but never mention saddle */
     strcpy(oldname,
-           x_monnam(mtmp, ARTICLE_THE, (char *)0, SUPPRESS_SADDLE, FALSE));
+           x_monnam(mtmp, ARTICLE_THE, nullptr, SUPPRESS_SADDLE, FALSE));
     oldname[0] = highc(oldname[0]);
   }
 
@@ -2493,7 +2493,7 @@ int newcham(Monster *mtmp, MonsterType *mdat, bool polyspot, bool msg) {
     pline("%s turns into %s!", oldname,
           mdat == &mons[PM_GREEN_SLIME]
               ? "slime"
-              : x_monnam(mtmp, ARTICLE_A, (char *)0, SUPPRESS_SADDLE, FALSE));
+              : x_monnam(mtmp, ARTICLE_A, nullptr, SUPPRESS_SADDLE, FALSE));
     mtmp->mnamelth = save_mnamelth;
   }
 
@@ -2640,7 +2640,7 @@ void kill_genocided_monsters() {
     mndx = monsndx(mtmp->data);
     if ((mvitals[mndx].mvflags & G_GENOD) || kill_cham[mtmp->cham]) {
       if (mtmp->cham && !kill_cham[mtmp->cham])
-        (void)newcham(mtmp, (MonsterType *)0, FALSE, FALSE);
+        (void)newcham(mtmp, nullptr, FALSE, FALSE);
       else
         mondead(mtmp);
     }

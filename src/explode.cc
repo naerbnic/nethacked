@@ -552,7 +552,7 @@ long scatter(int sx, int sy, int blastforce, unsigned int scflags,
             if (bigmonst(youmonst.data))
               hitvalu++;
             hitu = thitu(hitvalu, dmgval(stmp->obj, &youmonst), stmp->obj,
-                         (char *)0);
+                         nullptr);
             if (hitu) {
               stmp->range -= 3;
               stop_occupation();

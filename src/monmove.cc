@@ -373,7 +373,7 @@ int dochug(Monster *mtmp) {
     watch_on_duty(mtmp);
 
   else if (is_mind_flayer(mdat) && !rn2(20)) {
-    Monster *m2, *nmon = (Monster *)0;
+    Monster *m2, *nmon = nullptr;
 
     if (canseemon(mtmp))
       pline("%s concentrates.", Monnam(mtmp));
@@ -1199,7 +1199,7 @@ postmov:
         if (likegems)
           picked |= mpickstuff(mtmp, gem_class);
         if (uses_items)
-          picked |= mpickstuff(mtmp, (char *)0);
+          picked |= mpickstuff(mtmp, nullptr);
         if (picked)
           mmoved = 3;
       }

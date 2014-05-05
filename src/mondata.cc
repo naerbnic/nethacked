@@ -184,7 +184,7 @@ bool can_blnd(Monster *magr, Monster *mdef, uchar aatyp, Object *obj) {
     o = (mdef == &youmonst) ? invent : mdef->minvent;
     for (; o; o = o->nobj)
       if ((o->owornmask & W_ARMH) &&
-          (s = OBJ_DESCR(objects[o->otyp])) != (char *)0 &&
+          (s = OBJ_DESCR(objects[o->otyp])) != nullptr &&
           !strcmp(s, "visored helmet"))
         return FALSE;
   }
@@ -455,7 +455,7 @@ int name_to_mon(const char *in_str) {
     }
   }
   if (mntmp == NON_PM)
-    mntmp = title_to_mon(str, (int *)0, (int *)0);
+    mntmp = title_to_mon(str, nullptr, nullptr);
   return mntmp;
 }
 

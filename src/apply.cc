@@ -54,7 +54,7 @@ STATIC_OVL int use_camera(Object *obj) {
     pline("Using your camera underwater would void the warranty.");
     return (0);
   }
-  if (!getdir((char *)0))
+  if (!getdir(nullptr))
     return (0);
 
   if (obj->spe <= 0) {
@@ -206,7 +206,7 @@ STATIC_OVL int use_stethoscope(Object *obj) {
     You("have no free %s.", body_part(HAND));
     return 0;
   }
-  if (!getdir((char *)0))
+  if (!getdir(nullptr))
     return 0;
 
   res = (moves == last_used_move) && (youmonst.movement == last_used_movement);
@@ -405,7 +405,7 @@ STATIC_OVL void use_leash(Object *obj) {
     return;
   }
 
-  if (!get_adjacent_loc((char *)0, (char *)0, player.ux, player.uy, &cc))
+  if (!get_adjacent_loc(nullptr, nullptr, player.ux, player.uy, &cc))
     return;
 
   if ((cc.x == player.ux) && (cc.y == player.uy)) {
@@ -592,7 +592,7 @@ STATIC_OVL int use_mirror(Object *obj) {
   char mlet;
   bool vis;
 
-  if (!getdir((char *)0))
+  if (!getdir(nullptr))
     return 0;
   if (obj->cursed && !rn2(2)) {
     if (!Blind)
@@ -614,7 +614,7 @@ STATIC_OVL int use_mirror(Object *obj) {
         pline("Huh?  That doesn't look like you!");
         make_confused(HConfusion + d(3, 4), FALSE);
       } else if (Hallucination)
-        You(look_str, hcolor((char *)0));
+        You(look_str, hcolor(nullptr));
       else if (Sick)
         You(look_str, "peaked");
       else if (player.uhs >= WEAK)
@@ -1496,7 +1496,7 @@ void use_unicorn_horn(Object *obj) {
 
     switch (idx) {
       case prop2trbl(SICK):
-        make_sick(0L, (char *)0, TRUE, SICK_ALL);
+        make_sick(0L, nullptr, TRUE, SICK_ALL);
         did_prop++;
         break;
       case prop2trbl(BLINDED):
@@ -1664,10 +1664,10 @@ STATIC_OVL void use_figurine(Object **optr) {
 
   if (player.uswallow) {
     /* can't activate a figurine while swallowed */
-    if (!figurine_location_checks(obj, (coord *)0, FALSE))
+    if (!figurine_location_checks(obj, nullptr, FALSE))
       return;
   }
-  if (!getdir((char *)0)) {
+  if (!getdir(nullptr)) {
     flags.move = multi = 0;
     return;
   }
@@ -1847,7 +1847,7 @@ STATIC_OVL void use_stone(Object *tstone) {
                    (Role_if(PM_ARCHEOLOGIST) || Race_if(PM_GNOME))))) {
         makeknown(TOUCHSTONE);
         makeknown(obj->otyp);
-        prinv((char *)0, obj, 0L);
+        prinv(nullptr, obj, 0L);
         return;
       } else {
         /* either a ring or the touchstone was not effective */
@@ -1912,7 +1912,7 @@ STATIC_OVL void use_stone(Object *tstone) {
 /* Place a landmine/bear trap.  Helge Hafting */
 STATIC_OVL void use_trap(Object *otmp) {
   int ttyp, tmp;
-  const char *what = (char *)0;
+  const char *what = nullptr;
   char buf[BUFSZ];
   const char *occutext = "setting the trap";
 
@@ -2053,7 +2053,7 @@ STATIC_OVL int use_whip(Object *obj) {
     else
       res = 1;
   }
-  if (!getdir((char *)0))
+  if (!getdir(nullptr))
     return res;
 
   if (Stunned || (Confusion && !rn2(5)))
@@ -2147,7 +2147,7 @@ STATIC_OVL int use_whip(Object *obj) {
      *		- you only end up hitting.
      *
      */
-    const char *wrapped_what = (char *)0;
+    const char *wrapped_what = nullptr;
 
     if (mtmp) {
       if (bigmonst(mtmp->data)) {
@@ -2236,7 +2236,7 @@ STATIC_OVL int use_whip(Object *obj) {
 			hitvalu = 8 + otmp->spe;
 			hitu = thitu(hitvalu,
 				     dmgval(otmp, &youmonst),
-				     otmp, (char *)0);
+				     otmp, nullptr);
 			if (hitu) {
 			    pline_The("%s hits you as you try to snatch it!",
 				the(onambuf));
@@ -2345,7 +2345,7 @@ STATIC_OVL int use_pole(Object *obj) {
     pline("Too close!");
     return (res);
   } else if (!cansee(cc.x, cc.y) &&
-             ((mtmp = m_at(cc.x, cc.y)) == (Monster *)0 || !canseemon(mtmp))) {
+             ((mtmp = m_at(cc.x, cc.y)) == nullptr || !canseemon(mtmp))) {
     You(cant_see_spot);
     return (res);
   } else if (!couldsee(cc.x, cc.y)) { /* Eyes of the Overworld */
@@ -2354,7 +2354,7 @@ STATIC_OVL int use_pole(Object *obj) {
   }
 
   /* Attack the monster there */
-  if ((mtmp = m_at(cc.x, cc.y)) != (Monster *)0) {
+  if ((mtmp = m_at(cc.x, cc.y)) != nullptr) {
     int oldhp = mtmp->mhp;
 
     bhitpos = cc;
@@ -2387,7 +2387,7 @@ STATIC_OVL int use_cream_pie(Object *obj) {
     pline("You immerse your %s in %s%s.", body_part(FACE),
           several ? "one of " : "",
           several ? makeplural(the(xname(obj))) : the(xname(obj)));
-  if (can_blnd((Monster *)0, &youmonst, AT_WEAP, obj)) {
+  if (can_blnd(nullptr, &youmonst, AT_WEAP, obj)) {
     int blindinc = rnd(25);
     player.ucreamed += blindinc;
     make_blinded(Blinded + (long)blindinc, FALSE);
@@ -2495,10 +2495,10 @@ STATIC_OVL int use_grapple(Object *obj) {
       }
       break;
     case 2: /* Monster */
-      if ((mtmp = m_at(cc.x, cc.y)) == (Monster *)0)
+      if ((mtmp = m_at(cc.x, cc.y)) == nullptr)
         break;
       if (verysmall(mtmp->data) && !rn2(4) &&
-          enexto(&cc, player.ux, player.uy, (MonsterType *)0)) {
+          enexto(&cc, player.ux, player.uy, nullptr)) {
         You("pull in %s!", mon_nam(mtmp));
         mtmp->mundetected = 0;
         rloc_to(mtmp, cc.x, cc.y);
@@ -2636,7 +2636,7 @@ STATIC_OVL int do_break_wand(Object *obj) {
         if (IS_WALL(levl[x][y].typ) || IS_DOOR(levl[x][y].typ)) {
           /* normally, pits and holes don't anger guards, but they
            * do if it's a wall or door that's being dug */
-          watch_dig((Monster *)0, x, y, TRUE);
+          watch_dig(nullptr, x, y, TRUE);
           if (*in_rooms(x, y, SHOPBASE))
             shop_damage = TRUE;
         }
@@ -2647,7 +2647,7 @@ STATIC_OVL int do_break_wand(Object *obj) {
       continue;
     } else if (obj->otyp == WAN_CREATE_MONSTER) {
       /* player.ux,player.uy creates it near you--x,y might create it in rock */
-      (void)makemon((MonsterType *)0, player.ux, player.uy, NO_MM_FLAGS);
+      (void)makemon(nullptr, player.ux, player.uy, NO_MM_FLAGS);
       continue;
     } else {
       if (x == player.ux && y == player.uy) {
@@ -2717,7 +2717,7 @@ int doapply() {
   int res = 1;
   char class_list[MAXOCLASSES + 2];
 
-  if (check_capacity((char *)0))
+  if (check_capacity(nullptr))
     return (0);
 
   if (carrying(POT_OIL) || uhave_graystone())

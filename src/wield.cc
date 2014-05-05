@@ -118,7 +118,7 @@ STATIC_OVL int ready_weapon(Object *wep) {
     /* No weapon */
     if (uwep) {
       You("are empty %s.", body_part(HANDED));
-      setuwep((Object *)0);
+      setuwep(nullptr);
       res++;
     } else
       You("are already empty %s.", body_part(HANDED));
@@ -159,7 +159,7 @@ STATIC_OVL int ready_weapon(Object *wep) {
        */
       long dummy = wep->owornmask;
       wep->owornmask |= W_WEP;
-      prinv((char *)0, wep, 0L);
+      prinv(nullptr, wep, 0L);
       wep->owornmask = dummy;
     }
     setuwep(wep);
@@ -187,7 +187,7 @@ STATIC_OVL int ready_weapon(Object *wep) {
       Monster *this_shkp;
 
       if ((this_shkp = shop_keeper(inside_shop(player.ux, player.uy))) !=
-          (Monster *)0) {
+          nullptr) {
         pline("%s says \"You be careful with my %s!\"", shkname(this_shkp),
               xname(wep));
       }
@@ -242,11 +242,11 @@ int dowield() {
 
   /* Handle no object, or object in other slot */
   if (wep == &zeroobj)
-    wep = (Object *)0;
+    wep = nullptr;
   else if (wep == uswapwep)
     return (doswapweapon());
   else if (wep == uquiver)
-    setuqwep((Object *)0);
+    setuqwep(nullptr);
   else if (wep->owornmask & (W_ARMOR | W_RING | W_AMUL | W_TOOL
 #ifdef STEED
                              | W_SADDLE
@@ -284,7 +284,7 @@ int doswapweapon() {
   /* Unwield your current secondary weapon */
   oldwep = uwep;
   oldswap = uswapwep;
-  setuswapwep((Object *)0);
+  setuswapwep(nullptr);
 
   /* Set your new primary weapon */
   result = ready_weapon(oldswap);
@@ -295,7 +295,7 @@ int doswapweapon() {
   else {
     setuswapwep(oldwep);
     if (uswapwep)
-      prinv((char *)0, uswapwep, 0L);
+      prinv(nullptr, uswapwep, 0L);
     else
       You("have no secondary weapon readied.");
   }
@@ -331,7 +331,7 @@ int dowieldquiver() {
     /* Explicitly nothing */
     if (uquiver) {
       You("now have no ammunition readied.");
-      setuqwep(newquiver = (Object *)0);
+      setuqwep(newquiver = nullptr);
     } else {
       You("already have no ammunition readied!");
       return (0);
@@ -356,14 +356,14 @@ int dowieldquiver() {
 
     /* Check if it's the secondary weapon */
     if (newquiver == uswapwep) {
-      setuswapwep((Object *)0);
+      setuswapwep(nullptr);
       untwoweapon();
     }
 
     /* Okay to put in quiver; print it */
     dummy = newquiver->owornmask;
     newquiver->owornmask |= W_QUIVER;
-    prinv((char *)0, newquiver, 0L);
+    prinv(nullptr, newquiver, 0L);
     newquiver->owornmask = dummy;
   }
 
@@ -567,14 +567,14 @@ void erode_obj(Object *target, bool acid_dmg, bool fade_scrolls) {
   if (!target)
     return;
   victim = carried(target) ? &youmonst : mcarried(target) ? target->ocarry
-                                                          : (Monster *)0;
+                                                          : nullptr;
   vismon = victim && (victim != &youmonst) && canseemon(victim);
   visobj = !victim && cansee(bhitpos.x, bhitpos.y); /* assume thrown */
 
   erosion = acid_dmg ? target->oeroded2 : target->oeroded;
 
   if (target->greased) {
-    grease_protect(target, (char *)0, victim);
+    grease_protect(target, nullptr, victim);
   } else if (target->oclass == SCROLL_CLASS) {
     if (fade_scrolls && target->otyp != SCR_BLANK_PAPER
 #ifdef MAIL

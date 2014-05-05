@@ -378,7 +378,7 @@ gotobj:
           otmp->cursed = 0;
           /* can't charm you without first waking you */
           if (multi < 0 && is_fainted())
-            unmul((char *)0);
+            unmul(nullptr);
           slowly = (armordelay >= 1 || multi < 0);
           if (flags.female)
             pline("%s charms you.  You gladly %s your %s.",

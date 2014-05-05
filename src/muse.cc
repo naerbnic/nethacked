@@ -189,7 +189,7 @@ STATIC_OVL void mreadmsg(Monster *mtmp, Object *otmp) {
   else
     You_hear(
         "%s reading %s.",
-        x_monnam(mtmp, ARTICLE_A, (char *)0,
+        x_monnam(mtmp, ARTICLE_A, nullptr,
                  (SUPPRESS_IT | SUPPRESS_INVISIBLE | SUPPRESS_SADDLE), FALSE),
         onambuf);
 
@@ -630,7 +630,7 @@ int use_defensive(Monster *mtmp) {
           return 2;
         }
         get_level(&flev, nlev);
-        migrate_to_level(mtmp, ledger_no(&flev), MIGR_RANDOM, (coord *)0);
+        migrate_to_level(mtmp, ledger_no(&flev), MIGR_RANDOM, nullptr);
         if (oseen)
           makeknown(SCR_TELEPORTATION);
       } else
@@ -672,7 +672,7 @@ int use_defensive(Monster *mtmp) {
                  surface(mtmp->mx, mtmp->my));
       /* we made sure that there is a level for mtmp to go to */
       migrate_to_level(mtmp, ledger_no(&player.uz) + 1, MIGR_RANDOM,
-                       (coord *)0);
+                       nullptr);
       return 2;
     }
     case MUSE_WAN_CREATE_MONSTER: {
@@ -688,7 +688,7 @@ int use_defensive(Monster *mtmp) {
         return 0;
       mzapmsg(mtmp, otmp, FALSE);
       otmp->spe--;
-      mon = makemon((MonsterType *)0, cc.x, cc.y, NO_MM_FLAGS);
+      mon = makemon(nullptr, cc.x, cc.y, NO_MM_FLAGS);
       if (mon && canspotmon(mon) && oseen)
         makeknown(WAN_CREATE_MONSTER);
       return 2;
@@ -761,7 +761,7 @@ int use_defensive(Monster *mtmp) {
       newsym(trapx, trapy);
 
       migrate_to_level(mtmp, ledger_no(&player.uz) + 1, MIGR_RANDOM,
-                       (coord *)0);
+                       nullptr);
       return 2;
     case MUSE_UPSTAIRS:
       /* Monsters without amulets escape the dungeon and are
@@ -791,12 +791,12 @@ int use_defensive(Monster *mtmp) {
            upstairs, so there's not much point in having any
            chance for a random position on the current level */
         migrate_to_level(mtmp, ledger_no(&player.uz) + 1, MIGR_RANDOM,
-                         (coord *)0);
+                         nullptr);
       } else {
         if (vismon)
           pline("%s escapes upstairs!", Monnam(mtmp));
         migrate_to_level(mtmp, ledger_no(&player.uz) - 1, MIGR_STAIRS_DOWN,
-                         (coord *)0);
+                         nullptr);
       }
       return 2;
     case MUSE_DOWNSTAIRS:
@@ -804,21 +804,21 @@ int use_defensive(Monster *mtmp) {
       if (vismon)
         pline("%s escapes downstairs!", Monnam(mtmp));
       migrate_to_level(mtmp, ledger_no(&player.uz) + 1, MIGR_STAIRS_UP,
-                       (coord *)0);
+                       nullptr);
       return 2;
     case MUSE_UP_LADDER:
       m_flee(mtmp);
       if (vismon)
         pline("%s escapes up the ladder!", Monnam(mtmp));
       migrate_to_level(mtmp, ledger_no(&player.uz) - 1, MIGR_LADDER_DOWN,
-                       (coord *)0);
+                       nullptr);
       return 2;
     case MUSE_DN_LADDER:
       m_flee(mtmp);
       if (vismon)
         pline("%s escapes down the ladder!", Monnam(mtmp));
       migrate_to_level(mtmp, ledger_no(&player.uz) + 1, MIGR_LADDER_UP,
-                       (coord *)0);
+                       nullptr);
       return 2;
     case MUSE_SSTAIRS:
       m_flee(mtmp);
@@ -829,13 +829,13 @@ int use_defensive(Monster *mtmp) {
           pline("%s escapes upstairs!", Monnam(mtmp));
         if (Inhell) {
           migrate_to_level(mtmp, ledger_no(&sstairs.tolev), MIGR_RANDOM,
-                           (coord *)0);
+                           nullptr);
           return 2;
         }
       } else if (vismon)
         pline("%s escapes downstairs!", Monnam(mtmp));
       migrate_to_level(mtmp, ledger_no(&sstairs.tolev), MIGR_SSTAIRS,
-                       (coord *)0);
+                       nullptr);
       return 2;
     case MUSE_TELEPORT_TRAP:
       m_flee(mtmp);
@@ -1756,7 +1756,7 @@ int use_misc(Monster *mtmp) {
               docall(otmp);
           }
           m_useup(mtmp, otmp);
-          migrate_to_level(mtmp, ledger_no(&tolevel), MIGR_RANDOM, (coord *)0);
+          migrate_to_level(mtmp, ledger_no(&tolevel), MIGR_RANDOM, nullptr);
           return 2;
         } else {
         skipmsg:
@@ -1775,7 +1775,7 @@ int use_misc(Monster *mtmp) {
       if (oseen)
         makeknown(POT_GAIN_LEVEL);
       m_useup(mtmp, otmp);
-      if (!grow_up(mtmp, (Monster *)0))
+      if (!grow_up(mtmp, nullptr))
         return 1;
       /* grew into genocided monster */
       return 2;
@@ -1849,7 +1849,7 @@ int use_misc(Monster *mtmp) {
         worm_move(mtmp);
       newsym(trapx, trapy);
 
-      (void)newcham(mtmp, (MonsterType *)0, FALSE, FALSE);
+      (void)newcham(mtmp, nullptr, FALSE, FALSE);
       return 2;
     case MUSE_BULLWHIP:
       /* attempt to disarm hero */

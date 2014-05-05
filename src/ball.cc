@@ -350,7 +350,7 @@ void move_bc(int before, int control, xchar ballx, xchar bally, xchar chainx,
 bool drag_ball(xchar x, xchar y, int *bc_control, xchar *ballx, xchar *bally,
                xchar *chainx, xchar *chainy, bool *cause_delay,
                bool allow_drag) {
-  Trap *t = (Trap *)0;
+  Trap *t = nullptr;
   bool already_in_rock;
 
   *ballx = uball->ox;

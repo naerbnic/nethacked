@@ -227,7 +227,7 @@ Trap *maketrap(int x, int y, int typ) {
 
   if ((ttmp = t_at(x, y)) != 0) {
     if (ttmp->ttyp == MAGIC_PORTAL)
-      return (Trap *)0;
+      return nullptr;
     oldplace = TRUE;
     if (player.utrap && (x == player.ux) && (y == player.uy) &&
         ((player.utraptype == TT_BEARTRAP && typ != BEAR_TRAP) ||
@@ -250,7 +250,7 @@ Trap *maketrap(int x, int y, int typ) {
       Object *otmp, *statue;
 
       statue =
-          MakeCorpseOrStatue(STATUE, (Monster *)0,
+          MakeCorpseOrStatue(STATUE, nullptr,
                              &mons[PickRandomMonsterTypeIndex()], x, y, FALSE);
       mtmp = makemon(&mons[statue->corpsenm], 0, 0, NO_MM_FLAGS);
       if (!mtmp)
@@ -373,7 +373,7 @@ void fall_through(bool td) {
   if (!td)
     sprintf(msgbuf, "The hole in the %s above you closes up.",
             ceiling(player.ux, player.uy));
-  schedule_goto(&dtmp, FALSE, TRUE, 0, (char *)0, !td ? msgbuf : (char *)0);
+  schedule_goto(&dtmp, FALSE, TRUE, 0, nullptr, !td ? msgbuf : nullptr);
 }
 
 /*
@@ -423,7 +423,7 @@ Monster *animate_statue(Object *statue, xchar x, xchar y, int cause,
     if ((mptr->geno & G_UNIQ) && cause != ANIMATE_SPELL) {
       if (fail_reason)
         *fail_reason = AS_MON_IS_UNIQUE;
-      return (Monster *)0;
+      return nullptr;
     }
     if (cause == ANIMATE_SPELL &&
         ((mptr->geno & G_UNIQ) || mptr->msound == MS_GUARDIAN)) {
@@ -451,7 +451,7 @@ Monster *animate_statue(Object *statue, xchar x, xchar y, int cause,
   if (!mon) {
     if (fail_reason)
       *fail_reason = AS_NO_MON;
-    return (Monster *)0;
+    return nullptr;
   }
 
   /* in case statue is wielded and hero zaps stone-to-flesh at self */
@@ -515,7 +515,7 @@ Monster *animate_statue(Object *statue, xchar x, xchar y, int cause,
  * or pick-axe.
  */
 Monster *activate_statue_trap(Trap *trap, xchar x, xchar y, bool shatter) {
-  Monster *mtmp = (Monster *)0;
+  Monster *mtmp = nullptr;
   Object *otmp = sobj_at(STATUE, x, y);
   int fail_reason;
 
@@ -793,7 +793,7 @@ void dotrap(Trap *trap, unsigned trflags) {
         break;
       } else if (player.umonnum == PM_GREMLIN && rn2(3)) {
         pline("%s you!", A_gush_of_water_hits);
-        (void)split_mon(&youmonst, (Monster *)0);
+        (void)split_mon(&youmonst, nullptr);
         break;
       }
 
@@ -870,7 +870,7 @@ void dotrap(Trap *trap, unsigned trflags) {
                 verbbuf, "and %s fall",
                 x_monnam(player.usteed,
                          player.usteed->mnamelth ? ARTICLE_NONE : ARTICLE_THE,
-                         (char *)0, SUPPRESS_SADDLE, FALSE));
+                         nullptr, SUPPRESS_SADDLE, FALSE));
           else
             sprintf(
                 verbbuf, "lead %s",
@@ -1084,7 +1084,7 @@ void dotrap(Trap *trap, unsigned trflags) {
         sprintf(verbbuf, "lead %s",
                 x_monnam(player.usteed,
                          player.usteed->mnamelth ? ARTICLE_NONE : ARTICLE_THE,
-                         (char *)0, SUPPRESS_SADDLE, FALSE));
+                         nullptr, SUPPRESS_SADDLE, FALSE));
       else
 #endif
         sprintf(verbbuf, "%s", Levitation ? (const char *)"float"
@@ -1248,13 +1248,13 @@ STATIC_OVL int steedintrap(Trap *trap, Object *otmp) {
     case POLY_TRAP:
       if (!resists_magm(mtmp)) {
         if (!resist(mtmp, WAND_CLASS, 0, NOTELL)) {
-          (void)newcham(mtmp, (MonsterType *)0, FALSE, FALSE);
+          (void)newcham(mtmp, nullptr, FALSE, FALSE);
           if (!can_saddle(mtmp) || !can_ride(mtmp)) {
             dismount_steed(DISMOUNT_POLY);
           } else {
             You("have to adjust yourself in the saddle on %s.",
                 x_monnam(mtmp, mtmp->mnamelth ? ARTICLE_NONE : ARTICLE_A,
-                         (char *)0, SUPPRESS_SADDLE, FALSE));
+                         nullptr, SUPPRESS_SADDLE, FALSE));
           }
         }
         steedhit = TRUE;
@@ -1331,7 +1331,7 @@ int launch_obj(short otyp, int x1, int y1, int x2, int y2, int style) {
   if (otmp->quan == 1L) {
     RemoveObjectFromStorage(otmp);
     singleobj = otmp;
-    otmp = (Object *)0;
+    otmp = nullptr;
   } else {
     singleobj = SplitObject(otmp, 1L);
     RemoveObjectFromStorage(singleobj);
@@ -1408,7 +1408,7 @@ int launch_obj(short otyp, int x1, int y1, int x2, int y2, int style) {
       if (multi)
         nomul(0, 0);
       if (thitu(9 + singleobj->spe, dmgval(singleobj, &youmonst), singleobj,
-                (char *)0))
+                nullptr))
         stop_occupation();
     }
     if (style == ROLL) {
@@ -1864,7 +1864,7 @@ int mintrap(Monster *mtmp) {
           if (mtmp->mhp <= 0)
             trapkilled = TRUE;
         } else if (mptr == &mons[PM_GREMLIN] && rn2(3)) {
-          (void)split_mon(mtmp, (Monster *)0);
+          (void)split_mon(mtmp, nullptr);
         }
         break;
       }
@@ -2109,7 +2109,7 @@ int mintrap(Monster *mtmp) {
         if (resists_magm(mtmp)) {
           shieldeff(mtmp->mx, mtmp->my);
         } else if (!resist(mtmp, WAND_CLASS, 0, NOTELL)) {
-          (void)newcham(mtmp, (MonsterType *)0, FALSE, FALSE);
+          (void)newcham(mtmp, nullptr, FALSE, FALSE);
           if (in_sight)
             seetrap(trap);
         }
@@ -2265,7 +2265,7 @@ void fill_pit(int x, int y) {
 }
 
 int float_down(long hmask, long emask) {
-  Trap *trap = (Trap *)0;
+  Trap *trap = nullptr;
   d_level current_dungeon_level;
   bool no_msg = FALSE;
 
@@ -2473,7 +2473,7 @@ STATIC_OVL void domagictrap() {
     } else
       You_hear("a deafening roar!");
     while (cnt--)
-      (void)makemon((MonsterType *)0, player.ux, player.uy, NO_MM_FLAGS);
+      (void)makemon(nullptr, player.ux, player.uy, NO_MM_FLAGS);
   } else
     switch (fate) {
       case 10:
@@ -2821,7 +2821,7 @@ bool drown() {
   water_damage(invent, FALSE, FALSE);
 
   if (player.umonnum == PM_GREMLIN && rn2(3))
-    (void)split_mon(&youmonst, (Monster *)0);
+    (void)split_mon(&youmonst, nullptr);
   else if (player.umonnum == PM_IRON_GOLEM) {
     You("rust!");
     i = d(2, 6);
@@ -3270,7 +3270,7 @@ STATIC_OVL int help_monster_out(Monster *mtmp, Trap *ttmp) {
     return 0;
   }
   /* Do you have the necessary capacity to lift anything? */
-  if (check_capacity((char *)0))
+  if (check_capacity(nullptr))
     return 1;
 
   /* Will our hero succeed? */
@@ -3349,7 +3349,7 @@ int untrap(bool force) {
   char the_trap[BUFSZ], qbuf[QBUFSZ];
   int containercnt = 0;
 
-  if (!getdir((char *)0))
+  if (!getdir(nullptr))
     return (0);
   x = player.ux + player.dx;
   y = player.uy + player.dy;
@@ -3589,7 +3589,7 @@ bool chest_trap(Object *obj, int bodypart, bool disarm) {
         break;
       default:
         impossible("chest disarm bug");
-        msg = (char *)0;
+        msg = nullptr;
         break;
     }
     if (msg)
@@ -3609,7 +3609,7 @@ bool chest_trap(Object *obj, int bodypart, bool disarm) {
         /* the obj location need not be that of player */
         costly =
             (costly_spot(ox, oy) &&
-             (shkp = shop_keeper(*in_rooms(ox, oy, SHOPBASE))) != (Monster *)0);
+             (shkp = shop_keeper(*in_rooms(ox, oy, SHOPBASE))) != nullptr);
         insider = (*player.ushops && inside_shop(player.ux, player.uy) &&
                    *in_rooms(ox, oy, SHOPBASE) == *player.ushops);
 
@@ -3740,7 +3740,7 @@ Trap *t_at(int x, int y) {
       return (trap);
     trap = trap->ntrap;
   }
-  return ((Trap *)0);
+  return (nullptr);
 }
 
 #endif /* OVL0 */

@@ -530,7 +530,7 @@ void dropy(Object *obj) {
       if (is_animal(player.ustuck->data)) {
         if (could_poly || could_slime) {
           (void)newcham(player.ustuck,
-                        could_poly ? (MonsterType *)0 : &mons[PM_GREEN_SLIME],
+                        could_poly ? nullptr : &mons[PM_GREEN_SLIME],
                         FALSE, could_slime);
           delobj(obj); /* corpse is digested */
         } else if (could_petrify) {
@@ -539,7 +539,7 @@ void dropy(Object *obj) {
           if (!player.uswallow)
             delobj(obj);
         } else if (could_grow) {
-          (void)grow_up(player.ustuck, (Monster *)0);
+          (void)grow_up(player.ustuck, nullptr);
           delobj(obj); /* corpse is digested */
         } else if (could_heal) {
           player.ustuck->mhp = player.ustuck->mhpmax;
@@ -590,7 +590,7 @@ int doddrop() {
   if (*player.ushops)
     sellobj_state(SELL_DELIBERATE);
   if (flags.menu_style != MENU_TRADITIONAL ||
-      (result = ggetobj("drop", drop, 0, FALSE, (unsigned *)0)) < -1)
+      (result = ggetobj("drop", drop, 0, FALSE, nullptr)) < -1)
     result = menu_drop(result);
   if (*player.ushops)
     sellobj_state(SELL_NORMAL);
@@ -1139,15 +1139,15 @@ void goto_level(d_level *newlevel, bool at_stairs, bool falling, bool portal) {
       /* Stay inside the Wizard's tower when feasible.	*/
       /* Note: up vs down doesn't really matter in this case. */
       place_lregion(dndest.nlx, dndest.nly, dndest.nhx, dndest.nhy, 0, 0, 0, 0,
-                    LR_DOWNTELE, (d_level *)0);
+                    LR_DOWNTELE, nullptr);
     else if (up)
       place_lregion(updest.lx, updest.ly, updest.hx, updest.hy, updest.nlx,
                     updest.nly, updest.nhx, updest.nhy, LR_UPTELE,
-                    (d_level *)0);
+                    nullptr);
     else
       place_lregion(dndest.lx, dndest.ly, dndest.hx, dndest.hy, dndest.nlx,
                     dndest.nly, dndest.nhx, dndest.nhy, LR_DOWNTELE,
-                    (d_level *)0);
+                    nullptr);
     if (falling) {
       if (Punished)
         ballfall();
@@ -1442,9 +1442,9 @@ bool revive_corpse(Object *corpse) {
   mcarry = (where == OBJ_MINVENT) ? corpse->ocarry : 0;
 
   if (where == OBJ_CONTAINED) {
-    Monster *mtmp2 = (Monster *)0;
+    Monster *mtmp2 = nullptr;
     container = corpse->ocontainer;
-    mtmp2 = get_container_location(container, &container_where, (int *)0);
+    mtmp2 = get_container_location(container, &container_where, nullptr);
     /* container_where is the outermost container's location even if nested */
     if (container_where == OBJ_MINVENT && mtmp2)
       mcarry = mtmp2;

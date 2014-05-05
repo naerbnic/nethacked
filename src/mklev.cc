@@ -411,12 +411,12 @@ STATIC_OVL bool place_niche(struct mkroom *aroom, int *dy, int *xx, int *yy) {
 
 /* there should be one of these per trap, in the same order as trap.h */
 static const char *trap_engravings[TRAPNUM] = {
-    (char *)0,       (char *)0,     (char *)0,     (char *)0, (char *)0,
-    (char *)0,       (char *)0,     (char *)0,     (char *)0, (char *)0,
-    (char *)0,       (char *)0,     (char *)0,     (char *)0,
+    nullptr,       nullptr,     nullptr,     nullptr, nullptr,
+    nullptr,       nullptr,     nullptr,     nullptr, nullptr,
+    nullptr,       nullptr,     nullptr,     nullptr,
     /* 14..16: trap door, teleport, level-teleport */
-    "Vlad was here", "ad aerarium", "ad aerarium", (char *)0, (char *)0,
-    (char *)0,       (char *)0,     (char *)0,     (char *)0,
+    "Vlad was here", "ad aerarium", "ad aerarium", nullptr, nullptr,
+    nullptr,       nullptr,     nullptr,     nullptr,
 };
 
 STATIC_OVL void makeniche(int trap_type) {
@@ -506,7 +506,7 @@ STATIC_OVL void clear_level_structures() {
       *lev++ = zerorm;
 #ifdef MICROPORT_BUG
       level.objects[x][y] = nullptr;
-      level.monsters[x][y] = (Monster *)0;
+      level.monsters[x][y] = nullptr;
 #endif
     }
   }
@@ -516,7 +516,7 @@ STATIC_OVL void clear_level_structures() {
 #endif
   level.objlist = nullptr;
   level.buriedobjlist = nullptr;
-  level.monlist = (Monster *)0;
+  level.monlist = nullptr;
   level.damagelist = (struct damage *)0;
 
   level.flags.nfountains = 0;
@@ -726,7 +726,7 @@ skip0:
     if (player.uhave.amulet || !rn2(3)) {
       x = somex(croom);
       y = somey(croom);
-      tmonst = makemon((MonsterType *)0, x, y, NO_MM_FLAGS);
+      tmonst = makemon(nullptr, x, y, NO_MM_FLAGS);
       if (tmonst && tmonst->data == &mons[PM_GIANT_SPIDER] && !occupied(x, y))
         (void)maketrap(x, y, WEB);
     }
@@ -736,7 +736,7 @@ skip0:
     if (x <= 1)
       x = 2;
     while (!rn2(x))
-      mktrap(0, 0, croom, (coord *)0);
+      mktrap(0, 0, croom, nullptr);
     if (!goldseen && !rn2(3))
       (void)MakeGold(0L, somex(croom), somey(croom));
 #ifdef REINCARNATION
@@ -759,7 +759,7 @@ skip0:
 
     /* put statues inside */
     if (!rn2(20))
-      (void)MakeCorpseOrStatue(STATUE, (Monster *)0, (MonsterType *)0,
+      (void)MakeCorpseOrStatue(STATUE, nullptr, nullptr,
                                somex(croom), somey(croom), TRUE);
     /* put box/chest inside;
      *  40% chance for at least 1 box, regardless of number
@@ -1355,7 +1355,7 @@ static void mkgrave(struct mkroom *croom) {
   } while (occupied(m.x, m.y) || bydoor(m.x, m.y));
 
   /* Put a grave at m.x, m.y */
-  make_grave(m.x, m.y, dobell ? "Saved by the bell!" : (char *)0);
+  make_grave(m.x, m.y, dobell ? "Saved by the bell!" : nullptr);
 
   /* Possibly fill it with objects */
   if (!rn2(3))

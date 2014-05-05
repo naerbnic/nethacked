@@ -458,11 +458,11 @@ STATIC_OVL int gazemm(Monster *magr, Monster *mdef, struct Attack *mattk) {
     return (MM_MISS);
   }
   /* call mon_reflects 2x, first test, then, if visible, print message */
-  if (magr->data == &mons[PM_MEDUSA] && mon_reflects(mdef, (char *)0)) {
+  if (magr->data == &mons[PM_MEDUSA] && mon_reflects(mdef, nullptr)) {
     if (canseemon(mdef))
       (void)mon_reflects(mdef, "The gaze is reflected away by %s %s.");
     if (mdef->mcansee) {
-      if (mon_reflects(magr, (char *)0)) {
+      if (mon_reflects(magr, nullptr)) {
         if (canseemon(magr))
           (void)mon_reflects(magr, "The gaze is reflected away by %s %s.");
         return (MM_MISS);
@@ -917,7 +917,7 @@ STATIC_OVL int mdamagem(Monster *magr, Monster *mdef, struct Attack *mattk) {
       }
       break;
     case AD_BLND:
-      if (can_blnd(magr, mdef, mattk->aatyp, (Object *)0)) {
+      if (can_blnd(magr, mdef, mattk->aatyp, nullptr)) {
         unsigned rnd_tmp;
 
         if (vis && mdef->mcansee)
@@ -1035,7 +1035,7 @@ STATIC_OVL int mdamagem(Monster *magr, Monster *mdef, struct Attack *mattk) {
 
         /* make a special x_monnam() call that never omits
            the saddle, and save it for later messages */
-        strcpy(mdefnambuf, x_monnam(mdef, ARTICLE_THE, (char *)0, 0, FALSE));
+        strcpy(mdefnambuf, x_monnam(mdef, ARTICLE_THE, nullptr, 0, FALSE));
 
         otmp = obj;
 #ifdef STEED
@@ -1168,11 +1168,11 @@ STATIC_OVL int mdamagem(Monster *magr, Monster *mdef, struct Attack *mattk) {
       /* various checks similar to dog_eat and meatobj.
        * after monkilled() to provide better message ordering */
       if (mdef->cham != CHAM_ORDINARY) {
-        (void)newcham(magr, (MonsterType *)0, FALSE, TRUE);
+        (void)newcham(magr, nullptr, FALSE, TRUE);
       } else if (mdef->data == &mons[PM_GREEN_SLIME]) {
         (void)newcham(magr, &mons[PM_GREEN_SLIME], FALSE, TRUE);
       } else if (mdef->data == &mons[PM_WRAITH]) {
-        (void)grow_up(magr, (Monster *)0);
+        (void)grow_up(magr, nullptr);
         /* don't grow up twice */
         return (MM_DEF_DIED | (magr->mhp > 0 ? 0 : MM_AGR_DIED));
       } else if (mdef->data == &mons[PM_NURSE]) {
@@ -1336,7 +1336,7 @@ STATIC_OVL int passivemm(Monster *magr, Monster *mdef, bool mhit, int mdead) {
               (perceives(madat) || !mdef->minvis)) {
             sprintf(buf, "%s gaze is reflected by %%s %%s.",
                     s_suffix(mon_nam(mdef)));
-            if (mon_reflects(magr, canseemon(magr) ? buf : (char *)0))
+            if (mon_reflects(magr, canseemon(magr) ? buf : nullptr))
               return (mdead | mhit);
             strcpy(buf, Monnam(magr));
             if (canseemon(magr))

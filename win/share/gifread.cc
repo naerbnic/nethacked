@@ -498,7 +498,7 @@ bool fopen_gif_file(const char *filename, const char *type) {
     return FALSE;
   }
   gif_file = fopen(filename, type);
-  if (gif_file == (FILE *)0) {
+  if (gif_file == nullptr) {
     Fprintf(stderr, "cannot open gif file %s\n", filename);
     return FALSE;
   }

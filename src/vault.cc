@@ -10,7 +10,7 @@
 STATIC_DCL Monster *findgd();
 
 #define g_monnam(mtmp) \
-  x_monnam(mtmp, ARTICLE_NONE, (char *)0, SUPPRESS_IT, FALSE)
+  x_monnam(mtmp, ARTICLE_NONE, nullptr, SUPPRESS_IT, FALSE)
 
 #ifdef OVLB
 
@@ -100,7 +100,7 @@ Monster *findgd() {
     if (mtmp->isgd && !mtmp->dead() &&
         on_level(&(EGD(mtmp)->gdlevel), &player.uz))
       return (mtmp);
-  return ((Monster *)0);
+  return (nullptr);
 }
 
 #endif /* OVLB */
@@ -267,7 +267,7 @@ void invault() {
     stop_occupation(); /* if occupied, stop it *now* */
     if (multi > 0) {
       nomul(0, 0);
-      unmul((char *)0);
+      unmul(nullptr);
     }
     trycount = 5;
     do {
@@ -823,7 +823,7 @@ bool gd_sound() {
   if (vault_occupied(player.urooms))
     return (FALSE);
   else
-    return ((bool)(grd == (Monster *)0));
+    return ((bool)(grd == nullptr));
 }
 
 #endif /* OVLB */

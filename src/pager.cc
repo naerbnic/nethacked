@@ -51,8 +51,8 @@ STATIC_OVL int append_str(char *buf, const char *new_str) {
  * If not hallucinating and the glyph is a monster, also monster data.
  */
 STATIC_OVL MonsterType *lookat(int x, int y, char *buf, char *monbuf) {
-  Monster *mtmp = (Monster *)0;
-  MonsterType *pm = (MonsterType *)0;
+  Monster *mtmp = nullptr;
+  MonsterType *pm = nullptr;
   int glyph;
 
   buf[0] = monbuf[0] = 0;
@@ -114,7 +114,7 @@ STATIC_OVL MonsterType *lookat(int x, int y, char *buf, char *monbuf) {
     bhitpos.x = x;
     bhitpos.y = y;
     mtmp = m_at(x, y);
-    if (mtmp != (Monster *)0) {
+    if (mtmp != nullptr) {
       char *name, monnambuf[BUFSZ];
       bool accurate = !Hallucination;
 
@@ -282,7 +282,7 @@ STATIC_OVL MonsterType *lookat(int x, int y, char *buf, char *monbuf) {
         break;
     }
 
-  return ((pm && !Hallucination) ? pm : (MonsterType *)0);
+  return ((pm && !Hallucination) ? pm : nullptr);
 }
 
 /*
@@ -314,7 +314,7 @@ STATIC_OVL void checkfile(char *inp, MonsterType *pm, bool user_typed_name,
    * for Angel and angel, make the lookup string the same for both
    * user_typed_name and picked name.
    */
-  if (pm != (MonsterType *)0 && !user_typed_name)
+  if (pm != nullptr && !user_typed_name)
     dbase_str = strcpy(newstr, pm->mname);
   else
     dbase_str = strcpy(newstr, inp);
@@ -507,7 +507,7 @@ STATIC_OVL int do_look(bool quick) {
   do {
     /* Reset some variables. */
     need_to_look = FALSE;
-    pm = (MonsterType *)0;
+    pm = nullptr;
     skipped_venom = 0;
     found = 0;
     out_str[0] = '\0';
@@ -823,7 +823,7 @@ char *dowhatdoes_core(char q, char *cbuf) {
     }
   }
   (void)dlb_fclose(fp);
-  return (char *)0;
+  return nullptr;
 }
 
 int dowhatdoes() {
@@ -831,7 +831,7 @@ int dowhatdoes() {
   char q, *reslt;
 
   introff();
-  q = yn_function("What command?", (char *)0, '\0');
+  q = yn_function("What command?", nullptr, '\0');
   intron();
   reslt = dowhatdoes_core(q, bufr);
   if (reslt)
@@ -862,7 +862,7 @@ static const char *help_menu_items[] = {
 #ifdef WIZARD
     "List of wizard-mode commands.",
 #endif
-    "",                                                  (char *)0};
+    "",                                                  nullptr};
 
 STATIC_OVL bool help_menu(int *sel) {
   winid tmpwin = create_nhwindow(NHW_MENU);
@@ -878,7 +878,7 @@ STATIC_OVL bool help_menu(int *sel) {
 #ifdef WIZARD
   if (!wizard)
     help_menu_items[WIZHLP_SLOT] = "",
-    help_menu_items[WIZHLP_SLOT + 1] = (char *)0;
+    help_menu_items[WIZHLP_SLOT + 1] = nullptr;
 #endif
   for (i = 0; help_menu_items[i]; i++)
 #ifdef PORT_HELP

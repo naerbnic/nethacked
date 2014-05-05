@@ -404,7 +404,7 @@ void hatch_egg(genericptr_t arg, long timeout) {
   if (egg->corpsenm == NON_PM)
     return;
 
-  mon = mon2 = (Monster *)0;
+  mon = mon2 = nullptr;
   mnum = big_to_little(egg->corpsenm);
   /* The identity of one's father is learned, not innate */
   yours = (egg->spe || (!flags.female && carried(egg) && !rn2(2)));
@@ -624,7 +624,7 @@ STATIC_OVL void slip_or_trip() {
               ? upstart(x_monnam(
                     player.usteed,
                     player.usteed->mnamelth ? ARTICLE_NONE : ARTICLE_THE,
-                    (char *)0, SUPPRESS_SADDLE, FALSE))
+                    nullptr, SUPPRESS_SADDLE, FALSE))
               :
 #endif
               "You",
@@ -728,7 +728,7 @@ void burn_object(genericptr_t arg, long timeout) {
         /* get rid of candles and burning oil potions */
         RemoveObjectFromStorage(obj);
         obfree(obj, nullptr);
-        obj = (Object *)0;
+        obj = nullptr;
       }
 
     } else {
@@ -767,7 +767,7 @@ void burn_object(genericptr_t arg, long timeout) {
       end_burn(obj, FALSE); /* turn off light source */
       RemoveObjectFromStorage(obj);
       obfree(obj, nullptr);
-      obj = (Object *)0;
+      obj = nullptr;
       break;
 
     case BRASS_LANTERN:
@@ -920,7 +920,7 @@ void burn_object(genericptr_t arg, long timeout) {
           } else {
             RemoveObjectFromStorage(obj);
             obfree(obj, nullptr);
-            obj = (Object *)0;
+            obj = nullptr;
           }
           break;
 

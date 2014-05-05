@@ -112,7 +112,7 @@ Object *MakeRandomObject(char oclass, bool artif) {
 STATIC_OVL void AddRandomBoxContents(Object *box) {
   int n;
 
-  box->cobj = (Object *)0;
+  box->cobj = nullptr;
 
   switch (box->otyp) {
     case ICE_BOX:
@@ -944,8 +944,8 @@ static Object *SaveMonsterIntoObject(Object *obj, Monster *mtmp) {
     /* invalidate pointers */
     /* m_id is needed to know if this is a revived quest leader */
     /* but m_id must be cleared when loading bones */
-    mtmp2->nmon = (Monster *)0;
-    mtmp2->data = (MonsterType *)0;
+    mtmp2->nmon = nullptr;
+    mtmp2->data = nullptr;
     mtmp2->minvent = nullptr;
     otmp->oattached = OATTACHED_MONST; /* mark it */
   }
@@ -956,8 +956,8 @@ static Object *SaveMonsterIntoObject(Object *obj, Monster *mtmp) {
  * the one contained within the obj.
  */
 Monster *NewMonsterFromObject(Object *obj, bool copyof) {
-  Monster *mtmp = (Monster *)0;
-  Monster *mnew = (Monster *)0;
+  Monster *mtmp = nullptr;
+  Monster *mnew = nullptr;
 
   if (obj->oxlth && obj->oattached == OATTACHED_MONST)
     mtmp = (Monster *)obj->oextra;
@@ -994,7 +994,7 @@ Object *MakeNamedCorpseOrStatue(int objtype, MonsterType *ptr, int x, int y,
                                 const char *nm) {
   Object *otmp;
 
-  otmp = MakeCorpseOrStatue(objtype, (Monster *)0, ptr, x, y,
+  otmp = MakeCorpseOrStatue(objtype, nullptr, ptr, x, y,
                             (bool)(objtype != STATUE));
   if (nm)
     otmp = oname(otmp, nm);
@@ -1244,7 +1244,7 @@ void ExtractObjectFromList(Object *obj, Object **head_ptr) {
   Object *prev;
 
   Object *curr = *head_ptr;
-  for (prev = (Object *)0; curr; prev = curr, curr = curr->nobj) {
+  for (prev = nullptr; curr; prev = curr, curr = curr->nobj) {
     if (curr == obj) {
       if (prev)
         prev->nobj = curr->nobj;
@@ -1268,7 +1268,7 @@ void extract_nexthere(Object *obj, Object **head_ptr) {
   Object *curr, *prev;
 
   curr = *head_ptr;
-  for (prev = (Object *)0; curr; prev = curr, curr = curr->nexthere) {
+  for (prev = nullptr; curr; prev = curr, curr = curr->nexthere) {
     if (curr == obj) {
       if (prev)
         prev->nexthere = curr->nexthere;
@@ -1381,7 +1381,7 @@ void DeallocateObject(Object *obj) {
     del_light_source(LS_OBJECT, (genericptr_t)obj);
 
   if (obj == thrownobj)
-    thrownobj = (Object *)0;
+    thrownobj = nullptr;
 
   free((genericptr_t)obj);
 }

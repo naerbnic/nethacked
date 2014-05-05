@@ -378,7 +378,7 @@ void really_close() {
 int close(int fd) {
   if (lftrack.fd == fd) {
     really_close(); /* close it, but reopen it to hold it */
-    fd = open_levelfile(0, (char *)0);
+    fd = open_levelfile(0, nullptr);
     lftrack.nethack_thinks_it_is_open = FALSE;
     return 0;
   }
@@ -576,7 +576,7 @@ void free_saved_games(char **saved) {
 
 STATIC_OVL void redirect(const char *filename, const char *mode, FILE *stream,
                          bool uncomp) {
-  if (freopen(filename, mode, stream) == (FILE *)0) {
+  if (freopen(filename, mode, stream) == nullptr) {
     (void)fprintf(stderr, "freopen of %s for %scompress failed\n", filename,
                   uncomp ? "un" : "");
     terminate(EXIT_FAILURE);
@@ -607,7 +607,7 @@ STATIC_OVL void docompress_file(const char *filename, bool uncomp) {
 #endif
   /* when compressing, we know the file exists */
   if (uncomp) {
-    if ((cf = fopen(cfn, RDBMODE)) == (FILE *)0)
+    if ((cf = fopen(cfn, RDBMODE)) == nullptr)
       return;
     (void)fclose(cf);
   }
@@ -637,7 +637,7 @@ STATIC_OVL void docompress_file(const char *filename, bool uncomp) {
     }
   }
 #endif
-  args[++i] = (char *)0;
+  args[++i] = nullptr;
 
   /* If we don't do this and we are right after a y/n question *and*
    * there is an error message from the compression, the 'y' or 'n' can
@@ -672,12 +672,12 @@ STATIC_OVL void docompress_file(const char *filename, bool uncomp) {
     (void)setgid(getgid());
     (void)setuid(getuid());
     (void)execv(args[0], (char *const *)args);
-    perror((char *)0);
+    perror(nullptr);
     (void)fprintf(stderr, "Exec to %scompress %s failed.\n", uncomp ? "un" : "",
                   filename);
     terminate(EXIT_FAILURE);
   } else if (f == -1) {
-    perror((char *)0);
+    perror(nullptr);
     pline("Fork to %scompress %s failed.", uncomp ? "un" : "", filename);
     return;
   }
@@ -868,7 +868,7 @@ STATIC_OVL FILE *fopen_config_file(const char *filename) {
       raw_printf("Access to %s denied (%d).", filename, errno);
       wait_synch();
       /* fall through to standard names */
-    } else if ((fp = fopenp(filename, "r")) != (FILE *)0) {
+    } else if ((fp = fopenp(filename, "r")) != nullptr) {
       configfile = filename;
       return (fp);
     } else {
@@ -886,17 +886,17 @@ STATIC_OVL FILE *fopen_config_file(const char *filename) {
     strcpy(tmp_config, configfile);
   else
     sprintf(tmp_config, "%s/%s", envp, configfile);
-  if ((fp = fopenp(tmp_config, "r")) != (FILE *)0)
+  if ((fp = fopenp(tmp_config, "r")) != nullptr)
     return (fp);
 #if defined(__APPLE__)
   /* try an alternative */
   if (envp) {
     sprintf(tmp_config, "%s/%s", envp, "Library/Preferences/NetHack Defaults");
-    if ((fp = fopenp(tmp_config, "r")) != (FILE *)0)
+    if ((fp = fopenp(tmp_config, "r")) != nullptr)
       return (fp);
     sprintf(tmp_config, "%s/%s", envp,
             "Library/Preferences/NetHack Defaults.txt");
-    if ((fp = fopenp(tmp_config, "r")) != (FILE *)0)
+    if ((fp = fopenp(tmp_config, "r")) != nullptr)
       return (fp);
   }
   if (errno != ENOENT) {
@@ -912,7 +912,7 @@ STATIC_OVL FILE *fopen_config_file(const char *filename) {
     wait_synch();
   }
 #endif
-  return (FILE *)0;
+  return nullptr;
 }
 
 /*
@@ -962,7 +962,7 @@ STATIC_OVL int get_uchars(FILE *fp, char *buf, char *bufp, uchar *list,
         break;
 
       case '\\':
-        if (fp == (FILE *)0)
+        if (fp == nullptr)
           goto gi_error;
         do {
           if (!fgets(buf, BUFSZ, fp))
@@ -1149,8 +1149,8 @@ bool can_read_file(const char *filename) { return (access(filename, 4) == 0); }
 #endif /* USER_SOUNDS */
 
 void read_config_file(const char *filename) {
-#define tmp_levels (char *)0
-#define tmp_ramdisk (char *)0
+#define tmp_levels nullptr
+#define tmp_ramdisk nullptr
 
   char buf[4 * BUFSZ];
   FILE *fp;
@@ -1185,7 +1185,7 @@ STATIC_OVL FILE *fopen_wizkit_file() {
   if (envp && *envp)
     (void)strncpy(wizkit, envp, WIZKIT_MAX - 1);
   if (!wizkit[0])
-    return (FILE *)0;
+    return nullptr;
 
   if (access(wizkit, 4) == -1) {
     /* 4 is R_OK on newer systems */
@@ -1197,7 +1197,7 @@ STATIC_OVL FILE *fopen_wizkit_file() {
     raw_printf("Access to %s denied (%d).", wizkit, errno);
     wait_synch();
     /* fall through to standard names */
-  } else if ((fp = fopenp(wizkit, "r")) != (FILE *)0) {
+  } else if ((fp = fopenp(wizkit, "r")) != nullptr) {
     return (fp);
   } else {
     /* access() above probably caught most problems for UNIX */
@@ -1210,7 +1210,7 @@ STATIC_OVL FILE *fopen_wizkit_file() {
     sprintf(tmp_wizkit, "%s/%s", envp, wizkit);
   else
     strcpy(tmp_wizkit, wizkit);
-  if ((fp = fopenp(tmp_wizkit, "r")) != (FILE *)0)
+  if ((fp = fopenp(tmp_wizkit, "r")) != nullptr)
     return (fp);
   else if (errno != ENOENT) {
     /* e.g., problems when setuid NetHack can't search home
@@ -1218,7 +1218,7 @@ STATIC_OVL FILE *fopen_wizkit_file() {
     raw_printf("Couldn't open default wizkit file %s (%d).", tmp_wizkit, errno);
     wait_synch();
   }
-  return (FILE *)0;
+  return nullptr;
 }
 
 void read_wizkit() {
@@ -1411,7 +1411,7 @@ bool recover_savefile() {
      * maximum level number (for the endlevel) must be < 256
      */
     if (lev != savelev) {
-      lfd = open_levelfile(lev, (char *)0);
+      lfd = open_levelfile(lev, nullptr);
       if (lfd >= 0) {
         /* any or all of these may not exist */
         levc = (xchar)lev;

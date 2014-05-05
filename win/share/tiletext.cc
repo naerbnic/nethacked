@@ -235,13 +235,13 @@ bool fopen_text_file(const char *filename, const char *type) {
   const char *p;
   int i;
 
-  if (tile_file != (FILE *)0) {
+  if (tile_file != nullptr) {
     Fprintf(stderr, "can only open one text file at at time\n");
     return FALSE;
   }
 
   tile_file = fopen(filename, type);
-  if (tile_file == (FILE *)0) {
+  if (tile_file == nullptr) {
     Fprintf(stderr, "cannot open text file %s\n", filename);
     return FALSE;
   }
@@ -298,6 +298,6 @@ int fclose_text_file() {
   int ret;
 
   ret = fclose(tile_file);
-  tile_file = (FILE *)0;
+  tile_file = nullptr;
   return ret;
 }

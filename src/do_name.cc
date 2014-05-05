@@ -524,7 +524,7 @@ void docall(Object *obj) {
     if (*str1) { /* had name, so possibly remove from disco[] */
                  /* strip name first, for the update_inventory() call
                     from undiscover_object() */
-      *str1 = (char *)0;
+      *str1 = nullptr;
       undiscover_object(obj->otyp);
     }
   } else {
@@ -751,7 +751,7 @@ char *x_monnam(
 #ifdef OVLB
 
 char *l_monnam(Monster *mtmp) {
-  return (x_monnam(mtmp, ARTICLE_NONE, (char *)0,
+  return (x_monnam(mtmp, ARTICLE_NONE, nullptr,
                    mtmp->mnamelth ? SUPPRESS_SADDLE : 0, TRUE));
 }
 
@@ -759,7 +759,7 @@ char *l_monnam(Monster *mtmp) {
 #ifdef OVL0
 
 char *mon_nam(Monster *mtmp) {
-  return (x_monnam(mtmp, ARTICLE_THE, (char *)0,
+  return (x_monnam(mtmp, ARTICLE_THE, nullptr,
                    mtmp->mnamelth ? SUPPRESS_SADDLE : 0, FALSE));
 }
 
@@ -769,7 +769,7 @@ char *mon_nam(Monster *mtmp) {
  */
 char *noit_mon_nam(Monster *mtmp) {
   return (x_monnam(
-      mtmp, ARTICLE_THE, (char *)0,
+      mtmp, ARTICLE_THE, nullptr,
       mtmp->mnamelth ? (SUPPRESS_SADDLE | SUPPRESS_IT) : SUPPRESS_IT, FALSE));
 }
 
@@ -789,7 +789,7 @@ char *noit_Monnam(Monster *mtmp) {
 
 /* monster's own name */
 char *m_monnam(Monster *mtmp) {
-  return x_monnam(mtmp, ARTICLE_NONE, (char *)0, EXACT_NAME, FALSE);
+  return x_monnam(mtmp, ARTICLE_NONE, nullptr, EXACT_NAME, FALSE);
 }
 
 /* pet name: "your little dog" */
@@ -807,7 +807,7 @@ char *y_monnam(Monster *mtmp) {
                          ? SUPPRESS_SADDLE
                          : 0;
 
-  return x_monnam(mtmp, prefix, (char *)0, suppression_flag, FALSE);
+  return x_monnam(mtmp, prefix, nullptr, suppression_flag, FALSE);
 }
 
 #endif /* OVL0 */
@@ -822,7 +822,7 @@ char *Adjmonnam(Monster *mtmp, const char *adj) {
 }
 
 char *a_monnam(Monster *mtmp) {
-  return x_monnam(mtmp, ARTICLE_A, (char *)0,
+  return x_monnam(mtmp, ARTICLE_A, nullptr,
                   mtmp->mnamelth ? SUPPRESS_SADDLE : 0, FALSE);
 }
 
@@ -844,7 +844,7 @@ char *distant_monnam(Monster *mon, int article, char *outbuf) {
     strcpy(outbuf, article == ARTICLE_THE ? "the " : "");
     strcat(outbuf, mon->female ? "high priestess" : "high priest");
   } else {
-    strcpy(outbuf, x_monnam(mon, article, (char *)0, 0, TRUE));
+    strcpy(outbuf, x_monnam(mon, article, nullptr, 0, TRUE));
   }
   return outbuf;
 }
@@ -960,7 +960,7 @@ const char *hcolor(const char *colorpref) {
 /* return a random real color unless hallucinating */
 const char *rndcolor() {
   int k = rn2(CLR_MAX);
-  return Hallucination ? hcolor((char *)0) : (k == NO_COLOR) ? "colorless"
+  return Hallucination ? hcolor(nullptr) : (k == NO_COLOR) ? "colorless"
                                                              : c_obj_colors[k];
 }
 
@@ -981,7 +981,7 @@ static const char *const coynames[] = {
 
 char *coyotename(Monster *mtmp, char *buf) {
   if (mtmp && buf) {
-    sprintf(buf, "%s - %s", x_monnam(mtmp, ARTICLE_NONE, (char *)0, 0, TRUE),
+    sprintf(buf, "%s - %s", x_monnam(mtmp, ARTICLE_NONE, nullptr, 0, TRUE),
             mtmp->mcan ? coynames[SIZE(coynames) - 1]
                        : coynames[rn2(SIZE(coynames) - 1)]);
   }

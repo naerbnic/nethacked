@@ -46,7 +46,7 @@ int use_saddle(Object *otmp) {
   }
 
   /* Select an animal */
-  if (player.uswallow || Underwater || !getdir((char *)0)) {
+  if (player.uswallow || Underwater || !getdir(nullptr)) {
     pline(Never_mind);
     return 0;
   }
@@ -115,11 +115,11 @@ int use_saddle(Object *otmp) {
   }
   if (Confusion || Fumbling || Glib)
     chance -= 20;
-  else if (uarmg && (s = OBJ_DESCR(objects[uarmg->otyp])) != (char *)0 &&
+  else if (uarmg && (s = OBJ_DESCR(objects[uarmg->otyp])) != nullptr &&
            !strncmp(s, "riding ", 7))
     /* Bonus for wearing "riding" (but not fumbling) gloves */
     chance += 10;
-  else if (uarmf && (s = OBJ_DESCR(objects[uarmf->otyp])) != (char *)0 &&
+  else if (uarmf && (s = OBJ_DESCR(objects[uarmf->otyp])) != nullptr &&
            !strncmp(s, "riding ", 7))
     /* ... or for "riding boots" */
     chance += 10;
@@ -157,7 +157,7 @@ int doride() {
 
   if (player.usteed)
     dismount_steed(DISMOUNT_BYCHOICE);
-  else if (getdir((char *)0) &&
+  else if (getdir(nullptr) &&
            isok(player.ux + player.dx, player.uy + player.dy)) {
 #ifdef WIZARD
     if (wizard && yn("Force the mount to succeed?") == 'y')
@@ -300,7 +300,7 @@ bool mount_steed(Monster *mtmp, bool force) {
 
     sprintf(buf, "slipped while mounting %s",
             /* "a saddled mumak" or "a saddled pony called Dobbin" */
-            x_monnam(mtmp, ARTICLE_A, (char *)0,
+            x_monnam(mtmp, ARTICLE_A, nullptr,
                      SUPPRESS_IT | SUPPRESS_INVISIBLE | SUPPRESS_HALLUCINATION,
                      TRUE));
     losehp(rn1(5, 10), buf, NO_KILLER_PREFIX);

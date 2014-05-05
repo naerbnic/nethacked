@@ -485,7 +485,7 @@ void switch_graphics(int gr_set_flag) {
   switch (gr_set_flag) {
     default:
     case ASCII_GRAPHICS:
-      assign_graphics((uchar *)0, 0, MAXPCHARS, 0);
+      assign_graphics(nullptr, 0, MAXPCHARS, 0);
 #ifdef PC9800
       if (ascgraphics_mode_callback)
         (*ascgraphics_mode_callback)();

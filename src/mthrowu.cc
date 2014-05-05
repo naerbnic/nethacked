@@ -121,7 +121,7 @@ STATIC_OVL int drop_throw(Object *obj, bool ohit, int x, int y) {
       }
     }
   } else
-    obfree(obj, (Object *)0);
+    obfree(obj, nullptr);
   return retvalu;
 }
 
@@ -229,7 +229,7 @@ int ohitmon(
         mondied(mtmp);
     }
 
-    if (can_blnd((Monster *)0, mtmp,
+    if (can_blnd(nullptr, mtmp,
                  (uchar)(otmp->otyp == BLINDING_VENOM ? AT_SPIT : AT_WEAP),
                  otmp)) {
       if (vis && mtmp->mcansee)
@@ -280,7 +280,7 @@ void m_throw(Monster *mon, int x, int y, int dx, int dy, int range,
     }
     RemoveObjectFromStorage(obj);
     singleobj = obj;
-    obj = (Object *)0;
+    obj = nullptr;
   } else {
     singleobj = SplitObject(obj, 1L);
     RemoveObjectFromStorage(singleobj);
@@ -366,7 +366,7 @@ void m_throw(Monster *mon, int x, int y, int dx, int dy, int range,
         /* fall through */
         case CREAM_PIE:
         case BLINDING_VENOM:
-          hitu = thitu(8, 0, singleobj, (char *)0);
+          hitu = thitu(8, 0, singleobj, nullptr);
           break;
         default:
           dam = dmgval(singleobj, &youmonst);
@@ -385,7 +385,7 @@ void m_throw(Monster *mon, int x, int y, int dx, int dy, int range,
           hitv += 8 + singleobj->spe;
           if (dam < 1)
             dam = 1;
-          hitu = thitu(hitv, dam, singleobj, (char *)0);
+          hitu = thitu(hitv, dam, singleobj, nullptr);
       }
       if (hitu && singleobj->opoisoned && is_poisonable(singleobj)) {
         char onmbuf[BUFSZ], knmbuf[BUFSZ];
@@ -394,7 +394,7 @@ void m_throw(Monster *mon, int x, int y, int dx, int dy, int range,
         strcpy(knmbuf, killer_xname(singleobj));
         poisoned(onmbuf, A_STR, knmbuf, -10);
       }
-      if (hitu && can_blnd((Monster *)0, &youmonst,
+      if (hitu && can_blnd(nullptr, &youmonst,
                            (uchar)(singleobj->otyp == BLINDING_VENOM ? AT_SPIT
                                                                      : AT_WEAP),
                            singleobj)) {
@@ -420,7 +420,7 @@ void m_throw(Monster *mon, int x, int y, int dx, int dy, int range,
         if (!Stone_resistance &&
             !(poly_when_stoned(youmonst.data) && polymon(PM_STONE_GOLEM))) {
           Stoned = 5;
-          killer = (char *)0;
+          killer = nullptr;
         }
       }
       stop_occupation();
@@ -482,7 +482,7 @@ void m_useup(Monster *mon, Object *obj) {
       mon->misc_worn_check &= ~obj->owornmask;
       update_mon_intrinsics(mon, obj, FALSE, FALSE);
     }
-    obfree(obj, (Object *)0);
+    obfree(obj, nullptr);
   }
 }
 
@@ -533,7 +533,7 @@ void thrwmu(Monster *mtmp) {
     if (dam < 1)
       dam = 1;
 
-    (void)thitu(hitv, dam, otmp, (char *)0);
+    (void)thitu(hitv, dam, otmp, nullptr);
     stop_occupation();
     return;
   }
@@ -736,7 +736,7 @@ Object *m_carrying(Monster *mtmp, int type) {
   for (otmp = mtmp->minvent; otmp; otmp = otmp->nobj)
     if (otmp->otyp == type)
       return (otmp);
-  return ((Object *)0);
+  return (nullptr);
 }
 
 /* TRUE iff thrown/kicked/rolled object doesn't pass through iron bars */

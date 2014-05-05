@@ -86,7 +86,7 @@ void moveloop() {
                        ? 25
                        : (depth(&player.uz) > depth(&stronghold_level)) ? 50
                                                                         : 70))
-            (void)makemon((MonsterType *)0, 0, 0, NO_MM_FLAGS);
+            (void)makemon(nullptr, 0, 0, NO_MM_FLAGS);
 
 /* calculate how much time passed. */
 #ifdef STEED
@@ -301,7 +301,7 @@ void moveloop() {
           /* when immobile, count is in turns */
           if (multi < 0) {
             if (++multi == 0) { /* finished yet? */
-              unmul((char *)0);
+              unmul(nullptr);
               /* if unmul caused a level change, take it now */
               if (player.utotype)
                 deferred_goto();
@@ -416,7 +416,7 @@ void moveloop() {
 #ifdef MAIL
       ckmailstatus();
 #endif
-      rhack((char *)0);
+      rhack(nullptr);
     }
     if (player.utotype) /* change dungeon level */
       deferred_goto();  /* after rhack() */
@@ -571,7 +571,7 @@ void welcome(bool new_game) {
 
   pline(new_game ? "%s %s, welcome to NetHack!  You are a%s %s %s."
                  : "%s %s, the%s %s %s, welcome back to NetHack!",
-        Hello((Monster *)0), plname, buf, urace.adj,
+        Hello(nullptr), plname, buf, urace.adj,
         (currentgend && urole.name.f) ? urole.name.f : urole.name.m);
 }
 

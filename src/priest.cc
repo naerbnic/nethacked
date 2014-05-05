@@ -293,13 +293,13 @@ Monster *findpriest(char roomno) {
         histemple_at(mtmp, mtmp->mx, mtmp->my))
       return (mtmp);
   }
-  return (Monster *)0;
+  return nullptr;
 }
 
 /* called from check_special_room() when the player enters the temple room */
 void intemple(int roomno) {
   Monster *priest = findpriest((char)roomno);
-  bool tended = (priest != (Monster *)0);
+  bool tended = (priest != nullptr);
   bool shrined, sanctum, can_speak;
   const char *msg1, *msg2;
   char buf[BUFSZ];
@@ -514,13 +514,13 @@ Monster *mk_roamer(MonsterType *ptr, aligntyp alignment, xchar x, xchar y,
   bool coaligned = (player.ualign.type == alignment);
 
   if (ptr != &mons[PM_ALIGNED_PRIEST] && ptr != &mons[PM_ANGEL])
-    return ((Monster *)0);
+    return (nullptr);
 
   if (MON_AT(x, y))
     (void)rloc(m_at(x, y), FALSE); /* insurance */
 
   if (!(roamer = makemon(ptr, x, y, NO_MM_FLAGS)))
-    return ((Monster *)0);
+    return (nullptr);
 
   EPRI(roamer)->shralign = alignment;
   if (coaligned && !peaceful)

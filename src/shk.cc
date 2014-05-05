@@ -177,7 +177,7 @@ void shkgone(Monster *mtmp) {
   /*       even when the shk dies on a different level.] */
   if (on_level(&eshk->shoplevel, &player.uz)) {
     remove_damage(mtmp, TRUE);
-    sroom->resident = (Monster *)0;
+    sroom->resident = nullptr;
     if (!search_special(ANY_SHOP))
       level.flags.has_shop = 0;
 
@@ -203,7 +203,7 @@ void shkgone(Monster *mtmp) {
 void set_residency(Monster *shkp, bool zero_out) {
   if (on_level(&(ESHK(shkp)->shoplevel), &player.uz))
     rooms[ESHK(shkp)->shoproom - ROOMOFFSET].resident =
-        (zero_out) ? (Monster *)0 : shkp;
+        (zero_out) ? nullptr : shkp;
 }
 
 void replshk(Monster *mtmp, Monster *mtmp2) {
@@ -1481,7 +1481,7 @@ static coord repo_location; /* repossession context */
 
 /* routine called after dying (or quitting) */
 bool paybill(int croaked) {
-  Monster *mtmp, *mtmp2, *resident = (Monster *)0;
+  Monster *mtmp, *mtmp2, *resident = nullptr;
   bool taken = FALSE;
   int numsk = 0;
 
@@ -2649,7 +2649,7 @@ int doinvbill(int mode) {
       totused += thisused;
       obj->unpaid = 0; /* ditto */
       /* Why 'x'?  To match `I x', more or less. */
-      buf_p = xprname(obj, (char *)0, 'x', FALSE, thisused, uquan);
+      buf_p = xprname(obj, nullptr, 'x', FALSE, thisused, uquan);
 #ifdef __SASC
       /* SAS/C 6.2 can't cope for some reason */
       sasc_bug(Object, save_unpaid);
@@ -2744,7 +2744,7 @@ Monster *shkcatch(Object *obj, xchar x, xchar y) {
     (void)mpickobj(shkp, obj);
     return shkp;
   }
-  return (Monster *)0;
+  return nullptr;
 }
 
 void add_damage(xchar x, xchar y, long cost) {
@@ -3245,7 +3245,7 @@ STATIC_OVL void makekops(coord *mm) {
 #endif /* KOPS */
 
 void pay_for_damage(const char *dmgstr, bool cant_mollify) {
-  Monster *shkp = (Monster *)0;
+  Monster *shkp = nullptr;
   char shops_affected[5];
   bool uinshp = (*player.ushops != '\0');
   char qbuf[80];
@@ -3445,7 +3445,7 @@ void price_quote(Object *first_obj) {
       continue;
     cost = (otmp->no_charge || otmp == uball || otmp == uchain)
                ? 0L
-               : get_cost(otmp, (Monster *)0);
+               : get_cost(otmp, nullptr);
     if (Has_contents(otmp))
       cost += contained_cost(otmp, shkp, 0L, FALSE, FALSE);
     if (!cost) {
@@ -3464,7 +3464,7 @@ void price_quote(Object *first_obj) {
       pline("%s!", buf); /* buf still contains the string */
     } else {
       /* print cost in slightly different format, so can't reuse buf */
-      cost = get_cost(first_obj, (Monster *)0);
+      cost = get_cost(first_obj, nullptr);
       if (Has_contents(first_obj))
         cost += contained_cost(first_obj, shkp, 0L, FALSE, FALSE);
       pline("%s, price %ld %s%s%s", doname(first_obj), cost, currency(cost),
@@ -3831,13 +3831,13 @@ STATIC_OVL char *shk_owns(char *buf, Object *obj) {
     shkp = shop_keeper(inside_shop(x, y));
     return strcpy(buf, shkp ? s_suffix(shkname(shkp)) : "the");
   }
-  return (char *)0;
+  return nullptr;
 }
 
 STATIC_OVL char *mon_owns(char *buf, Object *obj) {
   if (obj->where == OBJ_MINVENT)
     return strcpy(buf, s_suffix(mon_nam(obj->ocarry)));
-  return (char *)0;
+  return nullptr;
 }
 
 #endif /* OVL2 */

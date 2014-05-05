@@ -164,7 +164,7 @@ bool is_digging() {
 }
 
 #define BY_YOU (&youmonst)
-#define BY_OBJECT ((Monster *)0)
+#define BY_OBJECT (nullptr)
 
 bool dig_check(Monster *madeby, bool verbose, int x, int y) {
   Trap *ttmp = t_at(x, y);
@@ -318,7 +318,7 @@ STATIC_OVL int dig() {
         /* it was a statue trap; break_statue()
          * printed a message and updated the screen
          */
-        digtxt = (char *)0;
+        digtxt = nullptr;
     } else if ((obj = sobj_at(BOULDER, dpx, dpy)) != 0) {
       Object *bobj;
 
@@ -634,7 +634,7 @@ void digactualhole(int x, int y, Monster *madeby, int ttyp) {
           }
           if (mtmp->isshk)
             make_angry_shk(mtmp, 0, 0);
-          migrate_to_level(mtmp, ledger_no(&tolevel), MIGR_RANDOM, (coord *)0);
+          migrate_to_level(mtmp, ledger_no(&tolevel), MIGR_RANDOM, nullptr);
         }
       }
     }
@@ -926,7 +926,7 @@ int use_pick_axe2(Object *obj) {
         if (vibrate)
           losehp(2, "axing a hard object", KILLED_BY);
       } else
-        You("swing your %s through thin air.", aobjnam(obj, (char *)0));
+        You("swing your %s through thin air.", aobjnam(obj, nullptr));
     } else {
       static const char *const d_action[6] = {
           "swinging",            "digging",              "chipping the statue",
@@ -960,7 +960,7 @@ int use_pick_axe2(Object *obj) {
     }
   } else if (Is_airlevel(&player.uz) || Is_waterlevel(&player.uz)) {
     /* it must be air -- water checked above */
-    You("swing your %s through thin air.", aobjnam(obj, (char *)0));
+    You("swing your %s through thin air.", aobjnam(obj, nullptr));
   } else if (!can_reach_floor()) {
     You_cant("reach the %s.", surface(player.ux, player.uy));
   } else if (is_pool(player.ux, player.uy) || is_lava(player.ux, player.uy)) {
@@ -968,7 +968,7 @@ int use_pick_axe2(Object *obj) {
     You("cannot stay under%s long enough.",
         is_pool(player.ux, player.uy) ? "water" : " the lava");
   } else if (!ispick) {
-    Your("%s merely scratches the %s.", aobjnam(obj, (char *)0),
+    Your("%s merely scratches the %s.", aobjnam(obj, nullptr),
          surface(player.ux, player.uy));
     u_wipe_engr(3);
   } else {
@@ -1164,7 +1164,7 @@ void zap_dig() {
         }
         newsym(player.ux, player.uy);
       } else {
-        watch_dig((Monster *)0, player.ux, player.uy, TRUE);
+        watch_dig(nullptr, player.ux, player.uy, TRUE);
         (void)dighole(FALSE);
       }
     }
@@ -1193,7 +1193,7 @@ void zap_dig() {
         room->typ = DOOR;
       else if (cansee(zx, zy))
         pline_The("door is razed!");
-      watch_dig((Monster *)0, zx, zy, TRUE);
+      watch_dig(nullptr, zx, zy, TRUE);
       room->doormask = D_NODOOR;
       unblock_point(zx, zy); /* vision */
       digdepth -= 2;
@@ -1234,7 +1234,7 @@ void zap_dig() {
           add_damage(zx, zy, 200L);
           shopwall = TRUE;
         }
-        watch_dig((Monster *)0, zx, zy, TRUE);
+        watch_dig(nullptr, zx, zy, TRUE);
         if (level.flags.is_cavernous_lev && !in_town(zx, zy)) {
           room->typ = CORR;
         } else {

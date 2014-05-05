@@ -155,7 +155,7 @@ Object *vobj_at(xchar x, xchar y) {
       return Object;
     Object = Object->nexthere;
   }
-  return ((Object *)0);
+  return (nullptr);
 }
 #endif /* else vobj_at() is defined in display.h */
 

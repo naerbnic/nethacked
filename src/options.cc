@@ -40,18 +40,18 @@ static struct Bool_Opt {
   bool *addr, initvalue;
   int optflags;
 } boolopt[] = {
-      {"altmeta", (bool *)0, TRUE, DISP_IN_GAME},
+      {"altmeta", nullptr, TRUE, DISP_IN_GAME},
       {"ascii_map", &iflags.wc_ascii_map, !PREFER_TILED, SET_IN_GAME}, /*WC*/
-      {"asksavedisk", (bool *)0, FALSE, SET_IN_FILE},
+      {"asksavedisk", nullptr, FALSE, SET_IN_FILE},
       {"autodig", &flags.autodig, FALSE, SET_IN_GAME},
       {"autopickup", &flags.pickup, TRUE, SET_IN_GAME},
       {"autoquiver", &flags.autoquiver, FALSE, SET_IN_GAME},
 #ifdef INSURANCE
       {"checkpoint", &flags.ins_chkpt, TRUE, SET_IN_GAME},
 #else
-      {"checkpoint", (bool *)0, FALSE, SET_IN_FILE},
+      {"checkpoint", nullptr, FALSE, SET_IN_FILE},
 #endif
-      {"checkspace", (bool *)0, FALSE, SET_IN_FILE},
+      {"checkspace", nullptr, FALSE, SET_IN_FILE},
       {"cmdassist", &iflags.cmdassist, TRUE, SET_IN_GAME},
       {"color", &iflags.wc_color, FALSE, SET_IN_GAME}, /*WC*/
       {"confirm", &flags.confirm, TRUE, SET_IN_GAME},
@@ -61,21 +61,21 @@ static struct Bool_Opt {
 #if defined(TERMLIB)
       {"DECgraphics", &iflags.DECgraphics, FALSE, SET_IN_GAME},
 #else
-      {"DECgraphics", (bool *)0, FALSE, SET_IN_FILE},
+      {"DECgraphics", nullptr, FALSE, SET_IN_FILE},
 #endif
       {"eight_bit_tty", &iflags.wc_eight_bit_input, FALSE, SET_IN_GAME}, /*WC*/
       {"extmenu", &iflags.extmenu, FALSE, SET_IN_GAME},
 #ifdef OPT_DISPMAP
       {"fast_map", &flags.fast_map, TRUE, SET_IN_GAME},
 #else
-      {"fast_map", (bool *)0, TRUE, SET_IN_FILE},
+      {"fast_map", nullptr, TRUE, SET_IN_FILE},
 #endif
       {"female", &flags.female, FALSE, DISP_IN_GAME},
       {"fixinv", &flags.invlet_constant, TRUE, SET_IN_GAME},
 #ifdef AMIFLUSH
       {"flush", &flags.amiflush, FALSE, SET_IN_GAME},
 #else
-      {"flush", (bool *)0, FALSE, SET_IN_FILE},
+      {"flush", nullptr, FALSE, SET_IN_FILE},
 #endif
       {"fullscreen", &iflags.wc2_fullscreen, FALSE, SET_IN_FILE},
       {"help", &flags.help, TRUE, SET_IN_GAME},
@@ -83,38 +83,38 @@ static struct Bool_Opt {
 #ifdef ASCIIGRAPH
       {"IBMgraphics", &iflags.IBMgraphics, FALSE, SET_IN_GAME},
 #else
-      {"IBMgraphics", (bool *)0, FALSE, SET_IN_FILE},
+      {"IBMgraphics", nullptr, FALSE, SET_IN_FILE},
 #endif
       {"ignintr", &flags.ignintr, FALSE, SET_IN_GAME},
       {"large_font", &iflags.obsolete, FALSE, SET_IN_FILE}, /* OBSOLETE */
       {"legacy", &flags.legacy, TRUE, DISP_IN_GAME},
       {"lit_corridor", &flags.lit_corridor, FALSE, SET_IN_GAME},
       {"lootabc", &iflags.lootabc, FALSE, SET_IN_GAME},
-      {"Macgraphics", (bool *)0, FALSE, SET_IN_FILE},
+      {"Macgraphics", nullptr, FALSE, SET_IN_FILE},
 #ifdef MAIL
       {"mail", &flags.biff, TRUE, SET_IN_GAME},
 #else
-      {"mail", (bool *)0, TRUE, SET_IN_FILE},
+      {"mail", nullptr, TRUE, SET_IN_FILE},
 #endif
 #ifdef MENU_COLOR
       {"menucolors", &iflags.use_menu_color, FALSE, SET_IN_GAME},
 #else
-      {"menucolors", (bool *)0, FALSE, SET_IN_GAME},
+      {"menucolors", nullptr, FALSE, SET_IN_GAME},
 #endif
 #ifdef WIZARD
       /* for menu debugging only*/
       {"menu_tab_sep", &iflags.menu_tab_sep, FALSE, SET_IN_GAME},
 #else
-      {"menu_tab_sep", (bool *)0, FALSE, SET_IN_FILE},
+      {"menu_tab_sep", nullptr, FALSE, SET_IN_FILE},
 #endif
       {"mouse_support", &iflags.wc_mouse_support, TRUE, DISP_IN_GAME}, /*WC*/
 #ifdef NEWS
       {"news", &iflags.news, TRUE, DISP_IN_GAME},
 #else
-      {"news", (bool *)0, FALSE, SET_IN_FILE},
+      {"news", nullptr, FALSE, SET_IN_FILE},
 #endif
       {"null", &flags.null, TRUE, SET_IN_GAME},
-      {"page_wait", (bool *)0, FALSE, SET_IN_FILE},
+      {"page_wait", nullptr, FALSE, SET_IN_FILE},
 #ifdef PARANOID
       {"paranoid_hit", &iflags.paranoid_hit, FALSE, SET_IN_GAME},
       {"paranoid_quit", &iflags.paranoid_quit, FALSE, SET_IN_GAME},
@@ -125,13 +125,13 @@ static struct Bool_Opt {
       {"prayconfirm", &flags.prayconfirm, TRUE, SET_IN_GAME},
       {"preload_tiles", &iflags.wc_preload_tiles, TRUE, DISP_IN_GAME}, /*WC*/
       {"pushweapon", &flags.pushweapon, FALSE, SET_IN_GAME},
-      {"rawio", (bool *)0, FALSE, SET_IN_FILE},
+      {"rawio", nullptr, FALSE, SET_IN_FILE},
       {"rest_on_space", &flags.rest_on_space, FALSE, SET_IN_GAME},
       {"safe_pet", &flags.safe_dog, TRUE, SET_IN_GAME},
 #ifdef WIZARD
       {"sanity_check", &iflags.sanity_check, FALSE, SET_IN_GAME},
 #else
-      {"sanity_check", (bool *)0, FALSE, SET_IN_FILE},
+      {"sanity_check", nullptr, FALSE, SET_IN_FILE},
 #endif
 #ifdef SHOW_BORN
       {"showborn", &iflags.show_born, FALSE, SET_IN_GAME},
@@ -139,7 +139,7 @@ static struct Bool_Opt {
 #ifdef EXP_ON_BOTL
       {"showexp", &flags.showexp, FALSE, SET_IN_GAME},
 #else
-      {"showexp", (bool *)0, FALSE, SET_IN_FILE},
+      {"showexp", nullptr, FALSE, SET_IN_FILE},
 #endif
       {"showbuc", &iflags.show_buc, FALSE, SET_IN_GAME},
       {"showrace", &iflags.showrace, FALSE, SET_IN_GAME},
@@ -149,7 +149,7 @@ static struct Bool_Opt {
 #ifdef SCORE_ON_BOTL
       {"showscore", &flags.showscore, FALSE, SET_IN_GAME},
 #else
-      {"showscore", (bool *)0, FALSE, SET_IN_FILE},
+      {"showscore", nullptr, FALSE, SET_IN_FILE},
 #endif
       {"silent", &flags.silent, TRUE, SET_IN_GAME},
       {"softkeyboard", &iflags.wc2_softkeyboard, FALSE, SET_IN_FILE},
@@ -163,7 +163,7 @@ static struct Bool_Opt {
 #ifdef TIMED_DELAY
       {"timed_delay", &flags.nap, TRUE, SET_IN_GAME},
 #else
-      {"timed_delay", (bool *)0, FALSE, SET_IN_GAME},
+      {"timed_delay", nullptr, FALSE, SET_IN_GAME},
 #endif
       {"tombstone", &flags.tombstone, TRUE, SET_IN_GAME},
       {"toptenwin", &flags.toptenwin, FALSE, SET_IN_GAME},
@@ -172,7 +172,7 @@ static struct Bool_Opt {
       {"use_inverse", &iflags.wc_inverse, FALSE, SET_IN_GAME}, /*WC*/
       {"verbose", &flags.verbose, TRUE, SET_IN_GAME},
       {"wraptext", &iflags.wc2_wraptext, FALSE, SET_IN_GAME},
-      {(char *)0, (bool *)0, FALSE, 0}};
+      {nullptr, nullptr, FALSE, 0}};
 
 /* compound options, for option_help() and external programs like Amiga
  * frontend */
@@ -300,7 +300,7 @@ static struct Comp_Opt {
       {"windowcolors", "the foreground/background colors of windows", /*WC*/
        80, DISP_IN_GAME},
       {"windowtype", "windowing system to use", WINTYPELEN, DISP_IN_GAME},
-      {(char *)0, (char *)0, 0, 0}};
+      {nullptr, nullptr, 0, 0}};
 
 #ifdef OPTION_LISTS_ONLY
 #undef static
@@ -444,7 +444,7 @@ char *nh_getenv(const char *ev) {
   if (getev && strlen(getev) <= (BUFSZ / 2))
     return getev;
   else
-    return (char *)0;
+    return nullptr;
 }
 
 void initoptions() {
@@ -455,7 +455,7 @@ void initoptions() {
   setrandom();
 
   /* for detection of configfile options specified multiple times */
-  iflags.opt_booldup = iflags.opt_compdup = (int *)0;
+  iflags.opt_booldup = iflags.opt_compdup = nullptr;
 
   for (i = 0; boolopt[i].name; i++) {
     if (boolopt[i].addr)
@@ -537,14 +537,14 @@ void initoptions() {
       if (strlen(opts) < BUFSZ / 2)
         read_config_file(opts);
     } else {
-      read_config_file((char *)0);
+      read_config_file(nullptr);
       /* let the total length of options be long;
        * parseoptions() will check each individually
        */
       parseoptions(opts, TRUE, FALSE);
     }
   } else
-    read_config_file((char *)0);
+    read_config_file(nullptr);
 
   (void)fruitadd(pl_fruit);
   /* Remove "slime mold" from list of object names; this will	*/
@@ -663,7 +663,7 @@ STATIC_OVL char *string_for_opt(char *opts, bool val_optional) {
   if (!colon || !*++colon) {
     if (!val_optional)
       badoption(opts);
-    return (char *)0;
+    return nullptr;
   }
   return colon;
 }
@@ -672,7 +672,7 @@ STATIC_OVL char *string_for_env_opt(const char *optname, char *opts,
                                     bool val_optional) {
   if (!initial) {
     rejectoption(optname);
-    return (char *)0;
+    return nullptr;
   }
   return string_for_opt(opts, val_optional);
 }
@@ -819,10 +819,10 @@ void set_duplicate_opt_detection(int on_or_off) {
     /*-- OFF --*/
     if (iflags.opt_booldup)
       free((genericptr_t)iflags.opt_booldup);
-    iflags.opt_booldup = (int *)0;
+    iflags.opt_booldup = nullptr;
     if (iflags.opt_compdup)
       free((genericptr_t)iflags.opt_compdup);
-    iflags.opt_compdup = (int *)0;
+    iflags.opt_compdup = nullptr;
   }
 }
 
@@ -901,7 +901,7 @@ bool add_menu_coloring(char *str) {
   int errnum;
   char errbuf[80];
 #endif
-  const char *err = (char *)0;
+  const char *err = nullptr;
 
   if (!cs || !str)
     return FALSE;
@@ -1299,7 +1299,7 @@ void parseoptions(char *opts, bool tinitial, bool tfrom_file) {
     }
     color_number = 0;
     color_incr = 1;
-    if ((op = string_for_opt(opts, FALSE)) != (char *)0) {
+    if ((op = string_for_opt(opts, FALSE)) != nullptr) {
       char *pt = op;
       int cnt, tmp, reverse;
       long rgb;
@@ -2471,7 +2471,7 @@ int doset() {
 #ifdef AUTOPICKUP_EXCEPTIONS
   any.a_int = -1;
   sprintf(buf, "autopickup exceptions (%d currently set)",
-          count_ape_maps((int *)0, (int *)0));
+          count_ape_maps(nullptr, nullptr));
   add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, buf, MENU_UNSELECTED);
 
 #endif /* AUTOPICKUP_EXCEPTIONS */
@@ -2526,7 +2526,7 @@ int doset() {
       }
     }
     free((genericptr_t)pick_list);
-    pick_list = (menu_item *)0;
+    pick_list = nullptr;
   }
 
   destroy_nhwindow(tmpwin);
@@ -2551,7 +2551,7 @@ STATIC_OVL bool special_handling(const char *optname, bool setinitial,
    */
   if (!strcmp("menustyle", optname)) {
     const char *style_name;
-    menu_item *style_pick = (menu_item *)0;
+    menu_item *style_pick = nullptr;
     tmpwin = create_nhwindow(NHW_MENU);
     start_menu(tmpwin);
     for (i = 0; i < SIZE(menutype); i++) {
@@ -2571,7 +2571,7 @@ STATIC_OVL bool special_handling(const char *optname, bool setinitial,
     retval = TRUE;
   } else if (!strcmp("pickup_burden", optname)) {
     const char *burden_name, *burden_letters = "ubsntl";
-    menu_item *burden_pick = (menu_item *)0;
+    menu_item *burden_pick = nullptr;
     tmpwin = create_nhwindow(NHW_MENU);
     start_menu(tmpwin);
     for (i = 0; i < SIZE(burdentype); i++) {
@@ -2593,7 +2593,7 @@ STATIC_OVL bool special_handling(const char *optname, bool setinitial,
     retval = TRUE;
   } else if (!strcmp("disclose", optname)) {
     int pick_cnt, pick_idx, opt_idx;
-    menu_item *disclosure_category_pick = (menu_item *)0;
+    menu_item *disclosure_category_pick = nullptr;
     /*
      * The order of disclose_names[]
      * must correspond to disclosure_options in decl.h
@@ -2620,14 +2620,14 @@ STATIC_OVL bool special_handling(const char *optname, bool setinitial,
         disc_cat[opt_idx] = 1;
       }
       free((genericptr_t)disclosure_category_pick);
-      disclosure_category_pick = (menu_item *)0;
+      disclosure_category_pick = nullptr;
     }
     destroy_nhwindow(tmpwin);
 
     for (i = 0; i < NUM_DISCLOSURE_OPTIONS; i++) {
       if (disc_cat[i]) {
         char dbuf[BUFSZ];
-        menu_item *disclosure_option_pick = (menu_item *)0;
+        menu_item *disclosure_option_pick = nullptr;
         sprintf(dbuf, "Disclosure options for %s:", disclosure_names[i]);
         tmpwin = create_nhwindow(NHW_MENU);
         start_menu(tmpwin);
@@ -2657,7 +2657,7 @@ STATIC_OVL bool special_handling(const char *optname, bool setinitial,
     retval = TRUE;
   } else if (!strcmp("runmode", optname)) {
     const char *mode_name;
-    menu_item *mode_pick = (menu_item *)0;
+    menu_item *mode_pick = nullptr;
     tmpwin = create_nhwindow(NHW_MENU);
     start_menu(tmpwin);
     for (i = 0; i < SIZE(runmodes); i++) {
@@ -2675,7 +2675,7 @@ STATIC_OVL bool special_handling(const char *optname, bool setinitial,
     retval = TRUE;
   } else if (!strcmp("msg_window", optname)) {
     /* by Christian W. Cooper */
-    menu_item *window_pick = (menu_item *)0;
+    menu_item *window_pick = nullptr;
     tmpwin = create_nhwindow(NHW_MENU);
     start_menu(tmpwin);
     any.a_char = 's';
@@ -2698,7 +2698,7 @@ STATIC_OVL bool special_handling(const char *optname, bool setinitial,
     retval = TRUE;
   } else if (!strcmp("align_message", optname) ||
              !strcmp("align_status", optname)) {
-    menu_item *window_pick = (menu_item *)0;
+    menu_item *window_pick = nullptr;
     char abuf[BUFSZ];
     bool msg = (*(optname + 6) == 'm');
 
@@ -2730,7 +2730,7 @@ STATIC_OVL bool special_handling(const char *optname, bool setinitial,
     static const char *npchoices[3] = {"0 (off)", "1 (on)",
                                        "2 (on, DOS compatible)"};
     const char *npletters = "abc";
-    menu_item *mode_pick = (menu_item *)0;
+    menu_item *mode_pick = nullptr;
 
     tmpwin = create_nhwindow(NHW_MENU);
     start_menu(tmpwin);
@@ -2763,7 +2763,7 @@ STATIC_OVL bool special_handling(const char *optname, bool setinitial,
 #ifdef SORTLOOT
   } else if (!strcmp("sortloot", optname)) {
     const char *sortl_name;
-    menu_item *sortl_pick = (menu_item *)0;
+    menu_item *sortl_pick = nullptr;
     tmpwin = create_nhwindow(NHW_MENU);
     start_menu(tmpwin);
     for (i = 0; i < SIZE(sortltype); i++) {
@@ -2783,7 +2783,7 @@ STATIC_OVL bool special_handling(const char *optname, bool setinitial,
   } else if (!strcmp("menu_headings", optname)) {
     static const char *mhchoices[3] = {"bold", "inverse", "underline"};
     const char *npletters = "biu";
-    menu_item *mode_pick = (menu_item *)0;
+    menu_item *mode_pick = nullptr;
 
     tmpwin = create_nhwindow(NHW_MENU);
     start_menu(tmpwin);
@@ -2815,7 +2815,7 @@ STATIC_OVL bool special_handling(const char *optname, bool setinitial,
     bool retval;
     int pick_cnt, pick_idx, opt_idx, pass;
     int totalapes = 0, numapes[2] = {0, 0};
-    menu_item *pick_list = (menu_item *)0;
+    menu_item *pick_list = nullptr;
     anything any;
     char apebuf[BUFSZ];
     struct autopickup_exception *ape;
@@ -2844,7 +2844,7 @@ STATIC_OVL bool special_handling(const char *optname, bool setinitial,
         opt_idx = pick_list[pick_idx].item.a_int - 1;
       }
       free((genericptr_t)pick_list);
-      pick_list = (menu_item *)0;
+      pick_list = nullptr;
     }
     destroy_nhwindow(tmpwin);
     if (pick_cnt < 1)
@@ -2890,7 +2890,7 @@ STATIC_OVL bool special_handling(const char *optname, bool setinitial,
               (struct autopickup_exception *)pick_list[pick_idx].item.a_void);
       }
       free((genericptr_t)pick_list);
-      pick_list = (menu_item *)0;
+      pick_list = nullptr;
       destroy_nhwindow(tmpwin);
       goto ape_again;
     }
@@ -3215,7 +3215,7 @@ int dotogglepickup() {
 #ifdef AUTOPICKUP_EXCEPTIONS
             (iflags.autopickup_exceptions[AP_LEAVE] ||
              iflags.autopickup_exceptions[AP_GRAB])
-                ? ((count_ape_maps((int *)0, (int *)0) == 1)
+                ? ((count_ape_maps(nullptr, nullptr) == 1)
                        ? ", with one exception"
                        : ", with some exceptions")
                 :
@@ -3323,16 +3323,16 @@ void free_autopickup_exceptions() {
 static const char *opt_intro[] = {
     "", "                 NetHack Options Help:", "",
 #define CONFIG_SLOT 3 /* fill in next value at run-time */
-    (char *)0, "or use `NETHACKOPTIONS=\"<options>\"' in your environment",
+    nullptr, "or use `NETHACKOPTIONS=\"<options>\"' in your environment",
     "(<options> is a list of options separated by commas)",
     "or press \"O\" while playing and use the menu.", "",
     "Boolean options (which can be negated by prefixing them with '!' or "
     "\"no\"):",
-    (char *)0};
+    nullptr};
 
 static const char *opt_epilog[] = {
     "", "Some of the options can be set only before the game is started; those",
-    "items will not be selectable in the 'O' command's menu.", (char *)0};
+    "items will not be selectable in the 'O' command's menu.", nullptr};
 
 void option_help() {
   char buf[BUFSZ], buf2[BUFSZ];
@@ -3516,7 +3516,7 @@ nonew:
  */
 int choose_classes_menu(const char *prompt, int category, bool way,
                         char *class_list, char *class_select) {
-  menu_item *pick_list = (menu_item *)0;
+  menu_item *pick_list = nullptr;
   winid win;
   anything any;
   char buf[BUFSZ];
@@ -3524,7 +3524,7 @@ int choose_classes_menu(const char *prompt, int category, bool way,
   int ret;
   int next_accelerator, accelerator;
 
-  if (class_list == (char *)0 || class_select == (char *)0)
+  if (class_list == nullptr || class_select == nullptr)
     return 0;
   accelerator = 0;
   next_accelerator = 'a';
@@ -3535,7 +3535,7 @@ int choose_classes_menu(const char *prompt, int category, bool way,
     const char *text;
     bool selected;
 
-    text = (char *)0;
+    text = nullptr;
     selected = FALSE;
     switch (category) {
       case 0:
@@ -3619,13 +3619,13 @@ struct wc_Opt wc_options[] = {{"ascii_map", WC_ASCII_MAP},
                               {"vary_msgcount", WC_VARY_MSGCOUNT},
                               {"windowcolors", WC_WINDOWCOLORS},
                               {"mouse_support", WC_MOUSE_SUPPORT},
-                              {(char *)0, 0L}};
+                              {nullptr, 0L}};
 
 struct wc_Opt wc2_options[] = {{"fullscreen", WC2_FULLSCREEN},
                                {"softkeyboard", WC2_SOFTKEYBOARD},
                                {"wraptext", WC2_WRAPTEXT},
                                {"use_darkgray", WC2_DARKGRAY},
-                               {(char *)0, 0L}};
+                               {nullptr, 0L}};
 
 /*
  * If a port wants to change or ensure that the
@@ -3793,7 +3793,7 @@ STATIC_OVL int wc_set_window_colors(char *op) {
   strcpy(buf, op);
   newop = mungspaces(buf);
   while (newop && *newop) {
-    wn = tfg = tbg = (char *)0;
+    wn = tfg = tbg = nullptr;
 
     /* until first non-space in case there's leading spaces - before colorname*/
     while (*newop && isspace(*newop))

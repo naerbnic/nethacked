@@ -36,7 +36,7 @@ void raw_panic(char const *str, ...) {
  * systems, but they should either use yacc or get a real alloca routine.
  */
 long *alloca(cnt) unsigned cnt;
-{ return cnt ? alloc(cnt) : (long *)0; }
+{ return cnt ? alloc(cnt) : nullptr; }
 #endif
 
 /*panic.c*/

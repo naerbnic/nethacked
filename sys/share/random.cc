@@ -237,7 +237,7 @@ char *initstate(unsigned seed,    // seed for R. N. G.
           "initstate: not enough state (%d bytes) with which to do "
           "jack; ignored.",
           n);
-      return (char *)0;
+      return nullptr;
     }
     rand_type = TYPE_0;
     rand_deg = DEG_0;

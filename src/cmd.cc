@@ -316,7 +316,7 @@ int doextlist() {
 /* here after # - now show pick-list of possible commands */
 int extcmd_via_menu() {
   const struct ext_func_tab *efp;
-  menu_item *pick_list = (menu_item *)0;
+  menu_item *pick_list = nullptr;
   winid win;
   anything any;
   const struct ext_func_tab *choices[MAX_EXT_CMD];
@@ -355,7 +355,7 @@ int extcmd_via_menu() {
     nchoices = i;
     /* if we're down to one, we have our selection so get out of here */
     if (nchoices == 1) {
-      for (i = 0; extcmdlist[i].ef_txt != (char *)0; i++)
+      for (i = 0; extcmdlist[i].ef_txt != nullptr; i++)
         if (!strncmpi(extcmdlist[i].ef_txt, cbuf, matchlevel)) {
           ret = i;
           break;
@@ -444,7 +444,7 @@ STATIC_PTR int domonability() {
     return domindblast();
   else if (player.umonnum == PM_GREMLIN) {
     if (IS_FOUNTAIN(levl[player.ux][player.uy].typ)) {
-      if (split_mon(&youmonst, (Monster *)0))
+      if (split_mon(&youmonst, nullptr))
         dryup(player.ux, player.uy, TRUE);
     } else
       There("is no fountain here.");
@@ -554,7 +554,7 @@ STATIC_PTR int wiz_genesis() {
 /* ^O command - display dungeon layout */
 STATIC_PTR int wiz_where() {
   if (wizard)
-    (void)print_dungeon(FALSE, (schar *)0, (xchar *)0);
+    (void)print_dungeon(FALSE, nullptr, nullptr);
   else
     pline("Unavailable command '^O'.");
   return 0;
@@ -932,7 +932,7 @@ void enlightenment(int final) {
   }
 #if defined(WIZARD) && defined(STEED)
   if (Wounded_legs && player.usteed && wizard) {
-    strcpy(buf, x_monnam(player.usteed, ARTICLE_YOUR, (char *)0,
+    strcpy(buf, x_monnam(player.usteed, ARTICLE_YOUR, nullptr,
                          SUPPRESS_SADDLE | SUPPRESS_HALLUCINATION, FALSE));
     *buf = highc(*buf);
     enl_msg(buf, " has", " had", " wounded legs");
@@ -1173,7 +1173,7 @@ void enlightenment(int final) {
       p = "survived after being killed ";
       switch (player.umortality) {
         case 0:
-          p = !final ? (char *)0 : "survived";
+          p = !final ? nullptr : "survived";
           break;
         case 1:
           strcpy(buf, "once");
@@ -1323,7 +1323,7 @@ void dump_enlightenment(int final) {
   }
 #ifdef STEED
   if (Wounded_legs && player.usteed) {
-    strcpy(buf, x_monnam(player.usteed, ARTICLE_YOUR, (char *)0,
+    strcpy(buf, x_monnam(player.usteed, ARTICLE_YOUR, nullptr,
                          SUPPRESS_SADDLE | SUPPRESS_HALLUCINATION, FALSE));
     *buf = highc(*buf);
     strcat(buf, " had wounded legs");
@@ -2050,28 +2050,28 @@ struct ext_func_tab extcmdlist[] = {
    * There must be a blank entry here for every entry in the table
    * below.
    */
-  {(char *)0, (char *)0, donull, TRUE},
-  {(char *)0, (char *)0, donull, TRUE},
+  {nullptr, nullptr, donull, TRUE},
+  {nullptr, nullptr, donull, TRUE},
 #ifdef DEBUG_MIGRATING_MONS
-  {(char *)0, (char *)0, donull, TRUE},
+  {nullptr, nullptr, donull, TRUE},
 #endif
-  {(char *)0, (char *)0, donull, TRUE},
-  {(char *)0, (char *)0, donull, TRUE},
-  {(char *)0, (char *)0, donull, TRUE},
+  {nullptr, nullptr, donull, TRUE},
+  {nullptr, nullptr, donull, TRUE},
+  {nullptr, nullptr, donull, TRUE},
 #ifdef PORT_DEBUG
-  {(char *)0, (char *)0, donull, TRUE},
+  {nullptr, nullptr, donull, TRUE},
 #endif
-  {(char *)0, (char *)0, donull, TRUE},
-  {(char *)0, (char *)0, donull, TRUE}, /* showkills (showborn patch) */
-  {(char *)0, (char *)0, donull, TRUE},
-  {(char *)0, (char *)0, donull, TRUE},
-  {(char *)0, (char *)0, donull, TRUE},
+  {nullptr, nullptr, donull, TRUE},
+  {nullptr, nullptr, donull, TRUE}, /* showkills (showborn patch) */
+  {nullptr, nullptr, donull, TRUE},
+  {nullptr, nullptr, donull, TRUE},
+  {nullptr, nullptr, donull, TRUE},
 #ifdef DEBUG
-  {(char *)0, (char *)0, donull, TRUE},
+  {nullptr, nullptr, donull, TRUE},
 #endif
-  {(char *)0, (char *)0, donull, TRUE},
+  {nullptr, nullptr, donull, TRUE},
 #endif
-  {(char *)0, (char *)0, donull, TRUE} /* sentinel */
+  {nullptr, nullptr, donull, TRUE} /* sentinel */
 };
 
 #if defined(WIZARD)
@@ -2096,7 +2096,7 @@ static const struct ext_func_tab debug_extcmdlist[] = {
     {"wizdebug", "wizard debug command", wiz_debug_cmd, TRUE},
 #endif
     {"wmode", "show wall modes", wiz_show_wmodes, TRUE},
-    {(char *)0, (char *)0, donull, TRUE}};
+    {nullptr, nullptr, donull, TRUE}};
 
 /*
  * Insert debug commands into the extended command list.  This function
@@ -2293,7 +2293,7 @@ static int wiz_migrate_mons() {
     ptr = rndmonst();
     mtmp = makemon(ptr, 0, 0, NO_MM_FLAGS);
     if (mtmp)
-      migrate_to_level(mtmp, ledger_no(&tolevel), MIGR_RANDOM, (coord *)0);
+      migrate_to_level(mtmp, ledger_no(&tolevel), MIGR_RANDOM, nullptr);
     mcount--;
   }
   return 0;
@@ -2321,7 +2321,7 @@ void rhack(char *cmd) {
   if (*cmd == DOAGAIN && !in_doagain && saveq[0]) {
     in_doagain = TRUE;
     stail = 0;
-    rhack((char *)0); /* read and execute command */
+    rhack(nullptr); /* read and execute command */
     in_doagain = FALSE;
     return;
   }
@@ -2602,7 +2602,7 @@ int getdir(const char *s) {
     dirsym = readchar();
   else
 #endif
-    dirsym = yn_function((s && *s != '^') ? s : "In what direction?", (char *)0,
+    dirsym = yn_function((s && *s != '^') ? s : "In what direction?", nullptr,
                          '\0');
 #ifdef REDO
   savech(dirsym);
@@ -2878,7 +2878,7 @@ STATIC_OVL char *parse() {
     multi--;
     save_cm = in_line;
   } else {
-    save_cm = (char *)0;
+    save_cm = nullptr;
   }
   in_line[0] = foo;
   in_line[1] = '\0';
@@ -2905,7 +2905,7 @@ static void end_of_input() {
   if (!program_state.done_hup++ && program_state.something_worth_saving)
     (void)dosave0();
 #endif
-  exit_nhwindows((char *)0);
+  exit_nhwindows(nullptr);
   clearlocks();
   terminate(EXIT_SUCCESS);
 }
@@ -2990,7 +2990,7 @@ int wiz_port_debug() {
     char *menutext;
     void (*fn)();
   } menu_selections[] = {
-        {(char *)0, (void (*)())0} /* array terminator */
+        {nullptr, (void (*)())0} /* array terminator */
     };
 
   num_menu_selections = SIZE(menu_selections) - 1;

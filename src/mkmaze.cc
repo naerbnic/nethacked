@@ -371,7 +371,7 @@ STATIC_OVL void fixup_special() {
 
   /* place dungeon branch if not placed above */
   if (!added_branch && Is_branchlev(&player.uz)) {
-    place_lregion(0, 0, 0, 0, 0, 0, 0, 0, LR_BRANCH, (d_level *)0);
+    place_lregion(0, 0, 0, 0, 0, 0, 0, 0, LR_BRANCH, nullptr);
   }
 
   /* KMH -- Sokoban levels */
@@ -387,7 +387,7 @@ STATIC_OVL void fixup_special() {
     for (tryct = rnd(4); tryct; tryct--) {
       x = somex(croom);
       y = somey(croom);
-      if (goodpos(x, y, (Monster *)0, 0)) {
+      if (goodpos(x, y, nullptr, 0)) {
         otmp = NewTopTenObject(STATUE, x, y);
         while (otmp && (poly_when_stoned(&mons[otmp->corpsenm]) ||
                         pm_resistance(&mons[otmp->corpsenm], MR_STONE))) {
@@ -400,7 +400,7 @@ STATIC_OVL void fixup_special() {
     if (rn2(2))
       otmp = NewTopTenObject(STATUE, somex(croom), somey(croom));
     else /* Medusa statues don't contain books */
-      otmp = MakeCorpseOrStatue(STATUE, (Monster *)0, (MonsterType *)0,
+      otmp = MakeCorpseOrStatue(STATUE, nullptr, nullptr,
                                 somex(croom), somey(croom), FALSE);
     if (otmp) {
       while (pm_resistance(&mons[otmp->corpsenm], MR_STONE) ||
@@ -613,14 +613,14 @@ void makemaz(const char *s) {
   }
   for (x = rn1(5, 7); x; x--) {
     mazexy(&mm);
-    (void)makemon((MonsterType *)0, mm.x, mm.y, NO_MM_FLAGS);
+    (void)makemon(nullptr, mm.x, mm.y, NO_MM_FLAGS);
   }
   for (x = rn1(6, 7); x; x--) {
     mazexy(&mm);
     (void)MakeGold(0L, mm.x, mm.y);
   }
   for (x = rn1(6, 7); x; x--)
-    mktrap(0, 1, (struct mkroom *)0, (coord *)0);
+    mktrap(0, 1, (struct mkroom *)0, nullptr);
 }
 
 void walkfrom(int x, int y) {
@@ -888,7 +888,7 @@ void movebubbles() {
 
           /* pick up objects, monsters, hero, and traps */
           if (OBJ_AT(x, y)) {
-            Object *olist = (Object *)0, *otmp;
+            Object *olist = nullptr, *otmp;
             struct container *cons =
                 (struct container *)alloc(sizeof(struct container));
 

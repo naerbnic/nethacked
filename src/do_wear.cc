@@ -642,11 +642,11 @@ void Ring_on(Object *obj) {
   int old_attrib, which;
 
   if (obj == uwep)
-    setuwep((Object *)0);
+    setuwep(nullptr);
   if (obj == uswapwep)
-    setuswapwep((Object *)0);
+    setuswapwep(nullptr);
   if (obj == uquiver)
-    setuqwep((Object *)0);
+    setuqwep(nullptr);
 
   /* only mask out W_RING when we don't have both
      left and right rings of the same type */
@@ -856,11 +856,11 @@ void Blindf_on(Object *otmp) {
   bool already_blind = Blind, changed = FALSE;
 
   if (otmp == uwep)
-    setuwep((Object *)0);
+    setuwep(nullptr);
   if (otmp == uswapwep)
-    setuswapwep((Object *)0);
+    setuswapwep(nullptr);
   if (otmp == uquiver)
-    setuqwep((Object *)0);
+    setuqwep(nullptr);
   setworn(otmp, W_TOOL);
   on_msg(otmp);
 
@@ -981,7 +981,7 @@ void cancel_don() {
   cancelled_don = (afternmv == Boots_on || afternmv == Helmet_on ||
                    afternmv == Gloves_on || afternmv == Armor_on);
   afternmv = 0;
-  nomovemsg = (char *)0;
+  nomovemsg = nullptr;
   multi = 0;
   todelay = 0;
   taking_off = 0L;
@@ -1400,9 +1400,9 @@ int dowear() {
   if (otmp == uwep)
     setuwep(nullptr);
   if (otmp == uswapwep)
-    setuswapwep((Object *)0);
+    setuswapwep(nullptr);
   if (otmp == uquiver)
-    setuqwep((Object *)0);
+    setuqwep(nullptr);
   setworn(otmp, mask);
   delay = -objects[otmp->otyp].oc_delay;
   if (delay) {
@@ -1455,9 +1455,9 @@ int doputon() {
   if (otmp == uwep)
     setuwep(nullptr);
   if (otmp == uswapwep)
-    setuswapwep((Object *)0);
+    setuswapwep(nullptr);
   if (otmp == uquiver)
-    setuqwep((Object *)0);
+    setuqwep(nullptr);
   if (otmp->oclass == RING_CLASS || otmp->otyp == MEAT_RING) {
     if (nolimbs(youmonst.data)) {
       You("cannot make the ring stick to your body.");
@@ -1554,7 +1554,7 @@ int doputon() {
     return (1);
   }
   if (is_worn(otmp))
-    prinv((char *)0, otmp, 0L);
+    prinv(nullptr, otmp, 0L);
   return (1);
 }
 
@@ -1858,16 +1858,16 @@ STATIC_OVL Object *do_takeoff() {
 
   if (taking_off == W_WEP) {
     if (!cursed(uwep)) {
-      setuwep((Object *)0);
+      setuwep(nullptr);
       You("are empty %s.", body_part(HANDED));
       player.twoweap = FALSE;
     }
   } else if (taking_off == W_SWAPWEP) {
-    setuswapwep((Object *)0);
+    setuswapwep(nullptr);
     You("no longer have a second weapon readied.");
     player.twoweap = FALSE;
   } else if (taking_off == W_QUIVER) {
-    setuqwep((Object *)0);
+    setuqwep(nullptr);
     You("no longer have ammunition readied.");
   } else if (taking_off == WORN_ARMOR) {
     otmp = uarm;
@@ -1945,7 +1945,7 @@ int take_off() {
       break;
     }
 
-  otmp = (Object *)0;
+  otmp = nullptr;
   todelay = 0;
 
   if (taking_off == 0L) {
@@ -2033,7 +2033,7 @@ int doddoremarm() {
 
   add_valid_menu_class(0); /* reset */
   if (flags.menu_style != MENU_TRADITIONAL ||
-      (result = ggetobj("take off", select_off, 0, FALSE, (unsigned *)0)) < -1)
+      (result = ggetobj("take off", select_off, 0, FALSE, nullptr)) < -1)
     result = menu_remarm(result);
 
   if (takeoff_mask) {
@@ -2074,7 +2074,7 @@ STATIC_OVL int menu_remarm(int retry) {
     free((genericptr_t)pick_list);
   } else if (flags.menu_style == MENU_COMBINATION) {
     all_worn_categories = FALSE;
-    if (ggetobj("take off", select_off, 0, TRUE, (unsigned *)0) == -2)
+    if (ggetobj("take off", select_off, 0, TRUE, nullptr) == -2)
       all_worn_categories = TRUE;
   }
 

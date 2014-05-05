@@ -217,7 +217,7 @@ Monster *find_mid(unsigned nid, unsigned fmflags) {
     for (mtmp = mydogs; mtmp; mtmp = mtmp->nmon)
       if (mtmp->m_id == nid)
         return mtmp;
-  return (Monster *)0;
+  return nullptr;
 }
 
 /* Save all light sources of the given range. */
@@ -400,7 +400,7 @@ void obj_move_light_source(Object *src, Object *dest) {
 }
 
 /* return true if there exist any light sources */
-bool any_light_source() { return light_base != (light_source *)0; }
+bool any_light_source() { return light_base != nullptr; }
 
 /*
  * Snuff an object light source if at (x,y).  This currently works

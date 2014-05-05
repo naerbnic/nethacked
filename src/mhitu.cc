@@ -1013,7 +1013,7 @@ STATIC_OVL int hitmu(Monster *mtmp, struct Attack *mattk) {
       }
       break;
     case AD_BLND:
-      if (can_blnd(mtmp, &youmonst, mattk->aatyp, (Object *)0)) {
+      if (can_blnd(mtmp, &youmonst, mattk->aatyp, nullptr)) {
         if (!Blind)
           pline("%s blinds you!", Monnam(mtmp));
         make_blinded(Blinded + (long)dmg, FALSE);
@@ -1394,7 +1394,7 @@ STATIC_OVL int hitmu(Monster *mtmp, struct Attack *mattk) {
         if (!rn2(3))
           exercise(A_CON, TRUE);
         if (Sick)
-          make_sick(0L, (char *)0, FALSE, SICK_ALL);
+          make_sick(0L, nullptr, FALSE, SICK_ALL);
         flags.botl = 1;
         if (goaway) {
           mongone(mtmp);
@@ -1757,7 +1757,7 @@ STATIC_OVL int gulpmu(Monster *mtmp, struct Attack *mattk) {
       }
       break;
     case AD_BLND:
-      if (can_blnd(mtmp, &youmonst, mattk->aatyp, (Object *)0)) {
+      if (can_blnd(mtmp, &youmonst, mattk->aatyp, nullptr)) {
         if (!Blind) {
           You_cant("see in here!");
           make_blinded((long)tmp, FALSE);
@@ -1941,7 +1941,7 @@ int gazemu(Monster *mtmp, struct Attack *mattk) {
           (void)ureflects("%s gaze is reflected by your %s.",
                           s_suffix(Monnam(mtmp)));
         if (mon_reflects(mtmp, !useeit
-                                   ? (char *)0
+                                   ? nullptr
                                    : "The gaze is reflected away by %s %s!"))
           break;
         if (!m_canseeu(mtmp)) { /* probably you're invisible */
@@ -2263,7 +2263,7 @@ int doseduce(Monster *mon) {
       } else
         impossible("ring replacement");
       Ring_on(ring);
-      prinv((char *)0, ring, 0L);
+      prinv(nullptr, ring, 0L);
     }
   }
 
@@ -2663,9 +2663,9 @@ Monster *cloneu() {
   int mndx = monsndx(youmonst.data);
 
   if (player.mh <= 1)
-    return (Monster *)0;
+    return nullptr;
   if (mvitals[mndx].mvflags & G_EXTINCT)
-    return (Monster *)0;
+    return nullptr;
   mon = makemon(youmonst.data, player.ux, player.uy, NO_MINVENT | MM_EDOG);
   mon = christen_monst(mon, plname);
   initedog(mon);

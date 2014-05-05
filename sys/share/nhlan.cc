@@ -58,7 +58,7 @@ char *lan_username() {
     strcpy(lusername, lu);
     return lusername;
   } else
-    return (char *)0;
+    return nullptr;
 }
 
 #ifdef LAN_MAIL

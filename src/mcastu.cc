@@ -522,7 +522,7 @@ void cast_cleric_spell(Monster *mtmp, int dmg, int spellnum) {
       /* Try for insects, and if there are none
          left, go for (sticks to) snakes.  -3. */
       MonsterType *pm = mkclass(S_ANT, 0);
-      Monster *mtmp2 = (Monster *)0;
+      Monster *mtmp2 = nullptr;
       char let = (pm ? S_ANT : S_SNAKE);
       bool success;
       int i;

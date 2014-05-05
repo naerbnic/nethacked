@@ -367,10 +367,10 @@ char *strstri(const char *str, const char *sub) {
 
   /* evaluate the info we've collected */
   if (k < 0)
-    return (char *)0;          /* sub longer than str, so can't match */
+    return nullptr;          /* sub longer than str, so can't match */
   for (i = 0; i < TABSIZ; i++) /* does sub have more 'x's than str? */
     if (tsub[i] > tstr[i])
-      return (char *)0; /* match not possible */
+      return nullptr; /* match not possible */
 
   /* now actually compare the substring repeatedly to parts of the string */
   for (i = 0; i <= k; i++) {
@@ -380,7 +380,7 @@ char *strstri(const char *str, const char *sub) {
       if (!*s2)
         return (char *)&str[i]; /* full match */
   }
-  return (char *)0; /* not found */
+  return nullptr; /* not found */
 }
 #endif /* STRSTRI */
 
@@ -429,7 +429,7 @@ void setrandom() {
  * routine names into one via #defines is even more confusing
  */
 #ifdef RANDOM /* srandom() from sys/share/random.c */
-  srandom((unsigned int)time((time_t *)0));
+  srandom((unsigned int)time(nullptr));
 #else
 #if defined(__APPLE__) || defined(BSD) || defined(LINUX) || defined(ULTRIX) || \
     defined(CYGWIN32) /* system srandom() */
@@ -437,12 +437,12 @@ void setrandom() {
 #if defined(SUNOS4)
   (void)
 #endif
-      srandom((int)time((long *)0));
+      srandom((int)time(nullptr));
 #else
-  srandom((int)time((time_t *)0));
+  srandom((int)time(nullptr));
 #endif
 #else
-  srand48((long)time((time_t *)0));
+  srand48((long)time(nullptr));
 #endif
 #endif
 }

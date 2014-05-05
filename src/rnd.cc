@@ -26,7 +26,7 @@ void check_reseed() {
     if (fptr)
       fread((void *)rnd, sizeof(int), 2, fptr);
     fclose(fptr);
-    srandom((int)(time((time_t *)0)) + rnd[0]);
+    srandom((int)(time(nullptr)) + rnd[0]);
     reseed_period = (rnd[1] % 700) + 10;
     reseed_count = 0;
   }

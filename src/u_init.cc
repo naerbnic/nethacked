@@ -581,7 +581,7 @@ void u_init() {
   /* zero u, including pointer values --
    * necessary when aborting from a failed restore */
   (void)memset((genericptr_t) & player, 0, sizeof(player));
-  player.ustuck = (Monster *)0;
+  player.ustuck = nullptr;
 
 #if 0 /* documentation of more zero values as desirable */
 	player.usick_cause[0] = 0;
@@ -1118,7 +1118,7 @@ STATIC_OVL void ini_inv(struct trobj *trop) {
       if (is_shield(obj) && !uarms) {
         setworn(obj, W_ARMS);
         if (uswapwep)
-          setuswapwep((Object *)0);
+          setuswapwep(nullptr);
       } else if (is_helmet(obj) && !uarmh)
         setworn(obj, W_ARMH);
       else if (is_gloves(obj) && !uarmg)

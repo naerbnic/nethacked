@@ -166,7 +166,7 @@ STATIC_OVL Monster *other_mon_has_arti(Monster *mtmp, short otyp) {
       if (mon_has_arti(mtmp2, otyp))
         return (mtmp2);
 
-  return ((Monster *)0);
+  return (nullptr);
 }
 
 STATIC_OVL Object *on_ground(short otyp) {
@@ -399,7 +399,7 @@ int nasty(Monster *mcast) {
   int count = 0;
 
   if (!rn2(10) && Inhell) {
-    msummon((Monster *)0); /* summons like WoY */
+    msummon(nullptr); /* summons like WoY */
     count++;
   } else {
     tmp = (player.ulevel > 3) ? player.ulevel / 3 : 1; /* just in case -- rph */
@@ -425,7 +425,7 @@ int nasty(Monster *mcast) {
           mtmp->msleeping = mtmp->mpeaceful = mtmp->mtame = 0;
           set_malign(mtmp);
         } else /* GENOD? */
-          mtmp = makemon((MonsterType *)0, bypos.x, bypos.y, NO_MM_FLAGS);
+          mtmp = makemon(nullptr, bypos.x, bypos.y, NO_MM_FLAGS);
         if (mtmp && (mtmp->data->maligntyp == 0 ||
                      sgn(mtmp->data->maligntyp) == sgn(castalign))) {
           count++;
@@ -502,7 +502,7 @@ void intervene() {
       aggravate();
       break;
     case 4:
-      (void)nasty((Monster *)0);
+      (void)nasty(nullptr);
       break;
     case 5:
       resurrect();

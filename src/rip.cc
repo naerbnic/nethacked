@@ -83,7 +83,7 @@ void genl_outrip(winid tmpwin, int how) {
     dp[x] = (char *)alloc((unsigned int)(strlen(rip_txt[x]) + 1));
     strcpy(dp[x], rip_txt[x]);
   }
-  dp[x] = (char *)0;
+  dp[x] = nullptr;
 
   /* Put name on stone */
   sprintf(buf, "%s", plname);

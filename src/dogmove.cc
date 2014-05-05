@@ -198,11 +198,11 @@ int dog_eat(Monster *mtmp, Object *obj, int x, int y, bool devour) {
     delobj(obj);
 
   if (poly) {
-    (void)newcham(mtmp, (MonsterType *)0, FALSE, cansee(mtmp->mx, mtmp->my));
+    (void)newcham(mtmp, nullptr, FALSE, cansee(mtmp->mx, mtmp->my));
   }
   /* limit "instant" growth to prevent potential abuse */
   if (grow && (int)mtmp->m_lev < (int)mtmp->data->mlevel + 15) {
-    if (!grow_up(mtmp, (Monster *)0))
+    if (!grow_up(mtmp, nullptr))
       return 2;
   }
   if (heal)
@@ -474,7 +474,7 @@ int dog_move(Monster *mtmp, int after) {
   int appr, whappr, udist;
   int i, j, k;
   struct edog *edog = EDOG(mtmp);
-  Object *obj = (Object *)0;
+  Object *obj = nullptr;
   xchar otyp;
   bool has_edog, cursemsg[9], do_eat = FALSE;
   xchar nix, niy; /* position mtmp is (considering) moving to */

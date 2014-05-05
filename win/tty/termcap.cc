@@ -79,7 +79,7 @@ char *hilites[CLR_MAX]; /* terminal escapes for the various colors */
 #endif
 
 #ifdef OVLB
-static char *KS = (char *)0, *KE = (char *)0; /* keypad sequences */
+static char *KS = nullptr, *KE = nullptr; /* keypad sequences */
 static char nullstr[] = "";
 #endif /* OVLB */
 
@@ -213,7 +213,7 @@ void tty_startup(int *wid, int *hgt) {
 #endif
 
 #ifdef MINIMAL_TERM
-  HO = (char *)0;
+  HO = nullptr;
 #else
   HO = Tgetstr("ho");
 #endif
@@ -767,8 +767,8 @@ static void init_hilite() {
   char *setf, *scratch;
   int length_md;
 
-  if (tgetnum("Co") < 8 || ((setf = tgetstr("AF", (char **)0)) == (char *)0 &&
-                            (setf = tgetstr("Sf", (char **)0)) == (char *)0)) {
+  if (tgetnum("Co") < 8 || ((setf = tgetstr("AF", (char **)0)) == nullptr &&
+                            (setf = tgetstr("Sf", (char **)0)) == nullptr)) {
     /* Fallback when colors not available
      * It's arbitrary to collapse all colors except gray
      * together, but that's what the previous code did.
@@ -960,7 +960,7 @@ static void init_hilite() {
 
   for (c = 0; c < SIZE(hilites); c++)
     hilites[c] = nh_HI;
-  hilites[CLR_GRAY] = hilites[NO_COLOR] = (char *)0;
+  hilites[CLR_GRAY] = hilites[NO_COLOR] = nullptr;
 
   analyze_seq(nh_HI, &hi_foreg, &hi_backg);
   analyze_seq(nh_HE, &foreg, &backg);
@@ -968,7 +968,7 @@ static void init_hilite() {
   for (c = 0; c < SIZE(hilites); c++) /* avoid invisibility */
     if ((backg & ~BRIGHT) != c) {
       if (c == foreg)
-        hilites[c] = (char *)0;
+        hilites[c] = nullptr;
       else if (c != hi_foreg || backg != hi_backg) {
         hilites[c] = (char *)alloc(sizeof("\033[%d;3%d;4%dm"));
         sprintf(hilites[c], "\033[%d", !!(c & BRIGHT));
@@ -1057,7 +1057,7 @@ void term_end_color() { xputs(nh_HE); }
 
 void term_start_color(int color) { xputs(hilites[color]); }
 
-int has_color(int color) { return hilites[color] != (char *)0; }
+int has_color(int color) { return hilites[color] != nullptr; }
 
 #endif /* TEXTCOLOR */
 

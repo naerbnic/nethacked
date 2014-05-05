@@ -252,13 +252,13 @@ make_bones:
     otmp = MakeNamedCorpseOrStatue(STATUE, &mons[player.umonnum], player.ux,
                                    player.uy, plname);
 
-    drop_upon_death((Monster *)0, otmp);
+    drop_upon_death(nullptr, otmp);
     if (!otmp)
       return; /* couldn't make statue */
-    mtmp = (Monster *)0;
+    mtmp = nullptr;
   } else if (player.ugrave_arise < LOW_PM) {
     /* drop everything */
-    drop_upon_death((Monster *)0, nullptr);
+    drop_upon_death(nullptr, nullptr);
     /* trick makemon() into allowing monster creation
      * on your location
      */
@@ -277,7 +277,7 @@ make_bones:
         makemon(&mons[player.ugrave_arise], player.ux, player.uy, NO_MM_FLAGS);
     in_mklev = FALSE;
     if (!mtmp) {
-      drop_upon_death((Monster *)0, nullptr);
+      drop_upon_death(nullptr, nullptr);
       return;
     }
     mtmp = christen_monst(mtmp, plname);

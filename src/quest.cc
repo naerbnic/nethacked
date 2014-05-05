@@ -111,7 +111,7 @@ STATIC_OVL int is_pure(bool talk) {
     } else if (player.ualign.record < MIN_QUEST_ALIGN) {
       You("are currently %d and require %d.", player.ualign.record,
           MIN_QUEST_ALIGN);
-      if (yn_function("adjust?", (char *)0, 'y') == 'y')
+      if (yn_function("adjust?", nullptr, 'y') == 'y')
         player.ualign.record = MIN_QUEST_ALIGN;
     }
   }
@@ -140,7 +140,7 @@ STATIC_OVL void expulsion(bool seal) {
   dest = (br->end1.dnum == player.uz.dnum) ? &br->end2 : &br->end1;
   portal_flag = player.uevent.qexpelled ? 0 : /* returned via artifact? */
                     !seal ? 1 : -1;
-  schedule_goto(dest, FALSE, FALSE, portal_flag, (char *)0, (char *)0);
+  schedule_goto(dest, FALSE, FALSE, portal_flag, nullptr, nullptr);
   if (seal) { /* remove the portal to the quest - sealing it off */
     int reexpelled = player.uevent.qexpelled;
     player.uevent.qexpelled = 1;

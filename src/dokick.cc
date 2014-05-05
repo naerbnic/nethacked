@@ -365,7 +365,7 @@ void container_impact_dmg(Object *obj) {
              *in_rooms(x, y, SHOPBASE) == *player.ushops);
 
   for (otmp = obj->cobj; otmp; otmp = otmp2) {
-    const char *result = (char *)0;
+    const char *result = nullptr;
 
     otmp2 = otmp->nobj;
     if (objects[otmp->otyp].oc_material == GLASS && otmp->oclass != GEM_CLASS &&
@@ -389,7 +389,7 @@ void container_impact_dmg(Object *obj) {
         useup(otmp);
       else {
         RemoveObjectFromStorage(otmp);
-        obfree(otmp, (Object *)0);
+        obfree(otmp, nullptr);
       }
     }
   }
@@ -708,7 +708,7 @@ int dokick() {
     return 0;
   }
 
-  if (!getdir((char *)0))
+  if (!getdir(nullptr))
     return (0);
   if (!player.dx && !player.dy)
     return (0);
@@ -1211,7 +1211,7 @@ void impact_drop(Object *missile, xchar x, xchar y, xchar dlev) {
   costly = costly_spot(x, y);
   price = debit = robbed = 0L;
   angry = FALSE;
-  shkp = (Monster *)0;
+  shkp = nullptr;
   /* if 'costly', we must keep a record of ESHK(shkp) before
    * it undergoes changes through the calls to stolen_value.
    * the angry bit must be reset, if needed, in this fn, since
@@ -1399,7 +1399,7 @@ bool ship_object(Object *otmp, xchar x, xchar y, bool shop_floor_obj) {
     }
     You_hear("a muffled %s.", result);
     RemoveObjectFromStorage(otmp);
-    obfree(otmp, (Object *)0);
+    obfree(otmp, nullptr);
     return TRUE;
   }
 

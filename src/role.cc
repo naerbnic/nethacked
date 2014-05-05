@@ -1525,12 +1525,12 @@ void plnamesuffix() {
   int i;
 
   /* Look for tokens delimited by '-' */
-  if ((eptr = index(plname, '-')) != (char *)0)
+  if ((eptr = index(plname, '-')) != nullptr)
     *eptr++ = '\0';
   while (eptr) {
     /* Isolate the next token */
     sptr = eptr;
-    if ((eptr = index(sptr, '-')) != (char *)0)
+    if ((eptr = index(sptr, '-')) != nullptr)
       *eptr++ = '\0';
 
     /* Try to match it to something */

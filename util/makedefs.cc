@@ -1666,7 +1666,7 @@ static char *tmpdup(const char *str) {
   static char buf[128];
 
   if (!str)
-    return (char *)0;
+    return nullptr;
   (void)strncpy(buf, str, 127);
   return buf;
 }

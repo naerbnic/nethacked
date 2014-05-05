@@ -162,7 +162,7 @@ void make_blinded(long xtime, bool talk) {
     /* clearing temporary blindness without toggling blindness */
     if (talk) {
       if (!haseyes(youmonst.data)) {
-        strange_feeling(nullptr, (char *)0);
+        strange_feeling(nullptr, nullptr);
       } else if (Blindfolded) {
         strcpy(buf, body_part(EYE));
         eyecnt = eyecount(youmonst.data);
@@ -188,7 +188,7 @@ void make_blinded(long xtime, bool talk) {
     /* setting temporary blindness without toggling blindness */
     if (talk) {
       if (!haseyes(youmonst.data)) {
-        strange_feeling(nullptr, (char *)0);
+        strange_feeling(nullptr, nullptr);
       } else if (Blindfolded) {
         strcpy(buf, body_part(EYE));
         eyecnt = eyecount(youmonst.data);
@@ -235,7 +235,7 @@ bool make_hallucinated(long xtime, bool talk, long mask) {
     /* clearing temporary hallucination without toggling vision */
     if (!changed && !HHallucination && old && talk) {
       if (!haseyes(youmonst.data)) {
-        strange_feeling(nullptr, (char *)0);
+        strange_feeling(nullptr, nullptr);
       } else if (Blind) {
         char buf[BUFSZ];
         int eyecnt = eyecount(youmonst.data);
@@ -443,7 +443,7 @@ int peffects(Object *otmp) {
       } else {
         if (otmp->blessed) {
           You_feel("full of awe.");
-          make_sick(0L, (char *)0, TRUE, SICK_ALL);
+          make_sick(0L, nullptr, TRUE, SICK_ALL);
           exercise(A_WIS, TRUE);
           exercise(A_CON, TRUE);
           if (player.ulycn >= LOW_PM)
@@ -888,7 +888,7 @@ void healup(int nhp, int nxtra, bool curesick, bool cureblind) {
   if (cureblind)
     make_blinded(0L, TRUE);
   if (curesick)
-    make_sick(0L, (char *)0, TRUE, SICK_ALL);
+    make_sick(0L, nullptr, TRUE, SICK_ALL);
   flags.botl = 1;
   return;
 }
@@ -1071,7 +1071,7 @@ void potionhit(Monster *mon, Object *obj, bool your_fault) {
           }
         } else if (mon->data == &mons[PM_GREMLIN]) {
           angermon = FALSE;
-          (void)split_mon(mon, (Monster *)0);
+          (void)split_mon(mon, nullptr);
         } else if (mon->data == &mons[PM_IRON_GOLEM]) {
           if (canseemon(mon))
             pline("%s rusts.", Monnam(mon));
@@ -1258,7 +1258,7 @@ void potionbreathe(Object *obj) {
       break;
     case POT_WATER:
       if (player.umonnum == PM_GREMLIN) {
-        (void)split_mon(&youmonst, (Monster *)0);
+        (void)split_mon(&youmonst, nullptr);
       } else if (player.ulycn >= LOW_PM) {
         /* vapor from [un]holy water will trigger
            transformation but won't cure lycanthropy */
@@ -1393,7 +1393,7 @@ bool get_wet(Object *obj) {
     return (TRUE);
 
   if (obj->greased) {
-    grease_protect(obj, (char *)0, &youmonst);
+    grease_protect(obj, nullptr, &youmonst);
     return (FALSE);
   }
   (void)Shk_Your(Your_buf, obj);
@@ -1625,7 +1625,7 @@ int dodip() {
       if (obj->otyp != save_otyp) {
         makeknown(POT_POLYMORPH);
         useup(potion);
-        prinv((char *)0, obj, 0L);
+        prinv(nullptr, obj, 0L);
         return 1;
       } else {
         pline("Nothing seems to happen.");
@@ -1751,7 +1751,7 @@ int dodip() {
         if (obj->oeroded == MAX_ERODE) {
           RemoveObjectFromStorage(obj);
           obfree(obj, nullptr);
-          obj = (Object *)0;
+          obj = nullptr;
         } else {
           /* we know it's carried */
           if (obj->unpaid) {

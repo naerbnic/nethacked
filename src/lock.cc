@@ -173,7 +173,7 @@ int forcelock() {
           loss += stolen_value(otmp, player.ux, player.uy,
                                (bool)shkp->mpeaceful, TRUE);
         if (otmp->quan == 1L) {
-          obfree(otmp, (Object *)0);
+          obfree(otmp, nullptr);
           continue;
         }
         useup(otmp);
@@ -259,7 +259,7 @@ int pick_lock(Object *pick) {
   }
   ch = 0; /* lint suppression */
 
-  if (!get_adjacent_loc((char *)0, "Invalid location!", player.ux, player.uy,
+  if (!get_adjacent_loc(nullptr, "Invalid location!", player.ux, player.uy,
                         &cc))
     return 0;
   if (cc.x == player.ux && cc.y == player.uy) { /* pick lock on a container */
@@ -536,7 +536,7 @@ int doopen() {
     return 0;
   }
 
-  if (!get_adjacent_loc((char *)0, (char *)0, player.ux, player.uy, &cc))
+  if (!get_adjacent_loc(nullptr, nullptr, player.ux, player.uy, &cc))
     return (0);
 
   if ((cc.x == player.ux) && (cc.y == player.uy))
@@ -648,7 +648,7 @@ int doclose() {
     return 0;
   }
 
-  if (!getdir((char *)0))
+  if (!getdir(nullptr))
     return (0);
 
   x = player.ux + player.dx;

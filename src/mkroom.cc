@@ -86,7 +86,7 @@ STATIC_OVL void mkshop() {
   struct mkroom *sroom;
   int i = -1;
 #ifdef WIZARD
-  char *ep = (char *)0; /* (init == lint suppression) */
+  char *ep = nullptr; /* (init == lint suppression) */
 
   /* first determine shoptype */
   if (wizard) {
@@ -311,7 +311,7 @@ void fill_zoo(struct mkroom *sroom) {
                                             ? &mons[PM_COCKATRICE]
                                             : (type == ANTHOLE)
                                                   ? antholemon()
-                                                  : (MonsterType *)0,
+                                                  : nullptr,
           sx, sy, NO_MM_FLAGS);
       if (mon) {
         mon->msleeping = 1;
@@ -340,7 +340,7 @@ void fill_zoo(struct mkroom *sroom) {
             (void)MakeSpecificObjectAt((rn2(3)) ? LARGE_BOX : CHEST, sx, sy,
                                        TRUE, FALSE);
           if (!rn2(5))
-            make_grave(sx, sy, (char *)0);
+            make_grave(sx, sy, nullptr);
           break;
         case BEEHIVE:
           if (!rn2(3))
@@ -445,7 +445,7 @@ STATIC_OVL MonsterType *antholemon() {
       mtyp = PM_FIRE_ANT;
       break;
   }
-  return ((mvitals[mtyp].mvflags & G_GONE) ? (MonsterType *)0 : &mons[mtyp]);
+  return ((mvitals[mtyp].mvflags & G_GONE) ? nullptr : &mons[mtyp]);
 }
 
 /* Michiel Huisjes & Fred de Wilde */
@@ -679,7 +679,7 @@ gotone:
   if (!(mvitals[mndx].mvflags & G_GONE))
     return (&mons[mndx]);
   else
-    return ((MonsterType *)0);
+    return (nullptr);
 }
 
 /*
@@ -734,7 +734,7 @@ void rest_rooms(int fd) {
   mread(fd, (genericptr_t) & nroom, sizeof(nroom));
   for (i = 0; i < nroom; i++) {
     rest_room(fd, &rooms[i]);
-    rooms[i].resident = (Monster *)0;
+    rooms[i].resident = nullptr;
   }
   rooms[nroom].hx = -1; /* restore ending flags */
   subrooms.clear();

@@ -676,7 +676,7 @@ void level_tele() {
     }
     newlevel.dnum = player.uz.dnum;
     newlevel.dlevel = llimit + newlev;
-    schedule_goto(&newlevel, FALSE, FALSE, 0, (char *)0, (char *)0);
+    schedule_goto(&newlevel, FALSE, FALSE, 0, nullptr, nullptr);
     return;
   }
 #endif
@@ -775,7 +775,7 @@ void level_tele() {
 #endif
       get_level(&newlevel, newlev);
   }
-  schedule_goto(&newlevel, FALSE, FALSE, 0, (char *)0, (char *)0);
+  schedule_goto(&newlevel, FALSE, FALSE, 0, nullptr, nullptr);
   /* in case player just read a scroll and is about to be asked to
      call it something, we can't defer until the end of the turn */
   if (player.utotype && !flags.mon_moving)
@@ -809,7 +809,7 @@ void domagicportal(Trap *ttmp) {
   target_level = ttmp->dst;
   schedule_goto(&target_level, FALSE, FALSE, 1,
                 "You feel dizzy for a moment, but the sensation passes.",
-                (char *)0);
+                nullptr);
 }
 
 void tele_trap(Trap *trap) {
@@ -1091,7 +1091,7 @@ int mlevel_tele_trap(Monster *mtmp, Trap *trap, bool force_it, int in_sight) {
       pline("Suddenly, %s disappears out of sight.", mon_nam(mtmp));
       seetrap(trap);
     }
-    migrate_to_level(mtmp, ledger_no(&tolevel), migrate_typ, (coord *)0);
+    migrate_to_level(mtmp, ledger_no(&tolevel), migrate_typ, nullptr);
     return 3; /* no longer on this level */
   }
   return 0;
@@ -1116,7 +1116,7 @@ void rloco(Object *obj) {
     ty = rn2(ROWNO);
     if (!--try_limit)
       break;
-  } while (!goodpos(tx, ty, (Monster *)0, 0) ||
+  } while (!goodpos(tx, ty, nullptr, 0) ||
            /* bug: this lacks provision for handling the Wizard's tower */
            (restricted_fall &&
             (!within_bounded_area(tx, ty, dndest.lx, dndest.ly, dndest.hx,

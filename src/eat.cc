@@ -412,7 +412,7 @@ STATIC_OVL void done_eating(bool message) {
     useup(victual.piece);
   else
     useupf(victual.piece, 1L);
-  victual.piece = (Object *)0;
+  victual.piece = nullptr;
   victual.fullwarn = victual.eating = victual.doreset = FALSE;
 }
 
@@ -1094,7 +1094,7 @@ use_me:
     useup(tin.tin);
   else
     useupf(tin.tin, 1L);
-  tin.tin = (Object *)0;
+  tin.tin = nullptr;
   return (0);
 }
 
@@ -1131,7 +1131,7 @@ STATIC_OVL void start_tin(Object *otmp) {
       default:
         goto no_opener;
     }
-    pline("Using your %s you try to open the tin.", aobjnam(uwep, (char *)0));
+    pline("Using your %s you try to open the tin.", aobjnam(uwep, nullptr));
   } else {
   no_opener:
     pline("It is not so easy to open this tin.");
@@ -1683,7 +1683,7 @@ STATIC_OVL void fpostfx(Object *otmp) {
       break;
     case EUCALYPTUS_LEAF:
       if (Sick && !otmp->cursed)
-        make_sick(0L, (char *)0, TRUE, SICK_ALL);
+        make_sick(0L, nullptr, TRUE, SICK_ALL);
       if (Vomiting && !otmp->cursed)
         make_vomiting(0L, TRUE);
       break;
@@ -1844,7 +1844,7 @@ int doeat() /* generic "eat" command funtion (see cmd.c) */
   }
   if (!(otmp = floorfood("eat", 0)))
     return 0;
-  if (check_capacity((char *)0))
+  if (check_capacity(nullptr))
     return 0;
 
   if (player.uedibility) {
@@ -2183,7 +2183,7 @@ void lesshungry(int num) {
             /* a one-gulp food will not survive a stop */
             if (yn_function("Stop eating?", ynchars, 'y') == 'y') {
               reset_eat();
-              nomovemsg = (char *)0;
+              nomovemsg = nullptr;
             }
           }
         }
@@ -2422,7 +2422,7 @@ Object *floorfood(const char *verb, int corpsecheck) {
       if ((c = yn_function(qbuf, ynqchars, 'n')) == 'y')
         return (otmp);
       else if (c == 'q')
-        return ((Object *)0);
+        return (nullptr);
     }
   }
 
@@ -2444,7 +2444,7 @@ skipfloor:
 /* added nomul (MRS) - it makes sense, you're too busy being sick! */
 /* A good idea from David Neves */
 void vomit() {
-  make_sick(0L, (char *)0, TRUE, SICK_VOMITABLE);
+  make_sick(0L, nullptr, TRUE, SICK_VOMITABLE);
   nomul(-2, "vomiting");
 }
 

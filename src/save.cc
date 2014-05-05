@@ -153,9 +153,9 @@ int dosave0() {
   /* these pointers are no longer valid, and at least player.usteed
    * may mislead place_monster() on other levels
    */
-  player.ustuck = (Monster *)0;
+  player.ustuck = nullptr;
 #ifdef STEED
-  player.usteed = (Monster *)0;
+  player.usteed = nullptr;
 #endif
 
   for (ltmp = (xchar)1; ltmp <= maxledgerno(); ltmp++) {

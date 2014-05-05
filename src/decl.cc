@@ -123,7 +123,7 @@ std::vector<struct mkroom> subrooms;
 struct mkroom *upstairs_room, *dnstairs_room, *sstairs_room;
 
 dlevel_t level; /* level map */
-Trap *ftrap = (Trap *)0;
+Trap *ftrap = nullptr;
 Monster youmonst = DUMMY;
 struct flag flags = DUMMY;
 struct instance_flags iflags = DUMMY;
@@ -181,9 +181,9 @@ char catname[PL_PSIZ] = DUMMY;
 char horsename[PL_PSIZ] = DUMMY;
 char preferred_pet; /* '\0', 'c', 'd', 'n' (none) */
 /* monsters that went down/up together with @ */
-Monster *mydogs = (Monster *)0;
+Monster *mydogs = nullptr;
 /* monsters that are moving to another dungeon level */
-Monster *migrating_mons = (Monster *)0;
+Monster *migrating_mons = nullptr;
 
 struct mvitals mvitals[NUMMONS];
 
@@ -253,9 +253,9 @@ char toplines[TBUFSZ];
 /* Windowing stuff that's really tty oriented, but present for all ports */
 struct tc_gbl_data tc_gbl_data = {0, 0, 0, 0}; /* AS,AE, LI,CO */
 
-char *fqn_prefix[PREFIX_COUNT] = {(char *)0, (char *)0, (char *)0,
-                                  (char *)0, (char *)0, (char *)0,
-                                  (char *)0, (char *)0, (char *)0};
+char *fqn_prefix[PREFIX_COUNT] = {nullptr, nullptr, nullptr,
+                                  nullptr, nullptr, nullptr,
+                                  nullptr, nullptr, nullptr};
 
 #ifdef PREFIXES_IN_USE
 char *fqn_prefix_names[PREFIX_COUNT] = {"hackdir",  "leveldir",  "savedir",

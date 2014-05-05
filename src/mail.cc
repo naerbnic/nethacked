@@ -56,7 +56,7 @@ extern struct passwd *getpwuid(int);
 #endif
 #endif
 static struct stat omstat, nmstat;
-static char *mailbox = (char *)0;
+static char *mailbox = nullptr;
 static long laststattime;
 
 #if !defined(MAILPATH) && defined(AMS) /* Just a placeholder for AMS */
@@ -128,7 +128,7 @@ STATIC_OVL bool md_start(coord *startp) {
    * the hero is not going to see it anyway.  So pick a nearby position.
    */
   if (Blind && !Blind_telepat) {
-    if (!enexto(startp, player.ux, player.uy, (MonsterType *)0))
+    if (!enexto(startp, player.ux, player.uy, nullptr))
       return FALSE; /* no good posiitons */
     return TRUE;
   }
@@ -171,7 +171,7 @@ retry:
           startp->x = viz_rmin[row];
 
         } else if (enexto(&testcc, (xchar)viz_rmin[row], row,
-                          (MonsterType *)0) &&
+                          nullptr) &&
                    !cansee(testcc.x, testcc.y) &&
                    couldsee(testcc.x, testcc.y)) {
           max_distance = dd;
@@ -186,7 +186,7 @@ retry:
           startp->x = viz_rmax[row];
 
         } else if (enexto(&testcc, (xchar)viz_rmax[row], row,
-                          (MonsterType *)0) &&
+                          nullptr) &&
                    !cansee(testcc.x, testcc.y) &&
                    couldsee(testcc.x, testcc.y)) {
           max_distance = dd;
@@ -434,7 +434,7 @@ void readmail(Object *otmp) {
     mr = DEF_MAILREADER;
 
   if (child(1)) {
-    (void)execl(mr, mr, (char *)0);
+    (void)execl(mr, mr, nullptr);
     terminate(EXIT_FAILURE);
   }
 #else

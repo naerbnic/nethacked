@@ -174,7 +174,7 @@ const char *artifact_name(const char *name, short *otyp) {
     }
   }
 
-  return (char *)0;
+  return nullptr;
 }
 
 bool exist_artifact(int otyp, const char *name) {
@@ -341,7 +341,7 @@ void set_artifact_intrinsic(Object *otmp, bool on, long wp_mask) {
       if (obj != otmp && obj->oartifact) {
         const Artifact *art = get_artifact(obj);
         if (art->cary.adtyp == dtyp) {
-          mask = (long *)0;
+          mask = nullptr;
           break;
         }
       }
@@ -807,7 +807,7 @@ STATIC_OVL bool Mb_hit(Monster *magr, Monster *mdef, Object *mb, int *dmgptr,
           nomul(-3, "being scared stiff");
           nomovemsg = "";
           if (magr && magr == player.ustuck && sticks(youmonst.data)) {
-            player.ustuck = (Monster *)0;
+            player.ustuck = nullptr;
             You("release %s!", mon_nam(magr));
           }
         }
@@ -1174,7 +1174,7 @@ STATIC_OVL int arti_invoke(Object *obj) {
             player.uhp += healamt;
         }
         if (Sick)
-          make_sick(0L, (char *)0, FALSE, SICK_ALL);
+          make_sick(0L, nullptr, FALSE, SICK_ALL);
         if (Slimed)
           Slimed = 0L;
         if (Blinded > creamed)

@@ -166,7 +166,7 @@ found:
   basecost = cost(new_obj);
   if (pen->spe < basecost / 2) {
     Your("marker is too dry to write that!");
-    obfree(new_obj, (Object *)0);
+    obfree(new_obj, nullptr);
     return (1);
   }
 
@@ -187,7 +187,7 @@ found:
       pline_The("scroll is now useless and disappears!");
       useup(paper);
     }
-    obfree(new_obj, (Object *)0);
+    obfree(new_obj, nullptr);
     return (1);
   }
   pen->spe -= actualcost;
@@ -211,7 +211,7 @@ found:
       You("write \"%s\" and the scroll disappears.", namebuf);
       useup(paper);
     }
-    obfree(new_obj, (Object *)0);
+    obfree(new_obj, nullptr);
     return (1);
   }
 

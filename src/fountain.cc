@@ -526,7 +526,7 @@ void drinksink() {
         otmp = MakeRandomObject(POTION_CLASS, FALSE);
         if (otmp->otyp == POT_WATER) {
           obfree(otmp, nullptr);
-          otmp = (Object *)0;
+          otmp = nullptr;
         }
       } while (!otmp);
       otmp->cursed = otmp->blessed = 0;

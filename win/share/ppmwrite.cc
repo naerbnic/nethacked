@@ -47,7 +47,7 @@ bool fopen_ppm_file(const char *filename, const char *type) {
     return FALSE;
   }
   ppm_file = fopen(filename, type);
-  if (ppm_file == (FILE *)0) {
+  if (ppm_file == nullptr) {
     Fprintf(stderr, "cannot open ppm file %s\n", filename);
     return FALSE;
   }

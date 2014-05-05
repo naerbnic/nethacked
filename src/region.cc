@@ -303,7 +303,7 @@ void remove_region(NhRegion *reg) {
 
   free_region(reg);
   regions[i] = regions[n_regions - 1];
-  regions[n_regions - 1] = (NhRegion *)0;
+  regions[n_regions - 1] = nullptr;
   n_regions--;
 }
 
@@ -528,7 +528,7 @@ NhRegion *visible_region_at(xchar x, xchar y) {
     if (inside_region(regions[i], x, y) && regions[i]->visible &&
         regions[i]->ttl != 0)
       return regions[i];
-  return (NhRegion *)0;
+  return nullptr;
 }
 
 void show_region(NhRegion *reg, xchar x, xchar y) {
@@ -846,7 +846,7 @@ NhRegion *create_gas_cloud(xchar x, xchar y, int radius, int damage) {
   int i, nrect;
   NhRect tmprect;
 
-  cloud = create_region((NhRect *)0, 0);
+  cloud = create_region(nullptr, 0);
   nrect = radius;
   tmprect.lx = x;
   tmprect.hx = x;

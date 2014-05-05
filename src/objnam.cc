@@ -767,7 +767,7 @@ char *doname(Object *obj) {
   if (obj->unpaid) {
     xchar ox, oy;
     long quotedprice = unpaid_cost(obj);
-    Monster *shkp = (Monster *)0;
+    Monster *shkp = nullptr;
 
     if (Has_contents(obj) &&
         get_obj_location(obj, &ox, &oy, BURIED_TOO | CONTAINED_TOO) &&
@@ -1027,7 +1027,7 @@ char *otense(Object *otmp, const char *verb) {
    * recomputing xname(otmp) at this time.
    */
   if (!is_plural(otmp))
-    return vtense((char *)0, verb);
+    return vtense(nullptr, verb);
 
   buf = nextobuf();
   strcpy(buf, verb);
@@ -1205,7 +1205,7 @@ char *makeplural(const char *oldstr) {
   /* Note: cannot use strcmpi here -- it'd give MATZot, CAVEMeN,... */
   char *spot;
   char *str = nextobuf();
-  const char *excess = (char *)0;
+  const char *excess = nullptr;
   int len;
 
   while (*oldstr == ' ')
@@ -1944,7 +1944,7 @@ Object *readobjnam(char *bp, Object *no_wish, bool from_user) {
                 (mntmp = name_to_mon(bp)) >= LOW_PM) {
               int mntmptoo, mntmplen; /* double check for rank title */
               char *obp = bp;
-              mntmptoo = title_to_mon(bp, (int *)0, &mntmplen);
+              mntmptoo = title_to_mon(bp, nullptr, &mntmplen);
               bp +=
                   mntmp != mntmptoo ? (int)strlen(mons[mntmp].mname) : mntmplen;
               if (*bp == ' ')
@@ -2327,7 +2327,7 @@ srch:
     }
 
     if (!BSTRCMP(bp, p - 5, "grave") || !BSTRCMP(bp, p - 9, "headstone")) {
-      make_grave(player.ux, player.uy, (char *)0);
+      make_grave(player.ux, player.uy, nullptr);
       pline("A grave.");
       newsym(player.ux, player.uy);
       return (&zeroobj);
@@ -2663,7 +2663,7 @@ typfnd:
 #endif
       ) {
     artifact_exists(otmp, ONAME(otmp), FALSE);
-    obfree(otmp, (Object *)0);
+    obfree(otmp, nullptr);
     otmp = &zeroobj;
     pline("For a moment, you feel %s in your %s, but it disappears!", something,
           makeplural(body_part(HAND)));

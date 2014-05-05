@@ -295,7 +295,7 @@ void growl(Monster *mtmp) {
   else
     growl_verb = growl_sound(mtmp);
   if (growl_verb) {
-    pline("%s %s!", Monnam(mtmp), vtense((char *)0, growl_verb));
+    pline("%s %s!", Monnam(mtmp), vtense(nullptr, growl_verb));
     if (flags.run)
       nomul(0, 0);
     wake_nearto(mtmp->mx, mtmp->my, mtmp->data->mlevel * 18);
@@ -335,7 +335,7 @@ void yelp(Monster *mtmp) {
         break;
     }
   if (yelp_verb) {
-    pline("%s %s!", Monnam(mtmp), vtense((char *)0, yelp_verb));
+    pline("%s %s!", Monnam(mtmp), vtense(nullptr, yelp_verb));
     if (flags.run)
       nomul(0, 0);
     wake_nearto(mtmp->mx, mtmp->my, mtmp->data->mlevel * 12);
@@ -366,7 +366,7 @@ void whimper(Monster *mtmp) {
         break;
     }
   if (whimper_verb) {
-    pline("%s %s.", Monnam(mtmp), vtense((char *)0, whimper_verb));
+    pline("%s %s.", Monnam(mtmp), vtense(nullptr, whimper_verb));
     if (flags.run)
       nomul(0, 0);
     wake_nearto(mtmp->mx, mtmp->my, mtmp->data->mlevel * 6);

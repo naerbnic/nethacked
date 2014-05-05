@@ -197,7 +197,7 @@ maze_level	: maze_def flags lev_init messages regions
 				maze.parts = NewTab(mazepart, npart);
 				for(i=0;i<npart;i++)
 				    maze.parts[i] = tmppart[i];
-				if (!write_level_file($1, (splev *)0, &maze)) {
+				if (!write_level_file($1, nullptr, &maze)) {
 					yyerror("Can't write output file!!");
 					exit(EXIT_FAILURE);
 				}
@@ -228,7 +228,7 @@ room_level	: level_def flags lev_init messages rreg_init rooms corridors_def
 				    special_lev.corrs[i] = tmpcor[i];
 				if (check_subrooms()) {
 				    if (!write_level_file($1, &special_lev,
-							  (specialmaze *)0)) {
+							  nullptr)) {
 					yyerror("Can't write output file!!");
 					exit(EXIT_FAILURE);
 				    }

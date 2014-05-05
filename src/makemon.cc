@@ -689,21 +689,21 @@ Monster *clone_mon(Monster *mon, xchar x, xchar y) {
 
   /* may be too weak or have been extinguished for population control */
   if (mon->mhp <= 1 || (mvitals[monsndx(mon->data)].mvflags & G_EXTINCT))
-    return (Monster *)0;
+    return nullptr;
 
   if (x == 0) {
     mm.x = mon->mx;
     mm.y = mon->my;
     if (!enexto(&mm, mm.x, mm.y, mon->data) || MON_AT(mm.x, mm.y))
-      return (Monster *)0;
+      return nullptr;
   } else if (!isok(x, y)) {
-    return (Monster *)0; /* paranoia */
+    return nullptr; /* paranoia */
   } else {
     mm.x = x;
     mm.y = y;
     if (MON_AT(mm.x, mm.y)) {
       if (!enexto(&mm, mm.x, mm.y, mon->data) || MON_AT(mm.x, mm.y))
-        return (Monster *)0;
+        return nullptr;
     }
   }
   m2 = newmonst(0);
@@ -716,7 +716,7 @@ Monster *clone_mon(Monster *mon, xchar x, xchar y) {
   m2->mx = mm.x;
   m2->my = mm.y;
 
-  m2->minvent = (Object *)0; /* objects don't clone */
+  m2->minvent = nullptr; /* objects don't clone */
   m2->mleashed = FALSE;
 #ifndef GOLDOBJ
   m2->mgold = 0L;
@@ -850,7 +850,7 @@ Monster *makemon(MonsterType *ptr, int x, int y, int mmflags) {
     do {
       x = rn1(COLNO - 3, 2);
       y = rn2(ROWNO);
-    } while (!goodpos(x, y, ptr ? &fakemon : (Monster *)0, gpflags) ||
+    } while (!goodpos(x, y, ptr ? &fakemon : nullptr, gpflags) ||
              (!in_mklev && tryct++ < 50 && cansee(x, y)));
   } else if (byyou && !in_mklev) {
     coord bypos;
@@ -859,7 +859,7 @@ Monster *makemon(MonsterType *ptr, int x, int y, int mmflags) {
       x = bypos.x;
       y = bypos.y;
     } else
-      return ((Monster *)0);
+      return (nullptr);
   }
 
   /* Does monster already exist at the position? */
@@ -870,9 +870,9 @@ Monster *makemon(MonsterType *ptr, int x, int y, int mmflags) {
         x = bypos.x;
         y = bypos.y;
       } else
-        return ((Monster *)0);
+        return (nullptr);
     } else
-      return ((Monster *)0);
+      return (nullptr);
   }
 
   if (ptr) {
@@ -880,7 +880,7 @@ Monster *makemon(MonsterType *ptr, int x, int y, int mmflags) {
     /* if you are to make a specific monster and it has
        already been genocided, return */
     if (mvitals[mndx].mvflags & G_GENOD)
-      return ((Monster *)0);
+      return (nullptr);
 #if defined(WIZARD) && defined(DEBUG)
     if (wizard && (mvitals[mndx].mvflags & G_EXTINCT))
       pline("Explicitly creating extinct monster %s.", mons[mndx].mname);
@@ -898,7 +898,7 @@ Monster *makemon(MonsterType *ptr, int x, int y, int mmflags) {
 #ifdef DEBUG
         pline("Warning: no monster.");
 #endif
-        return ((Monster *)0); /* no more monsters! */
+        return (nullptr); /* no more monsters! */
       }
       fakemon.data = ptr; /* set up for goodpos */
     } while (!goodpos(x, y, &fakemon, gpflags) && tryct++ < 50);
@@ -1232,7 +1232,7 @@ MonsterType *rndmonst() {
 #ifdef DEBUG
       pline("rndmonst: no common mons!");
 #endif
-      return (MonsterType *)0;
+      return nullptr;
     } /* else `mndx' now ready for use below */
     zlevel = level_difficulty();
     /* determine the level of the weakest monster to make. */
@@ -1280,7 +1280,7 @@ MonsterType *rndmonst() {
 #ifdef DEBUG
     Norep("rndmonst: choice_count=%d", rndmonst_state.choice_count);
 #endif
-    return (MonsterType *)0;
+    return nullptr;
   }
 
   /*
@@ -1293,7 +1293,7 @@ MonsterType *rndmonst() {
 
   if (mndx == SPECIAL_PM || uncommon(mndx)) { /* shouldn't happen */
     impossible("rndmonst: bad `mndx' [#%d]", mndx);
-    return (MonsterType *)0;
+    return nullptr;
   }
   return &mons[mndx];
 }
@@ -1327,7 +1327,7 @@ MonsterType *mkclass(char class_id, int spc) {
   maxmlev = level_difficulty() >> 1;
   if (class_id < 1 || class_id >= MAXMCLASSES) {
     impossible("mkclass called with bad class_id!");
-    return ((MonsterType *)0);
+    return (nullptr);
   }
   /*	Assumption #1:	monsters of a given class_id are contiguous in the
    *			mons[] array.
@@ -1336,7 +1336,7 @@ MonsterType *mkclass(char class_id, int spc) {
     if (mons[first].mlet == class_id)
       break;
   if (first == SPECIAL_PM)
-    return (MonsterType *)0;
+    return nullptr;
 
   for (last = first; last < SPECIAL_PM && mons[last].mlet == class_id; last++)
     if (!(mvitals[last].mvflags & G_GONE) && !(mons[last].geno & mask) &&
@@ -1349,7 +1349,7 @@ MonsterType *mkclass(char class_id, int spc) {
     }
 
   if (!num)
-    return ((MonsterType *)0);
+    return (nullptr);
 
   /*	Assumption #2:	monsters of a given class_id are presented in ascending
    *			order of strength.
@@ -1413,7 +1413,7 @@ MonsterType *grow_up(Monster *mtmp, Monster *victim) {
   /* monster died after killing enemy but before calling this function */
   /* currently possible if killing a gas spore */
   if (mtmp->mhp <= 0)
-    return ((MonsterType *)0);
+    return (nullptr);
 
   /* note:  none of the monsters with special hit point calculations
      have both little and big forms */
@@ -1476,7 +1476,7 @@ MonsterType *grow_up(Monster *mtmp, Monster *victim) {
               mhe(mtmp), nonliving(ptr) ? "expires" : "dies");
       set_mon_data(mtmp, ptr, -1); /* keep mvitals[] accurate */
       mondied(mtmp);
-      return (MonsterType *)0;
+      return nullptr;
     }
     set_mon_data(mtmp, ptr, 1);   /* preserve intrinsics */
     newsym(mtmp->mx, mtmp->my);   /* color may change */
@@ -1792,7 +1792,7 @@ void set_mimic_sym(Monster *mtmp) {
         otmp = MakeRandomObject((char)s_sym, FALSE);
         appear = otmp->otyp;
         /* make sure container contents are free'ed */
-        obfree(otmp, (Object *)0);
+        obfree(otmp, nullptr);
       }
     }
   }
@@ -1815,7 +1815,7 @@ void bagotricks(Object *bag) {
     if (!rn2(23))
       cnt += rn1(7, 1);
     while (cnt-- > 0) {
-      if (makemon((MonsterType *)0, player.ux, player.uy, NO_MM_FLAGS))
+      if (makemon(nullptr, player.ux, player.uy, NO_MM_FLAGS))
         gotone = TRUE;
     }
     if (gotone)

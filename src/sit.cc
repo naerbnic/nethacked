@@ -172,7 +172,7 @@ int dosit() {
             player.uhpmax += 4;
           player.uhp = player.uhpmax;
           make_blinded(0L, TRUE);
-          make_sick(0L, (char *)0, FALSE, SICK_ALL);
+          make_sick(0L, nullptr, FALSE, SICK_ALL);
           heal_legs();
           flags.botl = 1;
           break;

@@ -596,7 +596,7 @@ void delobj(Object *obj) {
   RemoveObjectFromStorage(obj);
   if (update_map)
     newsym(obj->ox, obj->oy);
-  obfree(obj, (Object *)0); /* frees contents also */
+  obfree(obj, nullptr); /* frees contents also */
 }
 
 #endif /* OVL2 */
@@ -620,7 +620,7 @@ Object *carrying(int type) {
   for (otmp = invent; otmp; otmp = otmp->nobj)
     if (otmp->otyp == type)
       return (otmp);
-  return ((Object *)0);
+  return (nullptr);
 }
 
 const char *currency(long amount) {
@@ -649,7 +649,7 @@ Object *o_on(unsigned int id, Object *objchn) {
       return temp;
     objchn = objchn->nobj;
   }
-  return ((Object *)0);
+  return (nullptr);
 }
 
 bool obj_here(Object *obj, int x, int y) {
@@ -946,7 +946,7 @@ Object *getobj(const char *let, const char *word) {
       ilet = readchar();
     else
 #endif
-      ilet = yn_function(qbuf, (char *)0, '\0');
+      ilet = yn_function(qbuf, nullptr, '\0');
     if (ilet == '0')
       prezero = TRUE;
     while (digit(ilet) && allowcnt) {
@@ -968,7 +968,7 @@ Object *getobj(const char *let, const char *word) {
       return (nullptr);
     }
     if (ilet == '-') {
-      return (allownone ? &zeroobj : (Object *)0);
+      return (allownone ? &zeroobj : nullptr);
     }
     if (ilet == def_oc_syms[COIN_CLASS]) {
       if (!usegold) {
@@ -1005,12 +1005,12 @@ Object *getobj(const char *let, const char *word) {
 #endif
     }
     if (ilet == '?' || ilet == '*') {
-      char *allowed_choices = (ilet == '?') ? lets : (char *)0;
+      char *allowed_choices = (ilet == '?') ? lets : nullptr;
       long ctmp = 0;
 
       if (ilet == '?' && !*lets && *altlets)
         allowed_choices = altlets;
-      ilet = display_pickinv(allowed_choices, TRUE, allowcnt ? &ctmp : (long *)0
+      ilet = display_pickinv(allowed_choices, TRUE, allowcnt ? &ctmp : nullptr
 #ifdef DUMP_LOG
                              ,
                              FALSE, TRUE
@@ -1059,14 +1059,14 @@ Object *getobj(const char *let, const char *word) {
       You("don't have that object.");
 #ifdef REDO
       if (in_doagain)
-        return ((Object *)0);
+        return (nullptr);
 #endif
       continue;
     } else if (cnt < 0 || otmp->quan < cnt) {
       You("don't have that many!  You have only %ld.", otmp->quan);
 #ifdef REDO
       if (in_doagain)
-        return ((Object *)0);
+        return (nullptr);
 #endif
       continue;
     }
@@ -1235,7 +1235,7 @@ int ggetobj(char const *word, int (*fn)(Object *), int mx,
     if (buf[0] == '\033')
       return (0);
     if (index(buf, 'i')) {
-      if (display_inventory((char *)0, TRUE) == '\033')
+      if (display_inventory(nullptr, TRUE) == '\033')
         return 0;
     } else
       break;
@@ -1397,7 +1397,7 @@ nextclass:
       continue;
     if (!allflag) {
       strcpy(qbuf, !ininv ? doname(otmp)
-                          : xprname(otmp, (char *)0, ilet, !nodot, 0L, 0L));
+                          : xprname(otmp, nullptr, ilet, !nodot, 0L, 0L));
       strcat(qbuf, "?");
       sym = (takeoff || ident || otmp->quan < 2L) ? nyaq(qbuf) : nyNaq(qbuf);
     } else
@@ -1475,7 +1475,7 @@ void fully_identify_obj(Object *otmp) {
 /* ggetobj callback routine; identify an object and give immediate feedback */
 int identify(Object *otmp) {
   fully_identify_obj(otmp);
-  prinv((char *)0, otmp, 0L);
+  prinv(nullptr, otmp, 0L);
   return 1;
 }
 
@@ -1536,7 +1536,7 @@ void identify_pack(int id_limit) {
     n = 0;
     if (flags.menu_style == MENU_TRADITIONAL)
       do {
-        n = ggetobj("identify", identify, id_limit, FALSE, (unsigned *)0);
+        n = ggetobj("identify", identify, id_limit, FALSE, nullptr);
         if (n < 0)
           break; /* quit or no eligible items */
       } while ((id_limit -= n) > 0);
@@ -1570,7 +1570,7 @@ void prinv(const char *prefix, Object *obj, long quan) {
   if (!prefix)
     prefix = "";
   pline("%s%s%s", prefix, *prefix ? " " : "",
-        xprname(obj, (char *)0, obj_to_let(obj), TRUE, 0L, quan));
+        xprname(obj, nullptr, obj_to_let(obj), TRUE, 0L, quan));
 }
 
 #endif /* OVL2 */
@@ -1621,7 +1621,7 @@ char *xprname(Object *obj, const char *txt, char let, bool dot, long cost,
 
 /* the 'i' command */
 int ddoinv() {
-  (void)display_inventory((char *)0, FALSE);
+  (void)display_inventory(nullptr, FALSE);
   return 0;
 }
 
@@ -1642,7 +1642,7 @@ STATIC_OVL Object *find_unpaid(Object *list, Object **last_found) {
       if (*last_found) {
         /* still looking for previous unpaid object */
         if (list == *last_found)
-          *last_found = (Object *)0;
+          *last_found = nullptr;
       } else
         return (*last_found = list);
     }
@@ -1652,7 +1652,7 @@ STATIC_OVL Object *find_unpaid(Object *list, Object **last_found) {
     }
     list = list->nobj;
   }
-  return (Object *)0;
+  return nullptr;
 }
 
 /*
@@ -1746,7 +1746,7 @@ static char display_pickinv(char const *lets, bool want_reply, long *out_cnt)
         if (want_disp) {
 #endif
           ret = message_menu(lets[0], want_reply ? PICK_ONE : PICK_NONE,
-                             xprname(otmp, (char *)0, lets[0], TRUE, 0L, 0L));
+                             xprname(otmp, nullptr, lets[0], TRUE, 0L, 0L));
           if (out_cnt)
             *out_cnt = -1L; /* select all */
 #ifdef DUMP_LOG
@@ -1754,7 +1754,7 @@ static char display_pickinv(char const *lets, bool want_reply, long *out_cnt)
         if (want_dump) {
           char letbuf[7];
           sprintf(letbuf, "  %c - ", lets[0]);
-          dump(letbuf, xprname(otmp, (char *)0, lets[0], TRUE, 0L, 0L));
+          dump(letbuf, xprname(otmp, nullptr, lets[0], TRUE, 0L, 0L));
         }
 #endif
         break;
@@ -1875,7 +1875,7 @@ nextclass:
 #ifdef DUMP_LOG
   if (want_disp) {
 #endif
-    end_menu(win, (char *)0);
+    end_menu(win, nullptr);
 
     n = select_menu(win, want_reply ? PICK_ONE : PICK_NONE, &selected);
     if (n > 0) {
@@ -1902,7 +1902,7 @@ nextclass:
  * was selected.
  */
 char display_inventory(const char *lets, bool want_reply) {
-  return display_pickinv(lets, want_reply, (long *)0
+  return display_pickinv(lets, want_reply, nullptr
 #ifdef DUMP_LOG
                          ,
                          FALSE, TRUE
@@ -1913,7 +1913,7 @@ char display_inventory(const char *lets, bool want_reply) {
 #ifdef DUMP_LOG
 /* See display_inventory. This is the same thing WITH dumpfile creation */
 char dump_inventory(const char *lets, bool want_reply, bool want_disp) {
-  return display_pickinv(lets, want_reply, (long *)0, TRUE, want_disp);
+  return display_pickinv(lets, want_reply, nullptr, TRUE, want_disp);
 }
 #endif
 
@@ -1983,7 +1983,7 @@ STATIC_OVL void dounpaid() {
   count = count_unpaid(invent);
 
   if (count == 1) {
-    marker = (Object *)0;
+    marker = nullptr;
     otmp = find_unpaid(invent, &marker);
 
     /* see if the unpaid item is in the top level inventory */
@@ -2038,7 +2038,7 @@ STATIC_OVL void dounpaid() {
      */
     for (otmp = invent; otmp; otmp = otmp->nobj) {
       if (Has_contents(otmp)) {
-        marker = (Object *)0; /* haven't found any */
+        marker = nullptr; /* haven't found any */
         while (find_unpaid(otmp->cobj, &marker)) {
           totcost += cost = unpaid_cost(marker);
           save_unpaid = marker->unpaid;
@@ -2170,7 +2170,7 @@ int dotypeinv() {
     }
     this_type = oclass;
   }
-  if (query_objlist((char *)0, invent,
+  if (query_objlist(nullptr, invent,
                     (flags.invlet_constant ? USE_INVLET : 0) | INVORDER_SORT,
                     &pick_list, PICK_NONE, this_type_only) > 0)
     free((genericptr_t)pick_list);
@@ -2255,7 +2255,7 @@ int look_here(int obj_cnt, bool picked_some) {
   Object *otmp;
   Trap *trap;
   const char *verb = Blind ? "feel" : "see";
-  const char *dfeature = (char *)0;
+  const char *dfeature = nullptr;
   char fbuf[BUFSZ], fbuf2[BUFSZ];
   winid tmpwin;
   bool skip_objects = (obj_cnt >= 5), felt_cockatrice = FALSE;
@@ -2507,9 +2507,9 @@ int doprwep() {
   if (!uwep) {
     You("are empty %s.", body_part(HANDED));
   } else {
-    prinv((char *)0, uwep, 0L);
+    prinv(nullptr, uwep, 0L);
     if (player.twoweap)
-      prinv((char *)0, uswapwep, 0L);
+      prinv(nullptr, uswapwep, 0L);
   }
   return 0;
 }
@@ -2568,7 +2568,7 @@ int dopramulet() {
   if (!uamul)
     You("are not wearing an amulet.");
   else
-    prinv((char *)0, uamul, 0L);
+    prinv(nullptr, uamul, 0L);
   return 0;
 }
 
@@ -2662,7 +2662,7 @@ static const char oth_symbols[] = {CONTAINED_SYM, '\0'};
 
 static const char *oth_names[] = {"Bagged/Boxed items"};
 
-static char *invbuf = (char *)0;
+static char *invbuf = nullptr;
 static unsigned invbufsiz = 0;
 
 char *let_to_name(char let, bool unpaid) {
@@ -2694,7 +2694,7 @@ char *let_to_name(char let, bool unpaid) {
 
 void free_invbuf() {
   if (invbuf)
-    free((genericptr_t)invbuf), invbuf = (char *)0;
+    free((genericptr_t)invbuf), invbuf = nullptr;
   invbufsiz = 0;
 }
 
@@ -2760,7 +2760,7 @@ int doorganize() {
   /* get new letter to use as inventory letter */
   for (;;) {
     sprintf(qbuf, "Adjust letter to what [%s]?", buf);
-    let = yn_function(qbuf, (char *)0, '\0');
+    let = yn_function(qbuf, nullptr, '\0');
     if (index(quitchars, let)) {
       pline(Never_mind);
       return (0);
@@ -2819,7 +2819,7 @@ STATIC_OVL void invdisp_nothing(const char *hdr, const char *txt) {
            MENU_UNSELECTED);
   add_menu(win, NO_GLYPH, &any, 0, 0, ATR_NONE, "", MENU_UNSELECTED);
   add_menu(win, NO_GLYPH, &any, 0, 0, ATR_NONE, txt, MENU_UNSELECTED);
-  end_menu(win, (char *)0);
+  end_menu(win, nullptr);
   if (select_menu(win, PICK_NONE, &selected) > 0)
     free((genericptr_t)selected);
   destroy_nhwindow(win);
@@ -2917,10 +2917,10 @@ Object *display_minventory(Monster *mon, int dflags, char *title) {
      * can happen.  Maybe even put gold in the inventory list...
      */
     if (ret == &m_gold)
-      ret = (Object *)0;
+      ret = nullptr;
 #endif
   } else
-    ret = (Object *)0;
+    ret = nullptr;
   return ret;
 }
 
@@ -2947,7 +2947,7 @@ Object *display_cinventory(Object *obj) {
     ret = selected[0].item.a_obj;
     free((genericptr_t)selected);
   } else
-    ret = (Object *)0;
+    ret = nullptr;
   return ret;
 }
 

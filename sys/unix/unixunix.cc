@@ -225,10 +225,10 @@ void msleep(unsigned msec) {
 int dosh() {
   char *str;
   if (child(0)) {
-    if ((str = getenv("SHELL")) != (char *)0)
-      (void)execl(str, str, (char *)0);
+    if ((str = getenv("SHELL")) != nullptr)
+      (void)execl(str, str, nullptr);
     else
-      (void)execl("/bin/sh", "sh", (char *)0);
+      (void)execl("/bin/sh", "sh", nullptr);
     raw_print("sh: cannot execute.");
     exit(EXIT_FAILURE);
   }
@@ -239,7 +239,7 @@ int dosh() {
 #if defined(SHELL) || defined(DEF_PAGER) || defined(DEF_MAILREADER)
 int child(int wt) {
   int f;
-  suspend_nhwindows((char *)0); /* also calls end_screen() */
+  suspend_nhwindows(nullptr); /* also calls end_screen() */
 #ifdef __linux__
   linux_mapon();
 #endif
@@ -258,7 +258,7 @@ int child(int wt) {
   /* fork succeeded; wait for child to exit */
   (void)signal(SIGINT, SIG_IGN);
   (void)signal(SIGQUIT, SIG_IGN);
-  (void)wait((int *)0);
+  (void)wait(nullptr);
 #ifdef __linux__
   linux_mapoff();
 #endif

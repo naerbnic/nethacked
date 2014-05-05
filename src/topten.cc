@@ -1131,7 +1131,7 @@ Object *tt_oname(Object *otmp) {
   struct toptenentry tt_buf;
 
   if (!otmp)
-    return ((Object *)0);
+    return (nullptr);
 
   rfile = fopen_datafile(RECORD, "r", SCOREPREFIX);
   if (!rfile) {
@@ -1154,7 +1154,7 @@ pickentry:
       rewind(rfile);
       goto pickentry;
     }
-    otmp = (Object *)0;
+    otmp = nullptr;
   } else {
     /* reset timer in case corpse started out as lizard or troll */
     if (otmp->otyp == CORPSE)

@@ -544,7 +544,7 @@ STATIC_OVL bool getspell(int *spell_no) {
 
     for (;;) {
       sprintf(qbuf, "Cast which spell? [%s ?]", lets);
-      if ((ilet = yn_function(qbuf, (char *)0, '\0')) == '?')
+      if ((ilet = yn_function(qbuf, nullptr, '\0')) == '?')
         break;
 
       if (index(quitchars, ilet))
@@ -862,7 +862,7 @@ int spelleffects(int spell, bool atme) {
       if (!(objects[pseudo->otyp].oc_dir == NODIR)) {
         if (atme)
           player.dx = player.dy = player.dz = 0;
-        else if (!getdir((char *)0)) {
+        else if (!getdir(nullptr)) {
           /* getdir cancelled, re-use previous direction */
           pline_The("magical energy is released!");
         }

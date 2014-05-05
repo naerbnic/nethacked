@@ -85,7 +85,7 @@ static const char *ends[] = {/* "when you..." */
 extern const char *const killed_by_prefix[]; /* from topten.c */
 
 #ifdef DUMP_LOG
-FILE *dump_fp = (FILE *)0; /* file pointer for dumps */
+FILE *dump_fp = nullptr; /* file pointer for dumps */
 /* functions dump_init, dump_exit and dump are from the dump patch */
 
 void dump_init() {
@@ -197,7 +197,7 @@ int done2() {
 #endif
     if ((c = ynq(tmp)) == 'y') {
       (void)signal(SIGINT, (SIG_RET_TYPE)done1);
-      exit_nhwindows((char *)0);
+      exit_nhwindows(nullptr);
       NH_abort();
     } else if (c == 'q')
       done_stopprint++;
@@ -308,7 +308,7 @@ void panic(const char *str, ...) {
   if (iflags.window_inited) {
     raw_print("\r\nOops...");
     wait_synch(); /* make sure all pending output gets flushed */
-    exit_nhwindows((char *)0);
+    exit_nhwindows(nullptr);
     iflags.window_inited = 0; /* they're gone; force raw_print()ing */
   }
 
@@ -408,11 +408,11 @@ STATIC_OVL void disclose(int how, bool taken) {
         obj->known = obj->bknown = obj->dknown = obj->rknown = 1;
       }
 #ifdef DUMP_LOG
-      (void)dump_inventory((char *)0, TRUE, want_disp);
+      (void)dump_inventory(nullptr, TRUE, want_disp);
       do_containerconts(invent, TRUE, TRUE, TRUE, want_disp);
 #else
       if (c == 'y') {
-        (void)display_inventory((char *)0, TRUE);
+        (void)display_inventory(nullptr, TRUE);
         container_contents(invent, TRUE, TRUE);
       }
 #endif /* DUMP_LOG */
@@ -1054,10 +1054,10 @@ die:
   if (flags.toptenwin) {
     topten(how);
     if (have_windows)
-      exit_nhwindows((char *)0);
+      exit_nhwindows(nullptr);
   } else {
     if (have_windows)
-      exit_nhwindows((char *)0);
+      exit_nhwindows(nullptr);
     topten(how);
   }
 #ifdef DUMP_LOG

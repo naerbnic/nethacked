@@ -2179,7 +2179,7 @@ genericptr_t arg;
     if (right > scol + range)
       right = scol + range;
   } else
-    limits = (char *)0;
+    limits = nullptr;
 
   if (func) {
     for (i = left; i <= right; i++)
@@ -2612,7 +2612,7 @@ STATIC_OVL void view_from(
     if (right > scol + range)
       right = scol + range;
   } else
-    limits = (char *)0;
+    limits = nullptr;
 
   if (func) {
     for (i = left; i <= right; i++)
@@ -2667,7 +2667,7 @@ void do_clear_area(int scol, int srow, int range,
                    void (*func)(int, int, genericptr_t), genericptr_t arg) {
   /* If not centered on hero, do the hard work of figuring the area */
   if (scol != player.ux || srow != player.uy)
-    view_from(srow, scol, (char **)0, (char *)0, (char *)0, range, func, arg);
+    view_from(srow, scol, (char **)0, nullptr, nullptr, range, func, arg);
   else {
     int x;
     int y, min_x, max_x, max_y, offset;

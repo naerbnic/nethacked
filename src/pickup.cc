@@ -193,7 +193,7 @@ STATIC_OVL bool query_classes(char oclasses[], bool *one_at_a_time,
         simple_look(objs, here); /* dumb if objs==invent */
         goto ask_again;
       } else if (sym == 'i') {
-        (void)display_inventory((char *)0, TRUE);
+        (void)display_inventory(nullptr, TRUE);
         goto ask_again;
       } else if (sym == 'm') {
         m_seen = TRUE;
@@ -285,20 +285,20 @@ bool allow_all(Object *obj) { return TRUE; }
 bool allow_category(Object *obj) {
   if (Role_if(PM_PRIEST))
     obj->bknown = TRUE;
-  if (((index(valid_menu_classes, 'u') != (char *)0) && obj->unpaid) ||
-      (index(valid_menu_classes, obj->oclass) != (char *)0))
+  if (((index(valid_menu_classes, 'u') != nullptr) && obj->unpaid) ||
+      (index(valid_menu_classes, obj->oclass) != nullptr))
     return TRUE;
-  else if (((index(valid_menu_classes, 'U') != (char *)0) &&
+  else if (((index(valid_menu_classes, 'U') != nullptr) &&
             (obj->oclass != COIN_CLASS && obj->bknown && !obj->blessed &&
              !obj->cursed)))
     return TRUE;
-  else if (((index(valid_menu_classes, 'B') != (char *)0) &&
+  else if (((index(valid_menu_classes, 'B') != nullptr) &&
             (obj->oclass != COIN_CLASS && obj->bknown && obj->blessed)))
     return TRUE;
-  else if (((index(valid_menu_classes, 'C') != (char *)0) &&
+  else if (((index(valid_menu_classes, 'C') != nullptr) &&
             (obj->oclass != COIN_CLASS && obj->bknown && obj->cursed)))
     return TRUE;
-  else if (((index(valid_menu_classes, 'X') != (char *)0) &&
+  else if (((index(valid_menu_classes, 'X') != nullptr) &&
             (obj->oclass != COIN_CLASS && !obj->bknown)))
     return TRUE;
   else
@@ -309,8 +309,8 @@ bool allow_category(Object *obj) {
 /* query_objlist callback: return TRUE if valid category (class), no uchain */
 STATIC_OVL bool allow_cat_no_uchain(Object *Object) {
     if ((Object != uchain) &&
-	(((index(valid_menu_classes,'u') != (char *)0) && Object->unpaid) ||
-	(index(valid_menu_classes, Object->oclass) != (char *)0)))
+	(((index(valid_menu_classes,'u') != nullptr) && Object->unpaid) ||
+	(index(valid_menu_classes, Object->oclass) != nullptr)))
 	return TRUE;
     else
 	return FALSE;
@@ -321,7 +321,7 @@ STATIC_OVL bool allow_cat_no_uchain(Object *Object) {
 bool is_worn_by_type(Object *otmp) {
   return ((bool)(!!(otmp->owornmask & (W_ARMOR | W_RING | W_AMUL | W_TOOL |
                                        W_WEP | W_SWAPWEP | W_QUIVER))) &&
-          (index(valid_menu_classes, otmp->oclass) != (char *)0));
+          (index(valid_menu_classes, otmp->oclass) != nullptr));
 }
 
 /*
@@ -338,7 +338,7 @@ bool is_worn_by_type(Object *otmp) {
  */
 int pickup(int what) {
   int i, n, res, count, n_tried = 0, n_picked = 0;
-  menu_item *pick_list = (menu_item *)0;
+  menu_item *pick_list = nullptr;
   bool autopickup = what > 0;
   Object *objchain;
   int traverse_how;
@@ -660,7 +660,7 @@ int query_objlist(
   anything any;
   bool printed_type_name;
 
-  *pick_list = (menu_item *)0;
+  *pick_list = nullptr;
   if (!olist)
     return 0;
 
@@ -709,7 +709,7 @@ int query_objlist(
 
   win = create_nhwindow(NHW_MENU);
   start_menu(win);
-  any.a_obj = (Object *)0;
+  any.a_obj = nullptr;
 
   /*
    * Run through the list and add the objects to the menu.  If
@@ -736,7 +736,7 @@ int query_objlist(
           (*allow)(curr)) {
         /* if sorting, print type name (once only) */
         if (qflags & INVORDER_SORT && !printed_type_name) {
-          any.a_obj = (Object *)0;
+          any.a_obj = nullptr;
           add_menu(win, NO_GLYPH, &any, 0, 0, iflags.menu_headings,
                    let_to_name(*pack, FALSE), MENU_UNSELECTED);
           printed_type_name = TRUE;
@@ -792,7 +792,7 @@ int query_category(const char *qstr, Object *olist, int qflags,
        do_buc_unknown = FALSE;
   int num_buc_types = 0;
 
-  *pick_list = (menu_item *)0;
+  *pick_list = nullptr;
   if (!olist)
     return 0;
   if ((qflags & UNPAID_TYPES) && count_unpaid(olist))
@@ -1270,7 +1270,7 @@ int pickup_object(Object *obj, long count, bool telekinesis) {
               nearload < MOD_ENCUMBER ? moderateloadmsg : nearloadmsg, count,
               plur(count));
       else
-        prinv((char *)0, obj, count);
+        prinv(nullptr, obj, count);
       costly_gold(obj->ox, obj->oy, count);
       if (count == obj->quan)
         delobj(obj);
@@ -1336,7 +1336,7 @@ int pickup_object(Object *obj, long count, bool telekinesis) {
   if (uwep && uwep == obj)
     mrg_to_wielded = TRUE;
   nearload = near_capacity();
-  prinv(nearload == SLT_ENCUMBER ? moderateloadmsg : (char *)0, obj, count);
+  prinv(nearload == SLT_ENCUMBER ? moderateloadmsg : nullptr, obj, count);
   mrg_to_wielded = FALSE;
   return 1;
 }
@@ -1488,7 +1488,7 @@ int doloot() {
   int prev_inquiry = 0;
   bool prev_loot = FALSE;
 
-  if (check_capacity((char *)0)) {
+  if (check_capacity(nullptr)) {
     /* "Can't do that while carrying so much stuff." */
     return 0;
   }
@@ -1669,7 +1669,7 @@ int loot_mon(Monster *mtmp, int *passed_info, bool *prev_loot) {
     if (passed_info)
       *passed_info = 1;
     sprintf(qbuf, "Do you want to remove the saddle from %s?",
-            x_monnam(mtmp, ARTICLE_THE, (char *)0, SUPPRESS_SADDLE, FALSE));
+            x_monnam(mtmp, ARTICLE_THE, nullptr, SUPPRESS_SADDLE, FALSE));
     if ((c = yn_function(qbuf, ynqchars, 'n')) == 'y') {
       if (nolimbs(youmonst.data)) {
         You_cant("do that without limbs."); /* not body_part(HAND) */
@@ -1677,7 +1677,7 @@ int loot_mon(Monster *mtmp, int *passed_info, bool *prev_loot) {
       }
       if (otmp->cursed) {
         You("can't. The saddle seems to be stuck to %s.",
-            x_monnam(mtmp, ARTICLE_THE, (char *)0, SUPPRESS_SADDLE, FALSE));
+            x_monnam(mtmp, ARTICLE_THE, nullptr, SUPPRESS_SADDLE, FALSE));
 
         /* the attempt costs you time */
         return (1);
@@ -1777,15 +1777,15 @@ STATIC_PTR int in_container(Object *obj) {
       weldmsg(obj);
       return 0;
     }
-    setuwep((Object *)0);
+    setuwep(nullptr);
     if (uwep)
       return 0; /* unwielded, died, rewielded */
   } else if (obj == uswapwep) {
-    setuswapwep((Object *)0);
+    setuswapwep(nullptr);
     if (uswapwep)
       return 0; /* unwielded, died, rewielded */
   } else if (obj == uquiver) {
-    setuqwep((Object *)0);
+    setuqwep(nullptr);
     if (uquiver)
       return 0; /* unwielded, died, rewielded */
   }
@@ -1956,7 +1956,7 @@ STATIC_PTR int out_container(Object *obj) {
   loadlev = near_capacity();
   prinv(loadlev ? (loadlev < MOD_ENCUMBER ? "You have a little trouble removing"
                                           : "You have much trouble removing")
-                : (char *)0,
+                : nullptr,
         otmp, count);
 
   if (is_gold) {
@@ -1983,7 +1983,7 @@ STATIC_OVL long mbag_item_gone(int held, Object *item) {
       loss =
           stolen_value(item, player.ux, player.uy, (bool)shkp->mpeaceful, TRUE);
   }
-  obfree(item, (Object *)0);
+  obfree(item, nullptr);
   return loss;
 }
 
@@ -2145,7 +2145,7 @@ int use_container(Object *obj, int held) {
 #endif
                             &menu_on_request)) {
             if (askchain((Object **)&current_container->cobj,
-                         (one_by_one ? (char *)0 : select), allflag,
+                         (one_by_one ? nullptr : select), allflag,
                          out_container, (int (*)(Object *))0, 0, "nodot"))
               used = 1;
           } else if (menu_on_request < 0) {
@@ -2227,7 +2227,7 @@ int use_container(Object *obj, int held) {
                         (player.ugold != 0L),
 #endif
                         &menu_on_request)) {
-        (void)askchain((Object **)&invent, (one_by_one ? (char *)0 : select),
+        (void)askchain((Object **)&invent, (one_by_one ? nullptr : select),
                        allflag, in_container, ck_bag, 0, "nodot");
         used = 1;
       } else if (menu_on_request < 0) {

@@ -457,7 +457,7 @@ void scan_map(char *map) {
       s1 = s2 + 1;
     } else {
       len = (int)strlen(s1);
-      s1 = (char *)0;
+      s1 = nullptr;
     }
     if (len > max_len)
       max_len = len;
@@ -1383,7 +1383,7 @@ void free_rooms(splev *lev) {
       Free(r->golds);
     }
     Free(r);
-    lev->rooms[n] = (room *)0;
+    lev->rooms[n] = nullptr;
   }
   Free(lev->rooms);
   lev->rooms = (room **)0;
@@ -1391,17 +1391,17 @@ void free_rooms(splev *lev) {
 
   for (j = 0; j < lev->ncorr; j++) {
     Free(lev->corrs[j]);
-    lev->corrs[j] = (corridor *)0;
+    lev->corrs[j] = nullptr;
   }
   Free(lev->corrs);
   lev->corrs = (corridor **)0;
   lev->ncorr = 0;
 
   Free(lev->robjects);
-  lev->robjects = (char *)0;
+  lev->robjects = nullptr;
   lev->nrobjects = 0;
   Free(lev->rmonst);
-  lev->rmonst = (char *)0;
+  lev->rmonst = nullptr;
   lev->nrmonst = 0;
 }
 
