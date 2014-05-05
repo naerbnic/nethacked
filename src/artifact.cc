@@ -77,8 +77,8 @@ STATIC_OVL void hack_artifacts() {
 
 /* zero out the artifact existence list */
 void init_artifacts() {
-  (void)memset((genericptr_t)artiexist, 0, sizeof artiexist);
-  (void)memset((genericptr_t)artidisco, 0, sizeof artidisco);
+  memset((genericptr_t)artiexist, 0, sizeof artiexist);
+  memset((genericptr_t)artidisco, 0, sizeof artidisco);
   hack_artifacts();
 }
 
@@ -378,7 +378,7 @@ void set_artifact_intrinsic(Object *otmp, bool on, long wp_mask) {
      * that can print a message--need to guard against being printed
      * when restoring a game
      */
-    (void)make_hallucinated((long)!on, restoring ? FALSE : TRUE, wp_mask);
+    make_hallucinated((long)!on, restoring ? FALSE : TRUE, wp_mask);
   }
   if (spfx & SPFX_ESP) {
     if (on)
@@ -459,7 +459,7 @@ void set_artifact_intrinsic(Object *otmp, bool on, long wp_mask) {
     /* might have to turn off invoked power too */
     if (oart->inv_prop <= LAST_PROP &&
         (player.uprops[oart->inv_prop].extrinsic & W_ARTI))
-      (void)arti_invoke(otmp);
+      arti_invoke(otmp);
   }
 }
 
@@ -853,7 +853,7 @@ STATIC_OVL bool Mb_hit(Monster *magr, Monster *mdef, Object *mb, int *dmgptr,
   }
 
   if (youattack || youdefend || vis) {
-    (void)upstart(hittee); /* capitalize */
+    upstart(hittee); /* capitalize */
     if (resisted) {
       pline("%s %s!", hittee, vtense(hittee, "resist"));
       shieldeff(youdefend ? player.ux : mdef->mx,
@@ -924,11 +924,11 @@ bool artifact_hit(Monster *magr, Monster *mdef, Object *otmp, int *dmgptr,
                                          : "burns",
                 hittee, !spec_dbon_applies ? '.' : '!');
     if (!rn2(4))
-      (void)destroy_mitem(mdef, POTION_CLASS, AD_FIRE);
+      destroy_mitem(mdef, POTION_CLASS, AD_FIRE);
     if (!rn2(4))
-      (void)destroy_mitem(mdef, SCROLL_CLASS, AD_FIRE);
+      destroy_mitem(mdef, SCROLL_CLASS, AD_FIRE);
     if (!rn2(7))
-      (void)destroy_mitem(mdef, SPBOOK_CLASS, AD_FIRE);
+      destroy_mitem(mdef, SPBOOK_CLASS, AD_FIRE);
     if (youdefend && Slimed)
       burn_away_slime();
     return realizes_damage;
@@ -939,7 +939,7 @@ bool artifact_hit(Monster *magr, Monster *mdef, Object *otmp, int *dmgptr,
                 !spec_dbon_applies ? "hits" : "freezes", hittee,
                 !spec_dbon_applies ? '.' : '!');
     if (!rn2(4))
-      (void)destroy_mitem(mdef, POTION_CLASS, AD_COLD);
+      destroy_mitem(mdef, POTION_CLASS, AD_COLD);
     return realizes_damage;
   }
   if (attacks(AD_ELEC, otmp)) {
@@ -948,9 +948,9 @@ bool artifact_hit(Monster *magr, Monster *mdef, Object *otmp, int *dmgptr,
                 !spec_dbon_applies ? "" : "!  Lightning strikes", hittee,
                 !spec_dbon_applies ? '.' : '!');
     if (!rn2(5))
-      (void)destroy_mitem(mdef, RING_CLASS, AD_ELEC);
+      destroy_mitem(mdef, RING_CLASS, AD_ELEC);
     if (!rn2(5))
-      (void)destroy_mitem(mdef, WAND_CLASS, AD_ELEC);
+      destroy_mitem(mdef, WAND_CLASS, AD_ELEC);
     return realizes_damage;
   }
   if (attacks(AD_MAGM, otmp)) {
@@ -1150,7 +1150,7 @@ STATIC_OVL int arti_invoke(Object *obj) {
 
         pseudo = zeroobj; /* neither cursed nor blessed */
         pseudo.otyp = SCR_TAMING;
-        (void)seffects(&pseudo);
+        seffects(&pseudo);
         break;
       }
       case HEALING: {
@@ -1350,7 +1350,7 @@ STATIC_OVL int arti_invoke(Object *obj) {
           float_up();
           spoteffects(FALSE);
         } else
-          (void)float_down(I_SPECIAL | TIMEOUT, W_ARTI);
+          float_down(I_SPECIAL | TIMEOUT, W_ARTI);
         break;
       case INVIS:
         if (BInvis || Blind) {
