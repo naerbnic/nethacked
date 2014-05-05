@@ -80,18 +80,22 @@ Object *MakeSpecificObjectAt(int otyp, int x, int y, bool init, bool artif) {
   return (otmp);
 }
 
+char PickRandomClass() {
+  const struct ItemClassProbability *iprobs =
+#ifdef REINCARNATION
+      (Is_rogue_level(&player.uz)) ? kRogueProbabilities :
+#endif
+                                   Inhell ? kHellProbabilities
+                                          : kMakeObjProbabilities;
+
+  for (int tprob = rnd(100); (tprob -= iprobs->iprob) > 0; iprobs++)
+    ;
+  return iprobs->iclass;
+}
+
 Object *MakeRandomObject(char oclass, bool artif) {
   if (oclass == RANDOM_CLASS) {
-    const struct ItemClassProbability *iprobs =
-#ifdef REINCARNATION
-        (Is_rogue_level(&player.uz)) ? kRogueProbabilities :
-#endif
-                                     Inhell ? kHellProbabilities
-                                            : kMakeObjProbabilities;
-
-    for (int tprob = rnd(100); (tprob -= iprobs->iprob) > 0; iprobs++)
-      ;
-    oclass = iprobs->iclass;
+    oclass = PickRandomClass();
   }
 
   int i = bases[(int)oclass];
