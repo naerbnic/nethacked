@@ -100,7 +100,8 @@ void del_light_source(int type, genericptr_t id) {
   }
 
   for (prev = 0, curr = light_base; curr; prev = curr, curr = curr->next) {
-    if (curr->type != type) continue;
+    if (curr->type != type)
+      continue;
     if (curr->id == ((curr->flags & LSF_NEEDS_FIXUP) ? tmp_id : id)) {
       if (prev)
         prev->next = curr->next;
@@ -158,13 +159,17 @@ void do_light_sources(char **cs_rows) {
        * method is faster for radius <= 3 (or so).
        */
       limits = circle_ptr(ls->range);
-      if ((max_y = (ls->y + ls->range)) >= ROWNO) max_y = ROWNO - 1;
-      if ((y = (ls->y - ls->range)) < 0) y = 0;
+      if ((max_y = (ls->y + ls->range)) >= ROWNO)
+        max_y = ROWNO - 1;
+      if ((y = (ls->y - ls->range)) < 0)
+        y = 0;
       for (; y <= max_y; y++) {
         row = cs_rows[y];
         offset = limits[abs(y - ls->y)];
-        if ((min_x = (ls->x - offset)) < 0) min_x = 0;
-        if ((max_x = (ls->x + offset)) >= COLNO) max_x = COLNO - 1;
+        if ((min_x = (ls->x - offset)) < 0)
+          min_x = 0;
+        if ((max_x = (ls->x + offset)) >= COLNO)
+          max_x = COLNO - 1;
 
         if (ls->x == player.ux && ls->y == player.uy) {
           /*
@@ -179,7 +184,8 @@ void do_light_sources(char **cs_rows) {
            * does this.
            */
           for (x = min_x; x <= max_x; x++)
-            if (row[x] & COULD_SEE) row[x] |= TEMP_LIT;
+            if (row[x] & COULD_SEE)
+              row[x] |= TEMP_LIT;
         } else {
           for (x = min_x; x <= max_x; x++)
             if ((ls->x == x && ls->y == y) ||
@@ -197,16 +203,20 @@ void do_light_sources(char **cs_rows) {
 Monster *find_mid(unsigned nid, unsigned fmflags) {
   Monster *mtmp;
 
-  if (!nid) return &youmonst;
+  if (!nid)
+    return &youmonst;
   if (fmflags & FM_FMON)
     for (mtmp = fmon; mtmp; mtmp = mtmp->nmon)
-      if (!mtmp->dead() && mtmp->m_id == nid) return mtmp;
+      if (!mtmp->dead() && mtmp->m_id == nid)
+        return mtmp;
   if (fmflags & FM_MIGRATE)
     for (mtmp = migrating_mons; mtmp; mtmp = mtmp->nmon)
-      if (mtmp->m_id == nid) return mtmp;
+      if (mtmp->m_id == nid)
+        return mtmp;
   if (fmflags & FM_MYDOGS)
     for (mtmp = mydogs; mtmp; mtmp = mtmp->nmon)
-      if (mtmp->m_id == nid) return mtmp;
+      if (mtmp->m_id == nid)
+        return mtmp;
   return (Monster *)0;
 }
 
@@ -333,7 +343,8 @@ STATIC_OVL int maybe_write_ls(int fd, int range, bool write_it) {
     /* if global and not doing local, or vice versa, count it */
     if (is_global ^ (range == RANGE_LEVEL)) {
       count++;
-      if (write_it) write_ls(fd, ls);
+      if (write_it)
+        write_ls(fd, ls);
     }
   }
 
@@ -413,7 +424,8 @@ void snuff_light_source(int x, int y) {
          * dropped or thrown inside a monster, this won't matter anyway
          * because it will go out when dropped.)
          */
-        if (artifact_light(obj)) continue;
+        if (artifact_light(obj))
+          continue;
         end_burn(obj, obj->otyp != MAGIC_LAMP);
         /*
          * The current ls element has just been removed (and
@@ -469,7 +481,8 @@ void obj_merge_light_sources(Object *src, Object *dest) {
   light_source *ls;
 
   /* src == dest implies adding to candelabrum */
-  if (src != dest) end_burn(src, TRUE); /* extinguish candles */
+  if (src != dest)
+    end_burn(src, TRUE); /* extinguish candles */
 
   for (ls = light_base; ls; ls = ls->next)
     if (ls->type == LS_OBJECT && ls->id == (genericptr_t)dest) {
@@ -526,7 +539,8 @@ int wiz_light_sources() {
   light_source *ls;
 
   win = create_nhwindow(NHW_MENU); /* corner text window */
-  if (win == WIN_ERR) return 0;
+  if (win == WIN_ERR)
+    return 0;
 
   sprintf(buf, "Mobile light sources: hero @ (%2d,%2d)", player.ux, player.uy);
   putstr(win, 0, buf);

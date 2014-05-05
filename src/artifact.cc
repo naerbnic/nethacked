@@ -64,7 +64,8 @@ STATIC_OVL void hack_artifacts() {
       art->alignment = alignmnt;
 
   /* Excalibur can be used by any lawful character, not just knights */
-  if (!Role_if(PM_KNIGHT)) artilist[ART_EXCALIBUR].role = NON_PM;
+  if (!Role_if(PM_KNIGHT))
+    artilist[ART_EXCALIBUR].role = NON_PM;
 
   /* Fix up the quest artifact */
   if (urole.questarti) {
@@ -93,7 +94,8 @@ void restore_artifacts(int fd) {
 }
 
 const char *artiname(int artinum) {
-  if (artinum <= 0 || artinum > NROFARTIFACTS) return ("");
+  if (artinum <= 0 || artinum > NROFARTIFACTS)
+    return ("");
   return (artilist[artinum].name);
 }
 
@@ -135,13 +137,15 @@ Object *mk_artifact(Object *otmp, aligntyp alignment) {
 
   /* make an appropriate object if necessary, then christen it */
   make_artif:
-    if (by_align) otmp = MakeSpecificObject((int)a->otyp, TRUE, FALSE);
+    if (by_align)
+      otmp = MakeSpecificObject((int)a->otyp, TRUE, FALSE);
     otmp = oname(otmp, a->name);
     otmp->oartifact = m;
     artiexist[m] = TRUE;
   } else {
     /* nothing appropriate could be found; return the original object */
-    if (by_align) otmp = 0; /* (there was no original object) */
+    if (by_align)
+      otmp = 0; /* (there was no original object) */
   }
   return otmp;
 }
@@ -157,11 +161,13 @@ const char *artifact_name(const char *name, short *otyp) {
   const Artifact *a;
   const char *aname;
 
-  if (!strncmpi(name, "the ", 4)) name += 4;
+  if (!strncmpi(name, "the ", 4))
+    name += 4;
 
   for (a = artilist + 1; a->otyp; a++) {
     aname = a->name;
-    if (!strncmpi(aname, "the ", 4)) aname += 4;
+    if (!strncmpi(aname, "the ", 4))
+      aname += 4;
     if (!strcmpi(name, aname)) {
       *otyp = a->otyp;
       return a->name;
@@ -177,7 +183,8 @@ bool exist_artifact(int otyp, const char *name) {
 
   if (otyp && *name)
     for (a = artilist + 1, arex = artiexist + 1; a->otyp; a++, arex++)
-      if ((int)a->otyp == otyp && !strcmp(a->name, name)) return *arex;
+      if ((int)a->otyp == otyp && !strcmp(a->name, name))
+        return *arex;
   return FALSE;
 }
 
@@ -190,7 +197,8 @@ void artifact_exists(Object *otmp, const char *name, bool mod) {
         int m = a - artilist;
         otmp->oartifact = (char)(mod ? m : 0);
         otmp->age = 0;
-        if (otmp->otyp == RIN_INCREASE_DAMAGE) otmp->spe = 0;
+        if (otmp->otyp == RIN_INCREASE_DAMAGE)
+          otmp->spe = 0;
         artiexist[m] = mod;
         break;
       }
@@ -202,7 +210,8 @@ int nartifact_exist() {
   int n = SIZE(artiexist);
 
   while (n > 1)
-    if (artiexist[--n]) a++;
+    if (artiexist[--n])
+      a++;
 
   return a;
 }
@@ -218,7 +227,8 @@ bool spec_ability(Object *otmp, unsigned long abil) {
 /* used so that callers don't need to known about SPFX_ codes */
 bool confers_luck(Object *obj) {
   /* might as well check for this too */
-  if (obj->otyp == LUCKSTONE) return TRUE;
+  if (obj->otyp == LUCKSTONE)
+    return TRUE;
 
   return (obj->oartifact && spec_ability(obj, SPFX_LUCK));
 }
@@ -229,9 +239,11 @@ bool arti_reflects(Object *obj) {
 
   if (arti) {
     /* while being worn */
-    if ((obj->owornmask & ~W_ART) && (arti->spfx & SPFX_REFLECT)) return TRUE;
+    if ((obj->owornmask & ~W_ART) && (arti->spfx & SPFX_REFLECT))
+      return TRUE;
     /* just being carried */
-    if (arti->cspfx & SPFX_REFLECT) return TRUE;
+    if (arti->cspfx & SPFX_REFLECT)
+      return TRUE;
   }
   return FALSE;
 }
@@ -244,17 +256,21 @@ bool restrict_name(Object *otmp, const char *name) {
   const Artifact *a;
   const char *aname;
 
-  if (!*name) return FALSE;
-  if (!strncmpi(name, "the ", 4)) name += 4;
+  if (!*name)
+    return FALSE;
+  if (!strncmpi(name, "the ", 4))
+    name += 4;
 
   /* Since almost every artifact is SPFX_RESTR, it doesn't cost
      us much to do the string comparison before the spfx check.
      Bug fix:  don't name multiple elven daggers "Sting".
    */
   for (a = artilist + 1; a->otyp; a++) {
-    if (a->otyp != otmp->otyp) continue;
+    if (a->otyp != otmp->otyp)
+      continue;
     aname = a->name;
-    if (!strncmpi(aname, "the ", 4)) aname += 4;
+    if (!strncmpi(aname, "the ", 4))
+      aname += 4;
     if (!strcmp(aname, name))
       return ((bool)((a->spfx & (SPFX_NOGEN | SPFX_RESTR)) != 0 ||
                      otmp->quan > 1L));
@@ -298,7 +314,8 @@ void set_artifact_intrinsic(Object *otmp, bool on, long wp_mask) {
   uchar dtyp;
   long spfx;
 
-  if (!oart) return;
+  if (!oart)
+    return;
 
   /* effects from the defn field */
   dtyp = (wp_mask != W_ART) ? oart->defn.adtyp : oart->cary.adtyp;
@@ -457,7 +474,8 @@ int touch_artifact(Object *obj, Monster *mon) {
   const Artifact *oart = get_artifact(obj);
   bool badclass, badalign, self_willed, yours;
 
-  if (!oart) return 1;
+  if (!oart)
+    return 1;
 
   yours = (mon == &youmonst);
   /* all quest artifacts are self-willed; it this ever changes, `badclass'
@@ -494,7 +512,8 @@ int touch_artifact(Object *obj, Monster *mon) {
     int dmg;
     char buf[BUFSZ];
 
-    if (!yours) return 0;
+    if (!yours)
+      return 0;
     You("are blasted by %s power!", s_suffix(the(xname(obj))));
     dmg = d((Antimagic ? 2 : 4), (self_willed ? 10 : 4));
     sprintf(buf, "touching %s", oart->name);
@@ -504,7 +523,8 @@ int touch_artifact(Object *obj, Monster *mon) {
 
   /* can pick it up unless you're totally non-synch'd with the artifact */
   if (badclass && badalign && self_willed) {
-    if (yours) pline("%s your grasp!", Tobjnam(obj, "evade"));
+    if (yours)
+      pline("%s your grasp!", Tobjnam(obj, "evade"));
     return 0;
   }
 
@@ -572,7 +592,8 @@ STATIC_OVL int spec_applies(const Artifact *weap, Monster *mtmp) {
  * against */
 long spec_m2(Object *otmp) {
   const Artifact *artifact = get_artifact(otmp);
-  if (artifact) return artifact->mtype;
+  if (artifact)
+    return artifact->mtype;
   return 0L;
 }
 
@@ -639,8 +660,10 @@ int disp_artifact_discoveries(winid tmpwin) {
   char buf[BUFSZ];
 
   for (i = 0; i < NROFARTIFACTS; i++) {
-    if (artidisco[i] == 0) break; /* empty slot implies end of list */
-    if (i == 0) putstr(tmpwin, iflags.menu_headings, "Artifacts");
+    if (artidisco[i] == 0)
+      break; /* empty slot implies end of list */
+    if (i == 0)
+      putstr(tmpwin, iflags.menu_headings, "Artifacts");
     m = artidisco[i];
     otyp = artilist[m].otyp;
     sprintf(buf, "  %s [%s %s]", artiname(m), align_str(artilist[m].alignment),
@@ -694,10 +717,12 @@ STATIC_OVL bool Mb_hit(Monster *magr, Monster *mdef, Object *mb, int *dmgptr,
 
   result = FALSE; /* no message given yet */
   /* the most severe effects are less likely at higher enchantment */
-  if (mb->spe >= 3) scare_dieroll /= (1 << (mb->spe / 3));
+  if (mb->spe >= 3)
+    scare_dieroll /= (1 << (mb->spe / 3));
   /* if target successfully resisted the artifact damage bonus,
      reduce overall likelihood of the assorted special effects */
-  if (!spec_dbon_applies) dieroll += 1;
+  if (!spec_dbon_applies)
+    dieroll += 1;
 
   /* might stun even when attempting a more severe effect, but
      in that case it will only happen if the other effect fails;
@@ -757,7 +782,8 @@ STATIC_OVL bool Mb_hit(Monster *magr, Monster *mdef, Object *mb, int *dmgptr,
           if (player.uenmax > 0) {
             You("lose magical energy!");
             player.uenmax--;
-            if (player.uen > 0) player.uen--;
+            if (player.uen > 0)
+              player.uen--;
             flags.botl = 1;
           }
         } else {
@@ -791,7 +817,8 @@ STATIC_OVL bool Mb_hit(Monster *magr, Monster *mdef, Object *mb, int *dmgptr,
         else
           monflee(mdef, 3, FALSE, (mdef->mhp > *dmgptr));
       }
-      if (!resisted) do_stun = FALSE;
+      if (!resisted)
+        do_stun = FALSE;
       break;
 
     case MB_INDEX_STUN:
@@ -813,7 +840,8 @@ STATIC_OVL bool Mb_hit(Monster *magr, Monster *mdef, Object *mb, int *dmgptr,
     else
       mdef->mstun = 1;
     /* avoid extra stun message below if we used mb_verb["stun"] above */
-    if (attack_indx == MB_INDEX_STUN) do_stun = FALSE;
+    if (attack_indx == MB_INDEX_STUN)
+      do_stun = FALSE;
   }
   /* lastly, all this magic can be confusing... */
   do_confuse = !rn2(12);
@@ -835,9 +863,12 @@ STATIC_OVL bool Mb_hit(Monster *magr, Monster *mdef, Object *mb, int *dmgptr,
       char buf[BUFSZ];
 
       buf[0] = '\0';
-      if (do_stun) strcat(buf, "stunned");
-      if (do_stun && do_confuse) strcat(buf, " and ");
-      if (do_confuse) strcat(buf, "confused");
+      if (do_stun)
+        strcat(buf, "stunned");
+      if (do_stun && do_confuse)
+        strcat(buf, " and ");
+      if (do_confuse)
+        strcat(buf, "confused");
       pline("%s %s %s%c", hittee, vtense(hittee, "are"), buf,
             (do_stun && do_confuse) ? '!' : '.');
     }
@@ -892,10 +923,14 @@ bool artifact_hit(Monster *magr, Monster *mdef, Object *otmp, int *dmgptr,
                                          ? "vaporizes part of"
                                          : "burns",
                 hittee, !spec_dbon_applies ? '.' : '!');
-    if (!rn2(4)) (void)destroy_mitem(mdef, POTION_CLASS, AD_FIRE);
-    if (!rn2(4)) (void)destroy_mitem(mdef, SCROLL_CLASS, AD_FIRE);
-    if (!rn2(7)) (void)destroy_mitem(mdef, SPBOOK_CLASS, AD_FIRE);
-    if (youdefend && Slimed) burn_away_slime();
+    if (!rn2(4))
+      (void)destroy_mitem(mdef, POTION_CLASS, AD_FIRE);
+    if (!rn2(4))
+      (void)destroy_mitem(mdef, SCROLL_CLASS, AD_FIRE);
+    if (!rn2(7))
+      (void)destroy_mitem(mdef, SPBOOK_CLASS, AD_FIRE);
+    if (youdefend && Slimed)
+      burn_away_slime();
     return realizes_damage;
   }
   if (attacks(AD_COLD, otmp)) {
@@ -903,7 +938,8 @@ bool artifact_hit(Monster *magr, Monster *mdef, Object *otmp, int *dmgptr,
       pline_The("ice-cold blade %s %s%c",
                 !spec_dbon_applies ? "hits" : "freezes", hittee,
                 !spec_dbon_applies ? '.' : '!');
-    if (!rn2(4)) (void)destroy_mitem(mdef, POTION_CLASS, AD_COLD);
+    if (!rn2(4))
+      (void)destroy_mitem(mdef, POTION_CLASS, AD_COLD);
     return realizes_damage;
   }
   if (attacks(AD_ELEC, otmp)) {
@@ -911,8 +947,10 @@ bool artifact_hit(Monster *magr, Monster *mdef, Object *otmp, int *dmgptr,
       pline_The("massive hammer hits%s %s%c",
                 !spec_dbon_applies ? "" : "!  Lightning strikes", hittee,
                 !spec_dbon_applies ? '.' : '!');
-    if (!rn2(5)) (void)destroy_mitem(mdef, RING_CLASS, AD_ELEC);
-    if (!rn2(5)) (void)destroy_mitem(mdef, WAND_CLASS, AD_ELEC);
+    if (!rn2(5))
+      (void)destroy_mitem(mdef, RING_CLASS, AD_ELEC);
+    if (!rn2(5))
+      (void)destroy_mitem(mdef, WAND_CLASS, AD_ELEC);
     return realizes_damage;
   }
   if (attacks(AD_MAGM, otmp)) {
@@ -947,7 +985,8 @@ bool artifact_hit(Monster *magr, Monster *mdef, Object *otmp, int *dmgptr,
       }
       if (!youdefend) {
         /* allow normal cutworm() call to add extra damage */
-        if (notonhead) return FALSE;
+        if (notonhead)
+          return FALSE;
 
         if (bigmonst(mdef->data)) {
           if (youattack)
@@ -983,7 +1022,8 @@ bool artifact_hit(Monster *magr, Monster *mdef, Object *otmp, int *dmgptr,
       static const char *const behead_msg[2] = {"%s beheads %s!",
                                                 "%s decapitates %s!"};
 
-      if (youattack && player.uswallow && mdef == player.ustuck) return FALSE;
+      if (youattack && player.uswallow && mdef == player.ustuck)
+        return FALSE;
       wepdesc = artilist[ART_VORPAL_BLADE].name;
       if (!youdefend) {
         if (!has_head(mdef->data) || notonhead || player.uswallow) {
@@ -1040,7 +1080,8 @@ bool artifact_hit(Monster *magr, Monster *mdef, Object *otmp, int *dmgptr,
         mdef->mhpmax -= drain;
         mdef->m_lev--;
         drain /= 2;
-        if (drain) healup(drain, 0, FALSE, FALSE);
+        if (drain)
+          healup(drain, 0, FALSE, FALSE);
       }
       return vis;
     } else { /* youdefend */
@@ -1057,7 +1098,8 @@ bool artifact_hit(Monster *magr, Monster *mdef, Object *otmp, int *dmgptr,
       losexp("life drainage");
       if (magr && magr->mhp < magr->mhpmax) {
         magr->mhp += (oldhpmax - player.uhpmax) / 2;
-        if (magr->mhp > magr->mhpmax) magr->mhp = magr->mhpmax;
+        if (magr->mhp > magr->mhpmax)
+          magr->mhp = magr->mhpmax;
       }
       return TRUE;
     }
@@ -1073,8 +1115,10 @@ int doinvoke() {
   Object *obj;
 
   obj = getobj(invoke_types, "invoke");
-  if (!obj) return 0;
-  if (obj->oartifact && !touch_artifact(obj, &youmonst)) return 1;
+  if (!obj)
+    return 0;
+  if (obj->oartifact && !touch_artifact(obj, &youmonst))
+    return 1;
   return arti_invoke(obj);
 }
 
@@ -1113,7 +1157,8 @@ STATIC_OVL int arti_invoke(Object *obj) {
         int healamt = (player.uhpmax + 1 - player.uhp) / 2;
         long creamed = (long)player.ucreamed;
 
-        if (Upolyd) healamt = (player.mhmax + 1 - player.mh) / 2;
+        if (Upolyd)
+          healamt = (player.mhmax + 1 - player.mh) / 2;
         if (healamt || Sick || Slimed || Blinded > creamed) {
           You_feel("better.");
         } else {
@@ -1128,9 +1173,12 @@ STATIC_OVL int arti_invoke(Object *obj) {
           else
             player.uhp += healamt;
         }
-        if (Sick) make_sick(0L, (char *)0, FALSE, SICK_ALL);
-        if (Slimed) Slimed = 0L;
-        if (Blinded > creamed) make_blinded(creamed, FALSE);
+        if (Sick)
+          make_sick(0L, (char *)0, FALSE, SICK_ALL);
+        if (Slimed)
+          Slimed = 0L;
+        if (Blinded > creamed)
+          make_blinded(creamed, FALSE);
         flags.botl = 1;
         break;
       }
@@ -1186,7 +1234,8 @@ STATIC_OVL int arti_invoke(Object *obj) {
         start_menu(tmpwin);
         /* use index+1 (cant use 0) as identifier */
         for (i = num_ok_dungeons = 0; i < n_dgns; i++) {
-          if (!dungeons[i].dunlev_ureached) continue;
+          if (!dungeons[i].dunlev_ureached)
+            continue;
           any.a_int = i + 1;
           add_menu(tmpwin, NO_GLYPH, &any, 0, 0, ATR_NONE, dungeons[i].dname,
                    MENU_UNSELECTED);
@@ -1251,10 +1300,12 @@ STATIC_OVL int arti_invoke(Object *obj) {
         otmp->cursed = obj->cursed;
         otmp->bknown = obj->bknown;
         if (obj->blessed) {
-          if (otmp->spe < 0) otmp->spe = 0;
+          if (otmp->spe < 0)
+            otmp->spe = 0;
           otmp->quan += rnd(10);
         } else if (obj->cursed) {
-          if (otmp->spe > 0) otmp->spe = 0;
+          if (otmp->spe > 0)
+            otmp->spe = 0;
         } else
           otmp->quan += rnd(5);
         otmp->owt = GetWeight(otmp);
@@ -1333,10 +1384,12 @@ void arti_speak(Object *obj) {
   char buf[BUFSZ];
 
   /* Is this a speaking artifact? */
-  if (!oart || !(oart->spfx & SPFX_SPEAK)) return;
+  if (!oart || !(oart->spfx & SPFX_SPEAK))
+    return;
 
   line = getrumor(GetBUCSign(obj), buf, TRUE);
-  if (!*line) line = "NetHack rumors file closed for renovation.";
+  if (!*line)
+    line = "NetHack rumors file closed for renovation.";
   pline("%s:", Tobjnam(obj, "whisper"));
   verbalize("%s", line);
   return;

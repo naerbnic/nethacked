@@ -200,7 +200,8 @@ void srandom(unsigned x) {
     }
     fptr = &state[rand_sep];
     rptr = &state[0];
-    for (i = 0; i < 10 * rand_deg; i++) random();
+    for (i = 0; i < 10 * rand_deg; i++)
+      random();
   }
 }
 
@@ -348,7 +349,8 @@ long random() {
       fptr = state;
       ++rptr;
     } else {
-      if (++rptr >= end_ptr) rptr = state;
+      if (++rptr >= end_ptr)
+        rptr = state;
     }
   }
   return (i);

@@ -11,7 +11,8 @@ STATIC_DCL int cost(Object *);
  * returns basecost of a scroll or a spellbook
  */
 STATIC_OVL int cost(Object *otmp) {
-  if (otmp->oclass == SPBOOK_CLASS) return (10 * objects[otmp->otyp].oc_level);
+  if (otmp->oclass == SPBOOK_CLASS)
+    return (10 * objects[otmp->otyp].oc_level);
 
   switch (otmp->otyp) {
 #ifdef MAIL
@@ -86,7 +87,8 @@ int dowrite(Object *pen) {
 
   /* get paper to write on */
   paper = getobj(write_on, "write on");
-  if (!paper) return (0);
+  if (!paper)
+    return (0);
   typeword = (paper->oclass == SPBOOK_CLASS) ? "spellbook" : "scroll";
   if (Blind && !paper->dknown) {
     You("don't know if that %s is blank or not!", typeword);
@@ -103,13 +105,15 @@ int dowrite(Object *pen) {
   sprintf(qbuf, "What type of %s do you want to write?", typeword);
   getlin(qbuf, namebuf);
   (void)mungspaces(namebuf); /* remove any excess whitespace */
-  if (namebuf[0] == '\033' || !namebuf[0]) return (1);
+  if (namebuf[0] == '\033' || !namebuf[0])
+    return (1);
   nm = namebuf;
   if (!strncmpi(nm, "scroll ", 7))
     nm += 7;
   else if (!strncmpi(nm, "spellbook ", 10))
     nm += 10;
-  if (!strncmpi(nm, "of ", 3)) nm += 3;
+  if (!strncmpi(nm, "of ", 3))
+    nm += 3;
 
   if ((bp = strstri(nm, " armour")) != 0) {
     (void)strncpy(bp, " armor ", 7); /* won't add '\0' */
@@ -120,9 +124,11 @@ int dowrite(Object *pen) {
   last = bases[(int)paper->oclass + 1] - 1;
   for (i = first; i <= last; i++) {
     /* extra shufflable descr not representing a real object */
-    if (!OBJ_NAME(objects[i])) continue;
+    if (!OBJ_NAME(objects[i]))
+      continue;
 
-    if (!strcmpi(OBJ_NAME(objects[i]), nm)) goto found;
+    if (!strcmpi(OBJ_NAME(objects[i]), nm))
+      goto found;
     if (!strcmpi(OBJ_DESCR(objects[i]), nm)) {
       by_descr = TRUE;
       goto found;
@@ -221,7 +227,8 @@ found:
   new_obj->blessed = (curseval > 0);
   new_obj->cursed = (curseval < 0);
 #ifdef MAIL
-  if (new_obj->otyp == SCR_MAIL) new_obj->spe = 1;
+  if (new_obj->otyp == SCR_MAIL)
+    new_obj->spe = 1;
 #endif
   new_obj = hold_another_object(new_obj, "Oops!  %s out of your grasp!",
                                 The(aobjnam(new_obj, "slip")), (const char *)0);

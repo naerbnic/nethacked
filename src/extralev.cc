@@ -38,14 +38,20 @@ void roguejoin(int x1, int y1, int x2, int y2, int horiz) {
 #endif
   if (horiz) {
     middle = x1 + rn2(x2 - x1 + 1);
-    for (x = MIN(x1, middle); x <= MAX(x1, middle); x++) corr(x, y1);
-    for (y = MIN(y1, y2); y <= MAX(y1, y2); y++) corr(middle, y);
-    for (x = MIN(middle, x2); x <= MAX(middle, x2); x++) corr(x, y2);
+    for (x = MIN(x1, middle); x <= MAX(x1, middle); x++)
+      corr(x, y1);
+    for (y = MIN(y1, y2); y <= MAX(y1, y2); y++)
+      corr(middle, y);
+    for (x = MIN(middle, x2); x <= MAX(middle, x2); x++)
+      corr(x, y2);
   } else {
     middle = y1 + rn2(y2 - y1 + 1);
-    for (y = MIN(y1, middle); y <= MAX(y1, middle); y++) corr(x1, y);
-    for (x = MIN(x1, x2); x <= MAX(x1, x2); x++) corr(x, middle);
-    for (y = MIN(middle, y2); y <= MAX(middle, y2); y++) corr(x2, y);
+    for (y = MIN(y1, middle); y <= MAX(y1, middle); y++)
+      corr(x1, y);
+    for (x = MIN(x1, x2); x <= MAX(x1, x2); x++)
+      corr(x, middle);
+    for (y = MIN(middle, y2); y <= MAX(middle, y2); y++)
+      corr(x2, y);
   }
 }
 
@@ -161,7 +167,8 @@ void miniwalk(int x, int y) {
     /* Rogue levels aren't just 3 by 3 mazes; they have some extra
      * connections, thus that 1/10 chance
      */
-    if (!q) return;
+    if (!q)
+      return;
     dir = dirs[rn2(q)];
     switch (dir) { /* Move in direction */
       case 0:
@@ -259,8 +266,10 @@ void makeroguerooms() {
   /* Now, add connecting corridors. */
   for (y = 0; y < 3; y++)
     for (x = 0; x < 3; x++) {
-      if (here.doortable & DOWN) roguecorr(x, y, DOWN);
-      if (here.doortable & RIGHT) roguecorr(x, y, RIGHT);
+      if (here.doortable & DOWN)
+        roguecorr(x, y, DOWN);
+      if (here.doortable & RIGHT)
+        roguecorr(x, y, RIGHT);
       if (here.doortable & LEFT)
         impossible("left end of %d, %d never connected?", x, y);
       if (here.doortable & UP)
@@ -282,11 +291,13 @@ void makerogueghost() {
   struct mkroom *croom;
   int x, y;
 
-  if (!nroom) return; /* Should never happen */
+  if (!nroom)
+    return; /* Should never happen */
   croom = &rooms[rn2(nroom)];
   x = somex(croom);
   y = somey(croom);
-  if (!(ghost = makemon(&mons[PM_GHOST], x, y, NO_MM_FLAGS))) return;
+  if (!(ghost = makemon(&mons[PM_GHOST], x, y, NO_MM_FLAGS)))
+    return;
   ghost->msleeping = 1;
   ghost = christen_monst(ghost, roguename());
 
@@ -298,32 +309,40 @@ void makerogueghost() {
   if (rn2(2)) {
     ghostobj = MakeSpecificObjectAt(MACE, x, y, FALSE, FALSE);
     ghostobj->spe = rnd(3);
-    if (rn2(4)) Curse(ghostobj);
+    if (rn2(4))
+      Curse(ghostobj);
   } else {
     ghostobj = MakeSpecificObjectAt(TWO_HANDED_SWORD, x, y, FALSE, FALSE);
     ghostobj->spe = rnd(5) - 2;
-    if (rn2(4)) Curse(ghostobj);
+    if (rn2(4))
+      Curse(ghostobj);
   }
   ghostobj = MakeSpecificObjectAt(BOW, x, y, FALSE, FALSE);
   ghostobj->spe = 1;
-  if (rn2(4)) Curse(ghostobj);
+  if (rn2(4))
+    Curse(ghostobj);
 
   ghostobj = MakeSpecificObjectAt(ARROW, x, y, FALSE, FALSE);
   ghostobj->spe = 0;
   ghostobj->quan = (long)rn1(10, 25);
   ghostobj->owt = GetWeight(ghostobj);
-  if (rn2(4)) Curse(ghostobj);
+  if (rn2(4))
+    Curse(ghostobj);
 
   if (rn2(2)) {
     ghostobj = MakeSpecificObjectAt(RING_MAIL, x, y, FALSE, FALSE);
     ghostobj->spe = rn2(3);
-    if (!rn2(3)) ghostobj->oerodeproof = TRUE;
-    if (rn2(4)) Curse(ghostobj);
+    if (!rn2(3))
+      ghostobj->oerodeproof = TRUE;
+    if (rn2(4))
+      Curse(ghostobj);
   } else {
     ghostobj = MakeSpecificObjectAt(PLATE_MAIL, x, y, FALSE, FALSE);
     ghostobj->spe = rnd(5) - 2;
-    if (!rn2(3)) ghostobj->oerodeproof = TRUE;
-    if (rn2(4)) Curse(ghostobj);
+    if (!rn2(3))
+      ghostobj->oerodeproof = TRUE;
+    if (rn2(4))
+      Curse(ghostobj);
   }
   if (rn2(2)) {
     ghostobj = MakeSpecificObjectAt(FAKE_AMULET_OF_YENDOR, x, y, TRUE, FALSE);

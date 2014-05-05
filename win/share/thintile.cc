@@ -42,7 +42,8 @@ static bool read_txttile() {
 
   char c[2];
 
-  if (fscanf(infile, "# %s %d (%[^)])", buf2, &i, buf) <= 0) return FALSE;
+  if (fscanf(infile, "# %s %d (%[^)])", buf2, &i, buf) <= 0)
+    return FALSE;
 
   sprintf(comment, "# tile %d (%s)", i, buf);
 

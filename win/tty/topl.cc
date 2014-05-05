@@ -44,14 +44,18 @@ int tty_doprev_message() {
           ttyDisplay->dismiss_more = C('p'); /* <ctrl/P> allowed at --More-- */
           redotoplin(toplines);
           cw->maxcol--;
-          if (cw->maxcol < 0) cw->maxcol = cw->rows - 1;
-          if (!cw->data[cw->maxcol]) cw->maxcol = cw->maxrow;
+          if (cw->maxcol < 0)
+            cw->maxcol = cw->rows - 1;
+          if (!cw->data[cw->maxcol])
+            cw->maxcol = cw->maxrow;
         } else if (cw->maxcol == (cw->maxrow - 1)) {
           ttyDisplay->dismiss_more = C('p'); /* <ctrl/P> allowed at --More-- */
           redotoplin(cw->data[cw->maxcol]);
           cw->maxcol--;
-          if (cw->maxcol < 0) cw->maxcol = cw->rows - 1;
-          if (!cw->data[cw->maxcol]) cw->maxcol = cw->maxrow;
+          if (cw->maxcol < 0)
+            cw->maxcol = cw->rows - 1;
+          if (!cw->data[cw->maxcol])
+            cw->maxcol = cw->maxrow;
         } else {
           winid prevmsg_win = create_nhwindow(NHW_MENU);
           putstr(prevmsg_win, 0, "Message History");
@@ -77,12 +81,15 @@ int tty_doprev_message() {
       putstr(prevmsg_win, 0, "");
       putstr(prevmsg_win, 0, toplines);
       cw->maxcol = cw->maxrow - 1;
-      if (cw->maxcol < 0) cw->maxcol = cw->rows - 1;
+      if (cw->maxcol < 0)
+        cw->maxcol = cw->rows - 1;
       do {
         putstr(prevmsg_win, 0, cw->data[cw->maxcol]);
         cw->maxcol--;
-        if (cw->maxcol < 0) cw->maxcol = cw->rows - 1;
-        if (!cw->data[cw->maxcol]) cw->maxcol = cw->maxrow;
+        if (cw->maxcol < 0)
+          cw->maxcol = cw->rows - 1;
+        if (!cw->data[cw->maxcol])
+          cw->maxcol = cw->maxrow;
       } while (cw->maxcol != cw->maxrow);
 
       display_nhwindow(prevmsg_win, TRUE);
@@ -99,8 +106,10 @@ int tty_doprev_message() {
       else if (cw->data[cw->maxcol])
         redotoplin(cw->data[cw->maxcol]);
       cw->maxcol--;
-      if (cw->maxcol < 0) cw->maxcol = cw->rows - 1;
-      if (!cw->data[cw->maxcol]) cw->maxcol = cw->maxrow;
+      if (cw->maxcol < 0)
+        cw->maxcol = cw->rows - 1;
+      if (!cw->data[cw->maxcol])
+        cw->maxcol = cw->maxrow;
     } while (morc == C('p'));
     ttyDisplay->dismiss_more = 0;
   }
@@ -123,7 +132,8 @@ STATIC_OVL void redotoplin(const char *str) {
   putsyms(str);
   cl_end();
   ttyDisplay->toplin = 1;
-  if (ttyDisplay->cury && otoplin != 3) more();
+  if (ttyDisplay->cury && otoplin != 3)
+    more();
 }
 
 STATIC_OVL void remember_topl() {
@@ -132,7 +142,8 @@ STATIC_OVL void remember_topl() {
   unsigned len = strlen(toplines) + 1;
 
   if (len > (unsigned)cw->datlen[idx]) {
-    if (cw->data[idx]) free(cw->data[idx]);
+    if (cw->data[idx])
+      free(cw->data[idx]);
     len += (8 - (len & 7)); /* pad up to next multiple of 8 */
     cw->data[idx] = (char *)alloc(len);
     cw->datlen[idx] = (short)len;
@@ -157,20 +168,25 @@ void more() {
   struct WinDesc *cw = wins[WIN_MESSAGE];
 
   /* avoid recursion -- only happens from interrupts */
-  if (ttyDisplay->inmore++) return;
+  if (ttyDisplay->inmore++)
+    return;
 
   if (ttyDisplay->toplin) {
     tty_curs(BASE_WINDOW, cw->curx + 1, cw->cury);
-    if (cw->curx >= CO - 8) topl_putsym('\n');
+    if (cw->curx >= CO - 8)
+      topl_putsym('\n');
   }
 
-  if (flags.standout) standoutbeg();
+  if (flags.standout)
+    standoutbeg();
   putsyms(defmorestr);
-  if (flags.standout) standoutend();
+  if (flags.standout)
+    standoutend();
 
   xwaitforspace("\033 ");
 
-  if (morc == '\033') cw->flags |= WIN_STOP;
+  if (morc == '\033')
+    cw->flags |= WIN_STOP;
 
   if (ttyDisplay->toplin && cw->cury) {
     docorner(1, cw->cury + 1);
@@ -200,7 +216,8 @@ void update_topl(const char *bp) {
     strcat(toplines, "  ");
     strcat(toplines, bp);
     cw->curx += 2;
-    if (!(cw->flags & WIN_STOP)) addtopl(bp);
+    if (!(cw->flags & WIN_STOP))
+      addtopl(bp);
     return;
   } else if (!(cw->flags & WIN_STOP)) {
     if (ttyDisplay->toplin == 1)
@@ -221,20 +238,24 @@ void update_topl(const char *bp) {
     if (tl == otl) {
       /* Eek!  A huge token.  Try splitting after it. */
       tl = index(otl, ' ');
-      if (!tl) break; /* No choice but to spit it out whole. */
+      if (!tl)
+        break; /* No choice but to spit it out whole. */
     }
     *tl++ = '\n';
     n0 = strlen(tl);
   }
-  if (!notdied) cw->flags &= ~WIN_STOP;
-  if (!(cw->flags & WIN_STOP)) redotoplin(toplines);
+  if (!notdied)
+    cw->flags &= ~WIN_STOP;
+  if (!(cw->flags & WIN_STOP))
+    redotoplin(toplines);
 }
 
 STATIC_OVL
 void topl_putsym(char c) {
   struct WinDesc *cw = wins[WIN_MESSAGE];
 
-  if (cw == (struct WinDesc *)0) panic("Putsym window MESSAGE nonexistant");
+  if (cw == (struct WinDesc *)0)
+    panic("Putsym window MESSAGE nonexistant");
 
   switch (c) {
     case '\b':
@@ -256,17 +277,20 @@ void topl_putsym(char c) {
       ttyDisplay->curx++;
   }
   cw->curx = ttyDisplay->curx;
-  if (cw->curx == 0) cl_end();
+  if (cw->curx == 0)
+    cl_end();
   putchar(c);
 }
 
 void putsyms(const char *str) {
-  while (*str) topl_putsym(*str++);
+  while (*str)
+    topl_putsym(*str++);
 }
 
 STATIC_OVL void removetopl(int n) {
   /* assume addtopl() has been done, so ttyDisplay->toplin is already set */
-  while (n-- > 0) putsyms("\b \b");
+  while (n-- > 0)
+    putsyms("\b \b");
 }
 
 extern char erase_char; /* from xxxtty.c; don't need kill_char */
@@ -290,7 +314,8 @@ char TtyAskYesNoQuestion(const char *query, const char *resp, char def) {
   bool doprev = 0;
   char prompt[QBUFSZ];
 
-  if (ttyDisplay->toplin == 1 && !(cw->flags & WIN_STOP)) more();
+  if (ttyDisplay->toplin == 1 && !(cw->flags & WIN_STOP))
+    more();
   cw->flags &= ~WIN_STOP;
   ttyDisplay->toplin = 3; /* special prompt state */
   ttyDisplay->inread++;
@@ -300,9 +325,11 @@ char TtyAskYesNoQuestion(const char *query, const char *resp, char def) {
     allow_num = (index(resp, '#') != 0);
     strcpy(respbuf, resp);
     /* any acceptable responses that follow <esc> aren't displayed */
-    if ((rb = index(respbuf, '\033')) != 0) *rb = '\0';
+    if ((rb = index(respbuf, '\033')) != 0)
+      *rb = '\0';
     sprintf(prompt, "%s [%s] ", query, respbuf);
-    if (def) sprintf(eos(prompt), "(%c) ", def);
+    if (def)
+      sprintf(eos(prompt), "(%c) ", def);
     pline("%s", prompt);
   } else {
     pline("%s ", query);
@@ -322,7 +349,8 @@ char TtyAskYesNoQuestion(const char *query, const char *resp, char def) {
         cw->maxcol = cw->maxrow;
         addtopl(prompt);
       } else {
-        if (!doprev) (void)tty_doprev_message(); /* need two initially */
+        if (!doprev)
+          (void)tty_doprev_message(); /* need two initially */
         (void)tty_doprev_message();
         doprev = 1;
       }
@@ -371,12 +399,14 @@ char TtyAskYesNoQuestion(const char *query, const char *resp, char def) {
         z = lowc(readchar());
         if (digit(z)) {
           value = (10 * value) + (z - '0');
-          if (value < 0) break; /* overflow: try again */
+          if (value < 0)
+            break; /* overflow: try again */
           digit_string[0] = z;
           addtopl(digit_string), n_len++;
         } else if (z == 'y' || index(quitchars, z)) {
-          if (z == '\033') value = -1; /* abort */
-          z = '\n';                    /* break */
+          if (z == '\033')
+            value = -1; /* abort */
+          z = '\n';     /* break */
         } else if (z == erase_char || z == '\b') {
           if (n_len <= 1) {
             value = -1;
@@ -409,8 +439,10 @@ char TtyAskYesNoQuestion(const char *query, const char *resp, char def) {
 clean_up:
   ttyDisplay->inread--;
   ttyDisplay->toplin = 2;
-  if (ttyDisplay->intr) ttyDisplay->intr--;
-  if (wins[WIN_MESSAGE]->cury) tty_clear_nhwindow(WIN_MESSAGE);
+  if (ttyDisplay->intr)
+    ttyDisplay->intr--;
+  if (wins[WIN_MESSAGE]->cury)
+    tty_clear_nhwindow(WIN_MESSAGE);
 
   return q;
 }

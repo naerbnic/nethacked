@@ -16,11 +16,15 @@ void ballfall() {
               ((uwep == uball) ? FALSE : (bool)rn2(5)));
   if (carried(uball)) {
     pline("Startled, you drop the iron ball.");
-    if (uwep == uball) setuwep(nullptr);
-    if (uswapwep == uball) setuswapwep(nullptr);
-    if (uquiver == uball) setuqwep(nullptr);
+    if (uwep == uball)
+      setuwep(nullptr);
+    if (uswapwep == uball)
+      setuswapwep(nullptr);
+    if (uquiver == uball)
+      setuqwep(nullptr);
     ;
-    if (uwep != uball) freeinv(uball);
+    if (uwep != uball)
+      freeinv(uball);
   }
   if (gets_hit) {
     int dmg = rn1(7, 25);
@@ -112,7 +116,8 @@ void placebc() {
 }
 
 void unplacebc() {
-  if (player.uswallow) return; /* ball&chain not placed while swallowed */
+  if (player.uswallow)
+    return; /* ball&chain not placed while swallowed */
 
   if (!carried(uball)) {
     RemoveObjectFromStorage(uball);
@@ -141,8 +146,10 @@ STATIC_OVL int bc_order() {
     return BCPOS_DIFFER;
 
   for (obj = level.objects[uball->ox][uball->oy]; obj; obj = obj->nexthere) {
-    if (obj == uchain) return BCPOS_CHAIN;
-    if (obj == uball) return BCPOS_BALL;
+    if (obj == uchain)
+      return BCPOS_CHAIN;
+    if (obj == uball)
+      return BCPOS_BALL;
   }
   impossible("bc_order:  ball&chain not in same location!");
   return BCPOS_DIFFER;
@@ -171,7 +178,8 @@ void set_bc(int already_blind) {
    *  disgusting, but it will work.
    */
   RemoveObjectFromFloor(uchain);
-  if (ball_on_floor) RemoveObjectFromFloor(uball);
+  if (ball_on_floor)
+    RemoveObjectFromFloor(uball);
 
   newsym(uchain->ox, uchain->oy);
   player.cglyph = levl[uchain->ox][uchain->oy].glyph;
@@ -310,15 +318,18 @@ void move_bc(int before, int control, xchar ballx, xchar bally, xchar chainx,
       if ((control & BC_CHAIN) ||
           (!control && player.bc_order == BCPOS_CHAIN)) {
         /* If the chain moved or nothing moved & chain on top. */
-        if (on_floor) PlaceObject(uball, ballx, bally);
+        if (on_floor)
+          PlaceObject(uball, ballx, bally);
         PlaceObject(uchain, chainx, chainy); /* chain on top */
       } else {
         PlaceObject(uchain, chainx, chainy);
-        if (on_floor) PlaceObject(uball, ballx, bally);
+        if (on_floor)
+          PlaceObject(uball, ballx, bally);
         /* ball on top */
       }
       newsym(chainx, chainy);
-      if (on_floor) newsym(ballx, bally);
+      if (on_floor)
+        newsym(ballx, bally);
     }
   }
 }
@@ -396,7 +407,8 @@ bool drag_ball(xchar x, xchar y, int *bc_control, xchar *ballx, xchar *bally,
       case 8:
         *chainx = (uball->ox + x) / 2;
         *chainy = (uball->oy + y) / 2;
-        if (IS_CHAIN_ROCK(*chainx, *chainy) && !already_in_rock) SKIP_TO_DRAG;
+        if (IS_CHAIN_ROCK(*chainx, *chainy) && !already_in_rock)
+          SKIP_TO_DRAG;
         break;
 
       /* player is distance 2/1 from ball; move chain to one of the
@@ -473,10 +485,12 @@ bool drag_ball(xchar x, xchar y, int *bc_control, xchar *ballx, xchar *bally,
       /* ball is two spaces horizontal or vertical from player; move*/
       /* chain inbetween *unless* current chain position is OK */
       case 4:
-        if (CHAIN_IN_MIDDLE(uchain->ox, uchain->oy)) break;
+        if (CHAIN_IN_MIDDLE(uchain->ox, uchain->oy))
+          break;
         *chainx = (x + uball->ox) / 2;
         *chainy = (y + uball->oy) / 2;
-        if (IS_CHAIN_ROCK(*chainx, *chainy) && !already_in_rock) SKIP_TO_DRAG;
+        if (IS_CHAIN_ROCK(*chainx, *chainy) && !already_in_rock)
+          SKIP_TO_DRAG;
         break;
 
       /* ball is one space diagonal from player.  Check for the
@@ -494,14 +508,16 @@ bool drag_ball(xchar x, xchar y, int *bc_control, xchar *ballx, xchar *bally,
             *chainx = uball->ox;
           else
             *chainy = uball->oy;
-          if (IS_CHAIN_ROCK(*chainx, *chainy) && !already_in_rock) SKIP_TO_DRAG;
+          if (IS_CHAIN_ROCK(*chainx, *chainy) && !already_in_rock)
+            SKIP_TO_DRAG;
           break;
         }
       /* fall through */
       case 1:
       case 0:
         /* do nothing if possible */
-        if (CHAIN_IN_MIDDLE(uchain->ox, uchain->oy)) break;
+        if (CHAIN_IN_MIDDLE(uchain->ox, uchain->oy))
+          break;
         /* otherwise try to drag chain to player's old position */
         if (CHAIN_IN_MIDDLE(player.ux, player.uy)) {
           *chainx = player.ux;
@@ -544,7 +560,8 @@ drag:
         t->ttyp == TRAPDOOR))) {
     if (Levitation) {
       You_feel("a tug from the iron ball.");
-      if (t) t->tseen = 1;
+      if (t)
+        t->tseen = 1;
     } else {
       Monster *victim;
 
@@ -683,7 +700,8 @@ void drop_ball(xchar x, xchar y) {
     newsym(player.ux0, player.uy0); /* clean up old position */
     if (player.ux0 != player.ux || player.uy0 != player.uy) {
       spoteffects(TRUE);
-      if (In_sokoban(&player.uz)) change_luck(-1); /* Sokoban guilt */
+      if (In_sokoban(&player.uz))
+        change_luck(-1); /* Sokoban guilt */
     }
   }
 }
@@ -719,7 +737,8 @@ void drag_down() {
 
   forward = carried(uball) && (uwep == uball || !uwep || !rn2(3));
 
-  if (carried(uball)) You("lose your grip on the iron ball.");
+  if (carried(uball))
+    You("lose your grip on the iron ball.");
 
   if (forward) {
     if (rn2(6)) {

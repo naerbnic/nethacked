@@ -218,7 +218,8 @@ STATIC_OVL bool md_stop(coord *stopp, coord *startp) {
 
   for (x = player.ux - 1; x <= player.ux + 1; x++)
     for (y = player.uy - 1; y <= player.uy + 1; y++) {
-      if (!isok(x, y) || (x == player.ux && y == player.uy)) continue;
+      if (!isok(x, y) || (x == player.ux && y == player.uy))
+        continue;
 
       if (ACCESSIBLE(levl[x][y].typ) && !MON_AT(x, y)) {
         distance = dist2(x, y, startp->x, startp->y);
@@ -285,13 +286,15 @@ STATIC_OVL bool md_rush(Monster *md, int tx, int ty) {
         }
 
     /* Break if the md couldn't find a new position. */
-    if (nfx == fx && nfy == fy) break;
+    if (nfx == fx && nfy == fy)
+      break;
 
     fx = nfx; /* this is our new position */
     fy = nfy;
 
     /* Break if the md reaches its destination. */
-    if (fx == tx && fy == ty) break;
+    if (fx == tx && fy == ty)
+      break;
 
     if ((mon = m_at(fx, fy)) != 0) /* save monster at this position */
       verbalize(md_exclamations());
@@ -348,19 +351,22 @@ STATIC_OVL void newmail(struct mail_info *info) {
   bool message_seen = FALSE;
 
   /* Try to find good starting and stopping places. */
-  if (!md_start(&start) || !md_stop(&stop, &start)) goto give_up;
+  if (!md_start(&start) || !md_stop(&stop, &start))
+    goto give_up;
 
   /* Make the daemon.  Have it rush towards the hero. */
   if (!(md = makemon(&mons[PM_MAIL_DAEMON], start.x, start.y, NO_MM_FLAGS)))
     goto give_up;
-  if (!md_rush(md, stop.x, stop.y)) goto go_back;
+  if (!md_rush(md, stop.x, stop.y))
+    goto go_back;
 
   message_seen = TRUE;
   verbalize("%s, %s!  %s.", Hello(md), plname, info->display_txt);
 
   if (info->message_typ) {
     Object *obj = MakeSpecificObject(SCR_MAIL, FALSE, FALSE);
-    if (distu(md->mx, md->my) > 2) verbalize("Catch!");
+    if (distu(md->mx, md->my) > 2)
+      verbalize("Catch!");
     display_nhwindow(WIN_MESSAGE, FALSE);
     if (info->object_nam) {
       obj = oname(obj, info->object_nam);
@@ -424,7 +430,8 @@ void readmail(Object *otmp) {
   const char *mr = 0;
 
   display_nhwindow(WIN_MESSAGE, FALSE);
-  if (!(mr = nh_getenv("MAILREADER"))) mr = DEF_MAILREADER;
+  if (!(mr = nh_getenv("MAILREADER")))
+    mr = DEF_MAILREADER;
 
   if (child(1)) {
     (void)execl(mr, mr, (char *)0);

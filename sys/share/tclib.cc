@@ -60,13 +60,16 @@ int tgetent(char *entbuf, const char *term) {
   char *tc = getenv("TERMCAP");
 
   tc_entry = entbuf;
-  if (!entbuf || !term) return -1;
+  if (!entbuf || !term)
+    return -1;
   /* if ${TERMCAP} is found as a file, it's not an inline termcap entry */
-  if ((fp = fopen(tc ? tc : TERMCAP, "r")) != 0) tc = 0;
+  if ((fp = fopen(tc ? tc : TERMCAP, "r")) != 0)
+    tc = 0;
   /* if ${TERMCAP} isn't a file and `term' matches ${TERM}, use ${TERMCAP} */
   if (tc) {
     char *tm = getenv("TERM");
-    if (tm && strcmp(tm, term) == 0) return tc_store(term, tc);
+    if (tm && strcmp(tm, term) == 0)
+      return tc_store(term, tc);
     fp = fopen(TERMCAP, "r");
   }
   /* otherwise, look `term' up in the file */
@@ -88,7 +91,8 @@ static int tc_store(const char *trm, const char *ent) {
   size_t n;
   int k;
 
-  if (!ent || !*ent || !trm || !*trm || (col = index(ent, ':')) == 0) return 0;
+  if (!ent || !*ent || !trm || !*trm || (col = index(ent, ':')) == 0)
+    return 0;
   (void)strcpy(tc_entry, trm);
   if (((bar = index(ent, '|')) != 0 && bar < col) ||
       ((long)(n = strlen(trm)) == (long)(col - ent) &&
@@ -103,7 +107,8 @@ static int tc_store(const char *trm, const char *ent) {
   k = tgetnum("pc");
   PC = (k == -1) ? '\0' : (char)k;
   BC = s = bc_up_buf;
-  if (!tgetstr("bc", &s)) (void)strcpy(s, "\b"), s += 2;
+  if (!tgetstr("bc", &s))
+    (void)strcpy(s, "\b"), s += 2;
   UP = s;
   (void)tgetstr("up", &s);
 #ifndef NO_DELAY_PADDING
@@ -128,17 +133,21 @@ static char *tc_find(FILE *fp, const char *term, char *buffer, int bufsiz) {
     first = 1, skip = 0;
     /* load entire next entry, including any continuations */
     do {
-      if (!fgets(ip, min(in, BUFSIZ), fp)) break;
-      if (first) skip = (*ip == '#'), first = 0;
+      if (!fgets(ip, min(in, BUFSIZ), fp))
+        break;
+      if (first)
+        skip = (*ip == '#'), first = 0;
       len = (int)strlen(ip);
       if (!skip && len > 1 && *(ip + len - 1) == '\n' &&
           *(ip + len - 2) == '\\')
         len -= 2;
       ip += len, in -= len;
     } while (*(ip - 1) != '\n' && in > 0);
-    if (ferror(fp) || ip == buffer || *(ip - 1) != '\n') return (char *)0;
+    if (ferror(fp) || ip == buffer || *(ip - 1) != '\n')
+      return (char *)0;
     *--ip = '\0'; /* strip newline */
-    if (!skip) ip = tc_name(term, tcbuf);
+    if (!skip)
+      ip = tc_name(term, tcbuf);
   } while (skip || !ip);
 
   /* we have the desired entry; strip cruft and look for :tc=other: */
@@ -149,7 +158,8 @@ static char *tc_find(FILE *fp, const char *term, char *buffer, int bufsiz) {
       *op++ = *ip, bufsiz -= 1;
     if (ip[0] == ':' && ip[1] == 't' && ip[2] == 'c' && ip[3] == '=') {
       tc_fetch = &ip[4];
-      if ((ip = index(tc_fetch, ':')) != 0) *ip = '\0';
+      if ((ip = index(tc_fetch, ':')) != 0)
+        *ip = '\0';
       break;
     }
   }
@@ -158,8 +168,10 @@ static char *tc_find(FILE *fp, const char *term, char *buffer, int bufsiz) {
   if (tc_fetch) {
     rewind(fp);
     tc_fetch = tc_find(fp, tc_fetch, tcbuf, min(bufsiz, TCBUFSIZ));
-    if (!tc_fetch) return (char *)0;
-    if (op > buffer && *(op - 1) == ':' && *tc_fetch == ':') ++tc_fetch;
+    if (!tc_fetch)
+      return (char *)0;
+    if (op > buffer && *(op - 1) == ':' && *tc_fetch == ':')
+      ++tc_fetch;
     strcpy(op, tc_fetch);
   }
   return buffer;
@@ -170,11 +182,14 @@ static char *tc_name(const char *nam, char *ent) {
   char *nxt, *lst, *p = ent;
   size_t n = strlen(nam);
 
-  if ((lst = index(p, ':')) == 0) lst = p + strlen(p);
+  if ((lst = index(p, ':')) == 0)
+    lst = p + strlen(p);
 
   while (p < lst) {
-    if ((nxt = index(p, '|')) == 0 || nxt > lst) nxt = lst;
-    if ((long)(nxt - p) == (long)n && strncmp(p, nam, n) == 0) return lst;
+    if ((nxt = index(p, '|')) == 0 || nxt > lst)
+      nxt = lst;
+    if ((long)(nxt - p) == (long)n && strncmp(p, nam, n) == 0)
+      return lst;
     p = nxt + 1;
   }
   return (char *)0;
@@ -186,9 +201,11 @@ int tgetnum(const char *which) {
   char numbuf[32];
   size_t n;
 
-  if (!p || p[2] != '#') return -1;
+  if (!p || p[2] != '#')
+    return -1;
   p += 3;
-  if ((n = (size_t)(q - p)) >= sizeof numbuf) return -1;
+  if ((n = (size_t)(q - p)) >= sizeof numbuf)
+    return -1;
   (void)strncpy(numbuf, p, n);
   numbuf[n] = '\0';
   return atoi(numbuf);
@@ -207,9 +224,11 @@ char *tgetstr(const char *which, char **outptr) {
   char c, *r, *result;
   const char *q, *p = tc_field(which, &q);
 
-  if (!p || p[2] != '=') return (char *)0;
+  if (!p || p[2] != '=')
+    return (char *)0;
   p += 3;
-  if ((q = index(p, ':')) == 0) q = p + strlen(p);
+  if ((q = index(p, ':')) == 0)
+    q = p + strlen(p);
   r = result = *outptr;
   while (p < q) {
     switch ((*r = *p++)) {
@@ -245,8 +264,10 @@ char *tgetstr(const char *which, char **outptr) {
           case '6':
           case '7':
             n = c - '0';
-            if (*p >= '0' && *p <= '7') n = 8 * n + (*p++ - '0');
-            if (*p >= '0' && *p <= '7') n = 8 * n + (*p++ - '0');
+            if (*p >= '0' && *p <= '7')
+              n = 8 * n + (*p++ - '0');
+            if (*p >= '0' && *p <= '7')
+              n = 8 * n + (*p++ - '0');
             *r = (char)n;
             break;
           /* case '^': case '\\': */
@@ -257,7 +278,8 @@ char *tgetstr(const char *which, char **outptr) {
         break;
       case '^':
         *r = (*p++ & 037);
-        if (!*r) *r = (char)'\200';
+        if (!*r)
+          *r = (char)'\200';
         break;
       default:
         break;
@@ -275,7 +297,8 @@ static const char *tc_field(const char *field, const char **tc_end) {
 
   end = p + strlen(p);
   while (p < end) {
-    if ((p = index(p, ':')) == 0) break;
+    if ((p = index(p, ':')) == 0)
+      break;
     ++p;
     if (p[0] == field[0] && p[1] == field[1] &&
         (p[2] == ':' || p[2] == '=' || p[2] == '#' || p[2] == '@'))
@@ -283,7 +306,8 @@ static const char *tc_field(const char *field, const char **tc_end) {
   }
   if (tc_end) {
     if (p) {
-      if ((q = index(p + 2, ':')) == 0) q = end;
+      if ((q = index(p + 2, ':')) == 0)
+        q = end;
     } else
       q = 0;
     *tc_end = q;
@@ -313,7 +337,8 @@ char *tparam(const char *ctl, char *buf, int buflen, int row, int col, int row2,
   r = buf, bufend = r + buflen - 1;
   while (*ctl) {
     if ((*r = *ctl++) == '%') {
-      if (ac > 4) ac = 4;
+      if (ac > 4)
+        ac = 4;
       fmt = 0;
       switch ((c = *ctl++)) {
         case '%':
@@ -330,7 +355,8 @@ char *tparam(const char *ctl, char *buf, int buflen, int row, int col, int row2,
         case '+': /*FALLTHRU*/
         case '.':
           *r = (char)av[ac++];
-          if (c == '+') *r += *ctl++;
+          if (c == '+')
+            *r += *ctl++;
           if (!*r) {
             *r = (char)'\200';
           } else {
@@ -341,12 +367,14 @@ char *tparam(const char *ctl, char *buf, int buflen, int row, int col, int row2,
                makes sense if this is a cursor positioning
                sequence, but we have no way to check that */
             while (index("\004\t\n\013\f\r", *r)) {
-              if (ac & 1) {             /* row */
-                if (!UP || !*UP) break; /* can't fix */
-                ++up;                   /* incr row now, later move up */
-              } else {                  /* column */
-                if (!BC || !*BC) break; /* can't fix */
-                ++bc;                   /* incr column, later backspace */
+              if (ac & 1) { /* row */
+                if (!UP || !*UP)
+                  break; /* can't fix */
+                ++up;    /* incr row now, later move up */
+              } else {   /* column */
+                if (!BC || !*BC)
+                  break; /* can't fix */
+                ++bc;    /* incr column, later backspace */
               }
               (*r)++;
             }
@@ -354,7 +382,8 @@ char *tparam(const char *ctl, char *buf, int buflen, int row, int col, int row2,
           }
           break;
         case '>':
-          if (av[ac] > (*ctl++ & 0377)) av[ac] += *ctl;
+          if (av[ac] > (*ctl++ & 0377))
+            av[ac] += *ctl;
           ++ctl;
           break;
         case 'r':
@@ -400,19 +429,24 @@ char *tparam(const char *ctl, char *buf, int buflen, int row, int col, int row2,
       }
       if (fmt) {
         (void)sprintf(numbuf, fmt, av[ac++]);
-        for (z = numbuf; *z && r <= bufend; z++) *r++ = *z;
+        for (z = numbuf; *z && r <= bufend; z++)
+          *r++ = *z;
         --r; /* will be re-incremented below */
       }
     }
-    if (++r > bufend) return (char *)0;
+    if (++r > bufend)
+      return (char *)0;
   }
 #ifndef NO_SPECIAL_CHARS_FIXUP
   if (bc || up) {
     while (--bc >= 0)
-      for (z = BC; *z && r <= bufend; z++) *r++ = *z;
+      for (z = BC; *z && r <= bufend; z++)
+        *r++ = *z;
     while (--up >= 0)
-      for (z = UP; *z && r <= bufend; z++) *r++ = *z;
-    if (r > bufend) return (char *)0;
+      for (z = UP; *z && r <= bufend; z++)
+        *r++ = *z;
+    if (r > bufend)
+      return (char *)0;
   }
 #endif /* !NO_SPECIAL_CHARS_FIXUP */
   *r = '\0';
@@ -424,20 +458,24 @@ void tputs(const char *string, int range, int (*output_func)(int)) {
   int c, num = 0;
   const char *p = string;
 
-  if (!p || !*p) return;
+  if (!p || !*p)
+    return;
 
   /* pick out padding prefix, if any */
   if (*p >= '0' && *p <= '9') {
     do { /* note: scale `num' by 10 to accommodate fraction */
       num += (*p++ - '0'), num *= 10;
     } while (*p >= '0' && *p <= '9');
-    if (*p == '.') ++p, num += (*p >= '0' && *p <= '9') ? (*p++ - '0') : 0;
-    if (*p == '*') ++p, num *= range;
+    if (*p == '.')
+      ++p, num += (*p >= '0' && *p <= '9') ? (*p++ - '0') : 0;
+    if (*p == '*')
+      ++p, num *= range;
   }
 
   /* output the string */
   while ((c = *p++) != '\0') {
-    if (c == '\200') c = '\0'; /* undo tgetstr's encoding */
+    if (c == '\200')
+      c = '\0'; /* undo tgetstr's encoding */
     (void)(*output_func)(c);
   }
 
@@ -448,13 +486,15 @@ void tputs(const char *string, int range, int (*output_func)(int)) {
 
     /* figure out how many chars needed to produce desired elapsed time */
     pad = (long)baud_rates[ospeed];
-    if (pad < 0) pad *= -100L;
+    if (pad < 0)
+      pad *= -100L;
     pad *= (long)num;
     /* 100000 == 10 bits/char * (1000 millisec/sec scaled by 10) */
     num = (int)(pad / 100000L); /* number of characters */
 
     c = PC; /* assume output_func isn't allowed to change PC */
-    while (--num >= 0) (void)(*output_func)(c);
+    while (--num >= 0)
+      (void)(*output_func)(c);
   }
 #endif /* !NO_DELAY_PADDING */
 

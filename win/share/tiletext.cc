@@ -40,7 +40,8 @@ static void read_text_colormap(FILE *txtfile) {
   int i, r, g, b;
   char c[2];
 
-  for (i = 0; i < MAXCOLORMAPSIZE; i++) color_index[i] = -1;
+  for (i = 0; i < MAXCOLORMAPSIZE; i++)
+    color_index[i] = -1;
 
   num_colors = 0;
   while (fscanf(txtfile, FORMAT_STRING, c, &r, &g, &b) == 4) {
@@ -85,7 +86,8 @@ static bool read_txttile(FILE *txtfile, pixel (*pixels)[TILE_X]) {
   const char *p;
   char c[2];
 
-  if (fscanf(txtfile, "# %s %d (%[^)])", ttype, &i, buf) <= 0) return FALSE;
+  if (fscanf(txtfile, "# %s %d (%[^)])", ttype, &i, buf) <= 0)
+    return FALSE;
 
   ph = strcmp(ttype, "placeholder") == 0;
 
@@ -184,7 +186,8 @@ static void write_txttile(FILE *txtfile, pixel (*pixels)[TILE_X]) {
             ColorMap[CM_BLUE][k] == pixels[j][i].b)
           break;
       }
-      if (k >= num_colors) Fprintf(stderr, "color not in colormap!\n");
+      if (k >= num_colors)
+        Fprintf(stderr, "color not in colormap!\n");
       (void)fputc(charcolors[k], txtfile);
     }
     Fprintf(txtfile, "\n");
@@ -251,7 +254,8 @@ bool fopen_text_file(const char *filename, const char *type) {
 
   tile_set = 0;
   for (i = 0; i < SIZE(text_sets); i++) {
-    if (!strcmp(p, text_sets[i])) tile_set = i + 1;
+    if (!strcmp(p, text_sets[i]))
+      tile_set = i + 1;
   }
   tile_set_indx = 0;
 

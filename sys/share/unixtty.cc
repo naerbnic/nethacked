@@ -181,7 +181,8 @@ static int speednum(speed_t speed) {
 #endif
 
 static void setctty() {
-  if (STTY(&curttyb) < 0 || STTY2(&curttyb2) < 0) perror("NetHack (setctty)");
+  if (STTY(&curttyb) < 0 || STTY2(&curttyb2) < 0)
+    perror("NetHack (setctty)");
 }
 
 /*
@@ -190,7 +191,8 @@ static void setctty() {
  * Called by startup() in termcap.c and after returning from ! or ^Z
  */
 void gettty() {
-  if (GTTY(&inittyb) < 0 || GTTY2(&inittyb2) < 0) perror("NetHack (gettty)");
+  if (GTTY(&inittyb) < 0 || GTTY2(&inittyb2) < 0)
+    perror("NetHack (gettty)");
   curttyb = inittyb;
   curttyb2 = inittyb2;
   ospeed = OSPEED(inittyb);
@@ -210,8 +212,10 @@ void gettty() {
 /* reset terminal to original state */
 void settty(const char *s) {
   end_screen();
-  if (s) raw_print(s);
-  if (STTY(&inittyb) < 0 || STTY2(&inittyb2) < 0) perror("NetHack (settty)");
+  if (s)
+    raw_print(s);
+  if (STTY(&inittyb) < 0 || STTY2(&inittyb2) < 0)
+    perror("NetHack (settty)");
   iflags.echo = (inittyb.echoflgs & ECHO) ? ON : OFF;
   iflags.cbreak = (CBRKON(inittyb.cbrkflgs & CBRKMASK)) ? ON : OFF;
   curttyb.inputflags |= STRIPHI;
@@ -271,7 +275,8 @@ void setftty() {
 #endif
     change++;
   }
-  if (!IS_7BIT(inittyb)) curttyb.inputflags &= ~STRIPHI;
+  if (!IS_7BIT(inittyb))
+    curttyb.inputflags &= ~STRIPHI;
   /* If an interrupt character is used, it will be overriden and
    * set to ^C.
    */
@@ -280,7 +285,8 @@ void setftty() {
     change++;
   }
 
-  if (change) setctty();
+  if (change)
+    setctty();
   start_screen();
 }
 
@@ -338,7 +344,8 @@ void init_linux_cons() {
     atexit(linux_mapon);
     linux_mapoff();
 #ifdef TEXTCOLOR
-    if (has_colors()) iflags.use_color = TRUE;
+    if (has_colors())
+      iflags.use_color = TRUE;
 #endif
   }
 }
@@ -365,7 +372,8 @@ void error(const char *s, ...) {
   backtrace_symbols_fd(trace, numlevels, 2);
   va_list args;
   va_start(args, s);
-  if (settty_needed) settty((char *)0);
+  if (settty_needed)
+    settty((char *)0);
   vprintf(s, args);
   putchar('\n');
   va_end(args);

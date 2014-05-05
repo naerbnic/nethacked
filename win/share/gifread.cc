@@ -138,7 +138,8 @@ static void DoExtension(FILE *fd, int label) {
       Gif89.disposal = (buf[0] >> 2) & 0x7;
       Gif89.inputFlag = (buf[0] >> 1) & 0x1;
       Gif89.delayTime = LM_to_uint(buf[1], buf[2]);
-      if ((buf[0] & 0x1) != 0) Gif89.transparent = buf[3];
+      if ((buf[0] & 0x1) != 0)
+        Gif89.transparent = buf[3];
 
       while (GetDataBlock(fd, (unsigned char *)buf) != 0)
         ;
@@ -287,13 +288,15 @@ static int GetCode(FILE *fd, int code_size, int flag) {
 
   if ((curbit + code_size) >= lastbit) {
     if (done) {
-      if (curbit >= lastbit) Fprintf(stderr, "ran off the end of my bits\n");
+      if (curbit >= lastbit)
+        Fprintf(stderr, "ran off the end of my bits\n");
       return -1;
     }
     buf[0] = buf[last_byte - 2];
     buf[1] = buf[last_byte - 1];
 
-    if ((count = GetDataBlock(fd, &buf[2])) == 0) done = TRUE;
+    if ((count = GetDataBlock(fd, &buf[2])) == 0)
+      done = TRUE;
 
     last_byte = 2 + count;
     curbit = (curbit - lastbit) + 16;
@@ -336,7 +339,8 @@ static int LWZReadByte(FILE *fd, int flag, int input_code_size) {
       table[0][i] = 0;
       table[1][i] = i;
     }
-    for (; i < (1 << MAX_LWZ_BITS); ++i) table[0][i] = table[1][0] = 0;
+    for (; i < (1 << MAX_LWZ_BITS); ++i)
+      table[0][i] = table[1][0] = 0;
 
     sp = stack;
 
@@ -349,7 +353,8 @@ static int LWZReadByte(FILE *fd, int flag, int input_code_size) {
     return firstcode;
   }
 
-  if (sp > stack) return *--sp;
+  if (sp > stack)
+    return *--sp;
 
   while ((code = GetCode(fd, code_size, FALSE)) >= 0) {
     if (code == clear_code) {
@@ -357,7 +362,8 @@ static int LWZReadByte(FILE *fd, int flag, int input_code_size) {
         table[0][i] = 0;
         table[1][i] = i;
       }
-      for (; i < (1 << MAX_LWZ_BITS); ++i) table[0][i] = table[1][i] = 0;
+      for (; i < (1 << MAX_LWZ_BITS); ++i)
+        table[0][i] = table[1][i] = 0;
       code_size = set_code_size + 1;
       max_code_size = 2 * clear_code;
       max_code = clear_code + 2;
@@ -368,7 +374,8 @@ static int LWZReadByte(FILE *fd, int flag, int input_code_size) {
       int count;
       unsigned char buf[260];
 
-      if (ZeroDataBlock) return -2;
+      if (ZeroDataBlock)
+        return -2;
 
       while ((count = GetDataBlock(fd, buf)) > 0)
         ;
@@ -409,7 +416,8 @@ static int LWZReadByte(FILE *fd, int flag, int input_code_size) {
 
     oldcode = incode;
 
-    if (sp > stack) return *--sp;
+    if (sp > stack)
+      return *--sp;
   }
   return code;
 }
@@ -455,7 +463,8 @@ static void ReadInterleavedImage(FILE *fd, int len, int height) {
         }
       }
     }
-    if (ypos >= height) break;
+    if (ypos >= height)
+      break;
   }
 
 fini:
@@ -476,7 +485,8 @@ static void ReadTileStrip(FILE *fd, int len) {
       xpos = 0;
       ++ypos;
     }
-    if (ypos >= TILE_Y) break;
+    if (ypos >= TILE_Y)
+      break;
   }
 }
 
@@ -548,12 +558,15 @@ bool fopen_gif_file(const char *filename, const char *type) {
 bool read_gif_tile(pixel (*pixels)[TILE_X]) {
   int i, j;
 
-  if (curr_tiles_down >= tiles_down) return FALSE;
+  if (curr_tiles_down >= tiles_down)
+    return FALSE;
   if (curr_tiles_across == tiles_across) {
     curr_tiles_across = 0;
     curr_tiles_down++;
-    if (curr_tiles_down >= tiles_down) return FALSE;
-    if (!GifScreen.Interlace) ReadTileStrip(gif_file, GifScreen.Width);
+    if (curr_tiles_down >= tiles_down)
+      return FALSE;
+    if (!GifScreen.Interlace)
+      ReadTileStrip(gif_file, GifScreen.Width);
   }
   if (GifScreen.Interlace) {
     for (j = 0; j < TILE_Y; j++) {
@@ -619,7 +632,8 @@ int main(int argc, char *argv[]) {
   }
 
   while (argc > 1) {
-    if (!fopen_gif_file(argv[1], RDBMODE)) exit(EXIT_FAILURE);
+    if (!fopen_gif_file(argv[1], RDBMODE))
+      exit(EXIT_FAILURE);
 
     init_colormap();
 
@@ -628,7 +642,8 @@ int main(int argc, char *argv[]) {
       exit(EXIT_FAILURE);
     }
 
-    while (read_gif_tile(pixels)) (void)write_text_tile(pixels);
+    while (read_gif_tile(pixels))
+      (void)write_text_tile(pixels);
 
     (void)fclose_gif_file();
     (void)fclose_text_file();

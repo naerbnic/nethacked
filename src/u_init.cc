@@ -568,7 +568,8 @@ STATIC_OVL void knows_object(int obj) {
 STATIC_OVL void knows_class(char sym) {
   int ct;
   for (ct = 1; ct < NUM_OBJECTS; ct++)
-    if (objects[ct].oc_class == sym && !objects[ct].oc_magic) knows_object(ct);
+    if (objects[ct].oc_class == sym && !objects[ct].oc_magic)
+      knows_object(ct);
 }
 
 void u_init() {
@@ -623,15 +624,18 @@ void u_init() {
   player.ulevel = 0; /* set up some of the initial attributes */
   player.uhp = player.uhpmax = newhp();
   player.uenmax = urole.enadv.infix + urace.enadv.infix;
-  if (urole.enadv.inrnd > 0) player.uenmax += rnd(urole.enadv.inrnd);
-  if (urace.enadv.inrnd > 0) player.uenmax += rnd(urace.enadv.inrnd);
+  if (urole.enadv.inrnd > 0)
+    player.uenmax += rnd(urole.enadv.inrnd);
+  if (urace.enadv.inrnd > 0)
+    player.uenmax += rnd(urace.enadv.inrnd);
   player.uen = player.uenmax;
   player.uspellprot = 0;
   adjabil(0, 1);
   player.ulevel = player.ulevelmax = 1;
 
   init_uhunger();
-  for (i = 0; i <= MAXSPELL; i++) spl_book[i].sp_id = NO_SPELL;
+  for (i = 0; i <= MAXSPELL; i++)
+    spl_book[i].sp_id = NO_SPELL;
   player.ublesscnt = 300; /* no prayers just yet */
   player.ualignbase[A_CURRENT] = player.ualignbase[A_ORIGINAL] =
       player.ualign.type = aligns[flags.initalign].value;
@@ -674,7 +678,8 @@ void u_init() {
         Barbarian[B_MINOR].trotyp = SHORT_SWORD;
       }
       ini_inv(Barbarian);
-      if (!rn2(6)) ini_inv(Lamp);
+      if (!rn2(6))
+        ini_inv(Lamp);
       knows_class(WEAPON_CLASS);
       knows_class(ARMOR_CLASS);
       skill_init(Skill_B);
@@ -691,7 +696,8 @@ void u_init() {
       player.umoney0 = rn1(1000, 1001);
 #endif
       ini_inv(Healer);
-      if (!rn2(25)) ini_inv(Lamp);
+      if (!rn2(25))
+        ini_inv(Lamp);
       knows_object(POT_FULL_HEALING);
       skill_init(Skill_H);
       break;
@@ -754,14 +760,16 @@ void u_init() {
       player.umoney0 = 0;
 #endif
       ini_inv(Rogue);
-      if (!rn2(5)) ini_inv(Blindfold);
+      if (!rn2(5))
+        ini_inv(Blindfold);
       knows_object(SACK);
       skill_init(Skill_R);
       break;
     case PM_SAMURAI:
       Samurai[S_ARROWS].trquan = rn1(20, 26);
       ini_inv(Samurai);
-      if (!rn2(5)) ini_inv(Blindfold);
+      if (!rn2(5))
+        ini_inv(Blindfold);
       knows_class(WEAPON_CLASS);
       knows_class(ARMOR_CLASS);
       skill_init(Skill_S);
@@ -788,15 +796,18 @@ void u_init() {
 #endif
     case PM_VALKYRIE:
       ini_inv(Valkyrie);
-      if (!rn2(6)) ini_inv(Lamp);
+      if (!rn2(6))
+        ini_inv(Lamp);
       knows_class(WEAPON_CLASS);
       knows_class(ARMOR_CLASS);
       skill_init(Skill_V);
       break;
     case PM_WIZARD:
       ini_inv(Wizard);
-      if (!rn2(5)) ini_inv(Magicmarker);
-      if (!rn2(5)) ini_inv(Blindfold);
+      if (!rn2(5))
+        ini_inv(Magicmarker);
+      if (!rn2(5))
+        ini_inv(Blindfold);
       skill_init(Skill_W);
       break;
 
@@ -853,7 +864,8 @@ void u_init() {
 
     case PM_ORC:
       /* compensate for generally inferior equipment */
-      if (!Role_if(PM_WIZARD)) ini_inv(Xtra_food);
+      if (!Role_if(PM_WIZARD))
+        ini_inv(Xtra_food);
       /* Orcs can recognize all orcish objects */
       knows_object(ORCISH_SHORT_SWORD);
       knows_object(ORCISH_ARROW);
@@ -872,16 +884,19 @@ void u_init() {
       break;
   }
 
-  if (discover) ini_inv(Wishing);
+  if (discover)
+    ini_inv(Wishing);
 
 #ifdef WIZARD
-  if (wizard) read_wizkit();
+  if (wizard)
+    read_wizkit();
 #endif
 
 #ifndef GOLDOBJ
   player.ugold0 += hidden_gold(); /* in case sack has gold in it */
 #else
-  if (player.umoney0) ini_inv(Money);
+  if (player.umoney0)
+    ini_inv(Money);
   player.umoney0 += hidden_gold(); /* in case sack has gold in it */
 #endif
 
@@ -895,13 +910,16 @@ void u_init() {
     if (!rn2(20)) {
       int xd = rn2(7) - 2; /* biased variation */
       (void)adjattrib(i, xd, TRUE);
-      if (ABASE(i) < AMAX(i)) AMAX(i) = ABASE(i);
+      if (ABASE(i) < AMAX(i))
+        AMAX(i) = ABASE(i);
     }
 
   /* make sure you can carry all you have - especially for Tourists */
   while (inv_weight() > 0) {
-    if (adjattrib(A_STR, 1, TRUE)) continue;
-    if (adjattrib(A_CON, 1, TRUE)) continue;
+    if (adjattrib(A_STR, 1, TRUE))
+      continue;
+    if (adjattrib(A_CON, 1, TRUE))
+      continue;
     /* only get here when didn't boost strength or constitution */
     break;
   }
@@ -962,7 +980,8 @@ STATIC_OVL bool restricted_spell_discipline(int otyp) {
   }
 
   while (skills->skill != P_NONE) {
-    if (skills->skill == this_skill) return FALSE;
+    if (skills->skill == this_skill)
+      return FALSE;
     ++skills;
   }
   return TRUE;
@@ -1034,7 +1053,8 @@ STATIC_OVL void ini_inv(struct trobj *trop) {
       }
 
       /* Don't start with +0 or negative rings */
-      if (objects[otyp].oc_charged && obj->spe <= 0) obj->spe = rne(3);
+      if (objects[otyp].oc_charged && obj->spe <= 0)
+        obj->spe = rne(3);
 
       /* Heavily relies on the fact that 1) we create wands
        * before rings, 2) that we create rings before
@@ -1065,9 +1085,11 @@ STATIC_OVL void ini_inv(struct trobj *trop) {
     } else {
 #endif
       obj->dknown = obj->bknown = obj->rknown = 1;
-      if (objects[otyp].oc_uses_known) obj->known = 1;
+      if (objects[otyp].oc_uses_known)
+        obj->known = 1;
       obj->cursed = 0;
-      if (obj->opoisoned && player.ualign.type != A_CHAOTIC) obj->opoisoned = 0;
+      if (obj->opoisoned && player.ualign.type != A_CHAOTIC)
+        obj->opoisoned = 0;
       if (obj->oclass == WEAPON_CLASS || obj->oclass == TOOL_CLASS) {
         obj->quan = (long)trop->trquan;
         trop->trquan = 1;
@@ -1075,8 +1097,10 @@ STATIC_OVL void ini_inv(struct trobj *trop) {
                  obj->otyp != FLINT) {
         obj->quan = 1L;
       }
-      if (trop->trspe != UNDEF_SPE) obj->spe = trop->trspe;
-      if (trop->trbless != UNDEF_BLESS) obj->blessed = trop->trbless;
+      if (trop->trspe != UNDEF_SPE)
+        obj->spe = trop->trspe;
+      if (trop->trbless != UNDEF_BLESS)
+        obj->blessed = trop->trbless;
 #ifdef GOLDOBJ
     }
 #endif
@@ -1087,12 +1111,14 @@ STATIC_OVL void ini_inv(struct trobj *trop) {
     /* Make the type known if necessary */
     if (OBJ_DESCR(objects[otyp]) && obj->known)
       discover_object(otyp, TRUE, FALSE);
-    if (otyp == OIL_LAMP) discover_object(POT_OIL, TRUE, FALSE);
+    if (otyp == OIL_LAMP)
+      discover_object(POT_OIL, TRUE, FALSE);
 
     if (obj->oclass == ARMOR_CLASS) {
       if (is_shield(obj) && !uarms) {
         setworn(obj, W_ARMS);
-        if (uswapwep) setuswapwep((Object *)0);
+        if (uswapwep)
+          setuswapwep((Object *)0);
       } else if (is_helmet(obj) && !uarmh)
         setworn(obj, W_ARMH);
       else if (is_gloves(obj) && !uarmg)
@@ -1112,7 +1138,8 @@ STATIC_OVL void ini_inv(struct trobj *trop) {
     if (obj->oclass == WEAPON_CLASS || is_weptool(obj) || otyp == TIN_OPENER ||
         otyp == FLINT || otyp == ROCK) {
       if (is_ammo(obj) || is_missile(obj)) {
-        if (!uquiver) setuqwep(obj);
+        if (!uquiver)
+          setuqwep(obj);
       } else if (!uwep)
         setuwep(obj);
       else if (!uswapwep)
@@ -1122,11 +1149,13 @@ STATIC_OVL void ini_inv(struct trobj *trop) {
       initialspell(obj);
 
 #if !defined(PYRAMID_BUG)
-    if (--trop->trquan) continue; /* make a similar object */
+    if (--trop->trquan)
+      continue; /* make a similar object */
 #else
     if (trop->trquan) {            /* check if zero first */
       --trop->trquan;
-      if (trop->trquan) continue; /* make a similar object */
+      if (trop->trquan)
+        continue; /* make a similar object */
     }
 #endif
     trop++;

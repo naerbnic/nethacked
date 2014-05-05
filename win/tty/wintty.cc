@@ -201,7 +201,8 @@ STATIC_OVL void winch(int ignored) {
               break;
             }
         (void)fflush(stdout);
-        if (i < 2) flush_screen(1);
+        if (i < 2)
+          flush_screen(1);
       }
     }
   }
@@ -288,7 +289,8 @@ void tty_player_selection() {
     tty_putstr(BASE_WINDOW, 0, prompt);
     do {
       pick4u = lowc(readchar());
-      if (index(quitchars, pick4u)) pick4u = 'y';
+      if (index(quitchars, pick4u))
+        pick4u = 'y';
     } while (!index(ynqchars, pick4u));
     if ((int)strlen(prompt) + 1 < CO) {
       /* Echo choice and move back down line */
@@ -336,7 +338,8 @@ void tty_player_selection() {
         if (ok_role(i, flags.initrace, flags.initgend, flags.initalign)) {
           any.a_int = i + 1; /* must be non-zero */
           thisch = lowc(roles[i].name.m[0]);
-          if (thisch == lastch) thisch = highc(thisch);
+          if (thisch == lastch)
+            thisch = highc(thisch);
           if (flags.initgend != ROLE_NONE && flags.initgend != ROLE_RANDOM) {
             if (flags.initgend == 1 && roles[i].name.f)
               strcpy(rolenamebuf, roles[i].name.f);
@@ -595,7 +598,8 @@ void tty_player_selection() {
   tty_display_nhwindow(BASE_WINDOW, FALSE);
   return;
 give_up: /* Quit */
-  if (selected) free((genericptr_t)selected);
+  if (selected)
+    free((genericptr_t)selected);
   bail((char *)0);
   /*NOTREACHED*/
   return;
@@ -614,7 +618,8 @@ void tty_askname() {
   tty_putstr(BASE_WINDOW, 0, "");
   do {
     if (++tryct > 1) {
-      if (tryct > 10) bail("Giving up after 10 tries.\n");
+      if (tryct > 10)
+        bail("Giving up after 10 tries.\n");
       tty_curs(BASE_WINDOW, 1, wins[BASE_WINDOW]->cury - 1);
       tty_putstr(BASE_WINDOW, 0, "Enter a name for your character...");
       /* erase previous prompt (in case of ESC after partial response) */
@@ -625,7 +630,8 @@ void tty_askname() {
              wins[BASE_WINDOW]->cury - 1);
     ct = 0;
     while ((c = tty_nhgetch()) != '\n') {
-      if (c == EOF) error("End of input\n");
+      if (c == EOF)
+        error("End of input\n");
       if (c == '\033') {
         ct = 0;
         break;
@@ -641,7 +647,8 @@ void tty_askname() {
         continue;
       }
       if (c != '-' && c != '@')
-        if (c < 'A' || (c > 'Z' && c < 'a') || c > 'z') c = '_';
+        if (c < 'A' || (c > 'Z' && c < 'a') || c > 'z')
+          c = '_';
       if (ct < (int)(sizeof plname) - 1) {
         (void)putchar(c);
         plname[ct++] = c;
@@ -658,17 +665,20 @@ void tty_get_nh_event() { return; }
 
 STATIC_OVL void getret() {
   xputs("\n");
-  if (flags.standout) standoutbeg();
+  if (flags.standout)
+    standoutbeg();
   xputs("Hit ");
   xputs(iflags.cbreak ? "space" : "return");
   xputs(" to continue: ");
-  if (flags.standout) standoutend();
+  if (flags.standout)
+    standoutend();
   xwaitforspace(" ");
 }
 
 void tty_suspend_nhwindows(const char *str) {
-  settty(str);                 /* calls end_screen, perhaps raw_print */
-  if (!str) tty_raw_print(""); /* calls fflush(stdout) */
+  settty(str); /* calls end_screen, perhaps raw_print */
+  if (!str)
+    tty_raw_print(""); /* calls fflush(stdout) */
 }
 
 void tty_resume_nhwindows() {
@@ -703,7 +713,8 @@ winid tty_create_nhwindow(int type) {
   int i;
   int newid;
 
-  if (maxwin == MAXWIN) return WIN_ERR;
+  if (maxwin == MAXWIN)
+    return WIN_ERR;
 
   newwin = (struct WinDesc *)alloc(sizeof(struct WinDesc));
   newwin->type = type;
@@ -788,7 +799,8 @@ winid tty_create_nhwindow(int type) {
         newwin->datlen[i] = 0;
       }
     }
-    if (newwin->type == NHW_MESSAGE) newwin->maxrow = 0;
+    if (newwin->type == NHW_MESSAGE)
+      newwin->maxrow = 0;
   } else {
     newwin->data = (char **)0;
     newwin->datlen = (short *)0;
@@ -821,12 +833,14 @@ STATIC_OVL void free_window_info(struct WinDesc *cw, bool free_data) {
       if (cw->data[i]) {
         free((genericptr_t)cw->data[i]);
         cw->data[i] = (char *)0;
-        if (cw->datlen) cw->datlen[i] = 0;
+        if (cw->datlen)
+          cw->datlen[i] = 0;
       }
     if (free_data) {
       free((genericptr_t)cw->data);
       cw->data = (char **)0;
-      if (cw->datlen) free((genericptr_t)cw->datlen);
+      if (cw->datlen)
+        free((genericptr_t)cw->datlen);
       cw->datlen = (short *)0;
       cw->rows = 0;
     }
@@ -836,7 +850,8 @@ STATIC_OVL void free_window_info(struct WinDesc *cw, bool free_data) {
     tty_menu_item *temp;
     while ((temp = cw->mlist) != 0) {
       cw->mlist = cw->mlist->next;
-      if (temp->str) free((genericptr_t)temp->str);
+      if (temp->str)
+        free((genericptr_t)temp->str);
       free((genericptr_t)temp);
     }
   }
@@ -863,7 +878,8 @@ void tty_clear_nhwindow(winid window) {
       if (ttyDisplay->toplin) {
         home();
         cl_end();
-        if (cw->cury) docorner(1, cw->cury + 1);
+        if (cw->cury)
+          docorner(1, cw->cury + 1);
         ttyDisplay->toplin = 0;
       }
       break;
@@ -882,7 +898,8 @@ void tty_clear_nhwindow(winid window) {
       break;
     case NHW_MENU:
     case NHW_TEXT:
-      if (cw->active) erase_menu_or_text(window, cw, TRUE);
+      if (cw->active)
+        erase_menu_or_text(window, cw, TRUE);
       free_window_info(cw, FALSE);
       break;
   }
@@ -894,10 +911,12 @@ STATIC_OVL void dmore(struct WinDesc *cw, const char *s) {
   int offset = (cw->type == NHW_TEXT) ? 1 : 2;
 
   tty_curs(BASE_WINDOW, (int)ttyDisplay->curx + offset, (int)ttyDisplay->cury);
-  if (flags.standout) standoutbeg();
+  if (flags.standout)
+    standoutbeg();
   xputs(prompt);
   ttyDisplay->curx += strlen(prompt);
-  if (flags.standout) standoutend();
+  if (flags.standout)
+    standoutend();
 
   xwaitforspace(s);
 }
@@ -1028,7 +1047,8 @@ STATIC_OVL void process_menu_window(winid window, struct WinDesc *cw) {
     int i, gcnt[128];
 #define GSELIDX(c) (c & 127) /* guard against `signed char' */
 
-    for (i = 0; i < SIZE(gcnt); i++) gcnt[i] = 0;
+    for (i = 0; i < SIZE(gcnt); i++)
+      gcnt[i] = 0;
     for (n = 0, curr = cw->mlist; curr; curr = curr->next)
       if (curr->gselector && curr->gselector != curr->selector) {
         ++n;
@@ -1077,10 +1097,12 @@ STATIC_OVL void process_menu_window(winid window, struct WinDesc *cw) {
           int color = NO_COLOR, attr = ATR_NONE;
           bool menucolr = FALSE;
 #endif
-          if (curr->selector) *rp++ = curr->selector;
+          if (curr->selector)
+            *rp++ = curr->selector;
 
           tty_curs(window, 1, page_lines);
-          if (cw->offx) cl_end();
+          if (cw->offx)
+            cl_end();
 
           (void)putchar(' ');
           ++ttyDisplay->curx;
@@ -1095,7 +1117,8 @@ STATIC_OVL void process_menu_window(winid window, struct WinDesc *cw) {
           if (iflags.use_menu_color &&
               (menucolr = get_menu_coloring(curr->str, &color, &attr))) {
             term_start_attr(attr);
-            if (color != NO_COLOR) term_start_color(color);
+            if (color != NO_COLOR)
+              term_start_color(color);
           } else
 #endif
             term_start_attr(curr->attr);
@@ -1111,7 +1134,8 @@ STATIC_OVL void process_menu_window(winid window, struct WinDesc *cw) {
               (void)putchar(*cp);
 #ifdef MENU_COLOR
           if (iflags.use_menu_color && menucolr) {
-            if (color != NO_COLOR) term_end_color();
+            if (color != NO_COLOR)
+              term_end_color();
             term_end_attr(attr);
           } else
 #endif
@@ -1158,7 +1182,8 @@ STATIC_OVL void process_menu_window(winid window, struct WinDesc *cw) {
     switch (morc) {
       case '0':
         /* special case: '0' is also the default ball class */
-        if (!counting && index(gacc, morc)) goto group_accel;
+        if (!counting && index(gacc, morc))
+          goto group_accel;
       /* fall through to count the zero */
       case '1':
       case '2':
@@ -1233,7 +1258,8 @@ STATIC_OVL void process_menu_window(winid window, struct WinDesc *cw) {
         }
         break;
       case MENU_SELECT_PAGE:
-        if (cw->how == PICK_ANY) set_all_on_page(window, page_start, page_end);
+        if (cw->how == PICK_ANY)
+          set_all_on_page(window, page_start, page_end);
         break;
       case MENU_UNSELECT_PAGE:
         unset_all_on_page(window, page_start, page_end);
@@ -1261,7 +1287,8 @@ STATIC_OVL void process_menu_window(winid window, struct WinDesc *cw) {
           }
         break;
       case MENU_INVERT_ALL:
-        if (cw->how == PICK_ANY) invert_all(window, page_start, page_end, 0);
+        if (cw->how == PICK_ANY)
+          invert_all(window, page_start, page_end, 0);
         break;
       default:
         if (cw->how == PICK_NONE || !index(resp, morc)) {
@@ -1273,7 +1300,8 @@ STATIC_OVL void process_menu_window(winid window, struct WinDesc *cw) {
           /* group accelerator; for the PICK_ONE case, we know that
              it matches exactly one item in order to be in gacc[] */
           invert_all(window, page_start, page_end, morc);
-          if (cw->how == PICK_ONE) finished = TRUE;
+          if (cw->how == PICK_ONE)
+            finished = TRUE;
           break;
         }
         /* find, toggle, and possibly update */
@@ -1300,7 +1328,8 @@ STATIC_OVL void process_menu_window(winid window, struct WinDesc *cw) {
               /* do nothing counting&&count==0 */
             }
 
-            if (cw->how == PICK_ONE) finished = TRUE;
+            if (cw->how == PICK_ONE)
+              finished = TRUE;
             break; /* from `for' loop */
           }
         break;
@@ -1332,7 +1361,8 @@ STATIC_OVL void process_text_window(winid window, struct WinDesc *cw) {
       n = 0;
     }
     tty_curs(window, 1, n++);
-    if (cw->offx) cl_end();
+    if (cw->offx)
+      cl_end();
     if (cw->data[i]) {
       attr = cw->data[i][0] - 1;
       if (cw->offx) {
@@ -1351,7 +1381,8 @@ STATIC_OVL void process_text_window(winid window, struct WinDesc *cw) {
              (cw->type == NHW_TEXT) ? (int)ttyDisplay->rows - 1 : n);
     cl_end();
     dmore(cw, quitchars);
-    if (morc == '\033') cw->flags |= WIN_CANCELLED;
+    if (morc == '\033')
+      cw->flags |= WIN_CANCELLED;
   }
 }
 
@@ -1361,7 +1392,8 @@ void tty_display_nhwindow(winid window, bool blocking) {
 
   if (window == WIN_ERR || (cw = wins[window]) == (struct WinDesc *)0)
     panic(winpanicstr, window);
-  if (cw->flags & WIN_CANCELLED) return;
+  if (cw->flags & WIN_CANCELLED)
+    return;
   ttyDisplay->lastwin = window;
   ttyDisplay->rawprint = 0;
 
@@ -1374,12 +1406,14 @@ void tty_display_nhwindow(winid window, bool blocking) {
       } else
         ttyDisplay->toplin = 0;
       cw->curx = cw->cury = 0;
-      if (!cw->active) iflags.window_inited = TRUE;
+      if (!cw->active)
+        iflags.window_inited = TRUE;
       break;
     case NHW_MAP:
       end_glyphout();
       if (blocking) {
-        if (!ttyDisplay->toplin) ttyDisplay->toplin = 1;
+        if (!ttyDisplay->toplin)
+          ttyDisplay->toplin = 1;
         tty_display_nhwindow(WIN_MESSAGE, TRUE);
         return;
       }
@@ -1394,8 +1428,10 @@ void tty_display_nhwindow(winid window, bool blocking) {
       /* avoid converting to uchar before calculations are finished */
       cw->offx =
           (uchar)(int)max((int)10, (int)(ttyDisplay->cols - cw->maxcol - 1));
-      if (cw->type == NHW_MENU) cw->offy = 0;
-      if (ttyDisplay->toplin == 1) tty_display_nhwindow(WIN_MESSAGE, TRUE);
+      if (cw->type == NHW_MENU)
+        cw->offy = 0;
+      if (ttyDisplay->toplin == 1)
+        tty_display_nhwindow(WIN_MESSAGE, TRUE);
       if (cw->offx == 10 || cw->maxrow >= (int)ttyDisplay->rows) {
         cw->offx = 0;
         if (cw->offy) {
@@ -1424,7 +1460,8 @@ void tty_dismiss_nhwindow(winid window) {
 
   switch (cw->type) {
     case NHW_MESSAGE:
-      if (ttyDisplay->toplin) tty_display_nhwindow(WIN_MESSAGE, TRUE);
+      if (ttyDisplay->toplin)
+        tty_display_nhwindow(WIN_MESSAGE, TRUE);
     /*FALLTHRU*/
     case NHW_STATUS:
     case NHW_BASE:
@@ -1461,9 +1498,12 @@ void tty_destroy_nhwindow(winid window) {
   if (window == WIN_ERR || (cw = wins[window]) == (struct WinDesc *)0)
     panic(winpanicstr, window);
 
-  if (cw->active) tty_dismiss_nhwindow(window);
-  if (cw->type == NHW_MESSAGE) iflags.window_inited = 0;
-  if (cw->type == NHW_MAP) clear_screen();
+  if (cw->active)
+    tty_dismiss_nhwindow(window);
+  if (cw->type == NHW_MESSAGE)
+    iflags.window_inited = 0;
+  if (cw->type == NHW_MAP)
+    clear_screen();
 
   free_window_info(cw, TRUE);
   free((genericptr_t)cw);
@@ -1520,9 +1560,11 @@ void tty_curs(winid window, int x, int y) {
   }
 #endif
 
-  if (y == cy && x == cx) return;
+  if (y == cy && x == cx)
+    return;
 
-  if (cw->type == NHW_MAP) end_glyphout();
+  if (cw->type == NHW_MAP)
+    end_glyphout();
 
 #ifndef NO_TERMS
   if (!nh_ND && (cx != x || x <= 3)) { /* Extremely primitive */
@@ -1531,8 +1573,10 @@ void tty_curs(winid window, int x, int y) {
   }
 #endif
 
-  if ((cy -= y) < 0) cy = -cy;
-  if ((cx -= x) < 0) cx = -cx;
+  if ((cy -= y) < 0)
+    cy = -cy;
+  if ((cx -= x) < 0)
+    cx = -cx;
   if (cy <= 3 && cx <= 3) {
     nocmov(x, y);
 #ifndef NO_TERMS
@@ -1610,7 +1654,8 @@ void tty_putstr(winid window, int attr, const char *str) {
   if (str == (const char *)0 ||
       ((cw->flags & WIN_CANCELLED) && (cw->type != NHW_MESSAGE)))
     return;
-  if (cw->type != NHW_MESSAGE) str = compress_str(str);
+  if (cw->type != NHW_MESSAGE)
+    str = compress_str(str);
 
   ttyDisplay->lastwin = window;
 
@@ -1622,11 +1667,13 @@ void tty_putstr(winid window, int attr, const char *str) {
 
     case NHW_STATUS:
       ob = &cw->data[cw->cury][j = cw->curx];
-      if (flags.botlx) *ob = 0;
+      if (flags.botlx)
+        *ob = 0;
       if (!cw->cury && (int)strlen(str) >= CO) {
         /* the characters before "St:" are unnecessary */
         nb = index(str, ':');
-        if (nb && nb > str + 2) str = nb - 2;
+        if (nb && nb > str + 2)
+          str = nb - 2;
       }
       nb = str;
       for (i = cw->curx + 1, n0 = cw->cols; i < n0; i++, nb++) {
@@ -1638,8 +1685,10 @@ void tty_putstr(winid window, int attr, const char *str) {
           }
           break;
         }
-        if (*ob != *nb) tty_putsym(WIN_STATUS, i, cw->cury, *nb);
-        if (*ob) ob++;
+        if (*ob != *nb)
+          tty_putsym(WIN_STATUS, i, cw->cury, *nb);
+        if (*ob)
+          ob++;
       }
 
       (void)strncpy(&cw->data[cw->cury][j], str, cw->cols - j - 1);
@@ -1695,23 +1744,30 @@ void tty_putstr(winid window, int attr, const char *str) {
 
         cw->rows += 12;
         tmp = (char **)alloc(sizeof(char *) * (unsigned)cw->rows);
-        for (i = 0; i < cw->maxrow; i++) tmp[i] = cw->data[i];
-        if (cw->data) free((genericptr_t)cw->data);
+        for (i = 0; i < cw->maxrow; i++)
+          tmp[i] = cw->data[i];
+        if (cw->data)
+          free((genericptr_t)cw->data);
         cw->data = tmp;
 
-        for (i = cw->maxrow; i < cw->rows; i++) cw->data[i] = 0;
+        for (i = cw->maxrow; i < cw->rows; i++)
+          cw->data[i] = 0;
       }
-      if (cw->data[cw->cury]) free((genericptr_t)cw->data[cw->cury]);
+      if (cw->data[cw->cury])
+        free((genericptr_t)cw->data[cw->cury]);
       n0 = strlen(str) + 1;
       ob = cw->data[cw->cury] = (char *)alloc((unsigned)n0 + 1);
       *ob++ = (char)(attr + 1); /* avoid nuls, for convenience */
       strcpy(ob, str);
 
-      if (n0 > cw->maxcol) cw->maxcol = n0;
-      if (++cw->cury > cw->maxrow) cw->maxrow = cw->cury;
+      if (n0 > cw->maxcol)
+        cw->maxcol = n0;
+      if (++cw->cury > cw->maxrow)
+        cw->maxrow = cw->cury;
       if (n0 > CO) {
         /* attempt to break the line */
-        for (i = CO - 1; i && str[i] != ' ' && str[i] != '\n';) i--;
+        for (i = CO - 1; i && str[i] != ' ' && str[i] != '\n';)
+          i--;
         if (i) {
           cw->data[cw->cury - 1][++i] = '\0';
           tty_putstr(window, attr, &str[i]);
@@ -1740,12 +1796,15 @@ void tty_display_file(const char *fname, bool complain) {
          it stdin. */
       (void)close(0);
       if (dup(fd)) {
-        if (complain) raw_printf("Cannot open %s as stdin.", fname);
+        if (complain)
+          raw_printf("Cannot open %s as stdin.", fname);
       } else {
         (void)execlp(catmore, "page", (char *)0);
-        if (complain) raw_printf("Cannot exec %s.", catmore);
+        if (complain)
+          raw_printf("Cannot exec %s.", catmore);
       }
-      if (complain) sleep(10); /* want to wait_synch() but stdin is gone */
+      if (complain)
+        sleep(10); /* want to wait_synch() but stdin is gone */
       terminate(EXIT_FAILURE);
     }
     (void)close(fd);
@@ -1783,13 +1842,17 @@ void tty_display_file(const char *fname, bool complain) {
           wins[datawin]->offy = 0;
       }
       while (dlb_fgets(buf, BUFSZ, f)) {
-        if ((cr = index(buf, '\n')) != 0) *cr = 0;
-        if (index(buf, '\t') != 0) (void)tabexpand(buf);
+        if ((cr = index(buf, '\n')) != 0)
+          *cr = 0;
+        if (index(buf, '\t') != 0)
+          (void)tabexpand(buf);
         empty = FALSE;
         tty_putstr(datawin, 0, buf);
-        if (wins[datawin]->flags & WIN_CANCELLED) break;
+        if (wins[datawin]->flags & WIN_CANCELLED)
+          break;
       }
-      if (!empty) tty_display_nhwindow(datawin, FALSE);
+      if (!empty)
+        tty_display_nhwindow(datawin, FALSE);
       tty_destroy_nhwindow(datawin);
       (void)dlb_fclose(f);
     }
@@ -1814,7 +1877,8 @@ void tty_add_menu(winid window, int glyph, const anything *identifier, char ch,
   const char *newstr;
   char buf[4 + BUFSZ];
 
-  if (str == (const char *)0) return;
+  if (str == (const char *)0)
+    return;
 
   if (window == WIN_ERR || (cw = wins[window]) == (struct WinDesc *)0 ||
       cw->type != NHW_MENU)
@@ -1896,7 +1960,8 @@ void tty_end_menu(winid window, const char *prompt) {
 
   /* make sure page list is large enough */
   if (cw->plist_size < cw->npages + 1 /*need 1 slot beyond last*/) {
-    if (cw->plist) free((genericptr_t)cw->plist);
+    if (cw->plist)
+      free((genericptr_t)cw->plist);
     cw->plist_size = cw->npages + 1;
     cw->plist =
         (tty_menu_item **)alloc(cw->plist_size * sizeof(tty_menu_item *));
@@ -1912,7 +1977,8 @@ void tty_end_menu(winid window, const char *prompt) {
     }
     if (curr->identifier.a_void && !curr->selector) {
       curr->str[0] = curr->selector = menu_ch;
-      if (menu_ch++ == 'z') menu_ch = 'A';
+      if (menu_ch++ == 'z')
+        menu_ch = 'A';
     }
 
     /* cut off any lines that are too long */
@@ -1921,7 +1987,8 @@ void tty_end_menu(winid window, const char *prompt) {
       curr->str[ttyDisplay->cols - 2] = 0;
       len = ttyDisplay->cols;
     }
-    if (len > cw->cols) cw->cols = len;
+    if (len > cw->cols)
+      cw->cols = len;
   }
   cw->plist[cw->npages] = 0; /* plist terminator */
 
@@ -1945,7 +2012,8 @@ void tty_end_menu(winid window, const char *prompt) {
       cw->morestr[ttyDisplay->cols] = 0;
     len = ttyDisplay->cols;
   }
-  if (len > cw->cols) cw->cols = len;
+  if (len > cw->cols)
+    cw->cols = len;
 
   cw->maxcol = cw->cols;
 
@@ -1980,7 +2048,8 @@ int tty_select_menu(winid window, int how, menu_item **menu_list) {
     n = -1;
   } else {
     for (n = 0, curr = cw->mlist; curr; curr = curr->next)
-      if (curr->selected) n++;
+      if (curr->selected)
+        n++;
   }
 
   if (n > 0) {
@@ -2032,7 +2101,8 @@ void tty_wait_synch() {
   /* we just need to make sure all windows are synch'd */
   if (!ttyDisplay || ttyDisplay->rawprint) {
     getret();
-    if (ttyDisplay) ttyDisplay->rawprint = 0;
+    if (ttyDisplay)
+      ttyDisplay->rawprint = 0;
   } else {
     tty_display_nhwindow(WIN_MAP, FALSE);
     if (ttyDisplay->inmore) {
@@ -2060,7 +2130,8 @@ void docorner(int xmin, int ymax) {
   }
 
 #if defined(SIGWINCH) && defined(CLIPPING)
-  if (ymax > LI) ymax = LI; /* can happen if window gets smaller */
+  if (ymax > LI)
+    ymax = LI; /* can happen if window gets smaller */
 #endif
   for (y = 0; y < ymax; y++) {
     tty_curs(BASE_WINDOW, xmin, y); /* move cursor */
@@ -2071,7 +2142,8 @@ void docorner(int xmin, int ymax) {
     row_refresh(xmin + clipx - (int)cw->offx, COLNO - 1,
                 y + clipy - (int)cw->offy);
 #else
-    if (y < cw->offy || y > ROWNO) continue; /* only refresh board  */
+    if (y < cw->offy || y > ROWNO)
+      continue; /* only refresh board  */
     row_refresh(xmin - (int)cw->offx, COLNO - 1, y - (int)cw->offy);
 #endif
   }
@@ -2140,7 +2212,8 @@ void tty_cliparound(int x, int y) {
   extern bool restoring;
   int oldx = clipx, oldy = clipy;
 
-  if (!clipping) return;
+  if (!clipping)
+    return;
   if (x < clipx + 5) {
     clipx = max(0, x - 20);
     clipxmax = clipx + CO;
@@ -2156,7 +2229,8 @@ void tty_cliparound(int x, int y) {
     clipy = clipymax - (LI - 3);
   }
   if (clipx != oldx || clipy != oldy) {
-    if (on_level(&player.uz0, &player.uz) && !restoring) (void)doredraw();
+    if (on_level(&player.uz0, &player.uz) && !restoring)
+      (void)doredraw();
   }
 }
 #endif /* CLIPPING */
@@ -2178,7 +2252,8 @@ void tty_print_glyph(winid window, xchar x, xchar y, int glyph) {
 
 #ifdef CLIPPING
   if (clipping) {
-    if (x <= clipx || y < clipy || x >= clipxmax || y >= clipymax) return;
+    if (x <= clipx || y < clipy || x >= clipxmax || y >= clipymax)
+      return;
   }
 #endif
   /* map glyph to character and color */
@@ -2196,9 +2271,11 @@ void tty_print_glyph(winid window, xchar x, xchar y, int glyph) {
 
 #ifdef TEXTCOLOR
   if (color != ttyDisplay->color) {
-    if (ttyDisplay->color != NO_COLOR) term_end_color();
+    if (ttyDisplay->color != NO_COLOR)
+      term_end_color();
     ttyDisplay->color = color;
-    if (color != NO_COLOR) term_start_color(color);
+    if (color != NO_COLOR)
+      term_start_color(color);
   }
 #endif /* TEXTCOLOR */
 
@@ -2227,13 +2304,15 @@ void tty_print_glyph(winid window, xchar x, xchar y, int glyph) {
 }
 
 void tty_raw_print(const char *str) {
-  if (ttyDisplay) ttyDisplay->rawprint++;
+  if (ttyDisplay)
+    ttyDisplay->rawprint++;
   puts(str);
   (void)fflush(stdout);
 }
 
 void tty_raw_print_bold(const char *str) {
-  if (ttyDisplay) ttyDisplay->rawprint++;
+  if (ttyDisplay)
+    ttyDisplay->rawprint++;
   term_start_raw_bold();
   (void)fputs(str, stdout);
   term_end_raw_bold();
@@ -2264,8 +2343,10 @@ int tty_nhgetch() {
                                ? (int)nestbuf
                                : EOF));
   --nesting;
-  if (!i) i = '\033'; /* map NUL to ESC since nethack doesn't expect NUL */
-  if (ttyDisplay && ttyDisplay->toplin == 1) ttyDisplay->toplin = 2;
+  if (!i)
+    i = '\033'; /* map NUL to ESC since nethack doesn't expect NUL */
+  if (ttyDisplay && ttyDisplay->toplin == 1)
+    ttyDisplay->toplin = 2;
   return i;
 }
 
@@ -2290,7 +2371,8 @@ void tty_update_positionbar(char *posbar) {}
  * This is an exact duplicate of copy_of() in X11/winmenu.c.
  */
 static char *copy_of(const char *s) {
-  if (!s) s = "";
+  if (!s)
+    s = "";
   return strcpy((char *)alloc((unsigned)(strlen(s) + 1)), s);
 }
 

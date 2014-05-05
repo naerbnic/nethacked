@@ -420,9 +420,12 @@ bool match_optname(const char *user_string, const char *opt_name,
   if (val_allowed) {
     const char *p = index(user_string, ':'), *q = index(user_string, '=');
 
-    if (!p || (q && q < p)) p = q;
-    while (p && p > user_string && isspace(*(p - 1))) p--;
-    if (p) len = (int)(p - user_string);
+    if (!p || (q && q < p))
+      p = q;
+    while (p && p > user_string && isspace(*(p - 1)))
+      p--;
+    if (p)
+      len = (int)(p - user_string);
   }
 
   return (len >= min_length) && !strncmpi(opt_name, user_string, len);
@@ -455,7 +458,8 @@ void initoptions() {
   iflags.opt_booldup = iflags.opt_compdup = (int *)0;
 
   for (i = 0; boolopt[i].name; i++) {
-    if (boolopt[i].addr) *(boolopt[i].addr) = boolopt[i].initvalue;
+    if (boolopt[i].addr)
+      *(boolopt[i].addr) = boolopt[i].initvalue;
   }
   flags.end_own = FALSE;
   flags.end_top = 3;
@@ -473,9 +477,12 @@ void initoptions() {
 
   /* Set the default monster and object class symbols.  Don't use */
   /* memcpy() --- sizeof char != sizeof uchar on some machines.	*/
-  for (i = 0; i < MAXOCLASSES; i++) oc_syms[i] = (uchar)def_oc_syms[i];
-  for (i = 0; i < MAXMCLASSES; i++) monsyms[i] = (uchar)def_monsyms[i];
-  for (i = 0; i < WARNCOUNT; i++) warnsyms[i] = def_warnsyms[i].sym;
+  for (i = 0; i < MAXOCLASSES; i++)
+    oc_syms[i] = (uchar)def_oc_syms[i];
+  for (i = 0; i < MAXMCLASSES; i++)
+    monsyms[i] = (uchar)def_monsyms[i];
+  for (i = 0; i < WARNCOUNT; i++)
+    warnsyms[i] = def_warnsyms[i].sym;
   iflags.bouldersym = 0;
   iflags.travelcc.x = iflags.travelcc.y = -1;
   flags.warnlevel = 1;
@@ -520,12 +527,15 @@ void initoptions() {
   objects[SLIME_MOLD].oc_name_idx = SLIME_MOLD;
   nmcpy(pl_fruit, OBJ_NAME(objects[SLIME_MOLD]), PL_FSIZ);
   opts = getenv("NETHACKOPTIONS");
-  if (!opts) opts = getenv("HACKOPTIONS");
+  if (!opts)
+    opts = getenv("HACKOPTIONS");
   if (opts) {
     if (*opts == '/' || *opts == '\\' || *opts == '@') {
-      if (*opts == '@') opts++; /* @filename */
+      if (*opts == '@')
+        opts++; /* @filename */
       /* looks like a filename */
-      if (strlen(opts) < BUFSZ / 2) read_config_file(opts);
+      if (strlen(opts) < BUFSZ / 2)
+        read_config_file(opts);
     } else {
       read_config_file((char *)0);
       /* let the total length of options be long;
@@ -550,7 +560,8 @@ STATIC_OVL void nmcpy(char *dest, const char *src, int maxlen) {
   int count;
 
   for (count = 1; count < maxlen; count++) {
-    if (*src == ',' || *src == '\0') break; /*exit on \0 terminator*/
+    if (*src == ',' || *src == '\0')
+      break; /*exit on \0 terminator*/
     *dest++ = *src++;
   }
   *dest = 0;
@@ -613,7 +624,8 @@ STATIC_OVL void escapes(const char *cp, char *tp) {
       cp++;
     } else
       cval = *cp++;
-    if (meta) cval |= 0x80;
+    if (meta)
+      cval |= 0x80;
     *tp++ = cval;
   }
   *tp = '\0';
@@ -645,10 +657,12 @@ STATIC_OVL char *string_for_opt(char *opts, bool val_optional) {
 
   colon = index(opts, ':');
   equals = index(opts, '=');
-  if (!colon || (equals && equals < colon)) colon = equals;
+  if (!colon || (equals && equals < colon))
+    colon = equals;
 
   if (!colon || !*++colon) {
-    if (!val_optional) badoption(opts);
+    if (!val_optional)
+      badoption(opts);
     return (char *)0;
   }
   return colon;
@@ -683,7 +697,8 @@ STATIC_OVL int change_inv_order(char *op) {
 
   num = 0;
 #ifndef GOLDOBJ
-  if (!index(op, GOLD_SYM)) buf[num++] = COIN_CLASS;
+  if (!index(op, GOLD_SYM))
+    buf[num++] = COIN_CLASS;
 #else
 /*  !!!! probably unnecessary with gold as normal inventory */
 #endif
@@ -716,13 +731,16 @@ STATIC_OVL void graphics_opts(char *opts, const char *optype, int maxlen,
   uchar translate[MAXPCHARS + 1];
   int length, i;
 
-  if (!(opts = string_for_env_opt(optype, opts, FALSE))) return;
+  if (!(opts = string_for_env_opt(optype, opts, FALSE)))
+    return;
   escapes(opts, opts);
 
   length = strlen(opts);
-  if (length > maxlen) length = maxlen;
+  if (length > maxlen)
+    length = maxlen;
   /* match the form obtained from PC configuration files */
-  for (i = 0; i < length; i++) translate[i] = (uchar)opts[i];
+  for (i = 0; i < length; i++)
+    translate[i] = (uchar)opts[i];
   assign_graphics(translate, length, maxlen, offset);
 }
 
@@ -730,11 +748,13 @@ STATIC_OVL void warning_opts(char *opts, const char *optype) {
   uchar translate[MAXPCHARS + 1];
   int length, i;
 
-  if (!(opts = string_for_env_opt(optype, opts, FALSE))) return;
+  if (!(opts = string_for_env_opt(optype, opts, FALSE)))
+    return;
   escapes(opts, opts);
 
   length = strlen(opts);
-  if (length > WARNCOUNT) length = WARNCOUNT;
+  if (length > WARNCOUNT)
+    length = WARNCOUNT;
   /* match the form obtained from PC configuration files */
   for (i = 0; i < length; i++)
     translate[i] =
@@ -745,14 +765,16 @@ STATIC_OVL void warning_opts(char *opts, const char *optype) {
 void assign_warnings(uchar *graph_chars) {
   int i;
   for (i = 0; i < WARNCOUNT; i++)
-    if (graph_chars[i]) warnsyms[i] = graph_chars[i];
+    if (graph_chars[i])
+      warnsyms[i] = graph_chars[i];
 }
 
 STATIC_OVL int feature_alert_opts(char *op, const char *optn) {
   char buf[BUFSZ];
   bool rejectver = FALSE;
   unsigned long fnv = get_feature_notice_ver(op); /* version.c */
-  if (fnv == 0L) return 0;
+  if (fnv == 0L)
+    return 0;
   if (fnv > get_current_feature_ver())
     rejectver = TRUE;
   else
@@ -784,18 +806,22 @@ void set_duplicate_opt_detection(int on_or_off) {
       impossible("iflags.opt_booldup already on (memory leak)");
     iflags.opt_booldup = (int *)alloc(SIZE(boolopt) * sizeof(int));
     optptr = iflags.opt_booldup;
-    for (k = 0; k < SIZE(boolopt); ++k) *optptr++ = 0;
+    for (k = 0; k < SIZE(boolopt); ++k)
+      *optptr++ = 0;
 
     if (iflags.opt_compdup)
       impossible("iflags.opt_compdup already on (memory leak)");
     iflags.opt_compdup = (int *)alloc(SIZE(compopt) * sizeof(int));
     optptr = iflags.opt_compdup;
-    for (k = 0; k < SIZE(compopt); ++k) *optptr++ = 0;
+    for (k = 0; k < SIZE(compopt); ++k)
+      *optptr++ = 0;
   } else {
     /*-- OFF --*/
-    if (iflags.opt_booldup) free((genericptr_t)iflags.opt_booldup);
+    if (iflags.opt_booldup)
+      free((genericptr_t)iflags.opt_booldup);
     iflags.opt_booldup = (int *)0;
-    if (iflags.opt_compdup) free((genericptr_t)iflags.opt_compdup);
+    if (iflags.opt_compdup)
+      free((genericptr_t)iflags.opt_compdup);
     iflags.opt_compdup = (int *)0;
   }
 }
@@ -877,25 +903,30 @@ bool add_menu_coloring(char *str) {
 #endif
   const char *err = (char *)0;
 
-  if (!cs || !str) return FALSE;
+  if (!cs || !str)
+    return FALSE;
 
   tmps = cs;
   tmps++;
-  while (*tmps && isspace(*tmps)) tmps++;
+  while (*tmps && isspace(*tmps))
+    tmps++;
 
   for (i = 0; i < SIZE(colornames); i++)
     if (strstri(tmps, colornames[i].name) == tmps) {
       c = colornames[i].color;
       break;
     }
-  if ((i == SIZE(colornames)) && (*tmps >= '0' && *tmps <= '9')) c = atoi(tmps);
+  if ((i == SIZE(colornames)) && (*tmps >= '0' && *tmps <= '9'))
+    c = atoi(tmps);
 
-  if (c > 15) return FALSE;
+  if (c > 15)
+    return FALSE;
 
   tmps = strchr(str, '&');
   if (tmps) {
     tmps++;
-    while (*tmps && isspace(*tmps)) tmps++;
+    while (*tmps && isspace(*tmps))
+      tmps++;
     for (i = 0; i < SIZE(attrnames); i++)
       if (strstri(tmps, attrnames[i].name) == tmps) {
         a = attrnames[i].attr;
@@ -909,7 +940,8 @@ bool add_menu_coloring(char *str) {
   tmps = str;
   if ((*tmps == '"') || (*tmps == '\'')) {
     cs--;
-    while (isspace(*cs)) cs--;
+    while (isspace(*cs))
+      cs--;
     if (*cs == *tmps) {
       *cs = '\0';
       tmps++;
@@ -970,11 +1002,14 @@ void parseoptions(char *opts, bool tinitial, bool tfrom_file) {
   }
 
   /* strip leading and trailing white space */
-  while (isspace(*opts)) opts++;
+  while (isspace(*opts))
+    opts++;
   op = eos(opts);
-  while (--op >= opts && isspace(*op)) *op = '\0';
+  while (--op >= opts && isspace(*op))
+    *op = '\0';
 
-  if (!*opts) return;
+  if (!*opts)
+    return;
   negated = FALSE;
   while ((*opts == '!') || !strncmpi(opts, "no", 2)) {
     if (*opts == '!')
@@ -1092,7 +1127,8 @@ void parseoptions(char *opts, bool tinitial, bool tfrom_file) {
         /* for backwards compatibility, "number_pad" without a
            value is a synonym for number_pad:1 */
         iflags.num_pad = !negated;
-        if (iflags.num_pad) iflags.num_pad_mode = 0;
+        if (iflags.num_pad)
+          iflags.num_pad_mode = 0;
       }
       return;
     }
@@ -1140,7 +1176,8 @@ void parseoptions(char *opts, bool tinitial, bool tfrom_file) {
     if (negated)
       bad_negation(fullname, FALSE);
     else if ((op = string_for_env_opt(fullname, opts, FALSE)) != 0)
-      if (!add_menu_coloring(op)) badoption(opts);
+      if (!add_menu_coloring(op))
+        badoption(opts);
 #endif
     return;
   }
@@ -1315,13 +1352,15 @@ void parseoptions(char *opts, bool tinitial, bool tfrom_file) {
       op = &empty_str;
       goto goodfruit;
     }
-    if (!op) return;
+    if (!op)
+      return;
     if (!initial) {
       struct fruit *f;
 
       num = 0;
       for (f = ffruit; f; f = f->nextf) {
-        if (!strcmp(op, f->fname)) goto goodfruit;
+        if (!strcmp(op, f->fname))
+          goto goodfruit;
         num++;
       }
       if (num >= 100) {
@@ -1332,8 +1371,10 @@ void parseoptions(char *opts, bool tinitial, bool tfrom_file) {
   goodfruit:
     nmcpy(pl_fruit, op, PL_FSIZ);
     /* OBJ_NAME(objects[SLIME_MOLD]) won't work after initialization */
-    if (!*pl_fruit) nmcpy(pl_fruit, "slime mold", PL_FSIZ);
-    if (!initial) (void)fruitadd(pl_fruit);
+    if (!*pl_fruit)
+      nmcpy(pl_fruit, "slime mold", PL_FSIZ);
+    if (!initial)
+      (void)fruitadd(pl_fruit);
     /* If initial, then initoptions is allowed to do it instead
      * of here (initoptions always has to do it even if there's
      * no fruit option at all.  Also, we don't want people
@@ -1385,7 +1426,8 @@ void parseoptions(char *opts, bool tinitial, bool tfrom_file) {
       bad_negation(fullname, FALSE);
       return;
     }
-    if (!(opts = string_for_env_opt(fullname, opts, FALSE))) return;
+    if (!(opts = string_for_env_opt(fullname, opts, FALSE)))
+      return;
     escapes(opts, opts);
 
     /*
@@ -1401,7 +1443,8 @@ void parseoptions(char *opts, bool tinitial, bool tfrom_file) {
     if (length >= MAXOCLASSES)
       length = MAXOCLASSES - 1; /* don't count RANDOM_OBJECT */
 
-    for (i = 0; i < length; i++) oc_syms[i + 1] = (uchar)opts[i];
+    for (i = 0; i < length; i++)
+      oc_syms[i + 1] = (uchar)opts[i];
     return;
   }
 
@@ -1414,7 +1457,8 @@ void parseoptions(char *opts, bool tinitial, bool tfrom_file) {
       bad_negation(fullname, FALSE);
       return;
     }
-    if (!(opts = string_for_env_opt(fullname, opts, FALSE))) return;
+    if (!(opts = string_for_env_opt(fullname, opts, FALSE)))
+      return;
     escapes(opts, opts);
 
     /* Override default mon class symbols set in initoptions(). */
@@ -1422,7 +1466,8 @@ void parseoptions(char *opts, bool tinitial, bool tfrom_file) {
     if (length >= MAXMCLASSES)
       length = MAXMCLASSES - 1; /* mon class 0 unused */
 
-    for (i = 0; i < length; i++) monsyms[i + 1] = (uchar)opts[i];
+    for (i = 0; i < length; i++)
+      monsyms[i + 1] = (uchar)opts[i];
     return;
   }
   fullname = "warnings";
@@ -1442,7 +1487,8 @@ void parseoptions(char *opts, bool tinitial, bool tfrom_file) {
       return;
     }
     /*		if (!(opts = string_for_env_opt(fullname, opts, FALSE))) */
-    if (!(opts = string_for_opt(opts, FALSE))) return;
+    if (!(opts = string_for_opt(opts, FALSE)))
+      return;
     escapes(opts, opts);
     if (def_char_to_monclass(opts[0]) != MAXMCLASSES)
       clash = 1;
@@ -1459,7 +1505,8 @@ void parseoptions(char *opts, bool tinitial, bool tfrom_file) {
        */
       iflags.bouldersym = (uchar)opts[0];
     }
-    if (!initial) need_redraw = TRUE;
+    if (!initial)
+      need_redraw = TRUE;
     return;
   }
 
@@ -1572,7 +1619,8 @@ void parseoptions(char *opts, bool tinitial, bool tfrom_file) {
     if (negated)
       bad_negation(fullname, FALSE);
     else if ((op = string_for_env_opt(fullname, opts, FALSE)) != 0)
-      if ((flags.initalign = str2align(op)) == ROLE_NONE) badoption(opts);
+      if ((flags.initalign = str2align(op)) == ROLE_NONE)
+        badoption(opts);
     return;
   }
 
@@ -1585,7 +1633,8 @@ void parseoptions(char *opts, bool tinitial, bool tfrom_file) {
     } else if (!(op = string_for_opt(opts, FALSE)))
       return;
 
-    if (!change_inv_order(op)) badoption(opts);
+    if (!change_inv_order(op))
+      badoption(opts);
     return;
   }
 
@@ -1669,7 +1718,8 @@ void parseoptions(char *opts, bool tinitial, bool tfrom_file) {
       bad_negation("pickup_types", TRUE);
       return;
     }
-    while (*op == ' ') op++;
+    while (*op == ' ')
+      op++;
     if (*op != 'a' && *op != 'A') {
       num = 0;
       while (*op) {
@@ -1682,7 +1732,8 @@ void parseoptions(char *opts, bool tinitial, bool tfrom_file) {
           badopt = TRUE;
         op++;
       }
-      if (badopt) badoption(opts);
+      if (badopt)
+        badoption(opts);
     }
     return;
   }
@@ -1736,7 +1787,8 @@ void parseoptions(char *opts, bool tinitial, bool tfrom_file) {
     /* "disclose" without a value means "all with prompting"
        and negated means "none without prompting" */
     if (!op || !strcmpi(op, "all") || !strcmpi(op, "none")) {
-      if (op && !strcmpi(op, "none")) negated = TRUE;
+      if (op && !strcmpi(op, "none"))
+        negated = TRUE;
       for (num = 0; num < NUM_DISCLOSURE_OPTIONS; num++)
         flags.end_disclose[num] =
             negated ? DISCLOSE_NO_WITHOUT_PROMPT : DISCLOSE_PROMPT_DEFAULT_YES;
@@ -1751,7 +1803,8 @@ void parseoptions(char *opts, bool tinitial, bool tfrom_file) {
           DISCLOSE_PROMPT_DEFAULT_YES, DISCLOSE_PROMPT_DEFAULT_NO,
           DISCLOSE_YES_WITHOUT_PROMPT, DISCLOSE_NO_WITHOUT_PROMPT, '\0'};
       c = lowc(*op);
-      if (c == 'k') c = 'v'; /* killed -> vanquished */
+      if (c == 'k')
+        c = 'v'; /* killed -> vanquished */
       dop = index(disclosure_options, c);
       if (dop) {
         idx = dop - disclosure_options;
@@ -1772,7 +1825,8 @@ void parseoptions(char *opts, bool tinitial, bool tfrom_file) {
         badopt = TRUE;
       op++;
     }
-    if (badopt) badoption(opts);
+    if (badopt)
+      badoption(opts);
     return;
   }
 
@@ -1782,19 +1836,22 @@ void parseoptions(char *opts, bool tinitial, bool tfrom_file) {
       bad_negation("scores", FALSE);
       return;
     }
-    if (!(op = string_for_opt(opts, FALSE))) return;
+    if (!(op = string_for_opt(opts, FALSE)))
+      return;
 
     while (*op) {
       int inum = 1;
 
       if (digit(*op)) {
         inum = atoi(op);
-        while (digit(*op)) op++;
+        while (digit(*op))
+          op++;
       } else if (*op == '!') {
         negated = !negated;
         op++;
       }
-      while (*op == ' ') op++;
+      while (*op == ' ')
+        op++;
 
       switch (*op) {
         case 't':
@@ -1813,8 +1870,10 @@ void parseoptions(char *opts, bool tinitial, bool tfrom_file) {
           badoption(opts);
           return;
       }
-      while (letter(*++op) || *op == ' ') continue;
-      if (*op == '/') op++;
+      while (letter(*++op) || *op == ' ')
+        continue;
+      if (*op == '/')
+        op++;
     }
     return;
   }
@@ -1860,7 +1919,8 @@ void parseoptions(char *opts, bool tinitial, bool tfrom_file) {
     } else if (!(opts = string_for_env_opt(fullname, opts, FALSE))) {
       return;
     }
-    if (!assign_videocolors(opts)) badoption(opts);
+    if (!assign_videocolors(opts))
+      badoption(opts);
     return;
   }
   /* videoshades:string */
@@ -1872,7 +1932,8 @@ void parseoptions(char *opts, bool tinitial, bool tfrom_file) {
     } else if (!(opts = string_for_env_opt(fullname, opts, FALSE))) {
       return;
     }
-    if (!assign_videoshades(opts)) badoption(opts);
+    if (!assign_videoshades(opts))
+      badoption(opts);
     return;
   }
 #endif /* VIDEOSHADES */
@@ -1958,7 +2019,8 @@ void parseoptions(char *opts, bool tinitial, bool tfrom_file) {
   fullname = "tile_file";
   if (match_optname(opts, fullname, sizeof("tile_file") - 1, TRUE)) {
     if ((op = string_for_opt(opts, FALSE)) != 0) {
-      if (iflags.wc_tile_file) free(iflags.wc_tile_file);
+      if (iflags.wc_tile_file)
+        free(iflags.wc_tile_file);
       iflags.wc_tile_file = (char *)alloc(strlen(op) + 1);
       strcpy(iflags.wc_tile_file, op);
     }
@@ -2006,7 +2068,8 @@ void parseoptions(char *opts, bool tinitial, bool tfrom_file) {
   fullname = "windowcolors";
   if (match_optname(opts, fullname, 7, TRUE)) {
     if ((op = string_for_opt(opts, FALSE)) != 0) {
-      if (!wc_set_window_colors(op)) badoption(opts);
+      if (!wc_set_window_colors(op))
+        badoption(opts);
     } else if (negated)
       bad_negation(fullname, TRUE);
     return;
@@ -2018,7 +2081,8 @@ void parseoptions(char *opts, bool tinitial, bool tfrom_file) {
     bool val_required = (strlen(opts) > 5 && !negated);
 
     if (!(op = string_for_opt(opts, !val_required))) {
-      if (val_required) return; /* string_for_opt gave feedback */
+      if (val_required)
+        return; /* string_for_opt gave feedback */
       tmp = negated ? 'n' : 'f';
     } else {
       tmp = tolower(*op);
@@ -2139,13 +2203,15 @@ void parseoptions(char *opts, bool tinitial, bool tfrom_file) {
           switch_graphics(iflags.IBMgraphics ? IBM_GRAPHICS : ASCII_GRAPHICS);
 #endif
 #ifdef REINCARNATION
-        if (!initial && Is_rogue_level(&player.uz)) assign_rogue_graphics(TRUE);
+        if (!initial && Is_rogue_level(&player.uz))
+          assign_rogue_graphics(TRUE);
 #endif
       }
 #endif /* TERMLIB || ASCIIGRAPH */
 
       /* only do processing below if setting with doset() */
-      if (initial) return;
+      if (initial)
+        return;
 
       if ((boolopt[i].addr) == &flags.time
 #ifdef EXP_ON_BOTL
@@ -2158,7 +2224,8 @@ void parseoptions(char *opts, bool tinitial, bool tfrom_file) {
         flags.botl = TRUE;
 
       else if ((boolopt[i].addr) == &flags.invlet_constant) {
-        if (flags.invlet_constant) reassign();
+        if (flags.invlet_constant)
+          reassign();
       }
 #ifdef LAN_MAIL
       else if ((boolopt[i].addr) == &flags.biff) {
@@ -2288,7 +2355,8 @@ STATIC_OVL void doset_add_menu(
     value = get_compopt_value(option, buf2);
   } else {
     for (i = 0; compopt[i].name; i++)
-      if (strcmp(option, compopt[i].name) == 0) break;
+      if (strcmp(option, compopt[i].name) == 0)
+        break;
 
     if (compopt[i].name) {
       any.a_int = i + 1 + indexoffset;
@@ -2333,10 +2401,13 @@ int doset() {
       if ((bool_p = boolopt[i].addr) != 0 &&
           ((boolopt[i].optflags == DISP_IN_GAME && pass == 0) ||
            (boolopt[i].optflags == SET_IN_GAME && pass == 1))) {
-        if (bool_p == &flags.female) continue; /* obsolete */
+        if (bool_p == &flags.female)
+          continue; /* obsolete */
 #ifdef WIZARD
-        if (bool_p == &iflags.sanity_check && !wizard) continue;
-        if (bool_p == &iflags.menu_tab_sep && !wizard) continue;
+        if (bool_p == &iflags.sanity_check && !wizard)
+          continue;
+        if (bool_p == &iflags.menu_tab_sep && !wizard)
+          continue;
 #endif
         if (is_wc_option(boolopt[i].name) && !wc_supported(boolopt[i].name))
           continue;
@@ -2368,7 +2439,8 @@ int doset() {
     if (compopt[i].optflags >= startpass && compopt[i].optflags <= endpass &&
         strlen(compopt[i].name) > (unsigned)biggest_name)
       biggest_name = (int)strlen(compopt[i].name);
-  if (biggest_name > 30) biggest_name = 30;
+  if (biggest_name > 30)
+    biggest_name = 30;
   if (!iflags.menu_tab_sep)
     sprintf(fmtstr_doset_add_menu, "%%s%%-%ds [%%s]", biggest_name);
 
@@ -2442,7 +2514,8 @@ int doset() {
         if (!special_handling(compopt[opt_indx].name, setinitial, fromfile)) {
           sprintf(buf, "Set %s to what?", compopt[opt_indx].name);
           getlin(buf, buf2);
-          if (buf2[0] == '\033') continue;
+          if (buf2[0] == '\033')
+            continue;
           sprintf(buf, "%s:%s", compopt[opt_indx].name, buf2);
           /* pass the buck */
           parseoptions(buf, setinitial, fromfile);
@@ -2457,7 +2530,8 @@ int doset() {
   }
 
   destroy_nhwindow(tmpwin);
-  if (need_redraw) (void)doredraw();
+  if (need_redraw)
+    (void)doredraw();
   return 0;
 }
 
@@ -2759,7 +2833,8 @@ STATIC_OVL bool special_handling(const char *optname, bool setinitial,
     any.a_int = 0;
     for (i = 0; i < SIZE(action_titles); i += 2) {
       any.a_int++;
-      if (!totalapes && (i >= 2 && i < 6)) continue;
+      if (!totalapes && (i >= 2 && i < 6))
+        continue;
       add_menu(tmpwin, NO_GLYPH, &any, *action_titles[i], 0, ATR_NONE,
                action_titles[i + 1], MENU_UNSELECTED);
     }
@@ -2772,11 +2847,13 @@ STATIC_OVL bool special_handling(const char *optname, bool setinitial,
       pick_list = (menu_item *)0;
     }
     destroy_nhwindow(tmpwin);
-    if (pick_cnt < 1) return FALSE;
+    if (pick_cnt < 1)
+      return FALSE;
 
     if (opt_idx == 0) { /* add new */
       getlin("What new autopickup exception pattern?", &apebuf[1]);
-      if (apebuf[1] == '\033') return FALSE;
+      if (apebuf[1] == '\033')
+        return FALSE;
       apebuf[0] = '"';
       strcat(apebuf, "\"");
       add_autopickup_exception(apebuf);
@@ -2787,7 +2864,8 @@ STATIC_OVL bool special_handling(const char *optname, bool setinitial,
       tmpwin = create_nhwindow(NHW_MENU);
       start_menu(tmpwin);
       for (pass = AP_LEAVE; pass <= AP_GRAB; ++pass) {
-        if (numapes[pass] == 0) continue;
+        if (numapes[pass] == 0)
+          continue;
         ape = iflags.autopickup_exceptions[pass];
         any.a_void = 0;
         add_menu(tmpwin, NO_GLYPH, &any, 0, 0, iflags.menu_headings,
@@ -2866,7 +2944,8 @@ STATIC_OVL const char *get_compopt_value(const char *optname, char *buf) {
   else if (!strcmp(optname, "disclose")) {
     for (i = 0; i < NUM_DISCLOSURE_OPTIONS; i++) {
       char topt[2];
-      if (i) strcat(buf, " ");
+      if (i)
+        strcat(buf, " ");
       topt[1] = '\0';
       topt[0] = flags.end_disclose[i];
       strcat(buf, topt);
@@ -3054,9 +3133,11 @@ STATIC_OVL const char *get_compopt_value(const char *optname, char *buf) {
   else if (!strcmp(optname, "sortloot")) {
     char *sortname = (char *)NULL;
     for (i = 0; i < SIZE(sortltype) && sortname == (char *)NULL; i++) {
-      if (iflags.sortloot == sortltype[i][0]) sortname = (char *)sortltype[i];
+      if (iflags.sortloot == sortltype[i][0])
+        sortname = (char *)sortltype[i];
     }
-    if (sortname != (char *)NULL) sprintf(buf, "%s", sortname);
+    if (sortname != (char *)NULL)
+      sprintf(buf, "%s", sortname);
   }
 #endif /* SORTLOOT */
   else if (!strcmp(optname, "player_selection"))
@@ -3217,8 +3298,10 @@ STATIC_OVL int count_ape_maps(int *leave, int *grab) {
     }
   }
   totalapes = numapes[AP_LEAVE] + numapes[AP_GRAB];
-  if (leave) *leave = numapes[AP_LEAVE];
-  if (grab) *grab = numapes[AP_GRAB];
+  if (leave)
+    *leave = numapes[AP_LEAVE];
+  if (grab)
+    *grab = numapes[AP_GRAB];
   return totalapes;
 }
 
@@ -3259,14 +3342,17 @@ void option_help() {
   datawin = create_nhwindow(NHW_TEXT);
   sprintf(buf, "Set options as OPTIONS=<options> in %s", configfile);
   opt_intro[CONFIG_SLOT] = (const char *)buf;
-  for (i = 0; opt_intro[i]; i++) putstr(datawin, 0, opt_intro[i]);
+  for (i = 0; opt_intro[i]; i++)
+    putstr(datawin, 0, opt_intro[i]);
 
   /* Boolean options */
   for (i = 0; boolopt[i].name; i++) {
     if (boolopt[i].addr) {
 #ifdef WIZARD
-      if (boolopt[i].addr == &iflags.sanity_check && !wizard) continue;
-      if (boolopt[i].addr == &iflags.menu_tab_sep && !wizard) continue;
+      if (boolopt[i].addr == &iflags.sanity_check && !wizard)
+        continue;
+      if (boolopt[i].addr == &iflags.menu_tab_sep && !wizard)
+        continue;
 #endif
       next_opt(datawin, boolopt[i].name);
     }
@@ -3282,7 +3368,8 @@ void option_help() {
     putstr(datawin, 0, buf);
   }
 
-  for (i = 0; opt_epilog[i]; i++) putstr(datawin, 0, opt_epilog[i]);
+  for (i = 0; opt_epilog[i]; i++)
+    putstr(datawin, 0, opt_epilog[i]);
 
   display_nhwindow(datawin, FALSE);
   destroy_nhwindow(datawin);
@@ -3298,12 +3385,14 @@ void next_opt(winid datawin, const char *str) {
   int i;
   char *s;
 
-  if (!buf) *(buf = (char *)alloc(BUFSZ)) = '\0';
+  if (!buf)
+    *(buf = (char *)alloc(BUFSZ)) = '\0';
 
   if (!*str) {
     s = eos(buf);
-    if (s > &buf[1] && s[-2] == ',') strcpy(s - 2, "."); /* replace last ", " */
-    i = COLNO; /* (greater than COLNO - 2) */
+    if (s > &buf[1] && s[-2] == ',')
+      strcpy(s - 2, "."); /* replace last ", " */
+    i = COLNO;            /* (greater than COLNO - 2) */
   } else {
     i = strlen(buf) + strlen(str) + 2;
   }
@@ -3360,7 +3449,8 @@ int fruitadd(char *str) {
 
       for (c = pl_fruit; *c >= '0' && *c <= '9'; c++)
         ;
-      if (isspace(*c) || *c == 0) numeric = TRUE;
+      if (isspace(*c) || *c == 0)
+        numeric = TRUE;
     }
     if (found || numeric || !strncmp(str, "cursed ", 7) ||
         !strncmp(str, "uncursed ", 9) || !strncmp(str, "blessed ", 8) ||
@@ -3377,12 +3467,15 @@ int fruitadd(char *str) {
   }
   for (f = ffruit; f; f = f->nextf) {
     lastf = f;
-    if (f->fid > highest_fruit_id) highest_fruit_id = f->fid;
-    if (!strncmp(str, f->fname, PL_FSIZ)) goto nonew;
+    if (f->fid > highest_fruit_id)
+      highest_fruit_id = f->fid;
+    if (!strncmp(str, f->fname, PL_FSIZ))
+      goto nonew;
   }
   /* if adding another fruit would overflow spe, use a random
      fruit instead... we've got a lot to choose from. */
-  if (highest_fruit_id >= 127) return rnd(127);
+  if (highest_fruit_id >= 127)
+    return rnd(127);
   highest_fruit_id++;
   f = newfruit();
   if (ffruit)
@@ -3393,7 +3486,8 @@ int fruitadd(char *str) {
   f->fid = highest_fruit_id;
   f->nextf = 0;
 nonew:
-  if (user_specified) current_fruit = highest_fruit_id;
+  if (user_specified)
+    current_fruit = highest_fruit_id;
   return f->fid;
 }
 
@@ -3430,7 +3524,8 @@ int choose_classes_menu(const char *prompt, int category, bool way,
   int ret;
   int next_accelerator, accelerator;
 
-  if (class_list == (char *)0 || class_select == (char *)0) return 0;
+  if (class_list == (char *)0 || class_select == (char *)0)
+    return 0;
   accelerator = 0;
   next_accelerator = 'a';
   any.a_void = 0;
@@ -3467,15 +3562,18 @@ int choose_classes_menu(const char *prompt, int category, bool way,
     ++class_list;
     if (category > 0) {
       ++next_accelerator;
-      if (next_accelerator == ('z' + 1)) next_accelerator = 'A';
-      if (next_accelerator == ('Z' + 1)) break;
+      if (next_accelerator == ('z' + 1))
+        next_accelerator = 'A';
+      if (next_accelerator == ('Z' + 1))
+        break;
     }
   }
   end_menu(win, prompt);
   n = select_menu(win, way ? PICK_ANY : PICK_ONE, &pick_list);
   destroy_nhwindow(win);
   if (n > 0) {
-    for (i = 0; i < n; ++i) *class_select++ = (char)pick_list[i].item.a_int;
+    for (i = 0; i < n; ++i)
+      *class_select++ = (char)pick_list[i].item.a_int;
     free((genericptr_t)pick_list);
     ret = n;
   } else if (n == -1) {
@@ -3581,7 +3679,8 @@ void set_wc_option_mod_status(unsigned long optmask, int status) {
 STATIC_OVL bool is_wc_option(const char *optnam) {
   int k = 0;
   while (wc_options[k].wc_name) {
-    if (strcmp(wc_options[k].wc_name, optnam) == 0) return TRUE;
+    if (strcmp(wc_options[k].wc_name, optnam) == 0)
+      return TRUE;
     k++;
   }
   return FALSE;
@@ -3626,7 +3725,8 @@ void set_wc2_option_mod_status(unsigned long optmask, int status) {
 STATIC_OVL bool is_wc2_option(const char *optnam) {
   int k = 0;
   while (wc2_options[k].wc_name) {
-    if (strcmp(wc2_options[k].wc_name, optnam) == 0) return TRUE;
+    if (strcmp(wc2_options[k].wc_name, optnam) == 0)
+      return TRUE;
     k++;
   }
   return FALSE;
@@ -3645,7 +3745,8 @@ STATIC_OVL bool wc2_supported(const char *optnam) {
 
 STATIC_OVL void wc_set_font_name(int wtype, char *fontname) {
   char **fn = (char **)0;
-  if (!fontname) return;
+  if (!fontname)
+    return;
   switch (wtype) {
     case NHW_MAP:
       fn = &iflags.wc_font_map;
@@ -3666,7 +3767,8 @@ STATIC_OVL void wc_set_font_name(int wtype, char *fontname) {
       return;
   }
   if (fn) {
-    if (*fn) free(*fn);
+    if (*fn)
+      free(*fn);
     *fn = (char *)alloc(strlen(fontname) + 1);
     strcpy(*fn, fontname);
   }
@@ -3694,14 +3796,16 @@ STATIC_OVL int wc_set_window_colors(char *op) {
     wn = tfg = tbg = (char *)0;
 
     /* until first non-space in case there's leading spaces - before colorname*/
-    while (*newop && isspace(*newop)) newop++;
+    while (*newop && isspace(*newop))
+      newop++;
     if (*newop)
       wn = newop;
     else
       return 0;
 
     /* until first space - colorname*/
-    while (*newop && !isspace(*newop)) newop++;
+    while (*newop && !isspace(*newop))
+      newop++;
     if (*newop)
       *newop = '\0';
     else
@@ -3709,14 +3813,16 @@ STATIC_OVL int wc_set_window_colors(char *op) {
     newop++;
 
     /* until first non-space - before foreground*/
-    while (*newop && isspace(*newop)) newop++;
+    while (*newop && isspace(*newop))
+      newop++;
     if (*newop)
       tfg = newop;
     else
       return 0;
 
     /* until slash - foreground */
-    while (*newop && *newop != '/') newop++;
+    while (*newop && *newop != '/')
+      newop++;
     if (*newop)
       *newop = '\0';
     else
@@ -3725,25 +3831,30 @@ STATIC_OVL int wc_set_window_colors(char *op) {
 
     /* until first non-space (in case there's leading space after slash) -
      * before background */
-    while (*newop && isspace(*newop)) newop++;
+    while (*newop && isspace(*newop))
+      newop++;
     if (*newop)
       tbg = newop;
     else
       return 0;
 
     /* until first space - background */
-    while (*newop && !isspace(*newop)) newop++;
-    if (*newop) *newop++ = '\0';
+    while (*newop && !isspace(*newop))
+      newop++;
+    if (*newop)
+      *newop++ = '\0';
 
     for (j = 0; j < 4; ++j) {
       if (!strcmpi(wn, wnames[j]) || !strcmpi(wn, shortnames[j])) {
         if (tfg && !strstri(tfg, " ")) {
-          if (*fgp[j]) free(*fgp[j]);
+          if (*fgp[j])
+            free(*fgp[j]);
           *fgp[j] = (char *)alloc(strlen(tfg) + 1);
           strcpy(*fgp[j], tfg);
         }
         if (tbg && !strstri(tbg, " ")) {
-          if (*bgp[j]) free(*bgp[j]);
+          if (*bgp[j])
+            free(*bgp[j]);
           *bgp[j] = (char *)alloc(strlen(tbg) + 1);
           strcpy(*bgp[j], tbg);
         }

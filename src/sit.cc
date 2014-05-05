@@ -102,7 +102,8 @@ int dosit() {
   } else if (is_pool(player.ux, player.uy)) {
   in_water:
     You("sit in the water.");
-    if (!rn2(10) && uarm) (void)rust_dmg(uarm, "armor", 1, TRUE, &youmonst);
+    if (!rn2(10) && uarm)
+      (void)rust_dmg(uarm, "armor", 1, TRUE, &youmonst);
     if (!rn2(10) && uarmf && uarmf->otyp != WATER_WALKING_BOOTS)
       (void)rust_dmg(uarm, "armor", 1, TRUE, &youmonst);
 #ifdef SINKS
@@ -136,7 +137,8 @@ int dosit() {
 
   } else if (is_ice(player.ux, player.uy)) {
     You(sit_message, defsyms[S_ice].explanation);
-    if (!Cold_resistance) pline_The("ice feels cold.");
+    if (!Cold_resistance)
+      pline_The("ice feels cold.");
 
   } else if (typ == DRAWBRIDGE_DOWN) {
     You(sit_message, "drawbridge");
@@ -162,10 +164,12 @@ int dosit() {
         case 4:
           You_feel("much, much better!");
           if (Upolyd) {
-            if (player.mh >= (player.mhmax - 5)) player.mhmax += 4;
+            if (player.mh >= (player.mhmax - 5))
+              player.mhmax += 4;
             player.mh = player.mhmax;
           }
-          if (player.uhp >= (player.uhpmax - 5)) player.uhpmax += 4;
+          if (player.uhp >= (player.uhpmax - 5))
+            player.uhpmax += 4;
           player.uhp = player.uhpmax;
           make_blinded(0L, TRUE);
           make_sick(0L, (char *)0, FALSE, SICK_ALL);
@@ -311,7 +315,8 @@ void rndcurse() {
   for (otmp = invent; otmp; otmp = otmp->nobj) {
 #ifdef GOLDOBJ
     /* gold isn't subject to being cursed or blessed */
-    if (otmp->oclass == COIN_CLASS) continue;
+    if (otmp->oclass == COIN_CLASS)
+      continue;
 #endif
     nobj++;
   }
@@ -322,13 +327,16 @@ void rndcurse() {
       for (otmp = invent; otmp; otmp = otmp->nobj) {
 #ifdef GOLDOBJ
         /* as above */
-        if (otmp->oclass == COIN_CLASS) continue;
+        if (otmp->oclass == COIN_CLASS)
+          continue;
 #endif
-        if (--onum == 0) break; /* found the target */
+        if (--onum == 0)
+          break; /* found the target */
       }
       /* the !otmp case should never happen; picking an already
          cursed item happens--avoid "resists" message in that case */
-      if (!otmp || otmp->cursed) continue; /* next target */
+      if (!otmp || otmp->cursed)
+        continue; /* next target */
 
       if (otmp->oartifact && spec_ability(otmp, SPFX_INTEL) && rn2(10) < 8) {
         pline("%s!", Tobjnam(otmp, "resist"));

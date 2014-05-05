@@ -90,7 +90,8 @@ int bhitm(Monster *mtmp, Object *otmp) {
   bool disguised_mimic =
       (mtmp->data->mlet == S_MIMIC && mtmp->m_ap_type != M_AP_NOTHING);
 
-  if (player.uswallow && mtmp == player.ustuck) reveal_invis = FALSE;
+  if (player.uswallow && mtmp == player.ustuck)
+    reveal_invis = FALSE;
 
   switch (otyp) {
     case WAN_STRIKING:
@@ -103,8 +104,10 @@ int bhitm(Monster *mtmp, Object *otmp) {
         break; /* skip makeknown */
       } else if (player.uswallow || rnd(20) < 10 + find_mac(mtmp)) {
         dmg = d(2, 12);
-        if (dbldam) dmg *= 2;
-        if (otyp == SPE_FORCE_BOLT) dmg += spell_damage_bonus();
+        if (dbldam)
+          dmg *= 2;
+        if (otyp == SPE_FORCE_BOLT)
+          dmg += spell_damage_bonus();
         hit(zap_type_text, mtmp, exclam(dmg));
         (void)resist(mtmp, otmp->oclass, dmg, TELL);
       } else
@@ -133,16 +136,20 @@ int bhitm(Monster *mtmp, Object *otmp) {
     case WAN_UNDEAD_TURNING:
     case SPE_TURN_UNDEAD:
       wake = FALSE;
-      if (unturn_dead(mtmp)) wake = TRUE;
+      if (unturn_dead(mtmp))
+        wake = TRUE;
       if (is_undead(mtmp->data)) {
         reveal_invis = TRUE;
         wake = TRUE;
         dmg = rnd(8);
-        if (dbldam) dmg *= 2;
-        if (otyp == SPE_TURN_UNDEAD) dmg += spell_damage_bonus();
+        if (dbldam)
+          dmg *= 2;
+        if (otyp == SPE_TURN_UNDEAD)
+          dmg += spell_damage_bonus();
         flags.bypasses = TRUE; /* for make_corpse() */
         if (!resist(mtmp, otmp->oclass, dmg, NOTELL)) {
-          if (mtmp->mhp > 0) monflee(mtmp, 0, FALSE, TRUE);
+          if (mtmp->mhp > 0)
+            monflee(mtmp, 0, FALSE, TRUE);
         }
       }
       break;
@@ -163,13 +170,15 @@ int bhitm(Monster *mtmp, Object *otmp) {
             makeknown(otyp);
           }
           /* dropped inventory shouldn't be hit by this zap */
-          for (obj = mtmp->minvent; obj; obj = obj->nobj) bypass_obj(obj);
+          for (obj = mtmp->minvent; obj; obj = obj->nobj)
+            bypass_obj(obj);
           /* flags.bypasses = TRUE; ## for make_corpse() */
           /* no corpse after system shock */
           xkilled(mtmp, 3);
         } else if (newcham(mtmp, (MonsterType *)0, (otyp != POT_POLYMORPH),
                            FALSE)) {
-          if (!Hallucination && canspotmon(mtmp)) makeknown(otyp);
+          if (!Hallucination && canspotmon(mtmp))
+            makeknown(otyp);
         }
       }
       break;
@@ -234,7 +243,8 @@ int bhitm(Monster *mtmp, Object *otmp) {
       if (mtmp->data != &mons[PM_PESTILENCE]) {
         wake = FALSE; /* wakeup() makes the target angry */
         mtmp->mhp += d(6, otyp == SPE_EXTRA_HEALING ? 8 : 4);
-        if (mtmp->mhp > mtmp->mhpmax) mtmp->mhp = mtmp->mhpmax;
+        if (mtmp->mhp > mtmp->mhpmax)
+          mtmp->mhp = mtmp->mhpmax;
         if (mtmp->mblinded) {
           mtmp->mblinded = 0;
           mtmp->mcansee = 1;
@@ -273,14 +283,16 @@ int bhitm(Monster *mtmp, Object *otmp) {
       reveal_invis = TRUE;
       if (sleep_monst(mtmp, d(1 + otmp->spe, 12), WAND_CLASS))
         slept_monst(mtmp);
-      if (!Blind) makeknown(WAN_SLEEP);
+      if (!Blind)
+        makeknown(WAN_SLEEP);
       break;
     case SPE_STONE_TO_FLESH:
       if (monsndx(mtmp->data) == PM_STONE_GOLEM) {
         char *name = Monnam(mtmp);
         /* turn into flesh golem */
         if (newcham(mtmp, &mons[PM_FLESH_GOLEM], FALSE, FALSE)) {
-          if (canseemon(mtmp)) pline("%s turns to flesh!", name);
+          if (canseemon(mtmp))
+            pline("%s turns to flesh!", name);
         } else {
           if (canseemon(mtmp))
             pline("%s looks rather fleshy for a moment.", name);
@@ -290,8 +302,10 @@ int bhitm(Monster *mtmp, Object *otmp) {
       break;
     case SPE_DRAIN_LIFE:
       dmg = rnd(8);
-      if (dbldam) dmg *= 2;
-      if (otyp == SPE_DRAIN_LIFE) dmg += spell_damage_bonus();
+      if (dbldam)
+        dmg *= 2;
+      if (otyp == SPE_DRAIN_LIFE)
+        dmg += spell_damage_bonus();
       if (resists_drli(mtmp))
         shieldeff(mtmp->mx, mtmp->my);
       else if (!resist(mtmp, otmp->oclass, dmg, NOTELL) && mtmp->mhp > 0) {
@@ -301,7 +315,8 @@ int bhitm(Monster *mtmp, Object *otmp) {
           xkilled(mtmp, 1);
         else {
           mtmp->m_lev--;
-          if (canseemon(mtmp)) pline("%s suddenly seems weaker!", Monnam(mtmp));
+          if (canseemon(mtmp))
+            pline("%s suddenly seems weaker!", Monnam(mtmp));
         }
       }
       break;
@@ -313,7 +328,8 @@ int bhitm(Monster *mtmp, Object *otmp) {
     if (mtmp->mhp > 0) {
       wakeup(mtmp);
       m_respond(mtmp);
-      if (mtmp->isshk && !*player.ushops) hot_pursuit(mtmp);
+      if (mtmp->isshk && !*player.ushops)
+        hot_pursuit(mtmp);
     } else if (mtmp->m_ap_type)
       seemimic(mtmp); /* might unblock if mimicing a boulder/door */
   }
@@ -332,7 +348,8 @@ void probe_monster(Monster *mtmp) {
   Object *otmp;
 
   mstatusline(mtmp);
-  if (notonhead) return; /* don't show minvent for long worm tail */
+  if (notonhead)
+    return; /* don't show minvent for long worm tail */
 
 #ifndef GOLDOBJ
   if (mtmp->minvent || mtmp->mgold) {
@@ -419,10 +436,12 @@ Monster *montraits(Object *obj, coord *cc) {
   if (mtmp2) {
     /* SaveMonsterIntoObject() validated mtmp2->mnum */
     mtmp2->data = &mons[mtmp2->mnum];
-    if (mtmp2->mhpmax <= 0 && !is_rider(mtmp2->data)) return (Monster *)0;
+    if (mtmp2->mhpmax <= 0 && !is_rider(mtmp2->data))
+      return (Monster *)0;
     mtmp = makemon(mtmp2->data, cc->x, cc->y,
                    NO_MINVENT | MM_NOWAIT | MM_NOCOUNTBIRTH);
-    if (!mtmp) return mtmp;
+    if (!mtmp)
+      return mtmp;
 
     /* heal the monster */
     if (mtmp->mhpmax > mtmp2->mhpmax && is_rider(mtmp2->data))
@@ -433,7 +452,8 @@ Monster *montraits(Object *obj, coord *cc) {
     /* monster ID is available if the monster died in the current
        game, but should be zero if the corpse was in a bones level
        (we cleared it when loading bones) */
-    if (!mtmp2->m_id) mtmp2->m_id = mtmp->m_id;
+    if (!mtmp2->m_id)
+      mtmp2->m_id = mtmp->m_id;
     mtmp2->mx = mtmp->mx;
     mtmp2->my = mtmp->my;
     mtmp2->mux = mtmp->mux;
@@ -486,16 +506,20 @@ Monster *montraits(Object *obj, coord *cc) {
  * if applicable.
  */
 Monster *get_container_location(Object *obj, int *loc, int *container_nesting) {
-  if (!obj || !loc) return 0;
+  if (!obj || !loc)
+    return 0;
 
-  if (container_nesting) *container_nesting = 0;
+  if (container_nesting)
+    *container_nesting = 0;
   while (obj && obj->where == OBJ_CONTAINED) {
-    if (container_nesting) *container_nesting += 1;
+    if (container_nesting)
+      *container_nesting += 1;
     obj = obj->ocontainer;
   }
   if (obj) {
     *loc = obj->where; /* outermost container's location */
-    if (obj->where == OBJ_MINVENT) return obj->ocarry;
+    if (obj->where == OBJ_MINVENT)
+      return obj->ocarry;
   }
   return (Monster *)0;
 }
@@ -543,7 +567,8 @@ Monster *revive(Object *obj) {
       }
     } else {
       /* only for invent, minvent, or floor */
-      if (!get_obj_location(obj, &x, &y, 0)) return (Monster *)0;
+      if (!get_obj_location(obj, &x, &y, 0))
+        return (Monster *)0;
     }
     if (in_container) {
       /* Rules for revival from containers:
@@ -561,7 +586,8 @@ Monster *revive(Object *obj) {
     if (MON_AT(x, y)) {
       coord new_xy;
 
-      if (enexto(&new_xy, x, y, &mons[montype])) x = new_xy.x, y = new_xy.y;
+      if (enexto(&new_xy, x, y, &mons[montype]))
+        x = new_xy.x, y = new_xy.y;
     }
 
     if (cant_create(&montype, TRUE)) {
@@ -577,7 +603,8 @@ Monster *revive(Object *obj) {
         xy.x = x;
         xy.y = y;
         mtmp = montraits(obj, &xy);
-        if (mtmp && mtmp->mtame && !mtmp->isminion) wary_dog(mtmp, TRUE);
+        if (mtmp && mtmp->mtame && !mtmp->isminion)
+          wary_dog(mtmp, TRUE);
       } else
         mtmp = makemon(&mons[montype], x, y,
                        NO_MINVENT | MM_NOWAIT | MM_NOCOUNTBIRTH);
@@ -592,7 +619,8 @@ Monster *revive(Object *obj) {
             int x2, y2;
             x2 = ghost->mx;
             y2 = ghost->my;
-            if (ghost->mtame) savetame = ghost->mtame;
+            if (ghost->mtame)
+              savetame = ghost->mtame;
             if (canseemon(ghost))
               pline("%s is suddenly drawn into its former body!",
                     Monnam(ghost));
@@ -604,7 +632,8 @@ Monster *revive(Object *obj) {
           obj->oattached = OATTACHED_NOTHING;
         }
         /* Monster retains its name */
-        if (obj->onamelth) mtmp = christen_monst(mtmp, ONAME(obj));
+        if (obj->onamelth)
+          mtmp = christen_monst(mtmp, ONAME(obj));
         /* flag the quest leader as alive. */
         if (mtmp->data->msound == MS_LEADER ||
             mtmp->m_id == quest_status.leader_m_id)
@@ -612,7 +641,8 @@ Monster *revive(Object *obj) {
       }
     }
     if (mtmp) {
-      if (obj->oeaten) mtmp->mhp = eaten_stat(mtmp->mhp, obj);
+      if (obj->oeaten)
+        mtmp->mhp = eaten_stat(mtmp->mhp, obj);
       /* track that this monster was revived at least once */
       mtmp->mrevived = 1;
 
@@ -637,7 +667,8 @@ Monster *revive(Object *obj) {
           /* in case MON_AT+enexto for invisible mon */
           x = obj->ox, y = obj->oy;
           /* not useupf(), which charges */
-          if (obj->quan > 1L) obj = SplitObject(obj, 1L);
+          if (obj->quan > 1L)
+            obj = SplitObject(obj, 1L);
           delobj(obj);
           newsym(x, y);
           break;
@@ -660,7 +691,8 @@ STATIC_OVL void revive_egg(Object *obj) {
   /*
    * Note: generic eggs with corpsenm set to NON_PM will never hatch.
    */
-  if (obj->otyp != EGG) return;
+  if (obj->otyp != EGG)
+    return;
   if (obj->corpsenm != NON_PM && !dead_species(obj->corpsenm, TRUE))
     attach_egg_hatch_timeout(obj);
 }
@@ -678,10 +710,13 @@ int unturn_dead(Monster *mon) {
 
   while ((otmp = otmp2) != 0) {
     otmp2 = otmp->nobj;
-    if (otmp->otyp == EGG) revive_egg(otmp);
-    if (otmp->otyp != CORPSE) continue;
+    if (otmp->otyp == EGG)
+      revive_egg(otmp);
+    if (otmp->otyp != CORPSE)
+      continue;
     /* save the name; the object is liable to go away */
-    if (youseeit) strcpy(corpse, corpse_xname(otmp, TRUE));
+    if (youseeit)
+      strcpy(corpse, corpse_xname(otmp, TRUE));
 
     /* for a merged group, only one is revived; should this be fixed? */
     if ((mtmp2 = revive(otmp)) != 0) {
@@ -705,13 +740,15 @@ STATIC_OVL void costly_cancel(Object *obj) {
   char objroom;
   Monster *shkp = (Monster *)0;
 
-  if (obj->no_charge) return;
+  if (obj->no_charge)
+    return;
 
   switch (obj->where) {
     case OBJ_INVENT:
       if (obj->unpaid) {
         shkp = shop_keeper(*player.ushops);
-        if (!shkp) return;
+        if (!shkp)
+          return;
         Norep("You cancel an unpaid object, you pay for it!");
         CreateBillDummyObject(obj);
       }
@@ -719,7 +756,8 @@ STATIC_OVL void costly_cancel(Object *obj) {
     case OBJ_FLOOR:
       objroom = *in_rooms(obj->ox, obj->oy, SHOPBASE);
       shkp = shop_keeper(objroom);
-      if (!shkp || !inhishop(shkp)) return;
+      if (!shkp || !inhishop(shkp))
+        return;
       if (costly_spot(player.ux, player.uy) && objroom == *player.ushops) {
         Norep("You cancel it, you pay for it!");
         CreateBillDummyObject(obj);
@@ -754,10 +792,12 @@ void cancel_item(Object *obj) {
       }
       break;
     case RIN_INCREASE_ACCURACY:
-      if ((obj->owornmask & W_RING) && u_ring) player.uhitinc -= obj->spe;
+      if ((obj->owornmask & W_RING) && u_ring)
+        player.uhitinc -= obj->spe;
       break;
     case RIN_INCREASE_DAMAGE:
-      if ((obj->owornmask & W_RING) && u_ring) player.udaminc -= obj->spe;
+      if ((obj->owornmask & W_RING) && u_ring)
+        player.udaminc -= obj->spe;
       break;
     case GAUNTLETS_OF_DEXTERITY:
       if ((obj->owornmask & W_ARMG) && (obj == uarmg)) {
@@ -813,11 +853,13 @@ void cancel_item(Object *obj) {
         break;
     }
   }
-  if (holy) costly_cancel(obj);
+  if (holy)
+    costly_cancel(obj);
   Unbless(obj);
   Uncurse(obj);
 #ifdef INVISIBLE_OBJECTS
-  if (Object->oinvis) Object->oinvis = 0;
+  if (Object->oinvis)
+    Object->oinvis = 0;
 #endif
   return;
 }
@@ -833,7 +875,8 @@ bool drain_item(Object *obj) {
                obj->oclass != ARMOR_CLASS && !is_weptool(obj)) ||
       obj->spe <= 0)
     return (FALSE);
-  if (obj_resists(obj, 10, 90)) return (FALSE);
+  if (obj_resists(obj, 10, 90))
+    return (FALSE);
 
   /* Charge for the cost of the object */
   costly_cancel(obj); /* The term "cancel" is okay for now */
@@ -861,10 +904,12 @@ bool drain_item(Object *obj) {
       }
       break;
     case RIN_INCREASE_ACCURACY:
-      if ((obj->owornmask & W_RING) && u_ring) player.uhitinc--;
+      if ((obj->owornmask & W_RING) && u_ring)
+        player.uhitinc--;
       break;
     case RIN_INCREASE_DAMAGE:
-      if ((obj->owornmask & W_RING) && u_ring) player.udaminc--;
+      if ((obj->owornmask & W_RING) && u_ring)
+        player.udaminc--;
       break;
     case HELM_OF_BRILLIANCE:
       if ((obj->owornmask & W_ARMH) && (obj == uarmh)) {
@@ -883,7 +928,8 @@ bool drain_item(Object *obj) {
       flags.botl = 1;
       break;
   }
-  if (carried(obj)) update_inventory();
+  if (carried(obj))
+    update_inventory();
   return (TRUE);
 }
 
@@ -915,7 +961,8 @@ bool obj_shudders(Object *obj) {
     zap_odds = 8; /* half-life = 6 zaps */
 
   /* adjust for "large" quantities of identical things */
-  if (obj->quan > 4L) zap_odds /= 2;
+  if (obj->quan > 4L)
+    zap_odds /= 2;
 
   return ((bool)(!rn2(zap_odds)));
 }
@@ -932,10 +979,13 @@ STATIC_OVL void polyuse(Object *objhdr, int mat, int minwt) {
 
   for (otmp = objhdr; minwt > 0 && otmp; otmp = otmp2) {
     otmp2 = otmp->nexthere;
-    if (otmp == uball || otmp == uchain) continue;
-    if (obj_resists(otmp, 0, 0)) continue; /* preserve unique objects */
+    if (otmp == uball || otmp == uchain)
+      continue;
+    if (obj_resists(otmp, 0, 0))
+      continue; /* preserve unique objects */
 #ifdef MAIL
-    if (otmp->otyp == SCR_MAIL) continue;
+    if (otmp->otyp == SCR_MAIL)
+      continue;
 #endif
 
     if (((int)objects[otmp->otyp].oc_material == mat) ==
@@ -967,7 +1017,8 @@ STATIC_OVL void create_polymon(Object *obj, int okind) {
   int pm_index;
 
   /* no golems if you zap only one object -- not enough stuff */
-  if (!obj || (!obj->nexthere && obj->quan == 1L)) return;
+  if (!obj || (!obj->nexthere && obj->quan == 1L))
+    return;
 
   /* some of these choices are arbitrary */
   switch (okind) {
@@ -1026,7 +1077,8 @@ STATIC_OVL void create_polymon(Object *obj, int okind) {
       break;
   }
 
-  if (!(mvitals[pm_index].mvflags & G_GENOD)) mdat = &mons[pm_index];
+  if (!(mvitals[pm_index].mvflags & G_GENOD))
+    mdat = &mons[pm_index];
 
   mtmp = makemon(mdat, obj->ox, obj->oy, NO_MM_FLAGS);
   polyuse(obj, okind, (int)mons[pm_index].cwt);
@@ -1042,7 +1094,8 @@ void do_osshock(Object *obj) {
   long i;
 
 #ifdef MAIL
-  if (obj->otyp == SCR_MAIL) return;
+  if (obj->otyp == SCR_MAIL)
+    return;
 #endif
   obj_zapped = TRUE;
 
@@ -1100,7 +1153,8 @@ Object *poly_obj(Object *obj, int id) {
        the new item be the same as it was for the old one. */
     otmp = nullptr;
     do {
-      if (otmp) delobj(otmp);
+      if (otmp)
+        delobj(otmp);
       otmp = MakeRandomObject(obj->oclass, FALSE);
     } while (--try_limit > 0 &&
              objects[obj->otyp].oc_magic != objects[otmp->otyp].oc_magic);
@@ -1120,7 +1174,8 @@ Object *poly_obj(Object *obj, int id) {
   /* preserve the shopkeepers (lack of) interest */
   otmp->no_charge = obj->no_charge;
   /* preserve inventory letter if in inventory */
-  if (obj_location == OBJ_INVENT) otmp->invlet = obj->invlet;
+  if (obj_location == OBJ_INVENT)
+    otmp->invlet = obj->invlet;
 #ifdef MAIL
   /* You can't send yourself 100 mail messages and then
    * polymorph them into useful scrolls
@@ -1158,21 +1213,27 @@ Object *poly_obj(Object *obj, int id) {
   }
 
   /* keep special fields (including charges on wands) */
-  if (index(charged_objs, otmp->oclass)) otmp->spe = obj->spe;
+  if (index(charged_objs, otmp->oclass))
+    otmp->spe = obj->spe;
   otmp->recharged = obj->recharged;
 
   otmp->cursed = obj->cursed;
   otmp->blessed = obj->blessed;
   otmp->oeroded = obj->oeroded;
   otmp->oeroded2 = obj->oeroded2;
-  if (!IsFlammable(otmp) && !is_rustprone(otmp)) otmp->oeroded = 0;
-  if (!is_corrodeable(otmp) && !IsRottable(otmp)) otmp->oeroded2 = 0;
-  if (is_damageable(otmp)) otmp->oerodeproof = obj->oerodeproof;
+  if (!IsFlammable(otmp) && !is_rustprone(otmp))
+    otmp->oeroded = 0;
+  if (!is_corrodeable(otmp) && !IsRottable(otmp))
+    otmp->oeroded2 = 0;
+  if (is_damageable(otmp))
+    otmp->oerodeproof = obj->oerodeproof;
 
   /* Keep chest/box traps and poisoned ammo if we may */
-  if (obj->otrapped && Is_box(otmp)) otmp->otrapped = TRUE;
+  if (obj->otrapped && Is_box(otmp))
+    otmp->otrapped = TRUE;
 
-  if (obj->opoisoned && is_poisonable(otmp)) otmp->opoisoned = TRUE;
+  if (obj->opoisoned && is_poisonable(otmp))
+    otmp->opoisoned = TRUE;
 
   if (id == STRANGE_OBJECT && obj->otyp == CORPSE) {
     /* turn crocodile corpses into shoes */
@@ -1188,7 +1249,8 @@ Object *poly_obj(Object *obj, int id) {
   }
 
   /* no box contents --KAA */
-  if (Has_contents(otmp)) delete_contents(otmp);
+  if (Has_contents(otmp))
+    delete_contents(otmp);
 
   /* 'n' merged objects may be fused into 1 object */
   if (otmp->quan > 1L && (!objects[otmp->otyp].oc_merge ||
@@ -1253,11 +1315,16 @@ Object *poly_obj(Object *obj, int id) {
       otmp->owornmask = obj->owornmask;
       remove_worn_item(obj, TRUE);
       setworn(otmp, otmp->owornmask);
-      if (otmp->owornmask & LEFT_RING) uleft = otmp;
-      if (otmp->owornmask & RIGHT_RING) uright = otmp;
-      if (otmp->owornmask & W_WEP) uwep = otmp;
-      if (otmp->owornmask & W_SWAPWEP) uswapwep = otmp;
-      if (otmp->owornmask & W_QUIVER) uquiver = otmp;
+      if (otmp->owornmask & LEFT_RING)
+        uleft = otmp;
+      if (otmp->owornmask & RIGHT_RING)
+        uright = otmp;
+      if (otmp->owornmask & W_WEP)
+        uwep = otmp;
+      if (otmp->owornmask & W_SWAPWEP)
+        uswapwep = otmp;
+      if (otmp->owornmask & W_QUIVER)
+        uquiver = otmp;
       goto no_unwear;
     }
   }
@@ -1381,10 +1448,12 @@ int bhito(Object *obj, Object *otmp) {
         /* KMH, conduct */
         player.uconduct.polypiles++;
         /* any saved lock context will be dangerously obsolete */
-        if (Is_box(obj)) (void)boxlock(obj, otmp);
+        if (Is_box(obj))
+          (void)boxlock(obj, otmp);
 
         if (obj_shudders(obj)) {
-          if (cansee(obj->ox, obj->oy)) makeknown(otmp->otyp);
+          if (cansee(obj->ox, obj->oy))
+            makeknown(otmp->otyp);
           do_osshock(obj);
           break;
         }
@@ -1407,7 +1476,8 @@ int bhito(Object *obj, Object *otmp) {
           }
           res = 1;
         }
-        if (res) makeknown(WAN_PROBING);
+        if (res)
+          makeknown(WAN_PROBING);
         break;
       case WAN_STRIKING:
       case SPE_FORCE_BOLT:
@@ -1460,7 +1530,8 @@ int bhito(Object *obj, Object *otmp) {
           res = boxlock(obj, otmp);
         else
           res = 0;
-        if (res /* && otmp->oclass == WAND_CLASS */) makeknown(otmp->otyp);
+        if (res /* && otmp->oclass == WAND_CLASS */)
+          makeknown(otmp->otyp);
         break;
       case WAN_SLOW_MONSTER: /* no effect on objects */
       case SPE_SLOW_MONSTER:
@@ -1538,7 +1609,8 @@ int bhito(Object *obj, Object *otmp) {
             mon = makemon(&mons[obj->corpsenm], oox, ooy, NO_MM_FLAGS);
             if (mon) {
               delobj(obj);
-              if (cansee(mon->mx, mon->my)) pline_The("figurine animates!");
+              if (cansee(mon->mx, mon->my))
+                pline_The("figurine animates!");
               break;
             }
             goto makecorpse;
@@ -1599,7 +1671,8 @@ int bhitpile(Object *obj, int (*fhito)(Object *, Object *), int tx, int ty) {
     next_obj = otmp->nexthere;
     hitanything += (*fhito)(otmp, obj);
   }
-  if (poly_zapped >= 0) create_polymon(level.objects[tx][ty], poly_zapped);
+  if (poly_zapped >= 0)
+    create_polymon(level.objects[tx][ty], poly_zapped);
 
   return hitanything;
 }
@@ -1612,8 +1685,10 @@ int bhitpile(Object *obj, int (*fhito)(Object *, Object *), int tx, int ty) {
  * added by GAN 11/03/86
  */
 int zappable(Object *wand) {
-  if (wand->spe < 0 || (wand->spe == 0 && rn2(121))) return 0;
-  if (wand->spe == 0) You("wrest one last charge from the worn-out wand.");
+  if (wand->spe < 0 || (wand->spe == 0 && rn2(121)))
+    return 0;
+  if (wand->spe == 0)
+    You("wrest one last charge from the worn-out wand.");
   wand->spe--;
   return 1;
 }
@@ -1629,12 +1704,15 @@ void zapnodir(Object *obj) {
     case WAN_LIGHT:
     case SPE_LIGHT:
       litroom(TRUE, obj);
-      if (!Blind) known = TRUE;
+      if (!Blind)
+        known = TRUE;
       break;
     case WAN_SECRET_DOOR_DETECTION:
     case SPE_DETECT_UNSEEN:
-      if (!findit()) return;
-      if (!Blind) known = TRUE;
+      if (!findit())
+        return;
+      if (!Blind)
+        known = TRUE;
       break;
     case WAN_CREATE_MONSTER:
       known = create_critters(rn2(23) ? 1 : rn1(7, 2), (MonsterType *)0);
@@ -1677,9 +1755,11 @@ int dozap() {
   Object *obj;
   int damage;
 
-  if (check_capacity((char *)0)) return (0);
+  if (check_capacity((char *)0))
+    return (0);
   obj = getobj(zap_syms, "zap");
-  if (!obj) return (0);
+  if (!obj)
+    return (0);
 
   check_unpaid(obj);
 
@@ -1691,7 +1771,8 @@ int dozap() {
     exercise(A_STR, FALSE);
     return (1);
   } else if (!(objects[obj->otyp].oc_dir == NODIR) && !getdir((char *)0)) {
-    if (!Blind) pline("%s glows and fades.", The(xname(obj)));
+    if (!Blind)
+      pline("%s glows and fades.", The(xname(obj)));
     /* make him pay for knowing !NODIR */
   } else if (!player.dx && !player.dy && !player.dz &&
              !(objects[obj->otyp].oc_dir == NODIR)) {
@@ -1757,7 +1838,8 @@ int zapyourself(Object *obj, bool ordinary) {
       if (!resists_blnd(&youmonst)) {
         You(are_blinded_by_the_flash);
         make_blinded((long)rnd(100), FALSE);
-        if (!Blind) Your(vision_clears);
+        if (!Blind)
+          Your(vision_clears);
       }
       break;
 
@@ -1811,9 +1893,11 @@ int zapyourself(Object *obj, bool ordinary) {
       break;
 
     case WAN_POLYMORPH:
-      if (!Unchanging) makeknown(WAN_POLYMORPH);
+      if (!Unchanging)
+        makeknown(WAN_POLYMORPH);
     case SPE_POLYMORPH:
-      if (!Unchanging) polyself(FALSE);
+      if (!Unchanging)
+        polyself(FALSE);
       break;
 
     case WAN_CANCELLATION:
@@ -1934,14 +2018,17 @@ int zapyourself(Object *obj, bool ordinary) {
         You(are_blinded_by_the_flash);
         make_blinded((long)damage, FALSE);
         makeknown(obj->otyp);
-        if (!Blind) Your(vision_clears);
+        if (!Blind)
+          Your(vision_clears);
       }
       damage = 0; /* reset */
       break;
     case WAN_OPENING:
-      if (Punished) makeknown(WAN_OPENING);
+      if (Punished)
+        makeknown(WAN_OPENING);
     case SPE_KNOCK:
-      if (Punished) Your("chain quivers for a moment.");
+      if (Punished)
+        Your("chain quivers for a moment.");
       break;
     case WAN_DIGGING:
     case SPE_DIG:
@@ -1951,7 +2038,8 @@ int zapyourself(Object *obj, bool ordinary) {
     case SPE_WIZARD_LOCK:
       break;
     case WAN_PROBING:
-      for (obj = invent; obj; obj = obj->nobj) obj->dknown = 1;
+      for (obj = invent; obj; obj = obj->nobj)
+        obj->dknown = 1;
       /* note: `obj' reused; doesn't point at wand anymore */
       makeknown(WAN_PROBING);
       ustatusline();
@@ -1960,8 +2048,10 @@ int zapyourself(Object *obj, bool ordinary) {
       Object *otemp, *onext;
       bool didmerge;
 
-      if (player.umonnum == PM_STONE_GOLEM) (void)polymon(PM_FLESH_GOLEM);
-      if (Stoned) fix_petrification(); /* saved! */
+      if (player.umonnum == PM_STONE_GOLEM)
+        (void)polymon(PM_FLESH_GOLEM);
+      if (Stoned)
+        fix_petrification(); /* saved! */
       /* but at a cost.. */
       for (otemp = invent; otemp; otemp = onext) {
         onext = otemp->nobj;
@@ -2091,10 +2181,12 @@ bool cancel_monst(Monster *mdef, Object *obj, bool youattack,
   } else {
     mdef->mcan = TRUE;
 
-    if (is_were(mdef->data) && mdef->data->mlet != S_HUMAN) were_change(mdef);
+    if (is_were(mdef->data) && mdef->data->mlet != S_HUMAN)
+      were_change(mdef);
 
     if (mdef->data == &mons[PM_CLAY_GOLEM]) {
-      if (canseemon(mdef)) pline(writing_vanishes, s_suffix(mon_nam(mdef)));
+      if (canseemon(mdef))
+        pline(writing_vanishes, s_suffix(mon_nam(mdef)));
 
       if (allow_cancel_kill) {
         if (youattack)
@@ -2132,7 +2224,8 @@ STATIC_OVL bool zap_updown(Object *obj) {
         You("probe beneath the %s.", surface(x, y));
         ptmp += display_binventory(x, y, TRUE);
       }
-      if (!ptmp) Your("probe reveals nothing.");
+      if (!ptmp)
+        Your("probe reveals nothing.");
       return TRUE; /* we've done our own bhitpile */
     case WAN_OPENING:
     case SPE_KNOCK:
@@ -2290,7 +2383,8 @@ void weffects(Object *obj) {
                  obj, NULL);
     }
     /* give a clue if obj_zapped */
-    if (obj_zapped) You_feel("shuddering vibrations.");
+    if (obj_zapped)
+      You_feel("shuddering vibrations.");
 
   } else if (objects[otyp].oc_dir == NODIR) {
     zapnodir(obj);
@@ -2494,7 +2588,8 @@ Monster *bhit(
       break;
     }
 
-    if (weapon == ZAPPED_WAND && find_drawbridge(&x, &y)) switch (obj->otyp) {
+    if (weapon == ZAPPED_WAND && find_drawbridge(&x, &y))
+      switch (obj->otyp) {
         case WAN_OPENING:
         case SPE_KNOCK:
           if (is_db_wall(bhitpos.x, bhitpos.y)) {
@@ -2512,7 +2607,8 @@ Monster *bhit(
           break;
         case WAN_STRIKING:
         case SPE_FORCE_BOLT:
-          if (typ != DRAWBRIDGE_UP) destroy_drawbridge(x, y);
+          if (typ != DRAWBRIDGE_UP)
+            destroy_drawbridge(x, y);
           makeknown(obj->otyp);
           break;
       }
@@ -2521,7 +2617,8 @@ Monster *bhit(
       notonhead = (bhitpos.x != mtmp->mx || bhitpos.y != mtmp->my);
       if (weapon != FLASHED_LIGHT) {
         if (weapon != ZAPPED_WAND) {
-          if (weapon != INVIS_BEAM) tmp_at(DISP_END, 0);
+          if (weapon != INVIS_BEAM)
+            tmp_at(DISP_END, 0);
           if (cansee(bhitpos.x, bhitpos.y) && !canspotmon(mtmp)) {
             if (weapon != INVIS_BEAM) {
               map_invisible(bhitpos.x, bhitpos.y);
@@ -2559,7 +2656,8 @@ Monster *bhit(
       }
     }
     if (fhito) {
-      if (bhitpile(obj, fhito, bhitpos.x, bhitpos.y)) range--;
+      if (bhitpile(obj, fhito, bhitpos.x, bhitpos.y))
+        range--;
     } else {
       if (weapon == KICKED_WEAPON &&
           ((obj->oclass == COIN_CLASS && OBJ_AT(bhitpos.x, bhitpos.y)) ||
@@ -2641,9 +2739,11 @@ Monster *bhit(
     point_blank = FALSE; /* affects passing through iron bars */
   }
 
-  if (weapon != ZAPPED_WAND && weapon != INVIS_BEAM) tmp_at(DISP_END, 0);
+  if (weapon != ZAPPED_WAND && weapon != INVIS_BEAM)
+    tmp_at(DISP_END, 0);
 
-  if (shopdoor) pay_for_damage("destroy", FALSE);
+  if (shopdoor)
+    pay_for_damage("destroy", FALSE);
 
   return (Monster *)0;
 }
@@ -2657,10 +2757,12 @@ Monster *boomhit(int dx, int dy) {
   bhitpos.y = player.uy;
 
   for (i = 0; i < 8; i++)
-    if (xdir[i] == dx && ydir[i] == dy) break;
+    if (xdir[i] == dx && ydir[i] == dy)
+      break;
   tmp_at(DISP_FLASH, cmap_to_glyph(boom));
   for (ct = 0; ct < 10; ct++) {
-    if (i == 8) i = 0;
+    if (i == 8)
+      i = 0;
     boom = (boom == S_boomleft) ? S_boomright : S_boomleft;
     tmp_at(DISP_CHANGE, cmap_to_glyph(boom)); /* change glyph */
     dx = xdir[i];
@@ -2692,7 +2794,8 @@ Monster *boomhit(int dx, int dy) {
     }
     tmp_at(bhitpos.x, bhitpos.y);
     delay_output();
-    if (ct % 5 != 0) i++;
+    if (ct % 5 != 0)
+      i++;
 #ifdef SINKS
     if (IS_SINK(levl[bhitpos.x][bhitpos.y].typ))
       break; /* boomerang falls on sink */
@@ -2717,7 +2820,8 @@ STATIC_OVL int zhitm(Monster *mon, int type, int nd, Object **ootmp) {
         break;
       }
       tmp = d(nd, 6);
-      if (spellcaster) tmp += spell_damage_bonus();
+      if (spellcaster)
+        tmp += spell_damage_bonus();
 #ifdef WIZ_PATCH_DEBUG
       if (spellcaster)
         pline("Damage = %d + %d", tmp - spell_damage_bonus(),
@@ -2730,17 +2834,22 @@ STATIC_OVL int zhitm(Monster *mon, int type, int nd, Object **ootmp) {
         break;
       }
       tmp = d(nd, 6);
-      if (resists_cold(mon)) tmp += 7;
-      if (spellcaster) tmp += spell_damage_bonus();
+      if (resists_cold(mon))
+        tmp += 7;
+      if (spellcaster)
+        tmp += spell_damage_bonus();
 #ifdef WIZ_PATCH_DEBUG
       if (spellcaster)
         pline("Damage = %d + %d", tmp - spell_damage_bonus(),
               spell_damage_bonus());
 #endif
       if (burnarmor(mon)) {
-        if (!rn2(3)) (void)destroy_mitem(mon, POTION_CLASS, AD_FIRE);
-        if (!rn2(3)) (void)destroy_mitem(mon, SCROLL_CLASS, AD_FIRE);
-        if (!rn2(5)) (void)destroy_mitem(mon, SPBOOK_CLASS, AD_FIRE);
+        if (!rn2(3))
+          (void)destroy_mitem(mon, POTION_CLASS, AD_FIRE);
+        if (!rn2(3))
+          (void)destroy_mitem(mon, SCROLL_CLASS, AD_FIRE);
+        if (!rn2(5))
+          (void)destroy_mitem(mon, SPBOOK_CLASS, AD_FIRE);
       }
       break;
     case ZT_COLD:
@@ -2749,14 +2858,17 @@ STATIC_OVL int zhitm(Monster *mon, int type, int nd, Object **ootmp) {
         break;
       }
       tmp = d(nd, 6);
-      if (resists_fire(mon)) tmp += d(nd, 3);
-      if (spellcaster) tmp += spell_damage_bonus();
+      if (resists_fire(mon))
+        tmp += d(nd, 3);
+      if (spellcaster)
+        tmp += spell_damage_bonus();
 #ifdef WIZ_PATCH_DEBUG
       if (spellcaster)
         pline("Damage = %d + %d", tmp - spell_damage_bonus(),
               spell_damage_bonus());
 #endif
-      if (!rn2(3)) (void)destroy_mitem(mon, POTION_CLASS, AD_COLD);
+      if (!rn2(3))
+        (void)destroy_mitem(mon, POTION_CLASS, AD_COLD);
       break;
     case ZT_SLEEP:
       tmp = 0;
@@ -2767,7 +2879,8 @@ STATIC_OVL int zhitm(Monster *mon, int type, int nd, Object **ootmp) {
       if (abs(type) != ZT_BREATH(ZT_DEATH)) { /* death */
         if (mon->data == &mons[PM_DEATH]) {
           mon->mhpmax += mon->mhpmax / 2;
-          if (mon->mhpmax >= MAGIC_COOKIE) mon->mhpmax = MAGIC_COOKIE - 1;
+          if (mon->mhpmax >= MAGIC_COOKIE)
+            mon->mhpmax = MAGIC_COOKIE - 1;
           mon->mhp = mon->mhpmax;
           tmp = 0;
           break;
@@ -2789,14 +2902,17 @@ STATIC_OVL int zhitm(Monster *mon, int type, int nd, Object **ootmp) {
         } else if (mon->misc_worn_check & W_ARM) {
           /* destroy body armor, also cloak if present */
           *ootmp = which_armor(mon, W_ARM);
-          if ((otmp2 = which_armor(mon, W_ARMC)) != 0) m_useup(mon, otmp2);
+          if ((otmp2 = which_armor(mon, W_ARMC)) != 0)
+            m_useup(mon, otmp2);
         } else {
           /* no body armor, victim dies; destroy cloak
              and shirt now in case target gets life-saved */
           tmp = MAGIC_COOKIE;
-          if ((otmp2 = which_armor(mon, W_ARMC)) != 0) m_useup(mon, otmp2);
+          if ((otmp2 = which_armor(mon, W_ARMC)) != 0)
+            m_useup(mon, otmp2);
 #ifdef TOURIST
-          if ((otmp2 = which_armor(mon, W_ARMU)) != 0) m_useup(mon, otmp2);
+          if ((otmp2 = which_armor(mon, W_ARMU)) != 0)
+            m_useup(mon, otmp2);
 #endif
         }
         type = -1; /* no saving throw wanted */
@@ -2811,7 +2927,8 @@ STATIC_OVL int zhitm(Monster *mon, int type, int nd, Object **ootmp) {
         /* can still blind the monster */
       } else
         tmp = d(nd, 6);
-      if (spellcaster) tmp += spell_damage_bonus();
+      if (spellcaster)
+        tmp += spell_damage_bonus();
 #ifdef WIZ_PATCH_DEBUG
       if (spellcaster)
         pline("Damage = %d + %d", tmp - spell_damage_bonus(),
@@ -2826,9 +2943,11 @@ STATIC_OVL int zhitm(Monster *mon, int type, int nd, Object **ootmp) {
         else
           mon->mblinded += rnd_tmp;
       }
-      if (!rn2(3)) (void)destroy_mitem(mon, WAND_CLASS, AD_ELEC);
+      if (!rn2(3))
+        (void)destroy_mitem(mon, WAND_CLASS, AD_ELEC);
       /* not actually possible yet */
-      if (!rn2(3)) (void)destroy_mitem(mon, RING_CLASS, AD_ELEC);
+      if (!rn2(3))
+        (void)destroy_mitem(mon, RING_CLASS, AD_ELEC);
       break;
     case ZT_POISON_GAS:
       if (resists_poison(mon)) {
@@ -2843,17 +2962,21 @@ STATIC_OVL int zhitm(Monster *mon, int type, int nd, Object **ootmp) {
         break;
       }
       tmp = d(nd, 6);
-      if (!rn2(6)) erode_obj(mon->weapon(), TRUE, TRUE);
-      if (!rn2(6)) erode_armor(mon, TRUE);
+      if (!rn2(6))
+        erode_obj(mon->weapon(), TRUE, TRUE);
+      if (!rn2(6))
+        erode_armor(mon, TRUE);
       break;
   }
-  if (sho_shieldeff) shieldeff(mon->mx, mon->my);
+  if (sho_shieldeff)
+    shieldeff(mon->mx, mon->my);
   if (is_hero_spell(type) && (Role_if(PM_KNIGHT) && player.uhave.questart))
     tmp *= 2;
   if (tmp > 0 && type >= 0 &&
       resist(mon, type < ZT_SPELL(0) ? WAND_CLASS : '\0', 0, NOTELL))
     tmp /= 2;
-  if (tmp < 0) tmp = 0; /* don't allow negative damage */
+  if (tmp < 0)
+    tmp = 0; /* don't allow negative damage */
 #ifdef WIZ_PATCH_DEBUG
   pline("zapped monster hp = %d (= %d - %d)", mon->mhp - tmp, mon->mhp, tmp);
 #endif
@@ -2884,9 +3007,12 @@ STATIC_OVL void zhitu(int type, int nd, const char *fltxt, xchar sx, xchar sy) {
       }
       burn_away_slime();
       if (burnarmor(&youmonst)) { /* "body hit" */
-        if (!rn2(3)) destroy_item(POTION_CLASS, AD_FIRE);
-        if (!rn2(3)) destroy_item(SCROLL_CLASS, AD_FIRE);
-        if (!rn2(5)) destroy_item(SPBOOK_CLASS, AD_FIRE);
+        if (!rn2(3))
+          destroy_item(POTION_CLASS, AD_FIRE);
+        if (!rn2(3))
+          destroy_item(SCROLL_CLASS, AD_FIRE);
+        if (!rn2(5))
+          destroy_item(SPBOOK_CLASS, AD_FIRE);
       }
       break;
     case ZT_COLD:
@@ -2897,7 +3023,8 @@ STATIC_OVL void zhitu(int type, int nd, const char *fltxt, xchar sx, xchar sy) {
       } else {
         dam = d(nd, 6);
       }
-      if (!rn2(3)) destroy_item(POTION_CLASS, AD_COLD);
+      if (!rn2(3))
+        destroy_item(POTION_CLASS, AD_COLD);
       break;
     case ZT_SLEEP:
       if (Sleep_resistance) {
@@ -2918,15 +3045,18 @@ STATIC_OVL void zhitu(int type, int nd, const char *fltxt, xchar sx, xchar sy) {
           break;
         } else if (uarm) {
           /* destroy suit; if present, cloak goes too */
-          if (uarmc) (void)destroy_arm(uarmc);
+          if (uarmc)
+            (void)destroy_arm(uarmc);
           (void)destroy_arm(uarm);
           break;
         }
         /* no shield or suit, you're dead; wipe out cloak
            and/or shirt in case of life-saving or bones */
-        if (uarmc) (void)destroy_arm(uarmc);
+        if (uarmc)
+          (void)destroy_arm(uarmc);
 #ifdef TOURIST
-        if (uarmu) (void)destroy_arm(uarmu);
+        if (uarmu)
+          (void)destroy_arm(uarmu);
 #endif
       } else if (nonliving(youmonst.data) || is_demon(youmonst.data)) {
         shieldeff(sx, sy);
@@ -2952,8 +3082,10 @@ STATIC_OVL void zhitu(int type, int nd, const char *fltxt, xchar sx, xchar sy) {
         dam = d(nd, 6);
         exercise(A_CON, FALSE);
       }
-      if (!rn2(3)) destroy_item(WAND_CLASS, AD_ELEC);
-      if (!rn2(3)) destroy_item(RING_CLASS, AD_ELEC);
+      if (!rn2(3))
+        destroy_item(WAND_CLASS, AD_ELEC);
+      if (!rn2(3))
+        destroy_item(RING_CLASS, AD_ELEC);
       break;
     case ZT_POISON_GAS:
       poisoned("blast", A_DEX, "poisoned blast", 15);
@@ -2967,9 +3099,12 @@ STATIC_OVL void zhitu(int type, int nd, const char *fltxt, xchar sx, xchar sy) {
         exercise(A_STR, FALSE);
       }
       /* using two weapons at once makes both of them more vulnerable */
-      if (!rn2(player.twoweap ? 3 : 6)) erode_obj(uwep, TRUE, TRUE);
-      if (player.twoweap && !rn2(3)) erode_obj(uswapwep, TRUE, TRUE);
-      if (!rn2(6)) erode_armor(&youmonst, TRUE);
+      if (!rn2(player.twoweap ? 3 : 6))
+        erode_obj(uwep, TRUE, TRUE);
+      if (player.twoweap && !rn2(3))
+        erode_obj(uswapwep, TRUE, TRUE);
+      if (!rn2(6))
+        erode_armor(&youmonst, TRUE);
       break;
   }
 
@@ -3002,7 +3137,8 @@ int burn_floor_paper(int x, int y, bool give_feedback, bool u_caused) {
       scrquan = obj->quan; /* number present */
       delquan = 0;         /* number to destroy */
       for (i = scrquan; i > 0; i--)
-        if (!rn2(3)) delquan++;
+        if (!rn2(3))
+          delquan++;
       if (delquan) {
         /* save name before potential delobj() */
         if (give_feedback) {
@@ -3042,7 +3178,8 @@ STATIC_OVL int zap_hit(int ac, int type) {
   int spell_bonus = type ? spell_hit_bonus(type) : 0;
 
   /* small chance for naked target to avoid being hit */
-  if (!chance) return rnd(10) < ac + spell_bonus;
+  if (!chance)
+    return rnd(10) < ac + spell_bonus;
 
   /* very high armor protection does not achieve invulnerability */
   ac = AC_VALUE(ac);
@@ -3075,7 +3212,8 @@ void buzz(int type, int nd, xchar sx, xchar sy, int dx, int dy) {
   if (player.uswallow) {
     int tmp;
 
-    if (type < 0) return;
+    if (type < 0)
+      return;
     tmp = zhitm(player.ustuck, type, nd, &otmp);
     if (!player.ustuck)
       player.uswallow = 0;
@@ -3083,13 +3221,17 @@ void buzz(int type, int nd, xchar sx, xchar sy, int dx, int dy) {
       pline("%s rips into %s%s", The(fltxt), mon_nam(player.ustuck),
             exclam(tmp));
     /* Using disintegration from the inside only makes a hole... */
-    if (tmp == MAGIC_COOKIE) player.ustuck->mhp = 0;
-    if (player.ustuck->mhp < 1) killed(player.ustuck);
+    if (tmp == MAGIC_COOKIE)
+      player.ustuck->mhp = 0;
+    if (player.ustuck->mhp < 1)
+      killed(player.ustuck);
     return;
   }
-  if (type < 0) newsym(player.ux, player.uy);
+  if (type < 0)
+    newsym(player.ux, player.uy);
   range = rn1(7, 7);
-  if (dx == 0 && dy == 0) range = 1;
+  if (dx == 0 && dy == 0)
+    range = 1;
   save_bhitpos = bhitpos;
 
   tmp_at(DISP_BEAM, zapdir_to_glyph(dx, dy, abstype));
@@ -3108,7 +3250,8 @@ void buzz(int type, int nd, xchar sx, xchar sy, int dx, int dy) {
           unmap_object(sx, sy);
           newsym(sx, sy);
         }
-        if (ZAP_POS(lev->typ) || cansee(lsx, lsy)) tmp_at(sx, sy);
+        if (ZAP_POS(lev->typ) || cansee(lsx, lsy))
+          tmp_at(sx, sy);
         delay_output(); /* wait a little */
       }
     } else
@@ -3121,8 +3264,10 @@ void buzz(int type, int nd, xchar sx, xchar sy, int dx, int dy) {
       range += zap_over_floor(sx, sy, type, &shopdamage);
 
     if (mon) {
-      if (type == ZT_SPELL(ZT_FIRE)) break;
-      if (type >= 0) mon->mstrategy &= ~STRAT_WAITMASK;
+      if (type == ZT_SPELL(ZT_FIRE))
+        break;
+      if (type >= 0)
+        mon->mstrategy &= ~STRAT_WAITMASK;
 #ifdef STEED
     buzzmonst:
 #endif
@@ -3244,7 +3389,8 @@ void buzz(int type, int nd, xchar sx, xchar sy, int dx, int dy) {
       if (abstype == ZT_LIGHTNING && !resists_blnd(&youmonst)) {
         You(are_blinded_by_the_flash);
         make_blinded((long)d(nd, 50), FALSE);
-        if (!Blind) Your(vision_clears);
+        if (!Blind)
+          Your(vision_clears);
       }
       stop_occupation();
       nomul(0, 0);
@@ -3277,7 +3423,8 @@ void buzz(int type, int nd, xchar sx, xchar sy, int dx, int dy) {
             !closed_door(lsx, sy) &&
             (IS_ROOM(rmn) ||
              (isok(lsx, sy + dy) && ZAP_POS(levl[lsx][sy + dy].typ))))
-          if (!bounce || rn2(2)) bounce = 2;
+          if (!bounce || rn2(2))
+            bounce = 2;
 
         switch (bounce) {
           case 0:
@@ -3294,7 +3441,8 @@ void buzz(int type, int nd, xchar sx, xchar sy, int dx, int dy) {
     }
   }
   tmp_at(DISP_END, 0);
-  if (type == ZT_SPELL(ZT_FIRE)) explode(sx, sy, type, d(12, 6), 0, EXPL_FIERY);
+  if (type == ZT_SPELL(ZT_FIRE))
+    explode(sx, sy, type, d(12, 6), 0, EXPL_FIERY);
   if (shopdamage)
     pay_for_damage(abstype == ZT_FIRE ? "burn away" : abstype == ZT_COLD
                                                           ? "shatter"
@@ -3326,11 +3474,14 @@ void melt_ice(xchar x, xchar y) {
   }
   ApplyIceEffectsAt(x, y, FALSE);
   unearth_objs(x, y);
-  if (Underwater) vision_recalc(1);
+  if (Underwater)
+    vision_recalc(1);
   newsym(x, y);
-  if (cansee(x, y)) Norep("The ice crackles and melts.");
+  if (cansee(x, y))
+    Norep("The ice crackles and melts.");
   if ((otmp = sobj_at(BOULDER, x, y)) != 0) {
-    if (cansee(x, y)) pline("%s settles...", An(xname(otmp)));
+    if (cansee(x, y))
+      pline("%s settles...", An(xname(otmp)));
     do {
       RemoveObjectFromStorage(otmp); /* boulder isn't being pushed */
       if (!boulder_hits_pool(otmp, x, y, FALSE))
@@ -3359,29 +3510,36 @@ int zap_over_floor(xchar x, xchar y, int type, bool *shopdamage) {
 
     if (t && t->ttyp == WEB) {
       /* a burning web is too flimsy to notice if you can't see it */
-      if (cansee(x, y)) Norep("A web bursts into flames!");
+      if (cansee(x, y))
+        Norep("A web bursts into flames!");
       (void)delfloortrap(t);
-      if (cansee(x, y)) newsym(x, y);
+      if (cansee(x, y))
+        newsym(x, y);
     }
     if (is_ice(x, y)) {
       melt_ice(x, y);
     } else if (is_pool(x, y)) {
       const char *msgtxt = "You hear hissing gas.";
       if (lev->typ != POOL) { /* MOAT or DRAWBRIDGE_UP */
-        if (cansee(x, y)) msgtxt = "Some water evaporates.";
+        if (cansee(x, y))
+          msgtxt = "Some water evaporates.";
       } else {
         Trap *ttmp;
 
         rangemod -= 3;
         lev->typ = ROOM;
         ttmp = maketrap(x, y, PIT);
-        if (ttmp) ttmp->tseen = 1;
-        if (cansee(x, y)) msgtxt = "The water evaporates.";
+        if (ttmp)
+          ttmp->tseen = 1;
+        if (cansee(x, y))
+          msgtxt = "The water evaporates.";
       }
       Norep(msgtxt);
-      if (lev->typ == ROOM) newsym(x, y);
+      if (lev->typ == ROOM)
+        newsym(x, y);
     } else if (IS_FOUNTAIN(lev->typ)) {
-      if (cansee(x, y)) pline("Steam billows from the fountain.");
+      if (cansee(x, y))
+        pline("Steam billows from the fountain.");
       rangemod -= 1;
       dryup(x, y, type > 0);
     }
@@ -3403,7 +3561,8 @@ int zap_over_floor(xchar x, xchar y, int type, bool *shopdamage) {
         lev->drawbridgemask &= ~DB_UNDER; /* clear lava */
         lev->drawbridgemask |= (lava ? DB_FLOOR : DB_ICE);
       } else {
-        if (!lava) lev->icedpool = (lev->typ == POOL ? ICED_POOL : ICED_MOAT);
+        if (!lava)
+          lev->icedpool = (lev->typ == POOL ? ICED_POOL : ICED_MOAT);
         lev->typ = (lava ? ROOM : ICE);
       }
       bury_objs(x, y);
@@ -3463,7 +3622,8 @@ int zap_over_floor(xchar x, xchar y, int type, bool *shopdamage) {
         break;
       case ZT_DEATH:
         /* death spells/wands don't disintegrate */
-        if (abs(type) != ZT_BREATH(ZT_DEATH)) goto def_case;
+        if (abs(type) != ZT_BREATH(ZT_DEATH))
+          goto def_case;
         new_doormask = D_NODOOR;
         see_txt = "The door disintegrates!";
         hear_txt = "crashing wood.";
@@ -3500,7 +3660,8 @@ int zap_over_floor(xchar x, xchar y, int type, bool *shopdamage) {
       } else if (sense_txt) {
         You(sense_txt);
       } else if (hear_txt) {
-        if (flags.soundok) You_hear(hear_txt);
+        if (flags.soundok)
+          You_hear(hear_txt);
       }
       if (picking_at(x, y)) {
         stop_occupation();
@@ -3517,11 +3678,14 @@ int zap_over_floor(xchar x, xchar y, int type, bool *shopdamage) {
   if ((mon = m_at(x, y)) != 0) {
     /* Cannot use wakeup() which also angers the monster */
     mon->msleeping = 0;
-    if (mon->m_ap_type) seemimic(mon);
+    if (mon->m_ap_type)
+      seemimic(mon);
     if (type >= 0) {
       setmangry(mon);
-      if (mon->ispriest && *in_rooms(mon->mx, mon->my, TEMPLE)) ghod_hitsu(mon);
-      if (mon->isshk && !*player.ushops) hot_pursuit(mon);
+      if (mon->ispriest && *in_rooms(mon->mx, mon->my, TEMPLE))
+        ghod_hitsu(mon);
+      if (mon->isshk && !*player.ushops)
+        hot_pursuit(mon);
     }
   }
   return rangemod;
@@ -3549,7 +3713,8 @@ void fracture_rock(Object *obj) {
     PlaceObject(obj, obj->ox, obj->oy);
     if (!does_block(obj->ox, obj->oy, &levl[obj->ox][obj->oy]))
       unblock_point(obj->ox, obj->oy);
-    if (cansee(obj->ox, obj->oy)) newsym(obj->ox, obj->oy);
+    if (cansee(obj->ox, obj->oy))
+      newsym(obj->ox, obj->oy);
   }
 }
 
@@ -3597,9 +3762,12 @@ void destroy_item(int osym, int dmgtyp) {
 
   for (obj = invent; obj; obj = obj2) {
     obj2 = obj->nobj;
-    if (obj->oclass != osym) continue; /* test only objs of type osym */
-    if (obj->oartifact) continue;      /* don't destroy artifacts */
-    if (obj->in_use && obj->quan == 1) continue; /* not available */
+    if (obj->oclass != osym)
+      continue; /* test only objs of type osym */
+    if (obj->oartifact)
+      continue; /* don't destroy artifacts */
+    if (obj->in_use && obj->quan == 1)
+      continue; /* not available */
     xresist = skip = 0;
 #ifdef GCC_WARN
     dmg = dindx = 0;
@@ -3617,7 +3785,8 @@ void destroy_item(int osym, int dmgtyp) {
       case AD_FIRE:
         xresist = (Fire_resistance && obj->oclass != POTION_CLASS);
 
-        if (obj->otyp == SCR_FIRE || obj->otyp == SPE_FIREBALL) skip++;
+        if (obj->otyp == SCR_FIRE || obj->otyp == SPE_FIREBALL)
+          skip++;
         if (obj->otyp == SPE_BOOK_OF_THE_DEAD) {
           skip++;
           if (!Blind)
@@ -3676,11 +3845,14 @@ void destroy_item(int osym, int dmgtyp) {
         break;
     }
     if (!skip) {
-      if (obj->in_use) --quan; /* one will be used up elsewhere */
+      if (obj->in_use)
+        --quan; /* one will be used up elsewhere */
       for (i = cnt = 0L; i < quan; i++)
-        if (!rn2(3)) cnt++;
+        if (!rn2(3))
+          cnt++;
 
-      if (!cnt) continue;
+      if (!cnt)
+        continue;
       if (cnt == quan)
         mult = "Your";
       else
@@ -3698,8 +3870,10 @@ void destroy_item(int osym, int dmgtyp) {
         else
           setnotworn(obj);
       }
-      if (obj == current_wand) current_wand = 0; /* destroyed */
-      for (i = 0; i < cnt; i++) useup(obj);
+      if (obj == current_wand)
+        current_wand = 0; /* destroyed */
+      for (i = 0; i < cnt; i++)
+        useup(obj);
       if (dmg) {
         if (xresist)
           You("aren't hurt!");
@@ -3732,7 +3906,8 @@ int destroy_mitem(Monster *mtmp, int osym, int dmgtyp) {
   vis = canseemon(mtmp);
   for (obj = mtmp->minvent; obj; obj = obj2) {
     obj2 = obj->nobj;
-    if (obj->oclass != osym) continue; /* test only objs of type osym */
+    if (obj->oclass != osym)
+      continue; /* test only objs of type osym */
     skip = 0;
     quan = 0L;
     dindx = 0;
@@ -3747,7 +3922,8 @@ int destroy_mitem(Monster *mtmp, int osym, int dmgtyp) {
           skip++;
         break;
       case AD_FIRE:
-        if (obj->otyp == SCR_FIRE || obj->otyp == SPE_FIREBALL) skip++;
+        if (obj->otyp == SCR_FIRE || obj->otyp == SPE_FIREBALL)
+          skip++;
         if (obj->otyp == SPE_BOOK_OF_THE_DEAD) {
           skip++;
           if (vis)
@@ -3802,14 +3978,17 @@ int destroy_mitem(Monster *mtmp, int osym, int dmgtyp) {
     }
     if (!skip) {
       for (i = cnt = 0L; i < quan; i++)
-        if (!rn2(3)) cnt++;
+        if (!rn2(3))
+          cnt++;
 
-      if (!cnt) continue;
+      if (!cnt)
+        continue;
       if (vis)
         pline("%s %s %s!", s_suffix(Monnam(mtmp)), xname(obj),
               (cnt > 1L) ? destroy_strings[dindx * 3 + 1]
                          : destroy_strings[dindx * 3]);
-      for (i = 0; i < cnt; i++) m_useup(mtmp, obj);
+      for (i = 0; i < cnt; i++)
+        m_useup(mtmp, obj);
     }
   }
   return (tmp);
@@ -3880,10 +4059,12 @@ void makewish() {
   int tries = 0;
 
   nothing = zeroobj; /* lint suppression; only its address matters */
-  if (flags.verbose) You("may wish for an object.");
+  if (flags.verbose)
+    You("may wish for an object.");
 retry:
   getlin("For what do you wish?", buf);
-  if (buf[0] == '\033') buf[0] = 0;
+  if (buf[0] == '\033')
+    buf[0] = 0;
   /*
    *  Note: if they wished for and got a non-object successfully,
    *  otmp == &zeroobj.  That includes gold, or an artifact that
@@ -3893,10 +4074,12 @@ retry:
   otmp = readobjnam(buf, &nothing, TRUE);
   if (!otmp) {
     pline("Nothing fitting that description exists in the game.");
-    if (++tries < 5) goto retry;
+    if (++tries < 5)
+      goto retry;
     pline(thats_enough_tries);
     otmp = readobjnam((char *)0, nullptr, TRUE);
-    if (!otmp) return; /* for safety; should never happen */
+    if (!otmp)
+      return; /* for safety; should never happen */
   } else if (otmp == &nothing) {
     /* explicitly wished for "nothing", presumeably attempting
        to retain wishless conduct */

@@ -24,9 +24,11 @@ static struct stat buf;
 static int veryold(int fd) {
   time_t date;
 
-  if (fstat(fd, &buf)) return (0); /* cannot get status */
+  if (fstat(fd, &buf))
+    return (0); /* cannot get status */
 #ifndef INSURANCE
-  if (buf.st_size != sizeof(int)) return (0); /* not an xlock file */
+  if (buf.st_size != sizeof(int))
+    return (0); /* not an xlock file */
 #endif
 #if defined(BSD) && !defined(POSIX_TYPES)
   (void)time((long *)(&date));
@@ -68,8 +70,9 @@ static int eraseoldlocks() {
     (void)unlink(fqname(lock, LEVELPREFIX, 0));
   }
   set_levelfile_name(lock, 0);
-  if (unlink(fqname(lock, LEVELPREFIX, 0))) return (0); /* cannot remove it */
-  return (1);                                           /* success! */
+  if (unlink(fqname(lock, LEVELPREFIX, 0)))
+    return (0); /* cannot remove it */
+  return (1);   /* success! */
 }
 
 void getlock() {
@@ -84,7 +87,8 @@ void getlock() {
    */
   /* added check for window-system type -dlc */
   if (!strcmp(windowprocs.name, "tty"))
-    if (!isatty(0)) error("You must play from a terminal.");
+    if (!isatty(0))
+      error("You must play from a terminal.");
 
   /* we ignore QUIT and INT at this point */
   if (!lock_file(HLOCK, LOCKPREFIX, 10)) {
@@ -96,14 +100,16 @@ void getlock() {
   set_levelfile_name(lock, 0);
 
   if (locknum) {
-    if (locknum > 25) locknum = 25;
+    if (locknum > 25)
+      locknum = 25;
 
     do {
       lock[0] = 'a' + i++;
       fq_lock = fqname(lock, LEVELPREFIX, 0);
 
       if ((fd = open(fq_lock, 0)) == -1) {
-        if (errno == ENOENT) goto gotlock; /* no such file */
+        if (errno == ENOENT)
+          goto gotlock; /* no such file */
         perror(fq_lock);
         unlock_file(HLOCK);
         error("Cannot open %s", fq_lock);
@@ -120,13 +126,15 @@ void getlock() {
   } else {
     fq_lock = fqname(lock, LEVELPREFIX, 0);
     if ((fd = open(fq_lock, 0)) == -1) {
-      if (errno == ENOENT) goto gotlock; /* no such file */
+      if (errno == ENOENT)
+        goto gotlock; /* no such file */
       perror(fq_lock);
       unlock_file(HLOCK);
       error("Cannot open %s", fq_lock);
     }
 
-    if (veryold(fd) /* closes fd if true */ && eraseoldlocks()) goto gotlock;
+    if (veryold(fd) /* closes fd if true */ && eraseoldlocks())
+      goto gotlock;
     (void)close(fd);
 
     if (iflags.window_inited) {
@@ -190,7 +198,8 @@ void regularize(char *s) {
 #else
     int i = 10; /* should never happen... */
 #endif
-    if (strlen(s) > i) s[i] = '\0';
+    if (strlen(s) > i)
+      s[i] = '\0';
   }
 #else
   if (strlen(s) > 11) /* leave room for .nn appended to level files */
@@ -206,7 +215,8 @@ void msleep(unsigned msec) {
   struct pollfd unused;
   int msecs = msec; /* poll API is signed */
 
-  if (msecs < 0) msecs = 0; /* avoid infinite sleep */
+  if (msecs < 0)
+    msecs = 0; /* avoid infinite sleep */
   (void)poll(&unused, (unsigned long)0, msecs);
 }
 #endif /* TIMED_DELAY for SYSV */
@@ -254,7 +264,8 @@ int child(int wt) {
 #endif
   (void)signal(SIGINT, (SIG_RET_TYPE)done1);
 #ifdef WIZARD
-  if (wizard) (void)signal(SIGQUIT, SIG_DFL);
+  if (wizard)
+    (void)signal(SIGQUIT, SIG_DFL);
 #endif
   if (wt) {
     raw_print("");

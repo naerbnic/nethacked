@@ -24,7 +24,8 @@ int lastmsg = -1;
 
 void msgpline_add(int typ, char *pattern) {
   struct _plinemsg *tmp = (struct _plinemsg *)alloc(sizeof(struct _plinemsg));
-  if (!tmp) return;
+  if (!tmp)
+    return;
   tmp->msgtype = typ;
   tmp->pattern = strdup(pattern);
   tmp->next = pline_msg;
@@ -46,7 +47,8 @@ void msgpline_free() {
 int msgpline_type(char const *msg) {
   struct _plinemsg *tmp = pline_msg;
   while (tmp) {
-    if (pmatch(tmp->pattern, msg)) return tmp->msgtype;
+    if (pmatch(tmp->pattern, msg))
+      return tmp->msgtype;
     tmp = tmp->next;
   }
   return MSGTYP_NORMAL;
@@ -73,7 +75,8 @@ static void vpline(const char *line, va_list the_args) {
   int typ;
   /* Do NOT use VA_START and VA_END in here... see above */
 
-  if (!line || !*line) return;
+  if (!line || !*line)
+    return;
   if (index(line, '%')) {
     vsprintf(pbuf, line, the_args);
     line = pbuf;
@@ -89,14 +92,20 @@ static void vpline(const char *line, va_list the_args) {
     raw_print(line);
     return;
   }
-  if (no_repeat && !strcmp(line, toplines)) return;
-  if (vision_full_recalc) vision_recalc(0);
-  if (player.ux) flush_screen(1); /* %% */
-  if (typ == MSGTYP_NOSHOW) return;
-  if (typ == MSGTYP_NOREP && !strcmp(line, prevmsg)) return;
+  if (no_repeat && !strcmp(line, toplines))
+    return;
+  if (vision_full_recalc)
+    vision_recalc(0);
+  if (player.ux)
+    flush_screen(1); /* %% */
+  if (typ == MSGTYP_NOSHOW)
+    return;
+  if (typ == MSGTYP_NOREP && !strcmp(line, prevmsg))
+    return;
   putstr(WIN_MESSAGE, 0, line);
   strncpy(prevmsg, line, BUFSZ);
-  if (typ == MSGTYP_STOP) display_nhwindow(WIN_MESSAGE, TRUE); /* --more-- */
+  if (typ == MSGTYP_STOP)
+    display_nhwindow(WIN_MESSAGE, TRUE); /* --more-- */
 }
 
 /*VARARGS1*/
@@ -116,7 +125,8 @@ static int you_buf_siz = 0;
 
 static char *You_buf(int siz) {
   if (siz > you_buf_siz) {
-    if (you_buf) free((genericptr_t)you_buf);
+    if (you_buf)
+      free((genericptr_t)you_buf);
     you_buf_siz = siz + 10;
     you_buf = (char *)alloc((unsigned)you_buf_siz);
   }
@@ -124,7 +134,8 @@ static char *You_buf(int siz) {
 }
 
 void free_youbuf() {
-  if (you_buf) free((genericptr_t)you_buf), you_buf = (char *)0;
+  if (you_buf)
+    free((genericptr_t)you_buf), you_buf = (char *)0;
   you_buf_siz = 0;
 }
 
@@ -207,7 +218,8 @@ void You_hear(const char *line, ...) {
 /*VARARGS1*/
 void verbalize(const char *line, ...) {
   char *tmp;
-  if (!flags.soundok) return;
+  if (!flags.soundok)
+    return;
   va_list args;
   va_start(args, line);
   tmp = You_buf((int)strlen(line) + sizeof "\"\"");
@@ -248,7 +260,8 @@ static void vraw_printf(const char *line, va_list the_args) {
 void impossible(const char *s, ...) {
   va_list args;
   va_start(args, s);
-  if (program_state.in_impossible) panic("impossible called impossible");
+  if (program_state.in_impossible)
+    panic("impossible called impossible");
   program_state.in_impossible = 1;
   {
     char pbuf[BUFSZ];
@@ -301,12 +314,18 @@ void mstatusline(Monster *mtmp) {
 #endif
   } else if (mtmp->mpeaceful)
     strcat(info, ", peaceful");
-  if (mtmp->meating) strcat(info, ", eating");
-  if (mtmp->mcan) strcat(info, ", cancelled");
-  if (mtmp->mconf) strcat(info, ", confused");
-  if (mtmp->mblinded || !mtmp->mcansee) strcat(info, ", blind");
-  if (mtmp->mstun) strcat(info, ", stunned");
-  if (mtmp->msleeping) strcat(info, ", asleep");
+  if (mtmp->meating)
+    strcat(info, ", eating");
+  if (mtmp->mcan)
+    strcat(info, ", cancelled");
+  if (mtmp->mconf)
+    strcat(info, ", confused");
+  if (mtmp->mblinded || !mtmp->mcansee)
+    strcat(info, ", blind");
+  if (mtmp->mstun)
+    strcat(info, ", stunned");
+  if (mtmp->msleeping)
+    strcat(info, ", asleep");
 #if 0 /* unfortunately mfrozen covers temporary sleep and being busy \
          (donning armor, for instance) as well as paralysis */
 	else if (mtmp->mfrozen)	  strcat(info, ", paralyzed");
@@ -319,13 +338,16 @@ void mstatusline(Monster *mtmp) {
     strcat(info, ", meditating");
   else if (mtmp->mflee)
     strcat(info, ", scared");
-  if (mtmp->mtrapped) strcat(info, ", trapped");
+  if (mtmp->mtrapped)
+    strcat(info, ", trapped");
   if (mtmp->mspeed)
     strcat(info, mtmp->mspeed == MFAST ? ", fast" : mtmp->mspeed == MSLOW
                                                         ? ", slow"
                                                         : ", ???? speed");
-  if (mtmp->mundetected) strcat(info, ", concealed");
-  if (mtmp->minvis) strcat(info, ", invisible");
+  if (mtmp->mundetected)
+    strcat(info, ", concealed");
+  if (mtmp->minvis)
+    strcat(info, ", invisible");
   if (mtmp == player.ustuck)
     strcat(info, (sticks(youmonst.data))
                      ? ", held by you"
@@ -334,7 +356,8 @@ void mstatusline(Monster *mtmp) {
                                                              : ", engulfed you")
                            : ", holding you");
 #ifdef STEED
-  if (mtmp == player.usteed) strcat(info, ", carrying you");
+  if (mtmp == player.usteed)
+    strcat(info, ", carrying you");
 #endif
 
   /* avoid "Status of the invisible newt ..., invisible" */
@@ -353,17 +376,24 @@ void ustatusline() {
   info[0] = '\0';
   if (Sick) {
     strcat(info, ", dying from");
-    if (player.usick_type & SICK_VOMITABLE) strcat(info, " food poisoning");
+    if (player.usick_type & SICK_VOMITABLE)
+      strcat(info, " food poisoning");
     if (player.usick_type & SICK_NONVOMITABLE) {
-      if (player.usick_type & SICK_VOMITABLE) strcat(info, " and");
+      if (player.usick_type & SICK_VOMITABLE)
+        strcat(info, " and");
       strcat(info, " illness");
     }
   }
-  if (Stoned) strcat(info, ", solidifying");
-  if (Slimed) strcat(info, ", becoming slimy");
-  if (Strangled) strcat(info, ", being strangled");
-  if (Vomiting) strcat(info, ", nauseated"); /* !"nauseous" */
-  if (Confusion) strcat(info, ", confused");
+  if (Stoned)
+    strcat(info, ", solidifying");
+  if (Slimed)
+    strcat(info, ", becoming slimy");
+  if (Strangled)
+    strcat(info, ", being strangled");
+  if (Vomiting)
+    strcat(info, ", nauseated"); /* !"nauseous" */
+  if (Confusion)
+    strcat(info, ", confused");
   if (Blind) {
     strcat(info, ", blind");
     if (player.ucreamed) {
@@ -373,20 +403,27 @@ void ustatusline() {
       strcat(info, "ed by sticky goop");
     } /* note: "goop" == "glop"; variation is intentional */
   }
-  if (Stunned) strcat(info, ", stunned");
+  if (Stunned)
+    strcat(info, ", stunned");
 #ifdef STEED
   if (!player.usteed)
 #endif
     if (Wounded_legs) {
       const char *what = body_part(LEG);
-      if ((Wounded_legs & BOTH_SIDES) == BOTH_SIDES) what = makeplural(what);
+      if ((Wounded_legs & BOTH_SIDES) == BOTH_SIDES)
+        what = makeplural(what);
       sprintf(eos(info), ", injured %s", what);
     }
-  if (Glib) sprintf(eos(info), ", slippery %s", makeplural(body_part(HAND)));
-  if (player.utrap) strcat(info, ", trapped");
-  if (Fast) strcat(info, Very_fast ? ", very fast" : ", fast");
-  if (player.uundetected) strcat(info, ", concealed");
-  if (Invis) strcat(info, ", invisible");
+  if (Glib)
+    sprintf(eos(info), ", slippery %s", makeplural(body_part(HAND)));
+  if (player.utrap)
+    strcat(info, ", trapped");
+  if (Fast)
+    strcat(info, Very_fast ? ", very fast" : ", fast");
+  if (player.uundetected)
+    strcat(info, ", concealed");
+  if (Invis)
+    strcat(info, ", invisible");
   if (player.ustuck) {
     if (sticks(youmonst.data))
       strcat(info, ", holding ");

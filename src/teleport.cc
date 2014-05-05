@@ -23,7 +23,8 @@ bool goodpos(int x, int y, Monster *mtmp, unsigned gpflags) {
   MonsterType *mdat = NULL;
   bool ignorewater = ((gpflags & MM_IGNOREWATER) != 0);
 
-  if (!isok(x, y)) return FALSE;
+  if (!isok(x, y))
+    return FALSE;
 
   /* in many cases, we're trying to create a new monster, which
    * can't go on top of the player or any existing monster.
@@ -51,7 +52,8 @@ bool goodpos(int x, int y, Monster *mtmp, unsigned gpflags) {
      * != x || mtmp->my != y, we'd miss the case where we're called
      * to place the worm segment and the worm's head is at x,y.
      */
-    if (mtmp2 && (mtmp2 != mtmp || mtmp->wormno)) return FALSE;
+    if (mtmp2 && (mtmp2 != mtmp || mtmp->wormno))
+      return FALSE;
 
     mdat = mtmp->data;
     if (is_pool(x, y) && !ignorewater) {
@@ -67,14 +69,18 @@ bool goodpos(int x, int y, Monster *mtmp, unsigned gpflags) {
       else
         return (is_flyer(mdat) || likes_lava(mdat));
     }
-    if (passes_walls(mdat) && may_passwall(x, y)) return TRUE;
+    if (passes_walls(mdat) && may_passwall(x, y))
+      return TRUE;
   }
   if (!ACCESSIBLE(levl[x][y].typ)) {
-    if (!(is_pool(x, y) && ignorewater)) return FALSE;
+    if (!(is_pool(x, y) && ignorewater))
+      return FALSE;
   }
 
-  if (closed_door(x, y) && (!mdat || !amorphous(mdat))) return FALSE;
-  if (sobj_at(BOULDER, x, y) && (!mdat || !throws_rocks(mdat))) return FALSE;
+  if (closed_door(x, y) && (!mdat || !amorphous(mdat)))
+    return FALSE;
+  if (sobj_at(BOULDER, x, y) && (!mdat || !throws_rocks(mdat)))
+    return FALSE;
   return TRUE;
 }
 
@@ -123,33 +129,38 @@ bool enexto_core(coord *cc, xchar xx, xchar yy, MonsterType *mdat,
         good_ptr->x = x;
         good_ptr->y = ymin;
         /* beware of accessing beyond segment boundaries.. */
-        if (good_ptr++ == &good[MAX_GOOD - 1]) goto full;
+        if (good_ptr++ == &good[MAX_GOOD - 1])
+          goto full;
       }
     for (x = xmin; x <= xmax; x++)
       if (goodpos(x, ymax, &fakemon, entflags)) {
         good_ptr->x = x;
         good_ptr->y = ymax;
         /* beware of accessing beyond segment boundaries.. */
-        if (good_ptr++ == &good[MAX_GOOD - 1]) goto full;
+        if (good_ptr++ == &good[MAX_GOOD - 1])
+          goto full;
       }
     for (y = ymin + 1; y < ymax; y++)
       if (goodpos(xmin, y, &fakemon, entflags)) {
         good_ptr->x = xmin;
         good_ptr->y = y;
         /* beware of accessing beyond segment boundaries.. */
-        if (good_ptr++ == &good[MAX_GOOD - 1]) goto full;
+        if (good_ptr++ == &good[MAX_GOOD - 1])
+          goto full;
       }
     for (y = ymin + 1; y < ymax; y++)
       if (goodpos(xmax, y, &fakemon, entflags)) {
         good_ptr->x = xmax;
         good_ptr->y = y;
         /* beware of accessing beyond segment boundaries.. */
-        if (good_ptr++ == &good[MAX_GOOD - 1]) goto full;
+        if (good_ptr++ == &good[MAX_GOOD - 1])
+          goto full;
       }
     range++;
 
     /* return if we've grown too big (nothing is valid) */
-    if (range > ROWNO && range > COLNO) return FALSE;
+    if (range > ROWNO && range > COLNO)
+      return FALSE;
   } while (good_ptr == good);
 
 full:
@@ -195,10 +206,14 @@ STATIC_OVL bool tele_jump_ok(int x1, int y1, int x2, int y2) {
 }
 
 STATIC_OVL bool teleok(int x, int y, bool trapok) {
-  if (!trapok && t_at(x, y)) return FALSE;
-  if (!goodpos(x, y, &youmonst, 0)) return FALSE;
-  if (!tele_jump_ok(player.ux, player.uy, x, y)) return FALSE;
-  if (!in_out_region(x, y)) return FALSE;
+  if (!trapok && t_at(x, y))
+    return FALSE;
+  if (!goodpos(x, y, &youmonst, 0))
+    return FALSE;
+  if (!tele_jump_ok(player.ux, player.uy, x, y))
+    return FALSE;
+  if (!in_out_region(x, y))
+    return FALSE;
   return TRUE;
 }
 
@@ -247,7 +262,8 @@ void teleds(int nux, int nuy, bool allow_drag) {
   else {
     player.uundetected = 0;
     /* mimics stop being unnoticed */
-    if (youmonst.data->mlet == S_MIMIC) youmonst.m_ap_type = M_AP_NOTHING;
+    if (youmonst.data->mlet == S_MIMIC)
+      youmonst.m_ap_type = M_AP_NOTHING;
   }
 
   if (player.uswallow) {
@@ -276,7 +292,8 @@ void teleds(int nux, int nuy, bool allow_drag) {
   player.uy = nuy;
   fill_pit(player.ux0, player.uy0);
   if (ball_active) {
-    if (!ball_still_in_range && !allow_drag) placebc();
+    if (!ball_still_in_range && !allow_drag)
+      placebc();
   }
   initrack(); /* teleports mess up tracking monsters without this */
   update_player_regions();
@@ -332,7 +349,8 @@ bool teleport_pet(Monster *mtmp, bool force_it) {
   Object *otmp;
 
 #ifdef STEED
-  if (mtmp == player.usteed) return (FALSE);
+  if (mtmp == player.usteed)
+    return (FALSE);
 #endif
 
   if (mtmp->mleashed) {
@@ -370,7 +388,8 @@ void tele() {
   }
 
   /* don't show trap if "Sorry..." */
-  if (!Blinded) make_blinded(0L, FALSE);
+  if (!Blinded)
+    make_blinded(0L, FALSE);
 
   if ((player.uhave.amulet || On_W_tower_level(&player.uz)) && !rn2(3)) {
     You_feel("disoriented for a moment.");
@@ -386,7 +405,8 @@ void tele() {
     } else {
 #ifdef STEED
       char buf[BUFSZ];
-      if (player.usteed) sprintf(buf, " and %s", mon_nam(player.usteed));
+      if (player.usteed)
+        sprintf(buf, " and %s", mon_nam(player.usteed));
 #endif
       pline("To what position do you%s want to be teleported?",
 #ifdef STEED
@@ -395,9 +415,10 @@ void tele() {
                           "");
       cc.x = player.ux;
       cc.y = player.uy;
-      if (getpos(&cc, TRUE, "the desired position") < 0) return; /* abort */
-      /* possible extensions: introduce a small error if
-         magic power is low; allow transfer to solid rock */
+      if (getpos(&cc, TRUE, "the desired position") < 0)
+        return; /* abort */
+                /* possible extensions: introduce a small error if
+                   magic power is low; allow transfer to solid rock */
       if (teleok(cc.x, cc.y, FALSE)) {
         teleds(cc.x, cc.y, FALSE);
         return;
@@ -413,7 +434,8 @@ int dotele() {
   Trap *trap;
 
   trap = t_at(player.ux, player.uy);
-  if (trap && (!trap->tseen || trap->ttyp != TELEP_TRAP)) trap = 0;
+  if (trap && (!trap->tseen || trap->ttyp != TELEP_TRAP))
+    trap = 0;
 
   if (trap) {
     if (trap->once) {
@@ -510,7 +532,8 @@ int dotele() {
     You(shudder_for_moment);
     return (0);
   }
-  if (!trap) morehungry(100);
+  if (!trap)
+    morehungry(100);
   return (1);
 }
 
@@ -593,8 +616,10 @@ void level_tele() {
 
     /* no dungeon escape via this route */
     if (newlev == 0) {
-      if (trycnt >= 10) goto random_levtport;
-      if (ynq("Go to Nowhere.  Are you sure?") != 'y') return;
+      if (trycnt >= 10)
+        goto random_levtport;
+      if (ynq("Go to Nowhere.  Are you sure?") != 'y')
+        return;
       You("%s in agony as your body begins to warp...",
           is_silent(youmonst.data) ? "writhe" : "scream");
       display_nhwindow(WIN_MESSAGE, FALSE);
@@ -753,7 +778,8 @@ void level_tele() {
   schedule_goto(&newlevel, FALSE, FALSE, 0, (char *)0, (char *)0);
   /* in case player just read a scroll and is about to be asked to
      call it something, we can't defer until the end of the turn */
-  if (player.utotype && !flags.mon_moving) deferred_goto();
+  if (player.utotype && !flags.mon_moving)
+    deferred_goto();
 }
 
 void domagicportal(Trap *ttmp) {
@@ -766,7 +792,8 @@ void domagicportal(Trap *ttmp) {
 
   /* if landed from another portal, do nothing */
   /* problem: level teleport landing escapes the check */
-  if (!on_level(&player.uz, &player.uz0)) return;
+  if (!on_level(&player.uz, &player.uz0))
+    return;
 
   You("activated a magic portal!");
 
@@ -787,7 +814,8 @@ void domagicportal(Trap *ttmp) {
 
 void tele_trap(Trap *trap) {
   if (In_endgame(&player.uz) || Antimagic) {
-    if (Antimagic) shieldeff(player.ux, player.uy);
+    if (Antimagic)
+      shieldeff(player.ux, player.uy);
     You_feel("a wrenching sensation.");
   } else if (!next_to_u()) {
     You(shudder_for_moment);
@@ -822,7 +850,8 @@ void level_tele_trap(Trap *trap) {
 STATIC_OVL bool rloc_pos_ok(int x, int y, Monster *mtmp) {
   int xx, yy;
 
-  if (!goodpos(x, y, mtmp, 0)) return FALSE;
+  if (!goodpos(x, y, mtmp, 0))
+    return FALSE;
   /*
    * Check for restricted areas present in some special levels.
    *
@@ -852,7 +881,8 @@ STATIC_OVL bool rloc_pos_ok(int x, int y, Monster *mtmp) {
                                     dndest.nhy)));
   } else {
     /* current location is <xx,yy> */
-    if (!tele_jump_ok(xx, yy, x, y)) return FALSE;
+    if (!tele_jump_ok(xx, yy, x, y))
+      return FALSE;
   }
   /* <x,y> is ok */
   return TRUE;
@@ -904,7 +934,8 @@ void rloc_to(Monster *mtmp, int x, int y) {
   /* shopkeepers will only teleport if you zap them with a wand of
      teleportation or if they've been transformed into a jumpy monster;
      the latter only happens if you've attacked them with polymorph */
-  if (resident_shk && !inhishop(mtmp)) make_angry_shk(mtmp, oldx, oldy);
+  if (resident_shk && !inhishop(mtmp))
+    make_angry_shk(mtmp, oldx, oldy);
 }
 
 /* place a monster at a random location, typically due to teleport */
@@ -929,7 +960,8 @@ bool rloc(Monster *mtmp, bool suppress_impossible) {
     /* if the wiz teleports away to heal, try the up staircase,
        to block the player's escaping before he's healed
        (deliberately use `goodpos' rather than `rloc_pos_ok' here) */
-    if (goodpos(x, y, mtmp, 0)) goto found_xy;
+    if (goodpos(x, y, mtmp, 0))
+      goto found_xy;
   }
 
   trycount = 0;
@@ -943,10 +975,12 @@ bool rloc(Monster *mtmp, bool suppress_impossible) {
   /* last ditch attempt to find a good place */
   for (x = 2; x < COLNO - 1; x++)
     for (y = 0; y < ROWNO; y++)
-      if (goodpos(x, y, mtmp, 0)) goto found_xy;
+      if (goodpos(x, y, mtmp, 0))
+        goto found_xy;
 
   /* level either full of monsters or somehow faulty */
-  if (!suppress_impossible) impossible("rloc(): couldn't relocate monster");
+  if (!suppress_impossible)
+    impossible("rloc(): couldn't relocate monster");
   return FALSE;
 
 found_xy:
@@ -977,7 +1011,8 @@ bool tele_restrict(Monster *mon) {
 void mtele_trap(Monster *mtmp, Trap *trap, int in_sight) {
   char *monname;
 
-  if (tele_restrict(mtmp)) return;
+  if (tele_restrict(mtmp))
+    return;
   if (teleport_pet(mtmp, FALSE)) {
     /* save name with pre-movement visibility */
     monname = Monnam(mtmp);
@@ -1045,7 +1080,8 @@ int mlevel_tele_trap(Monster *mtmp, Trap *trap, bool force_it, int in_sight) {
       }
       nlev = random_teleport_level();
       if (nlev == depth(&player.uz)) {
-        if (in_sight) pline("%s shudders for a moment.", Monnam(mtmp));
+        if (in_sight)
+          pline("%s shudders for a moment.", Monnam(mtmp));
         return 0;
       }
       get_level(&tolevel, nlev);
@@ -1067,7 +1103,8 @@ void rloco(Object *obj) {
   int try_limit = 4000;
 
   if (obj->otyp == CORPSE && is_rider(&mons[obj->corpsenm])) {
-    if (revive_corpse(obj)) return;
+    if (revive_corpse(obj))
+      return;
   }
 
   RemoveObjectFromStorage(obj);
@@ -1077,7 +1114,8 @@ void rloco(Object *obj) {
   do {
     tx = rn1(COLNO - 3, 2);
     ty = rn2(ROWNO);
-    if (!--try_limit) break;
+    if (!--try_limit)
+      break;
   } while (!goodpos(tx, ty, (Monster *)0, 0) ||
            /* bug: this lacks provision for handling the Wizard's tower */
            (restricted_fall &&
@@ -1110,7 +1148,8 @@ void rloco(Object *obj) {
 int random_teleport_level() {
   int nlev, max_depth, min_depth, cur_depth = (int)depth(&player.uz);
 
-  if (!rn2(5) || Is_knox(&player.uz)) return cur_depth;
+  if (!rn2(5) || Is_knox(&player.uz))
+    return cur_depth;
 
   /* What I really want to do is as follows:
    * -- If in a dungeon that goes down, the new level is to be restricted
@@ -1135,23 +1174,27 @@ int random_teleport_level() {
   max_depth = dunlevs_in_dungeon(&player.uz) +
               (dungeons[player.uz.dnum].depth_start - 1);
   /* can't reach the Sanctum if the invocation hasn't been performed */
-  if (Inhell && !player.uevent.invoked) max_depth -= 1;
+  if (Inhell && !player.uevent.invoked)
+    max_depth -= 1;
 
   /* Get a random value relative to the current dungeon */
   /* Range is 1 to current+3, current not counting */
   nlev = rn2(cur_depth + 3 - min_depth) + min_depth;
-  if (nlev >= cur_depth) nlev++;
+  if (nlev >= cur_depth)
+    nlev++;
 
   if (nlev > max_depth) {
     nlev = max_depth;
     /* teleport up if already on bottom */
-    if (Is_botlevel(&player.uz)) nlev -= rnd(3);
+    if (Is_botlevel(&player.uz))
+      nlev -= rnd(3);
   }
   if (nlev < min_depth) {
     nlev = min_depth;
     if (nlev == cur_depth) {
       nlev += rnd(3);
-      if (nlev > max_depth) nlev = max_depth;
+      if (nlev > max_depth)
+        nlev = max_depth;
     }
   }
   return nlev;
@@ -1163,11 +1206,13 @@ bool u_teleport_mon(Monster *mtmp, bool give_feedback) {
   coord cc;
 
   if (mtmp->ispriest && *in_rooms(mtmp->mx, mtmp->my, TEMPLE)) {
-    if (give_feedback) pline("%s resists your magic!", Monnam(mtmp));
+    if (give_feedback)
+      pline("%s resists your magic!", Monnam(mtmp));
     return FALSE;
   } else if (level.flags.noteleport && player.uswallow &&
              mtmp == player.ustuck) {
-    if (give_feedback) You("are no longer inside %s!", mon_nam(mtmp));
+    if (give_feedback)
+      You("are no longer inside %s!", mon_nam(mtmp));
     unstuck(mtmp);
     (void)rloc(mtmp, FALSE);
   } else if (is_rider(mtmp->data) && rn2(13) &&

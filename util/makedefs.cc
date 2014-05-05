@@ -272,8 +272,10 @@ static char *xcrypt(char const *str) { /* duplicated in src/hacklib.c */
 
   for (bitmask = 1, p = str, q = buf; *p; q++) {
     *q = *p++;
-    if (*q & (32 | 64)) *q ^= bitmask;
-    if ((bitmask <<= 1) >= 32) bitmask = 1;
+    if (*q & (32 | 64))
+      *q ^= bitmask;
+    if ((bitmask <<= 1) >= 32)
+      bitmask = 1;
   }
   *q = '\0';
   return buf;
@@ -415,11 +417,14 @@ static void make_version() {
    * Value used for object & monster sanity check.
    *    (NROFARTIFACTS<<24) | (NUM_OBJECTS<<12) | (NUMMONS<<0)
    */
-  for (i = 1; artifact_names[i]; i++) continue;
+  for (i = 1; artifact_names[i]; i++)
+    continue;
   version.entity_count = (unsigned long)(i - 1);
-  for (i = 1; objects[i].oc_class != ILLOBJ_CLASS; i++) continue;
+  for (i = 1; objects[i].oc_class != ILLOBJ_CLASS; i++)
+    continue;
   version.entity_count = (version.entity_count << 12) | (unsigned long)i;
-  for (i = 0; mons[i].mlet; i++) continue;
+  for (i = 0; mons[i].mlet; i++)
+    continue;
   version.entity_count = (version.entity_count << 12) | (unsigned long)i;
   /*
    * Value used for compiler (word size/field alignment/padding) check.
@@ -481,7 +486,8 @@ void do_date() {
   strcpy(cbuf, ctime((time_t *)&clocktim));
 #endif
   for (c = cbuf; *c; c++)
-    if (*c == '\n') break;
+    if (*c == '\n')
+      break;
   *c = '\0'; /* strip off the '\n' */
   Fprintf(ofp, "#define BUILD_DATE \"%s\"\n", cbuf);
   Fprintf(ofp, "#define BUILD_TIME (%ldL)\n", clocktim);
@@ -755,7 +761,8 @@ void do_options() {
 
 /* routine to decide whether to discard something from data.base */
 static bool d_filter(char *line) {
-  if (*line == '#') return TRUE; /* ignore comment lines */
+  if (*line == '#')
+    return TRUE; /* ignore comment lines */
   return FALSE;
 }
 
@@ -824,23 +831,27 @@ void do_data() {
   entry_cnt = line_cnt = 0;
   /* read through the input file and split it into two sections */
   while (fgets(in_line, sizeof in_line, ifp)) {
-    if (d_filter(in_line)) continue;
+    if (d_filter(in_line))
+      continue;
     if (*in_line > ' ') { /* got an entry name */
       /* first finish previous entry */
-      if (line_cnt) Fprintf(ofp, "%d\n", line_cnt), line_cnt = 0;
+      if (line_cnt)
+        Fprintf(ofp, "%d\n", line_cnt), line_cnt = 0;
       /* output the entry name */
       (void)fputs(in_line, ofp);
       entry_cnt++;          /* update number of entries */
     } else if (entry_cnt) { /* got some descriptive text */
       /* update previous entry with current text offset */
-      if (!line_cnt) Fprintf(ofp, "%ld,", ftell(tfp));
+      if (!line_cnt)
+        Fprintf(ofp, "%ld,", ftell(tfp));
       /* save the text line in the scratch file */
       (void)fputs(in_line, tfp);
       line_cnt++; /* update line counter */
     }
   }
   /* output an end marker and then record the current position */
-  if (line_cnt) Fprintf(ofp, "%d\n", line_cnt);
+  if (line_cnt)
+    Fprintf(ofp, "%d\n", line_cnt);
   Fprintf(ofp, ".\n%ld,%d\n", ftell(tfp), 0);
   txt_offset = ftell(ofp);
   Fclose(ifp); /* all done with original input file */
@@ -849,9 +860,11 @@ void do_data() {
   sprintf(in_line, "rewind of \"%s\"", tempfile);
   errno = 0;
   rewind(tfp);
-  if (errno != 0) goto dead_data;
+  if (errno != 0)
+    goto dead_data;
   /* copy all lines of text from the scratch file into the output file */
-  while (fgets(in_line, sizeof in_line, tfp)) (void)fputs(in_line, ofp);
+  while (fgets(in_line, sizeof in_line, tfp))
+    (void)fputs(in_line, ofp);
 
   /* finished with scratch file */
   Fclose(tfp);
@@ -886,14 +899,17 @@ static bool h_filter(char *line) {
   static bool skip = FALSE;
   char tag[sizeof in_line];
 
-  if (*line == '#') return TRUE; /* ignore comment lines */
+  if (*line == '#')
+    return TRUE; /* ignore comment lines */
   if (sscanf(line, "----- %s", tag) == 1) {
     skip = FALSE;
 #ifndef SINKS
-    if (!strcmp(tag, "SINKS")) skip = TRUE;
+    if (!strcmp(tag, "SINKS"))
+      skip = TRUE;
 #endif
 #ifndef ELBERETH
-    if (!strcmp(tag, "ELBERETH")) skip = TRUE;
+    if (!strcmp(tag, "ELBERETH"))
+      skip = TRUE;
 #endif
   } else if (skip && !strncmp(line, "-----", 5))
     skip = FALSE;
@@ -973,9 +989,11 @@ void do_oracles() {
   in_oracle = FALSE;
 
   while (fgets(in_line, sizeof in_line, ifp)) {
-    if (h_filter(in_line)) continue;
+    if (h_filter(in_line))
+      continue;
     if (!strncmp(in_line, "-----", 5)) {
-      if (!in_oracle) continue;
+      if (!in_oracle)
+        continue;
       in_oracle = FALSE;
       oracle_cnt++;
       (void)fputs("---\n", tfp);
@@ -1001,9 +1019,11 @@ void do_oracles() {
   sprintf(in_line, "rewind of \"%s\"", tempfile);
   errno = 0;
   rewind(tfp);
-  if (errno != 0) goto dead_data;
+  if (errno != 0)
+    goto dead_data;
   /* copy all lines of text from the scratch file into the output file */
-  while (fgets(in_line, sizeof in_line, tfp)) (void)fputs(in_line, ofp);
+  while (fgets(in_line, sizeof in_line, tfp))
+    (void)fputs(in_line, ofp);
 
   /* finished with scratch file */
   Fclose(tfp);
@@ -1021,12 +1041,18 @@ void do_oracles() {
   if (ok) {
     sprintf(in_line, "data rewrite of \"%s\"", filename);
     for (i = 0; i <= oracle_cnt; i++) {
-      if (!(ok = (fflush(ofp) == 0))) break;
-      if (!(ok = (fpos = ftell(ofp)) >= 0)) break;
-      if (!(ok = (fseek(ofp, fpos, SEEK_SET) >= 0))) break;
-      if (!(ok = (fscanf(ofp, "%5lx", &offset) == 1))) break;
-      if (!(ok = (fseek(ofp, fpos, SEEK_SET) >= 0))) break;
-      if (!(ok = (fprintf(ofp, "%05lx\n", offset + txt_offset) >= 0))) break;
+      if (!(ok = (fflush(ofp) == 0)))
+        break;
+      if (!(ok = (fpos = ftell(ofp)) >= 0))
+        break;
+      if (!(ok = (fseek(ofp, fpos, SEEK_SET) >= 0)))
+        break;
+      if (!(ok = (fscanf(ofp, "%5lx", &offset) == 1)))
+        break;
+      if (!(ok = (fseek(ofp, fpos, SEEK_SET) >= 0)))
+        break;
+      if (!(ok = (fprintf(ofp, "%05lx\n", offset + txt_offset) >= 0)))
+        break;
     }
   }
   if (!ok) {
@@ -1058,7 +1084,8 @@ static struct deflist {
 static int check_control(char *s) {
   int i;
 
-  if (s[0] != '%') return (-1);
+  if (s[0] != '%')
+    return (-1);
 
   for (i = 0; deflist[i].defname; i++)
     if (!strncmp(deflist[i].defname, s + 1, strlen(deflist[i].defname)))
@@ -1092,14 +1119,16 @@ void do_dungeon() {
 
   while (fgets(in_line, sizeof in_line, ifp) != 0) {
     rcnt++;
-    if (in_line[0] == '#') continue; /* discard comments */
+    if (in_line[0] == '#')
+      continue; /* discard comments */
   recheck:
     if (in_line[0] == '%') {
       int i = check_control(in_line);
       if (i >= 0) {
         if (!deflist[i].true_or_false) {
           while (fgets(in_line, sizeof in_line, ifp) != 0)
-            if (check_control(in_line) != i) goto recheck;
+            if (check_control(in_line) != i)
+              goto recheck;
         } else
           (void)fputs(without_control(in_line), ofp);
       } else {
@@ -1144,7 +1173,8 @@ static int mstrength(MonsterType *ptr) {
   n += (!!(ptr->geno & G_LGROUP)) << 1;
 
   /*	For ranged attacks */
-  if (ranged_attk(ptr)) n++;
+  if (ranged_attk(ptr))
+    n++;
 
   /*	For higher ac values */
   n += (ptr->ac < 4);
@@ -1174,7 +1204,8 @@ static int mstrength(MonsterType *ptr) {
 
   /*	Leprechauns are special cases.  They have many hit dice so they
           can hit and are hard to kill, but they don't really do much damage. */
-  if (!strcmp(ptr->mname, "leprechaun")) n -= 2;
+  if (!strcmp(ptr->mname, "leprechaun"))
+    n -= 2;
 
   /*	Finally, adjust the monster level  0 <= n <= 24 (approx.) */
   if (n == 0)
@@ -1276,7 +1307,8 @@ static bool in_msg;
 #define NO_MSG 1 /* strlen of a null line returned by fgets() */
 
 static bool qt_comment(char *s) {
-  if (s[0] == '#') return (TRUE);
+  if (s[0] == '#')
+    return (TRUE);
   return ((bool)(!in_msg && strlen(s) == NO_MSG));
 }
 
@@ -1288,7 +1320,8 @@ static int get_hdr(char *code) {
   int i;
 
   for (i = 0; i < qt_hdr.n_hdr; i++)
-    if (!strncmp(code, qt_hdr.id[i], LEN_HDR)) return (++i);
+    if (!strncmp(code, qt_hdr.id[i], LEN_HDR))
+      return (++i);
 
   return (0);
 }
@@ -1309,7 +1342,8 @@ static bool known_msg(int num, int id) {
   int i;
 
   for (i = 0; i < msg_hdr[num].n_msg; i++)
-    if (msg_hdr[num].qt_msg[i].msgnum == id) return (TRUE);
+    if (msg_hdr[num].qt_msg[i].msgnum == id)
+      return (TRUE);
 
   return (FALSE);
 }
@@ -1345,7 +1379,8 @@ static void do_qt_control(char *s) {
           break;
         }
         num = get_hdr(code);
-        if (!num && !new_id(code)) break;
+        if (!num && !new_id(code))
+          break;
         num = get_hdr(code) - 1;
         if (known_msg(num, id))
           Fprintf(stderr, DUP_MSG, qt_line);
@@ -1521,7 +1556,8 @@ void do_objs() {
 
   for (i = 0; !i || objects[i].oc_class != ILLOBJ_CLASS; i++) {
     objects[i].oc_name_idx = objects[i].oc_descr_idx = i; /* init */
-    if (!(objnam = tmpdup(OBJ_NAME(objects[i])))) continue;
+    if (!(objnam = tmpdup(OBJ_NAME(objects[i]))))
+      continue;
 
     /* make sure probabilities add up to 1000 */
     if (objects[i].oc_class != class_id) {
@@ -1581,7 +1617,8 @@ void do_objs() {
       default:
         Fprintf(ofp, "#define\t");
     }
-    if (prefix >= 0) Fprintf(ofp, "%s\t%d\n", limit(objnam, prefix), i);
+    if (prefix >= 0)
+      Fprintf(ofp, "%s\t%d\n", limit(objnam, prefix), i);
     prefix = 0;
 
     sum += objects[i].oc_prob;
@@ -1607,10 +1644,12 @@ void do_objs() {
       else if (*c < 'A' || *c > 'Z')
         *c = '_';
 
-    if (!strncmp(objnam, "THE_", 4)) objnam += 4;
+    if (!strncmp(objnam, "THE_", 4))
+      objnam += 4;
 #ifdef TOURIST
     /* fudge _platinum_ YENDORIAN EXPRESS CARD */
-    if (!strncmp(objnam, "PLATINUM_", 9)) objnam += 9;
+    if (!strncmp(objnam, "PLATINUM_", 9))
+      objnam += 9;
 #endif
     Fprintf(ofp, "#define\tART_%s\t%d\n", limit(objnam, 1), i);
   }
@@ -1618,20 +1657,23 @@ void do_objs() {
   Fprintf(ofp, "#define\tNROFARTIFACTS\t%d\n", i - 1);
   Fprintf(ofp, "\n#endif /* ONAMES_H */\n");
   Fclose(ofp);
-  if (sumerr) exit(EXIT_FAILURE);
+  if (sumerr)
+    exit(EXIT_FAILURE);
   return;
 }
 
 static char *tmpdup(const char *str) {
   static char buf[128];
 
-  if (!str) return (char *)0;
+  if (!str)
+    return (char *)0;
   (void)strncpy(buf, str, 127);
   return buf;
 }
 
 static char *eos(char *str) {
-  while (*str) str++;
+  while (*str)
+    str++;
   return str;
 }
 
@@ -1841,10 +1883,12 @@ static void C_close_gen() {
         }
         /* Find the first column that we can see. */
         for (i = block_col + 1; i < MAX_COL; i++) {
-          if (clear_path(src_row, src_col, block_row - this_row, i)) break;
+          if (clear_path(src_row, src_col, block_row - this_row, i))
+            break;
         }
 
-        if (i == MAX_COL) no_more = 1;
+        if (i == MAX_COL)
+          no_more = 1;
         Fprintf(ofp, "%2d%s", i - block_col, delim);
       }
       Fprintf(ofp, "}%s", (dx < TEST_WIDTH - 1) ? ",\n" : "\n");
@@ -1892,7 +1936,8 @@ static void C_far_gen() {
 
         /* Find first col that we can see. */
         for (i = 0; i <= block_col; i++) {
-          if (clear_path(src_row, src_col, this_row, i)) break;
+          if (clear_path(src_row, src_col, this_row, i))
+            break;
         }
 
         if (block_col - i < 0)
@@ -1941,10 +1986,12 @@ static int clear_path(int you_row, int you_col, int y2, int x2) {
   if (s1 == 0) {   /* same column */
     if (s2 == 1) { /* below (larger y2 value) */
       for (i = you_row + 1; i < y2; i++)
-        if (!xclear[i][you_col]) return 0;
+        if (!xclear[i][you_col])
+          return 0;
     } else { /* above (smaller y2 value) */
       for (i = y2 + 1; i < you_row; i++)
-        if (!xclear[i][you_col]) return 0;
+        if (!xclear[i][you_col])
+          return 0;
     }
     return 1;
   }
@@ -1961,7 +2008,8 @@ static int clear_path(int you_row, int you_col, int y2, int x2) {
     error = dys - dx; /* NOTE: error is used as a temporary above */
 
     for (i = 0; i < dx; i++) {
-      if (!xclear[y][x]) return 0; /* plot point */
+      if (!xclear[y][x])
+        return 0; /* plot point */
 
       while (error >= 0) {
         x += s1;
@@ -1976,7 +2024,8 @@ static int clear_path(int you_row, int you_col, int y2, int x2) {
     error = dys - dx;
 
     for (i = 0; i < dx; i++) {
-      if (!xclear[y][x]) return 0; /* plot point */
+      if (!xclear[y][x])
+        return 0; /* plot point */
 
       while (error >= 0) {
         y += s2;

@@ -37,10 +37,13 @@ int main(int argc, char *argv[]) {
   int argno;
   const char *dir = (char *)0;
 
-  if (!dir) dir = getenv("NETHACKDIR");
-  if (!dir) dir = getenv("HACKDIR");
+  if (!dir)
+    dir = getenv("NETHACKDIR");
+  if (!dir)
+    dir = getenv("HACKDIR");
 #if defined(EXEPATH)
-  if (!dir) dir = exepath(argv[0]);
+  if (!dir)
+    dir = exepath(argv[0]);
 #endif
   if (argc == 1 || (argc == 2 && !strcmp(argv[1], "-"))) {
     Fprintf(stderr, "Usage: %s [ -d directory ] base1 [ base2 ... ]\n",
@@ -51,7 +54,8 @@ int main(int argc, char *argv[]) {
   argno = 1;
   if (!strncmp(argv[argno], "-d", 2)) {
     dir = argv[argno] + 2;
-    if (*dir == '=' || *dir == ':') dir++;
+    if (*dir == '=' || *dir == ':')
+      dir++;
     if (!*dir && argc > argno) {
       argno++;
       dir = argv[argno];
@@ -75,7 +79,8 @@ int main(int argc, char *argv[]) {
 #endif /* SECURE */
 
 #ifdef HACKDIR
-  if (!dir) dir = HACKDIR;
+  if (!dir)
+    dir = HACKDIR;
 #endif
 
   if (dir && chdir((char *)dir) < 0) {
@@ -99,7 +104,8 @@ void set_levelfile_name(int lev) {
   char *tf;
 
   tf = rindex(lock, '.');
-  if (!tf) tf = lock + strlen(lock);
+  if (!tf)
+    tf = lock + strlen(lock);
   (void)sprintf(tf, ".%d", lev);
 }
 
@@ -247,12 +253,14 @@ char *exepath(str) char *str;
   char *tmp, *tmp2;
   int bsize;
 
-  if (!str) return (char *)0;
+  if (!str)
+    return (char *)0;
   bsize = EXEPATHBUFSZ;
   tmp = exepathbuf;
   strcpy(tmp, str);
   tmp2 = strrchr(tmp, PATH_SEPARATOR);
-  if (tmp2) *tmp2 = '\0';
+  if (tmp2)
+    *tmp2 = '\0';
   return tmp;
 }
 #endif /* EXEPATH */

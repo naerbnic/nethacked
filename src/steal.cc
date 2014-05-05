@@ -52,7 +52,8 @@ void stealgold(Monster *mtmp) {
     pline("%s quickly snatches some gold from between your %s!", Monnam(mtmp),
           makeplural(body_part(FOOT)));
     if (!player.ugold || !rn2(5)) {
-      if (!tele_restrict(mtmp)) (void)rloc(mtmp, FALSE);
+      if (!tele_restrict(mtmp))
+        (void)rloc(mtmp, FALSE);
       /* do not set mtmp->mavenge here; gold on the floor is fair game */
       monflee(mtmp, 0, FALSE, FALSE);
     }
@@ -60,7 +61,8 @@ void stealgold(Monster *mtmp) {
     player.ugold -= (tmp = somegold());
     Your("purse feels lighter.");
     mtmp->mgold += tmp;
-    if (!tele_restrict(mtmp)) (void)rloc(mtmp, FALSE);
+    if (!tele_restrict(mtmp))
+      (void)rloc(mtmp, FALSE);
     mtmp->mavenge = 1;
     monflee(mtmp, 0, FALSE, FALSE);
     flags.botl = 1;
@@ -88,7 +90,8 @@ May search containers too.
 Deals in gold only, as leprechauns don't care for lesser coins.
 */
 Object *findgold(Object *chain) {
-  while (chain && chain->otyp != GOLD_PIECE) chain = chain->nobj;
+  while (chain && chain->otyp != GOLD_PIECE)
+    chain = chain->nobj;
   return chain;
 }
 
@@ -101,7 +104,8 @@ void stealgold(Monster *mtmp) {
   long tmp;
 
   /* skip lesser coins on the floor */
-  while (fgold && fgold->otyp != GOLD_PIECE) fgold = fgold->nexthere;
+  while (fgold && fgold->otyp != GOLD_PIECE)
+    fgold = fgold->nexthere;
 
   /* Do you have real gold? */
   ygold = findgold(invent);
@@ -113,18 +117,21 @@ void stealgold(Monster *mtmp) {
     pline("%s quickly snatches some gold from between your %s!", Monnam(mtmp),
           makeplural(body_part(FOOT)));
     if (!ygold || !rn2(5)) {
-      if (!tele_restrict(mtmp)) (void)rloc(mtmp, FALSE);
+      if (!tele_restrict(mtmp))
+        (void)rloc(mtmp, FALSE);
       monflee(mtmp, 0, FALSE, FALSE);
     }
   } else if (ygold) {
     const int gold_price = objects[GOLD_PIECE].oc_cost;
     tmp = (somegold(money_cnt(invent)) + gold_price - 1) / gold_price;
     tmp = min(tmp, ygold->quan);
-    if (tmp < ygold->quan) ygold = SplitObject(ygold, tmp);
+    if (tmp < ygold->quan)
+      ygold = SplitObject(ygold, tmp);
     freeinv(ygold);
     AddObjectToMonsterInventory(mtmp, ygold);
     Your("purse feels lighter.");
-    if (!tele_restrict(mtmp)) (void)rloc(mtmp, FALSE);
+    if (!tele_restrict(mtmp))
+      (void)rloc(mtmp, FALSE);
     monflee(mtmp, 0, FALSE, FALSE);
     flags.botl = 1;
   }
@@ -143,17 +150,20 @@ STATIC_PTR int stealarm() {
     if (otmp->o_id == stealoid) {
       for (mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
         if (mtmp->m_id == stealmid) {
-          if (mtmp->dead()) impossible("stealarm(): dead monster stealing");
+          if (mtmp->dead())
+            impossible("stealarm(): dead monster stealing");
           if (!dmgtype(mtmp->data, AD_SITM)) /* polymorphed */
             goto botm;
-          if (otmp->unpaid) subfrombill(otmp, shop_keeper(*player.ushops));
+          if (otmp->unpaid)
+            subfrombill(otmp, shop_keeper(*player.ushops));
           freeinv(otmp);
           pline("%s steals %s!", Monnam(mtmp), doname(otmp));
           (void)mpickobj(mtmp, otmp); /* may free otmp */
           /* Implies seduction, "you gladly hand over ..."
              so we don't set mavenge bit here. */
           monflee(mtmp, 0, FALSE, FALSE);
-          if (!tele_restrict(mtmp)) (void)rloc(mtmp, FALSE);
+          if (!tele_restrict(mtmp))
+            (void)rloc(mtmp, FALSE);
           break;
         }
       }
@@ -168,8 +178,10 @@ botm:
 /* An object you're wearing has been taken off by a monster (theft or
    seduction).  Also used if a worn item gets transformed (stone to flesh). */
 void remove_worn_item(Object *obj, bool unchain_ball) {
-  if (donning(obj)) cancel_don();
-  if (!obj->owornmask) return;
+  if (donning(obj))
+    cancel_don();
+  if (!obj->owornmask)
+    return;
 
   if (obj->owornmask & W_ARMOR) {
     if (obj == uskin) {
@@ -202,13 +214,17 @@ void remove_worn_item(Object *obj, bool unchain_ball) {
   } else if (obj->owornmask & W_TOOL) {
     Blindf_off(obj);
   } else if (obj->owornmask & (W_WEP | W_SWAPWEP | W_QUIVER)) {
-    if (obj == uwep) uwepgone();
-    if (obj == uswapwep) uswapwepgone();
-    if (obj == uquiver) uqwepgone();
+    if (obj == uwep)
+      uwepgone();
+    if (obj == uswapwep)
+      uswapwepgone();
+    if (obj == uquiver)
+      uqwepgone();
   }
 
   if (obj->owornmask & (W_BALL | W_CHAIN)) {
-    if (unchain_ball) unpunish();
+    if (unchain_ball)
+      unpunish();
   } else if (obj->owornmask) {
     /* catchall */
     setnotworn(obj);
@@ -224,14 +240,17 @@ int steal(Monster *mtmp, char *objnambuf) {
   int tmp, could_petrify, named = 0, armordelay;
   bool monkey_business; /* true iff an animal is doing the thievery */
 
-  if (objnambuf) *objnambuf = '\0';
+  if (objnambuf)
+    *objnambuf = '\0';
   /* the following is true if successful on first of two attacks. */
-  if (!monnear(mtmp, player.ux, player.uy)) return (0);
+  if (!monnear(mtmp, player.ux, player.uy))
+    return (0);
 
   /* food being eaten might already be used up but will not have
      been removed from inventory yet; we don't want to steal that,
      so this will cause it to be removed now */
-  if (occupation) (void)maybe_finished_meal(FALSE);
+  if (occupation)
+    (void)maybe_finished_meal(FALSE);
 
   if (!invent || (inv_cnt() == 1 && uskin)) {
   nothing_to_steal:
@@ -263,7 +282,8 @@ int steal(Monster *mtmp, char *objnambuf) {
 #endif
         )
       tmp += ((otmp->owornmask & (W_ARMOR | W_RING | W_AMUL | W_TOOL)) ? 5 : 1);
-  if (!tmp) goto nothing_to_steal;
+  if (!tmp)
+    goto nothing_to_steal;
   tmp = rn2(tmp);
   for (otmp = invent; otmp; otmp = otmp->nobj)
     if ((!uarm || otmp != uarmc) && otmp != uskin
@@ -280,7 +300,8 @@ int steal(Monster *mtmp, char *objnambuf) {
     return (0);
   }
   /* can't steal gloves while wielding - so steal the wielded item. */
-  if (otmp == uarmg && uwep) otmp = uwep;
+  if (otmp == uarmg && uwep)
+    otmp = uwep;
   /* can't steal armor while wearing cloak - so steal the cloak. */
   else if (otmp == uarm && uarmc)
     otmp = uarmc;
@@ -291,7 +312,8 @@ int steal(Monster *mtmp, char *objnambuf) {
     otmp = uarm;
 #endif
 gotobj:
-  if (otmp->o_id == stealoid) return (0);
+  if (otmp->o_id == stealoid)
+    return (0);
 
   /* animals can't overcome curse stickiness nor unlock chains */
   if (monkey_business) {
@@ -319,7 +341,8 @@ gotobj:
   }
 
   if (otmp->otyp == LEASH && otmp->leashmon) {
-    if (monkey_business && otmp->cursed) goto cant_take;
+    if (monkey_business && otmp->cursed)
+      goto cant_take;
     o_unleash(otmp);
   }
 
@@ -343,7 +366,8 @@ gotobj:
         } else if (monkey_business) {
           /* animals usually don't have enough patience
              to take off items which require extra time */
-          if (armordelay >= 1 && rn2(10)) goto cant_take;
+          if (armordelay >= 1 && rn2(10))
+            goto cant_take;
           remove_worn_item(otmp, TRUE);
           break;
         } else {
@@ -353,7 +377,8 @@ gotobj:
 
           otmp->cursed = 0;
           /* can't charm you without first waking you */
-          if (multi < 0 && is_fainted()) unmul((char *)0);
+          if (multi < 0 && is_fainted())
+            unmul((char *)0);
           slowly = (armordelay >= 1 || multi < 0);
           if (flags.female)
             pline("%s charms you.  You gladly %s your %s.",
@@ -392,7 +417,8 @@ gotobj:
     remove_worn_item(otmp, TRUE);
 
   /* do this before removing it from inventory */
-  if (objnambuf) strcpy(objnambuf, yname(otmp));
+  if (objnambuf)
+    strcpy(objnambuf, yname(otmp));
   /* set mavenge bit so knights won't suffer an
    * alignment penalty during retaliation;
    */
@@ -443,7 +469,8 @@ int mpickobj(Monster *mtmp, Object *otmp) {
        so we have to call it after doing the object checks */
     freed_otmp = AddObjectToMonsterInventory(mtmp, otmp);
     /* and we had to defer this until object is in mtmp's inventory */
-    if (snuff_otmp) snuff_light_source(mtmp->mx, mtmp->my);
+    if (snuff_otmp)
+      snuff_light_source(mtmp->mx, mtmp->my);
 #ifndef GOLDOBJ
   }
 #endif
@@ -463,8 +490,10 @@ void stealamulet(Monster *mtmp) {
     fake = FAKE_AMULET_OF_YENDOR;
   } else if (player.uhave.questart) {
     for (otmp = invent; otmp; otmp = otmp->nobj)
-      if (is_quest_artifact(otmp)) break;
-    if (!otmp) return; /* should we panic instead? */
+      if (is_quest_artifact(otmp))
+        break;
+    if (!otmp)
+      return; /* should we panic instead? */
   } else if (player.uhave.bell) {
     real = BELL_OF_OPENING;
     fake = BELL;
@@ -478,11 +507,13 @@ void stealamulet(Monster *mtmp) {
   if (!otmp) {
     /* If we get here, real and fake have been set up. */
     for (otmp = invent; otmp; otmp = otmp->nobj)
-      if (otmp->otyp == real || (otmp->otyp == fake && !mtmp->iswiz)) break;
+      if (otmp->otyp == real || (otmp->otyp == fake && !mtmp->iswiz))
+        break;
   }
 
   if (otmp) { /* we have something to snatch */
-    if (otmp->owornmask) remove_worn_item(otmp, TRUE);
+    if (otmp->owornmask)
+      remove_worn_item(otmp, TRUE);
     freeinv(otmp);
     /* mpickobj wont merge otmp because none of the above things
        to steal are mergable */
@@ -506,7 +537,8 @@ STATIC_OVL void mdrop_obj(Monster *mon, Object *obj, bool verbosely) {
       mon->misc_worn_check &= ~obj->owornmask;
       update_mon_intrinsics(mon, obj, FALSE, TRUE);
       /* obj_no_longer_held(obj); -- done by place_object */
-      if (obj->owornmask & W_WEP) setmnotwielded(mon, obj);
+      if (obj->owornmask & W_WEP)
+        setmnotwielded(mon, obj);
 #ifdef STEED
       /* don't charge for an owned saddle on dead steed */
     } else if (mon->mtame && (obj->owornmask & W_SADDLE) && !obj->unpaid &&
@@ -551,7 +583,8 @@ void relobj(Monster *mtmp, int show, bool is_pet) {
 
   if (!is_pet || mindless(mtmp->data) || is_animal(mtmp->data))
     item1 = item2 = TRUE;
-  if (!tunnels(mtmp->data) || !needspick(mtmp->data)) item1 = TRUE;
+  if (!tunnels(mtmp->data) || !needspick(mtmp->data))
+    item1 = TRUE;
 
   while ((otmp = mtmp->minvent) != 0) {
     RemoveObjectFromStorage(otmp);
@@ -562,8 +595,10 @@ void relobj(Monster *mtmp, int show, bool is_pet) {
         ((!item1 && otmp->otyp == PICK_AXE) ||
          (!item2 && otmp->otyp == UNICORN_HORN && !otmp->cursed))) {
       if (is_pet) { /* dont drop worn/wielded item */
-        if (otmp->otyp == PICK_AXE) item1 = TRUE;
-        if (otmp->otyp == UNICORN_HORN && !otmp->cursed) item2 = TRUE;
+        if (otmp->otyp == PICK_AXE)
+          item1 = TRUE;
+        if (otmp->otyp == UNICORN_HORN && !otmp->cursed)
+          item2 = TRUE;
         otmp->nobj = keepobj;
         keepobj = otmp;
         continue;
@@ -587,7 +622,8 @@ void relobj(Monster *mtmp, int show, bool is_pet) {
   }
 #endif
 
-  if (show & cansee(omx, omy)) newsym(omx, omy);
+  if (show & cansee(omx, omy))
+    newsym(omx, omy);
 }
 
 #endif /* OVL0 */

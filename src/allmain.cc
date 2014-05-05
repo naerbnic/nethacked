@@ -41,7 +41,8 @@ void moveloop() {
   objects_init();
 
 #ifdef WIZARD
-  if (wizard) add_debug_extended_commands();
+  if (wizard)
+    add_debug_extended_commands();
 #endif
 
   (void)encumber_msg(); /* in case they auto-picked up something */
@@ -66,7 +67,8 @@ void moveloop() {
         flags.mon_moving = TRUE;
         do {
           monscanmove = movemon();
-          if (youmonst.movement > NORMAL_SPEED) break; /* it's now your turn */
+          if (youmonst.movement > NORMAL_SPEED)
+            break; /* it's now your turn */
         } while (monscanmove);
         flags.mon_moving = FALSE;
 
@@ -99,10 +101,12 @@ void moveloop() {
             if (Very_fast) { /* speed boots or potion */
               /* average movement is 1.67 times normal */
               moveamt += NORMAL_SPEED / 2;
-              if (rn2(3) == 0) moveamt += NORMAL_SPEED / 2;
+              if (rn2(3) == 0)
+                moveamt += NORMAL_SPEED / 2;
             } else if (Fast) {
               /* average movement is 1.33 times normal */
-              if (rn2(3) != 0) moveamt += NORMAL_SPEED / 2;
+              if (rn2(3) != 0)
+                moveamt += NORMAL_SPEED / 2;
             }
           }
 
@@ -126,7 +130,8 @@ void moveloop() {
           }
 
           youmonst.movement += moveamt;
-          if (youmonst.movement < 0) youmonst.movement = 0;
+          if (youmonst.movement < 0)
+            youmonst.movement = 0;
           settrack();
 
           monstermoves++;
@@ -136,13 +141,17 @@ void moveloop() {
           /* once-per-turn things go here */
           /********************************/
 
-          if (flags.bypasses) clear_bypasses();
-          if (Glib) glibr();
+          if (flags.bypasses)
+            clear_bypasses();
+          if (Glib)
+            glibr();
           nh_timeout();
           run_regions();
 
-          if (player.ublesscnt) player.ublesscnt--;
-          if (flags.time && !flags.run) flags.botl = 1;
+          if (player.ublesscnt)
+            player.ublesscnt--;
+          if (flags.time && !flags.run)
+            flags.botl = 1;
 
           /* One possible result of prayer is healing.  Whether or
            * not you get healed depends on your current hit points.
@@ -178,11 +187,13 @@ void moveloop() {
                 heal = 1;
               } else {
                 heal = rnd(Con);
-                if (heal > player.ulevel - 9) heal = player.ulevel - 9;
+                if (heal > player.ulevel - 9)
+                  heal = player.ulevel - 9;
               }
               flags.botl = 1;
               player.uhp += heal;
-              if (player.uhp > player.uhpmax) player.uhp = player.uhpmax;
+              if (player.uhp > player.uhpmax)
+                player.uhp = player.uhpmax;
             } else if (Regeneration ||
                        (player.ulevel <= 9 &&
                         !(moves %
@@ -213,7 +224,8 @@ void moveloop() {
                             (Role_if(PM_WIZARD) ? 3 : 4) / 6)))) ||
                Energy_regeneration)) {
             player.uen += rn1((int)(ACURR(A_WIS) + ACURR(A_INT)) / 15 + 1, 1);
-            if (player.uen > player.uenmax) player.uen = player.uenmax;
+            if (player.uen > player.uenmax)
+              player.uen = player.uenmax;
             flags.botl = 1;
           }
 
@@ -256,17 +268,21 @@ void moveloop() {
             }
           }
 
-          if (Searching && multi >= 0) (void)dosearch0(1);
+          if (Searching && multi >= 0)
+            (void)dosearch0(1);
           dosounds();
           do_storms();
           gethungry();
           age_spells();
           exerchk();
           invault();
-          if (player.uhave.amulet) amulet();
-          if (!rn2(40 + (int)(ACURR(A_DEX) * 3))) u_wipe_engr(rnd(3));
+          if (player.uhave.amulet)
+            amulet();
+          if (!rn2(40 + (int)(ACURR(A_DEX) * 3)))
+            u_wipe_engr(rnd(3));
           if (player.uevent.udemigod && !player.uinvulnerable) {
-            if (player.udg_cnt) player.udg_cnt--;
+            if (player.udg_cnt)
+              player.udg_cnt--;
             if (!player.udg_cnt) {
               intervene();
               player.udg_cnt = rn1(200, 50);
@@ -287,7 +303,8 @@ void moveloop() {
             if (++multi == 0) { /* finished yet? */
               unmul((char *)0);
               /* if unmul caused a level change, take it now */
-              if (player.utotype) deferred_goto();
+              if (player.utotype)
+                deferred_goto();
             }
           }
         }
@@ -310,13 +327,15 @@ void moveloop() {
         see_monsters();
         see_objects();
         see_traps();
-        if (player.uswallow) swallowed(0);
+        if (player.uswallow)
+          swallowed(0);
       } else if (Unblind_telepat) {
         see_monsters();
       } else if (Warning || Warn_of_mon)
         see_monsters();
 
-      if (vision_full_recalc) vision_recalc(0); /* vision! */
+      if (vision_full_recalc)
+        vision_recalc(0); /* vision! */
     }
 
 #ifdef REALTIME_ON_BOTL
@@ -328,12 +347,14 @@ void moveloop() {
     }
 #endif
 
-    if (flags.botl || flags.botlx) bot();
+    if (flags.botl || flags.botlx)
+      bot();
 
     flags.move = 1;
 
     if (multi >= 0 && occupation) {
-      if ((*occupation)() == 0) occupation = 0;
+      if ((*occupation)() == 0)
+        occupation = 0;
       if (monster_nearby()) {
         stop_occupation();
         reset_eat();
@@ -363,7 +384,8 @@ void moveloop() {
     }
 
 #ifdef WIZARD
-    if (iflags.sanity_check) sanity_check();
+    if (iflags.sanity_check)
+      sanity_check();
 #endif
 
 #ifdef CLIPPING
@@ -378,7 +400,8 @@ void moveloop() {
       if (!multi) {
         /* lookaround may clear multi */
         flags.move = 0;
-        if (flags.time) flags.botl = 1;
+        if (flags.time)
+          flags.botl = 1;
         continue;
       }
       if (flags.mv) {
@@ -401,11 +424,13 @@ void moveloop() {
     else if (flags.time && (!flags.move || !flags.mv))
       flags.botl = 1;
 
-    if (vision_full_recalc) vision_recalc(0); /* vision! */
+    if (vision_full_recalc)
+      vision_recalc(0); /* vision! */
     /* when running in non-tport mode, this gets done through domove() */
     if ((!flags.run || iflags.runmode == RUN_TPORT) &&
         (multi && (!flags.travel ? !(multi % 7) : !(moves % 7L)))) {
-      if (flags.time && flags.run) flags.botl = 1;
+      if (flags.time && flags.run)
+        flags.botl = 1;
       display_nhwindow(WIN_MAP, FALSE);
     }
   }
@@ -416,7 +441,8 @@ void moveloop() {
 
 void stop_occupation() {
   if (occupation) {
-    if (!maybe_finished_meal(TRUE)) You("stop %s.", occtxt);
+    if (!maybe_finished_meal(TRUE))
+      You("stop %s.", occtxt);
     occupation = 0;
     flags.botl = 1; /* in case player.uhs changed */
 /* fainting stops your occupation, there's no reason to sync.
@@ -453,7 +479,8 @@ void newgame() {
 
   flags.ident = 1;
 
-  for (i = 0; i < NUMMONS; i++) mvitals[i].mvflags = mons[i].geno & G_NOCORPSE;
+  for (i = 0; i < NUMMONS; i++)
+    mvitals[i].mvflags = mons[i].geno & G_NOCORPSE;
 
   init_objects(); /* must be before u_init() */
 
@@ -474,7 +501,8 @@ void newgame() {
   (void)signal(SIGINT, (SIG_RET_TYPE)done1);
 #endif
 #ifdef NEWS
-  if (iflags.news) display_file(NEWS, FALSE);
+  if (iflags.news)
+    display_file(NEWS, FALSE);
 #endif
   load_qtlist(); /* load up the quest text info */
   ErrMsg("loaded quest!");
@@ -491,7 +519,8 @@ void newgame() {
    * makedog() will fail when it calls makemon().
    *			- ucsfcgl!kneller
    */
-  if (MON_AT(player.ux, player.uy)) mnexto(m_at(player.ux, player.uy));
+  if (MON_AT(player.ux, player.uy))
+    mnexto(m_at(player.ux, player.uy));
   (void)makedog();
   docrt();
 

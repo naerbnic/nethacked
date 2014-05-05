@@ -10,8 +10,10 @@ STATIC_DCL long newuexp(int);
 STATIC_DCL int enermod(int);
 
 STATIC_OVL long newuexp(int lev) {
-  if (lev < 10) return (10L * (1L << lev));
-  if (lev < 20) return (10000L * (1L << (lev - 10)));
+  if (lev < 10)
+    return (10L * (1L << lev));
+  if (lev < 20)
+    return (10000L * (1L << (lev - 10)));
   return (10000000L * ((long)(lev - 19)));
 }
 
@@ -39,7 +41,8 @@ int experience(Monster *mtmp, int nk) {
   tmp = 1 + mtmp->m_lev * mtmp->m_lev;
 
   /*	For higher ac values, give extra experience */
-  if ((i = find_mac(mtmp)) < 3) tmp += (7 - i) * ((i < 0) ? 2 : 1);
+  if ((i = find_mac(mtmp)) < 3)
+    tmp += (7 - i) * ((i < 0) ? 2 : 1);
 
   /*	For very fast monsters, give extra experience */
   if (ptr->mmove > NORMAL_SPEED)
@@ -68,19 +71,24 @@ int experience(Monster *mtmp, int nk) {
     else if (tmp != AD_PHYS)
       tmp += mtmp->m_lev;
     /* extra heavy damage bonus */
-    if ((int)(ptr->mattk[i].damd * ptr->mattk[i].damn) > 23) tmp += mtmp->m_lev;
-    if (tmp2 == AD_WRAP && ptr->mlet == S_EEL && !Amphibious) tmp += 1000;
+    if ((int)(ptr->mattk[i].damd * ptr->mattk[i].damn) > 23)
+      tmp += mtmp->m_lev;
+    if (tmp2 == AD_WRAP && ptr->mlet == S_EEL && !Amphibious)
+      tmp += 1000;
   }
 
   /*	For certain "extra nasty" monsters, give even more */
-  if (extra_nasty(ptr)) tmp += (7 * mtmp->m_lev);
+  if (extra_nasty(ptr))
+    tmp += (7 * mtmp->m_lev);
 
   /*	For higher level monsters, an additional bonus is given */
-  if (mtmp->m_lev > 8) tmp += 50;
+  if (mtmp->m_lev > 8)
+    tmp += 50;
 
 #ifdef MAIL
   /* Mail daemons put up no fight. */
-  if (mtmp->data == &mons[PM_MAIL_DAEMON]) tmp = 1;
+  if (mtmp->data == &mons[PM_MAIL_DAEMON])
+    tmp = 1;
 #endif
 
   return (tmp);
@@ -95,7 +103,8 @@ void more_experienced(int exp, int rexp) {
 #endif
       )
     flags.botl = 1;
-  if (player.urexp >= (Role_if(PM_WIZARD) ? 1000 : 2000)) flags.beginner = 0;
+  if (player.urexp >= (Role_if(PM_WIZARD) ? 1000 : 2000))
+    flags.beginner = 0;
 }
 
 /* e.g., hit by drain life attack */
@@ -128,7 +137,8 @@ void losexp(const char *drainer) {
   }
   num = newhp();
   player.uhpmax -= num;
-  if (player.uhpmax < 1) player.uhpmax = 1;
+  if (player.uhpmax < 1)
+    player.uhpmax = 1;
   player.uhp -= num;
   if (player.uhp < 1)
     player.uhp = 1;
@@ -143,14 +153,16 @@ void losexp(const char *drainer) {
               urole.enadv.hifix + urace.enadv.hifix);
   num = enermod(num); /* M. Stephenson */
   player.uenmax -= num;
-  if (player.uenmax < 0) player.uenmax = 0;
+  if (player.uenmax < 0)
+    player.uenmax = 0;
   player.uen -= num;
   if (player.uen < 0)
     player.uen = 0;
   else if (player.uen > player.uenmax)
     player.uen = player.uenmax;
 
-  if (player.uexp > 0) player.uexp = newuexp(player.ulevel) - 1;
+  if (player.uexp > 0)
+    player.uexp = newuexp(player.ulevel) - 1;
   flags.botl = 1;
 }
 
@@ -168,7 +180,8 @@ void newexplevel() {
 void pluslvl(bool incr) {
   int num;
 
-  if (!incr) You_feel("more experienced.");
+  if (!incr)
+    You_feel("more experienced.");
   num = newhp();
   player.uhpmax += num;
   player.uhp += num;
@@ -189,12 +202,14 @@ void pluslvl(bool incr) {
   if (player.ulevel < MAXULEV) {
     if (incr) {
       long tmp = newuexp(player.ulevel + 1);
-      if (player.uexp >= tmp) player.uexp = tmp - 1;
+      if (player.uexp >= tmp)
+        player.uexp = tmp - 1;
     } else {
       player.uexp = newuexp(player.ulevel);
     }
     ++player.ulevel;
-    if (player.ulevelmax < player.ulevel) player.ulevelmax = player.ulevel;
+    if (player.ulevelmax < player.ulevel)
+      player.ulevelmax = player.ulevel;
     pline("Welcome to experience level %d.", player.ulevel);
     adjabil(player.ulevel - 1, player.ulevel); /* give new intrinsics */
     reset_rndmonst(NON_PM);                    /* new monster selection */
@@ -212,7 +227,8 @@ long rndexp(bool gaining) {
   maxexp = newuexp(player.ulevel);
   diff = maxexp - minexp, factor = 1L;
   /* make sure that `diff' is an argument which rn2() can handle */
-  while (diff >= (long)LARGEST_INT) diff /= 2L, factor *= 2L;
+  while (diff >= (long)LARGEST_INT)
+    diff /= 2L, factor *= 2L;
   result = minexp + factor * (long)rn2((int)diff);
   /* 3.4.1:  if already at level 30, add to current experience
      points rather than to threshold needed to reach the current
@@ -221,7 +237,8 @@ long rndexp(bool gaining) {
   if (player.ulevel == MAXULEV && gaining) {
     result += (player.uexp - minexp);
     /* avoid wrapping (over 400 blessed potions needed for that...) */
-    if (result < player.uexp) result = player.uexp;
+    if (result < player.uexp)
+      result = player.uexp;
   }
   return result;
 }

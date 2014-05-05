@@ -36,7 +36,8 @@ bool revive_nasty(int x, int y, const char *msg) {
       /* move any living monster already at that location */
       if ((mtmp = m_at(x, y)) && enexto(&cc, x, y, mtmp->data))
         rloc_to(mtmp, cc.x, cc.y);
-      if (msg) Norep("%s", msg);
+      if (msg)
+        Norep("%s", msg);
       revived = revive_corpse(otmp);
     }
   }
@@ -63,13 +64,15 @@ STATIC_OVL int moverock() {
   sy = player.uy + player.dy; /* boulder starting position */
   while ((otmp = sobj_at(BOULDER, sx, sy)) != 0) {
     /* make sure that this boulder is visible as the top object */
-    if (otmp != level.objects[sx][sy]) movobj(otmp, sx, sy);
+    if (otmp != level.objects[sx][sy])
+      movobj(otmp, sx, sy);
 
     rx = player.ux + 2 * player.dx; /* boulder destination position */
     ry = player.uy + 2 * player.dy;
     nomul(0, 0);
     if (Levitation || Is_airlevel(&player.uz)) {
-      if (Blind) feel_location(sx, sy);
+      if (Blind)
+        feel_location(sx, sy);
       You("don't have enough leverage to push %s.", the(xname(otmp)));
       /* Give them a chance to climb over it? */
       return -1;
@@ -79,7 +82,8 @@ STATIC_OVL int moverock() {
         && !player.usteed
 #endif
         ) {
-      if (Blind) feel_location(sx, sy);
+      if (Blind)
+        feel_location(sx, sy);
       pline("You're too small to push that %s.", xname(otmp));
       goto cannot_push;
     }
@@ -97,7 +101,8 @@ STATIC_OVL int moverock() {
 
       /* KMH -- Sokoban doesn't let you push boulders diagonally */
       if (In_sokoban(&player.uz) && player.dx && player.dy) {
-        if (Blind) feel_location(sx, sy);
+        if (Blind)
+          feel_location(sx, sy);
         pline("%s won't roll diagonally on this %s.", The(xname(otmp)),
               surface(sx, sy));
         goto cannot_push;
@@ -109,7 +114,8 @@ STATIC_OVL int moverock() {
       if (mtmp && !noncorporeal(mtmp->data) &&
           (!mtmp->mtrapped ||
            !(ttmp && ((ttmp->ttyp == PIT) || (ttmp->ttyp == SPIKED_PIT))))) {
-        if (Blind) feel_location(sx, sy);
+        if (Blind)
+          feel_location(sx, sy);
         if (canspotmon(mtmp))
           pline("There's %s on the other side.", a_monnam(mtmp));
         else {
@@ -125,7 +131,8 @@ STATIC_OVL int moverock() {
         goto cannot_push;
       }
 
-      if (ttmp) switch (ttmp->ttyp) {
+      if (ttmp)
+        switch (ttmp->ttyp) {
           case LANDMINE:
             if (rn2(10)) {
               RemoveObjectFromStorage(otmp);
@@ -137,7 +144,8 @@ STATIC_OVL int moverock() {
               blow_up_landmine(ttmp);
               /* if the boulder remains, it should fill the pit */
               fill_pit(player.ux, player.uy);
-              if (cansee(rx, ry)) newsym(rx, ry);
+              if (cansee(rx, ry))
+                newsym(rx, ry);
               continue;
             }
             break;
@@ -147,11 +155,13 @@ STATIC_OVL int moverock() {
             /* vision kludge to get messages right;
                the pit will temporarily be seen even
                if this is one among multiple boulders */
-            if (!Blind) viz_array[ry][rx] |= IN_SIGHT;
+            if (!Blind)
+              viz_array[ry][rx] |= IN_SIGHT;
             if (!flooreffects(otmp, rx, ry, "fall")) {
               PlaceObject(otmp, rx, ry);
             }
-            if (mtmp && !Blind) newsym(rx, ry);
+            if (mtmp && !Blind)
+              newsym(rx, ry);
             continue;
           case HOLE:
           case TRAPDOOR:
@@ -168,7 +178,8 @@ STATIC_OVL int moverock() {
             deltrap(ttmp);
             delobj(otmp);
             bury_objs(rx, ry);
-            if (cansee(rx, ry)) newsym(rx, ry);
+            if (cansee(rx, ry))
+              newsym(rx, ry);
             continue;
           case LEVEL_TELEP:
           case TELEP_TRAP:
@@ -197,8 +208,10 @@ STATIC_OVL int moverock() {
             seetrap(ttmp);
             continue;
         }
-      if (closed_door(rx, ry)) goto nopushmsg;
-      if (boulder_hits_pool(otmp, rx, ry, TRUE)) continue;
+      if (closed_door(rx, ry))
+        goto nopushmsg;
+      if (boulder_hits_pool(otmp, rx, ry, TRUE))
+        continue;
       /*
        * Re-link at top of fobj chain so that pile order is preserved
        * when level is restored.
@@ -233,7 +246,8 @@ STATIC_OVL int moverock() {
       }
 
       /* Move the boulder *after* the message. */
-      if (glyph_is_invisible(levl[rx][ry].glyph)) unmap_object(rx, ry);
+      if (glyph_is_invisible(levl[rx][ry].glyph))
+        unmap_object(rx, ry);
       movobj(otmp, rx, ry); /* does newsym(rx,ry) */
       if (Blind) {
         feel_location(rx, ry);
@@ -250,7 +264,8 @@ STATIC_OVL int moverock() {
       else
 #endif
         You("try to move %s, but in vain.", the(xname(otmp)));
-      if (Blind) feel_location(sx, sy);
+      if (Blind)
+        feel_location(sx, sy);
     cannot_push:
       if (throws_rocks(youmonst.data)) {
 #ifdef STEED
@@ -265,7 +280,8 @@ STATIC_OVL int moverock() {
           pline("However, you can easily %s.",
                 (flags.pickup && !In_sokoban(&player.uz)) ? "pick it up"
                                                           : "push it aside");
-          if (In_sokoban(&player.uz)) change_luck(-1); /* Sokoban guilt */
+          if (In_sokoban(&player.uz))
+            change_luck(-1); /* Sokoban guilt */
           break;
         }
         break;
@@ -281,7 +297,8 @@ STATIC_OVL int moverock() {
                   IS_ROCK(levl[sx][player.uy].typ)))) ||
                verysmall(youmonst.data))) {
         pline("However, you can squeeze yourself into a small opening.");
-        if (In_sokoban(&player.uz)) change_luck(-1); /* Sokoban guilt */
+        if (In_sokoban(&player.uz))
+          change_luck(-1); /* Sokoban guilt */
         break;
       } else
         return (-1);
@@ -407,8 +424,10 @@ STATIC_OVL int still_chewing(xchar x, xchar y) {
 
   unblock_point(x, y); /* vision */
   newsym(x, y);
-  if (digtxt) You(digtxt); /* after newsym */
-  if (dmgtxt) pay_for_damage(dmgtxt, FALSE);
+  if (digtxt)
+    You(digtxt); /* after newsym */
+  if (dmgtxt)
+    pay_for_damage(dmgtxt, FALSE);
   (void)memset((genericptr_t) & digging, 0, sizeof digging);
   return 0;
 }
@@ -518,18 +537,22 @@ bool test_move(int ux, int uy, int dx, int dy, int mode) {
    *  Check for physical obstacles.  First, the place we are going.
    */
   if (IS_ROCK(tmpr->typ) || tmpr->typ == IRONBARS) {
-    if (Blind && mode == DO_MOVE) feel_location(x, y);
+    if (Blind && mode == DO_MOVE)
+      feel_location(x, y);
     if (Passes_walls && may_passwall(x, y)) {
       ; /* do nothing */
     } else if (tmpr->typ == IRONBARS) {
-      if (!(Passes_walls || passes_bars(youmonst.data))) return FALSE;
+      if (!(Passes_walls || passes_bars(youmonst.data)))
+        return FALSE;
     } else if (tunnels(youmonst.data) && !needspick(youmonst.data)) {
       /* Eat the rock. */
-      if (mode == DO_MOVE && still_chewing(x, y)) return FALSE;
+      if (mode == DO_MOVE && still_chewing(x, y))
+        return FALSE;
     } else if (flags.autodig && !flags.run && !flags.nopick && uwep &&
                is_pick(uwep)) {
       /* MRKR: Automatic digging when wielding the appropriate tool */
-      if (mode == DO_MOVE) (void)use_pick_axe2(uwep);
+      if (mode == DO_MOVE)
+        (void)use_pick_axe2(uwep);
       return FALSE;
     } else {
       if (mode == DO_MOVE) {
@@ -542,14 +565,17 @@ bool test_move(int ux, int uy, int dx, int dy, int mode) {
     }
   } else if (IS_DOOR(tmpr->typ)) {
     if (closed_door(x, y)) {
-      if (Blind && mode == DO_MOVE) feel_location(x, y);
+      if (Blind && mode == DO_MOVE)
+        feel_location(x, y);
       if (Passes_walls)
         ; /* do nothing */
       else if (can_ooze(&youmonst)) {
-        if (mode == DO_MOVE) You("ooze under the door.");
+        if (mode == DO_MOVE)
+          You("ooze under the door.");
       } else if (tunnels(youmonst.data) && !needspick(youmonst.data)) {
         /* Eat the door. */
-        if (mode == DO_MOVE && still_chewing(x, y)) return FALSE;
+        if (mode == DO_MOVE && still_chewing(x, y))
+          return FALSE;
       } else {
         if (mode == DO_MOVE) {
           if (amorphous(youmonst.data))
@@ -582,7 +608,8 @@ bool test_move(int ux, int uy, int dx, int dy, int mode) {
 #endif
                                         || block_door(x, y))) {
         /* Diagonal moves into a door are not allowed. */
-        if (Blind && mode == DO_MOVE) feel_location(x, y);
+        if (Blind && mode == DO_MOVE)
+          feel_location(x, y);
         return FALSE;
       }
     }
@@ -591,15 +618,18 @@ bool test_move(int ux, int uy, int dx, int dy, int mode) {
       bad_rock(youmonst.data, x, uy)) {
     /* Move at a diagonal. */
     if (In_sokoban(&player.uz)) {
-      if (mode == DO_MOVE) You("cannot pass that way.");
+      if (mode == DO_MOVE)
+        You("cannot pass that way.");
       return FALSE;
     }
     if (bigmonst(youmonst.data)) {
-      if (mode == DO_MOVE) Your("body is too large to fit through.");
+      if (mode == DO_MOVE)
+        Your("body is too large to fit through.");
       return FALSE;
     }
     if (invent && (inv_weight() + weight_cap() > 600)) {
-      if (mode == DO_MOVE) You("are carrying too much to get through.");
+      if (mode == DO_MOVE)
+        You("are carrying too much to get through.");
       return FALSE;
     }
   }
@@ -636,7 +666,8 @@ bool test_move(int ux, int uy, int dx, int dy, int mode) {
       /* tunneling monsters will chew before pushing */
       if (tunnels(youmonst.data) && !needspick(youmonst.data) &&
           !In_sokoban(&player.uz)) {
-        if (still_chewing(x, y)) return FALSE;
+        if (still_chewing(x, y))
+          return FALSE;
       } else if (moverock() < 0)
         return FALSE;
     } else if (mode == TEST_TRAV) {
@@ -727,7 +758,8 @@ static bool findtravelpath(bool guess) {
           int nx = x + xdir[ordered[dir]];
           int ny = y + ydir[ordered[dir]];
 
-          if (!isok(nx, ny)) continue;
+          if (!isok(nx, ny))
+            continue;
           if ((!Passes_walls && !can_ooze(&youmonst) && closed_door(x, y)) ||
               sobj_at(BOULDER, x, y)) {
             /* closed doors and boulders usually
@@ -838,7 +870,8 @@ void domove() {
   u_wipe_engr(rnd(5));
 
   if (flags.travel) {
-    if (!findtravelpath(FALSE)) (void)findtravelpath(TRUE);
+    if (!findtravelpath(FALSE))
+      (void)findtravelpath(TRUE);
     iflags.travel1 = 0;
   }
 
@@ -882,7 +915,8 @@ void domove() {
     on_ice = !Levitation && is_ice(player.ux, player.uy);
     if (on_ice) {
       static int skates = 0;
-      if (!skates) skates = find_skates();
+      if (!skates)
+        skates = find_skates();
       if ((uarmf && uarmf->otyp == skates) || resists_cold(&youmonst) ||
           Flying || is_floater(youmonst.data) || is_clinger(youmonst.data) ||
           is_whirly(youmonst.data))
@@ -893,7 +927,8 @@ void domove() {
         HFumbling += 1; /* slip on next move */
       }
     }
-    if (!on_ice && (HFumbling & FROMOUTSIDE)) HFumbling &= ~FROMOUTSIDE;
+    if (!on_ice && (HFumbling & FROMOUTSIDE))
+      HFumbling &= ~FROMOUTSIDE;
 
     x = player.ux + player.dx;
     y = player.uy + player.dy;
@@ -1045,11 +1080,13 @@ void domove() {
           fall_asleep(-10, FALSE);
         }
       }
-      if (multi < 0) return; /* we just fainted */
+      if (multi < 0)
+        return; /* we just fainted */
 
       /* try to attack; note that it might evade */
       /* also, we don't attack tame when _safepet_ */
-      if (attack(mtmp)) return;
+      if (attack(mtmp))
+        return;
     }
   }
 
@@ -1196,7 +1233,8 @@ void domove() {
 #endif
           Norep("You are %s.", predicament);
       }
-      if ((player.dx && player.dy) || !rn2(5)) player.utrap--;
+      if ((player.dx && player.dy) || !rn2(5))
+        player.utrap--;
     }
     return;
   }
@@ -1214,7 +1252,8 @@ void domove() {
       return;
 
   /* Check regions entering/leaving */
-  if (!in_out_region(x, y)) return;
+  if (!in_out_region(x, y))
+    return;
 
   /* now move the hero */
   mtmp = m_at(x, y);
@@ -1247,7 +1286,8 @@ void domove() {
     if (mtmp->mtrapped) {
       if (!rn2(mtmp->mtame)) {
         mtmp->mtame = mtmp->mpeaceful = mtmp->msleeping = 0;
-        if (mtmp->mleashed) m_unleash(mtmp, TRUE);
+        if (mtmp->mleashed)
+          m_unleash(mtmp, TRUE);
         growl(mtmp);
       } else {
         yelp(mtmp);
@@ -1365,7 +1405,8 @@ void domove() {
   if (flags.run && iflags.runmode != RUN_TPORT) {
     /* display every step or every 7th step depending upon mode */
     if (iflags.runmode != RUN_LEAP || !(moves % 7L)) {
-      if (flags.time) flags.botl = 1;
+      if (flags.time)
+        flags.botl = 1;
       curs_on_u();
       delay_output();
       if (iflags.runmode == RUN_CRAWL) {
@@ -1453,22 +1494,27 @@ stillinwater:
       } else
 #endif
           if (is_lava(player.ux, player.uy)) {
-        if (lava_effects()) return;
+        if (lava_effects())
+          return;
       } else if (!Wwalking && drown())
         return;
     }
   }
   check_special_room(FALSE);
 #ifdef SINKS
-  if (IS_SINK(levl[player.ux][player.uy].typ) && Levitation) dosinkfall();
+  if (IS_SINK(levl[player.ux][player.uy].typ) && Levitation)
+    dosinkfall();
 #endif
   if (!in_steed_dismounting) { /* if dismounting, we'll check again later */
     Trap *trap = t_at(player.ux, player.uy);
     bool pit;
     pit = (trap && (trap->ttyp == PIT || trap->ttyp == SPIKED_PIT));
-    if (trap && pit) dotrap(trap, 0); /* fall into pit */
-    if (pick) (void)pickup(1);
-    if (trap && !pit) dotrap(trap, 0); /* fall into arrow trap, etc. */
+    if (trap && pit)
+      dotrap(trap, 0); /* fall into pit */
+    if (pick)
+      (void)pickup(1);
+    if (trap && !pit)
+      dotrap(trap, 0); /* fall into arrow trap, etc. */
   }
   if ((mtmp = m_at(player.ux, player.uy)) && !player.uswallow) {
     mtmp->mundetected = mtmp->msleeping = 0;
@@ -1487,7 +1533,8 @@ stillinwater:
           int dmg;
           You("are hit by %s!", x_monnam(mtmp, ARTICLE_A, "falling", 0, TRUE));
           dmg = d(4, 6);
-          if (Half_physical_damage) dmg = (dmg + 1) / 2;
+          if (Half_physical_damage)
+            dmg = (dmg + 1) / 2;
           mdamageu(mtmp, dmg);
         }
         break;
@@ -1538,7 +1585,8 @@ char *in_rooms(xchar x, xchar y, int typewanted) {
       step = 1;
       break;
     default: /* i.e. a regular room # */
-      if (goodtype(rno)) *(--ptr) = rno;
+      if (goodtype(rno))
+        *(--ptr) = rno;
       return (ptr);
   }
 
@@ -1564,12 +1612,14 @@ char *in_rooms(xchar x, xchar y, int typewanted) {
         goodtype(rno))
       *(--ptr) = rno;
     y += step;
-    if (y > max_y_offset) continue;
+    if (y > max_y_offset)
+      continue;
     if (((rno = lev[y].roomno) >= ROOMOFFSET) && !index(ptr, rno) &&
         goodtype(rno))
       *(--ptr) = rno;
     y += step;
-    if (y > max_y_offset) continue;
+    if (y > max_y_offset)
+      continue;
     if (((rno = lev[y].roomno) >= ROOMOFFSET) && !index(ptr, rno) &&
         goodtype(rno))
       *(--ptr) = rno;
@@ -1583,7 +1633,8 @@ bool in_town(int x, int y) {
   struct mkroom *sroom;
   bool has_subrooms = FALSE;
 
-  if (!slev || !slev->flags.town) return FALSE;
+  if (!slev || !slev->flags.town)
+    return FALSE;
 
   /*
    * See if (x,y) is in a room with subrooms, if so, assume it's the
@@ -1592,7 +1643,8 @@ bool in_town(int x, int y) {
   for (sroom = &rooms[0]; sroom->hx > 0; sroom++) {
     if (!sroom->subrooms.empty()) {
       has_subrooms = TRUE;
-      if (inside_room(sroom, x, y)) return TRUE;
+      if (inside_room(sroom, x, y))
+        return TRUE;
     }
   }
 
@@ -1617,10 +1669,12 @@ STATIC_OVL void move_update(bool newlev) {
   for (ptr1 = &player.urooms[0], ptr2 = &player.uentered[0],
       ptr3 = &player.ushops[0], ptr4 = &player.ushops_entered[0];
        *ptr1; ptr1++) {
-    if (!index(player.urooms0, *ptr1)) *(ptr2++) = *ptr1;
+    if (!index(player.urooms0, *ptr1))
+      *(ptr2++) = *ptr1;
     if (IS_SHOP(*ptr1 - ROOMOFFSET)) {
       *(ptr3++) = *ptr1;
-      if (!index(player.ushops0, *ptr1)) *(ptr4++) = *ptr1;
+      if (!index(player.ushops0, *ptr1))
+        *(ptr4++) = *ptr1;
     }
   }
   *ptr2 = '\0';
@@ -1629,7 +1683,8 @@ STATIC_OVL void move_update(bool newlev) {
 
   /* filter player.ushops0 -> player.ushops_left */
   for (ptr1 = &player.ushops0[0], ptr2 = &player.ushops_left[0]; *ptr1; ptr1++)
-    if (!index(player.ushops, *ptr1)) *(ptr2++) = *ptr1;
+    if (!index(player.ushops, *ptr1))
+      *(ptr2++) = *ptr1;
   *ptr2 = '\0';
 }
 
@@ -1639,13 +1694,15 @@ void check_special_room(bool newlev) {
 
   move_update(newlev);
 
-  if (*player.ushops0) u_left_shop(player.ushops_left, newlev);
+  if (*player.ushops0)
+    u_left_shop(player.ushops_left, newlev);
 
   if (!*player.uentered && !*player.ushops_entered) /* implied by newlev */
     return; /* no entrance messages necessary */
 
   /* Did we just enter a shop? */
-  if (*player.ushops_entered) u_entered_shop(player.ushops_entered);
+  if (*player.ushops_entered)
+    u_entered_shop(player.ushops_entered);
 
   for (ptr = &player.uentered[0]; *ptr; ptr++) {
     int roomno = *ptr - ROOMOFFSET, rt = rooms[roomno].rtype;
@@ -1734,7 +1791,8 @@ void check_special_room(bool newlev) {
       }
       if (rt == COURT || rt == SWAMP || rt == MORGUE || rt == ZOO)
         for (mtmp = fmon; mtmp; mtmp = mtmp->nmon)
-          if (!mtmp->dead() && !Stealth && !rn2(3)) mtmp->msleeping = 0;
+          if (!mtmp->dead() && !Stealth && !rn2(3))
+            mtmp->msleeping = 0;
     }
   }
 
@@ -1833,15 +1891,18 @@ void lookaround() {
     return;
   }
 
-  if (Blind || flags.run == 0) return;
+  if (Blind || flags.run == 0)
+    return;
   for (x = player.ux - 1; x <= player.ux + 1; x++)
     for (y = player.uy - 1; y <= player.uy + 1; y++) {
-      if (!isok(x, y)) continue;
+      if (!isok(x, y))
+        continue;
 
       if (player.umonnum == PM_GRID_BUG && x != player.ux && y != player.uy)
         continue;
 
-      if (x == player.ux && y == player.uy) continue;
+      if (x == player.ux && y == player.uy)
+        continue;
 
       if ((mtmp = m_at(x, y)) && mtmp->m_ap_type != M_AP_FURNITURE &&
           mtmp->m_ap_type != M_AP_OBJECT && (!mtmp->minvis || See_invisible) &&
@@ -1851,8 +1912,10 @@ void lookaround() {
           goto stop;
       }
 
-      if (levl[x][y].typ == STONE) continue;
-      if (x == player.ux - player.dx && y == player.uy - player.dy) continue;
+      if (levl[x][y].typ == STONE)
+        continue;
+      if (x == player.ux - player.dx && y == player.uy - player.dy)
+        continue;
 
       if (IS_ROCK(levl[x][y].typ) || (levl[x][y].typ == ROOM) ||
           IS_AIR(levl[x][y].typ))
@@ -1861,16 +1924,20 @@ void lookaround() {
                (mtmp && mtmp->m_ap_type == M_AP_FURNITURE &&
                 (mtmp->mappearance == S_hcdoor ||
                  mtmp->mappearance == S_vcdoor))) {
-        if (x != player.ux && y != player.uy) continue;
-        if (flags.run != 1) goto stop;
+        if (x != player.ux && y != player.uy)
+          continue;
+        if (flags.run != 1)
+          goto stop;
         goto bcorr;
       } else if (levl[x][y].typ == CORR) {
       bcorr:
         if (levl[player.ux][player.uy].typ != ROOM) {
           if (flags.run == 1 || flags.run == 3 || flags.run == 8) {
             i = dist2(x, y, player.ux + player.dx, player.uy + player.dy);
-            if (i > 2) continue;
-            if (corrct == 1 && dist2(x, y, x0, y0) != 1) noturn = 1;
+            if (i > 2)
+              continue;
+            if (corrct == 1 && dist2(x, y, x0, y0) != 1)
+              noturn = 1;
             if (i < i0) {
               i0 = i;
               x0 = x;
@@ -1882,8 +1949,10 @@ void lookaround() {
         }
         continue;
       } else if ((trap = t_at(x, y)) && trap->tseen) {
-        if (flags.run == 1) goto bcorr; /* if you must */
-        if (x == player.ux + player.dx && y == player.uy + player.dy) goto stop;
+        if (flags.run == 1)
+          goto bcorr; /* if you must */
+        if (x == player.ux + player.dx && y == player.uy + player.dy)
+          goto stop;
         continue;
       } else if (is_pool(x, y) || is_lava(x, y)) {
         /* water and lava only stop you if directly in front, and stop
@@ -1898,9 +1967,12 @@ void lookaround() {
           goto stop;
         continue;
       } else { /* e.g. objects or trap or stairs */
-        if (flags.run == 1) goto bcorr;
-        if (flags.run == 8) continue;
-        if (mtmp) continue; /* d */
+        if (flags.run == 1)
+          goto bcorr;
+        if (flags.run == 8)
+          continue;
+        if (mtmp)
+          continue; /* d */
         if (((x == player.ux - player.dx) && (y != player.uy + player.dy)) ||
             ((y == player.uy - player.dy) && (x != player.ux + player.dx)))
           continue;
@@ -1910,7 +1982,8 @@ void lookaround() {
       return;
     } /* end for loops */
 
-  if (corrct > 1 && flags.run == 2) goto stop;
+  if (corrct > 1 && flags.run == 2)
+    goto stop;
   if ((flags.run == 1 || flags.run == 3 || flags.run == 8) && !noturn && !m0 &&
       i0 && (corrct == 1 || (corrct == 2 && i0 == 1))) {
     /* make sure that we do not turn too far */
@@ -1951,8 +2024,10 @@ int monster_nearby() {
   /* Also see the similar check in dochugw() in monmove.c */
   for (x = player.ux - 1; x <= player.ux + 1; x++)
     for (y = player.uy - 1; y <= player.uy + 1; y++) {
-      if (!isok(x, y)) continue;
-      if (x == player.ux && y == player.uy) continue;
+      if (!isok(x, y))
+        continue;
+      if (x == player.ux && y == player.uy)
+        continue;
       if ((mtmp = m_at(x, y)) && mtmp->m_ap_type != M_AP_FURNITURE &&
           mtmp->m_ap_type != M_AP_OBJECT &&
           (!mtmp->mpeaceful || Hallucination) &&
@@ -1966,7 +2041,8 @@ int monster_nearby() {
 }
 
 void nomul(int nval, const char *txt) {
-  if (multi < nval) return;     /* This is a bug fix by ab@unido */
+  if (multi < nval)
+    return;                     /* This is a bug fix by ab@unido */
   player.uinvulnerable = FALSE; /* Kludge to avoid ctrl-C bug -dlc */
   player.usleep = 0;
   multi = nval;
@@ -1985,10 +2061,12 @@ void unmul(const char *msg_override) {
     nomovemsg = msg_override;
   else if (!nomovemsg)
     nomovemsg = You_can_move_again;
-  if (*nomovemsg) pline(nomovemsg);
+  if (*nomovemsg)
+    pline(nomovemsg);
   nomovemsg = 0;
   player.usleep = 0;
-  if (afternmv) (*afternmv)();
+  if (afternmv)
+    (*afternmv)();
   afternmv = 0;
 }
 
@@ -2000,7 +2078,8 @@ STATIC_OVL void maybe_wail() {
                            SHOCK_RES,        FIRE_RES,  SLEEP_RES,  DISINT_RES,
                            TELEPORT_CONTROL, STEALTH,   FAST,       INVIS};
 
-  if (moves <= wailmsg + 50) return;
+  if (moves <= wailmsg + 50)
+    return;
 
   wailmsg = moves;
   if (Role_if(PM_WIZARD) || Race_if(PM_ELF) || Role_if(PM_VALKYRIE)) {
@@ -2012,7 +2091,8 @@ STATIC_OVL void maybe_wail() {
       pline("%s is about to die.", who);
     } else {
       for (i = 0, powercnt = 0; i < SIZE(powers); ++i)
-        if (player.uprops[powers[i]].intrinsic & INTRINSIC) ++powercnt;
+        if (player.uprops[powers[i]].intrinsic & INTRINSIC)
+          ++powercnt;
 
       pline(powercnt >= 4 ? "%s, all your powers will be lost..."
                           : "%s, your life force is running out.",
@@ -2027,7 +2107,8 @@ STATIC_OVL void maybe_wail() {
 void losehp(int n, const char *knam, bool k_format) {
   if (Upolyd) {
     player.mh -= n;
-    if (player.mhmax < player.mh) player.mhmax = player.mh;
+    if (player.mhmax < player.mh)
+      player.mhmax = player.mh;
     flags.botl = 1;
     if (player.mh < 1)
       rehumanize();
@@ -2072,12 +2153,16 @@ int weight_cap() {
       )
     carrcap = MAX_CARR_CAP;
   else {
-    if (carrcap > MAX_CARR_CAP) carrcap = MAX_CARR_CAP;
+    if (carrcap > MAX_CARR_CAP)
+      carrcap = MAX_CARR_CAP;
     if (!Flying) {
-      if (EWounded_legs & LEFT_SIDE) carrcap -= 100;
-      if (EWounded_legs & RIGHT_SIDE) carrcap -= 100;
+      if (EWounded_legs & LEFT_SIDE)
+        carrcap -= 100;
+      if (EWounded_legs & RIGHT_SIDE)
+        carrcap -= 100;
     }
-    if (carrcap < 0) carrcap = 0;
+    if (carrcap < 0)
+      carrcap = 0;
   }
   return ((int)carrcap);
 }
@@ -2121,8 +2206,10 @@ int inv_weight() {
 int calc_capacity(int xtra_wt) {
   int cap, wt = inv_weight() + xtra_wt;
 
-  if (wt <= 0) return UNENCUMBERED;
-  if (wc <= 1) return OVERLOADED;
+  if (wt <= 0)
+    return UNENCUMBERED;
+  if (wc <= 1)
+    return OVERLOADED;
   cap = (wt * 2 / wc) + 1;
   return min(cap, OVERLOADED);
 }
@@ -2168,7 +2255,8 @@ int inv_cnt() {
 long money_cnt(Object *otmp) {
   while (otmp) {
     /* Must change when silver & copper is implemented: */
-    if (otmp->oclass == COIN_CLASS) return otmp->quan;
+    if (otmp->oclass == COIN_CLASS)
+      return otmp->quan;
     otmp = otmp->nobj;
   }
   return 0;

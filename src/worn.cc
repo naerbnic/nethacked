@@ -71,7 +71,8 @@ void setworn(Object *obj, long mask) {
                 player.uprops[p].extrinsic & ~wp->w_mask;
             if ((p = w_blocks(oobj, mask)) != 0)
               player.uprops[p].blocked &= ~wp->w_mask;
-            if (oobj->oartifact) set_artifact_intrinsic(oobj, 0, mask);
+            if (oobj->oartifact)
+              set_artifact_intrinsic(oobj, 0, mask);
           }
         }
         *(wp->w_obj) = obj;
@@ -91,7 +92,8 @@ void setworn(Object *obj, long mask) {
               if ((p = w_blocks(obj, mask)) != 0)
                 player.uprops[p].blocked |= wp->w_mask;
             }
-            if (obj->oartifact) set_artifact_intrinsic(obj, 1, mask);
+            if (obj->oartifact)
+              set_artifact_intrinsic(obj, 1, mask);
           }
         }
       }
@@ -105,15 +107,18 @@ void setnotworn(Object *obj) {
   const struct worn *wp;
   int p;
 
-  if (!obj) return;
-  if (obj == uwep || obj == uswapwep) player.twoweap = 0;
+  if (!obj)
+    return;
+  if (obj == uwep || obj == uswapwep)
+    player.twoweap = 0;
   for (wp = worn; wp->w_mask; wp++)
     if (obj == *(wp->w_obj)) {
       *(wp->w_obj) = 0;
       p = objects[obj->otyp].oc_oprop;
       player.uprops[p].extrinsic = player.uprops[p].extrinsic & ~wp->w_mask;
       obj->owornmask &= ~wp->w_mask;
-      if (obj->oartifact) set_artifact_intrinsic(obj, 0, wp->w_mask);
+      if (obj->oartifact)
+        set_artifact_intrinsic(obj, 0, wp->w_mask);
       if ((p = w_blocks(obj, wp->w_mask)) != 0)
         player.uprops[p].blocked &= ~wp->w_mask;
     }
@@ -124,8 +129,9 @@ void mon_set_minvis(Monster *mon) {
   mon->perminvis = 1;
   if (!mon->invis_blkd) {
     mon->minvis = 1;
-    newsym(mon->mx, mon->my);        /* make it disappear */
-    if (mon->wormno) see_wsegs(mon); /* and any tail too */
+    newsym(mon->mx, mon->my); /* make it disappear */
+    if (mon->wormno)
+      see_wsegs(mon); /* and any tail too */
   }
 }
 
@@ -159,13 +165,15 @@ void mon_adjust_speed(Monster *mon, int adjust, Object *obj) {
       break;
     case -3: /* petrification */
       /* take away intrinsic speed but don't reduce normal speed */
-      if (mon->permspeed == MFAST) mon->permspeed = 0;
+      if (mon->permspeed == MFAST)
+        mon->permspeed = 0;
       petrify = TRUE;
       break;
   }
 
   for (otmp = mon->minvent; otmp; otmp = otmp->nobj)
-    if (otmp->owornmask && objects[otmp->otyp].oc_oprop == FAST) break;
+    if (otmp->owornmask && objects[otmp->otyp].oc_oprop == FAST)
+      break;
   if (otmp) /* speed boots */
     mon->mspeed = MFAST;
   else
@@ -179,7 +187,8 @@ void mon_adjust_speed(Monster *mon, int adjust, Object *obj) {
     if (petrify) {
       /* mimic the player's petrification countdown; "slowing down"
          even if fast movement rate retained via worn speed boots */
-      if (flags.verbose) pline("%s is slowing down.", Monnam(mon));
+      if (flags.verbose)
+        pline("%s is slowing down.", Monnam(mon));
     } else if (adjust > 0 || mon->mspeed == MFAST)
       pline("%s is suddenly moving %sfaster.", Monnam(mon), howmuch);
     else
@@ -200,7 +209,8 @@ void update_mon_intrinsics(Monster *mon, Object *obj, bool on, bool silently) {
   int which = (int)objects[obj->otyp].oc_oprop;
 
   unseen = !canseemon(mon);
-  if (!which) goto maybe_blocks;
+  if (!which)
+    goto maybe_blocks;
 
   if (on) {
     switch (which) {
@@ -209,7 +219,8 @@ void update_mon_intrinsics(Monster *mon, Object *obj, bool on, bool silently) {
         break;
       case FAST: {
         bool save_in_mklev = in_mklev;
-        if (silently) in_mklev = TRUE;
+        if (silently)
+          in_mklev = TRUE;
         mon_adjust_speed(mon, 0, obj);
         in_mklev = save_in_mklev;
         break;
@@ -248,7 +259,8 @@ void update_mon_intrinsics(Monster *mon, Object *obj, bool on, bool silently) {
         break;
       case FAST: {
         bool save_in_mklev = in_mklev;
-        if (silently) in_mklev = TRUE;
+        if (silently)
+          in_mklev = TRUE;
         mon_adjust_speed(mon, 0, obj);
         in_mklev = save_in_mklev;
         break;
@@ -270,7 +282,8 @@ void update_mon_intrinsics(Monster *mon, Object *obj, bool on, bool silently) {
           for (otmp = mon->minvent; otmp; otmp = otmp->nobj)
             if (otmp->owornmask && (int)objects[otmp->otyp].oc_oprop == which)
               break;
-          if (!otmp) mon->mintrinsics &= ~((unsigned short)mask);
+          if (!otmp)
+            mon->mintrinsics &= ~((unsigned short)mask);
         }
         break;
       default:
@@ -297,7 +310,8 @@ maybe_blocks:
 #endif
 
   /* if couldn't see it but now can, or vice versa, update display */
-  if (!silently && (unseen ^ !canseemon(mon))) newsym(mon->mx, mon->my);
+  if (!silently && (unseen ^ !canseemon(mon)))
+    newsym(mon->mx, mon->my);
 }
 
 int find_mac(Monster *mon) {
@@ -306,7 +320,8 @@ int find_mac(Monster *mon) {
   long mwflags = mon->misc_worn_check;
 
   for (obj = mon->minvent; obj; obj = obj->nobj) {
-    if (obj->owornmask & mwflags) base -= ARM_BONUS(obj);
+    if (obj->owornmask & mwflags)
+      base -= ARM_BONUS(obj);
     /* since ARM_BONUS is positive, subtracting it increases AC */
   }
   return base;
@@ -370,14 +385,17 @@ STATIC_OVL void m_dowear_type(Monster *mon, long flag, bool creation,
   int unseen = !canseemon(mon);
   char nambuf[BUFSZ];
 
-  if (mon->mfrozen) return; /* probably putting previous item on */
+  if (mon->mfrozen)
+    return; /* probably putting previous item on */
 
   /* Get a copy of monster's name before altering its visibility */
   strcpy(nambuf, See_invisible ? Monnam(mon) : mon_nam(mon));
 
   old = which_armor(mon, flag);
-  if (old && old->cursed) return;
-  if (old && flag == W_AMUL) return; /* no such thing as better amulets */
+  if (old && old->cursed)
+    return;
+  if (old && flag == W_AMUL)
+    return; /* no such thing as better amulets */
   best = old;
 
   for (obj = mon->minvent; obj; obj = obj->nobj) {
@@ -391,32 +409,42 @@ STATIC_OVL void m_dowear_type(Monster *mon, long flag, bool creation,
         goto outer_break; /* no such thing as better amulets */
 #ifdef TOURIST
       case W_ARMU:
-        if (!is_shirt(obj)) continue;
+        if (!is_shirt(obj))
+          continue;
         break;
 #endif
       case W_ARMC:
-        if (!is_cloak(obj)) continue;
+        if (!is_cloak(obj))
+          continue;
         break;
       case W_ARMH:
-        if (!is_helmet(obj)) continue;
+        if (!is_helmet(obj))
+          continue;
         /* (flimsy exception matches polyself handling) */
-        if (has_horns(mon->data) && !is_flimsy(obj)) continue;
+        if (has_horns(mon->data) && !is_flimsy(obj))
+          continue;
         break;
       case W_ARMS:
-        if (!is_shield(obj)) continue;
+        if (!is_shield(obj))
+          continue;
         break;
       case W_ARMG:
-        if (!is_gloves(obj)) continue;
+        if (!is_gloves(obj))
+          continue;
         break;
       case W_ARMF:
-        if (!is_boots(obj)) continue;
+        if (!is_boots(obj))
+          continue;
         break;
       case W_ARM:
-        if (!is_suit(obj)) continue;
-        if (racialexception && (racial_exception(mon, obj) < 1)) continue;
+        if (!is_suit(obj))
+          continue;
+        if (racialexception && (racial_exception(mon, obj) < 1))
+          continue;
         break;
     }
-    if (obj->owornmask) continue;
+    if (obj->owornmask)
+      continue;
     /* I'd like to define a VISIBLE_ARM_BONUS which doesn't assume the
      * monster knows obj->spe, but if I did that, a monster would keep
      * switching forever between two -2 caps since when it took off one
@@ -429,7 +457,8 @@ STATIC_OVL void m_dowear_type(Monster *mon, long flag, bool creation,
     best = obj;
   }
 outer_break:
-  if (!best || best == old) return;
+  if (!best || best == old)
+    return;
 
   /* if wearing a cloak, account for the time spent removing
      and re-wearing it when putting on a suit or shirt */
@@ -442,7 +471,8 @@ outer_break:
     m_delay += 2;
   /* when upgrading a piece of armor, account for time spent
      taking off current one */
-  if (old) m_delay += objects[old->otyp].oc_delay;
+  if (old)
+    m_delay += objects[old->otyp].oc_delay;
 
   if (old) /* do this first to avoid "(being worn)" */
     old->owornmask = 0L;
@@ -458,9 +488,11 @@ outer_break:
     } /* can see it */
     m_delay += objects[best->otyp].oc_delay;
     mon->mfrozen = m_delay;
-    if (mon->mfrozen) mon->mcanmove = 0;
+    if (mon->mfrozen)
+      mon->mcanmove = 0;
   }
-  if (old) update_mon_intrinsics(mon, old, FALSE, creation);
+  if (old)
+    update_mon_intrinsics(mon, old, FALSE, creation);
   mon->misc_worn_check |= flag;
   best->owornmask |= flag;
   update_mon_intrinsics(mon, best, TRUE, creation);
@@ -478,14 +510,16 @@ Object *which_armor(Monster *mon, long flag) {
   Object *obj;
 
   for (obj = mon->minvent; obj; obj = obj->nobj)
-    if (obj->owornmask & flag) return obj;
+    if (obj->owornmask & flag)
+      return obj;
   return (nullptr);
 }
 
 /* remove an item of armor and then drop it */
 STATIC_OVL void m_lose_armor(Monster *mon, Object *obj) {
   mon->misc_worn_check &= ~obj->owornmask;
-  if (obj->owornmask) update_mon_intrinsics(mon, obj, FALSE, FALSE);
+  if (obj->owornmask)
+    update_mon_intrinsics(mon, obj, FALSE, FALSE);
   obj->owornmask = 0L;
 
   RemoveObjectFromStorage(obj);
@@ -519,13 +553,17 @@ void clear_bypasses() {
     }
   }
   /* invent and mydogs chains shouldn't matter here */
-  for (otmp = migrating_objs; otmp; otmp = otmp->nobj) otmp->bypass = 0;
+  for (otmp = migrating_objs; otmp; otmp = otmp->nobj)
+    otmp->bypass = 0;
   for (mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
-    if (mtmp->dead()) continue;
-    for (otmp = mtmp->minvent; otmp; otmp = otmp->nobj) otmp->bypass = 0;
+    if (mtmp->dead())
+      continue;
+    for (otmp = mtmp->minvent; otmp; otmp = otmp->nobj)
+      otmp->bypass = 0;
   }
   for (mtmp = migrating_mons; mtmp; mtmp = mtmp->nmon) {
-    for (otmp = mtmp->minvent; otmp; otmp = otmp->nobj) otmp->bypass = 0;
+    for (otmp = mtmp->minvent; otmp; otmp = otmp->nobj)
+      otmp->bypass = 0;
   }
   flags.bypasses = FALSE;
 }
@@ -560,7 +598,8 @@ void mon_break_armor(Monster *mon, bool polyspot) {
         if (vis)
           pline("%s %s falls off!", s_suffix(Monnam(mon)),
                 cloak_simple_name(otmp));
-        if (polyspot) bypass_obj(otmp);
+        if (polyspot)
+          bypass_obj(otmp);
         m_lose_armor(mon, otmp);
       } else {
         if (vis)
@@ -586,7 +625,8 @@ void mon_break_armor(Monster *mon, bool polyspot) {
         pline("%s armor falls around %s!", s_suffix(Monnam(mon)), pronoun);
       else
         You_hear("a thud.");
-      if (polyspot) bypass_obj(otmp);
+      if (polyspot)
+        bypass_obj(otmp);
       m_lose_armor(mon, otmp);
     }
     if ((otmp = which_armor(mon, W_ARMC)) != 0) {
@@ -598,7 +638,8 @@ void mon_break_armor(Monster *mon, bool polyspot) {
           pline("%s shrinks out of %s %s!", Monnam(mon), ppronoun,
                 cloak_simple_name(otmp));
       }
-      if (polyspot) bypass_obj(otmp);
+      if (polyspot)
+        bypass_obj(otmp);
       m_lose_armor(mon, otmp);
     }
 #ifdef TOURIST
@@ -610,7 +651,8 @@ void mon_break_armor(Monster *mon, bool polyspot) {
           pline("%s becomes much too small for %s shirt!", Monnam(mon),
                 ppronoun);
       }
-      if (polyspot) bypass_obj(otmp);
+      if (polyspot)
+        bypass_obj(otmp);
       m_lose_armor(mon, otmp);
     }
 #endif
@@ -621,7 +663,8 @@ void mon_break_armor(Monster *mon, bool polyspot) {
       if (vis)
         pline("%s drops %s gloves%s!", Monnam(mon), ppronoun,
               mon->weapon() ? " and weapon" : "");
-      if (polyspot) bypass_obj(otmp);
+      if (polyspot)
+        bypass_obj(otmp);
       m_lose_armor(mon, otmp);
     }
     if ((otmp = which_armor(mon, W_ARMS)) != 0) {
@@ -629,7 +672,8 @@ void mon_break_armor(Monster *mon, bool polyspot) {
         pline("%s can no longer hold %s shield!", Monnam(mon), ppronoun);
       else
         You_hear("a clank.");
-      if (polyspot) bypass_obj(otmp);
+      if (polyspot)
+        bypass_obj(otmp);
       m_lose_armor(mon, otmp);
     }
   }
@@ -642,7 +686,8 @@ void mon_break_armor(Monster *mon, bool polyspot) {
               surface(mon->mx, mon->my));
       else
         You_hear("a clank.");
-      if (polyspot) bypass_obj(otmp);
+      if (polyspot)
+        bypass_obj(otmp);
       m_lose_armor(mon, otmp);
     }
   }
@@ -655,18 +700,22 @@ void mon_break_armor(Monster *mon, bool polyspot) {
           pline("%s boots %s off %s feet!", s_suffix(Monnam(mon)),
                 verysmall(mdat) ? "slide" : "are pushed", ppronoun);
       }
-      if (polyspot) bypass_obj(otmp);
+      if (polyspot)
+        bypass_obj(otmp);
       m_lose_armor(mon, otmp);
     }
   }
 #ifdef STEED
   if (!can_saddle(mon)) {
     if ((otmp = which_armor(mon, W_SADDLE)) != 0) {
-      if (polyspot) bypass_obj(otmp);
+      if (polyspot)
+        bypass_obj(otmp);
       m_lose_armor(mon, otmp);
-      if (vis) pline("%s saddle falls off.", s_suffix(Monnam(mon)));
+      if (vis)
+        pline("%s saddle falls off.", s_suffix(Monnam(mon)));
     }
-    if (mon == player.usteed) goto noride;
+    if (mon == player.usteed)
+      goto noride;
   } else if (mon == player.usteed && !can_ride(mon)) {
   noride:
     You("can no longer ride %s.", mon_nam(mon));
@@ -688,7 +737,8 @@ void mon_break_armor(Monster *mon, bool polyspot) {
    use more armor abilities */
 static int extra_pref(Monster *mon, Object *obj) {
   if (obj) {
-    if (obj->otyp == SPEED_BOOTS && mon->permspeed != MFAST) return 20;
+    if (obj->otyp == SPEED_BOOTS && mon->permspeed != MFAST)
+      return 20;
   }
   return 0;
 }
@@ -705,7 +755,8 @@ int racial_exception(Monster *mon, Object *obj) {
 
   /* Acceptable Exceptions: */
   /* Allow hobbits to wear elven armor - LoTR */
-  if (ptr == &mons[PM_HOBBIT] && is_elven_armor(obj)) return 1;
+  if (ptr == &mons[PM_HOBBIT] && is_elven_armor(obj))
+    return 1;
   /* Unacceptable Exceptions: */
   /* Checks for object that certain races should never use go here */
   /*	return -1; */

@@ -96,7 +96,8 @@ char *fname_encode(const char *legal, char quotechar, char *s, char *callerbuf,
 
   while (*sp) {
     /* Do we have room for one more character or encoding? */
-    if ((bufsz - cnt) <= 4) return callerbuf;
+    if ((bufsz - cnt) <= 4)
+      return callerbuf;
 
     if (*sp == quotechar) {
       (void)sprintf(op, "%c%02X", quotechar, *sp);
@@ -139,17 +140,22 @@ char *fname_decode(char quotechar, char *s, char *callerbuf, int bufsz) {
 
   while (*sp) {
     /* Do we have room for one more character? */
-    if ((bufsz - cnt) <= 2) return callerbuf;
+    if ((bufsz - cnt) <= 2)
+      return callerbuf;
     if (*sp == quotechar) {
       sp++;
       for (k = 0; k < 16; ++k)
-        if (*sp == hexdigits[k]) break;
-      if (k >= 16) return callerbuf; /* impossible, so bail */
+        if (*sp == hexdigits[k])
+          break;
+      if (k >= 16)
+        return callerbuf; /* impossible, so bail */
       calc = k << 4;
       sp++;
       for (k = 0; k < 16; ++k)
-        if (*sp == hexdigits[k]) break;
-      if (k >= 16) return callerbuf; /* impossible, so bail */
+        if (*sp == hexdigits[k])
+          break;
+      if (k >= 16)
+        return callerbuf; /* impossible, so bail */
       calc += k;
       sp++;
       *op++ = calc;
@@ -172,7 +178,8 @@ const char *fqname(const char *basename, int whichprefix, int buffnum) {
 #else
   if (!basename || whichprefix < 0 || whichprefix >= PREFIX_COUNT)
     return basename;
-  if (!fqn_prefix[whichprefix]) return basename;
+  if (!fqn_prefix[whichprefix])
+    return basename;
   if (buffnum < 0 || buffnum >= FQN_NUMBUF) {
     impossible("Invalid fqn_filename_buffer specified: %d", buffnum);
     buffnum = 0;
@@ -195,22 +202,26 @@ int validate_prefix_locations(char *reasonbuf) {
   int prefcnt, failcount = 0;
   char panicbuf1[BUFSZ], panicbuf2[BUFSZ], *details;
 
-  if (reasonbuf) reasonbuf[0] = '\0';
+  if (reasonbuf)
+    reasonbuf[0] = '\0';
   for (prefcnt = 1; prefcnt < PREFIX_COUNT; prefcnt++) {
     /* don't test writing to configdir or datadir; they're readonly */
-    if (prefcnt == CONFIGPREFIX || prefcnt == DATAPREFIX) continue;
+    if (prefcnt == CONFIGPREFIX || prefcnt == DATAPREFIX)
+      continue;
     filename = fqname("validate", prefcnt, 3);
     if ((fp = fopen(filename, "w"))) {
       fclose(fp);
       (void)unlink(filename);
     } else {
       if (reasonbuf) {
-        if (failcount) strcat(reasonbuf, ", ");
+        if (failcount)
+          strcat(reasonbuf, ", ");
         strcat(reasonbuf, fqn_prefix_names[prefcnt]);
       }
       /* the paniclog entry gets the value of errno as well */
       sprintf(panicbuf1, "Invalid %s", fqn_prefix_names[prefcnt]);
-      if (!(details = strerror(errno))) details = "";
+      if (!(details = strerror(errno)))
+        details = "";
       sprintf(panicbuf2, "\"%s\", (%d) %s", fqn_prefix[prefcnt], errno,
               details);
       paniclog(panicbuf1, panicbuf2);
@@ -246,7 +257,8 @@ void set_levelfile_name(char *file, int lev) {
   char *tf;
 
   tf = rindex(file, '.');
-  if (!tf) tf = eos(file);
+  if (!tf)
+    tf = eos(file);
   sprintf(tf, ".%d", lev);
   return;
 }
@@ -255,7 +267,8 @@ int create_levelfile(int lev, char errbuf[]) {
   int fd;
   const char *fq_lock;
 
-  if (errbuf) *errbuf = '\0';
+  if (errbuf)
+    *errbuf = '\0';
   set_levelfile_name(lock, lev);
   fq_lock = fqname(lock, LEVELPREFIX, 0);
 
@@ -274,7 +287,8 @@ int open_levelfile(int lev, char errbuf[]) {
   int fd;
   const char *fq_lock;
 
-  if (errbuf) *errbuf = '\0';
+  if (errbuf)
+    *errbuf = '\0';
   set_levelfile_name(lock, lev);
   fq_lock = fqname(lock, LEVELPREFIX, 0);
 #ifdef HOLD_LOCKFILE_OPEN
@@ -302,7 +316,8 @@ void delete_levelfile(int lev) {
   if (lev == 0 || (level_info[lev].flags & LFILE_EXISTS)) {
     set_levelfile_name(lock, lev);
 #ifdef HOLD_LOCKFILE_OPEN
-    if (lev == 0) really_close();
+    if (lev == 0)
+      really_close();
 #endif
     (void)unlink(fqname(lock, LEVELPREFIX, 0));
     level_info[lev].flags &= ~LFILE_EXISTS;
@@ -345,7 +360,8 @@ STATIC_OVL int open_levelfile_exclusively(const char *name, int lev,
     fd = sopen(name, oflag, SH_DENYRW, FCMASK);
     lftrack.fd = fd;
     lftrack.oflag = oflag;
-    if (fd >= 0) lftrack.nethack_thinks_it_is_open = TRUE;
+    if (fd >= 0)
+      lftrack.nethack_thinks_it_is_open = TRUE;
   }
   return fd;
 }
@@ -401,7 +417,8 @@ STATIC_OVL char *set_bonestemp_name() {
   char *tf;
 
   tf = rindex(lock, '.');
-  if (!tf) tf = eos(lock);
+  if (!tf)
+    tf = eos(lock);
   sprintf(tf, ".bn");
   return lock;
 }
@@ -410,7 +427,8 @@ int create_bonesfile(d_level *lev, char **bonesid, char errbuf[]) {
   const char *file;
   int fd;
 
-  if (errbuf) *errbuf = '\0';
+  if (errbuf)
+    *errbuf = '\0';
   *bonesid = set_bonesfile_name(bones, lev);
   file = set_bonestemp_name();
   file = fqname(file, BONESPREFIX, 0);
@@ -527,7 +545,8 @@ int restore_saved_game() {
   fq_save = fqname(SAVEF, SAVEPREFIX, 0);
 
   uncompress(fq_save);
-  if ((fd = open_savefile()) < 0) return fd;
+  if ((fd = open_savefile()) < 0)
+    return fd;
 
   if (!uptodate(fd, fq_save)) {
     (void)close(fd), fd = -1;
@@ -543,7 +562,8 @@ char **get_saved_games() {
 void free_saved_games(char **saved) {
   if (saved) {
     int i = 0;
-    while (saved[i]) free((genericptr_t)saved[i++]);
+    while (saved[i])
+      free((genericptr_t)saved[i++]);
     free((genericptr_t)saved);
   }
 }
@@ -587,12 +607,14 @@ STATIC_OVL void docompress_file(const char *filename, bool uncomp) {
 #endif
   /* when compressing, we know the file exists */
   if (uncomp) {
-    if ((cf = fopen(cfn, RDBMODE)) == (FILE *)0) return;
+    if ((cf = fopen(cfn, RDBMODE)) == (FILE *)0)
+      return;
     (void)fclose(cf);
   }
 
   args[0] = COMPRESS;
-  if (uncomp) args[++i] = "-d"; /* uncompress */
+  if (uncomp)
+    args[++i] = "-d"; /* uncompress */
 #ifdef COMPRESS_OPTIONS
   {
     /* we can't guarantee there's only one additional option, sigh */
@@ -621,7 +643,8 @@ STATIC_OVL void docompress_file(const char *filename, bool uncomp) {
    * there is an error message from the compression, the 'y' or 'n' can
    * end up being displayed after the error message.
    */
-  if (istty) mark_synch();
+  if (istty)
+    mark_synch();
   f = fork();
   if (f == 0) { /* child */
                 /* any error messages from the compression must come out after
@@ -629,7 +652,8 @@ STATIC_OVL void docompress_file(const char *filename, bool uncomp) {
                  * them will have to clear the first line.  This should be
                  * invisible if there are no error messages.
                  */
-    if (istty) raw_print("");
+    if (istty)
+      raw_print("");
     /* run compressor without privileges, in case other programs
      * have surprises along the line of gzip once taking filenames
      * in GZIP.
@@ -662,7 +686,8 @@ STATIC_OVL void docompress_file(const char *filename, bool uncomp) {
   (void)wait((int *)&i);
   (void)signal(SIGINT, (SIG_RET_TYPE)done1);
 #ifdef WIZARD
-  if (wizard) (void)signal(SIGQUIT, SIG_DFL);
+  if (wizard)
+    (void)signal(SIGQUIT, SIG_DFL);
 #endif
   if (i == 0) {
     /* (un)compress succeeded: remove file left behind */
@@ -807,7 +832,8 @@ void unlock_file(char const *filename) {
     lockname = fqname(lockname, LOCKPREFIX, 2);
 #endif
 
-    if (unlink(lockname) < 0) HUP raw_printf("Can't unlink %s.", lockname);
+    if (unlink(lockname) < 0)
+      HUP raw_printf("Can't unlink %s.", lockname);
 #ifdef NO_FILE_LINKS
     (void)close(lockfd);
 #endif
@@ -860,15 +886,18 @@ STATIC_OVL FILE *fopen_config_file(const char *filename) {
     strcpy(tmp_config, configfile);
   else
     sprintf(tmp_config, "%s/%s", envp, configfile);
-  if ((fp = fopenp(tmp_config, "r")) != (FILE *)0) return (fp);
+  if ((fp = fopenp(tmp_config, "r")) != (FILE *)0)
+    return (fp);
 #if defined(__APPLE__)
   /* try an alternative */
   if (envp) {
     sprintf(tmp_config, "%s/%s", envp, "Library/Preferences/NetHack Defaults");
-    if ((fp = fopenp(tmp_config, "r")) != (FILE *)0) return (fp);
+    if ((fp = fopenp(tmp_config, "r")) != (FILE *)0)
+      return (fp);
     sprintf(tmp_config, "%s/%s", envp,
             "Library/Preferences/NetHack Defaults.txt");
-    if ((fp = fopenp(tmp_config, "r")) != (FILE *)0) return (fp);
+    if ((fp = fopenp(tmp_config, "r")) != (FILE *)0)
+      return (fp);
   }
   if (errno != ENOENT) {
     char const *details;
@@ -876,7 +905,8 @@ STATIC_OVL FILE *fopen_config_file(const char *filename) {
     /* e.g., problems when setuid NetHack can't search home
      * directory restricted to user */
 
-    if ((details = strerror(errno)) == 0) details = "";
+    if ((details = strerror(errno)) == 0)
+      details = "";
     raw_printf("Couldn't open default config file %s %s(%d).", tmp_config,
                details, errno);
     wait_synch();
@@ -905,12 +935,14 @@ STATIC_OVL int get_uchars(FILE *fp, char *buf, char *bufp, uchar *list,
       case '\n':
         if (havenum) {
           /* if modifying in place, don't insert zeros */
-          if (num || !modlist) list[count] = num;
+          if (num || !modlist)
+            list[count] = num;
           count++;
           num = 0;
           havenum = FALSE;
         }
-        if (count == size || !*bufp) return count;
+        if (count == size || !*bufp)
+          return count;
         bufp++;
         break;
 
@@ -930,9 +962,11 @@ STATIC_OVL int get_uchars(FILE *fp, char *buf, char *bufp, uchar *list,
         break;
 
       case '\\':
-        if (fp == (FILE *)0) goto gi_error;
+        if (fp == (FILE *)0)
+          goto gi_error;
         do {
-          if (!fgets(buf, BUFSZ, fp)) goto gi_error;
+          if (!fgets(buf, BUFSZ, fp))
+            goto gi_error;
         } while (buf[0] == '#');
         bufp = buf;
         break;
@@ -951,9 +985,11 @@ STATIC_OVL int get_uchars(FILE *fp, char *buf, char *bufp, uchar *list,
 STATIC_OVL void adjust_prefix(char *bufp, int prefixid) {
   char *ptr;
 
-  if (!bufp) return;
+  if (!bufp)
+    return;
   /* Backward compatibility, ignore trailing ;n */
-  if ((ptr = index(bufp, ';')) != 0) *ptr = '\0';
+  if ((ptr = index(bufp, ';')) != 0)
+    *ptr = '\0';
   if (strlen(bufp) > 0) {
     fqn_prefix[prefixid] = (char *)alloc(strlen(bufp) + 2);
     strcpy(fqn_prefix[prefixid], bufp);
@@ -971,11 +1007,13 @@ int parse_config_line(FILE *fp, char *buf, char *tmp_ramdisk,
   uchar translate[MAXPCHARS];
   int len;
 
-  if (*buf == '#') return 1;
+  if (*buf == '#')
+    return 1;
 
   /* remove trailing whitespace */
   bufp = eos(buf);
-  while (--bufp > buf && isspace(*bufp)) continue;
+  while (--bufp > buf && isspace(*bufp))
+    continue;
 
   if (bufp <= buf)
     return 1; /* skip all-blank lines */
@@ -985,8 +1023,10 @@ int parse_config_line(FILE *fp, char *buf, char *tmp_ramdisk,
   /* find the '=' or ':' */
   bufp = index(buf, '=');
   altp = index(buf, ':');
-  if (!bufp || (altp && altp < bufp)) bufp = altp;
-  if (!bufp) return 0;
+  if (!bufp || (altp && altp < bufp))
+    bufp = altp;
+  if (!bufp)
+    return 0;
 
   /* skip  whitespace between '=' and value */
   do {
@@ -1052,7 +1092,8 @@ int parse_config_line(FILE *fp, char *buf, char *tmp_ramdisk,
     }
   } else if (match_varname(buf, "ROLE", 4) ||
              match_varname(buf, "CHARACTER", 4)) {
-    if ((len = str2role(bufp)) >= 0) flags.initrole = len;
+    if ((len = str2role(bufp)) >= 0)
+      flags.initrole = len;
   } else if (match_varname(buf, "DOGNAME", 3)) {
     (void)strncpy(dogname, bufp, PL_PSIZ - 1);
   } else if (match_varname(buf, "CATNAME", 3)) {
@@ -1114,7 +1155,8 @@ void read_config_file(const char *filename) {
   char buf[4 * BUFSZ];
   FILE *fp;
 
-  if (!(fp = fopen_config_file(filename))) return;
+  if (!(fp = fopen_config_file(filename)))
+    return;
 
   /* begin detection of duplicate configfile options */
   set_duplicate_opt_detection(1);
@@ -1140,8 +1182,10 @@ STATIC_OVL FILE *fopen_wizkit_file() {
   char *envp;
 
   envp = nh_getenv("WIZKIT");
-  if (envp && *envp) (void)strncpy(wizkit, envp, WIZKIT_MAX - 1);
-  if (!wizkit[0]) return (FILE *)0;
+  if (envp && *envp)
+    (void)strncpy(wizkit, envp, WIZKIT_MAX - 1);
+  if (!wizkit[0])
+    return (FILE *)0;
 
   if (access(wizkit, 4) == -1) {
     /* 4 is R_OK on newer systems */
@@ -1183,12 +1227,14 @@ void read_wizkit() {
   Object *otmp;
   bool bad_items = FALSE, skip = FALSE;
 
-  if (!wizard || !(fp = fopen_wizkit_file())) return;
+  if (!wizard || !(fp = fopen_wizkit_file()))
+    return;
 
   while (fgets(buf, (int)(sizeof buf), fp)) {
     ep = index(buf, '\n');
-    if (skip) {             /* in case previous line was too long */
-      if (ep) skip = FALSE; /* found newline; next line is normal */
+    if (skip) { /* in case previous line was too long */
+      if (ep)
+        skip = FALSE; /* found newline; next line is normal */
     } else {
       if (!ep)
         skip = TRUE; /* newline missing; discard next fgets */
@@ -1198,7 +1244,8 @@ void read_wizkit() {
       if (buf[0]) {
         otmp = readobjnam(buf, nullptr, FALSE);
         if (otmp) {
-          if (otmp != &zeroobj) otmp = addinv(otmp);
+          if (otmp != &zeroobj)
+            otmp = addinv(otmp);
         } else {
           /* .60 limits output line width to 79 chars */
           raw_printf("Bad wizkit item: \"%.60s\"", buf);
@@ -1207,7 +1254,8 @@ void read_wizkit() {
       }
     }
   }
-  if (bad_items) wait_synch();
+  if (bad_items)
+    wait_synch();
   (void)fclose(fp);
   return;
 }
@@ -1272,7 +1320,8 @@ bool recover_savefile() {
   int processed[256];
   char savename[SAVESIZE], errbuf[BUFSZ];
 
-  for (lev = 0; lev < 256; lev++) processed[lev] = 0;
+  for (lev = 0; lev < 256; lev++)
+    processed[lev] = 0;
 
   /* level 0 file contains:
    *	pid of creating process (ignored here)
@@ -1405,7 +1454,8 @@ bool copy_bytes(int ifd, int ofd) {
   do {
     nfrom = read(ifd, buf, BUFSIZ);
     nto = write(ofd, buf, nfrom);
-    if (nto != nfrom) return FALSE;
+    if (nto != nfrom)
+      return FALSE;
   } while (nfrom == BUFSIZ);
   return TRUE;
 }

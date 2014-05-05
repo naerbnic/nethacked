@@ -30,7 +30,8 @@ static void getpos_help(bool force, const char *goal) {
   sprintf(sbuf, "Type a .%s when you are at the right place.",
           doing_what_is ? " or , or ; or :" : "");
   putstr(tmpwin, 0, sbuf);
-  if (!force) putstr(tmpwin, 0, "Type Space or Escape when you're done.");
+  if (!force)
+    putstr(tmpwin, 0, "Type Space or Escape when you're done.");
   putstr(tmpwin, 0, "");
   display_nhwindow(tmpwin, TRUE);
   destroy_nhwindow(tmpwin);
@@ -69,7 +70,8 @@ int getpos(coord *cc, bool force, const char *goal) {
       break;
     }
     if (c == 0) {
-      if (!isok(tx, ty)) continue;
+      if (!isok(tx, ty))
+        continue;
       /* a mouse click event, just assign and return */
       cx = tx;
       cy = ty;
@@ -174,7 +176,8 @@ int getpos(coord *cc, bool force, const char *goal) {
           msg_given = TRUE;
         } /* k => matching */
       }   /* !quitchars */
-      if (force) goto nxtc;
+      if (force)
+        goto nxtc;
       pline("Done.");
       msg_given = FALSE; /* suppress clear */
       cx = -1;
@@ -190,7 +193,8 @@ int getpos(coord *cc, bool force, const char *goal) {
     curs(WIN_MAP, cx, cy);
     flush_screen(0);
   }
-  if (msg_given) clear_nhwindow(WIN_MESSAGE);
+  if (msg_given)
+    clear_nhwindow(WIN_MESSAGE);
   cc->x = cx;
   cc->y = cy;
   return result;
@@ -210,7 +214,8 @@ Monster *christen_monst(Monster *mtmp, const char *name) {
   }
   if (lth == mtmp->mnamelth) {
     /* don't need to allocate a new monst struct */
-    if (lth) strcpy(mtmp->name(), name);
+    if (lth)
+      strcpy(mtmp->name(), name);
     return mtmp;
   }
   mtmp2 = newmonst(mtmp->mxlth + lth);
@@ -218,7 +223,8 @@ Monster *christen_monst(Monster *mtmp, const char *name) {
   (void)memcpy((genericptr_t)mtmp2->mextra, (genericptr_t)mtmp->mextra,
                mtmp->mxlth);
   mtmp2->mnamelth = lth;
-  if (lth) strcpy(mtmp2->name(), name);
+  if (lth)
+    strcpy(mtmp2->name(), name);
   replmon(mtmp, mtmp2);
   return (mtmp2);
 }
@@ -269,7 +275,8 @@ int do_mname() {
   (void)distant_monnam(mtmp, ARTICLE_THE, buf);
   sprintf(qbuf, "What do you want to call %s?", buf);
   getlin(qbuf, buf);
-  if (!*buf || *buf == '\033') return (0);
+  if (!*buf || *buf == '\033')
+    return (0);
   /* strip leading and trailing spaces; unnames monster if all spaces */
   (void)mungspaces(buf);
 
@@ -299,7 +306,8 @@ void do_oname(Object *obj) {
   sprintf(qbuf, "What do you want to name %s %s?",
           is_plural(obj) ? "these" : "this", xname(obj));
   getlin(qbuf, buf);
-  if (!*buf || *buf == '\033') return;
+  if (!*buf || *buf == '\033')
+    return;
   /* strip leading and trailing spaces; unnames item if all spaces */
   (void)mungspaces(buf);
 
@@ -353,7 +361,8 @@ Object *ReallocateExtraObjectSpace(Object *obj, int oextra_size,
      not set condition codes, but optimizer behaves as if it did).
      gcc-2.7.2.1 finally fixed this. */
   if (oname_size) {
-    if (name) strcpy(ONAME(otmp), name);
+    if (name)
+      strcpy(ONAME(otmp), name);
   }
 
   if (obj->owornmask) {
@@ -377,8 +386,10 @@ Object *ReallocateExtraObjectSpace(Object *obj, int oextra_size,
   }
 
   /* move timers and light sources from obj to otmp */
-  if (obj->timed) obj_move_timers(obj, otmp);
-  if (obj->lamplit) obj_move_light_source(obj, otmp);
+  if (obj->timed)
+    obj_move_timers(obj, otmp);
+  if (obj->lamplit)
+    obj_move_light_source(obj, otmp);
 
   /* objects possibly being manipulated by multi-turn occupations
      which have been interrupted but might be subsequently resumed */
@@ -406,23 +417,29 @@ Object *oname(Object *obj, const char *name) {
    * Also trying to create an artifact shouldn't de-artifact
    * it (e.g. Excalibur from prayer). In this case the object
    * will retain its current name. */
-  if (obj->oartifact || (lth && exist_artifact(obj->otyp, name))) return obj;
+  if (obj->oartifact || (lth && exist_artifact(obj->otyp, name)))
+    return obj;
 
   if (lth == obj->onamelth) {
     /* no need to replace entire object */
-    if (lth) strcpy(ONAME(obj), name);
+    if (lth)
+      strcpy(ONAME(obj), name);
   } else {
     obj = ReallocateExtraObjectSpace(obj, obj->oxlth, (genericptr_t)obj->oextra,
                                      lth, name);
   }
-  if (lth) artifact_exists(obj, name, TRUE);
+  if (lth)
+    artifact_exists(obj, name, TRUE);
   if (obj->oartifact) {
     /* can't dual-wield with artifact as secondary weapon */
-    if (obj == uswapwep) untwoweapon();
+    if (obj == uswapwep)
+      untwoweapon();
     /* activate warning if you've just named your weapon "Sting" */
-    if (obj == uwep) set_artifact_intrinsic(obj, TRUE, W_WEP);
+    if (obj == uwep)
+      set_artifact_intrinsic(obj, TRUE, W_WEP);
   }
-  if (carried(obj)) update_inventory();
+  if (carried(obj))
+    update_inventory();
   return obj;
 }
 
@@ -451,7 +468,8 @@ int ddocall() {
       allowall[0] = ALL_CLASSES;
       allowall[1] = '\0';
       obj = getobj(allowall, "name");
-      if (obj) do_oname(obj);
+      if (obj)
+        do_oname(obj);
       break;
     default:
 #ifdef REDO
@@ -480,7 +498,8 @@ void docall(Object *obj) {
   Object otemp;
   char **str1;
 
-  if (!obj->dknown) return; /* probably blind */
+  if (!obj->dknown)
+    return; /* probably blind */
   otemp = *obj;
   otemp.quan = 1L;
   otemp.onamelth = 0;
@@ -491,11 +510,13 @@ void docall(Object *obj) {
   else
     sprintf(qbuf, "Call %s:", an(xname(&otemp)));
   getlin(qbuf, buf);
-  if (!*buf || *buf == '\033') return;
+  if (!*buf || *buf == '\033')
+    return;
 
   /* clear old name */
   str1 = &(objects[obj->otyp].oc_uname);
-  if (*str1) free((genericptr_t) * str1);
+  if (*str1)
+    free((genericptr_t) * str1);
 
   /* strip leading and trailing spaces; uncalls item if all spaces */
   (void)mungspaces(buf);
@@ -572,8 +593,10 @@ char *x_monnam(
   bool name_at_start, has_adjectives;
   char *bp;
 
-  if (program_state.gameover) suppress |= SUPPRESS_HALLUCINATION;
-  if (article == ARTICLE_YOUR && !mtmp->mtame) article = ARTICLE_THE;
+  if (program_state.gameover)
+    suppress |= SUPPRESS_HALLUCINATION;
+  if (article == ARTICLE_YOUR && !mtmp->mtame)
+    article = ARTICLE_THE;
 
   do_hallu = Hallucination && !(suppress & SUPPRESS_HALLUCINATION);
   do_invis = mtmp->minvis && !(suppress & SUPPRESS_INVISIBLE);
@@ -601,12 +624,15 @@ char *x_monnam(
     unsigned save_invis = mtmp->minvis;
 
     /* when true name is wanted, explicitly block Hallucination */
-    if (!do_hallu) EHalluc_resistance = 1L;
-    if (!do_invis) mtmp->minvis = 0;
+    if (!do_hallu)
+      EHalluc_resistance = 1L;
+    if (!do_invis)
+      mtmp->minvis = 0;
     name = priestname(mtmp, priestnambuf);
     EHalluc_resistance = save_prop;
     mtmp->minvis = save_invis;
-    if (article == ARTICLE_NONE && !strncmp(name, "the ", 4)) name += 4;
+    if (article == ARTICLE_NONE && !strncmp(name, "the ", 4))
+      name += 4;
     return strcpy(buf, name);
   }
 
@@ -625,16 +651,20 @@ char *x_monnam(
       return buf;
     }
     strcat(buf, shkname(mtmp));
-    if (mdat == &mons[PM_SHOPKEEPER] && !do_invis) return buf;
+    if (mdat == &mons[PM_SHOPKEEPER] && !do_invis)
+      return buf;
     strcat(buf, " the ");
-    if (do_invis) strcat(buf, "invisible ");
+    if (do_invis)
+      strcat(buf, "invisible ");
     strcat(buf, mdat->mname);
     return buf;
   }
 
   /* Put the adjectives in the buffer */
-  if (adjective) strcat(strcat(buf, adjective), " ");
-  if (do_invis) strcat(buf, "invisible ");
+  if (adjective)
+    strcat(strcat(buf, adjective), " ");
+  if (do_invis)
+    strcat(buf, "invisible ");
 #ifdef STEED
   if (do_saddle && (mtmp->misc_worn_check & W_SADDLE) && !Blind &&
       !Hallucination)
@@ -665,7 +695,8 @@ char *x_monnam(
 
       strcpy(pbuf, name);
       pbuf[bp - name + 5] = '\0'; /* adjectives right after " the " */
-      if (has_adjectives) strcat(pbuf, buf);
+      if (has_adjectives)
+        strcat(pbuf, buf);
       strcat(pbuf, bp + 5); /* append the rest of the name */
       strcpy(buf, pbuf);
       article = ARTICLE_NONE;
@@ -884,7 +915,8 @@ const char *rndmonnam() {
   } while (name < SPECIAL_PM &&
            (type_is_pname(&mons[name]) || (mons[name].geno & G_NOGEN)));
 
-  if (name >= SPECIAL_PM) return bogusmons[name - SPECIAL_PM];
+  if (name >= SPECIAL_PM)
+    return bogusmons[name - SPECIAL_PM];
   return mons[name].mname;
 }
 
@@ -897,7 +929,8 @@ const char *roguename() {
     for (i = opts; *i; i++)
       if (!strncmp("name=", i, 5)) {
         char *j;
-        if ((j = index(i + 5, ',')) != 0) *j = (char)0;
+        if ((j = index(i + 5, ',')) != 0)
+          *j = (char)0;
         return i + 5;
       }
   }

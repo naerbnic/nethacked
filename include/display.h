@@ -24,15 +24,15 @@
  * Returns true if the hero can sense the given monster.  This includes
  * monsters that are hiding or mimicing other monsters.
  */
-#define tp_sensemon(mon)                                                                                    \
-  (                          /* The hero can always sense a monster IF:  */                                 \
-   (!mindless(mon->data)) && /* 1. the monster has a brain to sense AND  */                                 \
-   ((Blind && Blind_telepat) ||                                                                             \
+#define tp_sensemon(mon)                                                                                                                                           \
+  (                          /* The hero can always sense a monster IF:  */                                                                                        \
+   (!mindless(mon->data)) && /* 1. the monster has a brain to sense AND  */                                                                                        \
+   ((Blind && Blind_telepat) ||                                                                                                                                    \
     /* 2a. hero is blind and telepathic OR      \
                                       */ /* 2b. hero is using a telepathy      \
-                                            inducing   */ /*	 object and in \
-                                                                                             range          \
-                                                                                             */             \
+                                            inducing   */ /*	 object and in                                                        \
+                                                                                                                                                             range \
+                                                                                                                                                             */    \
     (Unblind_telepat && (distu(mon->mx, mon->my) <= (BOLT_LIM * BOLT_LIM)))))
 
 #define sensemon(mon) \

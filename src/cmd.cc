@@ -169,7 +169,8 @@ STATIC_PTR int doprev_message() { return nh_doprev_message(); }
 /* Count down by decrementing multi */
 STATIC_PTR int timed_occupation() {
   (*timed_occ_fn)();
-  if (multi > 0) multi--;
+  if (multi > 0)
+    multi--;
   return multi > 0;
 }
 
@@ -227,7 +228,8 @@ static char popch() {
    * ABORT character (as checked in pcmain.c), that character will be
    * pushed back on the pushq.
    */
-  if (occupation) return '\0';
+  if (occupation)
+    return '\0';
   if (in_doagain)
     return (char)((shead != stail) ? saveq[stail++] : '\0');
   else
@@ -237,14 +239,17 @@ static char popch() {
 char pgetchar() { /* curtesy of aeb@cwi.nl */
   int ch;
 
-  if (!(ch = popch())) ch = nhgetch();
+  if (!(ch = popch()))
+    ch = nhgetch();
   return ((char)ch);
 }
 
 /* A ch == 0 resets the pushq */
 void pushch(char ch) {
-  if (!ch) phead = ptail = 0;
-  if (phead < BSIZE) pushq[phead++] = ch;
+  if (!ch)
+    phead = ptail = 0;
+  if (phead < BSIZE)
+    pushq[phead++] = ch;
   return;
 }
 
@@ -272,7 +277,8 @@ STATIC_PTR int doextcmd() {
   /* keep repeating until we don't run help or quit */
   do {
     idx = get_ext_cmd();
-    if (idx < 0) return 0; /* quit */
+    if (idx < 0)
+      return 0; /* quit */
 
     retval = (*extcmdlist[idx].ef_funct)();
   } while (extcmdlist[idx].ef_funct == doextlist);
@@ -438,7 +444,8 @@ STATIC_PTR int domonability() {
     return domindblast();
   else if (player.umonnum == PM_GREMLIN) {
     if (IS_FOUNTAIN(levl[player.ux][player.uy].typ)) {
-      if (split_mon(&youmonst, (Monster *)0)) dryup(player.ux, player.uy, TRUE);
+      if (split_mon(&youmonst, (Monster *)0))
+        dryup(player.ux, player.uy, TRUE);
     } else
       There("is no fountain here.");
   } else if (is_unicorn(youmonst.data)) {
@@ -468,7 +475,8 @@ STATIC_PTR int enter_explore_mode() {
     if (iflags.paranoid_quit) {
       getlin("Do you want to enter explore mode? [yes/no]?", buf);
       (void)lcase(buf);
-      if (!(strcmp(buf, "yes"))) really_xplor = TRUE;
+      if (!(strcmp(buf, "yes")))
+        really_xplor = TRUE;
     } else {
       if (yn("Do you want to enter explore mode?") == 'y') {
         really_xplor = TRUE;
@@ -602,15 +610,19 @@ STATIC_PTR int wiz_level_change() {
       You("are already as inexperienced as you can get.");
       return 0;
     }
-    if (newlevel < 1) newlevel = 1;
-    while (player.ulevel > newlevel) losexp("#levelchange");
+    if (newlevel < 1)
+      newlevel = 1;
+    while (player.ulevel > newlevel)
+      losexp("#levelchange");
   } else {
     if (player.ulevel >= MAXULEV) {
       You("are already as experienced as you can get.");
       return 0;
     }
-    if (newlevel > MAXULEV) newlevel = MAXULEV;
-    while (player.ulevel < newlevel) pluslvl(FALSE);
+    if (newlevel > MAXULEV)
+      newlevel = MAXULEV;
+    while (player.ulevel < newlevel)
+      pluslvl(FALSE);
   }
   player.ulevelmax = player.ulevel;
   return 0;
@@ -643,7 +655,8 @@ STATIC_PTR int wiz_show_seenv() {
   startx = max(1, player.ux - (COLNO / 4));
   stopx = min(startx + (COLNO / 2), COLNO);
   /* can't have a line exactly 80 chars long */
-  if (stopx - startx == COLNO / 2) startx++;
+  if (stopx - startx == COLNO / 2)
+    startx++;
 
   for (y = 0; y < ROWNO; y++) {
     for (x = startx, curx = 0; x < stopx; x++, curx += 2) {
@@ -659,7 +672,8 @@ STATIC_PTR int wiz_show_seenv() {
     }
     /* remove trailing spaces */
     for (x = curx - 1; x >= 0; x--)
-      if (row[x] != ' ') break;
+      if (row[x] != ' ')
+        break;
     row[x + 1] = '\0';
 
     putstr(win, 0, row);
@@ -694,7 +708,8 @@ STATIC_PTR int wiz_show_vision() {
     }
     /* remove trailing spaces */
     for (x = COLNO - 1; x >= 1; x--)
-      if (row[x] != ' ') break;
+      if (row[x] != ' ')
+        break;
     row[x + 1] = '\0';
 
     putstr(win, 0, &row[1]);
@@ -849,41 +864,64 @@ void enlightenment(int final) {
 #endif
 
   /*** Resistances to troubles ***/
-  if (Fire_resistance) you_are("fire resistant");
-  if (Cold_resistance) you_are("cold resistant");
-  if (Sleep_resistance) you_are("sleep resistant");
-  if (Disint_resistance) you_are("disintegration-resistant");
-  if (Shock_resistance) you_are("shock resistant");
-  if (Poison_resistance) you_are("poison resistant");
-  if (Drain_resistance) you_are("level-drain resistant");
-  if (Sick_resistance) you_are("immune to sickness");
-  if (Antimagic) you_are("magic-protected");
-  if (Acid_resistance) you_are("acid resistant");
-  if (Stone_resistance) you_are("petrification resistant");
-  if (Invulnerable) you_are("invulnerable");
-  if (player.uedibility) you_can("recognize detrimental food");
+  if (Fire_resistance)
+    you_are("fire resistant");
+  if (Cold_resistance)
+    you_are("cold resistant");
+  if (Sleep_resistance)
+    you_are("sleep resistant");
+  if (Disint_resistance)
+    you_are("disintegration-resistant");
+  if (Shock_resistance)
+    you_are("shock resistant");
+  if (Poison_resistance)
+    you_are("poison resistant");
+  if (Drain_resistance)
+    you_are("level-drain resistant");
+  if (Sick_resistance)
+    you_are("immune to sickness");
+  if (Antimagic)
+    you_are("magic-protected");
+  if (Acid_resistance)
+    you_are("acid resistant");
+  if (Stone_resistance)
+    you_are("petrification resistant");
+  if (Invulnerable)
+    you_are("invulnerable");
+  if (player.uedibility)
+    you_can("recognize detrimental food");
 
   /*** Troubles ***/
-  if (Halluc_resistance) enl_msg("You resist", "", "ed", " hallucinations");
+  if (Halluc_resistance)
+    enl_msg("You resist", "", "ed", " hallucinations");
   if (final) {
-    if (Hallucination) you_are("hallucinating");
-    if (Stunned) you_are("stunned");
-    if (Confusion) you_are("confused");
-    if (Blinded) you_are("blinded");
+    if (Hallucination)
+      you_are("hallucinating");
+    if (Stunned)
+      you_are("stunned");
+    if (Confusion)
+      you_are("confused");
+    if (Blinded)
+      you_are("blinded");
     if (Sick) {
       if (player.usick_type & SICK_VOMITABLE)
         you_are("sick from food poisoning");
-      if (player.usick_type & SICK_NONVOMITABLE) you_are("sick from illness");
+      if (player.usick_type & SICK_NONVOMITABLE)
+        you_are("sick from illness");
     }
   }
-  if (Stoned) you_are("turning to stone");
-  if (Slimed) you_are("turning into slime");
-  if (Strangled) you_are((player.uburied) ? "buried" : "being strangled");
+  if (Stoned)
+    you_are("turning to stone");
+  if (Slimed)
+    you_are("turning into slime");
+  if (Strangled)
+    you_are((player.uburied) ? "buried" : "being strangled");
   if (Glib) {
     sprintf(buf, "slippery %s", makeplural(body_part(FINGER)));
     you_have(buf);
   }
-  if (Fumbling) enl_msg("You fumble", "", "d", "");
+  if (Fumbling)
+    enl_msg("You fumble", "", "d", "");
   if (Wounded_legs
 #ifdef STEED
       && !player.usteed
@@ -900,13 +938,18 @@ void enlightenment(int final) {
     enl_msg(buf, " has", " had", " wounded legs");
   }
 #endif
-  if (Sleeping) enl_msg("You ", "fall", "fell", " asleep");
-  if (Hunger) enl_msg("You hunger", "", "ed", " rapidly");
+  if (Sleeping)
+    enl_msg("You ", "fall", "fell", " asleep");
+  if (Hunger)
+    enl_msg("You hunger", "", "ed", " rapidly");
 
   /*** Vision and senses ***/
-  if (See_invisible) enl_msg(You_, "see", "saw", " invisible");
-  if (Blind_telepat) you_are("telepathic");
-  if (Warning) you_are("warned");
+  if (See_invisible)
+    enl_msg(You_, "see", "saw", " invisible");
+  if (Blind_telepat)
+    you_are("telepathic");
+  if (Warning)
+    you_are("warned");
   if (Warn_of_mon && flags.warntype) {
     sprintf(buf, "aware of the presence of %s",
             (flags.warntype & M2_ORC) ? "orcs" : (flags.warntype & M2_DEMON)
@@ -914,19 +957,27 @@ void enlightenment(int final) {
                                                      : something);
     you_are(buf);
   }
-  if (Undead_warning) you_are("warned of undead");
-  if (Searching) you_have("automatic searching");
-  if (Clairvoyant) you_are("clairvoyant");
-  if (Infravision) you_have("infravision");
-  if (Detect_monsters) you_are("sensing the presence of monsters");
-  if (player.umconf) you_are("going to confuse monsters");
+  if (Undead_warning)
+    you_are("warned of undead");
+  if (Searching)
+    you_have("automatic searching");
+  if (Clairvoyant)
+    you_are("clairvoyant");
+  if (Infravision)
+    you_have("infravision");
+  if (Detect_monsters)
+    you_are("sensing the presence of monsters");
+  if (player.umconf)
+    you_are("going to confuse monsters");
 
   /*** Appearance and behavior ***/
   if (Adornment) {
     int adorn = 0;
 
-    if (uleft && uleft->otyp == RIN_ADORNMENT) adorn += uleft->spe;
-    if (uright && uright->otyp == RIN_ADORNMENT) adorn += uright->spe;
+    if (uleft && uleft->otyp == RIN_ADORNMENT)
+      adorn += uleft->spe;
+    if (uright && uright->otyp == RIN_ADORNMENT)
+      adorn += uright->spe;
     if (adorn < 0)
       you_are("poorly adorned");
     else
@@ -940,28 +991,38 @@ void enlightenment(int final) {
      the situation when invisibility would be an expected attribute */
   else if ((HInvis || EInvis || pm_invisible(youmonst.data)) && BInvis)
     you_are("visible");
-  if (Displaced) you_are("displaced");
-  if (Stealth) you_are("stealthy");
-  if (Aggravate_monster) enl_msg("You aggravate", "", "d", " monsters");
-  if (Conflict) enl_msg("You cause", "", "d", " conflict");
+  if (Displaced)
+    you_are("displaced");
+  if (Stealth)
+    you_are("stealthy");
+  if (Aggravate_monster)
+    enl_msg("You aggravate", "", "d", " monsters");
+  if (Conflict)
+    enl_msg("You cause", "", "d", " conflict");
 
   /*** Transportation ***/
-  if (Jumping) you_can("jump");
-  if (Teleportation) you_can("teleport");
-  if (Teleport_control) you_have("teleport control");
+  if (Jumping)
+    you_can("jump");
+  if (Teleportation)
+    you_can("teleport");
+  if (Teleport_control)
+    you_have("teleport control");
   if (Lev_at_will)
     you_are("levitating, at will");
   else if (Levitation)
     you_are("levitating"); /* without control */
   else if (Flying)
     you_can("fly");
-  if (Wwalking) you_can("walk on water");
-  if (Swimming) you_can("swim");
+  if (Wwalking)
+    you_can("walk on water");
+  if (Swimming)
+    you_can("swim");
   if (Breathless)
     you_can("survive without air");
   else if (Amphibious)
     you_can("breathe water");
-  if (Passes_walls) you_can("walk through walls");
+  if (Passes_walls)
+    you_can("walk through walls");
 #ifdef STEED
   /* If you die while dismounting, player.usteed is still set.  Since several
    * places in the done() sequence depend on player.usteed, just detect this
@@ -974,7 +1035,8 @@ void enlightenment(int final) {
   if (player.uswallow) {
     sprintf(buf, "swallowed by %s", a_monnam(player.ustuck));
 #ifdef WIZARD
-    if (wizard) sprintf(eos(buf), " (%u)", player.uswldtim);
+    if (wizard)
+      sprintf(eos(buf), " (%u)", player.uswldtim);
 #endif
     you_are(buf);
   } else if (player.ustuck) {
@@ -989,14 +1051,19 @@ void enlightenment(int final) {
     you_have(enlght_combatinc("to hit", player.uhitinc, final, buf));
   if (player.udaminc)
     you_have(enlght_combatinc("damage", player.udaminc, final, buf));
-  if (Slow_digestion) you_have("slower digestion");
-  if (Regeneration) enl_msg("You regenerate", "", "d", "");
+  if (Slow_digestion)
+    you_have("slower digestion");
+  if (Regeneration)
+    enl_msg("You regenerate", "", "d", "");
   if (player.uspellprot || Protection) {
     int prot = 0;
 
-    if (uleft && uleft->otyp == RIN_PROTECTION) prot += uleft->spe;
-    if (uright && uright->otyp == RIN_PROTECTION) prot += uright->spe;
-    if (HProtection & INTRINSIC) prot += player.ublessed;
+    if (uleft && uleft->otyp == RIN_PROTECTION)
+      prot += uleft->spe;
+    if (uright && uright->otyp == RIN_PROTECTION)
+      prot += uright->spe;
+    if (HProtection & INTRINSIC)
+      prot += player.ublessed;
     prot += player.uspellprot;
 
     if (prot < 0)
@@ -1004,9 +1071,12 @@ void enlightenment(int final) {
     else
       you_are("protected");
   }
-  if (Protection_from_shape_changers) you_are("protected from shape changers");
-  if (Polymorph) you_are("polymorphing");
-  if (Polymorph_control) you_have("polymorph control");
+  if (Protection_from_shape_changers)
+    you_are("protected from shape changers");
+  if (Polymorph)
+    you_are("polymorphing");
+  if (Polymorph_control)
+    you_have("polymorph control");
   if (player.ulycn >= LOW_PM) {
     strcpy(buf, an(mons[player.ulycn].mname));
     you_are(buf);
@@ -1017,17 +1087,25 @@ void enlightenment(int final) {
     else
       sprintf(buf, "polymorphed into %s", an(youmonst.data->mname));
 #ifdef WIZARD
-    if (wizard) sprintf(eos(buf), " (%d)", player.mtimedone);
+    if (wizard)
+      sprintf(eos(buf), " (%d)", player.mtimedone);
 #endif
     you_are(buf);
   }
-  if (Unchanging) you_can("not change from your current form");
-  if (Fast) you_are(Very_fast ? "very fast" : "fast");
-  if (Reflecting) you_have("reflection");
-  if (Free_action) you_have("free action");
-  if (Fixed_abil) you_have("fixed abilities");
-  if (Lifesaved) enl_msg("Your life ", "will be", "would have been", " saved");
-  if (player.twoweap) you_are("wielding two weapons at once");
+  if (Unchanging)
+    you_can("not change from your current form");
+  if (Fast)
+    you_are(Very_fast ? "very fast" : "fast");
+  if (Reflecting)
+    you_have("reflection");
+  if (Free_action)
+    you_have("free action");
+  if (Fixed_abil)
+    you_have("fixed abilities");
+  if (Lifesaved)
+    enl_msg("Your life ", "will be", "would have been", " saved");
+  if (player.twoweap)
+    you_are("wielding two weapons at once");
 
   /*** Miscellany ***/
   if (Luck) {
@@ -1036,7 +1114,8 @@ void enlightenment(int final) {
             ltmp >= 10 ? "extremely " : ltmp >= 5 ? "very " : "",
             Luck < 0 ? "un" : "");
 #ifdef WIZARD
-    if (wizard) sprintf(eos(buf), " (%d)", Luck);
+    if (wizard)
+      sprintf(eos(buf), " (%d)", Luck);
 #endif
     you_are(buf);
   }
@@ -1050,7 +1129,8 @@ void enlightenment(int final) {
     you_have("reduced luck");
   if (carrying(LUCKSTONE) || stone_luck(TRUE)) {
     ltmp = stone_luck(FALSE);
-    if (ltmp <= 0) enl_msg("Bad luck ", "does", "did", " not time out for you");
+    if (ltmp <= 0)
+      enl_msg("Bad luck ", "does", "did", " not time out for you");
     if (ltmp >= 0)
       enl_msg("Good luck ", "does", "did", " not time out for you");
   }
@@ -1060,7 +1140,8 @@ void enlightenment(int final) {
                                           ? "extremely "
                                           : player.ugangr > 3 ? "very " : "");
 #ifdef WIZARD
-    if (wizard) sprintf(eos(buf), " (%d)", player.ugangr);
+    if (wizard)
+      sprintf(eos(buf), " (%d)", player.ugangr);
 #endif
     enl_msg(u_gname(), " is", " was", buf);
   } else
@@ -1078,7 +1159,8 @@ void enlightenment(int final) {
     sprintf(buf, "%ssafely pray", can_pray(FALSE) ? "" : "not ");
 #endif
 #ifdef WIZARD
-    if (wizard) sprintf(eos(buf), " (%d)", player.ublesscnt);
+    if (wizard)
+      sprintf(eos(buf), " (%d)", player.ublesscnt);
 #endif
     you_can(buf);
   }
@@ -1119,7 +1201,8 @@ void enlightenment(int final) {
           break;
       }
     }
-    if (p) enl_msg(You_, "have been killed ", p, buf);
+    if (p)
+      enl_msg(You_, "have been killed ", p, buf);
   }
 
   display_nhwindow(en_win, TRUE);
@@ -1174,40 +1257,62 @@ void dump_enlightenment(int final) {
   dump("  Your alignment was ", buf);
 
   /*** Resistances to troubles ***/
-  if (Fire_resistance) dump(youwere, "fire resistant");
-  if (Cold_resistance) dump(youwere, "cold resistant");
-  if (Sleep_resistance) dump(youwere, "sleep resistant");
-  if (Disint_resistance) dump(youwere, "disintegration-resistant");
-  if (Shock_resistance) dump(youwere, "shock resistant");
-  if (Poison_resistance) dump(youwere, "poison resistant");
-  if (Drain_resistance) dump(youwere, "level-drain resistant");
-  if (Sick_resistance) dump(youwere, "immune to sickness");
-  if (Antimagic) dump(youwere, "magic-protected");
-  if (Acid_resistance) dump(youwere, "acid resistant");
-  if (Stone_resistance) dump(youwere, "petrification resistant");
-  if (Invulnerable) dump(youwere, "invulnerable");
-  if (player.uedibility) dump(youcould, "recognize detrimental food");
+  if (Fire_resistance)
+    dump(youwere, "fire resistant");
+  if (Cold_resistance)
+    dump(youwere, "cold resistant");
+  if (Sleep_resistance)
+    dump(youwere, "sleep resistant");
+  if (Disint_resistance)
+    dump(youwere, "disintegration-resistant");
+  if (Shock_resistance)
+    dump(youwere, "shock resistant");
+  if (Poison_resistance)
+    dump(youwere, "poison resistant");
+  if (Drain_resistance)
+    dump(youwere, "level-drain resistant");
+  if (Sick_resistance)
+    dump(youwere, "immune to sickness");
+  if (Antimagic)
+    dump(youwere, "magic-protected");
+  if (Acid_resistance)
+    dump(youwere, "acid resistant");
+  if (Stone_resistance)
+    dump(youwere, "petrification resistant");
+  if (Invulnerable)
+    dump(youwere, "invulnerable");
+  if (player.uedibility)
+    dump(youcould, "recognize detrimental food");
 
   /*** Troubles ***/
-  if (Halluc_resistance) dump("  ", "You resisted hallucinations");
-  if (Hallucination) dump(youwere, "hallucinating");
-  if (Stunned) dump(youwere, "stunned");
-  if (Confusion) dump(youwere, "confused");
-  if (Blinded) dump(youwere, "blinded");
+  if (Halluc_resistance)
+    dump("  ", "You resisted hallucinations");
+  if (Hallucination)
+    dump(youwere, "hallucinating");
+  if (Stunned)
+    dump(youwere, "stunned");
+  if (Confusion)
+    dump(youwere, "confused");
+  if (Blinded)
+    dump(youwere, "blinded");
   if (Sick) {
     if (player.usick_type & SICK_VOMITABLE)
       dump(youwere, "sick from food poisoning");
     if (player.usick_type & SICK_NONVOMITABLE)
       dump(youwere, "sick from illness");
   }
-  if (Stoned) dump(youwere, "turning to stone");
-  if (Slimed) dump(youwere, "turning into slime");
-  if (Strangled) dump(youwere, (player.uburied) ? "buried" : "being strangled");
+  if (Stoned)
+    dump(youwere, "turning to stone");
+  if (Slimed)
+    dump(youwere, "turning into slime");
+  if (Strangled)
+    dump(youwere, (player.uburied) ? "buried" : "being strangled");
   if (Glib) {
     sprintf(buf, "slippery %s", makeplural(body_part(FINGER)));
     dump(youhad, buf);
   }
-  if (Fumbling) dump("  ", "You fumbled");
+  if (Fumbling)
+    dump("  ", "You fumbled");
   if (Wounded_legs
 #ifdef STEED
       && !player.usteed
@@ -1225,13 +1330,18 @@ void dump_enlightenment(int final) {
     dump("  ", buf);
   }
 #endif
-  if (Sleeping) dump("  ", "You fell asleep");
-  if (Hunger) dump("  ", "You hungered rapidly");
+  if (Sleeping)
+    dump("  ", "You fell asleep");
+  if (Hunger)
+    dump("  ", "You hungered rapidly");
 
   /*** Vision and senses ***/
-  if (See_invisible) dump("  ", "You saw invisible");
-  if (Blind_telepat) dump(youwere, "telepathic");
-  if (Warning) dump(youwere, "warned");
+  if (See_invisible)
+    dump("  ", "You saw invisible");
+  if (Blind_telepat)
+    dump(youwere, "telepathic");
+  if (Warning)
+    dump(youwere, "warned");
   if (Warn_of_mon && flags.warntype) {
     sprintf(buf, "aware of the presence of %s",
             (flags.warntype & M2_ORC) ? "orcs" : (flags.warntype & M2_DEMON)
@@ -1239,18 +1349,26 @@ void dump_enlightenment(int final) {
                                                      : something);
     dump(youwere, buf);
   }
-  if (Undead_warning) dump(youwere, "warned of undead");
-  if (Searching) dump(youhad, "automatic searching");
-  if (Clairvoyant) dump(youwere, "clairvoyant");
-  if (Infravision) dump(youhad, "infravision");
-  if (Detect_monsters) dump(youwere, "sensing the presence of monsters");
-  if (player.umconf) dump(youwere, "going to confuse monsters");
+  if (Undead_warning)
+    dump(youwere, "warned of undead");
+  if (Searching)
+    dump(youhad, "automatic searching");
+  if (Clairvoyant)
+    dump(youwere, "clairvoyant");
+  if (Infravision)
+    dump(youhad, "infravision");
+  if (Detect_monsters)
+    dump(youwere, "sensing the presence of monsters");
+  if (player.umconf)
+    dump(youwere, "going to confuse monsters");
 
   /*** Appearance and behavior ***/
   if (Adornment) {
     int adorn = 0;
-    if (uleft && uleft->otyp == RIN_ADORNMENT) adorn += uleft->spe;
-    if (uright && uright->otyp == RIN_ADORNMENT) adorn += uright->spe;
+    if (uleft && uleft->otyp == RIN_ADORNMENT)
+      adorn += uleft->spe;
+    if (uright && uright->otyp == RIN_ADORNMENT)
+      adorn += uright->spe;
     if (adorn < 0)
       dump(youwere, "poorly adorned");
     else
@@ -1264,28 +1382,38 @@ void dump_enlightenment(int final) {
      the situation when invisibility would be an expected attribute */
   else if ((HInvis || EInvis || pm_invisible(youmonst.data)) && BInvis)
     dump(youwere, "visible");
-  if (Displaced) dump(youwere, "displaced");
-  if (Stealth) dump(youwere, "stealthy");
-  if (Aggravate_monster) dump("  ", "You aggravated monsters");
-  if (Conflict) dump("  ", "You caused conflict");
+  if (Displaced)
+    dump(youwere, "displaced");
+  if (Stealth)
+    dump(youwere, "stealthy");
+  if (Aggravate_monster)
+    dump("  ", "You aggravated monsters");
+  if (Conflict)
+    dump("  ", "You caused conflict");
 
   /*** Transportation ***/
-  if (Jumping) dump(youcould, "jump");
-  if (Teleportation) dump(youcould, "teleport");
-  if (Teleport_control) dump(youhad, "teleport control");
+  if (Jumping)
+    dump(youcould, "jump");
+  if (Teleportation)
+    dump(youcould, "teleport");
+  if (Teleport_control)
+    dump(youhad, "teleport control");
   if (Lev_at_will)
     dump(youwere, "levitating, at will");
   else if (Levitation)
     dump(youwere, "levitating"); /* without control */
   else if (Flying)
     dump(youcould, "fly");
-  if (Wwalking) dump(youcould, "walk on water");
-  if (Swimming) dump(youcould, "swim");
+  if (Wwalking)
+    dump(youcould, "walk on water");
+  if (Swimming)
+    dump(youcould, "swim");
   if (Breathless)
     dump(youcould, "survive without air");
   else if (Amphibious)
     dump(youcould, "breathe water");
-  if (Passes_walls) dump(youcould, "walk through walls");
+  if (Passes_walls)
+    dump(youcould, "walk through walls");
 #ifdef STEED
   if (player.usteed && (final < 2 || strcmp(killer, "riding accident"))) {
     sprintf(buf, "riding %s", y_monnam(player.usteed));
@@ -1295,7 +1423,8 @@ void dump_enlightenment(int final) {
   if (player.uswallow) {
     sprintf(buf, "swallowed by %s", a_monnam(player.ustuck));
 #ifdef WIZARD
-    if (wizard) sprintf(eos(buf), " (%u)", player.uswldtim);
+    if (wizard)
+      sprintf(eos(buf), " (%u)", player.uswldtim);
 #endif
     dump(youwere, buf);
   } else if (player.ustuck) {
@@ -1310,14 +1439,19 @@ void dump_enlightenment(int final) {
     dump(youhad, enlght_combatinc("to hit", player.uhitinc, final, buf));
   if (player.udaminc)
     dump(youhad, enlght_combatinc("damage", player.udaminc, final, buf));
-  if (Slow_digestion) dump(youhad, "slower digestion");
-  if (Regeneration) dump("  ", "You regenerated");
+  if (Slow_digestion)
+    dump(youhad, "slower digestion");
+  if (Regeneration)
+    dump("  ", "You regenerated");
   if (player.uspellprot || Protection) {
     int prot = 0;
 
-    if (uleft && uleft->otyp == RIN_PROTECTION) prot += uleft->spe;
-    if (uright && uright->otyp == RIN_PROTECTION) prot += uright->spe;
-    if (HProtection & INTRINSIC) prot += player.ublessed;
+    if (uleft && uleft->otyp == RIN_PROTECTION)
+      prot += uleft->spe;
+    if (uright && uright->otyp == RIN_PROTECTION)
+      prot += uright->spe;
+    if (HProtection & INTRINSIC)
+      prot += player.ublessed;
     prot += player.uspellprot;
 
     if (prot < 0)
@@ -1327,8 +1461,10 @@ void dump_enlightenment(int final) {
   }
   if (Protection_from_shape_changers)
     dump(youwere, "protected from shape changers");
-  if (Polymorph) dump(youwere, "polymorphing");
-  if (Polymorph_control) dump(youhad, "polymorph control");
+  if (Polymorph)
+    dump(youwere, "polymorphing");
+  if (Polymorph_control)
+    dump(youhad, "polymorph control");
   if (player.ulycn >= LOW_PM) {
     strcpy(buf, an(mons[player.ulycn].mname));
     dump(youwere, buf);
@@ -1339,17 +1475,25 @@ void dump_enlightenment(int final) {
     else
       sprintf(buf, "polymorphed into %s", an(youmonst.data->mname));
 #ifdef WIZARD
-    if (wizard) sprintf(eos(buf), " (%d)", player.mtimedone);
+    if (wizard)
+      sprintf(eos(buf), " (%d)", player.mtimedone);
 #endif
     dump(youwere, buf);
   }
-  if (Unchanging) dump(youcould, "not change from your current form");
-  if (Fast) dump(youwere, Very_fast ? "very fast" : "fast");
-  if (Reflecting) dump(youhad, "reflection");
-  if (Free_action) dump(youhad, "free action");
-  if (Fixed_abil) dump(youhad, "fixed abilities");
-  if (Lifesaved) dump("  ", "Your life would have been saved");
-  if (player.twoweap) dump(youwere, "wielding two weapons at once");
+  if (Unchanging)
+    dump(youcould, "not change from your current form");
+  if (Fast)
+    dump(youwere, Very_fast ? "very fast" : "fast");
+  if (Reflecting)
+    dump(youhad, "reflection");
+  if (Free_action)
+    dump(youhad, "free action");
+  if (Fixed_abil)
+    dump(youhad, "fixed abilities");
+  if (Lifesaved)
+    dump("  ", "Your life would have been saved");
+  if (player.twoweap)
+    dump(youwere, "wielding two weapons at once");
 
   /*** Miscellany ***/
   if (Luck) {
@@ -1369,8 +1513,10 @@ void dump_enlightenment(int final) {
     dump(youhad, "reduced luck");
   if (carrying(LUCKSTONE) || stone_luck(TRUE)) {
     ltmp = stone_luck(FALSE);
-    if (ltmp <= 0) dump("  ", "Bad luck did not time out for you");
-    if (ltmp >= 0) dump("  ", "Good luck did not time out for you");
+    if (ltmp <= 0)
+      dump("  ", "Bad luck did not time out for you");
+    if (ltmp >= 0)
+      dump("  ", "Good luck did not time out for you");
   }
 
   if (player.ugangr) {
@@ -1378,7 +1524,8 @@ void dump_enlightenment(int final) {
                                           ? "extremely "
                                           : player.ugangr > 3 ? "very " : "");
 #ifdef WIZARD
-    if (wizard) sprintf(eos(buf), " (%d)", player.ugangr);
+    if (wizard)
+      sprintf(eos(buf), " (%d)", player.ugangr);
 #endif
     sprintf(buf2, "%s was %s", u_gname(), buf);
     dump("  ", buf2);
@@ -1543,8 +1690,10 @@ STATIC_OVL bool minimal_enlightenment() {
 }
 
 STATIC_PTR int doattributes() {
-  if (!minimal_enlightenment()) return 0;
-  if (wizard || discover) enlightenment(0);
+  if (!minimal_enlightenment())
+    return 0;
+  if (wizard || discover)
+    enlightenment(0);
   return 0;
 }
 
@@ -1573,9 +1722,11 @@ void show_conduct(int final) {
   else if (!player.uconduct.unvegetarian)
     you_have_been("vegetarian");
 
-  if (!player.uconduct.gnostic) you_have_been("an atheist");
+  if (!player.uconduct.gnostic)
+    you_have_been("an atheist");
 
-  if (!player.uconduct.weaphit) you_have_never("hit with a wielded weapon");
+  if (!player.uconduct.weaphit)
+    you_have_never("hit with a wielded weapon");
 #ifdef WIZARD
   else if (wizard) {
     sprintf(buf, "used a wielded weapon %ld time%s", player.uconduct.weaphit,
@@ -1583,9 +1734,11 @@ void show_conduct(int final) {
     you_have_X(buf);
   }
 #endif
-  if (!player.uconduct.killer) you_have_been("a pacifist");
+  if (!player.uconduct.killer)
+    you_have_been("a pacifist");
 
-  if (!player.uconduct.literate) you_have_been("illiterate");
+  if (!player.uconduct.literate)
+    you_have_been("illiterate");
 #ifdef WIZARD
   else if (wizard) {
     sprintf(buf, "read items or engraved %ld time%s", player.uconduct.literate,
@@ -1603,7 +1756,8 @@ void show_conduct(int final) {
     you_have_X(buf);
   }
 
-  if (!player.uconduct.polypiles) you_have_never("polymorphed an object");
+  if (!player.uconduct.polypiles)
+    you_have_never("polymorphed an object");
 #ifdef WIZARD
   else if (wizard) {
     sprintf(buf, "polymorphed %ld item%s", player.uconduct.polypiles,
@@ -1612,7 +1766,8 @@ void show_conduct(int final) {
   }
 #endif
 
-  if (!player.uconduct.polyselfs) you_have_never("changed form");
+  if (!player.uconduct.polyselfs)
+    you_have_never("changed form");
 #ifdef WIZARD
   else if (wizard) {
     sprintf(buf, "changed form %ld time%s", player.uconduct.polyselfs,
@@ -1644,7 +1799,8 @@ void dump_conduct(int final) {
 
   dump("", "Voluntary challenges");
 
-  if (!player.uconduct.food) dump("", "  You went without food");
+  if (!player.uconduct.food)
+    dump("", "  You went without food");
   /* But beverages are okay */
   else if (!player.uconduct.unvegan)
     dump("", "  You followed a strict vegan diet");
@@ -1656,7 +1812,8 @@ void dump_conduct(int final) {
     dump("", buf);
   }
 
-  if (!player.uconduct.gnostic) dump("", "  You were an atheist");
+  if (!player.uconduct.gnostic)
+    dump("", "  You were an atheist");
 
   if (!player.uconduct.weaphit)
     dump("", "  You never hit with a wielded weapon");
@@ -1672,9 +1829,11 @@ void dump_conduct(int final) {
     dump("  You ", buf);
   }
 #endif
-  if (!player.uconduct.killer) dump("", "  You were a pacifist");
+  if (!player.uconduct.killer)
+    dump("", "  You were a pacifist");
 
-  if (!player.uconduct.literate) dump("", "  You were illiterate");
+  if (!player.uconduct.literate)
+    dump("", "  You were illiterate");
 #ifdef WIZARD
   else if (wizard) {
     sprintf(buf, "read items or engraved %ld time%s", player.uconduct.literate,
@@ -1955,10 +2114,12 @@ void add_debug_extended_commands() {
 
   for (i = 0; debug_extcmdlist[i].ef_txt; i++) {
     for (j = 0; j < n; j++)
-      if (strcmp(debug_extcmdlist[i].ef_txt, extcmdlist[j].ef_txt) < 0) break;
+      if (strcmp(debug_extcmdlist[i].ef_txt, extcmdlist[j].ef_txt) < 0)
+        break;
 
     /* insert i'th debug entry into extcmdlist[j], pushing down  */
-    for (k = n; k >= j; --k) extcmdlist[k + 1] = extcmdlist[k];
+    for (k = n; k >= j; --k)
+      extcmdlist[k + 1] = extcmdlist[k];
     extcmdlist[j] = debug_extcmdlist[i];
     n++; /* now an extra entry */
   }
@@ -2119,7 +2280,8 @@ static int wiz_migrate_mons() {
   Monster *mtmp;
   d_level tolevel;
   getlin("How many random monsters to migrate? [0]", inbuf);
-  if (*inbuf == '\033') return 0;
+  if (*inbuf == '\033')
+    return 0;
   mcount = atoi(inbuf);
   if (mcount < 0 || mcount > (COLNO * ROWNO) || Is_botlevel(&player.uz))
     return 0;
@@ -2203,7 +2365,8 @@ void rhack(char *cmd) {
         prefix_seen = TRUE;
       break;
     case '5':
-      if (!iflags.num_pad) break; /* else FALLTHRU */
+      if (!iflags.num_pad)
+        break; /* else FALLTHRU */
     case 'G':
       if (movecmd(lowc(cmd[1]))) {
         flags.run = 3;
@@ -2212,12 +2375,13 @@ void rhack(char *cmd) {
         prefix_seen = TRUE;
       break;
     case '-':
-      if (!iflags.num_pad) break; /* else FALLTHRU */
-    /* Effects of movement commands and invisible monsters:
-     * m: always move onto space (even if 'I' remembered)
-     * F: always attack space (even if 'I' not remembered)
-     * normal movement: attack if 'I', move otherwise
-     */
+      if (!iflags.num_pad)
+        break; /* else FALLTHRU */
+               /* Effects of movement commands and invisible monsters:
+                * m: always move onto space (even if 'I' remembered)
+                * F: always attack space (even if 'I' not remembered)
+                * normal movement: attack if 'I', move otherwise
+                */
     case 'F':
       if (movecmd(cmd[1])) {
         flags.forcefight = 1;
@@ -2245,7 +2409,8 @@ void rhack(char *cmd) {
         prefix_seen = TRUE;
       break;
     case '0':
-      if (!iflags.num_pad) break;
+      if (!iflags.num_pad)
+        break;
       (void)ddoinv(); /* a convenience borrowed from the PC */
       flags.move = FALSE;
       multi = 0;
@@ -2282,13 +2447,15 @@ void rhack(char *cmd) {
   }
 
   if (do_walk) {
-    if (multi) flags.mv = TRUE;
+    if (multi)
+      flags.mv = TRUE;
     domove();
     flags.forcefight = 0;
     return;
   } else if (do_rush) {
     if (firsttime) {
-      if (!multi) multi = max(COLNO, ROWNO);
+      if (!multi)
+        multi = max(COLNO, ROWNO);
       player.last_str_turn = 0;
     }
     flags.mv = TRUE;
@@ -2306,7 +2473,8 @@ void rhack(char *cmd) {
     int res, (*func)();
 
     for (tlist = cmdlist; tlist->f_char; tlist++) {
-      if ((*cmd & 0xff) != (tlist->f_char & 0xff)) continue;
+      if ((*cmd & 0xff) != (tlist->f_char & 0xff))
+        continue;
 
       if (player.uburied && !tlist->can_if_buried) {
         You_cant("do that while you are buried!");
@@ -2361,7 +2529,8 @@ int xytod(schar x, schar y) {
   int dd;
 
   for (dd = 0; dd < 8; dd++)
-    if (x == xdir[dd] && y == ydir[dd]) return dd;
+    if (x == xdir[dd] && y == ydir[dd])
+      return dd;
 
   return -1;
 }
@@ -2383,7 +2552,8 @@ int movecmd(char sym) {
     sdp = sdir; /* DICE workaround */
 
   player.dz = 0;
-  if (!(dp = index(sdp, sym))) return 0;
+  if (!(dp = index(sdp, sym)))
+    return 0;
   player.dx = xdir[dp - sdp];
   player.dy = ydir[dp - sdp];
   player.dz = zdir[dp - sdp];
@@ -2417,7 +2587,8 @@ int get_adjacent_loc(char const *prompt, char const *emsg, xchar x, xchar y,
     cc->x = new_x;
     cc->y = new_y;
   } else {
-    if (emsg) pline(emsg);
+    if (emsg)
+      pline(emsg);
     return 0;
   }
   return 1;
@@ -2445,11 +2616,13 @@ int getdir(const char *s) {
         did_help =
             help_dir((s && *s == '^') ? dirsym : 0, "Invalid direction key!");
       }
-      if (!did_help) pline("What a strange direction!");
+      if (!did_help)
+        pline("What a strange direction!");
     }
     return 0;
   }
-  if (!player.dz && (Stunned || (Confusion && !rn2(5)))) confdir();
+  if (!player.dz && (Stunned || (Confusion && !rn2(5))))
+    confdir();
   return 1;
 }
 
@@ -2460,7 +2633,8 @@ STATIC_OVL bool help_dir(char sym, const char *msg) {
   char buf[BUFSZ], buf2[BUFSZ], *expl;
 
   win = create_nhwindow(NHW_TEXT);
-  if (!win) return FALSE;
+  if (!win)
+    return FALSE;
   if (msg) {
     sprintf(buf, "cmdassist: %s", msg);
     putstr(win, 0, buf);
@@ -2672,7 +2846,8 @@ STATIC_OVL char *parse() {
       foo = readchar();
       if (foo >= '0' && foo <= '9') {
         multi = 10 * multi + foo - '0';
-        if (multi < 0 || multi >= LARGEST_INT) multi = LARGEST_INT;
+        if (multi < 0 || multi >= LARGEST_INT)
+          multi = LARGEST_INT;
         if (multi > 9) {
           clear_nhwindow(WIN_MESSAGE);
           sprintf(in_line, "Count: %d", multi);
@@ -2680,7 +2855,8 @@ STATIC_OVL char *parse() {
           mark_synch();
         }
         last_multi = multi;
-        if (!multi && foo == '0') prezero = TRUE;
+        if (!multi && foo == '0')
+          prezero = TRUE;
       } else
         break; /* not a digit */
     }
@@ -2716,7 +2892,8 @@ STATIC_OVL char *parse() {
     in_line[2] = 0;
   }
   clear_nhwindow(WIN_MESSAGE);
-  if (prezero) in_line[0] = '\033';
+  if (prezero)
+    in_line[0] = '\033';
   return (in_line);
 }
 
@@ -2763,7 +2940,8 @@ char readchar() {
     } while (--cnt && sym == EOF);
   }
 #endif /* NR_OF_EOFS */
-  if (sym == EOF) end_of_input();
+  if (sym == EOF)
+    end_of_input();
 
   if (sym == 0) {
     /* click event */
@@ -2778,7 +2956,8 @@ STATIC_PTR int dotravel() {
   static char cmd[2];
   coord cc;
 
-  if (!iflags.travelcmd) return 0;
+  if (!iflags.travelcmd)
+    return 0;
   cmd[1] = 0;
   cc.x = iflags.travelcc.x;
   cc.y = iflags.travelcc.y;
@@ -2850,7 +3029,8 @@ char yn_function(const char *query, const char *resp, char def) {
   char qbuf[QBUFSZ];
   unsigned truncspot, reduction = sizeof(" [N]  ?") + 1;
 
-  if (resp) reduction += strlen(resp) + sizeof(" () ");
+  if (resp)
+    reduction += strlen(resp) + sizeof(" () ");
   if (strlen(query) < (QBUFSZ - reduction))
     return (*windowprocs.win_yn_function)(query, resp, def);
   paniclog("Query truncated: ", query);

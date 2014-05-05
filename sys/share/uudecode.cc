@@ -91,7 +91,8 @@ int main(int argc, char **argv) {
       fprintf(stderr, "No begin line\n");
       exit(3);
     }
-    if (strncmp(buf, "begin ", 6) == 0) break;
+    if (strncmp(buf, "begin ", 6) == 0)
+      break;
   }
   (void)sscanf(buf, "begin %o %s", &mode, dest);
 
@@ -153,11 +154,13 @@ void decode(FILE *in, FILE *out) {
       exit(10);
     }
     n = DEC(buf[0]);
-    if ((n <= 0) || (buf[0] == '\n')) break;
+    if ((n <= 0) || (buf[0] == '\n'))
+      break;
 
     /* Calculate expected # of chars and pad if necessary */
     expected = ((n + 2) / 3) << 2;
-    for (i = strlen(buf) - 1; i <= expected; i++) buf[i] = ' ';
+    for (i = strlen(buf) - 1; i <= expected; i++)
+      buf[i] = ' ';
 
     bp = &buf[1];
     while (n > 0) {
@@ -180,9 +183,12 @@ void outdec(char *p, FILE *f, int n) {
   c1 = DEC(*p) << 2 | DEC(p[1]) >> 4;
   c2 = DEC(p[1]) << 4 | DEC(p[2]) >> 2;
   c3 = DEC(p[2]) << 6 | DEC(p[3]);
-  if (n >= 1) putc(c1, f);
-  if (n >= 2) putc(c2, f);
-  if (n >= 3) putc(c3, f);
+  if (n >= 1)
+    putc(c1, f);
+  if (n >= 2)
+    putc(c2, f);
+  if (n >= 3)
+    putc(c3, f);
 }
 
 /*
@@ -196,7 +202,8 @@ void outdec(char *p, FILE *f, int n) {
 
 char *index(char *sp, char c) {
   do {
-    if (*sp == c) return (sp);
+    if (*sp == c)
+      return (sp);
   } while (*sp++);
   return (NULL);
 }

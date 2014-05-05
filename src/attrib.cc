@@ -81,10 +81,12 @@ STATIC_DCL void postadjabil(long *);
 
 /* adjust an attribute; return TRUE if change is made, FALSE otherwise */
 bool adjattrib(int ndx, int incr, int msgflg) {
-  if (Fixed_abil || !incr) return FALSE;
+  if (Fixed_abil || !incr)
+    return FALSE;
 
   if ((ndx == A_INT || ndx == A_WIS) && uarmh && uarmh->otyp == DUNCE_CAP) {
-    if (msgflg == 0) Your("cap constricts briefly, then relaxes again.");
+    if (msgflg == 0)
+      Your("cap constricts briefly, then relaxes again.");
     return FALSE;
   }
 
@@ -100,7 +102,8 @@ bool adjattrib(int ndx, int incr, int msgflg) {
     if (ABASE(ndx) > AMAX(ndx)) {
       incr = ABASE(ndx) - AMAX(ndx);
       AMAX(ndx) += incr;
-      if (AMAX(ndx) > ATTRMAX(ndx)) AMAX(ndx) = ATTRMAX(ndx);
+      if (AMAX(ndx) > ATTRMAX(ndx))
+        AMAX(ndx) = ATTRMAX(ndx);
       ABASE(ndx) = AMAX(ndx);
     }
   } else {
@@ -116,14 +119,16 @@ bool adjattrib(int ndx, int incr, int msgflg) {
       incr = ABASE(ndx) - ATTRMIN(ndx);
       ABASE(ndx) = ATTRMIN(ndx);
       AMAX(ndx) += incr;
-      if (AMAX(ndx) < ATTRMIN(ndx)) AMAX(ndx) = ATTRMIN(ndx);
+      if (AMAX(ndx) < ATTRMIN(ndx))
+        AMAX(ndx) = ATTRMIN(ndx);
     }
   }
   if (msgflg <= 0)
     You_feel("%s%s!", (incr > 1 || incr < -1) ? "very " : "",
              (incr > 0) ? plusattr[ndx] : minusattr[ndx]);
   flags.botl = 1;
-  if (moves > 1 && (ndx == A_STR || ndx == A_CON)) (void)encumber_msg();
+  if (moves > 1 && (ndx == A_STR || ndx == A_CON))
+    (void)encumber_msg();
   return TRUE;
 }
 
@@ -161,8 +166,10 @@ void losestr(int num) {
 
 void change_luck(schar n) {
   player.uluck += n;
-  if (player.uluck < 0 && player.uluck < LUCKMIN) player.uluck = LUCKMIN;
-  if (player.uluck > 0 && player.uluck > LUCKMAX) player.uluck = LUCKMAX;
+  if (player.uluck < 0 && player.uluck < LUCKMIN)
+    player.uluck = LUCKMIN;
+  if (player.uluck > 0 && player.uluck > LUCKMAX)
+    player.uluck = LUCKMAX;
 }
 
 int stone_luck(bool parameter) {
@@ -223,10 +230,12 @@ void exercise(int i, bool inc_or_dec) {
 #ifdef DEBUG
   pline("Exercise:");
 #endif
-  if (i == A_INT || i == A_CHA) return; /* can't exercise these */
+  if (i == A_INT || i == A_CHA)
+    return; /* can't exercise these */
 
   /* no physical exercise while polymorphed; the body's temporary */
-  if (Upolyd && i != A_WIS) return;
+  if (Upolyd && i != A_WIS)
+    return;
 
   if (abs(AEXE(i)) < AVAL) {
     /*
@@ -246,7 +255,8 @@ void exercise(int i, bool inc_or_dec) {
           (inc_or_dec) ? "inc" : "dec", AEXE(i));
 #endif
   }
-  if (moves > 0 && (i == A_STR || i == A_CON)) (void)encumber_msg();
+  if (moves > 0 && (i == A_STR || i == A_CON))
+    (void)encumber_msg();
 }
 
 /* hunger values - from eat.c */
@@ -276,7 +286,8 @@ STATIC_OVL void exerper() {
     switch (hs) {
       case SATIATED:
         exercise(A_DEX, FALSE);
-        if (Role_if(PM_MONK)) exercise(A_WIS, FALSE);
+        if (Role_if(PM_MONK))
+          exercise(A_WIS, FALSE);
         break;
       case NOT_HUNGRY:
         exercise(A_CON, TRUE);
@@ -318,10 +329,13 @@ STATIC_OVL void exerper() {
 #endif
     if ((HClairvoyant & (INTRINSIC | TIMEOUT)) && !BClairvoyant)
       exercise(A_WIS, TRUE);
-    if (HRegeneration) exercise(A_STR, TRUE);
+    if (HRegeneration)
+      exercise(A_STR, TRUE);
 
-    if (Sick || Vomiting) exercise(A_CON, FALSE);
-    if (Confusion || Hallucination) exercise(A_WIS, FALSE);
+    if (Sick || Vomiting)
+      exercise(A_CON, FALSE);
+    if (Confusion || Hallucination)
+      exercise(A_WIS, FALSE);
     if ((Wounded_legs
 #ifdef STEED
          && !player.usteed
@@ -339,7 +353,8 @@ void exerchk() {
   exerper();
 
 #ifdef DEBUG
-  if (moves >= next_check) pline("exerchk: ready to test. multi = %d.", multi);
+  if (moves >= next_check)
+    pline("exerchk: ready to test. multi = %d.", multi);
 #endif
   /*	Are we ready for a test?	*/
   if (moves >= next_check && !multi) {
@@ -355,8 +370,10 @@ void exerchk() {
      *	accumulated effects.
      */
     for (i = 0; i < A_MAX; AEXE(i++) /= 2) {
-      if (ABASE(i) >= 18 || !AEXE(i)) continue;
-      if (i == A_INT || i == A_CHA) continue; /* can't exercise these */
+      if (ABASE(i) >= 18 || !AEXE(i))
+        continue;
+      if (i == A_INT || i == A_CHA)
+        continue; /* can't exercise these */
 
 #ifdef DEBUG
       pline("exerchk: testing %s (%d).",
@@ -413,7 +430,8 @@ void exerchk() {
 
 /* next_check will otherwise have its initial 600L after a game restore */
 void reset_attribute_clock() {
-  if (moves > 600L) next_check = moves + rn1(50, 800);
+  if (moves > 600L)
+    next_check = moves + rn1(50, 800);
 }
 
 void init_attr(int np) {
@@ -430,7 +448,8 @@ void init_attr(int np) {
     x = rn2(100);
     for (i = 0; (i < A_MAX) && ((x -= urole.attrdist[i]) > 0); i++)
       ;
-    if (i >= A_MAX) continue; /* impossible */
+    if (i >= A_MAX)
+      continue; /* impossible */
 
     if (ABASE(i) >= ATTRMAX(i)) {
       tryct++;
@@ -448,7 +467,8 @@ void init_attr(int np) {
     x = rn2(100);
     for (i = 0; (i < A_MAX) && ((x -= urole.attrdist[i]) > 0); i++)
       ;
-    if (i >= A_MAX) continue; /* impossible */
+    if (i >= A_MAX)
+      continue; /* impossible */
 
     if (ABASE(i) <= ATTRMIN(i)) {
       tryct++;
@@ -465,23 +485,29 @@ void redist_attr() {
   int i, tmp;
 
   for (i = 0; i < A_MAX; i++) {
-    if (i == A_INT || i == A_WIS) continue;
+    if (i == A_INT || i == A_WIS)
+      continue;
     /* Polymorphing doesn't change your mind */
     tmp = AMAX(i);
     AMAX(i) += (rn2(5) - 2);
-    if (AMAX(i) > ATTRMAX(i)) AMAX(i) = ATTRMAX(i);
-    if (AMAX(i) < ATTRMIN(i)) AMAX(i) = ATTRMIN(i);
+    if (AMAX(i) > ATTRMAX(i))
+      AMAX(i) = ATTRMAX(i);
+    if (AMAX(i) < ATTRMIN(i))
+      AMAX(i) = ATTRMIN(i);
     ABASE(i) = ABASE(i) * AMAX(i) / tmp;
     /* ABASE(i) > ATTRMAX(i) is impossible */
-    if (ABASE(i) < ATTRMIN(i)) ABASE(i) = ATTRMIN(i);
+    if (ABASE(i) < ATTRMIN(i))
+      ABASE(i) = ATTRMIN(i);
   }
   (void)encumber_msg();
 }
 
 STATIC_OVL
 void postadjabil(long *ability) {
-  if (!ability) return;
-  if (ability == &(HWarning) || ability == &(HSee_invisible)) see_monsters();
+  if (!ability)
+    return;
+  if (ability == &(HWarning) || ability == &(HSee_invisible))
+    see_monsters();
 }
 
 void adjabil(int oldlevel, int newlevel) {
@@ -555,7 +581,8 @@ void adjabil(int oldlevel, int newlevel) {
     /* Have we finished with the intrinsics list? */
     if (!abil || !abil->ability) {
       /* Try the race intrinsics */
-      if (!rabil || !rabil->ability) break;
+      if (!rabil || !rabil->ability)
+        break;
       abil = rabil;
       rabil = 0;
       mask = FROMRACE;
@@ -573,7 +600,8 @@ void adjabil(int oldlevel, int newlevel) {
       else
         *(abil->ability) |= mask;
       if (!(*(abil->ability) & INTRINSIC & ~mask)) {
-        if (*(abil->gainstr)) You_feel("%s!", abil->gainstr);
+        if (*(abil->gainstr))
+          You_feel("%s!", abil->gainstr);
       }
     } else if (oldlevel >= abil->ulevel && newlevel < abil->ulevel) {
       *(abil->ability) &= ~mask;
@@ -603,8 +631,10 @@ int newhp() {
   if (player.ulevel == 0) {
     /* Initialize hit points */
     hp = urole.hpadv.infix + urace.hpadv.infix;
-    if (urole.hpadv.inrnd > 0) hp += rnd(urole.hpadv.inrnd);
-    if (urace.hpadv.inrnd > 0) hp += rnd(urace.hpadv.inrnd);
+    if (urole.hpadv.inrnd > 0)
+      hp += rnd(urole.hpadv.inrnd);
+    if (urace.hpadv.inrnd > 0)
+      hp += rnd(urace.hpadv.inrnd);
 
     /* Initialize alignment stuff */
     player.ualign.type = aligns[flags.initalign].value;
@@ -614,12 +644,16 @@ int newhp() {
   } else {
     if (player.ulevel < urole.xlev) {
       hp = urole.hpadv.lofix + urace.hpadv.lofix;
-      if (urole.hpadv.lornd > 0) hp += rnd(urole.hpadv.lornd);
-      if (urace.hpadv.lornd > 0) hp += rnd(urace.hpadv.lornd);
+      if (urole.hpadv.lornd > 0)
+        hp += rnd(urole.hpadv.lornd);
+      if (urace.hpadv.lornd > 0)
+        hp += rnd(urace.hpadv.lornd);
     } else {
       hp = urole.hpadv.hifix + urace.hpadv.hifix;
-      if (urole.hpadv.hirnd > 0) hp += rnd(urole.hpadv.hirnd);
-      if (urace.hpadv.hirnd > 0) hp += rnd(urace.hpadv.hirnd);
+      if (urole.hpadv.hirnd > 0)
+        hp += rnd(urole.hpadv.hirnd);
+      if (urace.hpadv.hirnd > 0)
+        hp += rnd(urace.hpadv.hirnd);
     }
   }
 
@@ -649,7 +683,8 @@ schar acurr(int x) {
   int tmp = (player.abon.a[x] + player.atemp.a[x] + player.acurr.a[x]);
 
   if (x == A_STR) {
-    if (uarmg && uarmg->otyp == GAUNTLETS_OF_POWER) return (125);
+    if (uarmg && uarmg->otyp == GAUNTLETS_OF_POWER)
+      return (125);
 #ifdef WIN32_BUG
     else
       return (x = ((tmp >= 125) ? 125 : (tmp <= 3) ? 3 : tmp));
@@ -666,7 +701,8 @@ schar acurr(int x) {
     /* yes, this may raise int/wis if player is sufficiently
      * stupid.  there are lower levels of cognition than "dunce".
      */
-    if (uarmh && uarmh->otyp == DUNCE_CAP) return (6);
+    if (uarmh && uarmh->otyp == DUNCE_CAP)
+      return (6);
   }
 #ifdef WIN32_BUG
   return (x = ((tmp >= 25) ? 25 : (tmp <= 3) ? 3 : tmp));
@@ -680,7 +716,8 @@ schar acurr(int x) {
 schar acurrstr() {
   int str = ACURR(A_STR);
 
-  if (str <= 18) return ((schar)str);
+  if (str <= 18)
+    return ((schar)str);
   if (str <= 121)
     return ((schar)(19 + str / 50)); /* map to 19-21 */
   else
@@ -697,10 +734,12 @@ void adjalign(int n) {
   int newalign = player.ualign.record + n;
 
   if (n < 0) {
-    if (newalign < player.ualign.record) player.ualign.record = newalign;
+    if (newalign < player.ualign.record)
+      player.ualign.record = newalign;
   } else if (newalign > player.ualign.record) {
     player.ualign.record = newalign;
-    if (player.ualign.record > ALIGNLIM) player.ualign.record = ALIGNLIM;
+    if (player.ualign.record > ALIGNLIM)
+      player.ualign.record = ALIGNLIM;
   }
 }
 

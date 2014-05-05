@@ -41,15 +41,19 @@ int doread() {
   bool confused;
 
   known = FALSE;
-  if (check_capacity((char *)0)) return (0);
+  if (check_capacity((char *)0))
+    return (0);
   scroll = getobj(readable, "read");
-  if (!scroll) return (0);
+  if (!scroll)
+    return (0);
 
   /* outrumor has its own blindness check */
   if (scroll->otyp == FORTUNE_COOKIE) {
-    if (flags.verbose) You("break up the cookie and throw away the pieces.");
+    if (flags.verbose)
+      You("break up the cookie and throw away the pieces.");
     outrumor(GetBUCSign(scroll), BY_COOKIE);
-    if (!Blind) player.uconduct.literate++;
+    if (!Blind)
+      player.uconduct.literate++;
     useup(scroll);
     return (1);
 #ifdef TOURIST
@@ -81,7 +85,8 @@ int doread() {
       return 0;
     }
     player.uconduct.literate++;
-    if (flags.verbose) pline("It reads:");
+    if (flags.verbose)
+      pline("It reads:");
     strcpy(buf, shirt_msgs[scroll->o_id % SIZE(shirt_msgs)]);
     erosion = greatest_erosion(scroll);
     if (erosion)
@@ -112,7 +117,8 @@ int doread() {
 
   confused = (Confusion != 0);
 #ifdef MAIL
-  if (scroll->otyp == SCR_MAIL) confused = FALSE;
+  if (scroll->otyp == SCR_MAIL)
+    confused = FALSE;
 #endif
   if (scroll->oclass == SPBOOK_CLASS) {
     return (study_book(scroll));
@@ -154,7 +160,8 @@ static void stripspe(Object *obj) {
   else {
     if (obj->spe > 0) {
       obj->spe = 0;
-      if (obj->otyp == OIL_LAMP || obj->otyp == BRASS_LANTERN) obj->age = 0;
+      if (obj->otyp == OIL_LAMP || obj->otyp == BRASS_LANTERN)
+        obj->age = 0;
       Your("%s %s briefly.", xname(obj), otense(obj, "vibrate"));
     } else
       pline(nothing_happens);
@@ -174,14 +181,16 @@ static void p_glow2(Object *otmp, const char *color) {
 /* Is the object chargeable?  For purposes of inventory display; it is */
 /* possible to be able to charge things for which this returns FALSE. */
 bool is_chargeable(Object *obj) {
-  if (obj->oclass == WAND_CLASS) return TRUE;
+  if (obj->oclass == WAND_CLASS)
+    return TRUE;
   /* known && !uname is possible after amnesia/mind flayer */
   if (obj->oclass == RING_CLASS)
     return (bool)(objects[obj->otyp].oc_charged &&
                   (obj->known || objects[obj->otyp].oc_uname));
   if (is_weptool(obj)) /* specific check before general tools */
     return FALSE;
-  if (obj->oclass == TOOL_CLASS) return (bool)(objects[obj->otyp].oc_charged);
+  if (obj->oclass == TOOL_CLASS)
+    return (bool)(objects[obj->otyp].oc_charged);
   return FALSE; /* why are weapons/armor considered charged anyway? */
 }
 
@@ -198,7 +207,8 @@ void recharge(Object *obj, int curse_bless) {
 
   if (obj->oclass == WAND_CLASS) {
     /* undo any prior cancellation, even when is_cursed */
-    if (obj->spe == -1) obj->spe = 0;
+    if (obj->spe == -1)
+      obj->spe = 0;
 
     /*
      * Recharging might cause wands to explode.
@@ -232,7 +242,8 @@ void recharge(Object *obj, int curse_bless) {
                     : (objects[obj->otyp].oc_dir != NODIR) ? 8 : 15;
 
       n = (lim == 3) ? 3 : rn1(5, lim + 1 - 5);
-      if (!is_blessed) n = rnd(n);
+      if (!is_blessed)
+        n = rnd(n);
 
       if (obj->spe < n)
         obj->spe = n;
@@ -257,7 +268,8 @@ void recharge(Object *obj, int curse_bless) {
     if (obj->spe > rn2(7) || obj->spe <= -5) {
       Your("%s %s momentarily, then %s!", xname(obj), otense(obj, "pulsate"),
            otense(obj, "explode"));
-      if (is_on) Ring_gone(obj);
+      if (is_on)
+        Ring_gone(obj);
       s = rnd(3 * abs(obj->spe)); /* amount of damage */
       useup(obj);
       losehp(s, "exploding ring", KILLED_BY_AN);
@@ -266,9 +278,11 @@ void recharge(Object *obj, int curse_bless) {
       Your("%s spins %sclockwise for a moment.", xname(obj),
            s < 0 ? "counter" : "");
       /* cause attributes and/or properties to be updated */
-      if (is_on) Ring_off(obj);
+      if (is_on)
+        Ring_off(obj);
       obj->spe += s; /* update the ring while it's off */
-      if (is_on) setworn(obj, mask), Ring_on(obj);
+      if (is_on)
+        setworn(obj, mask), Ring_on(obj);
       /* oartifact: if a touch-sensitive artifact ring is
          ever created the above will need to be revised  */
     }
@@ -289,7 +303,8 @@ void recharge(Object *obj, int curse_bless) {
           obj->spe += rnd(3);
         else
           obj->spe += 1;
-        if (obj->spe > 5) obj->spe = 5;
+        if (obj->spe > 5)
+          obj->spe = 5;
         break;
       case MAGIC_MARKER:
       case TINNING_KIT:
@@ -338,7 +353,8 @@ void recharge(Object *obj, int curse_bless) {
         if (is_cursed) {
           stripspe(obj);
           if (obj->lamplit) {
-            if (!Blind) pline("%s out!", Tobjnam(obj, "go"));
+            if (!Blind)
+              pline("%s out!", Tobjnam(obj, "go"));
             end_burn(obj, TRUE);
           }
         } else if (is_blessed) {
@@ -348,7 +364,8 @@ void recharge(Object *obj, int curse_bless) {
         } else {
           obj->spe = 1;
           obj->age += 750;
-          if (obj->age > 1500) obj->age = 1500;
+          if (obj->age > 1500)
+            obj->age = 1500;
           p_glow1(obj);
         }
         break;
@@ -376,11 +393,13 @@ void recharge(Object *obj, int curse_bless) {
             obj->spe += rn1(10, 6);
           else
             obj->spe += rn1(5, 6);
-          if (obj->spe > 50) obj->spe = 50;
+          if (obj->spe > 50)
+            obj->spe = 50;
           p_glow2(obj, NH_BLUE);
         } else {
           obj->spe += rnd(5);
-          if (obj->spe > 50) obj->spe = 50;
+          if (obj->spe > 50)
+            obj->spe = 50;
           p_glow1(obj);
         }
         break;
@@ -393,11 +412,13 @@ void recharge(Object *obj, int curse_bless) {
           stripspe(obj);
         } else if (is_blessed) {
           obj->spe += d(2, 4);
-          if (obj->spe > 20) obj->spe = 20;
+          if (obj->spe > 20)
+            obj->spe = 20;
           p_glow2(obj, NH_BLUE);
         } else {
           obj->spe += rnd(4);
-          if (obj->spe > 20) obj->spe = 20;
+          if (obj->spe > 20)
+            obj->spe = 20;
           p_glow1(obj);
         }
         break;
@@ -442,7 +463,8 @@ static void randomize(int *indices, int count) {
   int i, iswap, temp;
 
   for (i = count - 1; i > 0; i--) {
-    if ((iswap = rn2(i + 1)) == i) continue;
+    if ((iswap = rn2(i + 1)) == i)
+      continue;
     temp = indices[i];
     indices[i] = indices[iswap];
     indices[iswap] = temp;
@@ -454,7 +476,8 @@ void forget_objects(int percent) {
   int i, count;
   int indices[NUM_OBJECTS];
 
-  if (percent == 0) return;
+  if (percent == 0)
+    return;
   if (percent <= 0 || percent > 100) {
     impossible("forget_objects: bad percent %d", percent);
     return;
@@ -469,14 +492,16 @@ void forget_objects(int percent) {
 
   /* forget first % of randomized indices */
   count = ((count * percent) + 50) / 100;
-  for (i = 0; i < count; i++) forget_single_object(indices[i]);
+  for (i = 0; i < count; i++)
+    forget_single_object(indices[i]);
 }
 
 /* Forget some or all of map (depends on parameters). */
 void forget_map(int howmuch) {
   int zx, zy;
 
-  if (In_sokoban(&player.uz)) return;
+  if (In_sokoban(&player.uz))
+    return;
 
   known = TRUE;
   for (zx = 0; zx < COLNO; zx++)
@@ -509,7 +534,8 @@ void forget_levels(int percent) {
   xchar maxl, this_lev;
   int indices[MAXLINFO];
 
-  if (percent == 0) return;
+  if (percent == 0)
+    return;
 
   if (percent <= 0 || percent > 100) {
     impossible("forget_levels: bad percent %d", percent);
@@ -534,7 +560,8 @@ void forget_levels(int percent) {
         indices[count++] = i;
     }
 
-  if (percent > 100) percent = 100;
+  if (percent > 100)
+    percent = 100;
 
   randomize(indices, count);
 
@@ -559,18 +586,22 @@ void forget_levels(int percent) {
  *	howmuch & ALL_SPELLS	= forget all spells
  */
 static void forget(int howmuch) {
-  if (Punished) player.bc_felt = 0; /* forget felt ball&chain */
+  if (Punished)
+    player.bc_felt = 0; /* forget felt ball&chain */
 
   forget_map(howmuch);
   forget_traps();
 
   /* 1 in 3 chance of forgetting some levels */
-  if (!rn2(3)) forget_levels(rn2(25));
+  if (!rn2(3))
+    forget_levels(rn2(25));
 
   /* 1 in 3 chance of forgeting some objects */
-  if (!rn2(3)) forget_objects(rn2(25));
+  if (!rn2(3))
+    forget_objects(rn2(25));
 
-  if (howmuch & ALL_SPELLS) losespells();
+  if (howmuch & ALL_SPELLS)
+    losespells();
   /*
    * Make sure that what was seen is restored correctly.  To do this,
    * we need to go blind for an instant --- turn off the display,
@@ -601,7 +632,8 @@ int seffects(Object *sobj) {
   bool confused = (Confusion != 0);
   Object *otmp;
 
-  if (objects[sobj->otyp].oc_magic) exercise(A_WIS, TRUE); /* just for trying */
+  if (objects[sobj->otyp].oc_magic)
+    exercise(A_WIS, TRUE); /* just for trying */
   switch (sobj->otyp) {
 #ifdef MAIL
     case SCR_MAIL:
@@ -659,7 +691,8 @@ int seffects(Object *sobj) {
         same_color = (otmp->otyp == SILVER_DRAGON_SCALE_MAIL ||
                       otmp->otyp == SILVER_DRAGON_SCALES ||
                       otmp->otyp == SHIELD_OF_REFLECTION);
-      if (Blind) same_color = FALSE;
+      if (Blind)
+        same_color = FALSE;
 
       /* KMH -- catch underflow */
       s = sobj->cursed ? -otmp->spe : otmp->spe;
@@ -670,12 +703,18 @@ int seffects(Object *sobj) {
              (Blind || same_color) ? nul : hcolor(sobj->cursed ? NH_BLACK
                                                                : NH_SILVER),
              otense(otmp, "evaporate"));
-        if (is_cloak(otmp)) (void)Cloak_off();
-        if (is_boots(otmp)) (void)Boots_off();
-        if (is_helmet(otmp)) (void)Helmet_off();
-        if (is_gloves(otmp)) (void)Gloves_off();
-        if (is_shield(otmp)) (void)Shield_off();
-        if (otmp == uarm) (void)Armor_gone();
+        if (is_cloak(otmp))
+          (void)Cloak_off();
+        if (is_boots(otmp))
+          (void)Boots_off();
+        if (is_helmet(otmp))
+          (void)Helmet_off();
+        if (is_gloves(otmp))
+          (void)Gloves_off();
+        if (is_shield(otmp))
+          (void)Shield_off();
+        if (otmp == uarm)
+          (void)Armor_gone();
         useup(otmp);
         break;
       }
@@ -705,7 +744,8 @@ int seffects(Object *sobj) {
                                  : hcolor(sobj->cursed ? NH_BLACK : NH_SILVER),
            (s * s > 1) ? "while" : "moment");
       otmp->cursed = sobj->cursed;
-      if (!otmp->blessed || sobj->cursed) otmp->blessed = sobj->blessed;
+      if (!otmp->blessed || sobj->cursed)
+        otmp->blessed = sobj->blessed;
       if (s) {
         otmp->spe += s;
         adj_abon(otmp, s);
@@ -740,14 +780,16 @@ int seffects(Object *sobj) {
           known = TRUE;
       } else { /* armor and scroll both cursed */
         Your("%s %s.", xname(otmp), otense(otmp, "vibrate"));
-        if (otmp->spe >= -6) otmp->spe--;
+        if (otmp->spe >= -6)
+          otmp->spe--;
         make_stunned(HStun + rn1(10, 10), TRUE);
       }
     } break;
     case SCR_CONFUSE_MONSTER:
     case SPE_CONFUSE_MONSTER:
       if (youmonst.data->mlet != S_HUMAN || sobj->cursed) {
-        if (!HConfusion) You_feel("confused.");
+        if (!HConfusion)
+          You_feel("confused.");
         make_confused(HConfusion + rnd(100), FALSE);
       } else if (confused) {
         if (!sobj->blessed) {
@@ -787,14 +829,16 @@ int seffects(Object *sobj) {
       Monster *mtmp;
 
       for (mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
-        if (mtmp->dead()) continue;
+        if (mtmp->dead())
+          continue;
         if (cansee(mtmp->mx, mtmp->my)) {
           if (confused || sobj->cursed) {
             mtmp->mflee = mtmp->mfrozen = mtmp->msleeping = 0;
             mtmp->mcanmove = 1;
           } else if (!resist(mtmp, sobj->oclass, 0, NOTELL))
             monflee(mtmp, 0, FALSE, FALSE);
-          if (!mtmp->mtame) ct++; /* pets don't laugh at you */
+          if (!mtmp->mtame)
+            ct++; /* pets don't laugh at you */
         }
       }
       if (!ct)
@@ -834,7 +878,8 @@ int seffects(Object *sobj) {
           long wornmask;
 #ifdef GOLDOBJ
           /* gold isn't subject to cursing and blessing */
-          if (Object->oclass == COIN_CLASS) continue;
+          if (Object->oclass == COIN_CLASS)
+            continue;
 #endif
           wornmask = (obj->owornmask & ~(W_BALL | W_ART | W_ARTI));
           if (wornmask && !sobj->blessed) {
@@ -842,16 +887,19 @@ int seffects(Object *sobj) {
                allow auxiliary weapon slots to be used to
                artificially increase number of worn items */
             if (obj == uswapwep) {
-              if (!player.twoweap) wornmask = 0L;
+              if (!player.twoweap)
+                wornmask = 0L;
             } else if (obj == uquiver) {
               if (obj->oclass == WEAPON_CLASS) {
                 /* mergeable weapon test covers ammo,
                    missiles, spears, daggers & knives */
-                if (!objects[obj->otyp].oc_merge) wornmask = 0L;
+                if (!objects[obj->otyp].oc_merge)
+                  wornmask = 0L;
               } else if (obj->oclass == GEM_CLASS) {
                 /* possibly ought to check whether
                    alternate weapon is a sling... */
-                if (!uslinging()) wornmask = 0L;
+                if (!uslinging())
+                  wornmask = 0L;
               } else {
                 /* weptools don't merge and aren't
                    reasonable quivered weapons */
@@ -868,7 +916,8 @@ int seffects(Object *sobj) {
           }
         }
       }
-      if (Punished && !confused) unpunish();
+      if (Punished && !confused)
+        unpunish();
       update_inventory();
       break;
     }
@@ -921,7 +970,8 @@ int seffects(Object *sobj) {
 
         for (i = -bd; i <= bd; i++)
           for (j = -bd; j <= bd; j++) {
-            if (!isok(player.ux + i, player.uy + j)) continue;
+            if (!isok(player.ux + i, player.uy + j))
+              continue;
             if ((mtmp = m_at(player.ux + i, player.uy + j)) != 0)
               maybe_tame(mtmp, sobj);
           }
@@ -936,7 +986,8 @@ int seffects(Object *sobj) {
         do_genocide(!sobj->cursed | (2 * !!Confusion));
       break;
     case SCR_LIGHT:
-      if (!Blind) known = TRUE;
+      if (!Blind)
+        known = TRUE;
       litroom(!confused && !sobj->cursed, sobj);
       break;
     case SCR_TELEPORTATION:
@@ -945,7 +996,8 @@ int seffects(Object *sobj) {
       else {
         if (sobj->blessed && !Teleport_control) {
           known = TRUE;
-          if (yn("Do you wish to teleport?") == 'n') break;
+          if (yn("Do you wish to teleport?") == 'n')
+            break;
         }
         tele();
         if (Teleport_control || !couldsee(player.ux0, player.uy0) ||
@@ -960,7 +1012,8 @@ int seffects(Object *sobj) {
         return (gold_detect(sobj));
     case SCR_FOOD_DETECTION:
     case SPE_DETECT_FOOD:
-      if (food_detect(sobj)) return (1); /* nothing detected */
+      if (food_detect(sobj))
+        return (1); /* nothing detected */
       break;
     case SPE_IDENTIFY:
       cval = rn2(5);
@@ -974,10 +1027,12 @@ int seffects(Object *sobj) {
       if (sobj->blessed || (!sobj->cursed && !rn2(5))) {
         cval = rn2(5);
         /* Note: if rn2(5)==0, identify all items */
-        if (cval == 1 && sobj->blessed && Luck > 0) ++cval;
+        if (cval == 1 && sobj->blessed && Luck > 0)
+          ++cval;
       } else
         cval = 1;
-      if (!objects[sobj->otyp].oc_name_known) more_experienced(0, 10);
+      if (!objects[sobj->otyp].oc_name_known)
+        more_experienced(0, 10);
       useup(sobj);
       makeknown(SCR_IDENTIFY);
     id:
@@ -998,7 +1053,8 @@ int seffects(Object *sobj) {
       known = TRUE;
       pline("This is a charging scroll.");
       otmp = getobj(all_count, "charge");
-      if (!otmp) break;
+      if (!otmp)
+        break;
       recharge(otmp, sobj->cursed ? -1 : (sobj->blessed ? 1 : 0));
       break;
     case SCR_MAGIC_MAPPING:
@@ -1016,7 +1072,8 @@ int seffects(Object *sobj) {
 
         for (x = 1; x < COLNO; x++)
           for (y = 0; y < ROWNO; y++)
-            if (levl[x][y].typ == SDOOR) cvt_sdoor_to_door(&levl[x][y]);
+            if (levl[x][y].typ == SDOOR)
+              cvt_sdoor_to_door(&levl[x][y]);
         /* do_mapping() already reveals secret passages */
       }
       known = TRUE;
@@ -1028,7 +1085,8 @@ int seffects(Object *sobj) {
       }
       pline("A map coalesces in your mind!");
       cval = (sobj->cursed && !confused);
-      if (cval) HConfusion = 1; /* to screw up map */
+      if (cval)
+        HConfusion = 1; /* to screw up map */
       do_mapping();
       if (cval) {
         HConfusion = 0; /* restore */
@@ -1056,7 +1114,8 @@ int seffects(Object *sobj) {
        * some damage under all potential cases.
        */
       cval = GetBUCSign(sobj);
-      if (!objects[sobj->otyp].oc_name_known) more_experienced(0, 10);
+      if (!objects[sobj->otyp].oc_name_known)
+        more_experienced(0, 10);
       useup(sobj);
       makeknown(SCR_FIRE);
       if (confused) {
@@ -1097,7 +1156,8 @@ int seffects(Object *sobj) {
         pline_The("%s rumbles %s you!", ceiling(player.ux, player.uy),
                   sobj->blessed ? "around" : "above");
         known = 1;
-        if (In_sokoban(&player.uz)) change_luck(-1); /* Sokoban guilt */
+        if (In_sokoban(&player.uz))
+          change_luck(-1); /* Sokoban guilt */
 
         /* Loop through the surrounding squares */
         if (!sobj->cursed)
@@ -1113,7 +1173,8 @@ int seffects(Object *sobj) {
                 /* Make the object(s) */
                 otmp2 =
                     MakeSpecificObject(confused ? ROCK : BOULDER, FALSE, FALSE);
-                if (!otmp2) continue; /* Shouldn't happen */
+                if (!otmp2)
+                  continue; /* Shouldn't happen */
                 otmp2->quan = confused ? rn1(5, 2) : 1;
                 otmp2->owt = GetWeight(otmp2);
 
@@ -1138,7 +1199,8 @@ int seffects(Object *sobj) {
                               mon_nam(mtmp));
                       else if (flags.soundok)
                         You_hear("a clanging sound.");
-                      if (mdmg > 2) mdmg = 2;
+                      if (mdmg > 2)
+                        mdmg = 2;
                     } else {
                       if (canspotmon(mtmp))
                         pline("%s's %s does not protect %s.", Monnam(mtmp),
@@ -1146,7 +1208,8 @@ int seffects(Object *sobj) {
                     }
                   }
                   mtmp->mhp -= mdmg;
-                  if (mtmp->mhp <= 0) xkilled(mtmp, 1);
+                  if (mtmp->mhp <= 0)
+                    xkilled(mtmp, 1);
                 }
                 /* Drop the rock/boulder to the floor */
                 if (!flooreffects(otmp2, x, y, "fall")) {
@@ -1164,7 +1227,8 @@ int seffects(Object *sobj) {
 
           /* Okay, _you_ write this without repeating the code */
           otmp2 = MakeSpecificObject(confused ? ROCK : BOULDER, FALSE, FALSE);
-          if (!otmp2) break;
+          if (!otmp2)
+            break;
           otmp2->quan = confused ? rn1(5, 2) : 1;
           otmp2->owt = GetWeight(otmp2);
           if (!amorphous(youmonst.data) && !Passes_walls &&
@@ -1174,7 +1238,8 @@ int seffects(Object *sobj) {
             if (uarmh && !sobj->cursed) {
               if (is_metallic(uarmh)) {
                 pline("Fortunately, you are wearing a hard helmet.");
-                if (dmg > 2) dmg = 2;
+                if (dmg > 2)
+                  dmg = 2;
               } else if (flags.verbose) {
                 Your("%s does not protect you.", xname(uarmh));
               }
@@ -1187,7 +1252,8 @@ int seffects(Object *sobj) {
             stackobj(otmp2);
             newsym(player.ux, player.uy);
           }
-          if (dmg) losehp(dmg, "scroll of earth", KILLED_BY_AN);
+          if (dmg)
+            losehp(dmg, "scroll of earth", KILLED_BY_AN);
         }
       }
       break;
@@ -1267,10 +1333,13 @@ void litroom(bool on, Object *obj) {
 
     /* the magic douses lamps, et al, too */
     for (otmp = invent; otmp; otmp = otmp->nobj)
-      if (otmp->lamplit) (void)snuff_lit(otmp);
-    if (Blind) goto do_it;
+      if (otmp->lamplit)
+        (void)snuff_lit(otmp);
+    if (Blind)
+      goto do_it;
   } else {
-    if (Blind) goto do_it;
+    if (Blind)
+      goto do_it;
     if (player.uswallow) {
       if (is_animal(player.ustuck->data))
         pline("%s %s is lit.", s_suffix(Monnam(player.ustuck)),
@@ -1286,7 +1355,8 @@ void litroom(bool on, Object *obj) {
 
 do_it:
   /* No-op in water - can only see the adjacent squares and that's it! */
-  if (Underwater || Is_waterlevel(&player.uz)) return;
+  if (Underwater || Is_waterlevel(&player.uz))
+    return;
   /*
    *  If we are darkening the room and the hero is punished but not
    *  blind, then we have to pick up and replace the ball and chain so
@@ -1346,10 +1416,12 @@ static void do_class_genocide() {
       (void)mungspaces(buf);
     } while (buf[0] == '\033' || !buf[0]);
     /* choosing "none" preserves genocideless conduct */
-    if (!strcmpi(buf, "none") || !strcmpi(buf, "nothing")) return;
+    if (!strcmpi(buf, "none") || !strcmpi(buf, "nothing"))
+      return;
 
     if (strlen(buf) == 1) {
-      if (buf[0] == ILLOBJ_SYM) buf[0] = def_monsyms[S_MIMIC];
+      if (buf[0] == ILLOBJ_SYM)
+        buf[0] = def_monsyms[S_MIMIC];
       class_id = def_char_to_monclass(buf[0]);
     } else {
       char buf2[BUFSZ];
@@ -1389,7 +1461,8 @@ static void do_class_genocide() {
         gonecnt = 0;
         for (mtmp = fmon; mtmp; mtmp = mtmp2) {
           mtmp2 = mtmp->nmon;
-          if (mtmp->dead()) continue;
+          if (mtmp->dead())
+            continue;
           mongone(mtmp);
           gonecnt++;
         }
@@ -1422,7 +1495,8 @@ static void do_class_genocide() {
           if (Upolyd && i == player.umonnum) {
             player.mh = -1;
             if (Unchanging) {
-              if (!feel_dead++) You("die.");
+              if (!feel_dead++)
+                You("die.");
               /* finish genociding this class_id of
                  monsters before ultimately dying */
               gameover = TRUE;
@@ -1435,14 +1509,17 @@ static void do_class_genocide() {
           if (i == urole.malenum || i == urace.malenum) {
             player.uhp = -1;
             if (Upolyd) {
-              if (!feel_dead++) You_feel("dead inside.");
+              if (!feel_dead++)
+                You_feel("dead inside.");
             } else {
-              if (!feel_dead++) You("die.");
+              if (!feel_dead++)
+                You("die.");
               gameover = TRUE;
             }
           }
         } else if (mvitals[i].mvflags & G_GENOD) {
-          if (!gameover) pline("All %s are already nonexistent.", nam);
+          if (!gameover)
+            pline("All %s are already nonexistent.", nam);
         } else if (!gameover) {
           /* suppress feedback about quest beings except
              for those applicable to our own role */
@@ -1458,7 +1535,8 @@ static void do_class_genocide() {
             named = type_is_pname(&mons[i]) ? TRUE : FALSE;
             uniq = (mons[i].geno & G_UNIQ) ? TRUE : FALSE;
             /* one special case */
-            if (i == PM_HIGH_PRIEST) uniq = FALSE;
+            if (i == PM_HIGH_PRIEST)
+              uniq = FALSE;
 
             You("aren't permitted to genocide %s%s.",
                 (uniq && !named) ? "the " : "",
@@ -1470,7 +1548,8 @@ static void do_class_genocide() {
     if (gameover || player.uhp == -1) {
       killer_format = KILLED_BY_AN;
       killer = "scroll of genocide";
-      if (gameover) done(GENOCIDED);
+      if (gameover)
+        done(GENOCIDED);
     }
     return;
   }
@@ -1508,7 +1587,8 @@ void do_genocide(int how) {
         /* ... but no free pass if cursed */
         if (!(how & REALLY)) {
           ptr = rndmonst();
-          if (!ptr) return; /* no message, like normal case */
+          if (!ptr)
+            return; /* no message, like normal case */
           mndx = monsndx(ptr);
           break; /* remaining checks don't apply */
         } else
@@ -1529,8 +1609,10 @@ void do_genocide(int how) {
         killplayer++;
         break;
       }
-      if (is_human(ptr)) adjalign(-sgn(player.ualign.type));
-      if (is_demon(ptr)) adjalign(sgn(player.ualign.type));
+      if (is_human(ptr))
+        adjalign(-sgn(player.ualign.type));
+      if (is_demon(ptr))
+        adjalign(sgn(player.ualign.type));
 
       if (!(ptr->geno & G_GENO)) {
         if (flags.soundok) {
@@ -1543,7 +1625,8 @@ void do_genocide(int how) {
         continue;
       }
       /* KMH -- Unchanging prevents rehumanization */
-      if (Unchanging && ptr == youmonst.data) killplayer++;
+      if (Unchanging && ptr == youmonst.data)
+        killplayer++;
       break;
     }
   }
@@ -1613,7 +1696,8 @@ void do_genocide(int how) {
         if (!makemon(ptr, player.ux, player.uy, NO_MINVENT))
           break; /* couldn't make one */
         ++cnt;
-        if (mvitals[mndx].mvflags & G_EXTINCT) break; /* just made last one */
+        if (mvitals[mndx].mvflags & G_EXTINCT)
+          break; /* just made last one */
       }
     if (cnt)
       pline("Sent in some %s.", makeplural(buf));
@@ -1646,7 +1730,8 @@ void punish(Object *sobj) {
    */
   if (!player.uswallow) {
     placebc();
-    if (Blind) set_bc(1);         /* set up ball and chain variables */
+    if (Blind)
+      set_bc(1);                  /* set up ball and chain variables */
     newsym(player.ux, player.uy); /* see ball&chain if can't see self */
   }
 }
@@ -1701,7 +1786,8 @@ bool create_particular() {
     maketame = makepeaceful = makehostile = FALSE;
     getlin("Create what kind of monster? [type the name or symbol]", buf);
     bufp = mungspaces(buf);
-    if (*bufp == '\033') return FALSE;
+    if (*bufp == '\033')
+      return FALSE;
     /* allow the initial disposition to be specified */
     if (!strncmpi(bufp, "tame ", 5)) {
       bufp += 5;
@@ -1716,10 +1802,12 @@ bool create_particular() {
     /* decide whether a valid monster was chosen */
     if (strlen(bufp) == 1) {
       monclass = def_char_to_monclass(*bufp);
-      if (monclass != MAXMCLASSES) break; /* got one */
+      if (monclass != MAXMCLASSES)
+        break; /* got one */
     } else {
       which = name_to_mon(bufp);
-      if (which >= LOW_PM) break; /* got one */
+      if (which >= LOW_PM)
+        break; /* got one */
     }
     /* no good; try again... */
     pline("I've never heard of such monsters.");
@@ -1731,7 +1819,8 @@ bool create_particular() {
     (void)cant_create(&which, FALSE);
     whichpm = &mons[which];
     for (i = 0; i <= multi; i++) {
-      if (monclass != MAXMCLASSES) whichpm = mkclass(monclass, 0);
+      if (monclass != MAXMCLASSES)
+        whichpm = mkclass(monclass, 0);
       if (maketame) {
         mtmp = makemon(whichpm, player.ux, player.uy, MM_EDOG);
         if (mtmp) {
@@ -1746,7 +1835,8 @@ bool create_particular() {
           set_malign(mtmp);
         }
       }
-      if (mtmp) madeany = TRUE;
+      if (mtmp)
+        madeany = TRUE;
     }
   }
   return madeany;

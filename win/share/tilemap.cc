@@ -124,7 +124,8 @@ const char *tilename(int set, int entry) {
   condnum = tilenum = 0;
 
   for (i = 0; i < NUMMONS; i++) {
-    if (set == MON_GLYPH && tilenum == entry) return mons[i].mname;
+    if (set == MON_GLYPH && tilenum == entry)
+      return mons[i].mname;
     tilenum++;
     while (conditionals[condnum].sequence == MON_GLYPH &&
            conditionals[condnum].predecessor == i) {
@@ -134,15 +135,18 @@ const char *tilename(int set, int entry) {
       tilenum++;
     }
   }
-  if (set == MON_GLYPH && tilenum == entry) return "invisible monster";
+  if (set == MON_GLYPH && tilenum == entry)
+    return "invisible monster";
 
   tilenum = 0; /* set-relative number */
   for (i = 0; i < NUM_OBJECTS; i++) {
     /* prefer to give the description - that's all the tile's
      * appearance should reveal */
     if (set == OBJ_GLYPH && tilenum == entry) {
-      if (!obj_descr[i].oc_descr) return obj_descr[i].oc_name;
-      if (!obj_descr[i].oc_name) return obj_descr[i].oc_descr;
+      if (!obj_descr[i].oc_descr)
+        return obj_descr[i].oc_name;
+      if (!obj_descr[i].oc_name)
+        return obj_descr[i].oc_descr;
 
       sprintf(buf, "%s / %s", obj_descr[i].oc_descr, obj_descr[i].oc_name);
       return buf;
@@ -279,11 +283,13 @@ void init_tilemap() {
         swallowbase++;
         break;
       case OBJ_GLYPH:
-        if (conditionals[i].predecessor < CORPSE) corpsetile++;
+        if (conditionals[i].predecessor < CORPSE)
+          corpsetile++;
         swallowbase++;
         break;
       case OTH_GLYPH:
-        if (conditionals[i].predecessor < S_sw_tl) swallowbase++;
+        if (conditionals[i].predecessor < S_sw_tl)
+          swallowbase++;
         break;
     }
   }
@@ -409,7 +415,8 @@ void process_substitutions(FILE *ofp) {
       j = i;
       span++;
     }
-    if (i != j) fprintf(ofp, "\t} else ");
+    if (i != j)
+      fprintf(ofp, "\t} else ");
     fprintf(ofp, "\tif (%s) {\n", substitutes[i].level_test);
     fprintf(ofp, "\t\tfor (i = %d; i <= %d; i++)\n", substitutes[i].first_glyph,
             substitutes[i].last_glyph);

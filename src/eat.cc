@@ -10,7 +10,8 @@
 #ifdef DEBUG
 #ifdef WIZARD
 #define debugpline \
-  if (wizard) pline
+  if (wizard)      \
+  pline
 #else
 #define debugpline pline
 #endif
@@ -95,7 +96,8 @@ const char *hu_stat[] = {"Satiated", "        ", "Hungry  ", "Weak    ",
 bool is_edible(Object *obj) {
   /* protect invocation tools but not Rider corpses (handled elsewhere)*/
   /* if (obj->oclass != FOOD_CLASS && obj_resists(obj, 0, 0)) */
-  if (objects[obj->otyp].oc_unique) return FALSE;
+  if (objects[obj->otyp].oc_unique)
+    return FALSE;
   /* above also prevents the Amulet from being eaten, so we must never
      allow fake amulets to be eaten either [which is already the case] */
 
@@ -173,7 +175,8 @@ STATIC_PTR
 int eatmdone() {
   /* release `eatmbuf' */
   if (eatmbuf) {
-    if (nomovemsg == eatmbuf) nomovemsg = 0;
+    if (nomovemsg == eatmbuf)
+      nomovemsg = 0;
     free((genericptr_t)eatmbuf), eatmbuf = 0;
   }
   /* update display */
@@ -199,7 +202,8 @@ STATIC_OVL const char *food_xname(Object *food, bool the_pfx) {
   } else {
     /* the ordinary case */
     result = singular(food, xname);
-    if (the_pfx) result = the(result);
+    if (the_pfx)
+      result = the(result);
   }
   return result;
 }
@@ -213,7 +217,8 @@ STATIC_OVL const char *food_xname(Object *food, bool the_pfx) {
 STATIC_OVL void choke(Object *food) {
   /* only happens if you were satiated */
   if (player.uhs != SATIATED) {
-    if (!food || food->otyp != AMULET_OF_STRANGULATION) return;
+    if (!food || food->otyp != AMULET_OF_STRANGULATION)
+      return;
   } else if (Role_if(PM_KNIGHT) && player.ualign.type == A_LAWFUL) {
     adjalign(-1); /* gluttony is unchivalrous */
     You_feel("like a glutton!");
@@ -244,7 +249,8 @@ STATIC_OVL void choke(Object *food) {
       } else {
         killer = food_xname(food, FALSE);
         if (food->otyp == CORPSE && (mons[food->corpsenm].geno & G_UNIQ)) {
-          if (!type_is_pname(&mons[food->corpsenm])) killer = the(killer);
+          if (!type_is_pname(&mons[food->corpsenm]))
+            killer = the(killer);
           killer_format = KILLED_BY;
         }
       }
@@ -330,16 +336,20 @@ STATIC_OVL Object *touchfood(Object *otmp) {
  * in do_reset_eat().
  */
 void food_disappears(Object *obj) {
-  if (obj == victual.piece) victual.piece = nullptr;
-  if (obj->timed) obj_stop_timers(obj);
+  if (obj == victual.piece)
+    victual.piece = nullptr;
+  if (obj->timed)
+    obj_stop_timers(obj);
 }
 
 /* renaming an object usually results in it having a different address;
    so the sequence start eating/opening, get interrupted, name the food,
    resume eating/opening would restart from scratch */
 void food_substitution(Object *old_obj, Object *new_obj) {
-  if (old_obj == victual.piece) victual.piece = new_obj;
-  if (old_obj == tin.tin) tin.tin = new_obj;
+  if (old_obj == victual.piece)
+    victual.piece = new_obj;
+  if (old_obj == tin.tin)
+    tin.tin = new_obj;
 }
 
 STATIC_OVL void do_reset_eat() {
@@ -369,10 +379,12 @@ int eatfood() {
     do_reset_eat();
     return (0);
   }
-  if (!victual.eating) return (0);
+  if (!victual.eating)
+    return (0);
 
   if (++victual.usedtime <= victual.reqtime) {
-    if (bite()) return (0);
+    if (bite())
+      return (0);
     return (1); /* still busy */
   } else {      /* done */
     done_eating(TRUE);
@@ -385,7 +397,8 @@ STATIC_OVL void done_eating(bool message) {
   occupation = 0; /* do this early, so newuhs() knows we're done */
   newuhs(FALSE);
   if (nomovemsg) {
-    if (message) pline(nomovemsg);
+    if (message)
+      pline(nomovemsg);
     nomovemsg = 0;
   } else if (message)
     You("finish eating %s.", food_xname(victual.piece, TRUE));
@@ -406,7 +419,8 @@ STATIC_OVL void done_eating(bool message) {
 STATIC_OVL bool maybe_cannibal(int pm, bool allowmsg) {
   if (!CANNIBAL_ALLOWED() && your_race(&mons[pm])) {
     if (allowmsg) {
-      if (Upolyd) You("have a bad feeling deep inside.");
+      if (Upolyd)
+        You("have a bad feeling deep inside.");
       You("cannibal!  You will regret this!");
     }
     HAggravate_monster |= FROMOUTSIDE;
@@ -426,7 +440,8 @@ STATIC_OVL void cprefx(int pm) {
       killer = killer_buf;
       You("turn to stone.");
       done(STONING);
-      if (victual.piece) victual.eating = FALSE;
+      if (victual.piece)
+        victual.eating = FALSE;
       return; /* lifesaved */
     }
   }
@@ -444,7 +459,8 @@ STATIC_OVL void cprefx(int pm) {
       }
       break;
     case PM_LIZARD:
-      if (Stoned) fix_petrification();
+      if (Stoned)
+        fix_petrification();
       break;
     case PM_DEATH:
     case PM_PESTILENCE:
@@ -458,7 +474,8 @@ STATIC_OVL void cprefx(int pm) {
       /* It so happens that since we know these monsters */
       /* cannot appear in tins, victual.piece will always */
       /* be what we want, which is not generally true. */
-      if (revive_corpse(victual.piece)) victual.piece = nullptr;
+      if (revive_corpse(victual.piece))
+        victual.piece = nullptr;
       return;
     }
     case PM_GREEN_SLIME:
@@ -470,7 +487,8 @@ STATIC_OVL void cprefx(int pm) {
       }
     /* Fall through */
     default:
-      if (acidic(&mons[pm]) && Stoned) fix_petrification();
+      if (acidic(&mons[pm]) && Stoned)
+        fix_petrification();
       break;
   }
 }
@@ -624,7 +642,8 @@ STATIC_OVL void givit(int type, MonsterType *ptr) {
       break;
   }
 
-  if (ptr->mlevel <= rn2(chance)) return; /* failed die roll */
+  if (ptr->mlevel <= rn2(chance))
+    return; /* failed die roll */
 
   switch (type) {
     case FIRE_RES:
@@ -712,7 +731,8 @@ STATIC_OVL void givit(int type, MonsterType *ptr) {
                                : "a strange mental acuity.");
         HTelepat |= FROMOUTSIDE;
         /* If blind, make sure monsters show up. */
-        if (Blind) see_monsters();
+        if (Blind)
+          see_monsters();
       }
       break;
     default:
@@ -730,7 +750,8 @@ STATIC_OVL void cpostfx(int pm) {
 
   /* in case `afternmv' didn't get called for previously mimicking
      gold, clean up now to avoid `eatmbuf' memory leak */
-  if (eatmbuf) (void)eatmdone();
+  if (eatmbuf)
+    (void)eatmdone();
 
   switch (pm) {
     case PM_NEWT:
@@ -739,7 +760,8 @@ STATIC_OVL void cpostfx(int pm) {
         int old_uen = player.uen;
         player.uen += rnd(3);
         if (player.uen > player.uenmax) {
-          if (!rn2(3)) player.uenmax++;
+          if (!rn2(3))
+            player.uenmax++;
           player.uen = player.uenmax;
         }
         if (old_uen != player.uen) {
@@ -773,9 +795,11 @@ STATIC_OVL void cpostfx(int pm) {
     case PM_STALKER:
       if (!Invis) {
         set_itimeout(&HInvis, (long)rn1(100, 50));
-        if (!Blind && !BInvis) self_invis_message();
+        if (!Blind && !BInvis)
+          self_invis_message();
       } else {
-        if (!(HInvis & INTRINSIC)) You_feel("hidden!");
+        if (!(HInvis & INTRINSIC))
+          You_feel("hidden!");
         HInvis |= FROMOUTSIDE;
         HSee_invisible |= FROMOUTSIDE;
       }
@@ -803,7 +827,8 @@ STATIC_OVL void cpostfx(int pm) {
                  Hallucination ? "an orange" : "a pile of gold");
 #ifdef STEED
         /* A pile of gold can't ride. */
-        if (player.usteed) dismount_steed(DISMOUNT_FELL);
+        if (player.usteed)
+          dismount_steed(DISMOUNT_FELL);
 #endif
         nomul(-tmp, "pretending to be a pile of gold");
         sprintf(buf, Hallucination
@@ -833,8 +858,10 @@ STATIC_OVL void cpostfx(int pm) {
       }
       break;
     case PM_LIZARD:
-      if (HStun > 2) make_stunned(2L, FALSE);
-      if (HConfusion > 2) make_confused(2L, FALSE);
+      if (HStun > 2)
+        make_stunned(2L, FALSE);
+      if (HConfusion > 2)
+        make_confused(2L, FALSE);
       break;
     case PM_CHAMELEON:
     case PM_DOPPELGANGER:
@@ -865,7 +892,8 @@ STATIC_OVL void cpostfx(int pm) {
         pline("Oh wow!  Great stuff!");
         make_hallucinated(HHallucination + 200, FALSE, 0L);
       }
-      if (is_giant(ptr)) gainstr(nullptr, 0);
+      if (is_giant(ptr))
+        gainstr(nullptr, 0);
 
       /* Check the monster for all of the intrinsics.  If this
        * monster can give more than one, pick one to try to give
@@ -909,7 +937,8 @@ STATIC_OVL void cpostfx(int pm) {
       }
 
       /* if any found try to give them one */
-      if (count) givit(tmp, ptr);
+      if (count)
+        givit(tmp, ptr);
     } break;
   }
 
@@ -940,7 +969,8 @@ void costly_tin(const char *verb) {
         !tin.tin->no_charge) ||
        tin.tin->unpaid)) {
     verbalize("You %s it, you bought it!", verb ? verb : "open");
-    if (tin.tin->quan > 1L) tin.tin = SplitObject(tin.tin, 1L);
+    if (tin.tin->quan > 1L)
+      tin.tin = SplitObject(tin.tin, 1L);
     CreateBillDummyObject(tin.tin);
   }
 }
@@ -959,7 +989,8 @@ int opentin() {
     You("give up your attempt to open the tin.");
     return (0);
   }
-  if (tin.usedtime < tin.reqtime) return (1); /* still busy */
+  if (tin.usedtime < tin.reqtime)
+    return (1); /* still busy */
   if (tin.tin->otrapped || (tin.tin->cursed && tin.tin->spe != -1 && !rn2(8))) {
     b_trapped("tin", 0);
     costly_tin("destroyed");
@@ -989,11 +1020,14 @@ int opentin() {
       if (mons[tin.tin->corpsenm].geno & G_UNIQ)
         which = type_is_pname(&mons[tin.tin->corpsenm]) ? 1 : 2;
     }
-    if (which == 0) what = makeplural(what);
+    if (which == 0)
+      what = makeplural(what);
     pline("It smells like %s%s.", (which == 2) ? "the " : "", what);
     if (yn("Eat it?") == 'n') {
-      if (!Hallucination) tin.tin->dknown = tin.tin->known = TRUE;
-      if (flags.verbose) You("discard the open tin.");
+      if (!Hallucination)
+        tin.tin->dknown = tin.tin->known = TRUE;
+      if (flags.verbose)
+        You("discard the open tin.");
       costly_tin((const char *)0);
       goto use_me;
     }
@@ -1005,8 +1039,10 @@ int opentin() {
 
     /* KMH, conduct */
     player.uconduct.food++;
-    if (!vegan(&mons[tin.tin->corpsenm])) player.uconduct.unvegan++;
-    if (!vegetarian(&mons[tin.tin->corpsenm])) violated_vegetarian();
+    if (!vegan(&mons[tin.tin->corpsenm]))
+      player.uconduct.unvegan++;
+    if (!vegetarian(&mons[tin.tin->corpsenm]))
+      violated_vegetarian();
 
     tin.tin->dknown = tin.tin->known = TRUE;
     cprefx(tin.tin->corpsenm);
@@ -1037,7 +1073,8 @@ int opentin() {
     if (yn("Eat it?") == 'n') {
       if (!Hallucination && !tin.tin->cursed)
         tin.tin->dknown = tin.tin->known = TRUE;
-      if (flags.verbose) You("discard the open tin.");
+      if (flags.verbose)
+        You("discard the open tin.");
       costly_tin((const char *)0);
       goto use_me;
     }
@@ -1136,7 +1173,8 @@ STATIC_OVL int rottenfood(Object *obj) {
   } else if (!rn2(4) && !Blind) {
     pline("Everything suddenly goes dark.");
     make_blinded((long)d(2, 10), FALSE);
-    if (!Blind) Your(vision_clears);
+    if (!Blind)
+      Your(vision_clears);
   } else if (!rn2(3)) {
     const char *what, *where;
     if (!Blind)
@@ -1170,8 +1208,10 @@ STATIC_OVL int eatcorpse(Object *otmp) {
                     !poly_when_stoned(youmonst.data));
 
   /* KMH, conduct */
-  if (!vegan(&mons[mnum])) player.uconduct.unvegan++;
-  if (!vegetarian(&mons[mnum])) violated_vegetarian();
+  if (!vegan(&mons[mnum]))
+    player.uconduct.unvegan++;
+  if (!vegetarian(&mons[mnum]))
+    violated_vegetarian();
 
   if (mnum != PM_LIZARD && mnum != PM_LICHEN) {
     long age = PeekAtIcedCorpseAge(otmp);
@@ -1198,7 +1238,8 @@ STATIC_OVL int eatcorpse(Object *otmp) {
 
       sick_time = (long)rn1(10, 10);
       /* make sure new ill doesn't result in improvement */
-      if (Sick && (sick_time > Sick)) sick_time = (Sick > 1L) ? Sick - 1L : 1L;
+      if (Sick && (sick_time > Sick))
+        sick_time = (Sick > 1L) ? Sick - 1L : 1L;
       if (!uniq)
         sprintf(buf, "rotted %s", corpse_xname(otmp, TRUE));
       else
@@ -1244,7 +1285,8 @@ STATIC_OVL int eatcorpse(Object *otmp) {
 
     if (!mons[otmp->corpsenm].cnutrit) {
       /* no nutrution: rots away, no message if you passed out */
-      if (!retcode) pline_The("corpse rots away completely.");
+      if (!retcode)
+        pline_The("corpse rots away completely.");
       if (carried(otmp))
         useup(otmp);
       else
@@ -1252,7 +1294,8 @@ STATIC_OVL int eatcorpse(Object *otmp) {
       retcode = 2;
     }
 
-    if (!retcode) consume_oeaten(otmp, 2); /* oeaten >>= 2 */
+    if (!retcode)
+      consume_oeaten(otmp, 2); /* oeaten >>= 2 */
   } else {
     pline("%s%s %s!",
           !uniq ? "This " : !type_is_pname(&mons[mnum]) ? "The " : "",
@@ -1287,7 +1330,8 @@ STATIC_OVL void start_eating(Object *otmp) {
     }
   }
 
-  if (bite()) return;
+  if (bite())
+    return;
 
   if (++victual.usedtime >= victual.reqtime) {
     /* print "finish eating" message if they just resumed -dlc */
@@ -1387,13 +1431,15 @@ STATIC_OVL void eataccessory(Object *otmp) {
   oldprop = player.uprops[objects[typ].oc_oprop].intrinsic;
   if (otmp == uleft || otmp == uright) {
     Ring_gone(otmp);
-    if (player.uhp <= 0) return; /* died from sink fall */
+    if (player.uhp <= 0)
+      return; /* died from sink fall */
   }
   otmp->known = otmp->dknown = 1; /* by taste */
   if (!rn2(otmp->oclass == RING_CLASS ? 3 : 5)) {
     switch (otmp->otyp) {
       default:
-        if (!objects[typ].oc_oprop) break; /* should never happen */
+        if (!objects[typ].oc_oprop)
+          break; /* should never happen */
 
         if (!(player.uprops[objects[typ].oc_oprop].intrinsic & FROMOUTSIDE))
           accessory_has_effect(otmp);
@@ -1435,15 +1481,18 @@ STATIC_OVL void eataccessory(Object *otmp) {
         break;
       case RIN_ADORNMENT:
         accessory_has_effect(otmp);
-        if (adjattrib(A_CHA, otmp->spe, -1)) makeknown(typ);
+        if (adjattrib(A_CHA, otmp->spe, -1))
+          makeknown(typ);
         break;
       case RIN_GAIN_STRENGTH:
         accessory_has_effect(otmp);
-        if (adjattrib(A_STR, otmp->spe, -1)) makeknown(typ);
+        if (adjattrib(A_STR, otmp->spe, -1))
+          makeknown(typ);
         break;
       case RIN_GAIN_CONSTITUTION:
         accessory_has_effect(otmp);
-        if (adjattrib(A_CON, otmp->spe, -1)) makeknown(typ);
+        if (adjattrib(A_CON, otmp->spe, -1))
+          makeknown(typ);
         break;
       case RIN_INCREASE_ACCURACY:
         accessory_has_effect(otmp);
@@ -1461,8 +1510,10 @@ STATIC_OVL void eataccessory(Object *otmp) {
         break;
       case RIN_FREE_ACTION:
         /* Give sleep resistance instead */
-        if (!(HSleep_resistance & FROMOUTSIDE)) accessory_has_effect(otmp);
-        if (!Sleep_resistance) You_feel("wide awake.");
+        if (!(HSleep_resistance & FROMOUTSIDE))
+          accessory_has_effect(otmp);
+        if (!Sleep_resistance)
+          You_feel("wide awake.");
         HSleep_resistance |= FROMOUTSIDE;
         break;
       case AMULET_OF_CHANGE:
@@ -1485,7 +1536,8 @@ STATIC_OVL void eataccessory(Object *otmp) {
         choke(otmp);
         break;
       case AMULET_OF_RESTFUL_SLEEP: /* another bad idea! */
-        if (!(HSleeping & FROMOUTSIDE)) accessory_has_effect(otmp);
+        if (!(HSleeping & FROMOUTSIDE))
+          accessory_has_effect(otmp);
         HSleeping = FROMOUTSIDE | rnd(100);
         break;
       case RIN_SUSTAIN_ABILITY:
@@ -1511,9 +1563,11 @@ STATIC_OVL void eatspecial() {
   victual.eating = 0;
   if (otmp->oclass == COIN_CLASS) {
 #ifdef GOLDOBJ
-    if (carried(otmp)) useupall(otmp);
+    if (carried(otmp))
+      useupall(otmp);
 #else
-    if (otmp->where == OBJ_FREE) DeallocateObject(otmp);
+    if (otmp->where == OBJ_FREE)
+      DeallocateObject(otmp);
 #endif
     else
       useupf(otmp, otmp->quan);
@@ -1539,11 +1593,15 @@ STATIC_OVL void eatspecial() {
     exercise(A_CON, TRUE);
   }
 
-  if (otmp == uwep && otmp->quan == 1L) uwepgone();
-  if (otmp == uquiver && otmp->quan == 1L) uqwepgone();
-  if (otmp == uswapwep && otmp->quan == 1L) uswapwepgone();
+  if (otmp == uwep && otmp->quan == 1L)
+    uwepgone();
+  if (otmp == uquiver && otmp->quan == 1L)
+    uqwepgone();
+  if (otmp == uswapwep && otmp->quan == 1L)
+    uswapwepgone();
 
-  if (otmp == uball) unpunish();
+  if (otmp == uball)
+    unpunish();
   if (otmp == uchain)
     unpunish(); /* but no useup() */
   else if (carried(otmp))
@@ -1561,7 +1619,8 @@ static const char *foodwords[] = {
     "plastic", "glass",   "rich food", "stone"};
 
 STATIC_OVL const char *foodword(Object *otmp) {
-  if (otmp->oclass == FOOD_CLASS) return "food";
+  if (otmp->oclass == FOOD_CLASS)
+    return "food";
   if (otmp->oclass == GEM_CLASS && objects[otmp->otyp].oc_material == GLASS &&
       otmp->dknown)
     makeknown(otmp->otyp);
@@ -1572,14 +1631,16 @@ STATIC_OVL const char *foodword(Object *otmp) {
 STATIC_OVL void fpostfx(Object *otmp) {
   switch (otmp->otyp) {
     case SPRIG_OF_WOLFSBANE:
-      if (player.ulycn >= LOW_PM || is_were(youmonst.data)) you_unwere(TRUE);
+      if (player.ulycn >= LOW_PM || is_were(youmonst.data))
+        you_unwere(TRUE);
       break;
     case CARROT:
       make_blinded((long)player.ucreamed, TRUE);
       break;
     case FORTUNE_COOKIE:
       outrumor(GetBUCSign(otmp), BY_COOKIE);
-      if (!Blind) player.uconduct.literate++;
+      if (!Blind)
+        player.uconduct.literate++;
       break;
     case LUMP_OF_ROYAL_JELLY:
       /* This stuff seems to be VERY healthy! */
@@ -1587,7 +1648,8 @@ STATIC_OVL void fpostfx(Object *otmp) {
       if (Upolyd) {
         player.mh += otmp->cursed ? -rnd(20) : rnd(20);
         if (player.mh > player.mhmax) {
-          if (!rn2(17)) player.mhmax++;
+          if (!rn2(17))
+            player.mhmax++;
           player.mh = player.mhmax;
         } else if (player.mh <= 0) {
           rehumanize();
@@ -1595,7 +1657,8 @@ STATIC_OVL void fpostfx(Object *otmp) {
       } else {
         player.uhp += otmp->cursed ? -rnd(20) : rnd(20);
         if (player.uhp > player.uhpmax) {
-          if (!rn2(17)) player.uhpmax++;
+          if (!rn2(17))
+            player.uhpmax++;
           player.uhp = player.uhpmax;
         } else if (player.uhp <= 0) {
           killer_format = KILLED_BY_AN;
@@ -1603,13 +1666,15 @@ STATIC_OVL void fpostfx(Object *otmp) {
           done(POISONING);
         }
       }
-      if (!otmp->cursed) heal_legs();
+      if (!otmp->cursed)
+        heal_legs();
       break;
     case EGG:
       if (touch_petrifies(&mons[otmp->corpsenm])) {
         if (!Stone_resistance &&
             !(poly_when_stoned(youmonst.data) && polymon(PM_STONE_GOLEM))) {
-          if (!Stoned) Stoned = 5;
+          if (!Stoned)
+            Stoned = 5;
           killer_format = KILLED_BY_AN;
           sprintf(killer_buf, "%s egg", mons[otmp->corpsenm].mname);
           delayed_killer = killer_buf;
@@ -1617,8 +1682,10 @@ STATIC_OVL void fpostfx(Object *otmp) {
       }
       break;
     case EUCALYPTUS_LEAF:
-      if (Sick && !otmp->cursed) make_sick(0L, (char *)0, TRUE, SICK_ALL);
-      if (Vomiting && !otmp->cursed) make_vomiting(0L, TRUE);
+      if (Sick && !otmp->cursed)
+        make_sick(0L, (char *)0, TRUE, SICK_ALL);
+      if (Vomiting && !otmp->cursed)
+        make_vomiting(0L, TRUE);
       break;
   }
   return;
@@ -1775,8 +1842,10 @@ int doeat() /* generic "eat" command funtion (see cmd.c) */
     pline("If you can't breathe air, how can you consume solids?");
     return 0;
   }
-  if (!(otmp = floorfood("eat", 0))) return 0;
-  if (check_capacity((char *)0)) return 0;
+  if (!(otmp = floorfood("eat", 0)))
+    return 0;
+  if (check_capacity((char *)0))
+    return 0;
 
   if (player.uedibility) {
     int res = edibility_prompts(otmp);
@@ -1784,7 +1853,8 @@ int doeat() /* generic "eat" command funtion (see cmd.c) */
       Your("%s stops tingling and your sense of smell returns to normal.",
            body_part(NOSE));
       player.uedibility = 0;
-      if (res == 1) return 0;
+      if (res == 1)
+        return 0;
     }
   }
 
@@ -1863,7 +1933,8 @@ int doeat() /* generic "eat" command funtion (see cmd.c) */
       player.uconduct.unvegan++;
     player.uconduct.food++;
 
-    if (otmp->cursed) (void)rottenfood(otmp);
+    if (otmp->cursed)
+      (void)rottenfood(otmp);
 
     if (otmp->oclass == WEAPON_CLASS && otmp->opoisoned) {
       pline("Ecch - that must have been poisonous!");
@@ -1887,7 +1958,8 @@ int doeat() /* generic "eat" command funtion (see cmd.c) */
      * they were able to choke before, if they lost food it's possible
      * they shouldn't be able to choke now.
      */
-    if (player.uhs != SATIATED) victual.canchoke = FALSE;
+    if (player.uhs != SATIATED)
+      victual.canchoke = FALSE;
     victual.piece = touchfood(otmp);
     You("resume your meal.");
     start_eating(victual.piece);
@@ -1987,7 +2059,8 @@ int doeat() /* generic "eat" command funtion (see cmd.c) */
     victual.nmod = victual.reqtime % otmp->oeaten;
   victual.canchoke = (player.uhs == SATIATED);
 
-  if (!dont_start) start_eating(otmp);
+  if (!dont_start)
+    start_eating(otmp);
   return (1);
 }
 
@@ -2021,7 +2094,8 @@ STATIC_OVL int bite() {
 
 void gethungry() /* as time goes by - called by moveloop() and domove() */
 {
-  if (player.uinvulnerable) return; /* you don't feel hungrier */
+  if (player.uinvulnerable)
+    return; /* you don't feel hungrier */
 
   if ((!player.usleep || !rn2(10)) /* slow metabolic rate while asleep */
       && (carnivorous(youmonst.data) || herbivorous(youmonst.data)) &&
@@ -2033,11 +2107,14 @@ void gethungry() /* as time goes by - called by moveloop() and domove() */
     if (HRegeneration || ((ERegeneration & (~W_ART)) &&
                           (ERegeneration != W_WEP || !uwep->oartifact)))
       player.uhunger--;
-    if (near_capacity() > SLT_ENCUMBER) player.uhunger--;
+    if (near_capacity() > SLT_ENCUMBER)
+      player.uhunger--;
   } else { /* even turns */
-    if (Hunger) player.uhunger--;
+    if (Hunger)
+      player.uhunger--;
     /* Conflict uses up food too */
-    if (HConflict || (EConflict & (~W_ARTI))) player.uhunger--;
+    if (HConflict || (EConflict & (~W_ARTI)))
+      player.uhunger--;
     /* +0 charged rings don't do anything, so don't affect hunger */
     /* Slow digestion still uses ring hunger */
     switch ((int)(moves % 20)) { /* note: use even cases only */
@@ -2046,14 +2123,16 @@ void gethungry() /* as time goes by - called by moveloop() and domove() */
           player.uhunger--;
         break;
       case 8:
-        if (uamul) player.uhunger--;
+        if (uamul)
+          player.uhunger--;
         break;
       case 12:
         if (uright && (uright->spe || !objects[uright->otyp].oc_charged))
           player.uhunger--;
         break;
       case 16:
-        if (player.uhave.amulet) player.uhunger--;
+        if (player.uhave.amulet)
+          player.uhunger--;
         break;
       default:
         break;
@@ -2117,7 +2196,8 @@ void lesshungry(int num) {
 STATIC_PTR
 int unfaint() {
   (void)Hear_again();
-  if (player.uhs > FAINTING) player.uhs = FAINTING;
+  if (player.uhs > FAINTING)
+    player.uhs = FAINTING;
   stop_occupation();
   flags.botl = 1;
   return 0;
@@ -2130,7 +2210,8 @@ bool is_fainted() { return ((bool)(player.uhs == FAINTED)); }
 
 /* call when a faint must be prematurely terminated */
 void reset_faint() {
-  if (is_fainted()) nomul(0, 0);
+  if (is_fainted())
+    nomul(0, 0);
 }
 
 #if 0
@@ -2195,7 +2276,8 @@ void newuhs(bool incr) {
   }
 
   if (newhs == FAINTING) {
-    if (is_fainted()) newhs = FAINTED;
+    if (is_fainted())
+      newhs = FAINTED;
     if (player.uhs <= WEAK || rn2(20 - player.uhunger / 10) >= 19) {
       if (!is_fainted() && multi >= 0 /* %% */) {
         /* stop what you're doing, then faint */
@@ -2437,8 +2519,9 @@ void consume_oeaten(Object *obj, int amt) {
 bool maybe_finished_meal(bool stopping) {
   /* in case consume_oeaten() has decided that the food is all gone */
   if (occupation == eatfood && victual.usedtime >= victual.reqtime) {
-    if (stopping) occupation = 0; /* for do_reset_eat */
-    (void)eatfood(); /* calls done_eating() to use up victual.piece */
+    if (stopping)
+      occupation = 0; /* for do_reset_eat */
+    (void)eatfood();  /* calls done_eating() to use up victual.piece */
     return TRUE;
   }
   return FALSE;

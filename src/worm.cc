@@ -147,7 +147,8 @@ void toss_wsegs(struct wseg *curr, bool display_update) {
       remove_monster(curr->wx, curr->wy);
 
       /* update screen before deallocation */
-      if (display_update) newsym(curr->wx, curr->wy);
+      if (display_update)
+        newsym(curr->wx, curr->wy);
     }
 
     /* free memory used by the segment */
@@ -165,7 +166,8 @@ STATIC_OVL
 void shrink_worm(int wnum) {
   struct wseg *seg;
 
-  if (wtails[wnum] == wheads[wnum]) return; /* no tail */
+  if (wtails[wnum] == wheads[wnum])
+    return; /* no tail */
 
   seg = wtails[wnum];
   wtails[wnum] = seg->nseg;
@@ -209,8 +211,10 @@ void worm_move(Monster *worm) {
     else
       wgrowtime[wnum] += rn1(15, 3);
     worm->mhp += 3;
-    if (worm->mhp > MHPMAX) worm->mhp = MHPMAX;
-    if (worm->mhp > worm->mhpmax) worm->mhpmax = worm->mhp;
+    if (worm->mhp > MHPMAX)
+      worm->mhp = MHPMAX;
+    if (worm->mhp > worm->mhpmax)
+      worm->mhpmax = worm->mhp;
   } else
     /* The worm doesn't grow, so the last segment goes away. */
     shrink_worm(wnum);
@@ -273,7 +277,8 @@ void wormhitu(Monster *worm) {
    *  before we decide to do this.
    */
   for (seg = wtails[wnum]; seg; seg = seg->nseg)
-    if (distu(seg->wx, seg->wy) < 3) (void)mattacku(worm);
+    if (distu(seg->wx, seg->wy) < 3)
+      (void)mattacku(worm);
 }
 
 /*  cutoff()
@@ -286,7 +291,8 @@ void cutoff(Monster *worm, struct wseg *tail) {
   else
     You("cut part of the tail off of %s.", mon_nam(worm));
   toss_wsegs(tail, TRUE);
-  if (worm->mhp > 1) worm->mhp /= 2;
+  if (worm->mhp > 1)
+    worm->mhp /= 2;
 }
 
 /*  cutworm()
@@ -303,9 +309,11 @@ void cutworm(Monster *worm, xchar x, xchar y, Object *weap) {
   int wnum = worm->wormno;
   int cut_chance, new_wnum;
 
-  if (!wnum) return; /* bullet proofing */
+  if (!wnum)
+    return; /* bullet proofing */
 
-  if (x == worm->mx && y == worm->my) return; /* hit on head */
+  if (x == worm->mx && y == worm->my)
+    return; /* hit on head */
 
   /* cutting goes best with a bladed weapon */
   cut_chance = rnd(20); /* Normally  1-16 does not cut */
@@ -314,7 +322,8 @@ void cutworm(Monster *worm, xchar x, xchar y, Object *weap) {
   if (weap && is_blade(weap)) /* With a blade 1- 6 does not cut */
     cut_chance += 10;         /*		7-20 does */
 
-  if (cut_chance < 17) return; /* not good enough */
+  if (cut_chance < 17)
+    return; /* not good enough */
 
   /* Find the segment that was attacked. */
   curr = wtails[wnum];
@@ -372,7 +381,8 @@ void cutworm(Monster *worm, xchar x, xchar y, Object *weap) {
   /* Calculate the mhp on the old worm for the (lower) monster level. */
   if (worm->m_lev > 3) {
     worm->mhpmax = d((int)worm->m_lev, 8);
-    if (worm->mhpmax < worm->mhp) worm->mhp = worm->mhpmax;
+    if (worm->mhpmax < worm->mhp)
+      worm->mhp = worm->mhpmax;
   }
 
   wtails[new_wnum] = new_tail; /* We've got all the info right now */
@@ -439,7 +449,8 @@ void save_worm(int fd, int mode) {
 
   if (perform_bwrite(mode)) {
     for (i = 1; i < MAX_NUM_WORMS; i++) {
-      for (count = 0, curr = wtails[i]; curr; curr = curr->nseg) count++;
+      for (count = 0, curr = wtails[i]; curr; curr = curr->nseg)
+        count++;
       /* Save number of segments */
       bwrite(fd, (genericptr_t) & count, sizeof(int));
       /* Save segment locations of the monster. */
@@ -457,7 +468,8 @@ void save_worm(int fd, int mode) {
     /* Free the segments only.  savemonchn() will take care of the
      * monsters. */
     for (i = 1; i < MAX_NUM_WORMS; i++) {
-      if (!(curr = wtails[i])) continue;
+      if (!(curr = wtails[i]))
+        continue;
 
       while (curr) {
         temp = curr->nseg;
@@ -480,7 +492,8 @@ void rest_worm(int fd) {
 
   for (i = 1; i < MAX_NUM_WORMS; i++) {
     mread(fd, (genericptr_t) & count, sizeof(int));
-    if (!count) continue; /* none */
+    if (!count)
+      continue; /* none */
 
     /* Get the segments. */
     for (curr = (struct wseg *)0, j = 0; j < count; j++) {
@@ -641,7 +654,8 @@ struct wseg *create_worm_tail(int num_segs) {
   int i = 0;
   struct wseg *new_tail, *curr;
 
-  if (!num_segs) return (struct wseg *)0;
+  if (!num_segs)
+    return (struct wseg *)0;
 
   new_tail = curr = newseg();
   curr->nseg = (struct wseg *)0;
@@ -670,7 +684,8 @@ bool worm_known(Monster *worm) {
   struct wseg *curr = wtails[worm->wormno];
 
   while (curr) {
-    if (cansee(curr->wx, curr->wy)) return TRUE;
+    if (cansee(curr->wx, curr->wy))
+      return TRUE;
     curr = curr->nseg;
   }
   return FALSE;

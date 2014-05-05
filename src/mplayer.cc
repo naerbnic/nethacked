@@ -47,7 +47,8 @@ STATIC_OVL const char *dev_name() {
     match = FALSE;
     i = rn2(n);
     for (mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
-      if (!is_mplayer(mtmp->data)) continue;
+      if (!is_mplayer(mtmp->data))
+        continue;
       if (!strncmp(developers[i], mtmp->name(), strlen(developers[i]))) {
         match = TRUE;
         break;
@@ -56,7 +57,8 @@ STATIC_OVL const char *dev_name() {
     m++;
   } while (match && m < 100); /* m for insurance */
 
-  if (match) return (const char *)0;
+  if (match)
+    return (const char *)0;
   return (developers[i]);
 }
 
@@ -84,11 +86,15 @@ STATIC_OVL void get_mplname(Monster *mtmp, char *nam) {
 STATIC_OVL void mk_mplayer_armor(Monster *mon, short typ) {
   Object *obj;
 
-  if (typ == STRANGE_OBJECT) return;
+  if (typ == STRANGE_OBJECT)
+    return;
   obj = MakeSpecificObject(typ, FALSE, FALSE);
-  if (!rn2(3)) obj->oerodeproof = 1;
-  if (!rn2(3)) Curse(obj);
-  if (!rn2(3)) Bless(obj);
+  if (!rn2(3))
+    obj->oerodeproof = 1;
+  if (!rn2(3))
+    Curse(obj);
+  if (!rn2(3))
+    Bless(obj);
   /* Most players who get to the endgame who have cursed equipment
    * have it because the wizard or other monsters cursed it, so its
    * chances of having plusses is the same as usual....
@@ -101,11 +107,14 @@ Monster *mk_mplayer(MonsterType *ptr, xchar x, xchar y, bool special) {
   Monster *mtmp;
   char nam[PL_NSIZ];
 
-  if (!is_mplayer(ptr)) return ((Monster *)0);
+  if (!is_mplayer(ptr))
+    return ((Monster *)0);
 
-  if (MON_AT(x, y)) (void)rloc(m_at(x, y), FALSE); /* insurance */
+  if (MON_AT(x, y))
+    (void)rloc(m_at(x, y), FALSE); /* insurance */
 
-  if (!In_endgame(&player.uz)) special = FALSE;
+  if (!In_endgame(&player.uz))
+    special = FALSE;
 
   if ((mtmp = makemon(ptr, x, y, NO_MM_FLAGS)) != 0) {
     short weapon = rn2(2) ? LONG_SWORD : rnd_class(SPEAR, BULLWHIP);
@@ -133,15 +142,18 @@ Monster *mk_mplayer(MonsterType *ptr, xchar x, xchar y, bool special) {
 
     switch (monsndx(ptr)) {
       case PM_ARCHEOLOGIST:
-        if (rn2(2)) weapon = BULLWHIP;
+        if (rn2(2))
+          weapon = BULLWHIP;
         break;
       case PM_BARBARIAN:
         if (rn2(2)) {
           weapon = rn2(2) ? TWO_HANDED_SWORD : BATTLE_AXE;
           shield = STRANGE_OBJECT;
         }
-        if (rn2(2)) armor = rnd_class(PLATE_MAIL, CHAIN_MAIL);
-        if (helm == HELM_OF_BRILLIANCE) helm = STRANGE_OBJECT;
+        if (rn2(2))
+          armor = rnd_class(PLATE_MAIL, CHAIN_MAIL);
+        if (helm == HELM_OF_BRILLIANCE)
+          helm = STRANGE_OBJECT;
         break;
       case PM_CAVEMAN:
       case PM_CAVEWOMAN:
@@ -149,42 +161,56 @@ Monster *mk_mplayer(MonsterType *ptr, xchar x, xchar y, bool special) {
           weapon = MACE;
         else if (rn2(2))
           weapon = CLUB;
-        if (helm == HELM_OF_BRILLIANCE) helm = STRANGE_OBJECT;
+        if (helm == HELM_OF_BRILLIANCE)
+          helm = STRANGE_OBJECT;
         break;
       case PM_HEALER:
         if (rn2(4))
           weapon = QUARTERSTAFF;
         else if (rn2(2))
           weapon = rn2(2) ? UNICORN_HORN : SCALPEL;
-        if (rn2(4)) helm = rn2(2) ? HELM_OF_BRILLIANCE : HELM_OF_TELEPATHY;
-        if (rn2(2)) shield = STRANGE_OBJECT;
+        if (rn2(4))
+          helm = rn2(2) ? HELM_OF_BRILLIANCE : HELM_OF_TELEPATHY;
+        if (rn2(2))
+          shield = STRANGE_OBJECT;
         break;
       case PM_KNIGHT:
-        if (rn2(4)) weapon = LONG_SWORD;
-        if (rn2(2)) armor = rnd_class(PLATE_MAIL, CHAIN_MAIL);
+        if (rn2(4))
+          weapon = LONG_SWORD;
+        if (rn2(2))
+          armor = rnd_class(PLATE_MAIL, CHAIN_MAIL);
         break;
       case PM_MONK:
         weapon = STRANGE_OBJECT;
         armor = STRANGE_OBJECT;
         cloak = ROBE;
-        if (rn2(2)) shield = STRANGE_OBJECT;
+        if (rn2(2))
+          shield = STRANGE_OBJECT;
         break;
       case PM_PRIEST:
       case PM_PRIESTESS:
-        if (rn2(2)) weapon = MACE;
-        if (rn2(2)) armor = rnd_class(PLATE_MAIL, CHAIN_MAIL);
-        if (rn2(4)) cloak = ROBE;
-        if (rn2(4)) helm = rn2(2) ? HELM_OF_BRILLIANCE : HELM_OF_TELEPATHY;
-        if (rn2(2)) shield = STRANGE_OBJECT;
+        if (rn2(2))
+          weapon = MACE;
+        if (rn2(2))
+          armor = rnd_class(PLATE_MAIL, CHAIN_MAIL);
+        if (rn2(4))
+          cloak = ROBE;
+        if (rn2(4))
+          helm = rn2(2) ? HELM_OF_BRILLIANCE : HELM_OF_TELEPATHY;
+        if (rn2(2))
+          shield = STRANGE_OBJECT;
         break;
       case PM_RANGER:
-        if (rn2(2)) weapon = ELVEN_DAGGER;
+        if (rn2(2))
+          weapon = ELVEN_DAGGER;
         break;
       case PM_ROGUE:
-        if (rn2(2)) weapon = SHORT_SWORD;
+        if (rn2(2))
+          weapon = SHORT_SWORD;
         break;
       case PM_SAMURAI:
-        if (rn2(2)) weapon = KATANA;
+        if (rn2(2))
+          weapon = KATANA;
         break;
 #ifdef TOURIST
       case PM_TOURIST:
@@ -192,16 +218,20 @@ Monster *mk_mplayer(MonsterType *ptr, xchar x, xchar y, bool special) {
         break;
 #endif
       case PM_VALKYRIE:
-        if (rn2(2)) weapon = WAR_HAMMER;
-        if (rn2(2)) armor = rnd_class(PLATE_MAIL, CHAIN_MAIL);
+        if (rn2(2))
+          weapon = WAR_HAMMER;
+        if (rn2(2))
+          armor = rnd_class(PLATE_MAIL, CHAIN_MAIL);
         break;
       case PM_WIZARD:
-        if (rn2(4)) weapon = rn2(2) ? QUARTERSTAFF : ATHAME;
+        if (rn2(4))
+          weapon = rn2(2) ? QUARTERSTAFF : ATHAME;
         if (rn2(2)) {
           armor = rn2(2) ? BLACK_DRAGON_SCALE_MAIL : SILVER_DRAGON_SCALE_MAIL;
           cloak = CLOAK_OF_MAGIC_RESISTANCE;
         }
-        if (rn2(4)) helm = HELM_OF_BRILLIANCE;
+        if (rn2(4))
+          helm = HELM_OF_BRILLIANCE;
         shield = STRANGE_OBJECT;
         break;
       default:
@@ -217,14 +247,17 @@ Monster *mk_mplayer(MonsterType *ptr, xchar x, xchar y, bool special) {
         otmp->oerodeproof = 1;
       else if (!rn2(2))
         otmp->greased = 1;
-      if (special && rn2(2)) otmp = mk_artifact(otmp, A_NONE);
+      if (special && rn2(2))
+        otmp = mk_artifact(otmp, A_NONE);
       /* mplayers knew better than to overenchant Magicbane */
-      if (otmp->oartifact == ART_MAGICBANE) otmp->spe = rnd(4);
+      if (otmp->oartifact == ART_MAGICBANE)
+        otmp->spe = rnd(4);
       (void)mpickobj(mtmp, otmp);
     }
 
     if (special) {
-      if (!rn2(10)) (void)mongets(mtmp, rn2(3) ? LUCKSTONE : LOADSTONE);
+      if (!rn2(10))
+        (void)mongets(mtmp, rn2(3) ? LUCKSTONE : LOADSTONE);
       mk_mplayer_armor(mtmp, armor);
       mk_mplayer_armor(mtmp, cloak);
       mk_mplayer_armor(mtmp, helm);
@@ -237,7 +270,8 @@ Monster *mk_mplayer(MonsterType *ptr, xchar x, xchar y, bool special) {
       m_dowear(mtmp, TRUE);
 
       quan = rn2(3) ? rn2(3) : rn2(16);
-      while (quan--) (void)mongets(mtmp, rnd_class(DILITHIUM_CRYSTAL, JADE));
+      while (quan--)
+        (void)mongets(mtmp, rnd_class(DILITHIUM_CRYSTAL, JADE));
 /* To get the gold "right" would mean a player can double his */
 /* gold supply by killing one mplayer.  Not good. */
 #ifndef GOLDOBJ
@@ -250,11 +284,14 @@ Monster *mk_mplayer(MonsterType *ptr, xchar x, xchar y, bool special) {
         (void)mpickobj(mtmp, MakeRandomObject(RANDOM_CLASS, FALSE));
     }
     quan = rnd(3);
-    while (quan--) (void)mongets(mtmp, rnd_offensive_item(mtmp));
+    while (quan--)
+      (void)mongets(mtmp, rnd_offensive_item(mtmp));
     quan = rnd(3);
-    while (quan--) (void)mongets(mtmp, rnd_defensive_item(mtmp));
+    while (quan--)
+      (void)mongets(mtmp, rnd_defensive_item(mtmp));
     quan = rnd(3);
-    while (quan--) (void)mongets(mtmp, rnd_misc_item(mtmp));
+    while (quan--)
+      (void)mongets(mtmp, rnd_misc_item(mtmp));
   }
 
   return (mtmp);
@@ -285,7 +322,8 @@ void create_mplayers(int num, bool special) {
     } while (!goodpos(x, y, &fakemon, 0) && tryct++ <= 50);
 
     /* if pos not found in 50 tries, don't bother to continue */
-    if (tryct > 50) return;
+    if (tryct > 50)
+      return;
 
     (void)mk_mplayer(&mons[pm], (xchar)x, (xchar)y, special);
     num--;
@@ -302,7 +340,8 @@ void mplayer_talk(Monster *mtmp) {
                         "Here is what I have to say!",
                     };
 
-  if (mtmp->mpeaceful) return; /* will drop to humanoid talk */
+  if (mtmp->mpeaceful)
+    return; /* will drop to humanoid talk */
 
   pline("Talk? -- %s", (mtmp->data == &mons[urole.malenum] ||
                         mtmp->data == &mons[urole.femalenum])

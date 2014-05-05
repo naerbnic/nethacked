@@ -197,7 +197,8 @@ int main(int argc, char *argv[]) {
       build_bmfh(&bmp.bmfh);
       build_bmih(&bmp.bmih);
       for (i = 0; i < MAX_Y; ++i)
-        for (j = 0; j < MAX_X; ++j) bmp.packtile[i][j] = (uchar)0;
+        for (j = 0; j < MAX_X; ++j)
+          bmp.packtile[i][j] = (uchar)0;
       for (i = 0; i < num_colors; i++) {
         bmp.bmaColors[i].rgbRed = ColorMap[CM_RED][i];
         bmp.bmaColors[i].rgbGreen = ColorMap[CM_GREEN][i];
@@ -275,7 +276,8 @@ static void build_bmih(BITMAPINFOHEADER *pbmih) {
   pbmih->biXPelsPerMeter = lelong(0);
   pbmih->biYPelsPerMeter = lelong(0);
 #if (TILE_X == 32)
-  if (cClrBits < 24) pbmih->biClrUsed = lelong(1 << cClrBits);
+  if (cClrBits < 24)
+    pbmih->biClrUsed = lelong(1 << cClrBits);
 #else
   pbmih->biClrUsed = lelong(RGBQUAD_COUNT);
 #endif
@@ -300,7 +302,8 @@ static void build_bmptile(pixel (*pixels)[TILE_X]) {
             ColorMap[CM_BLUE][cur_color] == pixels[cur_y][cur_x].b)
           break;
       }
-      if (cur_color >= num_colors) Fprintf(stderr, "color not in colormap!\n");
+      if (cur_color >= num_colors)
+        Fprintf(stderr, "color not in colormap!\n");
       y = (MAX_Y - 1) - (cur_y + yoffset);
 #if BITCOUNT == 4
       x = (cur_x / 2) + xoffset;

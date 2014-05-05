@@ -91,7 +91,8 @@ int main(int argc, char *argv[]) {
               *  -d command line option (must be the first option given)
               */
   dir = nh_getenv("NETHACKDIR");
-  if (!dir) dir = nh_getenv("HACKDIR");
+  if (!dir)
+    dir = nh_getenv("HACKDIR");
 #endif
   if (argc > 1) {
 #ifdef CHDIR
@@ -102,13 +103,15 @@ int main(int argc, char *argv[]) {
       argc--;
       argv++;
       dir = argv[0] + 2;
-      if (*dir == '=' || *dir == ':') dir++;
+      if (*dir == '=' || *dir == ':')
+        dir++;
       if (!*dir && argc > 1) {
         argc--;
         argv++;
         dir = argv[0];
       }
-      if (!*dir) error("Flag -d must be followed by a directory name.");
+      if (!*dir)
+        error("Flag -d must be followed by a directory name.");
     }
     if (argc > 1)
 #endif /* CHDIR */
@@ -189,7 +192,8 @@ int main(int argc, char *argv[]) {
      */
     (void)signal(SIGQUIT, SIG_IGN);
     (void)signal(SIGINT, SIG_IGN);
-    if (!locknum) sprintf(lock, "%d%s", (int)getuid(), plname);
+    if (!locknum)
+      sprintf(lock, "%d%s", (int)getuid(), plname);
     getlock();
 #ifdef WIZARD
   } else {
@@ -205,9 +209,11 @@ int main(int argc, char *argv[]) {
    * Both boundaries have to be even.
    */
   x_maze_max = COLNO - 1;
-  if (x_maze_max % 2) x_maze_max--;
+  if (x_maze_max % 2)
+    x_maze_max--;
   y_maze_max = ROWNO - 1;
-  if (y_maze_max % 2) y_maze_max--;
+  if (y_maze_max % 2)
+    y_maze_max--;
 
   /*
    *  Initialize the vision system.  This must be before mklev() on a
@@ -236,9 +242,11 @@ int main(int argc, char *argv[]) {
 #endif
     pline("Restoring save file...");
     mark_synch(); /* flush output */
-    if (!dorecover(fd)) goto not_recovered;
+    if (!dorecover(fd))
+      goto not_recovered;
 #ifdef WIZARD
-    if (!wizard && remember_wiz_mode) wizard = TRUE;
+    if (!wizard && remember_wiz_mode)
+      wizard = TRUE;
 #endif
     check_special_room(FALSE);
     wd_message();
@@ -291,13 +299,15 @@ static void process_options(int argc, char *argv[]) {
         user = getlogin();
         if (user) {
           pw = getpwnam(user);
-          if (pw && (pw->pw_uid != uid)) pw = 0;
+          if (pw && (pw->pw_uid != uid))
+            pw = 0;
         }
         if (pw == 0) {
           user = nh_getenv("USER");
           if (user) {
             pw = getpwnam(user);
-            if (pw && (pw->pw_uid != uid)) pw = 0;
+            if (pw && (pw->pw_uid != uid))
+              pw = 0;
           }
           if (pw == 0) {
             pw = getpwuid(uid);
@@ -331,28 +341,34 @@ static void process_options(int argc, char *argv[]) {
         break;
       case 'I':
       case 'i':
-        if (!strncmpi(argv[0] + 1, "IBM", 3)) switch_graphics(IBM_GRAPHICS);
+        if (!strncmpi(argv[0] + 1, "IBM", 3))
+          switch_graphics(IBM_GRAPHICS);
         break;
       /*  case 'D': */
       case 'd':
-        if (!strncmpi(argv[0] + 1, "DEC", 3)) switch_graphics(DEC_GRAPHICS);
+        if (!strncmpi(argv[0] + 1, "DEC", 3))
+          switch_graphics(DEC_GRAPHICS);
         break;
       case 'p': /* profession (role) */
         if (argv[0][2]) {
-          if ((i = str2role(&argv[0][2])) >= 0) flags.initrole = i;
+          if ((i = str2role(&argv[0][2])) >= 0)
+            flags.initrole = i;
         } else if (argc > 1) {
           argc--;
           argv++;
-          if ((i = str2role(argv[0])) >= 0) flags.initrole = i;
+          if ((i = str2role(argv[0])) >= 0)
+            flags.initrole = i;
         }
         break;
       case 'r': /* race */
         if (argv[0][2]) {
-          if ((i = str2race(&argv[0][2])) >= 0) flags.initrace = i;
+          if ((i = str2race(&argv[0][2])) >= 0)
+            flags.initrace = i;
         } else if (argc > 1) {
           argc--;
           argv++;
-          if ((i = str2race(argv[0])) >= 0) flags.initrace = i;
+          if ((i = str2race(argv[0])) >= 0)
+            flags.initrace = i;
         }
         break;
       case '@':
@@ -367,9 +383,11 @@ static void process_options(int argc, char *argv[]) {
     }
   }
 
-  if (argc > 1) locknum = atoi(argv[1]);
+  if (argc > 1)
+    locknum = atoi(argv[1]);
 #ifdef MAX_NR_OF_PLAYERS
-  if (!locknum || locknum > MAX_NR_OF_PLAYERS) locknum = MAX_NR_OF_PLAYERS;
+  if (!locknum || locknum > MAX_NR_OF_PLAYERS)
+    locknum = MAX_NR_OF_PLAYERS;
 #endif
 }
 
@@ -402,7 +420,8 @@ static void chdirx(const char *dir, bool wr) {
   }
 
 #ifdef HACKDIR
-  if (dir == (const char *)0) dir = HACKDIR;
+  if (dir == (const char *)0)
+    dir = HACKDIR;
 #endif
 
   if (dir && chdir(dir) < 0) {
@@ -440,7 +459,8 @@ static bool whoami() {
    */
   char *s;
 
-  if (*plname) return FALSE;
+  if (*plname)
+    return FALSE;
   if (/* !*plname && */(s = nh_getenv("USER")))
     (void)strncpy(plname, s, sizeof(plname) - 1);
   if (!*plname && (s = nh_getenv("LOGNAME")))
@@ -483,7 +503,8 @@ static void wd_message() {
 void append_slash(char *name) {
   char *ptr;
 
-  if (!*name) return;
+  if (!*name)
+    return;
   ptr = name + (strlen(name) - 1);
   if (*ptr != '/') {
     *++ptr = '/';

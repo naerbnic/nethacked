@@ -18,7 +18,8 @@ STATIC_OVL bool no_bones_level(d_level *lev) {
   extern d_level save_dlevel; /* in do.c */
   s_level *sptr;
 
-  if (ledger_no(&save_dlevel)) assign_level(lev, &save_dlevel);
+  if (ledger_no(&save_dlevel))
+    assign_level(lev, &save_dlevel);
 
   return (bool)(((sptr = Is_special(lev)) != 0 && !sptr->boneid) ||
                 !dungeons[lev->dnum].boneid
@@ -51,7 +52,8 @@ STATIC_OVL void resetobjs(Object *ochain, bool restore) {
   Object *otmp;
 
   for (otmp = ochain; otmp; otmp = otmp->nobj) {
-    if (otmp->cobj) resetobjs(otmp->cobj, restore);
+    if (otmp->cobj)
+      resetobjs(otmp->cobj, restore);
 
     if (((otmp->otyp != CORPSE || otmp->corpsenm < SPECIAL_PM) &&
          otmp->otyp != STATUE) &&
@@ -66,13 +68,15 @@ STATIC_OVL void resetobjs(Object *ochain, bool restore) {
     if (!restore) {
       /* do not zero out o_ids for ghost levels anymore */
 
-      if (objects[otmp->otyp].oc_uses_known) otmp->known = 0;
+      if (objects[otmp->otyp].oc_uses_known)
+        otmp->known = 0;
       otmp->dknown = otmp->bknown = 0;
       otmp->rknown = 0;
       otmp->invlet = 0;
       otmp->no_charge = 0;
 
-      if (otmp->otyp == SLIME_MOLD) goodfruit(otmp->spe);
+      if (otmp->otyp == SLIME_MOLD)
+        goodfruit(otmp->spe);
 #ifdef MAIL
       else if (otmp->otyp == SCR_MAIL)
         otmp->spe = 1;
@@ -88,10 +92,12 @@ STATIC_OVL void resetobjs(Object *ochain, bool restore) {
         otmp->otyp = FAKE_AMULET_OF_YENDOR;
         Curse(otmp);
       } else if (otmp->otyp == CANDELABRUM_OF_INVOCATION) {
-        if (otmp->lamplit) end_burn(otmp, TRUE);
+        if (otmp->lamplit)
+          end_burn(otmp, TRUE);
         otmp->otyp = WAX_CANDLE;
         otmp->age = 50L; /* assume used */
-        if (otmp->spe > 0) otmp->quan = (long)otmp->spe;
+        if (otmp->spe > 0)
+          otmp->quan = (long)otmp->spe;
         otmp->spe = 0;
         otmp->owt = GetWeight(otmp);
         Curse(otmp);
@@ -119,9 +125,11 @@ STATIC_OVL void drop_upon_death(Monster *mtmp, Object *cont) {
     if ((cont || artifact_light(otmp)) && obj_is_burning(otmp))
       end_burn(otmp, TRUE); /* smother in statue */
 
-    if (otmp->otyp == SLIME_MOLD) goodfruit(otmp->spe);
+    if (otmp->otyp == SLIME_MOLD)
+      goodfruit(otmp->spe);
 
-    if (rn2(5)) Curse(otmp);
+    if (rn2(5))
+      Curse(otmp);
     if (mtmp)
       (void)AddObjectToMonsterInventory(mtmp, otmp);
     else if (cont)
@@ -141,7 +149,8 @@ STATIC_OVL void drop_upon_death(Monster *mtmp, Object *cont) {
     player.ugold = ugold; /* undo mkgoldobj()'s removal */
   }
 #endif
-  if (cont) cont->owt = GetWeight(cont);
+  if (cont)
+    cont->owt = GetWeight(cont);
 }
 
 /* check whether bones are feasible */
@@ -158,7 +167,8 @@ bool can_make_bones() {
   if (!Is_branchlev(&player.uz)) {
     /* no bones on non-branches with portals */
     for (ttmp = ftrap; ttmp; ttmp = ttmp->ntrap)
-      if (ttmp->ttyp == MAGIC_PORTAL) return FALSE;
+      if (ttmp->ttyp == MAGIC_PORTAL)
+        return FALSE;
   }
 
   if (depth(&player.uz) <= 0 ||           /* bulletproofing for endgame */
@@ -170,7 +180,8 @@ bool can_make_bones() {
     return FALSE;
   /* don't let multiple restarts generate multiple copies of objects
    * in bones files */
-  if (discover) return FALSE;
+  if (discover)
+    return FALSE;
   return TRUE;
 }
 
@@ -210,24 +221,28 @@ make_bones:
   unleash_all();
   /* in case these characters are not in their home bases */
   for (mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
-    if (mtmp->dead()) continue;
+    if (mtmp->dead())
+      continue;
     mptr = mtmp->data;
     if (mtmp->iswiz || mptr == &mons[PM_MEDUSA] || mptr->msound == MS_NEMESIS ||
         mptr->msound == MS_LEADER || mptr == &mons[PM_VLAD_THE_IMPALER])
       mongone(mtmp);
   }
 #ifdef STEED
-  if (player.usteed) dismount_steed(DISMOUNT_BONES);
+  if (player.usteed)
+    dismount_steed(DISMOUNT_BONES);
 #endif
   dmonsfree(); /* discard dead or gone monsters */
 
   /* mark all fruits as nonexistent; when we come to them we'll mark
    * them as existing (using goodfruit())
    */
-  for (f = ffruit; f; f = f->nextf) f->fid = -f->fid;
+  for (f = ffruit; f; f = f->nextf)
+    f->fid = -f->fid;
 
   /* check iron balls separately--maybe they're not carrying it */
-  if (uball) uball->owornmask = uchain->owornmask = 0;
+  if (uball)
+    uball->owornmask = uchain->owornmask = 0;
 
   /* dispose of your possessions, usually cursed */
   if (player.ugrave_arise == (NON_PM - 1)) {
@@ -238,7 +253,8 @@ make_bones:
                                    player.uy, plname);
 
     drop_upon_death((Monster *)0, otmp);
-    if (!otmp) return; /* couldn't make statue */
+    if (!otmp)
+      return; /* couldn't make statue */
     mtmp = (Monster *)0;
   } else if (player.ugrave_arise < LOW_PM) {
     /* drop everything */
@@ -249,9 +265,11 @@ make_bones:
     in_mklev = TRUE;
     mtmp = makemon(&mons[PM_GHOST], player.ux, player.uy, MM_NONAME);
     in_mklev = FALSE;
-    if (!mtmp) return;
+    if (!mtmp)
+      return;
     mtmp = christen_monst(mtmp, plname);
-    if (corpse) (void)AttachMonsterIdToObject(corpse, mtmp->m_id);
+    if (corpse)
+      (void)AttachMonsterIdToObject(corpse, mtmp->m_id);
   } else {
     /* give your possessions to the monster you become */
     in_mklev = TRUE;
@@ -280,7 +298,8 @@ make_bones:
     resetobjs(mtmp->minvent, FALSE);
     /* do not zero out m_ids for bones levels any more */
     mtmp->mlstmv = 0L;
-    if (mtmp->mtame) mtmp->mtame = mtmp->mpeaceful = 0;
+    if (mtmp->mtame)
+      mtmp->mtame = mtmp->mpeaceful = 0;
   }
   for (ttmp = ftrap; ttmp; ttmp = ttmp->ntrap) {
     ttmp->madeby_u = 0;
@@ -303,7 +322,8 @@ make_bones:
   fd = create_bonesfile(&player.uz, &bonesid, whynot);
   if (fd < 0) {
 #ifdef WIZARD
-    if (wizard) pline("%s", whynot);
+    if (wizard)
+      pline("%s", whynot);
 #endif
     /* bones file creation problems are silent to the player.
      * Keep it that way, but place a clue into the paniclog.
@@ -339,9 +359,11 @@ int getbones() {
 #endif
       )
     return (0);
-  if (no_bones_level(&player.uz)) return (0);
+  if (no_bones_level(&player.uz))
+    return (0);
   fd = open_bonesfile(&player.uz, &bonesid);
-  if (fd < 0) return (0);
+  if (fd < 0)
+    return (0);
 
   if ((ok = uptodate(fd, bones)) == 0) {
 #ifdef WIZARD

@@ -30,7 +30,8 @@ STATIC_OVL void init_map(schar bg_typ) {
   int i, j;
 
   for (i = 1; i < COLNO; i++)
-    for (j = 0; j < ROWNO; j++) levl[i][j].typ = bg_typ;
+    for (j = 0; j < ROWNO; j++)
+      levl[i][j].typ = bg_typ;
 }
 
 STATIC_OVL void init_fill(schar bg_typ, schar fg_typ) {
@@ -50,7 +51,8 @@ STATIC_OVL void init_fill(schar bg_typ, schar fg_typ) {
 }
 
 STATIC_OVL schar get_map(int col, int row, schar bg_typ) {
-  if (col <= 0 || row < 0 || col > WIDTH || row >= HEIGHT) return bg_typ;
+  if (col <= 0 || row < 0 || col > WIDTH || row >= HEIGHT)
+    return bg_typ;
   return levl[col][row].typ;
 }
 
@@ -103,7 +105,8 @@ STATIC_OVL void pass_two(schar bg_typ, schar fg_typ) {
     }
 
   for (i = 2; i <= WIDTH; i++)
-    for (j = 1; j < HEIGHT; j++) levl[i][j].typ = new_loc(i, j);
+    for (j = 1; j < HEIGHT; j++)
+      levl[i][j].typ = new_loc(i, j);
 }
 
 STATIC_OVL void pass_three(schar bg_typ, schar fg_typ) {
@@ -122,7 +125,8 @@ STATIC_OVL void pass_three(schar bg_typ, schar fg_typ) {
     }
 
   for (i = 2; i <= WIDTH; i++)
-    for (j = 1; j < HEIGHT; j++) levl[i][j].typ = new_loc(i, j);
+    for (j = 1; j < HEIGHT; j++)
+      levl[i][j].typ = new_loc(i, j);
 }
 
 /*
@@ -144,8 +148,10 @@ void flood_fill_rm(int sx, int sy, int rmno, bool lit, bool anyroom) {
   sx++; /* compensate for extra decrement */
 
   /* assume sx,sy is valid */
-  if (sx < min_rx) min_rx = sx;
-  if (sy < min_ry) min_ry = sy;
+  if (sx < min_rx)
+    min_rx = sx;
+  if (sy < min_ry)
+    min_ry = sy;
 
   for (i = sx; i <= WIDTH && levl[i][sy].typ == fg_typ; i++) {
     levl[i][sy].roomno = rmno;
@@ -158,8 +164,10 @@ void flood_fill_rm(int sx, int sy, int rmno, bool lit, bool anyroom) {
           if (isok(ii, jj) &&
               (IS_WALL(levl[ii][jj].typ) || IS_DOOR(levl[ii][jj].typ))) {
             levl[ii][jj].edge = 1;
-            if (lit) levl[ii][jj].lit = lit;
-            if ((int)levl[ii][jj].roomno != rmno) levl[ii][jj].roomno = SHARED;
+            if (lit)
+              levl[ii][jj].lit = lit;
+            if ((int)levl[ii][jj].roomno != rmno)
+              levl[ii][jj].roomno = SHARED;
           }
     }
     n_loc_filled++;
@@ -203,8 +211,10 @@ void flood_fill_rm(int sx, int sy, int rmno, bool lit, bool anyroom) {
       }
   }
 
-  if (nx > max_rx) max_rx = nx - 1; /* nx is just past valid region */
-  if (sy > max_ry) max_ry = sy;
+  if (nx > max_rx)
+    max_rx = nx - 1; /* nx is just past valid region */
+  if (sy > max_ry)
+    max_ry = sy;
 }
 
 /*
@@ -246,7 +256,8 @@ STATIC_OVL void join_map(schar bg_typ, schar fg_typ) {
         if (n_loc_filled > 3) {
           add_room(min_rx, min_ry, max_rx, max_ry, FALSE, OROOM, TRUE);
           rooms[nroom - 1].irregular = TRUE;
-          if (nroom >= (MAXNROFROOMS * 2)) goto joinm;
+          if (nroom >= (MAXNROFROOMS * 2))
+            goto joinm;
         } else {
           /*
            * it's a tiny hole; erase it from the map to avoid
@@ -296,7 +307,8 @@ joinm:
 STATIC_OVL void finish_map(schar fg_typ, schar bg_typ, bool lit, bool walled) {
   int i, j;
 
-  if (walled) wallify_map();
+  if (walled)
+    wallify_map();
 
   if (lit) {
     for (i = 1; i < COLNO; i++)
@@ -306,12 +318,14 @@ STATIC_OVL void finish_map(schar fg_typ, schar bg_typ, bool lit, bool walled) {
             (bg_typ == TREE && levl[i][j].typ == bg_typ) ||
             (walled && IS_WALL(levl[i][j].typ)))
           levl[i][j].lit = TRUE;
-    for (i = 0; i < nroom; i++) rooms[i].rlit = 1;
+    for (i = 0; i < nroom; i++)
+      rooms[i].rlit = 1;
   }
   /* light lava even if everything's otherwise unlit */
   for (i = 1; i < COLNO; i++)
     for (j = 0; j < ROWNO; j++)
-      if (levl[i][j].typ == LAVAPOOL) levl[i][j].lit = TRUE;
+      if (levl[i][j].typ == LAVAPOOL)
+        levl[i][j].lit = TRUE;
 }
 
 /*
@@ -336,7 +350,8 @@ void remove_rooms(int lx, int ly, int hx, int hy) {
         croom->hy >= hy) { /* partial overlap */
       /* TODO: ensure remaining parts of room are still joined */
 
-      if (!croom->irregular) impossible("regular room in joined map");
+      if (!croom->irregular)
+        impossible("regular room in joined map");
     } else {
       /* total overlap, remove the room */
       remove_room((unsigned)i);
@@ -368,7 +383,8 @@ STATIC_OVL void remove_room(unsigned roomno) {
     roomno += ROOMOFFSET;
     for (i = croom->lx; i <= croom->hx; ++i)
       for (j = croom->ly; j <= croom->hy; ++j) {
-        if (levl[i][j].roomno == oroomno) levl[i][j].roomno = roomno;
+        if (levl[i][j].roomno == oroomno)
+          levl[i][j].roomno = roomno;
       }
   }
 
@@ -385,21 +401,26 @@ void mkmap(lev_init *init_lev) {
   xchar lit = init_lev->lit, walled = init_lev->walled;
   int i;
 
-  if (lit < 0) lit = (rnd(1 + abs(depth(&player.uz))) < 11 && rn2(77)) ? 1 : 0;
+  if (lit < 0)
+    lit = (rnd(1 + abs(depth(&player.uz))) < 11 && rn2(77)) ? 1 : 0;
 
   new_locations = (char *)alloc((WIDTH + 1) * HEIGHT);
 
   init_map(bg_typ);
   init_fill(bg_typ, fg_typ);
 
-  for (i = 0; i < N_P1_ITER; i++) pass_one(bg_typ, fg_typ);
+  for (i = 0; i < N_P1_ITER; i++)
+    pass_one(bg_typ, fg_typ);
 
-  for (i = 0; i < N_P2_ITER; i++) pass_two(bg_typ, fg_typ);
+  for (i = 0; i < N_P2_ITER; i++)
+    pass_two(bg_typ, fg_typ);
 
   if (smooth)
-    for (i = 0; i < N_P3_ITER; i++) pass_three(bg_typ, fg_typ);
+    for (i = 0; i < N_P3_ITER; i++)
+      pass_three(bg_typ, fg_typ);
 
-  if (join) join_map(bg_typ, fg_typ);
+  if (join)
+    join_map(bg_typ, fg_typ);
 
   finish_map(fg_typ, bg_typ, (bool)lit, (bool)walled);
   /* a walled, joined level is cavernous, not mazelike -dlc */

@@ -108,7 +108,8 @@ void tty_startup(int *wid, int *hgt) {
   term = getenv("TERM");
 
 #if defined(TOS) && defined(__GNUC__)
-  if (!term) term = "builtin"; /* library has a default */
+  if (!term)
+    term = "builtin"; /* library has a default */
 #endif
   if (!term)
 #endif
@@ -193,7 +194,8 @@ void tty_startup(int *wid, int *hgt) {
     buf[BUFSZ - 1] = '\0';
     error("Unknown terminal type: %s.", term);
   }
-  if ((pc = Tgetstr("pc")) != 0) PC = *pc;
+  if ((pc = Tgetstr("pc")) != 0)
+    PC = *pc;
 
   if (!(BC = Tgetstr("le"))) /* both termcap and terminfo use le */
 #ifdef TERMINFO
@@ -201,7 +203,8 @@ void tty_startup(int *wid, int *hgt) {
 #else
     if (!(BC = Tgetstr("bc"))) { /* termcap also uses bc/bs */
 #ifndef MINIMAL_TERM
-      if (!tgetflag("bs")) error("Terminal must backspace.");
+      if (!tgetflag("bs"))
+        error("Terminal must backspace.");
 #endif
       BC = tbufptr;
       tbufptr += 2;
@@ -219,14 +222,19 @@ void tty_startup(int *wid, int *hgt) {
    * the kernel has values for either we should use them rather than
    * the values from TERMCAP ...
    */
-  if (!CO) CO = tgetnum("co");
-  if (!LI) LI = tgetnum("li");
+  if (!CO)
+    CO = tgetnum("co");
+  if (!LI)
+    LI = tgetnum("li");
 #ifdef CLIPPING
-  if (CO < COLNO || LI < ROWNO + 3) setclipped();
+  if (CO < COLNO || LI < ROWNO + 3)
+    setclipped();
 #endif
   nh_ND = Tgetstr("nd");
-  if (tgetflag("os")) error("NetHack can't have OS.");
-  if (tgetflag("ul")) ul_hack = TRUE;
+  if (tgetflag("os"))
+    error("NetHack can't have OS.");
+  if (tgetflag("ul"))
+    ul_hack = TRUE;
   CE = Tgetstr("ce");
   UP = Tgetstr("up");
   /* It seems that xd is no longer supported, and we should use
@@ -236,7 +244,8 @@ void tty_startup(int *wid, int *hgt) {
   XD = Tgetstr("xd");
   /* not:		XD = Tgetstr("do"); */
   if (!(nh_CM = Tgetstr("cm"))) {
-    if (!UP && !HO) error("NetHack needs CM or UP or HO.");
+    if (!UP && !HO)
+      error("NetHack needs CM or UP or HO.");
     tty_raw_print("Playing NetHack on terminals without CM is suspect.");
     tty_wait_synch();
   }
@@ -245,7 +254,8 @@ void tty_startup(int *wid, int *hgt) {
   nh_US = Tgetstr("us");
   nh_UE = Tgetstr("ue");
   SG = tgetnum("sg"); /* -1: not fnd; else # of spaces left by so */
-  if (!SO || !SE || (SG > 0)) SO = SE = nh_US = nh_UE = nullstr;
+  if (!SO || !SE || (SG > 0))
+    SO = SE = nh_US = nh_UE = nullstr;
   TI = Tgetstr("ti");
   TE = Tgetstr("te");
   VS = VE = nullstr;
@@ -260,8 +270,9 @@ void tty_startup(int *wid, int *hgt) {
 	MD = Tgetstr("md");	/* boldface */
 	MH = Tgetstr("mh");	/* dim */
 #endif
-  ME = Tgetstr("me");                  /* turn off all attributes */
-  if (!ME || (SE == nullstr)) ME = SE; /* default to SE value */
+  ME = Tgetstr("me"); /* turn off all attributes */
+  if (!ME || (SE == nullstr))
+    ME = SE; /* default to SE value */
 
   /* Get rid of padding numbers for nh_HI and nh_HE.  Hope they
    * aren't really needed!!!  nh_HI and nh_HE are outputted to the
@@ -271,10 +282,12 @@ void tty_startup(int *wid, int *hgt) {
   nh_HI = (char *)alloc((unsigned)(strlen(SO) + 1));
   nh_HE = (char *)alloc((unsigned)(strlen(ME) + 1));
   i = 0;
-  while (digit(SO[i])) i++;
+  while (digit(SO[i]))
+    i++;
   strcpy(nh_HI, &SO[i]);
   i = 0;
-  while (digit(ME[i])) i++;
+  while (digit(ME[i]))
+    i++;
   strcpy(nh_HE, &ME[i]);
   AS = Tgetstr("as");
   AE = Tgetstr("ae");
@@ -315,10 +328,12 @@ void tty_shutdown() {
 void tty_number_pad(int state) {
   switch (state) {
     case -1: /* activate keypad mode (escape sequences) */
-      if (KS && *KS) xputs(KS);
+      if (KS && *KS)
+        xputs(KS);
       break;
     case 1: /* activate numeric mode for keypad (digits) */
-      if (KE && *KE) xputs(KE);
+      if (KE && *KE)
+        xputs(KE);
       break;
     case 0: /* don't need to do anything--leave terminal as-is */
     default:
@@ -344,16 +359,21 @@ static void tty_decgraphics_termcap_fixup() {
   static char numMode[] = "\033>";
 
   /* these values are missing from some termcaps */
-  if (!AS) AS = ctrlN;   /* ^N (shift-out [graphics font]) */
-  if (!AE) AE = ctrlO;   /* ^O (shift-in  [regular font])  */
-  if (!KS) KS = appMode; /* ESC= (application keypad mode) */
-  if (!KE) KE = numMode; /* ESC> (numeric keypad mode)	  */
-                         /*
-                          * Select the line-drawing character set as the alternate font.
-                          * Do not select NA ASCII as the primary font since people may
-                          * reasonably be using the UK character set.
-                          */
-  if (iflags.DECgraphics) xputs("\033)0");
+  if (!AS)
+    AS = ctrlN; /* ^N (shift-out [graphics font]) */
+  if (!AE)
+    AE = ctrlO; /* ^O (shift-in  [regular font])  */
+  if (!KS)
+    KS = appMode; /* ESC= (application keypad mode) */
+  if (!KE)
+    KE = numMode; /* ESC> (numeric keypad mode)	  */
+                  /*
+                   * Select the line-drawing character set as the alternate font.
+                   * Do not select NA ASCII as the primary font since people may
+                   * reasonably be using the UK character set.
+                   */
+  if (iflags.DECgraphics)
+    xputs("\033)0");
 #ifdef PC9800
   init_hilite();
 #endif
@@ -371,9 +391,11 @@ static void tty_decgraphics_termcap_fixup() {
       while (digit(*ae));
       if (*ae == '.') {
         ++ae;
-        if (digit(*ae)) ++ae;
+        if (digit(*ae))
+          ++ae;
       }
-      if (*ae == '*') ++ae;
+      if (*ae == '*')
+        ++ae;
     }
     /* can't use nethack's case-insensitive strstri() here, and some old
        systems don't have strstr(), so use brute force substring search */
@@ -422,18 +444,21 @@ void tty_start_screen() {
   /* set up callback in case option is not set yet but toggled later */
   ascgraphics_mode_callback = tty_ascgraphics_hilite_fixup;
 #ifdef ASCIIGRAPH
-  if (iflags.IBMgraphics) init_hilite();
+  if (iflags.IBMgraphics)
+    init_hilite();
   /* set up callback in case option is not set yet but toggled later */
   ibmgraphics_mode_callback = init_hilite;
 #endif
 #endif /* PC9800 */
 
 #ifdef TERMLIB
-  if (iflags.DECgraphics) tty_decgraphics_termcap_fixup();
+  if (iflags.DECgraphics)
+    tty_decgraphics_termcap_fixup();
   /* set up callback in case option is not set yet but toggled later */
   decgraphics_mode_callback = tty_decgraphics_termcap_fixup;
 #endif
-  if (iflags.num_pad) tty_number_pad(1); /* make keypad send digits */
+  if (iflags.num_pad)
+    tty_number_pad(1); /* make keypad send digits */
 }
 
 void tty_end_screen() {
@@ -559,11 +584,13 @@ void home() {
 }
 
 void standoutbeg() {
-  if (SO) xputs(SO);
+  if (SO)
+    xputs(SO);
 }
 
 void standoutend() {
-  if (SE) xputs(SE);
+  if (SE)
+    xputs(SE);
 }
 
 #if 0 /* if you need one of these, uncomment it (here and in extern.h) */
@@ -597,7 +624,8 @@ void m_end() {
 void backsp() { xputs(BC); }
 
 void tty_nhbell() {
-  if (flags.silent) return;
+  if (flags.silent)
+    return;
   (void)putchar('\007'); /* curx does not change */
   (void)fflush(stdout);
 }
@@ -607,11 +635,13 @@ void tty_nhbell() {
 
 #ifdef ASCIIGRAPH
 void graph_on() {
-  if (AS) xputs(AS);
+  if (AS)
+    xputs(AS);
 }
 
 void graph_off() {
-  if (AE) xputs(AE);
+  if (AE)
+    xputs(AE);
 }
 #endif
 
@@ -806,9 +836,11 @@ static void init_hilite() {
 
 static void kill_hilite() {
   /* if colors weren't usable, no freeing needed */
-  if (hilites[CLR_BLACK] == nh_HI) return;
+  if (hilites[CLR_BLACK] == nh_HI)
+    return;
 
-  if (hilites[CLR_BLACK] != hilites[CLR_BLUE]) free(hilites[CLR_BLACK]);
+  if (hilites[CLR_BLACK] != hilites[CLR_BLUE])
+    free(hilites[CLR_BLACK]);
 
   /* CLR_BLUE overlaps CLR_BRIGHT_BLUE, do not free */
   /* CLR_GREEN overlaps CLR_BRIGHT_GREEN, do not free */
@@ -926,7 +958,8 @@ static void init_hilite() {
 
   int backg, foreg, hi_backg, hi_foreg;
 
-  for (c = 0; c < SIZE(hilites); c++) hilites[c] = nh_HI;
+  for (c = 0; c < SIZE(hilites); c++)
+    hilites[c] = nh_HI;
   hilites[CLR_GRAY] = hilites[NO_COLOR] = (char *)0;
 
   analyze_seq(nh_HI, &hi_foreg, &hi_backg);
@@ -955,7 +988,8 @@ static void kill_hilite() {
   int c;
 
   for (c = 0; c < CLR_MAX / 2; c++) {
-    if (hilites[c | BRIGHT] == hilites[c]) hilites[c | BRIGHT] = 0;
+    if (hilites[c | BRIGHT] == hilites[c])
+      hilites[c | BRIGHT] = 0;
     if (hilites[c] && (hilites[c] != nh_HI))
       free((genericptr_t)hilites[c]), hilites[c] = 0;
     if (hilites[c | BRIGHT] && (hilites[c | BRIGHT] != nh_HI))
@@ -972,11 +1006,13 @@ static char nulstr[] = "";
 static char *s_atr2str(int n) {
   switch (n) {
     case ATR_ULINE:
-      if (nh_US) return nh_US;
+      if (nh_US)
+        return nh_US;
     case ATR_BOLD:
     case ATR_BLINK:
 #if defined(TERMLIB) && defined(TEXTCOLOR)
-      if (MD) return MD;
+      if (MD)
+        return MD;
 #endif
       return nh_HI;
     case ATR_INVERSE:
@@ -988,7 +1024,8 @@ static char *s_atr2str(int n) {
 static char *e_atr2str(int n) {
   switch (n) {
     case ATR_ULINE:
-      if (nh_UE) return nh_UE;
+      if (nh_UE)
+        return nh_UE;
     case ATR_BOLD:
     case ATR_BLINK:
       return nh_HE;

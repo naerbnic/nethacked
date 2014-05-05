@@ -97,8 +97,10 @@ void getwindowsz() {
      * Use the kernel's values for lines and columns if it has
      * any idea.
      */
-    if (ttsz.ws_row) LI = ttsz.ws_row;
-    if (ttsz.ws_col) CO = ttsz.ws_col;
+    if (ttsz.ws_row)
+      LI = ttsz.ws_row;
+    if (ttsz.ws_col)
+      CO = ttsz.ws_col;
   }
 #endif
 }

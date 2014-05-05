@@ -77,13 +77,15 @@ char *lcase(char *s) {
   char *p;
 
   for (p = s; *p; p++)
-    if ('A' <= *p && *p <= 'Z') *p |= 040;
+    if ('A' <= *p && *p <= 'Z')
+      *p |= 040;
   return s;
 }
 
 /* convert first character of a string to uppercase */
 char *upstart(char *s) {
-  if (s) *s = highc(*s);
+  if (s)
+    *s = highc(*s);
   return s;
 }
 
@@ -93,11 +95,14 @@ char *mungspaces(char *bp) {
   bool was_space = TRUE;
 
   for (p = p2 = bp; (c = *p) != '\0'; p++) {
-    if (c == '\t') c = ' ';
-    if (c != ' ' || !was_space) *p2++ = c;
+    if (c == '\t')
+      c = ' ';
+    if (c != ' ' || !was_space)
+      *p2++ = c;
     was_space = (c == ' ');
   }
-  if (was_space && p2 > bp) p2--;
+  if (was_space && p2 > bp)
+    p2--;
   *p2 = '\0';
   return bp;
 }
@@ -107,7 +112,8 @@ char *mungspaces(char *bp) {
 #ifdef OVL0
 /* return the end of a string (pointing at '\0') */
 char *eos(char *s) {
-  while (*s) s++; /* s += strlen(s); */
+  while (*s)
+    s++; /* s += strlen(s); */
   return s;
 }
 
@@ -143,8 +149,10 @@ char *xcrypt(char const *str, char *buf) {
 
   for (bitmask = 1, p = str, q = buf; *p; q++) {
     *q = *p++;
-    if (*q & (32 | 64)) *q ^= bitmask;
-    if ((bitmask <<= 1) >= 32) bitmask = 1;
+    if (*q & (32 | 64))
+      *q ^= bitmask;
+    if ((bitmask <<= 1) >= 32)
+      bitmask = 1;
   }
   *q = '\0';
   return buf;
@@ -155,7 +163,8 @@ char *xcrypt(char const *str, char *buf) {
 /* is a string entirely whitespace? */
 bool onlyspace(const char *s) {
   for (; *s; s++)
-    if (*s != ' ' && *s != '\t') return FALSE;
+    if (*s != ' ' && *s != '\t')
+      return FALSE;
   return TRUE;
 }
 #endif /* OVL2 */
@@ -167,7 +176,8 @@ char *tabexpand(char *sbuf) {
   char *bp, *s = sbuf;
   int idx;
 
-  if (!*s) return sbuf;
+  if (!*s)
+    return sbuf;
 
   /* warning: no bounds checking performed */
   for (bp = buf, idx = 0; *s; s++)
@@ -246,7 +256,8 @@ int rounddiv(long x, int y) {
   }
   r = x / y;
   m = x % y;
-  if (2 * m >= y) r++;
+  if (2 * m >= y)
+    r++;
 
   return divsgn * r;
 }
@@ -256,8 +267,10 @@ int rounddiv(long x, int y) {
 /* distance between two points, in moves */
 int distmin(int x0, int y0, int x1, int y1) {
   int dx = x0 - x1, dy = y0 - y1;
-  if (dx < 0) dx = -dx;
-  if (dy < 0) dy = -dy;
+  if (dx < 0)
+    dx = -dx;
+  if (dy < 0)
+    dy = -dy;
   /*  The minimum number of moves to get from (x0,y0) to (x1,y1) is the
    :  larger of the [absolute value of the] two deltas.
    */
@@ -318,7 +331,8 @@ int strncmpi(const char *s1, const char *s2, int n) {
       return -1; /* s1  < s2 */
     t1 = lowc(*s1++);
     t2 = lowc(*s2++);
-    if (t1 != t2) return (t1 > t2) ? 1 : -1;
+    if (t1 != t2)
+      return (t1 > t2) ? 1 : -1;
   }
   return 0; /* s1 == s2 */
 }
@@ -340,24 +354,31 @@ char *strstri(const char *str, const char *sub) {
 #endif
 
   /* special case: empty substring */
-  if (!*sub) return (char *)str;
+  if (!*sub)
+    return (char *)str;
 
   /* do some useful work while determining relative lengths */
-  for (i = 0; i < TABSIZ; i++) tstr[i] = tsub[i] = 0; /* init */
-  for (k = 0, s1 = str; *s1; k++) tstr[*s1++ & (TABSIZ - 1)]++;
-  for (s2 = sub; *s2; --k) tsub[*s2++ & (TABSIZ - 1)]++;
+  for (i = 0; i < TABSIZ; i++)
+    tstr[i] = tsub[i] = 0; /* init */
+  for (k = 0, s1 = str; *s1; k++)
+    tstr[*s1++ & (TABSIZ - 1)]++;
+  for (s2 = sub; *s2; --k)
+    tsub[*s2++ & (TABSIZ - 1)]++;
 
   /* evaluate the info we've collected */
-  if (k < 0) return (char *)0; /* sub longer than str, so can't match */
+  if (k < 0)
+    return (char *)0;          /* sub longer than str, so can't match */
   for (i = 0; i < TABSIZ; i++) /* does sub have more 'x's than str? */
-    if (tsub[i] > tstr[i]) return (char *)0; /* match not possible */
+    if (tsub[i] > tstr[i])
+      return (char *)0; /* match not possible */
 
   /* now actually compare the substring repeatedly to parts of the string */
   for (i = 0; i <= k; i++) {
     s1 = &str[i];
     s2 = sub;
     while (lowc(*s1++) == lowc(*s2++))
-      if (!*s2) return (char *)&str[i]; /* full match */
+      if (!*s2)
+        return (char *)&str[i]; /* full match */
   }
   return (char *)0; /* not found */
 }
@@ -370,9 +391,12 @@ bool fuzzymatch(const char *s1, const char *s2, const char *ignore_chars,
   char c1, c2;
 
   do {
-    while ((c1 = *s1++) != '\0' && index(ignore_chars, c1) != 0) continue;
-    while ((c2 = *s2++) != '\0' && index(ignore_chars, c2) != 0) continue;
-    if (!c1 || !c2) break; /* stop when end of either string is reached */
+    while ((c1 = *s1++) != '\0' && index(ignore_chars, c1) != 0)
+      continue;
+    while ((c2 = *s2++) != '\0' && index(ignore_chars, c2) != 0)
+      continue;
+    if (!c1 || !c2)
+      break; /* stop when end of either string is reached */
 
     if (caseblind) {
       c1 = lowc(c1);
@@ -508,7 +532,8 @@ int phase_of_the_moon() {
   diy = lt->tm_yday;
   goldn = (lt->tm_year % 19) + 1;
   epact = (11 * goldn + 18) % 30;
-  if ((epact == 25 && goldn > 11) || epact == 24) epact++;
+  if ((epact == 25 && goldn > 11) || epact == 24)
+    epact++;
 
   return ((((((diy + epact) * 6) + 11) % 177) / 22) & 7);
 }

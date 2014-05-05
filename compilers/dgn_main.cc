@@ -48,7 +48,8 @@ int main(int argc, char **argv) {
     init_yyin(fin);
     init_yyout(fout);
     (void)yyparse();
-    if (fatal_error > 0) errors_encountered = TRUE;
+    if (fatal_error > 0)
+      errors_encountered = TRUE;
   } else { /* Otherwise every argument is a filename */
     for (i = 1; i < argc; i++) {
       fname = infile = argv[i];

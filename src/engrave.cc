@@ -120,7 +120,8 @@ void wipeout_text(char *engr, int cnt, unsigned seed) {
         use_rubout = seed & 3;
       }
       s = &engr[nxt];
-      if (*s == ' ') continue;
+      if (*s == ' ')
+        continue;
 
       /* rub out unreadable & small punctuation marks */
       if (index("?.,'`-|_", *s)) {
@@ -147,12 +148,14 @@ void wipeout_text(char *engr, int cnt, unsigned seed) {
           }
 
       /* didn't pick rubout; use '?' for unreadable character */
-      if (i == SIZE(rubouts)) *s = '?';
+      if (i == SIZE(rubouts))
+        *s = '?';
     }
   }
 
   /* trim trailing spaces */
-  while (lth && engr[lth - 1] == ' ') engr[--lth] = 0;
+  while (lth && engr[lth - 1] == ' ')
+    engr[--lth] = 0;
 }
 
 bool can_reach_floor() {
@@ -226,7 +229,8 @@ struct engr *engr_at(xchar x, xchar y) {
   struct engr *ep = head_engr;
 
   while (ep) {
-    if (x == ep->engr_x && y == ep->engr_y) return (ep);
+    if (x == ep->engr_x && y == ep->engr_y)
+      return (ep);
     ep = ep->nxt_engr;
   }
   return ((struct engr *)0);
@@ -249,7 +253,8 @@ int sengr_at(const char *s, xchar x, xchar y) {
 #ifdef OVL2
 
 void u_wipe_engr(int cnt) {
-  if (can_reach_floor()) wipe_engr_at(player.ux, player.uy, cnt);
+  if (can_reach_floor())
+    wipe_engr_at(player.ux, player.uy, cnt);
 }
 
 #endif /* OVL2 */
@@ -265,8 +270,10 @@ void wipe_engr_at(xchar x, xchar y, xchar cnt) {
         cnt = rn2(1 + 50 / (cnt + 1)) ? 0 : 1;
       }
       wipeout_text(ep->engr_txt, (int)cnt, 0);
-      while (ep->engr_txt[0] == ' ') ep->engr_txt++;
-      if (!ep->engr_txt[0]) del_engr(ep);
+      while (ep->engr_txt[0] == ' ')
+        ep->engr_txt++;
+      if (!ep->engr_txt[0])
+        del_engr(ep);
     }
   }
 }
@@ -335,7 +342,8 @@ void read_engr_at(int x, int y) {
       } else
         et = ep->engr_txt;
       You("%s: \"%s\".", (Blind) ? "feel the words" : "read", et);
-      if (flags.run > 1) nomul(0, 0);
+      if (flags.run > 1)
+        nomul(0, 0);
     }
   }
 }
@@ -346,7 +354,8 @@ void read_engr_at(int x, int y) {
 void make_engr_at(int x, int y, const char *s, long e_time, xchar e_type) {
   struct engr *ep;
 
-  if ((ep = engr_at(x, y)) != 0) del_engr(ep);
+  if ((ep = engr_at(x, y)) != 0)
+    del_engr(ep);
   ep = newengr(strlen(s) + 1);
   ep->nxt_engr = head_engr;
   head_engr = ep;
@@ -355,7 +364,8 @@ void make_engr_at(int x, int y, const char *s, long e_time, xchar e_type) {
   ep->engr_txt = (char *)(ep + 1);
   strcpy(ep->engr_txt, s);
   /* engraving Elbereth shows wisdom */
-  if (!in_mklev && !strcmp(s, "Elbereth")) exercise(A_WIS, TRUE);
+  if (!in_mklev && !strcmp(s, "Elbereth"))
+    exercise(A_WIS, TRUE);
   ep->engr_time = e_time;
   ep->engr_type = e_type > 0 ? e_type : rnd(N_ENGRAVE - 1);
   ep->engr_lth = strlen(s) + 1;
@@ -365,7 +375,8 @@ void make_engr_at(int x, int y, const char *s, long e_time, xchar e_type) {
 void del_engr_at(int x, int y) {
   struct engr *ep = engr_at(x, y);
 
-  if (ep) del_engr(ep);
+  if (ep)
+    del_engr(ep);
 }
 
 /*
@@ -474,14 +485,16 @@ int doengrave() {
     You_cant("even hold anything!");
     return (0);
   }
-  if (check_capacity((char *)0)) return (0);
+  if (check_capacity((char *)0))
+    return (0);
 
   /* One may write with finger, or weapon, or wand, or..., or...
    * Edited by GAN 10/20/86 so as not to change weapon wielded.
    */
 
   otmp = getobj(styluses, "write with");
-  if (!otmp) return (0); /* otmp == zeroobj if fingers */
+  if (!otmp)
+    return (0); /* otmp == zeroobj if fingers */
 
   if (otmp == &zeroobj)
     writer = makeplural(body_part(FINGER));
@@ -580,7 +593,8 @@ int doengrave() {
       if (zappable(otmp)) {
         check_unpaid(otmp);
         zapwand = TRUE;
-        if (Levitation) ptext = FALSE;
+        if (Levitation)
+          ptext = FALSE;
 
         switch (otmp->otyp) {
           /* DUST wands */
@@ -653,7 +667,8 @@ int doengrave() {
           case WAN_COLD:
             if (!Blind)
               strcpy(post_engr_text, "A few ice cubes drop from the wand.");
-            if (!oep || (oep->engr_type != BURN)) break;
+            if (!oep || (oep->engr_type != BURN))
+              break;
           case WAN_CANCELLATION:
           case WAN_MAKE_INVISIBLE:
             if (oep && oep->engr_type != HEADSTONE) {
@@ -935,7 +950,8 @@ int doengrave() {
   /* Count the actual # of chars engraved not including spaces */
   len = strlen(ebuf);
   for (sp = ebuf; *sp; sp++)
-    if (isspace(*sp)) len -= 1;
+    if (isspace(*sp))
+      len -= 1;
 
   if (len == 0 || index(ebuf, '\033')) {
     if (zapwand) {
@@ -955,7 +971,8 @@ int doengrave() {
   /* Mix up engraving if surface or state of mind is unsound.
      Note: this won't add or remove any spaces. */
   for (sp = ebuf; *sp; sp++) {
-    if (isspace(*sp)) continue;
+    if (isspace(*sp))
+      continue;
     if (((type == DUST || type == ENGR_BLOOD) && !rn2(25)) ||
         (Blind && !rn2(11)) || (Confusion && !rn2(7)) || (Stunned && !rn2(4)) ||
         (Hallucination && !rn2(2)))
@@ -975,11 +992,13 @@ int doengrave() {
   switch (type) {
     default:
       multi = -(len / 10);
-      if (multi) nomovemsg = "You finish your weird engraving.";
+      if (multi)
+        nomovemsg = "You finish your weird engraving.";
       break;
     case DUST:
       multi = -(len / 10);
-      if (multi) nomovemsg = "You finish writing in the dust.";
+      if (multi)
+        nomovemsg = "You finish writing in the dust.";
       break;
     case HEADSTONE:
     case ENGRAVE:
@@ -1011,7 +1030,8 @@ int doengrave() {
           otmp->spe -= 1; /* Prevent infinite engraving */
       } else if ((otmp->oclass == RING_CLASS) || (otmp->oclass == GEM_CLASS))
         multi = -len;
-      if (multi) nomovemsg = "You finish engraving.";
+      if (multi)
+        nomovemsg = "You finish engraving.";
       break;
     case BURN:
       multi = -(len / 10);
@@ -1033,38 +1053,45 @@ int doengrave() {
         else
           otmp->spe -= 1; /* Prevent infinite grafitti */
       }
-      if (multi) nomovemsg = "You finish defacing the dungeon.";
+      if (multi)
+        nomovemsg = "You finish defacing the dungeon.";
       break;
     case ENGR_BLOOD:
       multi = -(len / 10);
-      if (multi) nomovemsg = "You finish scrawling.";
+      if (multi)
+        nomovemsg = "You finish scrawling.";
       break;
   }
 
   /* Chop engraving down to size if necessary */
   if (len > maxelen) {
     for (sp = ebuf; (maxelen && *sp); sp++)
-      if (!isspace(*sp)) maxelen--;
+      if (!isspace(*sp))
+        maxelen--;
     if (!maxelen && *sp) {
       *sp = (char)0;
-      if (multi) nomovemsg = "You cannot write any more.";
+      if (multi)
+        nomovemsg = "You cannot write any more.";
       You("only are able to write \"%s\"", ebuf);
     }
   }
 
   /* Add to existing engraving */
-  if (oep) strcpy(buf, oep->engr_txt);
+  if (oep)
+    strcpy(buf, oep->engr_txt);
 
   (void)strncat(buf, ebuf, (BUFSZ - (int)strlen(buf) - 1));
 
   make_engr_at(player.ux, player.uy, buf, (moves - multi), type);
 
-  if (post_engr_text[0]) pline(post_engr_text);
+  if (post_engr_text[0])
+    pline(post_engr_text);
 
   if (doblind && !resists_blnd(&youmonst)) {
     You("are blinded by the flash!");
     make_blinded((long)rnd(50), FALSE);
-    if (!Blind) Your(vision_clears);
+    if (!Blind)
+      Your(vision_clears);
   }
 
   return (1);
@@ -1081,12 +1108,14 @@ void save_engravings(int fd, int mode) {
       bwrite(fd, (genericptr_t) & (ep->engr_lth), sizeof(ep->engr_lth));
       bwrite(fd, (genericptr_t)ep, sizeof(struct engr) + ep->engr_lth);
     }
-    if (release_data(mode)) dealloc_engr(ep);
+    if (release_data(mode))
+      dealloc_engr(ep);
     ep = ep2;
   }
   if (perform_bwrite(mode))
     bwrite(fd, (genericptr_t) & no_more_engr, sizeof no_more_engr);
-  if (release_data(mode)) head_engr = 0;
+  if (release_data(mode))
+    head_engr = 0;
 }
 
 void rest_engravings(int fd) {
@@ -1096,7 +1125,8 @@ void rest_engravings(int fd) {
   head_engr = 0;
   while (1) {
     mread(fd, (genericptr_t) & lth, sizeof(unsigned));
-    if (lth == 0) return;
+    if (lth == 0)
+      return;
     ep = newengr(lth);
     mread(fd, (genericptr_t)ep, sizeof(struct engr) + lth);
     ep->nxt_engr = head_engr;
@@ -1133,7 +1163,8 @@ void rloc_engr(struct engr *ep) {
   int tx, ty, tryct = 200;
 
   do {
-    if (--tryct < 0) return;
+    if (--tryct < 0)
+      return;
     tx = rn1(COLNO - 3, 2);
     ty = rn2(ROWNO);
   } while (engr_at(tx, ty) || !goodpos(tx, ty, (Monster *)0, 0));
@@ -1176,13 +1207,15 @@ static const char *epitaphs[] = {
  */
 void make_grave(int x, int y, const char *str) {
   /* Can we put a grave here? */
-  if ((levl[x][y].typ != ROOM && levl[x][y].typ != GRAVE) || t_at(x, y)) return;
+  if ((levl[x][y].typ != ROOM && levl[x][y].typ != GRAVE) || t_at(x, y))
+    return;
 
   /* Make the grave */
   levl[x][y].typ = GRAVE;
 
   /* Engrave the headstone */
-  if (!str) str = epitaphs[rn2(SIZE(epitaphs))];
+  if (!str)
+    str = epitaphs[rn2(SIZE(epitaphs))];
   del_engr_at(x, y);
   make_engr_at(x, y, str, 0L, HEADSTONE);
   return;

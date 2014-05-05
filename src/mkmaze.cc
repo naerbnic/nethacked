@@ -29,7 +29,8 @@ STATIC_DCL void unsetup_waterlevel();
 STATIC_OVL bool iswall(int x, int y) {
   int type;
 
-  if (!isok(x, y)) return FALSE;
+  if (!isok(x, y))
+    return FALSE;
   type = levl[x][y].typ;
   return (IS_WALL(type) || IS_DOOR(type) || type == SDOOR || type == IRONBARS);
 }
@@ -38,7 +39,8 @@ STATIC_OVL bool iswall_or_stone(int x, int y) {
   int type;
 
   /* out of bounds = stone */
-  if (!isok(x, y)) return TRUE;
+  if (!isok(x, y))
+    return TRUE;
 
   type = levl[x][y].typ;
   return (type == STONE || IS_WALL(type) || IS_DOOR(type) || type == SDOOR ||
@@ -144,7 +146,8 @@ void wallification(int x1, int y1, int x2, int y2) {
     for (y = y1; y <= y2; y++) {
       lev = &levl[x][y];
       type = lev->typ;
-      if (!(IS_WALL(type) && type != DBWALL)) continue;
+      if (!(IS_WALL(type) && type != DBWALL))
+        continue;
 
       /* set the locations TRUE if rock or wall or out of bounds */
       locale[0][0] = iswall_or_stone(x - 1, y - 1);
@@ -165,7 +168,8 @@ void wallification(int x1, int y1, int x2, int y2) {
              extend_spine(locale, iswall(x - 1, y), -1, 0);
 
       /* don't change typ if wall is free-standing */
-      if (bits) lev->typ = spine_array[bits];
+      if (bits)
+        lev->typ = spine_array[bits];
     }
 }
 
@@ -226,7 +230,8 @@ void place_lregion(xchar lx, xchar ly, xchar hx, xchar hy, xchar nlx, xchar nly,
   for (trycnt = 0; trycnt < 200; trycnt++) {
     x = rn1((hx - lx) + 1, lx);
     y = rn1((hy - ly) + 1, ly);
-    if (put_lregion_here(x, y, nlx, nly, nhx, nhy, rtype, oneshot, lev)) return;
+    if (put_lregion_here(x, y, nlx, nly, nhx, nhy, rtype, oneshot, lev))
+      return;
   }
 
   /* then a deterministic one */
@@ -252,8 +257,10 @@ STATIC_OVL bool put_lregion_here(xchar x, xchar y, xchar nlx, xchar nly,
          It might still fail if there's a dungeon feature here. */
       Trap *t = t_at(x, y);
 
-      if (t && t->ttyp != MAGIC_PORTAL) deltrap(t);
-      if (bad_location(x, y, nlx, nly, nhx, nhy)) return FALSE;
+      if (t && t->ttyp != MAGIC_PORTAL)
+        deltrap(t);
+      if (bad_location(x, y, nlx, nly, nhx, nhy))
+        return FALSE;
     }
   }
   switch (rtype) {
@@ -358,7 +365,8 @@ STATIC_OVL void fixup_special() {
         break;
     }
 
-    if (r->rname.str) free((genericptr_t)r->rname.str), r->rname.str = 0;
+    if (r->rname.str)
+      free((genericptr_t)r->rname.str), r->rname.str = 0;
   }
 
   /* place dungeon branch if not placed above */
@@ -367,7 +375,8 @@ STATIC_OVL void fixup_special() {
   }
 
   /* KMH -- Sokoban levels */
-  if (In_sokoban(&player.uz)) sokoban_detect();
+  if (In_sokoban(&player.uz))
+    sokoban_detect();
 
   /* Still need to add some stuff to level file */
   if (Is_medusa_level(&player.uz)) {
@@ -432,7 +441,8 @@ STATIC_OVL void fixup_special() {
     /* it's a ghost town, get rid of shopkeepers */
     for (mtmp = fmon; mtmp; mtmp = mtmp2) {
       mtmp2 = mtmp->nmon;
-      if (mtmp->isshk) mongone(mtmp);
+      if (mtmp->isshk)
+        mongone(mtmp);
     }
   }
 
@@ -442,12 +452,14 @@ STATIC_OVL void fixup_special() {
       *nl = '\0';
       pline("%s", str);
     }
-    if (*str) pline("%s", str);
+    if (*str)
+      pline("%s", str);
     free((genericptr_t)lev_message);
     lev_message = 0;
   }
 
-  if (lregions) free((genericptr_t)lregions), lregions = 0;
+  if (lregions)
+    free((genericptr_t)lregions), lregions = 0;
   num_lregions = 0;
 }
 
@@ -496,7 +508,8 @@ void makemaz(const char *s) {
           break;
         } else {
           ep = index(ep, ',');
-          if (ep) ++ep;
+          if (ep)
+            ++ep;
         }
       }
     }
@@ -519,7 +532,8 @@ void makemaz(const char *s) {
 
 #ifndef WALLIFIED_MAZE
   for (x = 2; x < x_maze_max; x++)
-    for (y = 2; y < y_maze_max; y++) levl[x][y].typ = STONE;
+    for (y = 2; y < y_maze_max; y++)
+      levl[x][y].typ = STONE;
 #else
   for (x = 2; x <= x_maze_max; x++)
     for (y = 2; y <= y_maze_max; y++)
@@ -605,7 +619,8 @@ void makemaz(const char *s) {
     mazexy(&mm);
     (void)MakeGold(0L, mm.x, mm.y);
   }
-  for (x = rn1(6, 7); x; x--) mktrap(0, 1, (struct mkroom *)0, (coord *)0);
+  for (x = rn1(6, 7); x; x--)
+    mktrap(0, 1, (struct mkroom *)0, (coord *)0);
 }
 
 void walkfrom(int x, int y) {
@@ -625,8 +640,10 @@ void walkfrom(int x, int y) {
   while (1) {
     q = 0;
     for (a = 0; a < 4; a++)
-      if (okay(x, y, a)) dirs[q++] = a;
-    if (!q) return;
+      if (okay(x, y, a))
+        dirs[q++] = a;
+    if (!q)
+      return;
     dir = dirs[rn2(q)];
     move(&x, &y, dir);
 #ifndef WALLIFIED_MAZE
@@ -714,7 +731,8 @@ void bound_digging()
   bool found, nonwall;
   int xmin, xmax, ymin, ymax;
 
-  if (Is_earthlevel(&player.uz)) return; /* everything diggable here */
+  if (Is_earthlevel(&player.uz))
+    return; /* everything diggable here */
 
   found = nonwall = FALSE;
   for (xmin = 0; !found; xmin++) {
@@ -723,12 +741,14 @@ void bound_digging()
       typ = lev->typ;
       if (typ != STONE) {
         found = TRUE;
-        if (!IS_WALL(typ)) nonwall = TRUE;
+        if (!IS_WALL(typ))
+          nonwall = TRUE;
       }
     }
   }
   xmin -= (nonwall || !level.flags.is_maze_lev) ? 2 : 1;
-  if (xmin < 0) xmin = 0;
+  if (xmin < 0)
+    xmin = 0;
 
   found = nonwall = FALSE;
   for (xmax = COLNO - 1; !found; xmax--) {
@@ -737,12 +757,14 @@ void bound_digging()
       typ = lev->typ;
       if (typ != STONE) {
         found = TRUE;
-        if (!IS_WALL(typ)) nonwall = TRUE;
+        if (!IS_WALL(typ))
+          nonwall = TRUE;
       }
     }
   }
   xmax += (nonwall || !level.flags.is_maze_lev) ? 2 : 1;
-  if (xmax >= COLNO) xmax = COLNO - 1;
+  if (xmax >= COLNO)
+    xmax = COLNO - 1;
 
   found = nonwall = FALSE;
   for (ymin = 0; !found; ymin++) {
@@ -751,7 +773,8 @@ void bound_digging()
       typ = lev->typ;
       if (typ != STONE) {
         found = TRUE;
-        if (!IS_WALL(typ)) nonwall = TRUE;
+        if (!IS_WALL(typ))
+          nonwall = TRUE;
       }
     }
   }
@@ -764,7 +787,8 @@ void bound_digging()
       typ = lev->typ;
       if (typ != STONE) {
         found = TRUE;
-        if (!IS_WALL(typ)) nonwall = TRUE;
+        if (!IS_WALL(typ))
+          nonwall = TRUE;
       }
     }
   }
@@ -838,11 +862,13 @@ void movebubbles() {
                                       0,                      0,     0, 0};
 
   /* set up the portal the first time bubbles are moved */
-  if (!wportal) set_wportal();
+  if (!wportal)
+    set_wportal();
 
   vision_recalc(2);
   /* keep attached ball&chain separate from bubble objects */
-  if (Punished) unplacebc();
+  if (Punished)
+    unplacebc();
 
   /*
    * Pick up everything inside of a bubble then fill all bubble
@@ -850,7 +876,8 @@ void movebubbles() {
    */
 
   for (b = up ? bbubbles : ebubbles; b; b = up ? b->next : b->prev) {
-    if (b->cons) panic("movebubbles: cons != null");
+    if (b->cons)
+      panic("movebubbles: cons != null");
     for (i = 0, x = b->x; i < (int)b->bm[0]; i++, x++)
       for (j = 0, y = b->y; j < (int)b->bm[1]; j++, y++)
         if (b->bm[j + 2] & (1 << i)) {
@@ -945,7 +972,8 @@ void movebubbles() {
   }
 
   /* put attached ball&chain back */
-  if (Punished) placebc();
+  if (Punished)
+    placebc();
   vision_full_recalc = 1;
 }
 
@@ -954,7 +982,8 @@ void water_friction() {
   int x, y, dx, dy;
   bool eff = FALSE;
 
-  if (Swimming && rn2(4)) return; /* natural swimmers have advantage */
+  if (Swimming && rn2(4))
+    return; /* natural swimmers have advantage */
 
   if (player.dx && !rn2(!player.dy ? 3 : 6)) { /* 1/3 chance or half that */
     /* cancel delta x and choose an arbitrary delta y value */
@@ -977,17 +1006,20 @@ void water_friction() {
     player.dx = dx;
     eff = TRUE;
   }
-  if (eff) pline("Water turbulence affects your movements.");
+  if (eff)
+    pline("Water turbulence affects your movements.");
 }
 
 void save_waterlevel(int fd, int mode) {
   struct bubble *b;
 
-  if (!Is_waterlevel(&player.uz)) return;
+  if (!Is_waterlevel(&player.uz))
+    return;
 
   if (perform_bwrite(mode)) {
     int n = 0;
-    for (b = bbubbles; b; b = b->next) ++n;
+    for (b = bbubbles; b; b = b->next)
+      ++n;
     bwrite(fd, (genericptr_t) & n, sizeof(int));
     bwrite(fd, (genericptr_t) & xmin, sizeof(int));
     bwrite(fd, (genericptr_t) & ymin, sizeof(int));
@@ -996,7 +1028,8 @@ void save_waterlevel(int fd, int mode) {
     for (b = bbubbles; b; b = b->next)
       bwrite(fd, (genericptr_t)b, sizeof(struct bubble));
   }
-  if (release_data(mode)) unsetup_waterlevel();
+  if (release_data(mode))
+    unsetup_waterlevel();
 }
 
 void restore_waterlevel(int fd) {
@@ -1004,7 +1037,8 @@ void restore_waterlevel(int fd) {
   int i;
   int n;
 
-  if (!Is_waterlevel(&player.uz)) return;
+  if (!Is_waterlevel(&player.uz))
+    return;
 
   set_wportal();
   mread(fd, (genericptr_t) & n, sizeof(int));
@@ -1034,7 +1068,8 @@ const char *waterbody_name(xchar x, xchar y) {
   struct rm *lev;
   schar ltyp;
 
-  if (!isok(x, y)) return "drink"; /* should never happen */
+  if (!isok(x, y))
+    return "drink"; /* should never happen */
   lev = &levl[x][y];
   ltyp = lev->typ;
 
@@ -1059,7 +1094,8 @@ const char *waterbody_name(xchar x, xchar y) {
 STATIC_OVL void set_wportal() {
   /* there better be only one magic portal on water level... */
   for (wportal = ftrap; wportal; wportal = wportal->ntrap)
-    if (wportal->ttyp == MAGIC_PORTAL) return;
+    if (wportal->ttyp == MAGIC_PORTAL)
+      return;
   impossible("set_wportal(): no portal!");
 }
 
@@ -1078,14 +1114,16 @@ STATIC_OVL void setup_waterlevel() {
   /* set hero's memory to water */
 
   for (x = xmin; x <= xmax; x++)
-    for (y = ymin; y <= ymax; y++) levl[x][y].glyph = water_glyph;
+    for (y = ymin; y <= ymax; y++)
+      levl[x][y].glyph = water_glyph;
 
   /* make bubbles */
 
   xskip = 10 + rn2(10);
   yskip = 4 + rn2(4);
   for (x = bxmin; x <= bxmax; x += xskip)
-    for (y = bymin; y <= bymax; y += yskip) mk_bubble(x, y, rn2(7));
+    for (y = bymin; y <= bymax; y += yskip)
+      mk_bubble(x, y, rn2(7));
 }
 
 STATIC_OVL void unsetup_waterlevel() {
@@ -1117,21 +1155,25 @@ STATIC_OVL void mk_bubble(int x, int y, int n) {
 
   struct bubble *b;
 
-  if (x >= bxmax || y >= bymax) return;
+  if (x >= bxmax || y >= bymax)
+    return;
   if (n >= SIZE(bmask)) {
     impossible("n too large (mk_bubble)");
     n = SIZE(bmask) - 1;
   }
   b = (struct bubble *)alloc(sizeof(struct bubble));
-  if ((x + (int)bmask[n][0] - 1) > bxmax) x = bxmax - bmask[n][0] + 1;
-  if ((y + (int)bmask[n][1] - 1) > bymax) y = bymax - bmask[n][1] + 1;
+  if ((x + (int)bmask[n][0] - 1) > bxmax)
+    x = bxmax - bmask[n][0] + 1;
+  if ((y + (int)bmask[n][1] - 1) > bymax)
+    y = bymax - bmask[n][1] + 1;
   b->x = x;
   b->y = y;
   b->dx = 1 - rn2(3);
   b->dy = 1 - rn2(3);
   b->bm = bmask[n];
   b->cons = 0;
-  if (!bbubbles) bbubbles = b;
+  if (!bbubbles)
+    bbubbles = b;
   if (ebubbles) {
     ebubbles->next = b;
     b->prev = ebubbles;
@@ -1165,10 +1207,14 @@ STATIC_OVL void mv_bubble(struct bubble *b, int dx, int dy, bool ini) {
    * collision with level borders?
    *	1 = horizontal border, 2 = vertical, 3 = corner
    */
-  if (b->x <= bxmin) colli |= 2;
-  if (b->y <= bymin) colli |= 1;
-  if ((int)(b->x + b->bm[0] - 1) >= bxmax) colli |= 2;
-  if ((int)(b->y + b->bm[1] - 1) >= bymax) colli |= 1;
+  if (b->x <= bxmin)
+    colli |= 2;
+  if (b->y <= bymin)
+    colli |= 1;
+  if ((int)(b->x + b->bm[0] - 1) >= bxmax)
+    colli |= 2;
+  if ((int)(b->y + b->bm[1] - 1) >= bymax)
+    colli |= 1;
 
   if (b->x < bxmin) {
     pline("bubble xmin: x = %d, xmin = %d", b->x, bxmin);
@@ -1188,10 +1234,14 @@ STATIC_OVL void mv_bubble(struct bubble *b, int dx, int dy, bool ini) {
   }
 
   /* bounce if we're trying to move off the border */
-  if (b->x == bxmin && dx < 0) dx = -dx;
-  if (b->x + b->bm[0] - 1 == bxmax && dx > 0) dx = -dx;
-  if (b->y == bymin && dy < 0) dy = -dy;
-  if (b->y + b->bm[1] - 1 == bymax && dy > 0) dy = -dy;
+  if (b->x == bxmin && dx < 0)
+    dx = -dx;
+  if (b->x + b->bm[0] - 1 == bxmax && dx > 0)
+    dx = -dx;
+  if (b->y == bymin && dy < 0)
+    dy = -dy;
+  if (b->y + b->bm[1] - 1 == bymax && dy > 0)
+    dy = -dy;
 
   b->x += dx;
   b->y += dy;

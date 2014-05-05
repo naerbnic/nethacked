@@ -18,7 +18,8 @@
 #ifdef DEBUG
 #ifdef WIZARD
 #define debugpline \
-  if (wizard) pline
+  if (wizard)      \
+  pline
 #else
 #define debugpline pline
 #endif
@@ -66,7 +67,8 @@ STATIC_DCL bool create_subroom(struct mkroom *, xchar, xchar, xchar, xchar,
 #define New(type) (type *) alloc(sizeof(type))
 #define NewTab(type, size) (type **) alloc(sizeof(type *) * (unsigned)size)
 #define Free(ptr) \
-  if (ptr) free((genericptr_t)(ptr))
+  if (ptr)        \
+  free((genericptr_t)(ptr))
 
 static walk walklist[50];
 extern int min_rx, max_rx, min_ry, max_ry; /* from mkmap.c */
@@ -109,7 +111,8 @@ STATIC_OVL void set_wall_property(xchar x1, xchar y1, xchar x2, xchar y2,
 
   for (y = y1; y <= y2; y++)
     for (x = x1; x <= x2; x++)
-      if (IS_STWALL(levl[x][y].typ)) levl[x][y].wall_info |= prop;
+      if (IS_STWALL(levl[x][y].typ))
+        levl[x][y].wall_info |= prop;
 }
 
 /*
@@ -135,15 +138,18 @@ STATIC_OVL int rndtrap() {
         rtrap = NO_TRAP;
         break;
       case TRAPDOOR:
-        if (!Can_dig_down(&player.uz)) rtrap = NO_TRAP;
+        if (!Can_dig_down(&player.uz))
+          rtrap = NO_TRAP;
         break;
       case LEVEL_TELEP:
       case TELEP_TRAP:
-        if (level.flags.noteleport) rtrap = NO_TRAP;
+        if (level.flags.noteleport)
+          rtrap = NO_TRAP;
         break;
       case ROLLING_BOULDER_TRAP:
       case ROCKTRAP:
-        if (In_endgame(&player.uz)) rtrap = NO_TRAP;
+        if (In_endgame(&player.uz))
+          rtrap = NO_TRAP;
         break;
     }
   } while (rtrap == NO_TRAP);
@@ -179,7 +185,8 @@ STATIC_OVL void get_location(schar *x, schar *y, int humidity) {
     do {
       *x = xstart + rn2((int)xsize);
       *y = ystart + rn2((int)ysize);
-      if (is_ok_location(*x, *y, humidity)) break;
+      if (is_ok_location(*x, *y, humidity))
+        break;
     } while (++cpt < 100);
     if (cpt >= 100) {
       int xx, yy;
@@ -188,7 +195,8 @@ STATIC_OVL void get_location(schar *x, schar *y, int humidity) {
         for (yy = 0; yy < ysize; yy++) {
           *x = xstart + xx;
           *y = ystart + yy;
-          if (is_ok_location(*x, *y, humidity)) goto found_it;
+          if (is_ok_location(*x, *y, humidity))
+            goto found_it;
         }
       panic("get_location:  can't find a place!");
     }
@@ -206,7 +214,8 @@ found_it:
 STATIC_OVL bool is_ok_location(schar x, schar y, int humidity) {
   int typ;
 
-  if (Is_waterlevel(&player.uz)) return TRUE; /* accept any spot */
+  if (Is_waterlevel(&player.uz))
+    return TRUE; /* accept any spot */
 
   if (humidity & DRY) {
     typ = levl[x][y].typ;
@@ -214,7 +223,8 @@ STATIC_OVL bool is_ok_location(schar x, schar y, int humidity) {
       return TRUE;
   }
   if (humidity & WET) {
-    if (is_pool(x, y) || is_lava(x, y)) return TRUE;
+    if (is_pool(x, y) || is_lava(x, y))
+      return TRUE;
   }
   return FALSE;
 }
@@ -228,7 +238,8 @@ STATIC_OVL void sp_lev_shuffle(char list1[], char list2[], int n) {
   char k;
 
   for (i = n - 1; i > 0; i--) {
-    if ((j = rn2(i + 1)) == i) continue;
+    if ((j = rn2(i + 1)) == i)
+      continue;
     k = list1[j];
     list1[j] = list1[i];
     list1[i] = k;
@@ -255,8 +266,10 @@ STATIC_OVL void get_room_loc(schar *x, schar *y, struct mkroom *croom) {
     } else
       panic("get_room_loc : can't find a place!");
   } else {
-    if (*x < 0) *x = rn2(croom->hx - croom->lx + 1);
-    if (*y < 0) *y = rn2(croom->hy - croom->ly + 1);
+    if (*x < 0)
+      *x = rn2(croom->hx - croom->lx + 1);
+    if (*y < 0)
+      *y = rn2(croom->hy - croom->ly + 1);
     *x += croom->lx;
     *y += croom->ly;
   }
@@ -276,7 +289,8 @@ STATIC_OVL void get_free_room_loc(schar *x, schar *y, struct mkroom *croom) {
     get_room_loc(&try_x, &try_y, croom);
   } while (levl[try_x][try_y].typ != ROOM && ++trycnt <= 100);
 
-  if (trycnt > 100) panic("get_free_room_loc:  can't find a place!");
+  if (trycnt > 100)
+    panic("get_free_room_loc:  can't find a place!");
   *x = try_x, *y = try_y;
 }
 
@@ -288,27 +302,37 @@ bool check_room(xchar *lowx, xchar *ddx, xchar *lowy, xchar *ddy, bool vault) {
   xlim = XLIM + (vault ? 1 : 0);
   ylim = YLIM + (vault ? 1 : 0);
 
-  if (*lowx < 3) *lowx = 3;
-  if (*lowy < 2) *lowy = 2;
-  if (hix > COLNO - 3) hix = COLNO - 3;
-  if (hiy > ROWNO - 3) hiy = ROWNO - 3;
+  if (*lowx < 3)
+    *lowx = 3;
+  if (*lowy < 2)
+    *lowy = 2;
+  if (hix > COLNO - 3)
+    hix = COLNO - 3;
+  if (hiy > ROWNO - 3)
+    hiy = ROWNO - 3;
 chk:
-  if (hix <= *lowx || hiy <= *lowy) return FALSE;
+  if (hix <= *lowx || hiy <= *lowy)
+    return FALSE;
 
   /* check area around room (and make room smaller if necessary) */
   for (x = *lowx - xlim; x <= hix + xlim; x++) {
-    if (x <= 0 || x >= COLNO) continue;
+    if (x <= 0 || x >= COLNO)
+      continue;
     y = *lowy - ylim;
     ymax = hiy + ylim;
-    if (y < 0) y = 0;
-    if (ymax >= ROWNO) ymax = (ROWNO - 1);
+    if (y < 0)
+      y = 0;
+    if (ymax >= ROWNO)
+      ymax = (ROWNO - 1);
     lev = &levl[x][y];
     for (; y <= ymax; y++) {
       if (lev++->typ) {
 #ifdef DEBUG
-        if (!vault) debugpline("strange area [%d,%d] in check_room.", x, y);
+        if (!vault)
+          debugpline("strange area [%d,%d] in check_room.", x, y);
 #endif
-        if (!rn2(3)) return FALSE;
+        if (!rn2(3))
+          return FALSE;
         if (x < *lowx)
           *lowx = x + xlim + 1;
         else
@@ -392,7 +416,8 @@ bool create_room(xchar x, xchar y, xchar w, xchar h, xchar xal, xchar yal,
       else {
         dx = 2 + rn2((hx - lx > 28) ? 12 : 8);
         dy = 2 + rn2(4);
-        if (dx * dy > 50) dy = 50 / dx;
+        if (dx * dy > 50)
+          dy = 50 / dx;
       }
       xborder = (lx > 0 && hx < COLNO - 1) ? 2 * xlim : xlim + 1;
       yborder = (ly > 0 && hy < ROWNO - 1) ? 2 * ylim : ylim + 1;
@@ -407,7 +432,8 @@ bool create_room(xchar x, xchar y, xchar w, xchar h, xchar xal, xchar yal,
       if (ly == 0 && hy >= (ROWNO - 1) && (!nroom || !rn2(nroom)) &&
           (yabs + dy > ROWNO / 2)) {
         yabs = rn1(3, 2);
-        if (nroom < 4 && dy > 1) dy--;
+        if (nroom < 4 && dy > 1)
+          dy--;
       }
       if (!check_room(&xabs, &dx, &yabs, &dy, vault)) {
         r1 = 0;
@@ -460,10 +486,14 @@ bool create_room(xchar x, xchar y, xchar w, xchar h, xchar xal, xchar yal,
           break;
       }
 
-      if (xabs + wtmp - 1 > COLNO - 2) xabs = COLNO - wtmp - 3;
-      if (xabs < 2) xabs = 2;
-      if (yabs + htmp - 1 > ROWNO - 2) yabs = ROWNO - htmp - 3;
-      if (yabs < 2) yabs = 2;
+      if (xabs + wtmp - 1 > COLNO - 2)
+        xabs = COLNO - wtmp - 3;
+      if (xabs < 2)
+        xabs = 2;
+      if (yabs + htmp - 1 > ROWNO - 2)
+        yabs = ROWNO - htmp - 3;
+      if (yabs < 2)
+        yabs = 2;
 
       /* Try to find a rectangle that fit our room ! */
 
@@ -502,19 +532,29 @@ STATIC_OVL bool create_subroom(struct mkroom *proom, xchar x, xchar y, xchar w,
   height = proom->hy - proom->ly + 1;
 
   /* There is a minimum size for the parent room */
-  if (width < 4 || height < 4) return FALSE;
+  if (width < 4 || height < 4)
+    return FALSE;
 
   /* Check for random position, size, etc... */
 
-  if (w == -1) w = rnd(width - 3);
-  if (h == -1) h = rnd(height - 3);
-  if (x == -1) x = rnd(width - w - 1) - 1;
-  if (y == -1) y = rnd(height - h - 1) - 1;
-  if (x == 1) x = 0;
-  if (y == 1) y = 0;
-  if ((x + w + 1) == width) x++;
-  if ((y + h + 1) == height) y++;
-  if (rtype == -1) rtype = OROOM;
+  if (w == -1)
+    w = rnd(width - 3);
+  if (h == -1)
+    h = rnd(height - 3);
+  if (x == -1)
+    x = rnd(width - w - 1) - 1;
+  if (y == -1)
+    y = rnd(height - h - 1) - 1;
+  if (x == 1)
+    x = 0;
+  if (y == 1)
+    y = 0;
+  if ((x + w + 1) == width)
+    x++;
+  if ((y + h + 1) == height)
+    y++;
+  if (rtype == -1)
+    rtype = OROOM;
   if (rlit == -1)
     rlit = (rnd(1 + abs(depth(&player.uz))) < 11 && rn2(77)) ? TRUE : FALSE;
   add_subroom(proom, proom->lx + x, proom->ly + y, proom->lx + x + w - 1,
@@ -531,7 +571,8 @@ STATIC_OVL void create_door(room_door *dd, struct mkroom *broom) {
   int x, y;
   int trycnt = 0;
 
-  if (dd->secret == -1) dd->secret = rn2(2);
+  if (dd->secret == -1)
+    dd->secret = rn2(2);
 
   if (dd->mask == -1) {
     /* is it a locked door, closed, or a doorway? */
@@ -543,7 +584,8 @@ STATIC_OVL void create_door(room_door *dd, struct mkroom *broom) {
           dd->mask = D_LOCKED;
         else
           dd->mask = D_CLOSED;
-        if (dd->mask != D_ISOPEN && !rn2(25)) dd->mask |= D_TRAPPED;
+        if (dd->mask != D_ISOPEN && !rn2(25))
+          dd->mask |= D_TRAPPED;
       } else
         dd->mask = D_NODOOR;
     } else {
@@ -552,7 +594,8 @@ STATIC_OVL void create_door(room_door *dd, struct mkroom *broom) {
       else
         dd->mask = D_CLOSED;
 
-      if (!rn2(20)) dd->mask |= D_TRAPPED;
+      if (!rn2(20))
+        dd->mask |= D_TRAPPED;
     }
   }
 
@@ -593,7 +636,8 @@ STATIC_OVL void create_door(room_door *dd, struct mkroom *broom) {
         panic("create_door: No wall for door!");
         break;
     }
-    if (okdoor(x, y)) break;
+    if (okdoor(x, y))
+      break;
   } while (++trycnt <= 100);
   if (trycnt > 100) {
     impossible("create_door: Can't find a proper place!");
@@ -617,19 +661,23 @@ void create_secret_door(struct mkroom *croom, xchar walls) {
 
     switch (rn2(4)) {
       case 0: /* top */
-        if (!(walls & W_NORTH)) continue;
+        if (!(walls & W_NORTH))
+          continue;
         sy = croom->ly - 1;
         break;
       case 1: /* bottom */
-        if (!(walls & W_SOUTH)) continue;
+        if (!(walls & W_SOUTH))
+          continue;
         sy = croom->hy + 1;
         break;
       case 2: /* left */
-        if (!(walls & W_EAST)) continue;
+        if (!(walls & W_EAST))
+          continue;
         sx = croom->lx - 1;
         break;
       case 3: /* right */
-        if (!(walls & W_WEST)) continue;
+        if (!(walls & W_WEST))
+          continue;
         sx = croom->hx + 1;
         break;
     }
@@ -676,7 +724,8 @@ STATIC_OVL int noncoalignment(aligntyp alignment) {
   int k;
 
   k = rn2(2);
-  if (!alignment) return (k ? -1 : 1);
+  if (!alignment)
+    return (k ? -1 : 1);
   return (k ? -alignment : 0);
 }
 
@@ -740,7 +789,8 @@ STATIC_OVL void create_monster(monster *m, struct mkroom *croom) {
         get_location(&x, &y, DRY | WET);
     }
     /* try to find a close place if someone else is already there */
-    if (MON_AT(x, y) && enexto(&cc, x, y, pm)) x = cc.x, y = cc.y;
+    if (MON_AT(x, y) && enexto(&cc, x, y, pm))
+      x = cc.x, y = cc.y;
 
     if (m->align != -12)
       mtmp = mk_roamer(pm, Amask2align(amask), x, y, m->peaceful);
@@ -751,7 +801,8 @@ STATIC_OVL void create_monster(monster *m, struct mkroom *croom) {
 
     if (mtmp) {
       /* handle specific attributes for some special monsters */
-      if (m->name.str) mtmp = christen_monst(mtmp, m->name.str);
+      if (m->name.str)
+        mtmp = christen_monst(mtmp, m->name.str);
 
       /*
        * This is currently hardwired for mimics only.  It should
@@ -769,7 +820,8 @@ STATIC_OVL void create_monster(monster *m, struct mkroom *croom) {
 
           case M_AP_FURNITURE:
             for (i = 0; i < MAXPCHARS; i++)
-              if (!strcmp(defsyms[i].explanation, m->appear_as.str)) break;
+              if (!strcmp(defsyms[i].explanation, m->appear_as.str))
+                break;
             if (i == MAXPCHARS) {
               impossible("create_monster: can't find feature \"%s\"",
                          m->appear_as.str);
@@ -802,7 +854,8 @@ STATIC_OVL void create_monster(monster *m, struct mkroom *croom) {
                 m->appear, m->appear_as.str);
             break;
         }
-        if (does_block(x, y, &levl[x][y])) block_point(x, y);
+        if (does_block(x, y, &levl[x][y]))
+          block_point(x, y);
       }
 
       if (m->peaceful >= 0) {
@@ -911,7 +964,8 @@ STATIC_OVL void create_object(object *o, struct mkroom *croom) {
         attach_egg_hatch_timeout(otmp); /* attach new hatch timeout */
     }
 
-    if (named) otmp = oname(otmp, o->name.str);
+    if (named)
+      otmp = oname(otmp, o->name.str);
 
     switch (o->containment) {
       static Object *container = 0;
@@ -955,7 +1009,8 @@ STATIC_OVL void create_object(object *o, struct mkroom *croom) {
       for (wastyp = otmp->corpsenm;; wastyp = PickRandomMonsterTypeIndex()) {
         /* makemon without rndmonst() might create a group */
         was = makemon(&mons[wastyp], 0, 0, NO_MM_FLAGS);
-        if (!resists_ston(was)) break;
+        if (!resists_ston(was))
+          break;
         mongone(was);
       }
       otmp->corpsenm = wastyp;
@@ -1035,7 +1090,8 @@ STATIC_OVL void create_altar(altar *a, struct mkroom *croom) {
 
   if (croom) {
     get_free_room_loc(&x, &y, croom);
-    if (croom->rtype != TEMPLE) croom_is_temple = FALSE;
+    if (croom->rtype != TEMPLE)
+      croom_is_temple = FALSE;
   } else {
     get_location(&x, &y, DRY);
     if ((sproom = (schar) * in_rooms(x, y, TEMPLE)) != 0)
@@ -1046,7 +1102,8 @@ STATIC_OVL void create_altar(altar *a, struct mkroom *croom) {
 
   /* check for existing features */
   oldtyp = levl[x][y].typ;
-  if (oldtyp == STAIRS || oldtyp == LADDER) return;
+  if (oldtyp == STAIRS || oldtyp == LADDER)
+    return;
 
   a->x = x;
   a->y = y;
@@ -1070,14 +1127,16 @@ STATIC_OVL void create_altar(altar *a, struct mkroom *croom) {
   levl[x][y].typ = ALTAR;
   levl[x][y].altarmask = amask;
 
-  if (a->shrine < 0) a->shrine = rn2(2); /* handle random case */
+  if (a->shrine < 0)
+    a->shrine = rn2(2); /* handle random case */
 
   if (oldtyp == FOUNTAIN)
     level.flags.nfountains--;
   else if (oldtyp == SINK)
     level.flags.nsinks--;
 
-  if (!croom_is_temple || !a->shrine) return;
+  if (!croom_is_temple || !a->shrine)
+    return;
 
   if (a->shrine) { /* Is it a shrine  or sanctum? */
     priestini(&player.uz, croom, x, y, (a->shrine > 1));
@@ -1100,7 +1159,8 @@ STATIC_OVL void create_gold(gold *g, struct mkroom *croom) {
   else
     get_location(&x, &y, DRY);
 
-  if (g->amount == -1) g->amount = rnd(200);
+  if (g->amount == -1)
+    g->amount = rnd(200);
   (void)MakeGold((long)g->amount, x, y);
 }
 
@@ -1115,14 +1175,16 @@ STATIC_OVL void create_feature(int fx, int fy, struct mkroom *croom, int typ) {
   x = fx;
   y = fy;
   if (croom) {
-    if (x < 0 && y < 0) do {
+    if (x < 0 && y < 0)
+      do {
         x = -1;
         y = -1;
         get_room_loc(&x, &y, croom);
       } while (++trycnt <= 200 && occupied(x, y));
     else
       get_room_loc(&x, &y, croom);
-    if (trycnt > 200) return;
+    if (trycnt > 200)
+      return;
   } else {
     get_location(&x, &y, DRY);
   }
@@ -1130,7 +1192,8 @@ STATIC_OVL void create_feature(int fx, int fy, struct mkroom *croom, int typ) {
      placed stairs).  However, if the _same_ feature is already
      here, it came from the map drawing and we still need to
      update the special counters. */
-  if (IS_FURNITURE(levl[x][y].typ) && levl[x][y].typ != typ) return;
+  if (IS_FURNITURE(levl[x][y].typ) && levl[x][y].typ != typ)
+    return;
 
   levl[x][y].typ = typ;
   if (typ == FOUNTAIN)
@@ -1182,7 +1245,8 @@ STATIC_OVL bool search_door(struct mkroom *croom, xchar *x, xchar *y,
     if (IS_DOOR(levl[xx][yy].typ) || levl[xx][yy].typ == SDOOR) {
       *x = xx;
       *y = yy;
-      if (cnt-- <= 0) return TRUE;
+      if (cnt-- <= 0)
+        return TRUE;
     }
     xx += dx;
     yy += dy;
@@ -1224,7 +1288,8 @@ bool dig_corridor(coord *org, coord *dest, bool nxcor, schar ftyp, schar btyp) {
   cct = 0;
   while (xx != tx || yy != ty) {
     /* loop: dig corridor at [xx,yy] and find new [xx,yy] */
-    if (cct++ > 500 || (nxcor && !rn2(35))) return FALSE;
+    if (cct++ > 500 || (nxcor && !rn2(35)))
+      return FALSE;
 
     xx += dx;
     yy += dy;
@@ -1273,7 +1338,8 @@ bool dig_corridor(coord *org, coord *dest, bool nxcor, schar ftyp, schar btyp) {
 
     /* continue straight on? */
     crm = &levl[xx + dx][yy + dy];
-    if (crm->typ == btyp || crm->typ == ftyp || crm->typ == SCORR) continue;
+    if (crm->typ == btyp || crm->typ == ftyp || crm->typ == SCORR)
+      continue;
 
     /* no, what must we do now?? */
     if (dx) {
@@ -1284,7 +1350,8 @@ bool dig_corridor(coord *org, coord *dest, bool nxcor, schar ftyp, schar btyp) {
       dx = (tx < xx) ? -1 : 1;
     }
     crm = &levl[xx + dx][yy + dy];
-    if (crm->typ == btyp || crm->typ == ftyp || crm->typ == SCORR) continue;
+    if (crm->typ == btyp || crm->typ == ftyp || crm->typ == SCORR)
+      continue;
     dy = -dy;
     dx = -dx;
   }
@@ -1312,7 +1379,8 @@ STATIC_OVL void fix_stair_rooms() {
         break;
       }
     }
-    if (i == nroom) panic("Couldn't find dnstair room in fix_stair_rooms!");
+    if (i == nroom)
+      panic("Couldn't find dnstair room in fix_stair_rooms!");
   }
   if (xupstair &&
       !((upstairs_room->lx <= xupstair && xupstair <= upstairs_room->hx) &&
@@ -1325,7 +1393,8 @@ STATIC_OVL void fix_stair_rooms() {
         break;
       }
     }
-    if (i == nroom) panic("Couldn't find upstair room in fix_stair_rooms!");
+    if (i == nroom)
+      panic("Couldn't find upstair room in fix_stair_rooms!");
   }
 }
 
@@ -1390,7 +1459,8 @@ STATIC_OVL void create_corridor(corridor *c) {
  */
 
 void fill_room(struct mkroom *croom, bool prefilled) {
-  if (!croom || croom->rtype == OROOM) return;
+  if (!croom || croom->rtype == OROOM)
+    return;
 
   if (!prefilled) {
     int x, y;
@@ -1454,47 +1524,58 @@ STATIC_OVL void free_rooms(room **ro, int n) {
     Free(r->name);
     Free(r->parent);
     if ((j = r->ndoor) != 0) {
-      while (j--) Free(r->doors[j]);
+      while (j--)
+        Free(r->doors[j]);
       Free(r->doors);
     }
     if ((j = r->nstair) != 0) {
-      while (j--) Free(r->stairs[j]);
+      while (j--)
+        Free(r->stairs[j]);
       Free(r->stairs);
     }
     if ((j = r->naltar) != 0) {
-      while (j--) Free(r->altars[j]);
+      while (j--)
+        Free(r->altars[j]);
       Free(r->altars);
     }
     if ((j = r->nfountain) != 0) {
-      while (j--) Free(r->fountains[j]);
+      while (j--)
+        Free(r->fountains[j]);
       Free(r->fountains);
     }
     if ((j = r->nsink) != 0) {
-      while (j--) Free(r->sinks[j]);
+      while (j--)
+        Free(r->sinks[j]);
       Free(r->sinks);
     }
     if ((j = r->npool) != 0) {
-      while (j--) Free(r->pools[j]);
+      while (j--)
+        Free(r->pools[j]);
       Free(r->pools);
     }
     if ((j = r->ntrap) != 0) {
-      while (j--) Free(r->traps[j]);
+      while (j--)
+        Free(r->traps[j]);
       Free(r->traps);
     }
     if ((j = r->nmonster) != 0) {
-      while (j--) Free(r->monsters[j]);
+      while (j--)
+        Free(r->monsters[j]);
       Free(r->monsters);
     }
     if ((j = r->nobject) != 0) {
-      while (j--) Free(r->objects[j]);
+      while (j--)
+        Free(r->objects[j]);
       Free(r->objects);
     }
     if ((j = r->ngold) != 0) {
-      while (j--) Free(r->golds[j]);
+      while (j--)
+        Free(r->golds[j]);
       Free(r->golds);
     }
     if ((j = r->nengraving) != 0) {
-      while (j--) Free(r->engravings[j]);
+      while (j--)
+        Free(r->engravings[j]);
       Free(r->engravings);
     }
     Free(r);
@@ -1520,12 +1601,14 @@ STATIC_OVL void build_room(room *r, room *pr) {
 
   if (okroom) {
     /* Create subrooms if necessary... */
-    for (i = 0; i < r->nsubroom; i++) build_room(r->subrooms[i], r);
+    for (i = 0; i < r->nsubroom; i++)
+      build_room(r->subrooms[i], r);
     /* And now we can fill the room! */
 
     /* Priority to the stairs */
 
-    for (i = 0; i < r->nstair; i++) create_stairs(r->stairs[i], aroom);
+    for (i = 0; i < r->nstair; i++)
+      create_stairs(r->stairs[i], aroom);
 
     /* Then to the various elements (sinks, etc..) */
     for (i = 0; i < r->nsink; i++)
@@ -1534,20 +1617,26 @@ STATIC_OVL void build_room(room *r, room *pr) {
       create_feature(r->pools[i]->x, r->pools[i]->y, aroom, POOL);
     for (i = 0; i < r->nfountain; i++)
       create_feature(r->fountains[i]->x, r->fountains[i]->y, aroom, FOUNTAIN);
-    for (i = 0; i < r->naltar; i++) create_altar(r->altars[i], aroom);
-    for (i = 0; i < r->ndoor; i++) create_door(r->doors[i], aroom);
+    for (i = 0; i < r->naltar; i++)
+      create_altar(r->altars[i], aroom);
+    for (i = 0; i < r->ndoor; i++)
+      create_door(r->doors[i], aroom);
 
     /* The traps */
-    for (i = 0; i < r->ntrap; i++) create_trap(r->traps[i], aroom);
+    for (i = 0; i < r->ntrap; i++)
+      create_trap(r->traps[i], aroom);
 
     /* The monsters */
-    for (i = 0; i < r->nmonster; i++) create_monster(r->monsters[i], aroom);
+    for (i = 0; i < r->nmonster; i++)
+      create_monster(r->monsters[i], aroom);
 
     /* The objects */
-    for (i = 0; i < r->nobject; i++) create_object(r->objects[i], aroom);
+    for (i = 0; i < r->nobject; i++)
+      create_object(r->objects[i], aroom);
 
     /* The gold piles */
-    for (i = 0; i < r->ngold; i++) create_gold(r->golds[i], aroom);
+    for (i = 0; i < r->ngold; i++)
+      create_gold(r->golds[i], aroom);
 
     /* The engravings */
     for (i = 0; i < r->nengraving; i++)
@@ -1563,7 +1652,8 @@ STATIC_OVL void build_room(room *r, room *pr) {
      * DLC - this can fail if corridors are added to this room
      * at a later point.  Currently no good way to fix this.
      */
-    if (aroom->rtype != OROOM && r->filled) fill_room(aroom, FALSE);
+    if (aroom->rtype != OROOM && r->filled)
+      fill_room(aroom, FALSE);
   }
 }
 
@@ -1620,17 +1710,23 @@ STATIC_OVL void load_common_data(dlb *fd, int typ) {
   /* Read the level initialization data */
   Fread((genericptr_t) & init_lev, 1, sizeof(lev_init), fd);
   if (init_lev.init_present) {
-    if (init_lev.lit < 0) init_lev.lit = rn2(2);
+    if (init_lev.lit < 0)
+      init_lev.lit = rn2(2);
     mkmap(&init_lev);
   }
 
   /* Read the per level flags */
   Fread((genericptr_t) & lev_flags, 1, sizeof(lev_flags), fd);
-  if (lev_flags & NOTELEPORT) level.flags.noteleport = 1;
-  if (lev_flags & HARDFLOOR) level.flags.hardfloor = 1;
-  if (lev_flags & NOMMAP) level.flags.nommap = 1;
-  if (lev_flags & SHORTSIGHTED) level.flags.shortsighted = 1;
-  if (lev_flags & ARBOREAL) level.flags.arboreal = 1;
+  if (lev_flags & NOTELEPORT)
+    level.flags.noteleport = 1;
+  if (lev_flags & HARDFLOOR)
+    level.flags.hardfloor = 1;
+  if (lev_flags & NOMMAP)
+    level.flags.nommap = 1;
+  if (lev_flags & SHORTSIGHTED)
+    level.flags.shortsighted = 1;
+  if (lev_flags & ARBOREAL)
+    level.flags.arboreal = 1;
 
   /* Read message */
   Fread((genericptr_t) & n, 1, sizeof(n), fd);
@@ -1753,7 +1849,8 @@ STATIC_OVL bool load_rooms(dlb *fd) {
 
     /* read the doors */
     Fread((genericptr_t) & r->ndoor, 1, sizeof(r->ndoor), fd);
-    if ((n = r->ndoor) != 0) r->doors = NewTab(room_door, n);
+    if ((n = r->ndoor) != 0)
+      r->doors = NewTab(room_door, n);
     while (n--) {
       r->doors[(int)n] = New(room_door);
       Fread((genericptr_t)r->doors[(int)n], 1, sizeof(room_door), fd);
@@ -1761,7 +1858,8 @@ STATIC_OVL bool load_rooms(dlb *fd) {
 
     /* read the stairs */
     Fread((genericptr_t) & r->nstair, 1, sizeof(r->nstair), fd);
-    if ((n = r->nstair) != 0) r->stairs = NewTab(stair, n);
+    if ((n = r->nstair) != 0)
+      r->stairs = NewTab(stair, n);
     while (n--) {
       r->stairs[(int)n] = New(stair);
       Fread((genericptr_t)r->stairs[(int)n], 1, sizeof(stair), fd);
@@ -1769,7 +1867,8 @@ STATIC_OVL bool load_rooms(dlb *fd) {
 
     /* read the altars */
     Fread((genericptr_t) & r->naltar, 1, sizeof(r->naltar), fd);
-    if ((n = r->naltar) != 0) r->altars = NewTab(altar, n);
+    if ((n = r->naltar) != 0)
+      r->altars = NewTab(altar, n);
     while (n--) {
       r->altars[(int)n] = New(altar);
       Fread((genericptr_t)r->altars[(int)n], 1, sizeof(altar), fd);
@@ -1777,7 +1876,8 @@ STATIC_OVL bool load_rooms(dlb *fd) {
 
     /* read the fountains */
     Fread((genericptr_t) & r->nfountain, 1, sizeof(r->nfountain), fd);
-    if ((n = r->nfountain) != 0) r->fountains = NewTab(fountain, n);
+    if ((n = r->nfountain) != 0)
+      r->fountains = NewTab(fountain, n);
     while (n--) {
       r->fountains[(int)n] = New(fountain);
       Fread((genericptr_t)r->fountains[(int)n], 1, sizeof(fountain), fd);
@@ -1785,7 +1885,8 @@ STATIC_OVL bool load_rooms(dlb *fd) {
 
     /* read the sinks */
     Fread((genericptr_t) & r->nsink, 1, sizeof(r->nsink), fd);
-    if ((n = r->nsink) != 0) r->sinks = NewTab(sink, n);
+    if ((n = r->nsink) != 0)
+      r->sinks = NewTab(sink, n);
     while (n--) {
       r->sinks[(int)n] = New(sink);
       Fread((genericptr_t)r->sinks[(int)n], 1, sizeof(sink), fd);
@@ -1793,7 +1894,8 @@ STATIC_OVL bool load_rooms(dlb *fd) {
 
     /* read the pools */
     Fread((genericptr_t) & r->npool, 1, sizeof(r->npool), fd);
-    if ((n = r->npool) != 0) r->pools = NewTab(pool, n);
+    if ((n = r->npool) != 0)
+      r->pools = NewTab(pool, n);
     while (n--) {
       r->pools[(int)n] = New(pool);
       Fread((genericptr_t)r->pools[(int)n], 1, sizeof(pool), fd);
@@ -1801,7 +1903,8 @@ STATIC_OVL bool load_rooms(dlb *fd) {
 
     /* read the traps */
     Fread((genericptr_t) & r->ntrap, 1, sizeof(r->ntrap), fd);
-    if ((n = r->ntrap) != 0) r->traps = NewTab(trap_info, n);
+    if ((n = r->ntrap) != 0)
+      r->traps = NewTab(trap_info, n);
     while (n--) {
       r->traps[(int)n] = New(trap_info);
       Fread((genericptr_t)r->traps[(int)n], 1, sizeof(Trap), fd);
@@ -1831,7 +1934,8 @@ STATIC_OVL bool load_rooms(dlb *fd) {
 
     /* read the gold piles */
     Fread((genericptr_t) & r->ngold, 1, sizeof(r->ngold), fd);
-    if ((n = r->ngold) != 0) r->golds = NewTab(gold, n);
+    if ((n = r->ngold) != 0)
+      r->golds = NewTab(gold, n);
     while (n--) {
       r->golds[(int)n] = New(gold);
       Fread((genericptr_t)r->golds[(int)n], 1, sizeof(gold), fd);
@@ -1869,7 +1973,8 @@ STATIC_OVL bool load_rooms(dlb *fd) {
    */
 
   for (i = 0; i < nrooms; i++)
-    if (!tmproom[i]->parent) build_room(tmproom[i], (room *)0);
+    if (!tmproom[i]->parent)
+      build_room(tmproom[i], (room *)0);
 
   free_rooms(tmproom, nrooms);
 
@@ -1900,7 +2005,8 @@ STATIC_OVL void maze1xy(coord *m, int humidity) {
   do {
     x = rn1(x_maze_max - 3, 3);
     y = rn1(y_maze_max - 3, 3);
-    if (--tryct < 0) break; /* give up */
+    if (--tryct < 0)
+      break; /* give up */
   } while (!(x % 2) || !(y % 2) || Map[x][y] ||
            !is_ok_location((schar)x, (schar)y, humidity));
 
@@ -2007,12 +2113,15 @@ STATIC_OVL bool load_maze(dlb *fd) {
         ystart = y_maze_max - ysize - 1;
         break;
     }
-    if (!(xstart % 2)) xstart++;
-    if (!(ystart % 2)) ystart++;
+    if (!(xstart % 2))
+      xstart++;
+    if (!(ystart % 2))
+      ystart++;
     if ((ystart < 0) || (ystart + ysize > ROWNO)) {
       /* try to move the start a bit */
       ystart += (ystart > 0) ? -2 : 2;
-      if (ysize == ROWNO) ystart = 0;
+      if (ysize == ROWNO)
+        ystart = 0;
       if (ystart < 0 || ystart + ysize > ROWNO)
         panic("reading special level with ysize too large");
     }
@@ -2052,7 +2161,8 @@ STATIC_OVL bool load_maze(dlb *fd) {
            *  the horizontal bit.
            */
           if (levl[x][y].typ == SDOOR || IS_DOOR(levl[x][y].typ)) {
-            if (levl[x][y].typ == SDOOR) levl[x][y].doormask = D_CLOSED;
+            if (levl[x][y].typ == SDOOR)
+              levl[x][y].doormask = D_CLOSED;
             /*
              *  If there is a wall to the left that connects to a
              *  (secret) door, then it is horizontal.  This does
@@ -2160,7 +2270,8 @@ STATIC_OVL bool load_maze(dlb *fd) {
       room_not_needed =
           (tmpregion.rtype == OROOM && !tmpregion.rirreg && !prefilled);
       if (room_not_needed || nroom >= MAXNROFROOMS) {
-        if (!room_not_needed) impossible("Too many rooms on new level!");
+        if (!room_not_needed)
+          impossible("Too many rooms on new level!");
         light_region(&tmpregion);
         continue;
       }
@@ -2168,7 +2279,8 @@ STATIC_OVL bool load_maze(dlb *fd) {
       troom = &rooms[nroom];
 
       /* mark rooms that must be filled, but do it later */
-      if (tmpregion.rtype != OROOM) mustfill[nroom] = (prefilled ? 2 : 1);
+      if (tmpregion.rtype != OROOM)
+        mustfill[nroom] = (prefilled ? 2 : 1);
 
       if (tmpregion.rirreg) {
         min_rx = max_rx = tmpregion.x1;
@@ -2204,7 +2316,8 @@ STATIC_OVL bool load_maze(dlb *fd) {
       if (levl[x][y].typ != SDOOR)
         levl[x][y].typ = DOOR;
       else {
-        if (typ < D_CLOSED) typ = D_CLOSED; /* force it to be closed */
+        if (typ < D_CLOSED)
+          typ = D_CLOSED; /* force it to be closed */
       }
       levl[x][y].doormask = typ;
 
@@ -2222,13 +2335,15 @@ STATIC_OVL bool load_maze(dlb *fd) {
 
     /* now that we have rooms _and_ associated doors, fill the rooms */
     for (n = 0; n < SIZE(mustfill); n++)
-      if (mustfill[(int)n]) fill_room(&rooms[(int)n], (mustfill[(int)n] == 2));
+      if (mustfill[(int)n])
+        fill_room(&rooms[(int)n], (mustfill[(int)n] == 2));
 
     /* if special boundary syms (CROSSWALL) in map, remove them now */
     if (has_bounds) {
       for (x = xstart; x < xstart + xsize; x++)
         for (y = ystart; y < ystart + ysize; y++)
-          if (levl[x][y].typ == CROSSWALL) levl[x][y].typ = ROOM;
+          if (levl[x][y].typ == CROSSWALL)
+            levl[x][y].typ = ROOM;
     }
 
     Fread((genericptr_t) & n, 1, sizeof(n), fd);
@@ -2312,7 +2427,8 @@ STATIC_OVL bool load_maze(dlb *fd) {
         get_location(&x, &y, DRY);
       } while (prevstair.x && xi++ < 100 &&
                distmin(x, y, prevstair.x, prevstair.y) <= 8);
-      if ((badtrap = t_at(x, y)) != 0) deltrap(badtrap);
+      if ((badtrap = t_at(x, y)) != 0)
+        deltrap(badtrap);
       mkstairs(x, y, (char)tmpstair.up, (struct mkroom *)0);
       prevstair.x = x;
       prevstair.y = y;
@@ -2452,7 +2568,8 @@ STATIC_OVL bool load_maze(dlb *fd) {
 
   for (x = 2; x < x_maze_max; x++)
     for (y = 0; y < y_maze_max; y++)
-      if (Map[x][y]) mapcount--;
+      if (Map[x][y])
+        mapcount--;
 
   if (nwalk_sav && (mapcount > (int)(mapcountmax / 10))) {
     mapfact = (int)((mapcount * 100L) / mapcountmax);
@@ -2503,10 +2620,12 @@ bool load_special(const char *name) {
   struct version_info vers_info;
 
   fd = dlb_fopen(name, RDBMODE);
-  if (!fd) return FALSE;
+  if (!fd)
+    return FALSE;
 
   Fread((genericptr_t) & vers_info, sizeof vers_info, 1, fd);
-  if (!check_version(&vers_info, name, TRUE)) goto give_up;
+  if (!check_version(&vers_info, name, TRUE))
+    goto give_up;
 
   Fread((genericptr_t) & c, sizeof c, 1, fd); /* c Header */
 

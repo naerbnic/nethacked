@@ -62,7 +62,8 @@ STATIC_OVL void find_lev_obj() {
   int x, y;
 
   for (x = 0; x < COLNO; x++)
-    for (y = 0; y < ROWNO; y++) level.objects[x][y] = nullptr;
+    for (y = 0; y < ROWNO; y++)
+      level.objects[x][y] = nullptr;
 
   /*
    * Reverse the entire fobj chain, which is necessary so that we can
@@ -104,7 +105,8 @@ void inven_inuse(bool quietly) {
     } else
 #endif /* GOLDOBJ */
         if (otmp->in_use) {
-      if (!quietly) pline("Finishing off %s...", xname(otmp));
+      if (!quietly)
+        pline("Finishing off %s...", xname(otmp));
       useup(otmp);
     }
   }
@@ -135,13 +137,15 @@ STATIC_OVL void restdamage(int fd, bool ghostly) {
   struct damage *tmp_dam;
 
   mread(fd, (genericptr_t) & counter, sizeof(counter));
-  if (!counter) return;
+  if (!counter)
+    return;
   tmp_dam = (struct damage *)alloc(sizeof(struct damage));
   while (--counter >= 0) {
     char damaged_shops[5], *shp = (char *)0;
 
     mread(fd, (genericptr_t)tmp_dam, sizeof(*tmp_dam));
-    if (ghostly) tmp_dam->when += (monstermoves - omoves);
+    if (ghostly)
+      tmp_dam->when += (monstermoves - omoves);
     strcpy(damaged_shops,
            in_rooms(tmp_dam->place.x, tmp_dam->place.y, SHOPBASE));
     if (player.uz.dlevel) {
@@ -153,7 +157,8 @@ STATIC_OVL void restdamage(int fd, bool ghostly) {
       for (shp = damaged_shops; *shp; shp++) {
         Monster *shkp = shop_keeper(*shp);
 
-        if (shkp && inhishop(shkp) && repair_damage(shkp, tmp_dam, TRUE)) break;
+        if (shkp && inhishop(shkp) && repair_damage(shkp, tmp_dam, TRUE))
+          break;
       }
     }
     if (!shp || !*shp) {
@@ -172,7 +177,8 @@ STATIC_OVL Object *restobjchn(int fd, bool ghostly, bool frozen) {
 
   while (1) {
     mread(fd, (genericptr_t) & xl, sizeof(xl));
-    if (xl == -1) break;
+    if (xl == -1)
+      break;
     otmp = newobj(xl);
     if (!first)
       first = otmp;
@@ -184,7 +190,8 @@ STATIC_OVL Object *restobjchn(int fd, bool ghostly, bool frozen) {
       add_id_mapping(otmp->o_id, nid);
       otmp->o_id = nid;
     }
-    if (ghostly && otmp->otyp == SLIME_MOLD) ghostfruit(otmp);
+    if (ghostly && otmp->otyp == SLIME_MOLD)
+      ghostfruit(otmp);
     /* Ghost levels get object age shifted from old player's clock
      * to new player's clock.  Assumption: new player arrived
      * immediately after old player died.
@@ -200,7 +207,8 @@ STATIC_OVL Object *restobjchn(int fd, bool ghostly, bool frozen) {
       for (otmp3 = otmp->cobj; otmp3; otmp3 = otmp3->nobj)
         otmp3->ocontainer = otmp;
     }
-    if (otmp->bypass) otmp->bypass = 0;
+    if (otmp->bypass)
+      otmp->bypass = 0;
 
     otmp2 = otmp;
   }
@@ -225,7 +233,8 @@ STATIC_OVL Monster *restmonchn(int fd, bool ghostly) {
 
   while (1) {
     mread(fd, (genericptr_t) & xl, sizeof(xl));
-    if (xl == -1) break;
+    if (xl == -1)
+      break;
     mtmp = newmonst(xl);
     if (!first)
       first = mtmp;
@@ -252,13 +261,15 @@ STATIC_OVL Monster *restmonchn(int fd, bool ghostly) {
       Object *obj;
       mtmp->minvent = restobjchn(fd, ghostly, FALSE);
       /* restore monster back pointer */
-      for (obj = mtmp->minvent; obj; obj = obj->nobj) obj->ocarry = mtmp;
+      for (obj = mtmp->minvent; obj; obj = obj->nobj)
+        obj->ocarry = mtmp;
     }
     if (mtmp->mw) {
       Object *obj;
 
       for (obj = mtmp->minvent; obj; obj = obj->nobj)
-        if (obj->owornmask & W_WEP) break;
+        if (obj->owornmask & W_WEP)
+          break;
       if (obj)
         mtmp->mw = obj;
       else {
@@ -267,8 +278,10 @@ STATIC_OVL Monster *restmonchn(int fd, bool ghostly) {
       }
     }
 
-    if (mtmp->isshk) restshk(mtmp, ghostly);
-    if (mtmp->ispriest) restpriest(mtmp, ghostly);
+    if (mtmp->isshk)
+      restshk(mtmp, ghostly);
+    if (mtmp->ispriest)
+      restpriest(mtmp, ghostly);
 
     mtmp2 = mtmp;
   }
@@ -306,7 +319,8 @@ STATIC_OVL void ghostfruit(Object *otmp) {
   struct fruit *oldf;
 
   for (oldf = oldfruit; oldf; oldf = oldf->nextf)
-    if (oldf->fid == otmp->spe) break;
+    if (oldf->fid == otmp->spe)
+      break;
 
   if (!oldf)
     impossible("no old fruit?");
@@ -334,7 +348,8 @@ bool restgamestate(int fd, unsigned int *stuckid, unsigned int *steedid) {
 
   mread(fd, (genericptr_t) & flags, sizeof(struct flag));
   flags.bypasses = 0; /* never use the saved value of bypasses */
-  if (remember_discover) discover = remember_discover;
+  if (remember_discover)
+    discover = remember_discover;
 
   role_init(); /* Reset the initial role, race, gender, and alignment */
   mread(fd, (genericptr_t) & player, sizeof(struct Player));
@@ -364,7 +379,8 @@ bool restgamestate(int fd, unsigned int *stuckid, unsigned int *steedid) {
 
   /* this comes after inventory has been loaded */
   for (otmp = invent; otmp; otmp = otmp->nobj)
-    if (otmp->owornmask) setworn(otmp, otmp->owornmask);
+    if (otmp->owornmask)
+      setworn(otmp, otmp->owornmask);
   /* reset weapon so that player will get a reminder about "bashing"
      during next fight when bare-handed or wielding an unconventional
      item; for pick-axe, we aren't able to distinguish between having
@@ -383,9 +399,11 @@ bool restgamestate(int fd, unsigned int *stuckid, unsigned int *steedid) {
   mread(fd, (genericptr_t)spl_book, sizeof(struct spell) * (MAXSPELL + 1));
   restore_artifacts(fd);
   restore_oracles(fd);
-  if (player.ustuck) mread(fd, (genericptr_t)stuckid, sizeof(*stuckid));
+  if (player.ustuck)
+    mread(fd, (genericptr_t)stuckid, sizeof(*stuckid));
 #ifdef STEED
-  if (player.usteed) mread(fd, (genericptr_t)steedid, sizeof(*steedid));
+  if (player.usteed)
+    mread(fd, (genericptr_t)steedid, sizeof(*steedid));
 #endif
   mread(fd, (genericptr_t)pl_character, sizeof pl_character);
 
@@ -420,15 +438,19 @@ STATIC_OVL void restlevelstate(unsigned int stuckid, unsigned int steedid) {
 
   if (stuckid) {
     for (mtmp = fmon; mtmp; mtmp = mtmp->nmon)
-      if (mtmp->m_id == stuckid) break;
-    if (!mtmp) panic("Cannot find the monster ustuck.");
+      if (mtmp->m_id == stuckid)
+        break;
+    if (!mtmp)
+      panic("Cannot find the monster ustuck.");
     player.ustuck = mtmp;
   }
 #ifdef STEED
   if (steedid) {
     for (mtmp = fmon; mtmp; mtmp = mtmp->nmon)
-      if (mtmp->m_id == steedid) break;
-    if (!mtmp) panic("Cannot find the monster usteed.");
+      if (mtmp->m_id == steedid)
+        break;
+    if (!mtmp)
+      panic("Cannot find the monster usteed.");
     player.usteed = mtmp;
     remove_monster(mtmp->mx, mtmp->my);
   }
@@ -478,7 +500,8 @@ int dorecover(int fd) {
   savestateinlock();
 #endif
   rtmp = restlevelfile(fd, ledger_no(&player.uz));
-  if (rtmp < 2) return (rtmp); /* dorecover called recursively */
+  if (rtmp < 2)
+    return (rtmp); /* dorecover called recursively */
 
   /* these pointers won't be valid while we're processing the
    * other levels, but they'll be reset again by restlevelstate()
@@ -499,7 +522,8 @@ int dorecover(int fd) {
       break;
     getlev(fd, 0, ltmp, FALSE);
     rtmp = restlevelfile(fd, ltmp);
-    if (rtmp < 2) return (rtmp); /* dorecover called recursively */
+    if (rtmp < 2)
+      return (rtmp); /* dorecover called recursively */
   }
 
 #ifdef BSD
@@ -514,9 +538,11 @@ int dorecover(int fd) {
   getlev(fd, 0, (xchar)0, FALSE);
   (void)close(fd);
 
-  if (!wizard && !discover) (void)delete_savefile();
+  if (!wizard && !discover)
+    (void)delete_savefile();
 #ifdef REINCARNATION
-  if (Is_rogue_level(&player.uz)) assign_rogue_graphics(TRUE);
+  if (Is_rogue_level(&player.uz))
+    assign_rogue_graphics(TRUE);
 #endif
 #ifdef USE_TILES
   substitute_tiles(&player.uz);
@@ -525,7 +551,8 @@ int dorecover(int fd) {
   max_rank_sz(); /* to recompute mrank_sz (botl.c) */
   /* take care of iron ball & chain */
   for (otmp = fobj; otmp; otmp = otmp->nobj)
-    if (otmp->owornmask) setworn(otmp, otmp->owornmask);
+    if (otmp->owornmask)
+      setworn(otmp, otmp->owornmask);
 
   /* in_use processing must be after:
    *    + The inventory has been read so that freeinv() works.
@@ -582,12 +609,14 @@ void getlev(int fd, int pid, xchar lev, bool ghostly) {
   short tlev;
 #endif
 
-  if (ghostly) clear_id_mapping();
+  if (ghostly)
+    clear_id_mapping();
 
   /* Load the old fruit info.  We have to do it first, so the
    * information is available when restoring the objects.
    */
-  if (ghostly) oldfruit = loadfruitchn(fd);
+  if (ghostly)
+    oldfruit = loadfruitchn(fd);
 
   /* First some sanity checks */
   mread(fd, (genericptr_t) & hpid, sizeof(hpid));
@@ -606,7 +635,8 @@ void getlev(int fd, int pid, xchar lev, bool ghostly) {
     else
       sprintf(trickbuf, "This is level %d, not %d!", dlvl, lev);
 #ifdef WIZARD
-    if (wizard) pline(trickbuf);
+    if (wizard)
+      pline(trickbuf);
 #endif
     trickery(trickbuf);
   }
@@ -697,11 +727,14 @@ void getlev(int fd, int pid, xchar lev, bool ghostly) {
 
   /* reset level.monsters for new level */
   for (x = 0; x < COLNO; x++)
-    for (y = 0; y < ROWNO; y++) level.monsters[x][y] = (Monster *)0;
+    for (y = 0; y < ROWNO; y++)
+      level.monsters[x][y] = (Monster *)0;
   for (mtmp = level.monlist; mtmp; mtmp = mtmp->nmon) {
-    if (mtmp->isshk) set_residency(mtmp, FALSE);
+    if (mtmp->isshk)
+      set_residency(mtmp, FALSE);
     place_monster(mtmp, mtmp->mx, mtmp->my);
-    if (mtmp->wormno) place_wsegs(mtmp);
+    if (mtmp->wormno)
+      place_wsegs(mtmp);
   }
   restdamage(fd, ghostly);
 
@@ -739,8 +772,10 @@ void getlev(int fd, int pid, xchar lev, bool ghostly) {
         {
           Trap *ttmp;
           for (ttmp = ftrap; ttmp; ttmp = ttmp->ntrap)
-            if (ttmp->ttyp == MAGIC_PORTAL) break;
-          if (!ttmp) panic("getlev: need portal but none found");
+            if (ttmp->ttyp == MAGIC_PORTAL)
+              break;
+          if (!ttmp)
+            panic("getlev: need portal but none found");
           assign_level(&ttmp->dst, &ltmp);
         } break;
       }
@@ -760,7 +795,8 @@ void getlev(int fd, int pid, xchar lev, bool ghostly) {
   relink_light_sources(ghostly);
   reset_oattached_mids(ghostly);
 
-  if (ghostly) clear_id_mapping();
+  if (ghostly)
+    clear_id_mapping();
 }
 
 /* Clear all structures for object and monster ID mapping. */
@@ -806,7 +842,8 @@ bool lookup_id_mapping(unsigned long gid, unsigned long *nidp) {
       /* first bucket might not be totally full */
       if (curr == id_map) {
         i = n_ids_mapped % N_PER_BUCKET;
-        if (i == 0) i = N_PER_BUCKET;
+        if (i == 0)
+          i = N_PER_BUCKET;
       } else
         i = N_PER_BUCKET;
 
@@ -858,7 +895,8 @@ static int mgetc() {
   if (inbufp >= inbufsz) {
     inbufsz = read(mreadfd, (genericptr_t)inbuf, sizeof inbuf);
     if (!inbufsz) {
-      if (inbufp > sizeof inbuf) error("EOF on file #%d.\n", mreadfd);
+      if (inbufp > sizeof inbuf)
+        error("EOF on file #%d.\n", mreadfd);
       inbufp = 1 + sizeof inbuf; /* exactly one warning :-) */
       return -1;
     }
@@ -875,7 +913,8 @@ void minit() {
 
 int mread(int fd, genericptr_t buf, unsigned len) {
   /*int readlen = 0;*/
-  if (fd < 0) error("Restore error; mread attempting to read file %d.", fd);
+  if (fd < 0)
+    error("Restore error; mread attempting to read file %d.", fd);
   mreadfd = fd;
   while (len--) {
     if (inrunlength > 0) {
@@ -883,7 +922,8 @@ int mread(int fd, genericptr_t buf, unsigned len) {
       *(*((char **)&buf))++ = '\0';
     } else {
       short ch = mgetc();
-      if (ch < 0) return -1; /*readlen;*/
+      if (ch < 0)
+        return -1; /*readlen;*/
       if ((*(*(char **)&buf)++ = (char)ch) == RLESC) {
         inrunlength = mgetc();
       }

@@ -63,7 +63,8 @@ void cursetxt(Monster *mtmp, bool undirected) {
 
     pline("%s points %s.", Monnam(mtmp), point_msg);
   } else if ((!(moves % 4) || !rn2(4))) {
-    if (flags.soundok) Norep("You hear a mumbled curse.");
+    if (flags.soundok)
+      Norep("You hear a mumbled curse.");
   }
 }
 
@@ -186,7 +187,8 @@ int castmu(Monster *mtmp, struct Attack *mattk, bool thinks_it_foundyou,
         break;
       }
     } while (--cnt > 0 && spell_would_be_useless(mtmp, mattk->adtyp, spellnum));
-    if (cnt == 0) return 0;
+    if (cnt == 0)
+      return 0;
   }
 
   /* monster unable to cast spells? */
@@ -197,7 +199,8 @@ int castmu(Monster *mtmp, struct Attack *mattk, bool thinks_it_foundyou,
 
   if (mattk->adtyp == AD_SPEL || mattk->adtyp == AD_CLRC) {
     mtmp->mspec_used = 10 - mtmp->m_lev;
-    if (mtmp->mspec_used < 2) mtmp->mspec_used = 2;
+    if (mtmp->mspec_used < 2)
+      mtmp->mspec_used = 2;
   }
 
   /* monster can cast spells, but is casting a directed spell at the
@@ -246,7 +249,8 @@ int castmu(Monster *mtmp, struct Attack *mattk, bool thinks_it_foundyou,
     dmg = d((int)((ml / 2) + mattk->damn), (int)mattk->damd);
   else
     dmg = d((int)((ml / 2) + 1), 6);
-  if (Half_spell_damage) dmg = (dmg + 1) / 2;
+  if (Half_spell_damage)
+    dmg = (dmg + 1) / 2;
 
   ret = 1;
 
@@ -288,7 +292,8 @@ int castmu(Monster *mtmp, struct Attack *mattk, bool thinks_it_foundyou,
       break;
     }
   }
-  if (dmg) mdamageu(mtmp, dmg);
+  if (dmg)
+    mdamageu(mtmp, dmg);
   return (ret);
 }
 
@@ -322,7 +327,8 @@ void cast_wizard_spell(Monster *mtmp, int dmg, int spellnum) {
           done(DIED);
         }
       } else {
-        if (Antimagic) shieldeff(player.ux, player.uy);
+        if (Antimagic)
+          shieldeff(player.ux, player.uy);
         pline("Lucky for you, it didn't work!");
       }
       dmg = 0;
@@ -385,9 +391,11 @@ void cast_wizard_spell(Monster *mtmp, int dmg, int spellnum) {
       } else {
         You("suddenly feel weaker!");
         dmg = mtmp->m_lev - 6;
-        if (Half_spell_damage) dmg = (dmg + 1) / 2;
+        if (Half_spell_damage)
+          dmg = (dmg + 1) / 2;
         losestr(rnd(dmg));
-        if (player.uhp < 1) done_in_by(mtmp);
+        if (player.uhp < 1)
+          done_in_by(mtmp);
       }
       dmg = 0;
       break;
@@ -404,12 +412,14 @@ void cast_wizard_spell(Monster *mtmp, int dmg, int spellnum) {
     case MGC_STUN_YOU:
       if (Antimagic || Free_action) {
         shieldeff(player.ux, player.uy);
-        if (!Stunned) You_feel("momentarily disoriented.");
+        if (!Stunned)
+          You_feel("momentarily disoriented.");
         make_stunned(1L, FALSE);
       } else {
         You(Stunned ? "struggle to keep your balance." : "reel...");
         dmg = d(ACURR(A_DEX) < 12 ? 6 : 4, 4);
-        if (Half_spell_damage) dmg = (dmg + 1) / 2;
+        if (Half_spell_damage)
+          dmg = (dmg + 1) / 2;
         make_stunned(HStun + dmg, FALSE);
       }
       dmg = 0;
@@ -420,9 +430,11 @@ void cast_wizard_spell(Monster *mtmp, int dmg, int spellnum) {
       break;
     case MGC_CURE_SELF:
       if (mtmp->mhp < mtmp->mhpmax) {
-        if (canseemon(mtmp)) pline("%s looks better.", Monnam(mtmp));
+        if (canseemon(mtmp))
+          pline("%s looks better.", Monnam(mtmp));
         /* note: player healing does 6d4; this used to do 1d8 */
-        if ((mtmp->mhp += d(3, 6)) > mtmp->mhpmax) mtmp->mhp = mtmp->mhpmax;
+        if ((mtmp->mhp += d(3, 6)) > mtmp->mhpmax)
+          mtmp->mhp = mtmp->mhpmax;
         dmg = 0;
       }
       break;
@@ -448,7 +460,8 @@ void cast_wizard_spell(Monster *mtmp, int dmg, int spellnum) {
       break;
   }
 
-  if (dmg) mdamageu(mtmp, dmg);
+  if (dmg)
+    mdamageu(mtmp, dmg);
 }
 
 STATIC_OVL
@@ -463,7 +476,8 @@ void cast_cleric_spell(Monster *mtmp, int dmg, int spellnum) {
       /* this is physical damage, not magical damage */
       pline("A sudden geyser slams into you from nowhere!");
       dmg = d(8, 6);
-      if (Half_physical_damage) dmg = (dmg + 1) / 2;
+      if (Half_physical_damage)
+        dmg = (dmg + 1) / 2;
       break;
     case CLC_FIRE_PILLAR:
       pline("A pillar of fire strikes all around you!");
@@ -472,7 +486,8 @@ void cast_cleric_spell(Monster *mtmp, int dmg, int spellnum) {
         dmg = 0;
       } else
         dmg = d(8, 6);
-      if (Half_spell_damage) dmg = (dmg + 1) / 2;
+      if (Half_spell_damage)
+        dmg = (dmg + 1) / 2;
       burn_away_slime();
       (void)burnarmor(&youmonst);
       destroy_item(SCROLL_CLASS, AD_FIRE);
@@ -488,10 +503,12 @@ void cast_cleric_spell(Monster *mtmp, int dmg, int spellnum) {
       if (reflects || Shock_resistance) {
         shieldeff(player.ux, player.uy);
         dmg = 0;
-        if (reflects) break;
+        if (reflects)
+          break;
       } else
         dmg = d(8, 6);
-      if (Half_spell_damage) dmg = (dmg + 1) / 2;
+      if (Half_spell_damage)
+        dmg = (dmg + 1) / 2;
       destroy_item(WAND_CLASS, AD_ELEC);
       destroy_item(RING_CLASS, AD_ELEC);
       break;
@@ -513,10 +530,12 @@ void cast_cleric_spell(Monster *mtmp, int dmg, int spellnum) {
       int quan;
 
       quan = (mtmp->m_lev < 2) ? 1 : rnd((int)mtmp->m_lev / 2);
-      if (quan < 3) quan = 3;
+      if (quan < 3)
+        quan = 3;
       success = pm ? TRUE : FALSE;
       for (i = 0; i <= quan; i++) {
-        if (!enexto(&bypos, mtmp->mux, mtmp->muy, mtmp->data)) break;
+        if (!enexto(&bypos, mtmp->mux, mtmp->muy, mtmp->data))
+          break;
         if ((pm = mkclass(let, 0)) != 0 &&
             (mtmp2 = makemon(pm, bypos.x, bypos.y, NO_MM_FLAGS)) != 0) {
           success = TRUE;
@@ -553,7 +572,8 @@ void cast_cleric_spell(Monster *mtmp, int dmg, int spellnum) {
         pline("Scales cover your %s!",
               (num_eyes == 1) ? body_part(EYE) : makeplural(body_part(EYE)));
         make_blinded(Half_spell_damage ? 100L : 200L, FALSE);
-        if (!Blind) Your(vision_clears);
+        if (!Blind)
+          Your(vision_clears);
         dmg = 0;
       } else
         impossible("no reason for monster to cast blindness spell?");
@@ -561,12 +581,15 @@ void cast_cleric_spell(Monster *mtmp, int dmg, int spellnum) {
     case CLC_PARALYZE:
       if (Antimagic || Free_action) {
         shieldeff(player.ux, player.uy);
-        if (multi >= 0) You("stiffen briefly.");
+        if (multi >= 0)
+          You("stiffen briefly.");
         nomul(-1, "paralyzed by a monster");
       } else {
-        if (multi >= 0) You("are frozen in place!");
+        if (multi >= 0)
+          You("are frozen in place!");
         dmg = 4 + (int)mtmp->m_lev;
-        if (Half_spell_damage) dmg = (dmg + 1) / 2;
+        if (Half_spell_damage)
+          dmg = (dmg + 1) / 2;
         nomul(-dmg, "paralyzed by a monster");
       }
       dmg = 0;
@@ -579,7 +602,8 @@ void cast_cleric_spell(Monster *mtmp, int dmg, int spellnum) {
         bool oldprop = !!Confusion;
 
         dmg = (int)mtmp->m_lev;
-        if (Half_spell_damage) dmg = (dmg + 1) / 2;
+        if (Half_spell_damage)
+          dmg = (dmg + 1) / 2;
         make_confused(HConfusion + dmg, TRUE);
         if (Hallucination)
           You_feel("%s!", oldprop ? "trippier" : "trippy");
@@ -590,9 +614,11 @@ void cast_cleric_spell(Monster *mtmp, int dmg, int spellnum) {
       break;
     case CLC_CURE_SELF:
       if (mtmp->mhp < mtmp->mhpmax) {
-        if (canseemon(mtmp)) pline("%s looks better.", Monnam(mtmp));
+        if (canseemon(mtmp))
+          pline("%s looks better.", Monnam(mtmp));
         /* note: player healing does 6d4; this used to do 1d8 */
-        if ((mtmp->mhp += d(3, 6)) > mtmp->mhpmax) mtmp->mhp = mtmp->mhpmax;
+        if ((mtmp->mhp += d(3, 6)) > mtmp->mhpmax)
+          mtmp->mhp = mtmp->mhpmax;
         dmg = 0;
       }
       break;
@@ -616,7 +642,8 @@ void cast_cleric_spell(Monster *mtmp, int dmg, int spellnum) {
       break;
   }
 
-  if (dmg) mdamageu(mtmp, dmg);
+  if (dmg)
+    mdamageu(mtmp, dmg);
 }
 
 STATIC_DCL
@@ -663,7 +690,8 @@ bool spell_would_be_useless(Monster *mtmp, unsigned int adtyp, int spellnum) {
          spellnum == MGC_CLONE_WIZ))
       return TRUE;
     /* haste self when already fast */
-    if (mtmp->permspeed == MFAST && spellnum == MGC_HASTE_SELF) return TRUE;
+    if (mtmp->permspeed == MFAST && spellnum == MGC_HASTE_SELF)
+      return TRUE;
     /* invisibility when already invisible */
     if ((mtmp->minvis || mtmp->invis_blkd) && spellnum == MGC_DISAPPEAR)
       return TRUE;
@@ -674,7 +702,8 @@ bool spell_would_be_useless(Monster *mtmp, unsigned int adtyp, int spellnum) {
     if (mtmp->mpeaceful && !See_invisible && spellnum == MGC_DISAPPEAR)
       return TRUE;
     /* healing when already healed */
-    if (mtmp->mhp == mtmp->mhpmax && spellnum == MGC_CURE_SELF) return TRUE;
+    if (mtmp->mhp == mtmp->mhpmax && spellnum == MGC_CURE_SELF)
+      return TRUE;
     /* don't summon monsters if it doesn't think you're around */
     if (!mcouldseeu && (spellnum == MGC_SUMMON_MONS ||
                         (!mtmp->iswiz && spellnum == MGC_CLONE_WIZ)))
@@ -683,13 +712,17 @@ bool spell_would_be_useless(Monster *mtmp, unsigned int adtyp, int spellnum) {
       return TRUE;
   } else if (adtyp == AD_CLRC) {
     /* summon insects/sticks to snakes won't be cast by peaceful monsters */
-    if (mtmp->mpeaceful && spellnum == CLC_INSECTS) return TRUE;
+    if (mtmp->mpeaceful && spellnum == CLC_INSECTS)
+      return TRUE;
     /* healing when already healed */
-    if (mtmp->mhp == mtmp->mhpmax && spellnum == CLC_CURE_SELF) return TRUE;
+    if (mtmp->mhp == mtmp->mhpmax && spellnum == CLC_CURE_SELF)
+      return TRUE;
     /* don't summon insects if it doesn't think you're around */
-    if (!mcouldseeu && spellnum == CLC_INSECTS) return TRUE;
+    if (!mcouldseeu && spellnum == CLC_INSECTS)
+      return TRUE;
     /* blindness spell on blinded player */
-    if (Blinded && spellnum == CLC_BLIND_YOU) return TRUE;
+    if (Blinded && spellnum == CLC_BLIND_YOU)
+      return TRUE;
   }
   return FALSE;
 }
@@ -704,7 +737,8 @@ bool spell_would_be_useless(Monster *mtmp, unsigned int adtyp, int spellnum) {
 int buzzmu(Monster *mtmp, struct Attack *mattk) {
   /* don't print constant stream of curse messages for 'normal'
      spellcasting monsters at range */
-  if (mattk->adtyp > AD_SPC2) return (0);
+  if (mattk->adtyp > AD_SPC2)
+    return (0);
 
   if (mtmp->mcan) {
     cursetxt(mtmp, FALSE);

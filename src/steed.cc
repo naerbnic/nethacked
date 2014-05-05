@@ -94,8 +94,10 @@ int use_saddle(Object *otmp) {
   /* Calculate your chance */
   chance = ACURR(A_DEX) + ACURR(A_CHA) / 2 + 2 * mtmp->mtame;
   chance += player.ulevel * (mtmp->mtame ? 20 : 5);
-  if (!mtmp->mtame) chance -= 10 * mtmp->m_lev;
-  if (Role_if(PM_KNIGHT)) chance += 20;
+  if (!mtmp->mtame)
+    chance -= 10 * mtmp->m_lev;
+  if (Role_if(PM_KNIGHT))
+    chance += 20;
   switch (P_SKILL(P_RIDING)) {
     case P_ISRESTRICTED:
     case P_UNSKILLED:
@@ -121,12 +123,14 @@ int use_saddle(Object *otmp) {
            !strncmp(s, "riding ", 7))
     /* ... or for "riding boots" */
     chance += 10;
-  if (otmp->cursed) chance -= 50;
+  if (otmp->cursed)
+    chance -= 50;
 
   /* Make the attempt */
   if (rn2(100) < chance) {
     You("put the saddle on %s.", mon_nam(mtmp));
-    if (otmp->owornmask) remove_worn_item(otmp, FALSE);
+    if (otmp->owornmask)
+      remove_worn_item(otmp, FALSE);
     freeinv(otmp);
     /* mpickobj may free otmp it if merges, but we have already
        checked for a saddle above, so no merger should happen */
@@ -156,7 +160,8 @@ int doride() {
   else if (getdir((char *)0) &&
            isok(player.ux + player.dx, player.uy + player.dy)) {
 #ifdef WIZARD
-    if (wizard && yn("Force the mount to succeed?") == 'y') forcemount = TRUE;
+    if (wizard && yn("Force the mount to succeed?") == 'y')
+      forcemount = TRUE;
 #endif
     return (mount_steed(m_at(player.ux + player.dx, player.uy + player.dy),
                         forcemount));
@@ -260,7 +265,8 @@ bool mount_steed(Monster *mtmp, bool force) {
     newsym(mtmp->mx, mtmp->my);
     pline("%s resists%s!", Monnam(mtmp),
           mtmp->mleashed ? " and its leash comes off" : "");
-    if (mtmp->mleashed) m_unleash(mtmp, FALSE);
+    if (mtmp->mleashed)
+      m_unleash(mtmp, FALSE);
     return (FALSE);
   }
   if (!force && Underwater && !is_swimmer(ptr)) {
@@ -309,7 +315,8 @@ bool mount_steed(Monster *mtmp, bool force) {
     You("mount %s.", mon_nam(mtmp));
   }
   /* setuwep handles polearms differently when you're mounted */
-  if (uwep && is_pole(uwep)) unweapon = FALSE;
+  if (uwep && is_pole(uwep))
+    unweapon = FALSE;
   player.usteed = mtmp;
   remove_monster(mtmp->mx, mtmp->my);
   teleds(mtmp->mx, mtmp->my, TRUE);
@@ -318,7 +325,8 @@ bool mount_steed(Monster *mtmp, bool force) {
 
 /* You and your steed have moved */
 void exercise_steed() {
-  if (!player.usteed) return;
+  if (!player.usteed)
+    return;
 
   /* It takes many turns of riding to exercise skill */
   if (player.urideturns++ >= 100) {
@@ -331,7 +339,8 @@ void exercise_steed() {
 /* The player kicks or whips the steed */
 void kick_steed() {
   char He[4];
-  if (!player.usteed) return;
+  if (!player.usteed)
+    return;
 
   /* [ALI] Various effects of kicking sleeping/paralyzed steeds */
   if (player.usteed->msleeping || !player.usteed->mcanmove) {
@@ -359,7 +368,8 @@ void kick_steed() {
   }
 
   /* Make the steed less tame and check if it resists */
-  if (player.usteed->mtame) player.usteed->mtame--;
+  if (player.usteed->mtame)
+    player.usteed->mtame--;
   if (!player.usteed->mtame && player.usteed->mleashed)
     m_unleash(player.usteed, TRUE);
   if (!player.usteed->mtame ||
@@ -387,11 +397,13 @@ STATIC_OVL bool landing_spot(coord *spot, int reason, int forceit) {
   Trap *t;
 
   /* avoid known traps (i == 0) and boulders, but allow them as a backup */
-  if (reason != DISMOUNT_BYCHOICE || Stunned || Confusion || Fumbling) i = 1;
+  if (reason != DISMOUNT_BYCHOICE || Stunned || Confusion || Fumbling)
+    i = 1;
   for (; !found && i < 2; ++i) {
     for (x = player.ux - 1; x <= player.ux + 1; x++)
       for (y = player.uy - 1; y <= player.uy + 1; y++) {
-        if (!isok(x, y) || (x == player.ux && y == player.uy)) continue;
+        if (!isok(x, y) || (x == player.ux && y == player.uy))
+          continue;
 
         if (ACCESSIBLE(levl[x][y].typ) && !MON_AT(x, y) && !closed_door(x, y)) {
           distance = distu(x, y);
@@ -440,14 +452,16 @@ void dismount_steed(int reason) {
       verb = "are thrown";
     case DISMOUNT_FELL:
       You("%s off of %s!", verb, mon_nam(mtmp));
-      if (!have_spot) have_spot = landing_spot(&cc, reason, 1);
+      if (!have_spot)
+        have_spot = landing_spot(&cc, reason, 1);
       losehp(rn1(10, 10), "riding accident", KILLED_BY_AN);
       set_wounded_legs(BOTH_SIDES, (int)HWounded_legs + rn1(5, 5));
       repair_leg_damage = FALSE;
       break;
     case DISMOUNT_POLY:
       You("can no longer ride %s.", mon_nam(player.usteed));
-      if (!have_spot) have_spot = landing_spot(&cc, reason, 1);
+      if (!have_spot)
+        have_spot = landing_spot(&cc, reason, 1);
       break;
     case DISMOUNT_ENGULFED:
       /* caller displays message */
@@ -473,7 +487,8 @@ void dismount_steed(int reason) {
       if (!mtmp->mnamelth) {
         pline("You've been through the dungeon on %s with no name.",
               an(mtmp->data->mname));
-        if (Hallucination) pline("It felt good to get out of the rain.");
+        if (Hallucination)
+          pline("It felt good to get out of the rain.");
       } else
         You("dismount %s.", mon_nam(mtmp));
   }
@@ -481,7 +496,8 @@ void dismount_steed(int reason) {
    * so after dismounting they refer to the player's
    * legs once again.
    */
-  if (repair_leg_damage) HWounded_legs = EWounded_legs = 0;
+  if (repair_leg_damage)
+    HWounded_legs = EWounded_legs = 0;
 
   /* Release the steed and saddle */
   player.usteed = 0;
@@ -547,7 +563,8 @@ void dismount_steed(int reason) {
         in_steed_dismounting = FALSE;
 
         /* Put your steed in your trap */
-        if (save_utrap) (void)mintrap(mtmp);
+        if (save_utrap)
+          (void)mintrap(mtmp);
       }
       /* Couldn't... try placing the steed */
     } else if (enexto(&cc, player.ux, player.uy, mtmp->data)) {
@@ -572,7 +589,8 @@ void dismount_steed(int reason) {
   } else
     flags.botl = 1;
   /* polearms behave differently when not mounted */
-  if (uwep && is_pole(uwep)) unweapon = TRUE;
+  if (uwep && is_pole(uwep))
+    unweapon = TRUE;
   return;
 }
 

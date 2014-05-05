@@ -14,7 +14,8 @@
 
 void set_mon_data(Monster *mon, MonsterType *ptr, int flag) {
   mon->data = ptr;
-  if (flag == -1) return; /* "don't care" */
+  if (flag == -1)
+    return; /* "don't care" */
 
   if (flag == 1)
     mon->mintrinsics |= (ptr->mresists & 0x00FF);
@@ -30,7 +31,8 @@ struct Attack *attacktype_fordmg(MonsterType *ptr, int atyp, int dtyp) {
   struct Attack *a;
 
   for (a = &ptr->mattk[0]; a < &ptr->mattk[NATTK]; a++)
-    if (a->aatyp == atyp && (dtyp == AD_ANY || a->adtyp == dtyp)) return a;
+    if (a->aatyp == atyp && (dtyp == AD_ANY || a->adtyp == dtyp))
+      return a;
 
   return (struct Attack *)0;
 }
@@ -69,7 +71,8 @@ bool resists_magm(Monster *mon) {
     return TRUE;
   /* check for magic resistance granted by wielded weapon */
   o = (mon == &youmonst) ? uwep : mon->weapon();
-  if (o && o->oartifact && defends(AD_MAGM, o)) return TRUE;
+  if (o && o->oartifact && defends(AD_MAGM, o))
+    return TRUE;
   /* check for magic resistance granted by worn or carried items */
   o = (mon == &youmonst) ? invent : mon->minvent;
   for (; o; o = o->nobj)
@@ -96,7 +99,8 @@ bool resists_blnd(Monster *mon) {
       dmgtype_fromattack(ptr, AD_BLND, AT_GAZE))
     return TRUE;
   o = is_you ? uwep : mon->weapon();
-  if (o && o->oartifact && defends(AD_BLND, o)) return TRUE;
+  if (o && o->oartifact && defends(AD_BLND, o))
+    return TRUE;
   o = is_you ? invent : mon->minvent;
   for (; o; o = o->nobj)
     if ((o->owornmask && objects[o->otyp].oc_oprop == BLINDED) ||
@@ -114,7 +118,8 @@ bool can_blnd(Monster *magr, Monster *mdef, uchar aatyp, Object *obj) {
   const char *s;
 
   /* no eyes protect against all attacks for now */
-  if (!haseyes(mdef->data)) return FALSE;
+  if (!haseyes(mdef->data))
+    return FALSE;
 
   switch (aatyp) {
     case AT_EXPL:
@@ -123,7 +128,8 @@ bool can_blnd(Monster *magr, Monster *mdef, uchar aatyp, Object *obj) {
     case AT_MAGC:
     case AT_BREA: /* assumed to be lightning */
       /* light-based attacks may be cancelled or resisted */
-      if (magr && magr->mcan) return FALSE;
+      if (magr && magr->mcan)
+        return FALSE;
       return !resists_blnd(mdef);
 
     case AT_WEAP:
@@ -131,10 +137,12 @@ bool can_blnd(Monster *magr, Monster *mdef, uchar aatyp, Object *obj) {
     case AT_NONE:
       /* an object is used (thrown/spit/other) */
       if (obj && (obj->otyp == CREAM_PIE)) {
-        if (is_you && Blindfolded) return FALSE;
+        if (is_you && Blindfolded)
+          return FALSE;
       } else if (obj && (obj->otyp == BLINDING_VENOM)) {
         /* all ublindf, including LENSES, protect, cream-pies too */
-        if (is_you && (ublindf || player.ucreamed)) return FALSE;
+        if (is_you && (ublindf || player.ucreamed))
+          return FALSE;
         check_visor = TRUE;
       } else if (obj && (obj->otyp == POT_BLINDNESS)) {
         return TRUE; /* no defense */
@@ -147,12 +155,14 @@ bool can_blnd(Monster *magr, Monster *mdef, uchar aatyp, Object *obj) {
     case AT_ENGL:
       if (is_you && (Blindfolded || player.usleep || player.ucreamed))
         return FALSE;
-      if (!is_you && mdef->msleeping) return FALSE;
+      if (!is_you && mdef->msleeping)
+        return FALSE;
       break;
 
     case AT_CLAW:
       /* e.g. raven: all ublindf, including LENSES, protect */
-      if (is_you && ublindf) return FALSE;
+      if (is_you && ublindf)
+        return FALSE;
       if ((magr == &youmonst) && player.uswallow)
         return FALSE; /* can't affect eyes while inside monster */
       check_visor = TRUE;
@@ -161,7 +171,8 @@ bool can_blnd(Monster *magr, Monster *mdef, uchar aatyp, Object *obj) {
     case AT_TUCH:
     case AT_STNG:
       /* some physical, blind-inducing attacks can be cancelled */
-      if (magr && magr->mcan) return FALSE;
+      if (magr && magr->mcan)
+        return FALSE;
       break;
 
     default:
@@ -196,9 +207,11 @@ bool ranged_attk(MonsterType *ptr) {
    */
   for (i = 0; i < NATTK; i++) {
     atyp = ptr->mattk[i].aatyp;
-    if (atyp >= AT_WEAP) return TRUE;
+    if (atyp >= AT_WEAP)
+      return TRUE;
     /* assert(atyp < 32); */
-    if ((atk_mask & (1L << atyp)) != 0L) return TRUE;
+    if ((atk_mask & (1L << atyp)) != 0L)
+      return TRUE;
   }
 
   return FALSE;
@@ -276,7 +289,8 @@ struct Attack *dmgtype_fromattack(MonsterType *ptr, int dtyp, int atyp) {
   struct Attack *a;
 
   for (a = &ptr->mattk[0]; a < &ptr->mattk[NATTK]; a++)
-    if (a->adtyp == dtyp && (atyp == AT_ANY || a->aatyp == atyp)) return a;
+    if (a->adtyp == dtyp && (atyp == AT_ANY || a->aatyp == atyp))
+      return a;
 
   return (struct Attack *)0;
 }
@@ -300,7 +314,8 @@ int max_passive_dmg(Monster *mdef, Monster *magr) {
           (adtyp == AD_FIRE && !resists_fire(magr)) ||
           (adtyp == AD_ELEC && !resists_elec(magr)) || adtyp == AD_PHYS) {
         dmg = mdef->data->mattk[i].damn;
-        if (!dmg) dmg = mdef->data->mlevel + 1;
+        if (!dmg)
+          dmg = mdef->data->mlevel + 1;
         dmg *= mdef->data->mattk[i].damd;
       } else
         dmg = 0;
@@ -359,7 +374,8 @@ int name_to_mon(const char *in_str) {
   slen = strlen(str);
   term = str + slen;
 
-  if ((s = strstri(str, "vortices")) != 0) strcpy(s + 4, "ex");
+  if ((s = strstri(str, "vortices")) != 0)
+    strcpy(s + 4, "ex");
   /* be careful with "ies"; "priest", "zombies" */
   else if (slen > 3 && !strcmpi(term - 3, "ies") &&
            (slen < 7 || strcmpi(term - 7, "zombies")))
@@ -438,7 +454,8 @@ int name_to_mon(const char *in_str) {
       }
     }
   }
-  if (mntmp == NON_PM) mntmp = title_to_mon(str, (int *)0, (int *)0);
+  if (mntmp == NON_PM)
+    mntmp = title_to_mon(str, (int *)0, (int *)0);
   return mntmp;
 }
 
@@ -447,14 +464,16 @@ int name_to_mon(const char *in_str) {
 
 /* returns 3 values (0=male, 1=female, 2=none) */
 int gender(Monster *mtmp) {
-  if (is_neuter(mtmp->data)) return 2;
+  if (is_neuter(mtmp->data))
+    return 2;
   return mtmp->female;
 }
 
 /* Like gender(), but lower animals and such are still "it". */
 /* This is the one we want to use when printing messages. */
 int pronoun_gender(Monster *mtmp) {
-  if (is_neuter(mtmp->data) || !canspotmon(mtmp)) return 2;
+  if (is_neuter(mtmp->data) || !canspotmon(mtmp))
+    return 2;
   return (humanoid(mtmp->data) || (mtmp->data->geno & G_UNIQ) ||
           type_is_pname(mtmp->data))
              ? (int)mtmp->female
@@ -467,10 +486,12 @@ int pronoun_gender(Monster *mtmp) {
 /* used for nearby monsters when you go to another level */
 bool levl_follower(Monster *mtmp) {
   /* monsters with the Amulet--even pets--won't follow across levels */
-  if (mon_has_amulet(mtmp)) return FALSE;
+  if (mon_has_amulet(mtmp))
+    return FALSE;
 
   /* some monsters will follow even while intending to flee from you */
-  if (mtmp->mtame || mtmp->iswiz || is_fshk(mtmp)) return TRUE;
+  if (mtmp->mtame || mtmp->iswiz || is_fshk(mtmp))
+    return TRUE;
 
   /* stalking types follow, but won't when fleeing unless you hold
      the Amulet */
@@ -557,7 +578,8 @@ int little_to_big(int montype) {
   int i;
 
   for (i = 0; grownups[i][0] >= LOW_PM; i++)
-    if (montype == grownups[i][0]) return grownups[i][1];
+    if (montype == grownups[i][0])
+      return grownups[i][1];
   return montype;
 #else
   /* AIX PS/2 C-compiler 1.1.1 optimizer does not like the above for loop,
@@ -570,7 +592,8 @@ int little_to_big(int montype) {
 
   monvalue = montype;
   for (i = 0; grownups[i][0] >= LOW_PM; i++)
-    if (montype == grownups[i][0]) monvalue = grownups[i][1];
+    if (montype == grownups[i][0])
+      monvalue = grownups[i][1];
 
   return monvalue;
 #endif
@@ -580,7 +603,8 @@ int big_to_little(int montype) {
   int i;
 
   for (i = 0; grownups[i][0] >= LOW_PM; i++)
-    if (montype == grownups[i][1]) return grownups[i][0];
+    if (montype == grownups[i][1])
+      return grownups[i][0];
   return montype;
 }
 

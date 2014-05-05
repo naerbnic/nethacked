@@ -83,7 +83,8 @@ void load_qtlist() {
   long qt_offsets[N_HDR];
 
   msg_file = dlb_fopen(QTEXT_FILE, RDBMODE);
-  if (!msg_file) panic("CANNOT OPEN QUEST TEXT FILE %s.", QTEXT_FILE);
+  if (!msg_file)
+    panic("CANNOT OPEN QUEST TEXT FILE %s.", QTEXT_FILE);
 
   /*
    * Read in the number of classes, then the ID's & offsets for
@@ -122,9 +123,12 @@ void load_qtlist() {
 
 /* called at program exit */
 void unload_qtlist() {
-  if (msg_file) (void)dlb_fclose(msg_file), msg_file = 0;
-  if (qt_list.common) free((genericptr_t)qt_list.common), qt_list.common = 0;
-  if (qt_list.chrole) free((genericptr_t)qt_list.chrole), qt_list.chrole = 0;
+  if (msg_file)
+    (void)dlb_fclose(msg_file), msg_file = 0;
+  if (qt_list.common)
+    free((genericptr_t)qt_list.common), qt_list.common = 0;
+  if (qt_list.chrole)
+    free((genericptr_t)qt_list.chrole), qt_list.chrole = 0;
   return;
 }
 
@@ -181,7 +185,8 @@ STATIC_OVL struct qtmsg *msg_in(struct qtmsg *qtm_list, int msgnum) {
   struct qtmsg *qt_msg;
 
   for (qt_msg = qtm_list; qt_msg->msgnum > 0; qt_msg++)
-    if (qt_msg->msgnum == msgnum) return (qt_msg);
+    if (qt_msg->msgnum == msgnum)
+      return (qt_msg);
 
   return ((struct qtmsg *)0);
 }
@@ -335,7 +340,8 @@ STATIC_OVL void convert_line() {
         break;
     }
   }
-  if (cc >= out_line + sizeof out_line) panic("convert_line: overflow");
+  if (cc >= out_line + sizeof out_line)
+    panic("convert_line: overflow");
   *cc = 0;
   return;
 }

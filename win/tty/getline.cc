@@ -40,7 +40,8 @@ STATIC_OVL void hooked_tty_getlin(const char *query, char *bufp,
   struct WinDesc *cw = wins[WIN_MESSAGE];
   bool doprev = 0;
 
-  if (ttyDisplay->toplin == 1 && !(cw->flags & WIN_STOP)) more();
+  if (ttyDisplay->toplin == 1 && !(cw->flags & WIN_STOP))
+    more();
   cw->flags &= ~WIN_STOP;
   ttyDisplay->toplin = 3; /* special prompt state */
   ttyDisplay->inread++;
@@ -78,7 +79,8 @@ STATIC_OVL void hooked_tty_getlin(const char *query, char *bufp,
         *bufp = 0;
         addtopl(obufp);
       } else {
-        if (!doprev) (void)tty_doprev_message(); /* need two initially */
+        if (!doprev)
+          (void)tty_doprev_message(); /* need two initially */
         (void)tty_doprev_message();
         doprev = 1;
         continue;
@@ -103,8 +105,10 @@ STATIC_OVL void hooked_tty_getlin(const char *query, char *bufp,
         putsyms("\b \b"); /* putsym converts \b */
 #else                     /* NEWAUTOCOMP */
         putsyms("\b");
-        for (i = bufp; *i; ++i) putsyms(" ");
-        for (; i > bufp; --i) putsyms("\b");
+        for (i = bufp; *i; ++i)
+          putsyms(" ");
+        for (; i > bufp; --i)
+          putsyms("\b");
         *bufp = 0;
 #endif                    /* NEWAUTOCOMP */
       } else
@@ -136,13 +140,16 @@ STATIC_OVL void hooked_tty_getlin(const char *query, char *bufp,
         bufp = eos(bufp);
 #else  /* NEWAUTOCOMP */
         /* pointer and cursor left where they were */
-        for (i = bufp; *i; ++i) putsyms("\b");
+        for (i = bufp; *i; ++i)
+          putsyms("\b");
       } else if (i > bufp) {
         char *s = i;
 
         /* erase rest of prior guess */
-        for (; i > bufp; --i) putsyms(" ");
-        for (; s > bufp; --s) putsyms("\b");
+        for (; i > bufp; --i)
+          putsyms(" ");
+        for (; s > bufp; --s)
+          putsyms("\b");
 #endif /* NEWAUTOCOMP */
       }
     } else if (c == kill_char || c == '\177') { /* Robert Viduya */
@@ -153,8 +160,10 @@ STATIC_OVL void hooked_tty_getlin(const char *query, char *bufp,
         putsyms("\b \b");
       }
 #else  /* NEWAUTOCOMP */
-      for (; *bufp; ++bufp) putsyms(" ");
-      for (; bufp != obufp; --bufp) putsyms("\b \b");
+      for (; *bufp; ++bufp)
+        putsyms(" ");
+      for (; bufp != obufp; --bufp)
+        putsyms("\b \b");
       *bufp = 0;
 #endif /* NEWAUTOCOMP */
     } else
@@ -224,7 +233,8 @@ int tty_get_ext_cmd() {
   int i;
   char buf[BUFSZ];
 
-  if (iflags.extmenu) return extcmd_via_menu();
+  if (iflags.extmenu)
+    return extcmd_via_menu();
 /* maybe a runtime option? */
 /* hooked_tty_getlin("#", buf, flags.cmd_comp ? ext_cmd_getlin_hook :
  * (getlin_hook_proc) 0); */
@@ -235,15 +245,18 @@ int tty_get_ext_cmd() {
   hooked_tty_getlin("#", buf, ext_cmd_getlin_hook);
 #endif
   (void)mungspaces(buf);
-  if (buf[0] == 0 || buf[0] == '\033') return -1;
+  if (buf[0] == 0 || buf[0] == '\033')
+    return -1;
 
   for (i = 0; extcmdlist[i].ef_txt != (char *)0; i++)
-    if (!strcmpi(buf, extcmdlist[i].ef_txt)) break;
+    if (!strcmpi(buf, extcmdlist[i].ef_txt))
+      break;
 
 #ifdef REDO
   if (!in_doagain) {
     int j;
-    for (j = 0; buf[j]; j++) savech(buf[j]);
+    for (j = 0; buf[j]; j++)
+      savech(buf[j]);
     savech('\n');
   }
 #endif

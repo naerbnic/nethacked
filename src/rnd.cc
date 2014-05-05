@@ -23,7 +23,8 @@ void check_reseed() {
     int rnd[2];
 
     fptr = fopen("/dev/urandom", "r");
-    if (fptr) fread((void *)rnd, sizeof(int), 2, fptr);
+    if (fptr)
+      fread((void *)rnd, sizeof(int), 2, fptr);
     fclose(fptr);
     srandom((int)(time((time_t *)0)) + rnd[0]);
     reseed_period = (rnd[1] % 700) + 10;
@@ -105,7 +106,8 @@ int d(int n, int x) {
     return (1);
   }
 #endif
-  while (n--) tmp += RND(x);
+  while (n--)
+    tmp += RND(x);
   return (tmp); /* Alea iacta est. -- J.C. */
 }
 
@@ -117,7 +119,8 @@ int rne(int x) {
 
   utmp = (player.ulevel < 15) ? 5 : player.ulevel / 3;
   tmp = 1;
-  while (tmp < utmp && !rn2(x)) tmp++;
+  while (tmp < utmp && !rn2(x))
+    tmp++;
   return tmp;
 
   /* was:

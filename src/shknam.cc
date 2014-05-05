@@ -314,23 +314,27 @@ STATIC_OVL void nameshk(Monster *shk, const char *const *nlp) {
     int nseed = (int)((long)player.ubirthday / 257L);
 
     name_wanted = ledger_no(&player.uz) + (nseed % 13) - (nseed % 5);
-    if (name_wanted < 0) name_wanted += (13 + 5);
+    if (name_wanted < 0)
+      name_wanted += (13 + 5);
     shk->female = name_wanted & 1;
 
-    for (names_avail = 0; nlp[names_avail]; names_avail++) continue;
+    for (names_avail = 0; nlp[names_avail]; names_avail++)
+      continue;
 
     for (trycnt = 0; trycnt < 50; trycnt++) {
       if (nlp == shktools) {
         shname = shktools[rn2(names_avail)];
         shk->female = (*shname == '_');
-        if (shk->female) shname++;
+        if (shk->female)
+          shname++;
       } else if (name_wanted < names_avail) {
         shname = nlp[name_wanted];
       } else if ((i = rn2(names_avail)) != 0) {
         shname = nlp[i - 1];
       } else if (nlp != shkgeneral) {
         nlp = shkgeneral; /* try general names */
-        for (names_avail = 0; nlp[names_avail]; names_avail++) continue;
+        for (names_avail = 0; nlp[names_avail]; names_avail++)
+          continue;
         continue; /* next `trycnt' iteration */
       } else {
         shname = shk->female ? "Lucrezia" : "Dirk";
@@ -338,11 +342,14 @@ STATIC_OVL void nameshk(Monster *shk, const char *const *nlp) {
 
       /* is name already in use on this level? */
       for (mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
-        if (mtmp->dead() || (mtmp == shk) || !mtmp->isshk) continue;
-        if (strcmp(ESHK(mtmp)->shknam, shname)) continue;
+        if (mtmp->dead() || (mtmp == shk) || !mtmp->isshk)
+          continue;
+        if (strcmp(ESHK(mtmp)->shknam, shname))
+          continue;
         break;
       }
-      if (!mtmp) break; /* new name */
+      if (!mtmp)
+        break; /* new name */
     }
   }
   (void)strncpy(ESHK(shk)->shknam, shname, PL_NSIZ);
@@ -408,10 +415,12 @@ STATIC_OVL int shkinit(const struct shclass *shp, struct mkroom *sroom) {
     return (-1);
   }
 
-  if (MON_AT(sx, sy)) (void)rloc(m_at(sx, sy), FALSE); /* insurance */
+  if (MON_AT(sx, sy))
+    (void)rloc(m_at(sx, sy), FALSE); /* insurance */
 
   /* now initialize the shopkeeper monster structure */
-  if (!(shk = makemon(&mons[PM_SHOPKEEPER], sx, sy, NO_MM_FLAGS))) return (-1);
+  if (!(shk = makemon(&mons[PM_SHOPKEEPER], sx, sy, NO_MM_FLAGS)))
+    return (-1);
   shk->isshk = shk->mpeaceful = 1;
   set_malign(shk);
   shk->msleeping = 0;
@@ -435,7 +444,8 @@ STATIC_OVL int shkinit(const struct shclass *shp, struct mkroom *sroom) {
 #else
   mkmonmoney(shk, 1000L + 30L * (long)rnd(100)); /* initial capital */
 #endif
-  if (shp->shknms == shkrings) (void)mongets(shk, TOUCHSTONE);
+  if (shp->shknms == shkrings)
+    (void)mongets(shk, TOUCHSTONE);
   nameshk(shk, shp->shknms);
 
   return (sh);
@@ -455,7 +465,8 @@ void stock_room(int shp_indx, struct mkroom *sroom) {
   const struct shclass *shp = &shtypes[shp_indx];
 
   /* first, try to place a shopkeeper in the room */
-  if ((sh = shkinit(shp, sroom)) < 0) return;
+  if ((sh = shkinit(shp, sroom)) < 0)
+    return;
 
   /* make sure no doorways without doors, and no */
   /* trapped doors, in shops.			   */
@@ -470,7 +481,8 @@ void stock_room(int shp_indx, struct mkroom *sroom) {
     cvt_sdoor_to_door(&levl[sx][sy]); /* .typ = DOOR */
     newsym(sx, sy);
   }
-  if (levl[sx][sy].doormask & D_TRAPPED) levl[sx][sy].doormask = D_LOCKED;
+  if (levl[sx][sy].doormask & D_TRAPPED)
+    levl[sx][sy].doormask = D_LOCKED;
 
   if (levl[sx][sy].doormask == D_LOCKED) {
     int m = sx, n = sy;
@@ -534,7 +546,8 @@ int get_shop_item(int type) {
   int i, j;
 
   /* select an appropriate object type at random */
-  for (j = rnd(100), i = 0; (j -= shp->iprobs[i].iprob) > 0; i++) continue;
+  for (j = rnd(100), i = 0; (j -= shp->iprobs[i].iprob) > 0; i++)
+    continue;
 
   return shp->iprobs[i].itype;
 }

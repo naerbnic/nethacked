@@ -74,7 +74,8 @@ STATIC_OVL void dowaternymph() {
     else
       You_hear("a seductive voice.");
     mtmp->msleeping = 0;
-    if (t_at(mtmp->mx, mtmp->my)) (void)mintrap(mtmp);
+    if (t_at(mtmp->mx, mtmp->my))
+      (void)mintrap(mtmp);
   } else if (!Blind)
     pline("A large bubble rises to the surface and pops.");
   else
@@ -103,7 +104,8 @@ STATIC_PTR void gush(int x, int y, genericptr_t poolcnt) {
       (levl[x][y].typ != ROOM) || (sobj_at(BOULDER, x, y)) || nexttodoor(x, y))
     return;
 
-  if ((ttmp = t_at(x, y)) != 0 && !delfloortrap(ttmp)) return;
+  if ((ttmp = t_at(x, y)) != 0 && !delfloortrap(ttmp))
+    return;
 
   if (!((*(int *)poolcnt)++))
     pline("Water gushes forth from the overflowing fountain!");
@@ -140,7 +142,8 @@ void dryup(xchar x, xchar y, bool isyou) {
       SET_FOUNTAIN_WARNED(x, y);
       /* Warn about future fountain use. */
       for (mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
-        if (mtmp->dead()) continue;
+        if (mtmp->dead())
+          continue;
         if ((mtmp->data == &mons[PM_WATCHMAN] ||
              mtmp->data == &mons[PM_WATCH_CAPTAIN]) &&
             couldsee(mtmp->mx, mtmp->my) && mtmp->mpeaceful) {
@@ -150,24 +153,28 @@ void dryup(xchar x, xchar y, bool isyou) {
         }
       }
       /* You can see or hear this effect */
-      if (!mtmp) pline_The("flow reduces to a trickle.");
+      if (!mtmp)
+        pline_The("flow reduces to a trickle.");
       return;
     }
 #ifdef WIZARD
     if (isyou && wizard) {
-      if (yn("Dry up fountain?") == 'n') return;
+      if (yn("Dry up fountain?") == 'n')
+        return;
     }
 #endif
     /* replace the fountain with ordinary floor */
     levl[x][y].typ = ROOM;
     levl[x][y].looted = 0;
     levl[x][y].blessedftn = 0;
-    if (cansee(x, y)) pline_The("fountain dries up!");
+    if (cansee(x, y))
+      pline_The("fountain dries up!");
     /* The location is seen if the hero/monster is invisible */
     /* or felt if the hero is blind.			 */
     newsym(x, y);
     level.flags.nfountains--;
-    if (isyou && in_town(x, y)) (void)angry_guards(FALSE);
+    if (isyou && in_town(x, y))
+      (void)angry_guards(FALSE);
   }
 }
 
@@ -194,8 +201,10 @@ void drinkfountain() {
     /* gain ability, blessed if "natural" luck is high */
     i = rn2(A_MAX); /* start at a random attribute */
     for (ii = 0; ii < A_MAX; ii++) {
-      if (adjattrib(i, 1, littleluck ? -1 : 0) && littleluck) break;
-      if (++i >= A_MAX) i = 0;
+      if (adjattrib(i, 1, littleluck ? -1 : 0) && littleluck)
+        break;
+      if (++i >= A_MAX)
+        i = 0;
     }
     display_nhwindow(WIN_MESSAGE, FALSE);
     pline("A wisp of vapor escapes the fountain...");
@@ -208,7 +217,8 @@ void drinkfountain() {
     pline_The("cool draught refreshes you.");
     player.uhunger += rnd(10); /* don't choke on water */
     newuhs(FALSE);
-    if (mgkftn) return;
+    if (mgkftn)
+      return;
   } else {
     switch (fate) {
       case 19: /* Self-knowledge */
@@ -257,7 +267,8 @@ void drinkfountain() {
         morehungry(rn1(20, 11));
         exercise(A_CON, FALSE);
         for (obj = invent; obj; obj = obj->nobj)
-          if (!rn2(5)) Curse(obj);
+          if (!rn2(5))
+            Curse(obj);
         break;
       }
 
@@ -302,7 +313,8 @@ void drinkfountain() {
 
         pline("This water gives you bad breath!");
         for (mtmp = fmon; mtmp; mtmp = mtmp->nmon)
-          if (!mtmp->dead()) monflee(mtmp, 0, FALSE, FALSE);
+          if (!mtmp->dead())
+            monflee(mtmp, 0, FALSE, FALSE);
       } break;
 
       case 30: /* Gushing forth in this room */
@@ -335,7 +347,8 @@ void dipfountain(Object *obj) {
       pline("A freezing mist rises from the water and envelopes the sword.");
       pline_The("fountain disappears!");
       Curse(obj);
-      if (obj->spe > -6 && !rn2(3)) obj->spe--;
+      if (obj->spe > -6 && !rn2(3))
+        obj->spe--;
       obj->oerodeproof = FALSE;
       exercise(A_WIS, FALSE);
     } else {
@@ -355,7 +368,8 @@ void dipfountain(Object *obj) {
     levl[player.ux][player.uy].looted = 0;
     newsym(player.ux, player.uy);
     level.flags.nfountains--;
-    if (in_town(player.ux, player.uy)) (void)angry_guards(FALSE);
+    if (in_town(player.ux, player.uy))
+      (void)angry_guards(FALSE);
     return;
   } else if (get_wet(obj) && !rn2(2))
     return;
@@ -375,7 +389,8 @@ void dipfountain(Object *obj) {
     case 19:
     case 20: /* Uncurse the item */
       if (obj->cursed) {
-        if (!Blind) pline_The("water glows for a moment.");
+        if (!Blind)
+          pline_The("water glows for a moment.");
         Uncurse(obj);
       } else {
         pline("A feeling of loss comes over you.");
@@ -428,7 +443,8 @@ void dipfountain(Object *obj) {
               coin_loss = min(coin_loss, otmp->quan);
               otmp->quan -= coin_loss;
               money -= coin_loss * denomination;
-              if (!otmp->quan) delobj(otmp);
+              if (!otmp->quan)
+                delobj(otmp);
             }
           You("lost some of your money in the fountain!");
           CLEAR_FOUNTAIN_LOOTED(player.ux, player.uy);
@@ -443,7 +459,8 @@ void dipfountain(Object *obj) {
        * surface.  After all, there will have been more people going
        * by.	Just like a shopping mall!  Chris Woodbury  */
 
-      if (FOUNTAIN_IS_LOOTED(player.ux, player.uy)) break;
+      if (FOUNTAIN_IS_LOOTED(player.ux, player.uy))
+        break;
       SET_FOUNTAIN_LOOTED(player.ux, player.uy);
       (void)MakeGold(
           (long)(rnd((dunlevs_in_dungeon(&player.uz) - dunlev(&player.uz) + 1) *

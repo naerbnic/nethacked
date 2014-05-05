@@ -115,7 +115,8 @@ static void mail_by_window(struct lan_mail_struct *msg) {
 /* this returns TRUE if there is mail ready to be read */
 bool lan_mail_check() {
   if (flags.biff) {
-    if (mail_check()) return TRUE;
+    if (mail_check())
+      return TRUE;
   }
   return FALSE;
 }
@@ -142,12 +143,14 @@ void lan_mail_read(Object *otmp) {
 }
 
 void lan_mail_init() {
-  if (!flags.biff) return;
+  if (!flags.biff)
+    return;
   (void)mail_init(lusername);
 }
 
 void lan_mail_finish() {
-  if (iflags.lan_mail) (void)mail_finish();
+  if (iflags.lan_mail)
+    (void)mail_finish();
 }
 
 /* If ever called, the underlying mail system ran into trouble

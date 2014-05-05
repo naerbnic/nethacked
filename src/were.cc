@@ -9,7 +9,8 @@
 #ifdef OVL0
 
 void were_change(Monster *mon) {
-  if (!is_were(mon->data)) return;
+  if (!is_were(mon->data))
+    return;
 
   if (is_human(mon->data)) {
     if (!Protection_from_shape_changers &&
@@ -30,7 +31,8 @@ void were_change(Monster *mon) {
             howler = (char *)0;
             break;
         }
-        if (howler) You_hear("a %s howling at the moon.", howler);
+        if (howler)
+          You_hear("a %s howling at the moon.", howler);
       }
     }
   } else if (!rn2(30) || Protection_from_shape_changers) {
@@ -99,23 +101,27 @@ int were_summon(MonsterType *ptr, bool yours,
   int total = 0;
 
   *visible = 0;
-  if (Protection_from_shape_changers && !yours) return 0;
+  if (Protection_from_shape_changers && !yours)
+    return 0;
   for (i = rnd(5); i > 0; i--) {
     switch (pm) {
       case PM_WERERAT:
       case PM_HUMAN_WERERAT:
         typ = rn2(3) ? PM_SEWER_RAT : rn2(3) ? PM_GIANT_RAT : PM_RABID_RAT;
-        if (genbuf) strcpy(genbuf, "rat");
+        if (genbuf)
+          strcpy(genbuf, "rat");
         break;
       case PM_WEREJACKAL:
       case PM_HUMAN_WEREJACKAL:
         typ = PM_JACKAL;
-        if (genbuf) strcpy(genbuf, "jackal");
+        if (genbuf)
+          strcpy(genbuf, "jackal");
         break;
       case PM_WEREWOLF:
       case PM_HUMAN_WEREWOLF:
         typ = rn2(5) ? PM_WOLF : PM_WINTER_WOLF;
-        if (genbuf) strcpy(genbuf, "wolf");
+        if (genbuf)
+          strcpy(genbuf, "wolf");
         break;
       default:
         continue;
@@ -123,9 +129,11 @@ int were_summon(MonsterType *ptr, bool yours,
     mtmp = makemon(&mons[typ], player.ux, player.uy, NO_MM_FLAGS);
     if (mtmp) {
       total++;
-      if (canseemon(mtmp)) *visible += 1;
+      if (canseemon(mtmp))
+        *visible += 1;
     }
-    if (yours && mtmp) (void)tamedog(mtmp, (Object *)0);
+    if (yours && mtmp)
+      (void)tamedog(mtmp, (Object *)0);
   }
   return total;
 }
@@ -133,12 +141,14 @@ int were_summon(MonsterType *ptr, bool yours,
 void you_were() {
   char qbuf[QBUFSZ];
 
-  if (Unchanging || (player.umonnum == player.ulycn)) return;
+  if (Unchanging || (player.umonnum == player.ulycn))
+    return;
   if (Polymorph_control) {
     /* `+4' => skip "were" prefix to get name of beast */
     sprintf(qbuf, "Do you want to change into %s? ",
             an(mons[player.ulycn].mname + 4));
-    if (yn(qbuf) == 'n') return;
+    if (yn(qbuf) == 'n')
+      return;
   }
   (void)polymon(player.ulycn);
 }

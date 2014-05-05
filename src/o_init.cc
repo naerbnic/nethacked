@@ -48,7 +48,8 @@ STATIC_OVL void setgemprobs(d_level *dlev) {
     lev = 0;
   first = bases[GEM_CLASS];
 
-  for (j = 0; j < 9 - lev / 3; j++) objects[first + j].oc_prob = 0;
+  for (j = 0; j < 9 - lev / 3; j++)
+    objects[first + j].oc_prob = 0;
   first += j;
   if (first > LAST_GEM || objects[first].oc_class != GEM_CLASS ||
       OBJ_NAME(objects[first]) == (char *)0) {
@@ -67,11 +68,14 @@ STATIC_OVL void shuffle(int o_low, int o_high, bool domaterial) {
   int color;
 
   for (num_to_shuffle = 0, j = o_low; j <= o_high; j++)
-    if (!objects[j].oc_name_known) num_to_shuffle++;
-  if (num_to_shuffle < 2) return;
+    if (!objects[j].oc_name_known)
+      num_to_shuffle++;
+  if (num_to_shuffle < 2)
+    return;
 
   for (j = o_low; j <= o_high; j++) {
-    if (objects[j].oc_name_known) continue;
+    if (objects[j].oc_name_known)
+      continue;
     do
       i = j + rn2(o_high - j + 1);
     while (objects[i].oc_name_known);
@@ -107,7 +111,8 @@ void init_objects() {
   /* bug fix to prevent "initialization error" abort on Intel Xenix.
    * reported by mikew@semike
    */
-  for (i = 0; i < MAXOCLASSES; i++) bases[i] = 0;
+  for (i = 0; i < MAXOCLASSES; i++)
+    bases[i] = 0;
   /* initialize object descriptions */
   for (i = 0; i < NUM_OBJECTS; i++)
     objects[i].oc_name_idx = objects[i].oc_descr_idx = i;
@@ -117,7 +122,8 @@ void init_objects() {
   while (first < NUM_OBJECTS) {
     oclass = objects[first].oc_class;
     last = first + 1;
-    while (last < NUM_OBJECTS && objects[last].oc_class == oclass) last++;
+    while (last < NUM_OBJECTS && objects[last].oc_class == oclass)
+      last++;
     bases[(int)oclass] = first;
 
     if (oclass == GEM_CLASS) {
@@ -145,13 +151,15 @@ void init_objects() {
     }
   check:
     sum = 0;
-    for (i = first; i < last; i++) sum += objects[i].oc_prob;
+    for (i = first; i < last; i++)
+      sum += objects[i].oc_prob;
     if (sum == 0) {
       for (i = first; i < last; i++)
         objects[i].oc_prob = (1000 + i - first) / (last - first);
       goto check;
     }
-    if (sum != 1000) error("init-prob error for class %d (%d%%)", oclass, sum);
+    if (sum != 1000)
+      error("init-prob error for class %d (%d%%)", oclass, sum);
     first = last;
   }
   /* shuffle descriptions */
@@ -167,7 +175,8 @@ STATIC_OVL void shuffle_all() {
   for (oclass = 1; oclass < MAXOCLASSES; oclass++) {
     first = bases[oclass];
     last = first + 1;
-    while (last < NUM_OBJECTS && objects[last].oc_class == oclass) last++;
+    while (last < NUM_OBJECTS && objects[last].oc_class == oclass)
+      last++;
 
     if (OBJ_DESCR(objects[first]) != (char *)0 && oclass != TOOL_CLASS &&
         oclass != WEAPON_CLASS && oclass != ARMOR_CLASS &&
@@ -178,7 +187,8 @@ STATIC_OVL void shuffle_all() {
         j -= 1; /* only water has a fixed description */
       else if (oclass == AMULET_CLASS || oclass == SCROLL_CLASS ||
                oclass == SPBOOK_CLASS) {
-        while (!objects[j].oc_magic || objects[j].oc_unique) j--;
+        while (!objects[j].oc_magic || objects[j].oc_unique)
+          j--;
       }
 
       /* non-magical amulets, scrolls, and spellbooks
@@ -209,7 +219,8 @@ int find_skates() {
   const char *s;
 
   for (i = SPEED_BOOTS; i <= LEVITATION_BOOTS; i++)
-    if ((s = OBJ_DESCR(objects[i])) != 0 && !strcmp(s, "snow boots")) return i;
+    if ((s = OBJ_DESCR(objects[i])) != 0 && !strcmp(s, "snow boots"))
+      return i;
 
   impossible("snow boots not found?");
   return -1; /* not 0, or caller would try again each move */
@@ -271,14 +282,17 @@ void discover_object(int oindx, bool mark_as_known, bool credit_hero) {
        before we reach the next class...
      */
     for (dindx = bases[acls]; disco[dindx] != 0; dindx++)
-      if (disco[dindx] == oindx) break;
+      if (disco[dindx] == oindx)
+        break;
     disco[dindx] = oindx;
 
     if (mark_as_known) {
       objects[oindx].oc_name_known = 1;
-      if (credit_hero) exercise(A_WIS, TRUE);
+      if (credit_hero)
+        exercise(A_WIS, TRUE);
     }
-    if (moves > 1L) update_inventory();
+    if (moves > 1L)
+      update_inventory();
   }
 }
 
@@ -335,7 +349,8 @@ int dodiscovered() {
      also be displayed individually within their regular class */
   for (i = dis = 0; i < SIZE(uniq_objs); i++)
     if (objects[uniq_objs[i]].oc_name_known) {
-      if (!dis++) putstr(tmpwin, iflags.menu_headings, "Unique Items");
+      if (!dis++)
+        putstr(tmpwin, iflags.menu_headings, "Unique Items");
       sprintf(buf, "  %s", OBJ_NAME(objects[uniq_objs[i]]));
       putstr(tmpwin, 0, buf);
       ++ct;

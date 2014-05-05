@@ -96,7 +96,8 @@ static void verbose_help() {
       (char *)0};
   const char **str;
 
-  for (str = long_help; *str; str++) (void)printf("%s\n", *str);
+  for (str = long_help; *str; str++)
+    (void)printf("%s\n", *str);
   usage();
 }
 
@@ -108,7 +109,8 @@ static void Write(int out, char *buf, long len) {
 }
 
 char *eos(char *s) {
-  while (*s) s++;
+  while (*s)
+    s++;
   return s;
 }
 
@@ -130,7 +132,8 @@ int main(int argc, char **argv) {
   char action = ' ';
   library lib;
 
-  if (argc > 0 && argv[0] && *argv[0]) progname = argv[0];
+  if (argc > 0 && argv[0] && *argv[0])
+    progname = argv[0];
 
   if (argc < 2) {
     usage();
@@ -148,19 +151,24 @@ int main(int argc, char **argv) {
         verbose_help();
         break;
       case 'I':
-        if (ap == argc) usage();
+        if (ap == argc)
+          usage();
         list_file = argv[ap++];
-        if (iseen) printf("Warning: multiple I options.  Previous ignored.\n");
+        if (iseen)
+          printf("Warning: multiple I options.  Previous ignored.\n");
         iseen = 1;
         break;
       case 'f':
-        if (ap == argc) usage();
+        if (ap == argc)
+          usage();
         library_file = argv[ap++];
-        if (fseen) printf("Warning: multiple f options.  Previous ignored.\n");
+        if (fseen)
+          printf("Warning: multiple f options.  Previous ignored.\n");
         fseen = 1;
         break;
       case 'C':
-        if (ap == argc) usage();
+        if (ap == argc)
+          usage();
         if (chdir(argv[ap++])) {
           printf("Can't chdir to %s\n", argv[--ap]);
           xexit(EXIT_FAILURE);
@@ -227,8 +235,10 @@ int main(int argc, char **argv) {
           /* if files are listed, see if current is wanted */
           int c;
           for (c = ap; c < argc; c++)
-            if (!FILENAME_CMP(lib.dir[i].fname, argv[c])) break;
-          if (c == argc) continue; /* skip */
+            if (!FILENAME_CMP(lib.dir[i].fname, argv[c]))
+              break;
+          if (c == argc)
+            continue; /* skip */
         } else if (!FILENAME_CMP(lib.dir[i].fname, DLB_DIRECTORY)) {
           /*
            * Don't extract the directory unless the user
@@ -271,7 +281,8 @@ int main(int argc, char **argv) {
 
         (void)close(f);
 
-        if (verbose) printf("x %s\n", lib.dir[i].fname);
+        if (verbose)
+          printf("x %s\n", lib.dir[i].fname);
       }
 
       close_library(&lib);
@@ -370,7 +381,8 @@ int main(int argc, char **argv) {
           printf("Can't open input file '%s'\n", ld[i].fname);
           xexit(EXIT_FAILURE);
         }
-        if (verbose) printf("%s\n", ld[i].fname);
+        if (verbose)
+          printf("%s\n", ld[i].fname);
 
         fsiz = 0L;
         while ((r = read(fd, buf, sizeof buf)) != 0) {
@@ -385,7 +397,8 @@ int main(int argc, char **argv) {
           fsiz += r;
         }
         (void)close(fd);
-        if (fsiz != ld[i].fsize) rewrite_directory = TRUE;
+        if (fsiz != ld[i].fsize)
+          rewrite_directory = TRUE;
         /* in case directory rewrite is needed */
         ld[i].fsize = fsiz;
         ld[i].foffset = flen;
@@ -393,7 +406,8 @@ int main(int argc, char **argv) {
       }
 
       if (rewrite_directory) {
-        if (verbose) printf("(rewriting dlb directory info)\n");
+        if (verbose)
+          printf("(rewriting dlb directory info)\n");
         (void)lseek(out, 0, SEEK_SET); /* rewind */
         write_dlb_directory(out, nfiles, ld, slen, dir_size, flen);
       }

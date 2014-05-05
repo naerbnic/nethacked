@@ -81,14 +81,16 @@ STATIC_DCL int ready_weapon(Object *);
 void setuwep(Object *obj) {
   Object *olduwep = uwep;
 
-  if (obj == uwep) return; /* necessary to not set unweapon */
-  /* This message isn't printed in the caller because it happens
-   * *whenever* Sunsword is unwielded, from whatever cause.
-   */
+  if (obj == uwep)
+    return; /* necessary to not set unweapon */
+            /* This message isn't printed in the caller because it happens
+             * *whenever* Sunsword is unwielded, from whatever cause.
+             */
   setworn(obj, W_WEP);
   if (uwep == obj && artifact_light(olduwep) && olduwep->lamplit) {
     end_burn(olduwep, FALSE);
-    if (!Blind) pline("%s glowing.", Tobjnam(olduwep, "stop"));
+    if (!Blind)
+      pline("%s glowing.", Tobjnam(olduwep, "stop"));
   }
   /* Note: Explicitly wielding a pick-axe will not give a "bashing"
    * message.  Wielding one via 'a'pplying it will.
@@ -167,7 +169,8 @@ STATIC_OVL int ready_weapon(Object *wep) {
 
     if (artifact_light(wep) && !wep->lamplit) {
       begin_burn(wep, FALSE);
-      if (!Blind) pline("%s to glow brilliantly!", Tobjnam(wep, "begin"));
+      if (!Blind)
+        pline("%s to glow brilliantly!", Tobjnam(wep, "begin"));
     }
 
 #if 0
@@ -227,7 +230,8 @@ int dowield() {
     return (0);
   else if (wep == uwep) {
     You("are already wielding that!");
-    if (is_weptool(wep)) unweapon = FALSE; /* [see setuwep()] */
+    if (is_weptool(wep))
+      unweapon = FALSE; /* [see setuwep()] */
     return (0);
   } else if (welded(uwep)) {
     weldmsg(uwep);
@@ -255,7 +259,8 @@ int dowield() {
   /* Set your new primary weapon */
   oldwep = uwep;
   result = ready_weapon(wep);
-  if (flags.pushweapon && oldwep && uwep != oldwep) setuswapwep(oldwep);
+  if (flags.pushweapon && oldwep && uwep != oldwep)
+    setuswapwep(oldwep);
   untwoweapon();
 
   return (result);
@@ -295,7 +300,8 @@ int doswapweapon() {
       You("have no secondary weapon readied.");
   }
 
-  if (player.twoweap && !can_twoweapon()) untwoweapon();
+  if (player.twoweap && !can_twoweapon())
+    untwoweapon();
 
   return (result);
 }
@@ -373,9 +379,11 @@ bool wield_tool(Object *obj, const char *verb) {
   const char *what;
   bool more_than_1;
 
-  if (obj == uwep) return TRUE; /* nothing to do if already wielding it */
+  if (obj == uwep)
+    return TRUE; /* nothing to do if already wielding it */
 
-  if (!verb) verb = "wield";
+  if (!verb)
+    verb = "wield";
   what = xname(obj);
   more_than_1 = (obj->quan > 1L || strstri(what, "pair of ") != 0 ||
                  strstri(what, "s of ") != 0);
@@ -391,8 +399,10 @@ bool wield_tool(Object *obj, const char *verb) {
     if (flags.verbose) {
       const char *hand = body_part(HAND);
 
-      if (bimanual(uwep)) hand = makeplural(hand);
-      if (strstri(what, "pair of ") != 0) more_than_1 = FALSE;
+      if (bimanual(uwep))
+        hand = makeplural(hand);
+      if (strstri(what, "pair of ") != 0)
+        more_than_1 = FALSE;
       pline("Since your weapon is welded to your %s, you cannot %s %s %s.",
             hand, verb, more_than_1 ? "those" : "that", xname(obj));
     } else {
@@ -410,19 +420,24 @@ bool wield_tool(Object *obj, const char *verb) {
         (obj->oclass == WEAPON_CLASS) ? "weapon" : "tool");
     return FALSE;
   }
-  if (uquiver == obj) setuqwep(nullptr);
+  if (uquiver == obj)
+    setuqwep(nullptr);
   if (uswapwep == obj) {
     (void)doswapweapon();
     /* doswapweapon might fail */
-    if (uswapwep == obj) return FALSE;
+    if (uswapwep == obj)
+      return FALSE;
   } else {
     You("now wield %s.", doname(obj));
     setuwep(obj);
   }
-  if (uwep != obj) return FALSE; /* rewielded old object after dying */
+  if (uwep != obj)
+    return FALSE; /* rewielded old object after dying */
   /* applying weapon or tool that gets wielded ends two-weapon combat */
-  if (player.twoweap) untwoweapon();
-  if (obj->oclass != WEAPON_CLASS) unweapon = TRUE;
+  if (player.twoweap)
+    untwoweapon();
+  if (obj->oclass != WEAPON_CLASS)
+    unweapon = TRUE;
   return TRUE;
 }
 
@@ -462,7 +477,8 @@ int can_twoweapon() {
     sprintf(kbuf, "%s corpse", an(mons[uswapwep->corpsenm].mname));
     instapetrify(kbuf);
   } else if (Glib || uswapwep->cursed) {
-    if (!Glib) uswapwep->bknown = TRUE;
+    if (!Glib)
+      uswapwep->bknown = TRUE;
     drop_uswapwep();
   } else
     return (TRUE);
@@ -509,7 +525,8 @@ void uwepgone() {
   if (uwep) {
     if (artifact_light(uwep) && uwep->lamplit) {
       end_burn(uwep, FALSE);
-      if (!Blind) pline("%s glowing.", Tobjnam(uwep, "stop"));
+      if (!Blind)
+        pline("%s glowing.", Tobjnam(uwep, "stop"));
     }
     setworn(nullptr, W_WEP);
     unweapon = TRUE;
@@ -547,7 +564,8 @@ void erode_obj(Object *target, bool acid_dmg, bool fade_scrolls) {
   bool vismon;
   bool visobj;
 
-  if (!target) return;
+  if (!target)
+    return;
   victim = carried(target) ? &youmonst : mcarried(target) ? target->ocarry
                                                           : (Monster *)0;
   vismon = victim && (victim != &youmonst) && canseemon(victim);
@@ -583,7 +601,8 @@ void erode_obj(Object *target, bool acid_dmg, bool fade_scrolls) {
         pline("%s's %s not affected.", Monnam(victim), aobjnam(target, "are"));
       /* no message if not carried */
     }
-    if (target->oerodeproof) target->rknown = TRUE;
+    if (target->oerodeproof)
+      target->rknown = TRUE;
   } else if (erosion < MAX_ERODE) {
     if (victim == &youmonst)
       Your(
@@ -632,14 +651,16 @@ int chwepon(Object *otmp, int amount) {
     return (0);
   }
 
-  if (otmp && otmp->oclass == SCROLL_CLASS) otyp = otmp->otyp;
+  if (otmp && otmp->oclass == SCROLL_CLASS)
+    otyp = otmp->otyp;
 
   if (uwep->otyp == WORM_TOOTH && amount >= 0) {
     uwep->otyp = CRYSKNIFE;
     uwep->oerodeproof = 0;
     Your("weapon seems sharper now.");
     uwep->cursed = 0;
-    if (otyp != STRANGE_OBJECT) makeknown(otyp);
+    if (otyp != STRANGE_OBJECT)
+      makeknown(otyp);
     return (1);
   }
 
@@ -647,12 +668,14 @@ int chwepon(Object *otmp, int amount) {
     uwep->otyp = WORM_TOOTH;
     uwep->oerodeproof = 0;
     Your("weapon seems duller now.");
-    if (otyp != STRANGE_OBJECT && otmp->bknown) makeknown(otyp);
+    if (otyp != STRANGE_OBJECT && otmp->bknown)
+      makeknown(otyp);
     return (1);
   }
 
   if (amount < 0 && uwep->oartifact && restrict_name(uwep, ONAME(uwep))) {
-    if (!Blind) Your("%s %s.", aobjnam(uwep, "faintly glow"), color);
+    if (!Blind)
+      Your("%s %s.", aobjnam(uwep, "faintly glow"), color);
     return (1);
   }
   /* there is a (soft) upper and lower limit to uwep->spe */
@@ -676,7 +699,8 @@ int chwepon(Object *otmp, int amount) {
       makeknown(otyp);
   }
   uwep->spe += amount;
-  if (amount > 0) uwep->cursed = 0;
+  if (amount > 0)
+    uwep->cursed = 0;
 
   /*
    * Enchantment, which normally improves a weapon, has an

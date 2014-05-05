@@ -91,7 +91,8 @@ int picklock() {
     return ((xlock.usedtime = 0));
   }
 
-  if (rn2(100) >= xlock.chance) return (1); /* still busy */
+  if (rn2(100) >= xlock.chance)
+    return (1); /* still busy */
 
   You("succeed in %s.", lock_action());
   if (xlock.door) {
@@ -108,7 +109,8 @@ int picklock() {
       xlock.door->doormask = D_LOCKED;
   } else {
     xlock.box->olocked = !xlock.box->olocked;
-    if (xlock.box->otrapped) (void)chest_trap(xlock.box, FINGER, FALSE);
+    if (xlock.box->otrapped)
+      (void)chest_trap(xlock.box, FINGER, FALSE);
   }
   exercise(A_DEX, TRUE);
   return ((xlock.usedtime = 0));
@@ -146,7 +148,8 @@ int forcelock() {
   } else           /* blunt */
     wake_nearby(); /* due to hammering on the container */
 
-  if (rn2(100) >= xlock.chance) return (1); /* still busy */
+  if (rn2(100) >= xlock.chance)
+    return (1); /* still busy */
 
   You("succeed in forcing the lock.");
   xlock.box->olocked = 0;
@@ -186,7 +189,8 @@ int forcelock() {
     if (costly)
       loss += stolen_value(xlock.box, player.ux, player.uy,
                            (bool)shkp->mpeaceful, TRUE);
-    if (loss) You("owe %ld %s for objects destroyed.", loss, currency(loss));
+    if (loss)
+      You("owe %ld %s for objects destroyed.", loss, currency(loss));
     delobj(xlock.box);
   }
   exercise((xlock.picktyp) ? A_DEX : A_STR, TRUE);
@@ -222,7 +226,8 @@ int pick_lock(Object *pick) {
     if (nohands(youmonst.data)) {
       const char *what = (picktyp == LOCK_PICK) ? "pick" : "key";
 #ifdef TOURIST
-      if (picktyp == CREDIT_CARD) what = "card";
+      if (picktyp == CREDIT_CARD)
+        what = "card";
 #endif
       pline(no_longer, "hold the", what);
       reset_pick();
@@ -278,8 +283,10 @@ int pick_lock(Object *pick) {
 
 #ifdef CONFIRM_LOCKING
     for (otmp = level.objects[cc.x][cc.y]; otmp; otmp = otmp->nexthere)
-      if (Is_box(otmp)) ++count;
-    if ((count == 1) && !iflags.confirm_locking) c = 'y';
+      if (Is_box(otmp))
+        ++count;
+    if ((count == 1) && !iflags.confirm_locking)
+      c = 'y';
 #endif
 
     for (otmp = level.objects[cc.x][cc.y]; otmp; otmp = otmp->nexthere)
@@ -313,8 +320,10 @@ int pick_lock(Object *pick) {
               verb, it ? "it" : "its lock");
 
           c = ynq(qbuf);
-          if (c == 'q') return (0);
-          if (c == 'n') continue;
+          if (c == 'q')
+            return (0);
+          if (c == 'n')
+            continue;
 
 #ifdef CONFIRM_LOCKING
         }
@@ -346,7 +355,8 @@ int pick_lock(Object *pick) {
           default:
             ch = 0;
         }
-        if (otmp->cursed) ch /= 2;
+        if (otmp->cursed)
+          ch /= 2;
 
         xlock.picktyp = picktyp;
         xlock.box = otmp;
@@ -354,7 +364,8 @@ int pick_lock(Object *pick) {
         break;
       }
     if (c != 'y') {
-      if (!count) There("doesn't seem to be any sort of lock here.");
+      if (!count)
+        There("doesn't seem to be any sort of lock here.");
       return (0); /* decided against all boxes */
     }
   } else { /* pick the lock in a door */
@@ -410,7 +421,8 @@ int pick_lock(Object *pick) {
           sprintf(qbuf, "%sock it?", (door->doormask & D_LOCKED) ? "Unl" : "L");
 
           c = yn(qbuf);
-          if (c == 'n') return (0);
+          if (c == 'n')
+            return (0);
 
 #ifdef CONFIRM_LOCKING
         }
@@ -485,8 +497,10 @@ int doforce() {
                     an(simple_typename(otmp->otyp)), "a box"));
 
       c = ynq(qbuf);
-      if (c == 'q') return (0);
-      if (c == 'n') continue;
+      if (c == 'q')
+        return (0);
+      if (c == 'n')
+        continue;
 
       if (picktyp)
         You("force your %s into a crack and pry.", xname(uwep));
@@ -525,7 +539,8 @@ int doopen() {
   if (!get_adjacent_loc((char *)0, (char *)0, player.ux, player.uy, &cc))
     return (0);
 
-  if ((cc.x == player.ux) && (cc.y == player.uy)) return (0);
+  if ((cc.x == player.ux) && (cc.y == player.uy))
+    return (0);
 
   if ((mtmp = m_at(cc.x, cc.y)) && mtmp->m_ap_type == M_AP_FURNITURE &&
       (mtmp->mappearance == S_hcdoor || mtmp->mappearance == S_vcdoor) &&
@@ -563,7 +578,8 @@ int doopen() {
         break;
     }
     pline("This door%s.", mesg);
-    if (Blind) feel_location(cc.x, cc.y);
+    if (Blind)
+      feel_location(cc.x, cc.y);
     return (0);
   }
 
@@ -578,7 +594,8 @@ int doopen() {
     if (door->doormask & D_TRAPPED) {
       b_trapped("door", FINGER);
       door->doormask = D_NODOOR;
-      if (*in_rooms(cc.x, cc.y, SHOPBASE)) add_damage(cc.x, cc.y, 0L);
+      if (*in_rooms(cc.x, cc.y, SHOPBASE))
+        add_damage(cc.x, cc.y, 0L);
     } else
       door->doormask = D_ISOPEN;
     if (Blind)
@@ -599,10 +616,12 @@ bool obstructed(int x, int y) {
   Monster *mtmp = m_at(x, y);
 
   if (mtmp && mtmp->m_ap_type != M_AP_FURNITURE) {
-    if (mtmp->m_ap_type == M_AP_OBJECT) goto objhere;
+    if (mtmp->m_ap_type == M_AP_OBJECT)
+      goto objhere;
     pline("%s stands in the way!",
           !canspotmon(mtmp) ? "Some creature" : Monnam(mtmp));
-    if (!canspotmon(mtmp)) map_invisible(mtmp->mx, mtmp->my);
+    if (!canspotmon(mtmp))
+      map_invisible(mtmp->mx, mtmp->my);
     return (TRUE);
   }
   if (OBJ_AT(x, y)) {
@@ -629,7 +648,8 @@ int doclose() {
     return 0;
   }
 
-  if (!getdir((char *)0)) return (0);
+  if (!getdir((char *)0))
+    return (0);
 
   x = player.ux + player.dx;
   y = player.uy + player.dy;
@@ -660,7 +680,8 @@ int doclose() {
     return (0);
   }
 
-  if (obstructed(x, y)) return (0);
+  if (obstructed(x, y))
+    return (0);
 
   if (door->doormask == D_BROKEN) {
     pline("This door is broken.");
@@ -730,7 +751,8 @@ bool /* box obj was hit with spell effect otmp */ boxlock(Object *obj,
     case SPE_POLYMORPH:
       /* maybe start unlocking chest, get interrupted, then zap it;
          we must avoid any attempt to resume unlocking it */
-      if (xlock.box == obj) reset_pick();
+      if (xlock.box == obj)
+        reset_pick();
       break;
   }
   return res;
@@ -755,8 +777,10 @@ bool /* Door/secret door was hit with spell effect otmp */ doorlock(
         door->typ = DOOR;
         door->doormask = D_CLOSED | (door->doormask & D_TRAPPED);
         newsym(x, y);
-        if (cansee(x, y)) pline("A door appears in the wall!");
-        if (otmp->otyp == WAN_OPENING || otmp->otyp == SPE_KNOCK) return TRUE;
+        if (cansee(x, y))
+          pline("A door appears in the wall!");
+        if (otmp->otyp == WAN_OPENING || otmp->otyp == SPE_KNOCK)
+          return TRUE;
         break; /* striking: continue door handling below */
       case WAN_LOCKING:
       case SPE_WIZARD_LOCK:
@@ -778,17 +802,20 @@ bool /* Door/secret door was hit with spell effect otmp */ doorlock(
         else
           You_hear("a swoosh.");
         if (obstructed(x, y)) {
-          if (vis) pline_The("cloud %s.", quickly_dissipates);
+          if (vis)
+            pline_The("cloud %s.", quickly_dissipates);
           return FALSE;
         }
         block_point(x, y);
         door->typ = SDOOR;
-        if (vis) pline_The("doorway vanishes!");
+        if (vis)
+          pline_The("doorway vanishes!");
         newsym(x, y);
         return TRUE;
       }
 #endif
-      if (obstructed(x, y)) return FALSE;
+      if (obstructed(x, y))
+        return FALSE;
       /* Don't allow doors to close over traps.  This is for pits */
       /* & trap doors, but is it ever OK for anything else? */
       if (t_at(x, y)) {
@@ -855,7 +882,8 @@ bool /* Door/secret door was hit with spell effect otmp */ doorlock(
         unblock_point(x, y);
         newsym(x, y);
         /* force vision recalc before printing more messages */
-        if (vision_full_recalc) vision_recalc(0);
+        if (vision_full_recalc)
+          vision_recalc(0);
         loudness = 20;
       } else
         res = FALSE;
@@ -864,11 +892,13 @@ bool /* Door/secret door was hit with spell effect otmp */ doorlock(
       impossible("magic (%d) attempted on door.", otmp->otyp);
       break;
   }
-  if (msg && cansee(x, y)) pline(msg);
+  if (msg && cansee(x, y))
+    pline(msg);
   if (loudness > 0) {
     /* door was destroyed */
     wake_nearto(x, y, loudness);
-    if (*in_rooms(x, y, SHOPBASE)) add_damage(x, y, 0L);
+    if (*in_rooms(x, y, SHOPBASE))
+      add_damage(x, y, 0L);
   }
 
   if (res && picking_at(x, y)) {

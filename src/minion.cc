@@ -57,17 +57,20 @@ void msummon(Monster *mon) {
     cnt = (!rn2(4) && !is_lord(&mons[dtype])) ? 2 : 1;
   }
 
-  if (dtype == NON_PM) return;
+  if (dtype == NON_PM)
+    return;
 
   /* sanity checks */
-  if (cnt > 1 && (mons[dtype].geno & G_UNIQ)) cnt = 1;
+  if (cnt > 1 && (mons[dtype].geno & G_UNIQ))
+    cnt = 1;
   /*
    * If this daemon is unique and being re-summoned (the only way we
    * could get this far with an extinct dtype), try another.
    */
   if (mvitals[dtype].mvflags & G_GONE) {
     dtype = ndemon(atyp);
-    if (dtype == NON_PM) return;
+    if (dtype == NON_PM)
+      return;
   }
 
   while (cnt > 0) {
@@ -121,7 +124,8 @@ void summon_minion(aligntyp alignment, bool talk) {
     if (talk) {
       pline_The("voice of %s booms:", align_gname(alignment));
       verbalize("Thou shalt pay for thy indiscretion!");
-      if (!Blind) pline("%s appears before you.", Amonnam(mon));
+      if (!Blind)
+        pline("%s appears before you.", Amonnam(mon));
     }
     mon->mpeaceful = FALSE;
     /* don't call set_malign(); player was naughty */
@@ -145,13 +149,15 @@ int demon_talk(Monster *mtmp) {
   /* Slight advantage given. */
   if (is_dprince(mtmp->data) && mtmp->minvis) {
     mtmp->minvis = mtmp->perminvis = 0;
-    if (!Blind) pline("%s appears before you.", Amonnam(mtmp));
+    if (!Blind)
+      pline("%s appears before you.", Amonnam(mtmp));
     newsym(mtmp->mx, mtmp->my);
   }
   if (youmonst.data->mlet == S_DEMON) { /* Won't blackmail their own. */
     pline("%s says, \"Good hunting, %s.\"", Amonnam(mtmp),
           flags.female ? "Sister" : "Brother");
-    if (!tele_restrict(mtmp)) (void)rloc(mtmp, FALSE);
+    if (!tele_restrict(mtmp))
+      (void)rloc(mtmp, FALSE);
     return (1);
   }
 #ifndef GOLDOBJ
@@ -171,7 +177,8 @@ int demon_talk(Monster *mtmp) {
     /* make sure that the demand is unmeetable if the monster
        has the Amulet, preventing monster from being satisified
        and removed from the game (along with said Amulet...) */
-    if (mon_has_amulet(mtmp)) demand = cash + (long)rn1(1000, 40);
+    if (mon_has_amulet(mtmp))
+      demand = cash + (long)rn1(1000, 40);
 
     pline("%s demands %ld %s for safe passage.", Amonnam(mtmp), demand,
           currency(demand));
@@ -199,7 +206,8 @@ long bribe(Monster *mtmp) {
 #endif
 
   getlin("How much will you offer?", buf);
-  if (sscanf(buf, "%ld", &offer) != 1) offer = 0L;
+  if (sscanf(buf, "%ld", &offer) != 1)
+    offer = 0L;
 
   /*Michael Paddon -- fix for negative offer to monster*/
   /*JAR880815 - */
@@ -257,7 +265,8 @@ int dlord(aligntyp atyp) {
 
 /* create lawful (good) lord */
 int llord() {
-  if (!(mvitals[PM_ARCHON].mvflags & G_GONE)) return (PM_ARCHON);
+  if (!(mvitals[PM_ARCHON].mvflags & G_GONE))
+    return (PM_ARCHON);
 
   return (lminion()); /* approximate */
 }
@@ -268,7 +277,8 @@ int lminion() {
 
   for (tryct = 0; tryct < 20; tryct++) {
     ptr = mkclass(S_ANGEL, 0);
-    if (ptr && !is_lord(ptr)) return (monsndx(ptr));
+    if (ptr && !is_lord(ptr))
+      return (monsndx(ptr));
   }
 
   return NON_PM;

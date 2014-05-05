@@ -24,7 +24,8 @@ extern void port_help();
 STATIC_OVL bool is_swallow_sym(int c) {
   int i;
   for (i = S_sw_tl; i <= S_sw_br; i++)
-    if ((int)showsyms[i] == c) return TRUE;
+    if ((int)showsyms[i] == c)
+      return TRUE;
   return FALSE;
 }
 
@@ -36,7 +37,8 @@ STATIC_OVL bool is_swallow_sym(int c) {
 STATIC_OVL int append_str(char *buf, const char *new_str) {
   int space_left; /* space remaining in buf */
 
-  if (strstri(buf, new_str)) return 0;
+  if (strstri(buf, new_str))
+    return 0;
 
   space_left = BUFSZ - strlen(buf) - 1;
   (void)strncat(buf, " or ", space_left);
@@ -88,9 +90,12 @@ STATIC_OVL MonsterType *lookat(int x, int y, char *buf, char *monbuf) {
     if ((Invisible || player.uundetected) && !Blind && !player.uswallow) {
       unsigned how = 0;
 
-      if (Infravision) how |= 1;
-      if (Unblind_telepat) how |= 2;
-      if (Detect_monsters) how |= 4;
+      if (Infravision)
+        how |= 1;
+      if (Unblind_telepat)
+        how |= 2;
+      if (Detect_monsters)
+        how |= 4;
 
       if (how)
         sprintf(eos(buf), " [seen: %s%s%s%s%s]", (how & 1) ? "infravision" : "",
@@ -130,7 +135,8 @@ STATIC_OVL MonsterType *lookat(int x, int y, char *buf, char *monbuf) {
       if (player.ustuck == mtmp)
         strcat(buf, (Upolyd && sticks(youmonst.data)) ? ", being held"
                                                       : ", holding you");
-      if (mtmp->mleashed) strcat(buf, ", leashed to you");
+      if (mtmp->mleashed)
+        strcat(buf, ", leashed to you");
 
       if (mtmp->mtrapped && cansee(mtmp->mx, mtmp->my)) {
         Trap *t = t_at(mtmp->mx, mtmp->my);
@@ -155,45 +161,55 @@ STATIC_OVL MonsterType *lookat(int x, int y, char *buf, char *monbuf) {
           normal++;
         }
         /* see invisible */
-        if (useemon && mtmp->minvis) ways_seen++;
+        if (useemon && mtmp->minvis)
+          ways_seen++;
         /* infravision */
         if ((!mtmp->minvis || See_invisible) && see_with_infrared(mtmp))
           ways_seen++;
         /* telepathy */
-        if (tp_sensemon(mtmp)) ways_seen++;
+        if (tp_sensemon(mtmp))
+          ways_seen++;
         /* xray */
         if (useemon && xraydist > 0 && distu(mtmp->mx, mtmp->my) <= xraydist)
           ways_seen++;
-        if (Detect_monsters) ways_seen++;
-        if (MATCH_WARN_OF_MON(mtmp)) ways_seen++;
+        if (Detect_monsters)
+          ways_seen++;
+        if (MATCH_WARN_OF_MON(mtmp))
+          ways_seen++;
 
         if (ways_seen > 1 || !normal) {
           if (normal) {
             strcat(monbuf, "normal vision");
             /* can't actually be 1 yet here */
-            if (ways_seen-- > 1) strcat(monbuf, ", ");
+            if (ways_seen-- > 1)
+              strcat(monbuf, ", ");
           }
           if (useemon && mtmp->minvis) {
             strcat(monbuf, "see invisible");
-            if (ways_seen-- > 1) strcat(monbuf, ", ");
+            if (ways_seen-- > 1)
+              strcat(monbuf, ", ");
           }
           if ((!mtmp->minvis || See_invisible) && see_with_infrared(mtmp)) {
             strcat(monbuf, "infravision");
-            if (ways_seen-- > 1) strcat(monbuf, ", ");
+            if (ways_seen-- > 1)
+              strcat(monbuf, ", ");
           }
           if (tp_sensemon(mtmp)) {
             strcat(monbuf, "telepathy");
-            if (ways_seen-- > 1) strcat(monbuf, ", ");
+            if (ways_seen-- > 1)
+              strcat(monbuf, ", ");
           }
           if (useemon && xraydist > 0 &&
               distu(mtmp->mx, mtmp->my) <= xraydist) {
             /* Eyes of the Overworld */
             strcat(monbuf, "astral vision");
-            if (ways_seen-- > 1) strcat(monbuf, ", ");
+            if (ways_seen-- > 1)
+              strcat(monbuf, ", ");
           }
           if (Detect_monsters) {
             strcat(monbuf, "monster detection");
-            if (ways_seen-- > 1) strcat(monbuf, ", ");
+            if (ways_seen-- > 1)
+              strcat(monbuf, ", ");
           }
           if (MATCH_WARN_OF_MON(mtmp)) {
             char wbuf[BUFSZ];
@@ -203,7 +219,8 @@ STATIC_OVL MonsterType *lookat(int x, int y, char *buf, char *monbuf) {
               sprintf(wbuf, "warned of %s", makeplural(mtmp->data->mname));
               strcat(monbuf, wbuf);
             }
-            if (ways_seen-- > 1) strcat(monbuf, ", ");
+            if (ways_seen-- > 1)
+              strcat(monbuf, ", ");
           }
         }
       }
@@ -303,7 +320,8 @@ STATIC_OVL void checkfile(char *inp, MonsterType *pm, bool user_typed_name,
     dbase_str = strcpy(newstr, inp);
   (void)lcase(dbase_str);
 
-  if (!strncmp(dbase_str, "interior of ", 12)) dbase_str += 12;
+  if (!strncmp(dbase_str, "interior of ", 12))
+    dbase_str += 12;
   if (!strncmp(dbase_str, "a ", 2))
     dbase_str += 2;
   else if (!strncmp(dbase_str, "an ", 3))
@@ -314,7 +332,8 @@ STATIC_OVL void checkfile(char *inp, MonsterType *pm, bool user_typed_name,
     dbase_str += 5;
   else if (!strncmp(dbase_str, "peaceful ", 9))
     dbase_str += 9;
-  if (!strncmp(dbase_str, "invisible ", 10)) dbase_str += 10;
+  if (!strncmp(dbase_str, "invisible ", 10))
+    dbase_str += 10;
   if (!strncmp(dbase_str, "statue of ", 10))
     dbase_str[6] = '\0';
   else if (!strncmp(dbase_str, "figurine of ", 12))
@@ -329,8 +348,10 @@ STATIC_OVL void checkfile(char *inp, MonsterType *pm, bool user_typed_name,
       alt = ep + 7;
     else
       ep = strstri(dbase_str, " called ");
-    if (!ep) ep = strstri(dbase_str, ", ");
-    if (ep && ep > dbase_str) *ep = '\0';
+    if (!ep)
+      ep = strstri(dbase_str, ", ");
+    if (ep && ep > dbase_str)
+      *ep = '\0';
 
     /*
      * If the object is named, then the name is the alternate description;
@@ -356,13 +377,15 @@ STATIC_OVL void checkfile(char *inp, MonsterType *pm, bool user_typed_name,
 
     /* look for the appropriate entry */
     while (dlb_fgets(buf, BUFSZ, fp)) {
-      if (*buf == '.') break; /* we passed last entry without success */
+      if (*buf == '.')
+        break; /* we passed last entry without success */
 
       if (digit(*buf)) {
         /* a number indicates the end of current entry */
         skipping_entry = FALSE;
       } else if (!skipping_entry) {
-        if (!(ep = index(buf, '\n'))) goto bad_data_file;
+        if (!(ep = index(buf, '\n')))
+          goto bad_data_file;
         *ep = 0;
         /* if we match a key that begins with "~", skip this entry */
         chk_skip = (*buf == '~') ? 1 : 0;
@@ -387,7 +410,8 @@ STATIC_OVL void checkfile(char *inp, MonsterType *pm, bool user_typed_name,
 
     /* skip over other possible matches for the info */
     do {
-      if (!dlb_fgets(buf, BUFSZ, fp)) goto bad_data_file;
+      if (!dlb_fgets(buf, BUFSZ, fp))
+        goto bad_data_file;
     } while (!digit(*buf));
     if (sscanf(buf, "%ld,%d\n", &entry_offset, &entry_count) < 2) {
     bad_data_file:
@@ -406,9 +430,12 @@ STATIC_OVL void checkfile(char *inp, MonsterType *pm, bool user_typed_name,
       }
       datawin = create_nhwindow(NHW_MENU);
       for (i = 0; i < entry_count; i++) {
-        if (!dlb_fgets(buf, BUFSZ, fp)) goto bad_data_file;
-        if ((ep = index(buf, '\n')) != 0) *ep = 0;
-        if (index(buf + 1, '\t') != 0) (void)tabexpand(buf + 1);
+        if (!dlb_fgets(buf, BUFSZ, fp))
+          goto bad_data_file;
+        if ((ep = index(buf, '\n')) != 0)
+          *ep = 0;
+        if (index(buf + 1, '\t') != 0)
+          (void)tabexpand(buf + 1);
         putstr(datawin, 0, buf + 1);
       }
       display_nhwindow(datawin, FALSE);
@@ -450,7 +477,8 @@ STATIC_OVL int do_look(bool quick) {
     from_screen = TRUE; /* yes, we want to use the cursor */
   } else {
     i = ynq("Specify unknown object by cursor?");
-    if (i == 'q') return 0;
+    if (i == 'q')
+      return 0;
     from_screen = (i == 'y');
   }
 
@@ -460,7 +488,8 @@ STATIC_OVL int do_look(bool quick) {
     sym = 0; /* gcc -Wall lint */
   } else {
     getlin("Specify what? (type the word)", out_str);
-    if (out_str[0] == '\0' || out_str[0] == '\033') return 0;
+    if (out_str[0] == '\0' || out_str[0] == '\033')
+      return 0;
 
     if (out_str[1]) { /* user typed in a complete string */
       checkfile(out_str, pm, TRUE, TRUE);
@@ -624,10 +653,12 @@ STATIC_OVL int do_look(bool quick) {
           found += append_str(out_str, article == 2
                                            ? the(x_str)
                                            : article == 1 ? an(x_str) : x_str);
-          if (is_cmap_trap(i)) hit_trap = TRUE;
+          if (is_cmap_trap(i))
+            hit_trap = TRUE;
         }
 
-        if (i == S_altar || is_cmap_trap(i)) need_to_look = TRUE;
+        if (i == S_altar || is_cmap_trap(i))
+          need_to_look = TRUE;
       }
     }
 
@@ -724,12 +755,14 @@ int doidtrap() {
   Trap *trap;
   int x, y, tt;
 
-  if (!getdir("^")) return 0;
+  if (!getdir("^"))
+    return 0;
   x = player.ux + player.dx;
   y = player.uy + player.dy;
   for (trap = ftrap; trap; trap = trap->ntrap)
     if (trap->tx == x && trap->ty == y) {
-      if (!trap->tseen) break;
+      if (!trap->tseen)
+        break;
       tt = trap->ttyp;
       if (player.dz) {
         if (player.dz < 0 ? (tt == TRAPDOOR || tt == HOLE) : tt == ROCKTRAP)
@@ -769,7 +802,8 @@ char *dowhatdoes_core(char q, char *cbuf) {
         (meta && *buf == 'M' && *(buf + 1) == '-' && *(buf + 2) == meta) ||
         *buf == q) {
       ep = index(buf, '\n');
-      if (ep) *ep = 0;
+      if (ep)
+        *ep = 0;
       if (ctrl && buf[2] == '\t') {
         buf = bufr + 1;
         (void)strncpy(buf, "^?      ", 8);

@@ -40,9 +40,11 @@ int dodrop() {
   int result, i = (invent) ? 0 : (SIZE(drop_types) - 1);
 #endif
 
-  if (*player.ushops) sellobj_state(SELL_DELIBERATE);
+  if (*player.ushops)
+    sellobj_state(SELL_DELIBERATE);
   result = drop(getobj(&drop_types[i], "drop"));
-  if (*player.ushops) sellobj_state(SELL_NORMAL);
+  if (*player.ushops)
+    sellobj_state(SELL_NORMAL);
   reset_occupations();
 
   return result;
@@ -74,13 +76,15 @@ bool boulder_hits_pool(Object *otmp, int rx, int ry, bool pushing) {
       } else
         levl[rx][ry].typ = ROOM;
 
-      if (ttmp) (void)delfloortrap(ttmp);
+      if (ttmp)
+        (void)delfloortrap(ttmp);
       bury_objs(rx, ry);
 
       newsym(rx, ry);
       if (pushing) {
         You("push %s into the %s.", the(xname(otmp)), what);
-        if (flags.verbose && !Blind) pline("Now you can cross it!");
+        if (flags.verbose && !Blind)
+          pline("Now you can cross it!");
         /* no splashing in this case */
       }
     }
@@ -126,7 +130,8 @@ bool flooreffects(Object *obj, int x, int y, const char *verb) {
   Trap *t;
   Monster *mtmp;
 
-  if (obj->where != OBJ_FREE) panic("flooreffects: obj not free");
+  if (obj->where != OBJ_FREE)
+    panic("flooreffects: obj not free");
 
   /* make sure things like water_damage() have no pointers to follow */
   obj->nobj = obj->nexthere = nullptr;
@@ -211,7 +216,8 @@ bool flooreffects(Object *obj, int x, int y, const char *verb) {
 
 /* obj is an object dropped on an altar */
 void doaltarobj(Object *obj) {
-  if (Blind) return;
+  if (Blind)
+    return;
 
   /* KMH, conduct */
   player.uconduct.gnostic++;
@@ -220,7 +226,8 @@ void doaltarobj(Object *obj) {
     There("is %s flash as %s %s the altar.",
           an(hcolor(obj->blessed ? NH_AMBER : NH_BLACK)), doname(obj),
           otense(obj, "hit"));
-    if (!Hallucination) obj->bknown = 1;
+    if (!Hallucination)
+      obj->bknown = 1;
   } else {
     pline("%s %s on the altar.", Doname2(obj), otense(obj, "land"));
     obj->bknown = 1;
@@ -378,7 +385,8 @@ void dosinkring(Object *obj) {
 /* some common tests when trying to drop or throw items */
 bool canletgo(Object *obj, const char *word) {
   if (obj->owornmask & (W_ARMOR | W_RING | W_AMUL | W_TOOL)) {
-    if (*word) Norep("You cannot %s %s you are wearing.", word, something);
+    if (*word)
+      Norep("You cannot %s %s you are wearing.", word, something);
     return (FALSE);
   }
   if (obj->otyp == LOADSTONE && obj->cursed) {
@@ -387,7 +395,8 @@ bool canletgo(Object *obj, const char *word) {
     if (*word) {
       /* getobj() ignores a count for throwing since that is
          implicitly forced to be 1; replicate its kludge... */
-      if (!strcmp(word, "throw") && obj->quan > 1L) obj->corpsenm = 1;
+      if (!strcmp(word, "throw") && obj->quan > 1L)
+        obj->corpsenm = 1;
       pline("For some reason, you cannot %s%s the stone%s!", word,
             obj->corpsenm ? " any of" : "", plur(obj->quan));
     }
@@ -396,12 +405,14 @@ bool canletgo(Object *obj, const char *word) {
     return (FALSE);
   }
   if (obj->otyp == LEASH && obj->leashmon != 0) {
-    if (*word) pline_The("leash is tied around your %s.", body_part(HAND));
+    if (*word)
+      pline_The("leash is tied around your %s.", body_part(HAND));
     return (FALSE);
   }
 #ifdef STEED
   if (obj->owornmask & W_SADDLE) {
-    if (*word) You("cannot %s %s you are sitting on.", word, something);
+    if (*word)
+      You("cannot %s %s you are sitting on.", word, something);
     return (FALSE);
   }
 #endif
@@ -410,8 +421,10 @@ bool canletgo(Object *obj, const char *word) {
 
 STATIC_PTR
 int drop(Object *obj) {
-  if (!obj) return (0);
-  if (!canletgo(obj, "drop")) return (0);
+  if (!obj)
+    return (0);
+  if (!canletgo(obj, "drop"))
+    return (0);
   if (obj == uwep) {
     if (welded(uwep)) {
       weldmsg(obj);
@@ -445,12 +458,15 @@ int drop(Object *obj) {
     }
 #endif
     if (!can_reach_floor()) {
-      if (flags.verbose) You("drop %s.", doname(obj));
+      if (flags.verbose)
+        You("drop %s.", doname(obj));
 #ifndef GOLDOBJ
-      if (obj->oclass != COIN_CLASS || obj == invent) freeinv(obj);
+      if (obj->oclass != COIN_CLASS || obj == invent)
+        freeinv(obj);
 #else
       /* Ensure update when we drop gold objects */
-      if (Object->oclass == COIN_CLASS) flags.botl = 1;
+      if (Object->oclass == COIN_CLASS)
+        flags.botl = 1;
       freeinv(Object);
 #endif
       hitfloor(obj);
@@ -467,14 +483,17 @@ int drop(Object *obj) {
 /* eg ship_object() and dropy() -> sellobj() both produce output */
 void dropx(Object *obj) {
 #ifndef GOLDOBJ
-  if (obj->oclass != COIN_CLASS || obj == invent) freeinv(obj);
+  if (obj->oclass != COIN_CLASS || obj == invent)
+    freeinv(obj);
 #else
   /* Ensure update when we drop gold objects */
-  if (Object->oclass == COIN_CLASS) flags.botl = 1;
+  if (Object->oclass == COIN_CLASS)
+    flags.botl = 1;
   freeinv(Object);
 #endif
   if (!player.uswallow) {
-    if (ship_object(obj, player.ux, player.uy, FALSE)) return;
+    if (ship_object(obj, player.ux, player.uy, FALSE))
+      return;
     if (IS_ALTAR(levl[player.ux][player.uy].typ))
       doaltarobj(obj); /* set bknown */
   }
@@ -482,9 +501,12 @@ void dropx(Object *obj) {
 }
 
 void dropy(Object *obj) {
-  if (obj == uwep) setuwep(nullptr);
-  if (obj == uquiver) setuqwep(nullptr);
-  if (obj == uswapwep) setuswapwep(nullptr);
+  if (obj == uwep)
+    setuwep(nullptr);
+  if (obj == uquiver)
+    setuqwep(nullptr);
+  if (obj == uswapwep)
+    setuswapwep(nullptr);
 
   if (!player.uswallow && flooreffects(obj, player.ux, player.uy, "drop"))
     return;
@@ -514,7 +536,8 @@ void dropy(Object *obj) {
         } else if (could_petrify) {
           minstapetrify(player.ustuck, TRUE);
           /* Don't leave a cockatrice corpse in a statue */
-          if (!player.uswallow) delobj(obj);
+          if (!player.uswallow)
+            delobj(obj);
         } else if (could_grow) {
           (void)grow_up(player.ustuck, (Monster *)0);
           delobj(obj); /* corpse is digested */
@@ -531,7 +554,8 @@ void dropy(Object *obj) {
     else
       sellobj(obj, player.ux, player.uy);
     stackobj(obj);
-    if (Blind && Levitation) map_object(obj, 0);
+    if (Blind && Levitation)
+      map_object(obj, 0);
     newsym(player.ux, player.uy); /* remap location under self */
   }
 }
@@ -563,11 +587,13 @@ int doddrop() {
   int result = 0;
 
   add_valid_menu_class(0); /* clear any classes already there */
-  if (*player.ushops) sellobj_state(SELL_DELIBERATE);
+  if (*player.ushops)
+    sellobj_state(SELL_DELIBERATE);
   if (flags.menu_style != MENU_TRADITIONAL ||
       (result = ggetobj("drop", drop, 0, FALSE, (unsigned *)0)) < -1)
     result = menu_drop(result);
-  if (*player.ushops) sellobj_state(SELL_NORMAL);
+  if (*player.ushops)
+    sellobj_state(SELL_NORMAL);
   reset_occupations();
 
   return result;
@@ -605,7 +631,8 @@ STATIC_OVL int menu_drop(int retry) {
                        UNPAID_TYPES | ALL_TYPES | CHOOSE_ALL | BUC_BLESSED |
                            BUC_CURSED | BUC_UNCURSED | BUC_UNKNOWN,
                        &pick_list, PICK_ANY);
-    if (!n) goto drop_done;
+    if (!n)
+      goto drop_done;
     for (i = 0; i < n; i++) {
       if (pick_list[i].item.a_int == ALL_TYPES_SELECTED)
         all_categories = TRUE;
@@ -620,7 +647,8 @@ STATIC_OVL int menu_drop(int retry) {
     all_categories = FALSE;
     /* Gather valid classes via traditional NetHack method */
     i = ggetobj("drop", drop, 0, TRUE, &ggoresults);
-    if (i == -2) all_categories = TRUE;
+    if (i == -2)
+      all_categories = TRUE;
     if (ggoresults & ALL_FINISHED) {
       n_dropped = i;
       goto drop_done;
@@ -800,7 +828,8 @@ int doup() {
     return (1);
   }
   if (ledger_no(&player.uz) == 1) {
-    if (yn("Beware, there will be no return! Still climb?") != 'y') return (0);
+    if (yn("Beware, there will be no return! Still climb?") != 'y')
+      return (0);
   }
   if (!next_to_u()) {
     You("are held back by your pet!");
@@ -844,7 +873,8 @@ void save_currentstate() {
   if (flags.ins_chkpt) {
     /* write out just-attained level, with pets and everything */
     int fd = currentlevel_rewrite();
-    if (fd < 0) return;
+    if (fd < 0)
+      return;
     bufon(fd);
     savelev(fd, ledger_no(&player.uz), WRITE_SAVE);
     bclose(fd);
@@ -883,7 +913,8 @@ void goto_level(d_level *newlevel, bool at_stairs, bool falling, bool portal) {
       return;
   }
   new_ledger = ledger_no(newlevel);
-  if (new_ledger <= 0) done(ESCAPED); /* in fact < 0 is impossible */
+  if (new_ledger <= 0)
+    done(ESCAPED); /* in fact < 0 is impossible */
 
   /* If you have the amulet and are trying to get out of Gehennom, going
    * up a set of stairs sometimes does some very strange things!
@@ -906,9 +937,11 @@ void goto_level(d_level *newlevel, bool at_stairs, bool falling, bool portal) {
       if (diff != 0) {
         assign_rnd_level(newlevel, &player.uz, diff);
         /* if inside the tower, stay inside */
-        if (was_in_W_tower && !On_W_tower_level(newlevel)) diff = 0;
+        if (was_in_W_tower && !On_W_tower_level(newlevel))
+          diff = 0;
       }
-      if (diff == 0) assign_level(newlevel, &player.uz);
+      if (diff == 0)
+        assign_level(newlevel, &player.uz);
 
       new_ledger = ledger_no(newlevel);
 
@@ -930,16 +963,19 @@ void goto_level(d_level *newlevel, bool at_stairs, bool falling, bool portal) {
     return;
   }
 
-  if (on_level(newlevel, &player.uz)) return; /* this can happen */
+  if (on_level(newlevel, &player.uz))
+    return; /* this can happen */
 
   fd = currentlevel_rewrite();
-  if (fd < 0) return;
+  if (fd < 0)
+    return;
 
   if (falling) /* assuming this is only trap door or hole */
     impact_drop(nullptr, player.ux, player.uy, newlevel->dlevel);
 
   check_special_room(TRUE); /* probably was a trap door */
-  if (Punished) unplacebc();
+  if (Punished)
+    unplacebc();
   player.utrap = 0; /* needed in level_tele */
   fill_pit(player.ux, player.uy);
   player.ustuck = 0; /* idem */
@@ -972,7 +1008,8 @@ void goto_level(d_level *newlevel, bool at_stairs, bool falling, bool portal) {
   bclose(fd);
   if (cant_go_back) {
     /* discard unreachable levels; keep #0 */
-    for (l_idx = maxledgerno(); l_idx > 0; --l_idx) delete_levelfile(l_idx);
+    for (l_idx = maxledgerno(); l_idx > 0; --l_idx)
+      delete_levelfile(l_idx);
   }
 
 #ifdef REINCARNATION
@@ -1028,9 +1065,11 @@ void goto_level(d_level *newlevel, bool at_stairs, bool falling, bool portal) {
     Trap *ttrap;
 
     for (ttrap = ftrap; ttrap; ttrap = ttrap->ntrap)
-      if (ttrap->ttyp == MAGIC_PORTAL) break;
+      if (ttrap->ttyp == MAGIC_PORTAL)
+        break;
 
-    if (!ttrap) panic("goto_level: no corresponding portal!");
+    if (!ttrap)
+      panic("goto_level: no corresponding portal!");
     seetrap(ttrap);
     u_on_newpos(ttrap->tx, ttrap->ty);
   } else if (at_stairs && !In_endgame(&player.uz)) {
@@ -1075,9 +1114,12 @@ void goto_level(d_level *newlevel, bool at_stairs, bool falling, bool portal) {
         if (Punished) {
           drag_down();
           if (carried(uball)) {
-            if (uwep == uball) setuwep(nullptr);
-            if (uswapwep == uball) setuswapwep(nullptr);
-            if (uquiver == uball) setuqwep(nullptr);
+            if (uwep == uball)
+              setuwep(nullptr);
+            if (uswapwep == uball)
+              setuswapwep(nullptr);
+            if (uquiver == uball)
+              setuqwep(nullptr);
             freeinv(uball);
           }
         }
@@ -1107,12 +1149,14 @@ void goto_level(d_level *newlevel, bool at_stairs, bool falling, bool portal) {
                     dndest.nly, dndest.nhx, dndest.nhy, LR_DOWNTELE,
                     (d_level *)0);
     if (falling) {
-      if (Punished) ballfall();
+      if (Punished)
+        ballfall();
       selftouch("Falling, you");
     }
   }
 
-  if (Punished) placebc();
+  if (Punished)
+    placebc();
   obj_delivery(); /* before killing geno'd monsters' eggs */
   losedogs();
   kill_genocided_monsters(); /* for those wiped out while in limbo */
@@ -1150,7 +1194,8 @@ void goto_level(d_level *newlevel, bool at_stairs, bool falling, bool portal) {
   }
 
   /* initial movement of bubbles just before vision_recalc */
-  if (Is_waterlevel(&player.uz)) movebubbles();
+  if (Is_waterlevel(&player.uz))
+    movebubbles();
 
   if (level_info[new_ledger].flags & FORGOTTEN) {
     forget_map(ALL_MAP); /* forget the map */
@@ -1208,7 +1253,8 @@ void goto_level(d_level *newlevel, bool at_stairs, bool falling, bool portal) {
       sprintf(buf, mesg, !Blind ? "looks" : "seems");
       mesg = buf;
     }
-    if (mesg) pline(mesg);
+    if (mesg)
+      pline(mesg);
   }
 
 #ifdef REINCARNATION
@@ -1216,7 +1262,8 @@ void goto_level(d_level *newlevel, bool at_stairs, bool falling, bool portal) {
     You("enter what seems to be an older, more primitive world.");
 #endif
   /* Final confrontation */
-  if (In_endgame(&player.uz) && newdungeon && player.uhave.amulet) resurrect();
+  if (In_endgame(&player.uz) && newdungeon && player.uhave.amulet)
+    resurrect();
   if (newdungeon && In_V_tower(&player.uz) && In_hell(&player.uz0))
     pline_The("heat and smoke are gone.");
 
@@ -1237,7 +1284,8 @@ void goto_level(d_level *newlevel, bool at_stairs, bool falling, bool portal) {
     You("penetrated a high security area!");
     pline("An alarm sounds!");
     for (mtmp = fmon; mtmp; mtmp = mtmp->nmon)
-      if (!mtmp->dead() && mtmp->msleeping) mtmp->msleeping = 0;
+      if (!mtmp->dead() && mtmp->msleeping)
+        mtmp->msleeping = 0;
   }
 
   if (on_level(&player.uz, &astral_level))
@@ -1263,7 +1311,8 @@ STATIC_OVL void final_level() {
 
   /* reset monster hostility relative to player */
   for (mtmp = fmon; mtmp; mtmp = mtmp->nmon)
-    if (!mtmp->dead()) reset_hostility(mtmp);
+    if (!mtmp->dead())
+      reset_hostility(mtmp);
 
   /* create some player-monsters */
   create_mplayers(rn1(4, 3), TRUE);
@@ -1299,10 +1348,12 @@ STATIC_OVL void final_level() {
         mtmp->mhp = mtmp->mhpmax = d((int)mtmp->m_lev, 10) + 30 + rnd(30);
         if ((otmp = select_hwep(mtmp)) == 0) {
           otmp = MakeSpecificObject(SILVER_SABER, FALSE, FALSE);
-          if (mpickobj(mtmp, otmp)) panic("merged weapon?");
+          if (mpickobj(mtmp, otmp))
+            panic("merged weapon?");
         }
         Bless(otmp);
-        if (otmp->spe < 4) otmp->spe += rnd(4);
+        if (otmp->spe < 4)
+          otmp->spe += rnd(4);
         if ((otmp = which_armor(mtmp, W_ARMS)) == 0 ||
             otmp->otyp != SHIELD_OF_REFLECTION) {
           (void)mongets(mtmp, AMULET_OF_REFLECTION);
@@ -1322,10 +1373,14 @@ void schedule_goto(d_level *tolev, bool at_stairs, bool falling,
   int typmask = 0100; /* non-zero triggers `deferred_goto' */
 
   /* destination flags (`goto_level' args) */
-  if (at_stairs) typmask |= 1;
-  if (falling) typmask |= 2;
-  if (portal_flag) typmask |= 4;
-  if (portal_flag < 0) typmask |= 0200; /* flag for portal removal */
+  if (at_stairs)
+    typmask |= 1;
+  if (falling)
+    typmask |= 2;
+  if (portal_flag)
+    typmask |= 4;
+  if (portal_flag < 0)
+    typmask |= 0200; /* flag for portal removal */
   player.utotype = typmask;
   /* destination level */
   assign_level(&player.utolev, tolev);
@@ -1344,7 +1399,8 @@ void deferred_goto() {
         player.utotype; /* save it; goto_level zeroes player.utotype */
 
     assign_level(&dest, &player.utolev);
-    if (dfr_pre_msg) pline(dfr_pre_msg);
+    if (dfr_pre_msg)
+      pline(dfr_pre_msg);
     goto_level(&dest, !!(typmask & 1), !!(typmask & 2), !!(typmask & 4));
     if (typmask & 0200) { /* remove portal */
       Trap *t = t_at(player.ux, player.uy);
@@ -1354,11 +1410,14 @@ void deferred_goto() {
         newsym(player.ux, player.uy);
       }
     }
-    if (dfr_post_msg) pline(dfr_post_msg);
+    if (dfr_post_msg)
+      pline(dfr_post_msg);
   }
   player.utotype = 0; /* our caller keys off of this */
-  if (dfr_pre_msg) free((genericptr_t)dfr_pre_msg), dfr_pre_msg = 0;
-  if (dfr_post_msg) free((genericptr_t)dfr_post_msg), dfr_post_msg = 0;
+  if (dfr_pre_msg)
+    free((genericptr_t)dfr_pre_msg), dfr_pre_msg = 0;
+  if (dfr_post_msg)
+    free((genericptr_t)dfr_post_msg), dfr_post_msg = 0;
 }
 
 #endif /* OVL2 */
@@ -1387,13 +1446,15 @@ bool revive_corpse(Object *corpse) {
     container = corpse->ocontainer;
     mtmp2 = get_container_location(container, &container_where, (int *)0);
     /* container_where is the outermost container's location even if nested */
-    if (container_where == OBJ_MINVENT && mtmp2) mcarry = mtmp2;
+    if (container_where == OBJ_MINVENT && mtmp2)
+      mcarry = mtmp2;
   }
   mtmp = revive(corpse); /* corpse is gone if successful */
 
   if (mtmp) {
     chewed = (mtmp->mhp < mtmp->mhpmax);
-    if (chewed) cname = cname_buf; /* include "bite-covered" prefix */
+    if (chewed)
+      cname = cname_buf; /* include "bite-covered" prefix */
     switch (where) {
       case OBJ_INVENT:
         if (is_uwep)
@@ -1455,7 +1516,8 @@ void revive_mon(genericptr_t arg, long timeout) {
 
   /* if we succeed, the corpse is gone, otherwise, rot it away */
   if (!revive_corpse(body)) {
-    if (is_rider(&mons[body->corpsenm])) You_feel("less hassled.");
+    if (is_rider(&mons[body->corpsenm]))
+      You_feel("less hassled.");
     (void)start_timer(250L - (monstermoves - body->age), TIMER_OBJECT,
                       ROT_CORPSE, arg);
   }
@@ -1515,7 +1577,8 @@ void set_wounded_legs(long side, int timex) {
     flags.botl = 1;
   }
 
-  if (!Wounded_legs || (HWounded_legs & TIMEOUT)) HWounded_legs = timex;
+  if (!Wounded_legs || (HWounded_legs & TIMEOUT))
+    HWounded_legs = timex;
   EWounded_legs = side;
   (void)encumber_msg();
 }

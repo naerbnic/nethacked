@@ -167,7 +167,8 @@ int does_block(int x, int y, struct rm *lev) {
 
   /* Boulders block light. */
   for (obj = level.objects[x][y]; obj; obj = obj->nexthere)
-    if (obj->otyp == BOULDER) return 1;
+    if (obj->otyp == BOULDER)
+      return 1;
 
   /* Mimics mimicing a door or boulder block light. */
   if ((mon = m_at(x, y)) && (!mon->minvis || See_invisible) &&
@@ -214,7 +215,8 @@ void vision_reset() {
           }
         } else {
           i = dig_left;
-          if (dig_left) dig_left--; /* point at first blocked point */
+          if (dig_left)
+            dig_left--; /* point at first blocked point */
           for (; i < x; i++) {
             left_ptrs[y][i] = dig_left;
             right_ptrs[y][i] = x;
@@ -226,7 +228,8 @@ void vision_reset() {
       }
     /* handle right boundary; almost identical for blocked/unblocked */
     i = dig_left;
-    if (!block && dig_left) dig_left--; /* point at first blocked point */
+    if (!block && dig_left)
+      dig_left--; /* point at first blocked point */
     for (; i < COLNO; i++) {
       left_ptrs[y][i] = dig_left;
       right_ptrs[y][i] = (COLNO - 1);
@@ -312,8 +315,10 @@ STATIC_OVL void rogue_vision(char **next, char *rmin, char *rmax) {
   xlo = max(player.ux - 1, 1);
   xhi = min(player.ux + 1, COLNO - 1);
   for (zy = ylo; zy <= yhi; zy++) {
-    if (xlo < rmin[zy]) rmin[zy] = xlo;
-    if (xhi > rmax[zy]) rmax[zy] = xhi;
+    if (xlo < rmin[zy])
+      rmin[zy] = xlo;
+    if (xhi > rmax[zy])
+      rmax[zy] = xhi;
 
     for (zx = xlo; zx <= xhi; zx++) {
       next[zy][zx] = COULD_SEE | IN_SIGHT;
@@ -325,7 +330,8 @@ STATIC_OVL void rogue_vision(char **next, char *rmin, char *rmax) {
        * positions are not updated because they were already in sight.
        * So, we have to do it here.
        */
-      if (in_door && (zx == player.ux || zy == player.uy)) newsym(zx, zy);
+      if (in_door && (zx == player.ux || zy == player.uy))
+        newsym(zx, zy);
     }
   }
 }
@@ -388,20 +394,28 @@ STATIC_OVL int new_angle(struct rm *lev, unsigned char *sv, int row, int col) {
   if (lev->typ >= CROSSWALL && lev->typ <= TRWALL) {
     switch (res) {
       case SV0:
-        if (col > 0 && viz_clear[row][col - 1]) res |= SV7;
-        if (row > 0 && viz_clear[row - 1][col]) res |= SV1;
+        if (col > 0 && viz_clear[row][col - 1])
+          res |= SV7;
+        if (row > 0 && viz_clear[row - 1][col])
+          res |= SV1;
         break;
       case SV2:
-        if (row > 0 && viz_clear[row - 1][col]) res |= SV1;
-        if (col < COLNO - 1 && viz_clear[row][col + 1]) res |= SV3;
+        if (row > 0 && viz_clear[row - 1][col])
+          res |= SV1;
+        if (col < COLNO - 1 && viz_clear[row][col + 1])
+          res |= SV3;
         break;
       case SV4:
-        if (col < COLNO - 1 && viz_clear[row][col + 1]) res |= SV3;
-        if (row < ROWNO - 1 && viz_clear[row + 1][col]) res |= SV5;
+        if (col < COLNO - 1 && viz_clear[row][col + 1])
+          res |= SV3;
+        if (row < ROWNO - 1 && viz_clear[row + 1][col])
+          res |= SV5;
         break;
       case SV6:
-        if (row < ROWNO - 1 && viz_clear[row + 1][col]) res |= SV5;
-        if (col > 0 && viz_clear[row][col - 1]) res |= SV7;
+        if (row < ROWNO - 1 && viz_clear[row + 1][col])
+          res |= SV5;
+        if (col > 0 && viz_clear[row][col - 1])
+          res |= SV7;
         break;
     }
   }
@@ -484,7 +498,8 @@ void vision_recalc(int control) {
   int oldseenv;                            /* previous seenv value */
 
   vision_full_recalc = 0; /* reset flag */
-  if (in_mklev || !iflags.vision_inited) return;
+  if (in_mklev || !iflags.vision_inited)
+    return;
 
 #ifdef GCC_WARN
   row = 0;
@@ -532,7 +547,8 @@ void vision_recalc(int control) {
       stop = max(viz_rmax[row], next_rmax[row]);
 
       for (col = start; col <= stop; col++)
-        if (old_row[col] & IN_SIGHT) newsym(col, row);
+        if (old_row[col] & IN_SIGHT)
+          newsym(col, row);
     }
 
     /* skip the normal update loop */
@@ -556,7 +572,8 @@ void vision_recalc(int control) {
 
       for (row = player.uy - 1; row <= player.uy + 1; row++)
         for (col = player.ux - 1; col <= player.ux + 1; col++) {
-          if (!isok(col, row) || !is_pool(col, row)) continue;
+          if (!isok(col, row) || !is_pool(col, row))
+            continue;
 
           next_rmin[row] = min(next_rmin[row], col);
           next_rmax[row] = max(next_rmax[row], col);
@@ -567,8 +584,10 @@ void vision_recalc(int control) {
     /* if in a pit, just update for immediate locations */
     else if (player.utrap && player.utraptype == TT_PIT) {
       for (row = player.uy - 1; row <= player.uy + 1; row++) {
-        if (row < 0) continue;
-        if (row >= ROWNO) break;
+        if (row < 0)
+          continue;
+        if (row >= ROWNO)
+          break;
 
         next_rmin[row] = max(0, player.ux - 1);
         next_rmax[row] = min(COLNO - 1, player.ux + 1);
@@ -590,8 +609,10 @@ void vision_recalc(int control) {
 
         for (row = player.uy - player.xray_range;
              row <= player.uy + player.xray_range; row++) {
-          if (row < 0) continue;
-          if (row >= ROWNO) break;
+          if (row < 0)
+            continue;
+          if (row >= ROWNO)
+            break;
           dy = v_abs(player.uy - row);
           next_row = next_array[row];
 
@@ -631,8 +652,10 @@ void vision_recalc(int control) {
 
         for (row = player.uy - player.nv_range;
              row <= player.uy + player.nv_range; row++) {
-          if (row < 0) continue;
-          if (row >= ROWNO) break;
+          if (row < 0)
+            continue;
+          if (row >= ROWNO)
+            break;
           dy = v_abs(player.uy - row);
           next_row = next_array[row];
 
@@ -640,7 +663,8 @@ void vision_recalc(int control) {
           stop = min(COLNO - 1, player.ux + ranges[dy]);
 
           for (col = start; col <= stop; col++)
-            if (next_row[col]) next_row[col] |= IN_SIGHT;
+            if (next_row[col])
+              next_row[col] |= IN_SIGHT;
 
           next_rmin[row] = min(start, next_rmin[row]);
           next_rmax[row] = max(stop, next_rmax[row]);
@@ -804,7 +828,8 @@ void block_point(int x, int y) {
    * was out of night-vision range of the hero.  Suddenly the hero should
    * see the lit room.
    */
-  if (viz_array[y][x]) vision_full_recalc = 1;
+  if (viz_array[y][x])
+    vision_full_recalc = 1;
 }
 
 /*
@@ -817,7 +842,8 @@ void unblock_point(int x, int y) {
 
   /* recalc light sources here? */
 
-  if (viz_array[y][x]) vision_full_recalc = 1;
+  if (viz_array[y][x])
+    vision_full_recalc = 1;
 }
 
 /*===========================================================================*\
@@ -870,7 +896,8 @@ void unblock_point(int x, int y) {
 STATIC_OVL void dig_point(int row, int col) {
   int i;
 
-  if (viz_clear[row][col]) return; /* already done */
+  if (viz_clear[row][col])
+    return; /* already done */
 
   viz_clear[row][col] = 1;
 
@@ -882,7 +909,8 @@ STATIC_OVL void dig_point(int row, int col) {
       right_ptrs[row][0] = right_ptrs[row][1];
     } else {
       right_ptrs[row][0] = 1;
-      for (i = 1; i <= right_ptrs[row][1]; i++) left_ptrs[row][i] = 1;
+      for (i = 1; i <= right_ptrs[row][1]; i++)
+        left_ptrs[row][i] = 1;
     }
   } else if (col == (COLNO - 1)) { /* right edge */
 
@@ -901,11 +929,13 @@ STATIC_OVL void dig_point(int row, int col) {
   else if (viz_clear[row][col - 1] && viz_clear[row][col + 1]) {
     /* Both sides clear */
     for (i = left_ptrs[row][col - 1]; i <= col; i++) {
-      if (!viz_clear[row][i]) continue; /* catch non-end case */
+      if (!viz_clear[row][i])
+        continue; /* catch non-end case */
       right_ptrs[row][i] = right_ptrs[row][col + 1];
     }
     for (i = col; i <= right_ptrs[row][col + 1]; i++) {
-      if (!viz_clear[row][i]) continue; /* catch non-end case */
+      if (!viz_clear[row][i])
+        continue; /* catch non-end case */
       left_ptrs[row][i] = left_ptrs[row][col - 1];
     }
 
@@ -915,7 +945,8 @@ STATIC_OVL void dig_point(int row, int col) {
       left_ptrs[row][i] = col + 1;
 
     for (i = left_ptrs[row][col - 1]; i <= col; i++) {
-      if (!viz_clear[row][i]) continue; /* catch non-end case */
+      if (!viz_clear[row][i])
+        continue; /* catch non-end case */
       right_ptrs[row][i] = col + 1;
     }
     left_ptrs[row][col] = left_ptrs[row][col - 1];
@@ -926,7 +957,8 @@ STATIC_OVL void dig_point(int row, int col) {
       right_ptrs[row][i] = col - 1;
 
     for (i = col; i <= right_ptrs[row][col + 1]; i++) {
-      if (!viz_clear[row][i]) continue; /* catch non-end case */
+      if (!viz_clear[row][i])
+        continue; /* catch non-end case */
       left_ptrs[row][i] = col - 1;
     }
     right_ptrs[row][col] = right_ptrs[row][col + 1];
@@ -947,7 +979,8 @@ STATIC_OVL void dig_point(int row, int col) {
 STATIC_OVL void fill_point(int row, int col) {
   int i;
 
-  if (!viz_clear[row][col]) return;
+  if (!viz_clear[row][col])
+    return;
 
   viz_clear[row][col] = 0;
 
@@ -956,7 +989,8 @@ STATIC_OVL void fill_point(int row, int col) {
       right_ptrs[row][0] = 0;
     } else {
       right_ptrs[row][0] = right_ptrs[row][1];
-      for (i = 1; i <= right_ptrs[row][1]; i++) left_ptrs[row][i] = 0;
+      for (i = 1; i <= right_ptrs[row][1]; i++)
+        left_ptrs[row][i] = 0;
     }
   } else if (col == COLNO - 1) {
     if (viz_clear[row][COLNO - 2]) { /* adjacent is clear */
@@ -979,14 +1013,16 @@ STATIC_OVL void fill_point(int row, int col) {
     if (!left_ptrs[row][col - 1]) /* catch the end case */
       right_ptrs[row][0] = col;
 
-    for (i = col; i < right_ptrs[row][col + 1]; i++) left_ptrs[row][i] = col;
+    for (i = col; i < right_ptrs[row][col + 1]; i++)
+      left_ptrs[row][i] = col;
 
     if (right_ptrs[row][col + 1] == COLNO - 1) /* catch the end case */
       left_ptrs[row][COLNO - 1] = col;
 
   } else if (viz_clear[row][col - 1]) {
     /* Left side clear, right side blocked. */
-    for (i = col; i <= right_ptrs[row][col + 1]; i++) left_ptrs[row][i] = col;
+    for (i = col; i <= right_ptrs[row][col + 1]; i++)
+      left_ptrs[row][i] = col;
 
     for (i = left_ptrs[row][col - 1] + 1; i < col; i++)
       right_ptrs[row][i] = col;
@@ -998,7 +1034,8 @@ STATIC_OVL void fill_point(int row, int col) {
 
   } else if (viz_clear[row][col + 1]) {
     /* Right side clear, left side blocked. */
-    for (i = left_ptrs[row][col - 1]; i <= col; i++) right_ptrs[row][i] = col;
+    for (i = left_ptrs[row][col - 1]; i <= col; i++)
+      right_ptrs[row][i] = col;
 
     for (i = col + 1; i < right_ptrs[row][col + 1]; i++)
       left_ptrs[row][i] = col;
@@ -1050,10 +1087,12 @@ static genericptr_t varg;
  */
 #define set_cs(rowp, col) (rowp[col] = COULD_SEE)
 #define good_row(z) ((z) >= 0 && (z) < ROWNO)
-#define set_min(z) \
-  if (*row_min > (z)) *row_min = (z)
-#define set_max(z) \
-  if (*row_max < (z)) *row_max = (z)
+#define set_min(z)    \
+  if (*row_min > (z)) \
+  *row_min = (z)
+#define set_max(z)    \
+  if (*row_max < (z)) \
+  *row_max = (z)
 #define is_clear(row, col) viz_clear_rows[row][col]
 
 /*
@@ -1086,187 +1125,195 @@ static genericptr_t varg;
 /*
  *  Quadrant I (step < 0).
  */
-#define q1_path(srow, scol, y2, x2, label)             \
-  {                                                    \
-    int dx, dy;                                        \
-    int k, err, x, y, dxs, dys;                        \
-                                                       \
-    x = (scol);                                        \
-    y = (srow);                                        \
-    dx = (x2) - x;                                     \
-    dy = y - (y2);                                     \
-                                                       \
-    result = 0; /* default to a blocked path */        \
-                                                       \
-    dxs = dx << 1; /* save the shifted values */       \
-    dys = dy << 1;                                     \
-    if (dy > dx) {                                     \
-      err = dxs - dy;                                  \
-                                                       \
-      for (k = dy - 1; k; k--) {                       \
-        if (err >= 0) {                                \
-          x++;                                         \
-          err -= dys;                                  \
-        }                                              \
-        y--;                                           \
-        err += dxs;                                    \
-        if (!is_clear(y, x)) goto label; /* blocked */ \
-      }                                                \
-    } else {                                           \
-      err = dys - dx;                                  \
-                                                       \
-      for (k = dx - 1; k; k--) {                       \
-        if (err >= 0) {                                \
-          y--;                                         \
-          err -= dxs;                                  \
-        }                                              \
-        x++;                                           \
-        err += dys;                                    \
-        if (!is_clear(y, x)) goto label; /* blocked */ \
-      }                                                \
-    }                                                  \
-                                                       \
-    result = 1;                                        \
+#define q1_path(srow, scol, y2, x2, label)       \
+  {                                              \
+    int dx, dy;                                  \
+    int k, err, x, y, dxs, dys;                  \
+                                                 \
+    x = (scol);                                  \
+    y = (srow);                                  \
+    dx = (x2) - x;                               \
+    dy = y - (y2);                               \
+                                                 \
+    result = 0; /* default to a blocked path */  \
+                                                 \
+    dxs = dx << 1; /* save the shifted values */ \
+    dys = dy << 1;                               \
+    if (dy > dx) {                               \
+      err = dxs - dy;                            \
+                                                 \
+      for (k = dy - 1; k; k--) {                 \
+        if (err >= 0) {                          \
+          x++;                                   \
+          err -= dys;                            \
+        }                                        \
+        y--;                                     \
+        err += dxs;                              \
+        if (!is_clear(y, x))                     \
+          goto label; /* blocked */              \
+      }                                          \
+    } else {                                     \
+      err = dys - dx;                            \
+                                                 \
+      for (k = dx - 1; k; k--) {                 \
+        if (err >= 0) {                          \
+          y--;                                   \
+          err -= dxs;                            \
+        }                                        \
+        x++;                                     \
+        err += dys;                              \
+        if (!is_clear(y, x))                     \
+          goto label; /* blocked */              \
+      }                                          \
+    }                                            \
+                                                 \
+    result = 1;                                  \
   }
 
 /*
  * Quadrant IV (step > 0).
  */
-#define q4_path(srow, scol, y2, x2, label)             \
-  {                                                    \
-    int dx, dy;                                        \
-    int k, err, x, y, dxs, dys;                        \
-                                                       \
-    x = (scol);                                        \
-    y = (srow);                                        \
-    dx = (x2) - x;                                     \
-    dy = (y2) - y;                                     \
-                                                       \
-    result = 0; /* default to a blocked path */        \
-                                                       \
-    dxs = dx << 1; /* save the shifted values */       \
-    dys = dy << 1;                                     \
-    if (dy > dx) {                                     \
-      err = dxs - dy;                                  \
-                                                       \
-      for (k = dy - 1; k; k--) {                       \
-        if (err >= 0) {                                \
-          x++;                                         \
-          err -= dys;                                  \
-        }                                              \
-        y++;                                           \
-        err += dxs;                                    \
-        if (!is_clear(y, x)) goto label; /* blocked */ \
-      }                                                \
-                                                       \
-    } else {                                           \
-      err = dys - dx;                                  \
-                                                       \
-      for (k = dx - 1; k; k--) {                       \
-        if (err >= 0) {                                \
-          y++;                                         \
-          err -= dxs;                                  \
-        }                                              \
-        x++;                                           \
-        err += dys;                                    \
-        if (!is_clear(y, x)) goto label; /* blocked */ \
-      }                                                \
-    }                                                  \
-                                                       \
-    result = 1;                                        \
+#define q4_path(srow, scol, y2, x2, label)       \
+  {                                              \
+    int dx, dy;                                  \
+    int k, err, x, y, dxs, dys;                  \
+                                                 \
+    x = (scol);                                  \
+    y = (srow);                                  \
+    dx = (x2) - x;                               \
+    dy = (y2) - y;                               \
+                                                 \
+    result = 0; /* default to a blocked path */  \
+                                                 \
+    dxs = dx << 1; /* save the shifted values */ \
+    dys = dy << 1;                               \
+    if (dy > dx) {                               \
+      err = dxs - dy;                            \
+                                                 \
+      for (k = dy - 1; k; k--) {                 \
+        if (err >= 0) {                          \
+          x++;                                   \
+          err -= dys;                            \
+        }                                        \
+        y++;                                     \
+        err += dxs;                              \
+        if (!is_clear(y, x))                     \
+          goto label; /* blocked */              \
+      }                                          \
+                                                 \
+    } else {                                     \
+      err = dys - dx;                            \
+                                                 \
+      for (k = dx - 1; k; k--) {                 \
+        if (err >= 0) {                          \
+          y++;                                   \
+          err -= dxs;                            \
+        }                                        \
+        x++;                                     \
+        err += dys;                              \
+        if (!is_clear(y, x))                     \
+          goto label; /* blocked */              \
+      }                                          \
+    }                                            \
+                                                 \
+    result = 1;                                  \
   }
 
 /*
  * Quadrant II (step < 0).
  */
-#define q2_path(srow, scol, y2, x2, label)             \
-  {                                                    \
-    int dx, dy;                                        \
-    int k, err, x, y, dxs, dys;                        \
-                                                       \
-    x = (scol);                                        \
-    y = (srow);                                        \
-    dx = x - (x2);                                     \
-    dy = y - (y2);                                     \
-                                                       \
-    result = 0; /* default to a blocked path */        \
-                                                       \
-    dxs = dx << 1; /* save the shifted values */       \
-    dys = dy << 1;                                     \
-    if (dy > dx) {                                     \
-      err = dxs - dy;                                  \
-                                                       \
-      for (k = dy - 1; k; k--) {                       \
-        if (err >= 0) {                                \
-          x--;                                         \
-          err -= dys;                                  \
-        }                                              \
-        y--;                                           \
-        err += dxs;                                    \
-        if (!is_clear(y, x)) goto label; /* blocked */ \
-      }                                                \
-    } else {                                           \
-      err = dys - dx;                                  \
-                                                       \
-      for (k = dx - 1; k; k--) {                       \
-        if (err >= 0) {                                \
-          y--;                                         \
-          err -= dxs;                                  \
-        }                                              \
-        x--;                                           \
-        err += dys;                                    \
-        if (!is_clear(y, x)) goto label; /* blocked */ \
-      }                                                \
-    }                                                  \
-                                                       \
-    result = 1;                                        \
+#define q2_path(srow, scol, y2, x2, label)       \
+  {                                              \
+    int dx, dy;                                  \
+    int k, err, x, y, dxs, dys;                  \
+                                                 \
+    x = (scol);                                  \
+    y = (srow);                                  \
+    dx = x - (x2);                               \
+    dy = y - (y2);                               \
+                                                 \
+    result = 0; /* default to a blocked path */  \
+                                                 \
+    dxs = dx << 1; /* save the shifted values */ \
+    dys = dy << 1;                               \
+    if (dy > dx) {                               \
+      err = dxs - dy;                            \
+                                                 \
+      for (k = dy - 1; k; k--) {                 \
+        if (err >= 0) {                          \
+          x--;                                   \
+          err -= dys;                            \
+        }                                        \
+        y--;                                     \
+        err += dxs;                              \
+        if (!is_clear(y, x))                     \
+          goto label; /* blocked */              \
+      }                                          \
+    } else {                                     \
+      err = dys - dx;                            \
+                                                 \
+      for (k = dx - 1; k; k--) {                 \
+        if (err >= 0) {                          \
+          y--;                                   \
+          err -= dxs;                            \
+        }                                        \
+        x--;                                     \
+        err += dys;                              \
+        if (!is_clear(y, x))                     \
+          goto label; /* blocked */              \
+      }                                          \
+    }                                            \
+                                                 \
+    result = 1;                                  \
   }
 
 /*
  * Quadrant III (step > 0).
  */
-#define q3_path(srow, scol, y2, x2, label)             \
-  {                                                    \
-    int dx, dy;                                        \
-    int k, err, x, y, dxs, dys;                        \
-                                                       \
-    x = (scol);                                        \
-    y = (srow);                                        \
-    dx = x - (x2);                                     \
-    dy = (y2) - y;                                     \
-                                                       \
-    result = 0; /* default to a blocked path */        \
-                                                       \
-    dxs = dx << 1; /* save the shifted values */       \
-    dys = dy << 1;                                     \
-    if (dy > dx) {                                     \
-      err = dxs - dy;                                  \
-                                                       \
-      for (k = dy - 1; k; k--) {                       \
-        if (err >= 0) {                                \
-          x--;                                         \
-          err -= dys;                                  \
-        }                                              \
-        y++;                                           \
-        err += dxs;                                    \
-        if (!is_clear(y, x)) goto label; /* blocked */ \
-      }                                                \
-                                                       \
-    } else {                                           \
-      err = dys - dx;                                  \
-                                                       \
-      for (k = dx - 1; k; k--) {                       \
-        if (err >= 0) {                                \
-          y++;                                         \
-          err -= dxs;                                  \
-        }                                              \
-        x--;                                           \
-        err += dys;                                    \
-        if (!is_clear(y, x)) goto label; /* blocked */ \
-      }                                                \
-    }                                                  \
-                                                       \
-    result = 1;                                        \
+#define q3_path(srow, scol, y2, x2, label)       \
+  {                                              \
+    int dx, dy;                                  \
+    int k, err, x, y, dxs, dys;                  \
+                                                 \
+    x = (scol);                                  \
+    y = (srow);                                  \
+    dx = x - (x2);                               \
+    dy = (y2) - y;                               \
+                                                 \
+    result = 0; /* default to a blocked path */  \
+                                                 \
+    dxs = dx << 1; /* save the shifted values */ \
+    dys = dy << 1;                               \
+    if (dy > dx) {                               \
+      err = dxs - dy;                            \
+                                                 \
+      for (k = dy - 1; k; k--) {                 \
+        if (err >= 0) {                          \
+          x--;                                   \
+          err -= dys;                            \
+        }                                        \
+        y++;                                     \
+        err += dxs;                              \
+        if (!is_clear(y, x))                     \
+          goto label; /* blocked */              \
+      }                                          \
+                                                 \
+    } else {                                     \
+      err = dys - dx;                            \
+                                                 \
+      for (k = dx - 1; k; k--) {                 \
+        if (err >= 0) {                          \
+          y++;                                   \
+          err -= dxs;                            \
+        }                                        \
+        x--;                                     \
+        err += dys;                              \
+        if (!is_clear(y, x))                     \
+          goto label; /* blocked */              \
+      }                                          \
+    }                                            \
+                                                 \
+    result = 1;                                  \
   }
 
 #else /* quadrants are really functions */
@@ -1305,7 +1352,8 @@ STATIC_OVL int _q1_path(int srow, int scol, int y2, int x2) {
       }
       y--;
       err += dxs;
-      if (!is_clear(y, x)) return 0; /* blocked */
+      if (!is_clear(y, x))
+        return 0; /* blocked */
     }
   } else {
     err = dys - dx;
@@ -1317,7 +1365,8 @@ STATIC_OVL int _q1_path(int srow, int scol, int y2, int x2) {
       }
       x++;
       err += dys;
-      if (!is_clear(y, x)) return 0; /* blocked */
+      if (!is_clear(y, x))
+        return 0; /* blocked */
     }
   }
 
@@ -1348,7 +1397,8 @@ STATIC_OVL int _q4_path(int srow, int scol, int y2, int x2) {
       }
       y++;
       err += dxs;
-      if (!is_clear(y, x)) return 0; /* blocked */
+      if (!is_clear(y, x))
+        return 0; /* blocked */
     }
   } else {
     err = dys - dx;
@@ -1360,7 +1410,8 @@ STATIC_OVL int _q4_path(int srow, int scol, int y2, int x2) {
       }
       x++;
       err += dys;
-      if (!is_clear(y, x)) return 0; /* blocked */
+      if (!is_clear(y, x))
+        return 0; /* blocked */
     }
   }
 
@@ -1391,7 +1442,8 @@ STATIC_OVL int _q2_path(int srow, int scol, int y2, int x2) {
       }
       y--;
       err += dxs;
-      if (!is_clear(y, x)) return 0; /* blocked */
+      if (!is_clear(y, x))
+        return 0; /* blocked */
     }
   } else {
     err = dys - dx;
@@ -1403,7 +1455,8 @@ STATIC_OVL int _q2_path(int srow, int scol, int y2, int x2) {
       }
       x--;
       err += dys;
-      if (!is_clear(y, x)) return 0; /* blocked */
+      if (!is_clear(y, x))
+        return 0; /* blocked */
     }
   }
 
@@ -1434,7 +1487,8 @@ STATIC_OVL int _q3_path(int srow, int scol, int y2, int x2) {
       }
       y++;
       err += dxs;
-      if (!is_clear(y, x)) return 0; /* blocked */
+      if (!is_clear(y, x))
+        return 0; /* blocked */
     }
   } else {
     err = dys - dx;
@@ -1446,7 +1500,8 @@ STATIC_OVL int _q3_path(int srow, int scol, int y2, int x2) {
       }
       x--;
       err += dys;
-      if (!is_clear(y, x)) return 0; /* blocked */
+      if (!is_clear(y, x))
+        return 0; /* blocked */
     }
   }
 
@@ -1519,9 +1574,11 @@ STATIC_DCL int far_shadow(int, int, int, int);
 STATIC_OVL void view_init() {
   int i;
 
-  for (i = 0; i < CLOSE_MAX_BC_DY; i++) close_dy[i] = &close_table[i];
+  for (i = 0; i < CLOSE_MAX_BC_DY; i++)
+    close_dy[i] = &close_table[i];
 
-  for (i = 0; i < FAR_MAX_BC_DY; i++) far_dy[i] = &far_table[i];
+  for (i = 0; i < FAR_MAX_BC_DY; i++)
+    far_dy[i] = &far_table[i];
 }
 
 /*
@@ -1538,13 +1595,17 @@ STATIC_OVL int close_shadow(int side, int this_row, int block_row,
   /*
    * If on the same column (block_row = -1), then we can see it.
    */
-  if (block_row < 0) return block_col;
+  if (block_row < 0)
+    return block_col;
 
   /* Take explicit absolute values.  Adjust. */
-  if ((sdy = (start_row - block_row)) < 0) sdy = -sdy;
-  --sdy;                                               /* src   dy */
-  if ((sdx = (start_col - block_col)) < 0) sdx = -sdx; /* src   dx */
-  if ((pdy = (block_row - this_row)) < 0) pdy = -pdy;  /* point dy */
+  if ((sdy = (start_row - block_row)) < 0)
+    sdy = -sdy;
+  --sdy; /* src   dy */
+  if ((sdx = (start_col - block_col)) < 0)
+    sdx = -sdx; /* src   dx */
+  if ((pdy = (block_row - this_row)) < 0)
+    pdy = -pdy; /* point dy */
 
   if (sdy < 0 || sdy >= CLOSE_MAX_SB_DY || sdx >= CLOSE_MAX_SB_DX ||
       pdy >= CLOSE_MAX_BC_DY) {
@@ -1552,7 +1613,8 @@ STATIC_OVL int close_shadow(int side, int this_row, int block_row,
     return block_col;
   }
   offset = close_dy[sdy]->close[sdx][pdy];
-  if (side == FROM_RIGHT) return block_col + offset;
+  if (side == FROM_RIGHT)
+    return block_col + offset;
 
   return block_col - offset;
 }
@@ -1570,13 +1632,17 @@ STATIC_OVL int far_shadow(int side, int this_row, int block_row,
    * Could easily have the column be -1, but then wouldn't know if it was
    * the left or right border.
    */
-  if (block_row < 0) return block_col;
+  if (block_row < 0)
+    return block_col;
 
   /* Take explicit absolute values.  Adjust. */
-  if ((sdy = (start_row - block_row)) < 0) sdy = -sdy; /* src   dy */
-  if ((sdx = (start_col - block_col)) < 0) sdx = -sdx;
+  if ((sdy = (start_row - block_row)) < 0)
+    sdy = -sdy; /* src   dy */
+  if ((sdx = (start_col - block_col)) < 0)
+    sdx = -sdx;
   --sdx; /* src   dx */
-  if ((pdy = (block_row - this_row)) < 0) pdy = -pdy;
+  if ((pdy = (block_row - this_row)) < 0)
+    pdy = -pdy;
   --pdy; /* point dy */
 
   if (sdy >= FAR_MAX_SB_DY || sdx < 0 || sdx >= FAR_MAX_SB_DX || pdy < 0 ||
@@ -1584,8 +1650,10 @@ STATIC_OVL int far_shadow(int side, int this_row, int block_row,
     impossible("far_shadow:  bad value");
     return block_col;
   }
-  if ((offset = far_dy[sdy]->far_q[sdx][pdy]) == OFF_TABLE) offset = -1;
-  if (side == FROM_RIGHT) return block_col + offset;
+  if ((offset = far_dy[sdy]->far_q[sdx][pdy]) == OFF_TABLE)
+    offset = -1;
+  if (side == FROM_RIGHT)
+    return block_col + offset;
 
   return block_col - offset;
 }
@@ -1619,8 +1687,10 @@ STATIC_OVL void right_side(int row, int cb_row, int cb_col, int fb_row,
   }
   if (limits) {
     lim_max = start_col + *limits;
-    if (lim_max > COLNO - 1) lim_max = COLNO - 1;
-    if (right_mark > lim_max) right_mark = lim_max;
+    if (lim_max > COLNO - 1)
+      lim_max = COLNO - 1;
+    if (right_mark > lim_max)
+      right_mark = lim_max;
     limits++; /* prepare for next row */
   } else
     lim_max = COLNO - 1;
@@ -1642,7 +1712,8 @@ STATIC_OVL void right_side(int row, int cb_row, int cb_col, int fb_row,
    */
   while (left <= right_mark) {
     loc_right = right_ptrs[row][left];
-    if (loc_right > lim_max) loc_right = lim_max;
+    if (loc_right > lim_max)
+      loc_right = lim_max;
     if (viz_clear_rows[row][left]) {
       if (loc_right >= left_shadow) {
         left = left_shadow; /* opening ends beyond shadow */
@@ -1650,26 +1721,33 @@ STATIC_OVL void right_side(int row, int cb_row, int cb_col, int fb_row,
       }
       left = loc_right;
       loc_right = right_ptrs[row][left];
-      if (loc_right > lim_max) loc_right = lim_max;
-      if (left == loc_right) return; /* boundary */
+      if (loc_right > lim_max)
+        loc_right = lim_max;
+      if (left == loc_right)
+        return; /* boundary */
 
       /* Shadow covers opening, beyond right mark */
-      if (left == right_mark && left_shadow > right_mark) return;
+      if (left == right_mark && left_shadow > right_mark)
+        return;
     }
 
     if (loc_right > right_mark) /* can't see stone beyond the mark */
       loc_right = right_mark;
 
     if (vis_func) {
-      for (i = left; i <= loc_right; i++) (*vis_func)(i, row, varg);
+      for (i = left; i <= loc_right; i++)
+        (*vis_func)(i, row, varg);
     } else {
-      for (i = left; i <= loc_right; i++) set_cs(rowp, i);
+      for (i = left; i <= loc_right; i++)
+        set_cs(rowp, i);
       set_min(left);
       set_max(loc_right);
     }
 
-    if (loc_right == right_mark) return; /* all stone */
-    if (loc_right >= left_shadow) hit_stone = 1;
+    if (loc_right == right_mark)
+      return; /* all stone */
+    if (loc_right >= left_shadow)
+      hit_stone = 1;
     left = loc_right + 1;
   }
 
@@ -1693,7 +1771,8 @@ STATIC_OVL void right_side(int row, int cb_row, int cb_col, int fb_row,
    */
   if (right_shadow < fb_col && !viz_clear_rows[row][fb_col])
     right_shadow = fb_col;
-  if (right_shadow > lim_max) right_shadow = lim_max;
+  if (right_shadow > lim_max)
+    right_shadow = lim_max;
 
   /*
    * Main loop.  Within the range of sight of the previous row, mark all
@@ -1702,7 +1781,8 @@ STATIC_OVL void right_side(int row, int cb_row, int cb_col, int fb_row,
   while (left <= right_mark) {
     /* Get the far right of the opening or wall */
     loc_right = right_ptrs[row][left];
-    if (loc_right > lim_max) loc_right = lim_max;
+    if (loc_right > lim_max)
+      loc_right = lim_max;
 
     if (!viz_clear_rows[row][left]) {
       hit_stone = 1; /* use stone on this row as close block */
@@ -1712,20 +1792,25 @@ STATIC_OVL void right_side(int row, int cb_row, int cb_col, int fb_row,
                       *
                       * Can't see stone beyond the right mark.
                       */
-      if (loc_right > right_mark) loc_right = right_mark;
+      if (loc_right > right_mark)
+        loc_right = right_mark;
 
       if (vis_func) {
-        for (i = left; i <= loc_right; i++) (*vis_func)(i, row, varg);
+        for (i = left; i <= loc_right; i++)
+          (*vis_func)(i, row, varg);
       } else {
-        for (i = left; i <= loc_right; i++) set_cs(rowp, i);
+        for (i = left; i <= loc_right; i++)
+          set_cs(rowp, i);
         set_min(left);
         set_max(loc_right);
       }
 
-      if (loc_right == right_mark) return; /* hit the end */
+      if (loc_right == right_mark)
+        return; /* hit the end */
       left = loc_right + 1;
       loc_right = right_ptrs[row][left];
-      if (loc_right > lim_max) loc_right = lim_max;
+      if (loc_right > lim_max)
+        loc_right = lim_max;
       /* fall through... we know at least one position is visible */
     }
 
@@ -1739,7 +1824,8 @@ STATIC_OVL void right_side(int row, int cb_row, int cb_col, int fb_row,
     if (hit_stone) {
       lblock_col = left - 1; /* local block column */
       left = close_shadow(FROM_RIGHT, row, row, lblock_col);
-      if (left > lim_max) break; /* off the end */
+      if (left > lim_max)
+        break; /* off the end */
     }
 
     /*
@@ -1784,9 +1870,11 @@ STATIC_OVL void right_side(int row, int cb_row, int cb_col, int fb_row,
     if ((loc_right < right_shadow) ||
         (fb_row >= 0 && loc_right == right_shadow)) {
       if (vis_func) {
-        for (i = left; i <= loc_right; i++) (*vis_func)(i, row, varg);
+        for (i = left; i <= loc_right; i++)
+          (*vis_func)(i, row, varg);
       } else {
-        for (i = left; i <= loc_right; i++) set_cs(rowp, i);
+        for (i = left; i <= loc_right; i++)
+          set_cs(rowp, i);
         set_min(left);
         set_max(loc_right);
       }
@@ -1820,9 +1908,11 @@ STATIC_OVL void right_side(int row, int cb_row, int cb_col, int fb_row,
      */
     else {
       if (vis_func) {
-        for (i = left; i <= right_shadow; i++) (*vis_func)(i, row, varg);
+        for (i = left; i <= right_shadow; i++)
+          (*vis_func)(i, row, varg);
       } else {
-        for (i = left; i <= right_shadow; i++) set_cs(rowp, i);
+        for (i = left; i <= right_shadow; i++)
+          set_cs(rowp, i);
         set_min(left);
         set_max(right_shadow);
       }
@@ -1871,8 +1961,10 @@ STATIC_OVL void left_side(int row, int cb_row, int cb_col, int fb_row,
   }
   if (limits) {
     lim_min = start_col - *limits;
-    if (lim_min < 0) lim_min = 0;
-    if (left_mark < lim_min) left_mark = lim_min;
+    if (lim_min < 0)
+      lim_min = 0;
+    if (left_mark < lim_min)
+      left_mark = lim_min;
     limits++; /* prepare for next row */
   } else
     lim_min = 0;
@@ -1882,7 +1974,8 @@ STATIC_OVL void left_side(int row, int cb_row, int cb_col, int fb_row,
 
   while (right >= left_mark) {
     loc_left = left_ptrs[row][right];
-    if (loc_left < lim_min) loc_left = lim_min;
+    if (loc_left < lim_min)
+      loc_left = lim_min;
     if (viz_clear_rows[row][right]) {
       if (loc_left <= right_shadow) {
         right = right_shadow; /* opening ends beyond shadow */
@@ -1890,23 +1983,29 @@ STATIC_OVL void left_side(int row, int cb_row, int cb_col, int fb_row,
       }
       right = loc_left;
       loc_left = left_ptrs[row][right];
-      if (loc_left < lim_min) loc_left = lim_min;
-      if (right == loc_left) return; /* boundary */
+      if (loc_left < lim_min)
+        loc_left = lim_min;
+      if (right == loc_left)
+        return; /* boundary */
     }
 
     if (loc_left < left_mark) /* can't see beyond the left mark */
       loc_left = left_mark;
 
     if (vis_func) {
-      for (i = loc_left; i <= right; i++) (*vis_func)(i, row, varg);
+      for (i = loc_left; i <= right; i++)
+        (*vis_func)(i, row, varg);
     } else {
-      for (i = loc_left; i <= right; i++) set_cs(rowp, i);
+      for (i = loc_left; i <= right; i++)
+        set_cs(rowp, i);
       set_min(loc_left);
       set_max(right);
     }
 
-    if (loc_left == left_mark) return; /* all stone */
-    if (loc_left <= right_shadow) hit_stone = 1;
+    if (loc_left == left_mark)
+      return; /* all stone */
+    if (loc_left <= right_shadow)
+      hit_stone = 1;
     right = loc_left - 1;
   }
 
@@ -1918,7 +2017,8 @@ STATIC_OVL void left_side(int row, int cb_row, int cb_col, int fb_row,
   /* Do vertical walls as we want. */
   if (left_shadow > fb_col && !viz_clear_rows[row][fb_col])
     left_shadow = fb_col;
-  if (left_shadow < lim_min) left_shadow = lim_min;
+  if (left_shadow < lim_min)
+    left_shadow = lim_min;
 
   while (right >= left_mark) {
     loc_left = left_ptrs[row][right];
@@ -1927,20 +2027,25 @@ STATIC_OVL void left_side(int row, int cb_row, int cb_col, int fb_row,
       hit_stone = 1; /* use stone on this row as close block */
 
       /* We can only see walls until the left mark */
-      if (loc_left < left_mark) loc_left = left_mark;
+      if (loc_left < left_mark)
+        loc_left = left_mark;
 
       if (vis_func) {
-        for (i = loc_left; i <= right; i++) (*vis_func)(i, row, varg);
+        for (i = loc_left; i <= right; i++)
+          (*vis_func)(i, row, varg);
       } else {
-        for (i = loc_left; i <= right; i++) set_cs(rowp, i);
+        for (i = loc_left; i <= right; i++)
+          set_cs(rowp, i);
         set_min(loc_left);
         set_max(right);
       }
 
-      if (loc_left == left_mark) return; /* hit end */
+      if (loc_left == left_mark)
+        return; /* hit end */
       right = loc_left - 1;
       loc_left = left_ptrs[row][right];
-      if (loc_left < lim_min) loc_left = lim_min;
+      if (loc_left < lim_min)
+        loc_left = lim_min;
       /* fall through...*/
     }
 
@@ -1948,7 +2053,8 @@ STATIC_OVL void left_side(int row, int cb_row, int cb_col, int fb_row,
     if (hit_stone) {
       lblock_col = right + 1; /* stone block (local) */
       right = close_shadow(FROM_LEFT, row, row, lblock_col);
-      if (right < lim_min) return; /* off the end */
+      if (right < lim_min)
+        return; /* off the end */
     }
 
     /*  Check if the shadow covers the opening. */
@@ -1973,9 +2079,11 @@ STATIC_OVL void left_side(int row, int cb_row, int cb_col, int fb_row,
     /* If the far wall of the opening is closer than the shadow limit. */
     if ((loc_left > left_shadow) || (fb_row >= 0 && loc_left == left_shadow)) {
       if (vis_func) {
-        for (i = loc_left; i <= right; i++) (*vis_func)(i, row, varg);
+        for (i = loc_left; i <= right; i++)
+          (*vis_func)(i, row, varg);
       } else {
-        for (i = loc_left; i <= right; i++) set_cs(rowp, i);
+        for (i = loc_left; i <= right; i++)
+          set_cs(rowp, i);
         set_min(loc_left);
         set_max(right);
       }
@@ -1995,9 +2103,11 @@ STATIC_OVL void left_side(int row, int cb_row, int cb_col, int fb_row,
     /*  The opening extends beyond the left mark. */
     else {
       if (vis_func) {
-        for (i = left_shadow; i <= right; i++) (*vis_func)(i, row, varg);
+        for (i = left_shadow; i <= right; i++)
+          (*vis_func)(i, row, varg);
       } else {
-        for (i = left_shadow; i <= right; i++) set_cs(rowp, i);
+        for (i = left_shadow; i <= right; i++)
+          set_cs(rowp, i);
         set_min(left_shadow);
         set_max(right);
       }
@@ -2064,19 +2174,23 @@ genericptr_t arg;
     if (range > MAX_RADIUS || range < 1)
       panic("view_from called with range %d", range);
     limits = circle_ptr(range) + 1; /* start at next row */
-    if (left < scol - range) left = scol - range;
-    if (right > scol + range) right = scol + range;
+    if (left < scol - range)
+      left = scol - range;
+    if (right > scol + range)
+      right = scol + range;
   } else
     limits = (char *)0;
 
   if (func) {
-    for (i = left; i <= right; i++) (*func)(i, srow, arg);
+    for (i = left; i <= right; i++)
+      (*func)(i, srow, arg);
   } else {
     /* Row optimization */
     rowp = cs_rows[srow];
 
     /* We know that we can see our row. */
-    for (i = left; i <= right; i++) set_cs(rowp, i);
+    for (i = left; i <= right; i++)
+      set_cs(rowp, i);
     cs_left[srow] = left;
     cs_right[srow] = right;
   }
@@ -2092,14 +2206,16 @@ genericptr_t arg;
     step = 1; /* move down */
     if (scol < COLNO - 1)
       right_side(nrow, -1, scol, right_row, right, scol, right, limits);
-    if (scol) left_side(nrow, -1, scol, left_row, left, left, scol, limits);
+    if (scol)
+      left_side(nrow, -1, scol, left_row, left, left, scol, limits);
   }
 
   if ((nrow = srow - 1) >= 0) {
     step = -1; /* move up */
     if (scol < COLNO - 1)
       right_side(nrow, -1, scol, right_row, right, scol, right, limits);
-    if (scol) left_side(nrow, -1, scol, left_row, left, left, scol, limits);
+    if (scol)
+      left_side(nrow, -1, scol, left_row, left, left, scol, limits);
   }
 }
 
@@ -2153,15 +2269,18 @@ STATIC_OVL void right_side(int row, int left, int right_mark, char *limits) {
   }
   if (limits) {
     lim_max = start_col + *limits;
-    if (lim_max > COLNO - 1) lim_max = COLNO - 1;
-    if (right_mark > lim_max) right_mark = lim_max;
+    if (lim_max > COLNO - 1)
+      lim_max = COLNO - 1;
+    if (right_mark > lim_max)
+      right_mark = lim_max;
     limits++; /* prepare for next row */
   } else
     lim_max = COLNO - 1;
 
   while (left <= right_mark) {
     right_edge = right_ptrs[row][left];
-    if (right_edge > lim_max) right_edge = lim_max;
+    if (right_edge > lim_max)
+      right_edge = lim_max;
 
     if (!is_clear(row, left)) {
       /*
@@ -2183,9 +2302,11 @@ STATIC_OVL void right_side(int row, int left, int right_mark, char *limits) {
             is_clear(row - step, right_mark) ? right_mark + 1 : right_mark;
       }
       if (vis_func) {
-        for (i = left; i <= right_edge; i++) (*vis_func)(i, row, varg);
+        for (i = left; i <= right_edge; i++)
+          (*vis_func)(i, row, varg);
       } else {
-        for (i = left; i <= right_edge; i++) set_cs(rowp, i);
+        for (i = left; i <= right_edge; i++)
+          set_cs(rowp, i);
         set_min(left);
         set_max(right_edge);
       }
@@ -2206,7 +2327,8 @@ STATIC_OVL void right_side(int row, int left, int right_mark, char *limits) {
           q4_path(start_row, start_col, row, left, rside1);
         }
       rside1: /* used if q?_path() is a macro */
-        if (result) break;
+        if (result)
+          break;
       }
 
       /*
@@ -2216,8 +2338,9 @@ STATIC_OVL void right_side(int row, int left, int right_mark, char *limits) {
        *		left == right_edge == right_mark == lim_max.
        *
        */
-      if (left > lim_max) return; /* check (1) */
-      if (left == lim_max) {      /* check (2) */
+      if (left > lim_max)
+        return;              /* check (1) */
+      if (left == lim_max) { /* check (2) */
         if (vis_func)
           (*vis_func)(lim_max, row, varg);
         else {
@@ -2258,7 +2381,8 @@ STATIC_OVL void right_side(int row, int left, int right_mark, char *limits) {
           q4_path(start_row, start_col, row, right, rside2);
         }
       rside2: /* used if q?_path() is a macro */
-        if (!result) break;
+        if (!result)
+          break;
       }
       --right; /* get rid of the last increment */
     } else
@@ -2279,18 +2403,22 @@ STATIC_OVL void right_side(int row, int left, int right_mark, char *limits) {
           !is_clear(row, start_col + 1))
         right = start_col + 1;
 
-      if (right > lim_max) right = lim_max;
+      if (right > lim_max)
+        right = lim_max;
       /* set the bits */
       if (vis_func)
-        for (i = left; i <= right; i++) (*vis_func)(i, row, varg);
+        for (i = left; i <= right; i++)
+          (*vis_func)(i, row, varg);
       else {
-        for (i = left; i <= right; i++) set_cs(rowp, i);
+        for (i = left; i <= right; i++)
+          set_cs(rowp, i);
         set_min(left);
         set_max(right);
       }
 
       /* recursive call for next finger of light */
-      if (deeper) right_side(nrow, left, right, limits);
+      if (deeper)
+        right_side(nrow, left, right, limits);
       left = right + 1; /* no limit check necessary */
     }
   }
@@ -2319,15 +2447,18 @@ STATIC_OVL void left_side(int row, int left_mark, int right, char *limits) {
   }
   if (limits) {
     lim_min = start_col - *limits;
-    if (lim_min < 0) lim_min = 0;
-    if (left_mark < lim_min) left_mark = lim_min;
+    if (lim_min < 0)
+      lim_min = 0;
+    if (left_mark < lim_min)
+      left_mark = lim_min;
     limits++; /* prepare for next row */
   } else
     lim_min = 0;
 
   while (right >= left_mark) {
     left_edge = left_ptrs[row][right];
-    if (left_edge < lim_min) left_edge = lim_min;
+    if (left_edge < lim_min)
+      left_edge = lim_min;
 
     if (!is_clear(row, right)) {
       /* Jump to the far side of a stone wall. */
@@ -2336,9 +2467,11 @@ STATIC_OVL void left_side(int row, int left_mark, int right, char *limits) {
         left_edge = is_clear(row - step, left_mark) ? left_mark - 1 : left_mark;
       }
       if (vis_func) {
-        for (i = left_edge; i <= right; i++) (*vis_func)(i, row, varg);
+        for (i = left_edge; i <= right; i++)
+          (*vis_func)(i, row, varg);
       } else {
-        for (i = left_edge; i <= right; i++) set_cs(rowp, i);
+        for (i = left_edge; i <= right; i++)
+          set_cs(rowp, i);
         set_min(left_edge);
         set_max(right);
       }
@@ -2355,11 +2488,13 @@ STATIC_OVL void left_side(int row, int left_mark, int right, char *limits) {
           q3_path(start_row, start_col, row, right, lside1);
         }
       lside1: /* used if q?_path() is a macro */
-        if (result) break;
+        if (result)
+          break;
       }
 
       /* Check for boundary conditions. */
-      if (right < lim_min) return;
+      if (right < lim_min)
+        return;
       if (right == lim_min) {
         if (vis_func)
           (*vis_func)(lim_min, row, varg);
@@ -2385,7 +2520,8 @@ STATIC_OVL void left_side(int row, int left_mark, int right, char *limits) {
           q3_path(start_row, start_col, row, left, lside2);
         }
       lside2: /* used if q?_path() is a macro */
-        if (!result) break;
+        if (!result)
+          break;
       }
       left++; /* get rid of the last decrement */
     } else
@@ -2397,17 +2533,21 @@ STATIC_OVL void left_side(int row, int left_mark, int right, char *limits) {
           !is_clear(row, start_col - 1))
         left = start_col - 1;
 
-      if (left < lim_min) left = lim_min;
+      if (left < lim_min)
+        left = lim_min;
       if (vis_func)
-        for (i = left; i <= right; i++) (*vis_func)(i, row, varg);
+        for (i = left; i <= right; i++)
+          (*vis_func)(i, row, varg);
       else {
-        for (i = left; i <= right; i++) set_cs(rowp, i);
+        for (i = left; i <= right; i++)
+          set_cs(rowp, i);
         set_min(left);
         set_max(right);
       }
 
       /* Recurse */
-      if (deeper) left_side(nrow, left, right, limits);
+      if (deeper)
+        left_side(nrow, left, right, limits);
       right = left - 1; /* no limit check necessary */
     }
   }
@@ -2467,19 +2607,23 @@ STATIC_OVL void view_from(
     if (range > MAX_RADIUS || range < 1)
       panic("view_from called with range %d", range);
     limits = circle_ptr(range) + 1; /* start at next row */
-    if (left < scol - range) left = scol - range;
-    if (right > scol + range) right = scol + range;
+    if (left < scol - range)
+      left = scol - range;
+    if (right > scol + range)
+      right = scol + range;
   } else
     limits = (char *)0;
 
   if (func) {
-    for (i = left; i <= right; i++) (*func)(i, srow, arg);
+    for (i = left; i <= right; i++)
+      (*func)(i, srow, arg);
   } else {
     /* Row pointer optimization. */
     rowp = cs_rows[srow];
 
     /* We know that we can see our row. */
-    for (i = left; i <= right; i++) set_cs(rowp, i);
+    for (i = left; i <= right; i++)
+      set_cs(rowp, i);
     cs_left[srow] = left;
     cs_right[srow] = right;
   }
@@ -2491,14 +2635,18 @@ STATIC_OVL void view_from(
    */
   if ((nrow = srow + 1) < ROWNO) { /* move down */
     step = 1;
-    if (scol < COLNO - 1) right_side(nrow, scol, right, limits);
-    if (scol) left_side(nrow, left, scol, limits);
+    if (scol < COLNO - 1)
+      right_side(nrow, scol, right, limits);
+    if (scol)
+      left_side(nrow, left, scol, limits);
   }
 
   if ((nrow = srow - 1) >= 0) { /* move up */
     step = -1;
-    if (scol < COLNO - 1) right_side(nrow, scol, right, limits);
-    if (scol) left_side(nrow, left, scol, limits);
+    if (scol < COLNO - 1)
+      right_side(nrow, scol, right, limits);
+    if (scol)
+      left_side(nrow, left, scol, limits);
   }
 }
 
@@ -2527,16 +2675,22 @@ void do_clear_area(int scol, int srow, int range,
 
     if (range > MAX_RADIUS || range < 1)
       panic("do_clear_area:  illegal range %d", range);
-    if (vision_full_recalc) vision_recalc(0); /* recalc vision if dirty */
+    if (vision_full_recalc)
+      vision_recalc(0); /* recalc vision if dirty */
     limits = circle_ptr(range);
-    if ((max_y = (srow + range)) >= ROWNO) max_y = ROWNO - 1;
-    if ((y = (srow - range)) < 0) y = 0;
+    if ((max_y = (srow + range)) >= ROWNO)
+      max_y = ROWNO - 1;
+    if ((y = (srow - range)) < 0)
+      y = 0;
     for (; y <= max_y; y++) {
       offset = limits[v_abs(y - srow)];
-      if ((min_x = (scol - offset)) < 0) min_x = 0;
-      if ((max_x = (scol + offset)) >= COLNO) max_x = COLNO - 1;
+      if ((min_x = (scol - offset)) < 0)
+        min_x = 0;
+      if ((max_x = (scol + offset)) >= COLNO)
+        max_x = COLNO - 1;
       for (x = min_x; x <= max_x; x++)
-        if (couldsee(x, y)) (*func)(x, y, arg);
+        if (couldsee(x, y))
+          (*func)(x, y, arg);
     }
   }
 }

@@ -172,7 +172,8 @@ STATIC_OVL void charm_monsters(int distance) {
   } else {
     for (mtmp = fmon; mtmp; mtmp = mtmp2) {
       mtmp2 = mtmp->nmon;
-      if (mtmp->dead()) continue;
+      if (mtmp->dead())
+        continue;
 
       if (distu(mtmp->mx, mtmp->my) <= distance) {
         if (!resist(mtmp, TOOL_CLASS, 0, NOTELL))
@@ -197,10 +198,14 @@ STATIC_OVL void do_earthquake(int force) {
   start_y = player.uy - (force * 2);
   end_x = player.ux + (force * 2);
   end_y = player.uy + (force * 2);
-  if (start_x < 1) start_x = 1;
-  if (start_y < 1) start_y = 1;
-  if (end_x >= COLNO) end_x = COLNO - 1;
-  if (end_y >= ROWNO) end_y = ROWNO - 1;
+  if (start_x < 1)
+    start_x = 1;
+  if (start_y < 1)
+    start_y = 1;
+  if (end_x >= COLNO)
+    end_x = COLNO - 1;
+  if (end_y >= ROWNO)
+    end_y = ROWNO - 1;
   for (x = start_x; x <= end_x; x++)
     for (y = start_y; y <= end_y; y++) {
       if ((mtmp = m_at(x, y)) != 0) {
@@ -216,31 +221,39 @@ STATIC_OVL void do_earthquake(int force) {
           newsym(x, y);
         }
       }
-      if (!rn2(14 - force)) switch (levl[x][y].typ) {
+      if (!rn2(14 - force))
+        switch (levl[x][y].typ) {
           case FOUNTAIN: /* Make the fountain disappear */
-            if (cansee(x, y)) pline_The("fountain falls into a chasm.");
+            if (cansee(x, y))
+              pline_The("fountain falls into a chasm.");
             goto do_pit;
 #ifdef SINKS
           case SINK:
-            if (cansee(x, y)) pline_The("kitchen sink falls into a chasm.");
+            if (cansee(x, y))
+              pline_The("kitchen sink falls into a chasm.");
             goto do_pit;
 #endif
           case ALTAR:
-            if (Is_astralevel(&player.uz) || Is_sanctum(&player.uz)) break;
+            if (Is_astralevel(&player.uz) || Is_sanctum(&player.uz))
+              break;
 
-            if (cansee(x, y)) pline_The("altar falls into a chasm.");
+            if (cansee(x, y))
+              pline_The("altar falls into a chasm.");
             goto do_pit;
           case GRAVE:
-            if (cansee(x, y)) pline_The("headstone topples into a chasm.");
+            if (cansee(x, y))
+              pline_The("headstone topples into a chasm.");
             goto do_pit;
           case THRONE:
-            if (cansee(x, y)) pline_The("throne falls into a chasm.");
+            if (cansee(x, y))
+              pline_The("throne falls into a chasm.");
           /* Falls into next case */
           case ROOM:
           case CORR: /* Try to make a pit */
           do_pit:
             chasm = maketrap(x, y, PIT);
-            if (!chasm) break; /* no pit if portal at that location */
+            if (!chasm)
+              break; /* no pit if portal at that location */
             chasm->tseen = 1;
 
             levl[x][y].doormask = 0;
@@ -252,7 +265,8 @@ STATIC_OVL void do_earthquake(int force) {
                 pline(
                     "KADOOM! The boulder falls into a chasm%s!",
                     ((x == player.ux) && (y == player.uy)) ? " below you" : "");
-              if (mtmp) mtmp->mtrapped = 0;
+              if (mtmp)
+                mtmp->mtrapped = 0;
               RemoveObjectFromStorage(otmp);
               (void)flooreffects(otmp, x, y, "");
               break;
@@ -299,9 +313,12 @@ STATIC_OVL void do_earthquake(int force) {
               newsym(x, y);
             break;
           case DOOR: /* Make the door collapse */
-            if (levl[x][y].doormask == D_NODOOR) goto do_pit;
-            if (cansee(x, y)) pline_The("door collapses.");
-            if (*in_rooms(x, y, SHOPBASE)) add_damage(x, y, 0L);
+            if (levl[x][y].doormask == D_NODOOR)
+              goto do_pit;
+            if (cansee(x, y))
+              pline_The("door collapses.");
+            if (*in_rooms(x, y, SHOPBASE))
+              add_damage(x, y, 0L);
             levl[x][y].doormask = D_NODOOR;
             unblock_point(x, y);
             newsym(x, y);
@@ -322,9 +339,11 @@ STATIC_OVL int do_improvisation(Object *instr) {
   itmp = *instr;
   /* if won't yield special effect, make sound of mundane counterpart */
   if (!do_spec || instr->spe <= 0)
-    while (objects[itmp.otyp].oc_magic) itmp.otyp -= 1;
+    while (objects[itmp.otyp].oc_magic)
+      itmp.otyp -= 1;
 #ifdef VPIX_MUSIC
-  if (sco_flag_console) speaker(&itmp, "C");
+  if (sco_flag_console)
+    speaker(&itmp, "C");
 #endif
 #endif /* VPIX_MUSIC */
 
@@ -346,7 +365,8 @@ STATIC_OVL int do_improvisation(Object *instr) {
     case WOODEN_FLUTE: /* May charm snakes */
       do_spec &= (rn2(ACURR(A_DEX)) + player.ulevel > 25);
       pline("%s.", Tobjnam(instr, do_spec ? "trill" : "toot"));
-      if (do_spec) charm_snakes(player.ulevel * 3);
+      if (do_spec)
+        charm_snakes(player.ulevel * 3);
       exercise(A_DEX, TRUE);
       break;
     case FROST_HORN: /* Idem wand of cold */
@@ -393,7 +413,8 @@ STATIC_OVL int do_improvisation(Object *instr) {
       do_spec &= (rn2(ACURR(A_DEX)) + player.ulevel > 25);
       pline("%s %s.", The(xname(instr)),
             do_spec ? "produces a lilting melody" : "twangs");
-      if (do_spec) calm_nymphs(player.ulevel * 3);
+      if (do_spec)
+        calm_nymphs(player.ulevel * 3);
       exercise(A_DEX, TRUE);
       break;
     case DRUM_OF_EARTHQUAKE: /* create several pits */
@@ -446,16 +467,19 @@ int do_play_instrument(Object *instr) {
       /* convert to uppercase and change any "H" to the expected "B" */
       for (s = buf; *s; s++) {
         *s = highc(*s);
-        if (*s == 'H') *s = 'B';
+        if (*s == 'H')
+          *s = 'B';
       }
     }
     You("extract a strange sound from %s!", the(xname(instr)));
 #ifdef UNIX386MUSIC
     /* if user is at the console, play through the console speaker */
-    if (atconsole()) speaker(instr, buf);
+    if (atconsole())
+      speaker(instr, buf);
 #endif
 #ifdef VPIX_MUSIC
-    if (sco_flag_console) speaker(instr, buf);
+    if (sco_flag_console)
+      speaker(instr, buf);
 #endif
     /* Check if there was the Stronghold drawbridge near
      * and if the tune conforms to what we're waiting for.
@@ -476,7 +500,8 @@ int do_play_instrument(Object *instr) {
                 return 0;
               }
       } else if (flags.soundok) {
-        if (player.uevent.uheard_tune < 1) player.uevent.uheard_tune = 1;
+        if (player.uevent.uheard_tune < 1)
+          player.uevent.uheard_tune = 1;
         /* Okay, it wasn't the right tune, but perhaps
          * we can give the player some hints like in the
          * Mastermind game */
@@ -492,7 +517,8 @@ int do_play_instrument(Object *instr) {
           bool matched[5];
 
           tumblers = gears = 0;
-          for (x = 0; x < 5; x++) matched[x] = FALSE;
+          for (x = 0; x < 5; x++)
+            matched[x] = FALSE;
 
           for (x = 0; x < (int)strlen(buf); x++)
             if (x < 5) {
@@ -518,7 +544,8 @@ int do_play_instrument(Object *instr) {
             /* could only get `gears == 5' by playing five
                correct notes followed by excess; otherwise,
                tune would have matched above */
-            if (gears == 5) player.uevent.uheard_tune = 2;
+            if (gears == 5)
+              player.uevent.uheard_tune = 2;
           }
         }
       }

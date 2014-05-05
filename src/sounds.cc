@@ -35,7 +35,8 @@ void dosounds() {
   int hallu, vx, vy;
   Monster *mtmp;
 
-  if (!flags.soundok || player.uswallow || Underwater) return;
+  if (!flags.soundok || player.uswallow || Underwater)
+    return;
 
   hallu = Hallucination ? 1 : 0;
 
@@ -60,7 +61,8 @@ void dosounds() {
         "Someone shouts \"Off with %s head!\"", "Queen Beruthiel's cats!",
     };
     for (mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
-      if (mtmp->dead()) continue;
+      if (mtmp->dead())
+        continue;
       if ((mtmp->msleeping || is_lord(mtmp->data) || is_prince(mtmp->data)) &&
           !is_animal(mtmp->data) && mon_in_room(mtmp, COURT)) {
         /* finding one is enough, at least for now */
@@ -88,13 +90,15 @@ void dosounds() {
       level.flags.has_vault = 0;
       return;
     }
-    if (gd_sound()) switch (rn2(2) + hallu) {
+    if (gd_sound())
+      switch (rn2(2) + hallu) {
         case 1: {
           bool gold_in_vault = FALSE;
 
           for (vx = sroom->lx; vx <= sroom->hx; vx++)
             for (vy = sroom->ly; vy <= sroom->hy; vy++)
-              if (g_at(vx, vy)) gold_in_vault = TRUE;
+              if (g_at(vx, vy))
+                gold_in_vault = TRUE;
           if (vault_occupied(player.urooms) !=
               (ROOM_INDEX(sroom) + ROOMOFFSET)) {
             if (gold_in_vault)
@@ -117,7 +121,8 @@ void dosounds() {
   }
   if (level.flags.has_beehive && !rn2(200)) {
     for (mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
-      if (mtmp->dead()) continue;
+      if (mtmp->dead())
+        continue;
       if ((mtmp->data->mlet == S_ANT && is_flyer(mtmp->data)) &&
           mon_in_room(mtmp, BEEHIVE)) {
         switch (rn2(2) + hallu) {
@@ -137,7 +142,8 @@ void dosounds() {
   }
   if (level.flags.has_morgue && !rn2(200)) {
     for (mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
-      if (mtmp->dead()) continue;
+      if (mtmp->dead())
+        continue;
       if (is_undead(mtmp->data) && mon_in_room(mtmp, MORGUE)) {
         switch (rn2(2) + hallu) {
           case 0:
@@ -164,7 +170,8 @@ void dosounds() {
     int count = 0;
 
     for (mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
-      if (mtmp->dead()) continue;
+      if (mtmp->dead())
+        continue;
       if (is_mercenary(mtmp->data) &&
 #if 0 /* don't bother excluding these */
 		!strstri(mtmp->data->mname, "watch") &&
@@ -184,7 +191,8 @@ void dosounds() {
         "a sound reminiscent of a seal barking.", "Doctor Doolittle!",
     };
     for (mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
-      if (mtmp->dead()) continue;
+      if (mtmp->dead())
+        continue;
       if ((mtmp->msleeping || is_animal(mtmp->data)) &&
           mon_in_room(mtmp, ZOO)) {
         You_hear(zoo_msg[rn2(2) + hallu]);
@@ -211,7 +219,8 @@ void dosounds() {
   if (Is_oracle_level(&player.uz) && !rn2(400)) {
     /* make sure the Oracle is still here */
     for (mtmp = fmon; mtmp; mtmp = mtmp->nmon)
-      if (!mtmp->dead() && mtmp->data == &mons[PM_ORACLE]) break;
+      if (!mtmp->dead() && mtmp->data == &mons[PM_ORACLE])
+        break;
     /* and don't produce silly effects when she's clearly visible */
     if (mtmp && (hallu || !canseemon(mtmp))) {
       static const char *const ora_msg[5] = {
@@ -277,7 +286,8 @@ const char *growl_sound(Monster *mtmp) {
 void growl(Monster *mtmp) {
   const char *growl_verb = 0;
 
-  if (mtmp->msleeping || !mtmp->mcanmove || !mtmp->data->msound) return;
+  if (mtmp->msleeping || !mtmp->mcanmove || !mtmp->data->msound)
+    return;
 
   /* presumably nearness and soundok checks have already been made */
   if (Hallucination)
@@ -286,7 +296,8 @@ void growl(Monster *mtmp) {
     growl_verb = growl_sound(mtmp);
   if (growl_verb) {
     pline("%s %s!", Monnam(mtmp), vtense((char *)0, growl_verb));
-    if (flags.run) nomul(0, 0);
+    if (flags.run)
+      nomul(0, 0);
     wake_nearto(mtmp->mx, mtmp->my, mtmp->data->mlevel * 18);
   }
 }
@@ -295,7 +306,8 @@ void growl(Monster *mtmp) {
 void yelp(Monster *mtmp) {
   const char *yelp_verb = 0;
 
-  if (mtmp->msleeping || !mtmp->mcanmove || !mtmp->data->msound) return;
+  if (mtmp->msleeping || !mtmp->mcanmove || !mtmp->data->msound)
+    return;
 
   /* presumably nearness and soundok checks have already been made */
   if (Hallucination)
@@ -324,7 +336,8 @@ void yelp(Monster *mtmp) {
     }
   if (yelp_verb) {
     pline("%s %s!", Monnam(mtmp), vtense((char *)0, yelp_verb));
-    if (flags.run) nomul(0, 0);
+    if (flags.run)
+      nomul(0, 0);
     wake_nearto(mtmp->mx, mtmp->my, mtmp->data->mlevel * 12);
   }
 }
@@ -333,7 +346,8 @@ void yelp(Monster *mtmp) {
 void whimper(Monster *mtmp) {
   const char *whimper_verb = 0;
 
-  if (mtmp->msleeping || !mtmp->mcanmove || !mtmp->data->msound) return;
+  if (mtmp->msleeping || !mtmp->mcanmove || !mtmp->data->msound)
+    return;
 
   /* presumably nearness and soundok checks have already been made */
   if (Hallucination)
@@ -353,7 +367,8 @@ void whimper(Monster *mtmp) {
     }
   if (whimper_verb) {
     pline("%s %s.", Monnam(mtmp), vtense((char *)0, whimper_verb));
-    if (flags.run) nomul(0, 0);
+    if (flags.run)
+      nomul(0, 0);
     wake_nearto(mtmp->mx, mtmp->my, mtmp->data->mlevel * 6);
   }
 }
@@ -368,7 +383,8 @@ void beg(Monster *mtmp) {
   if (!is_silent(mtmp->data) && mtmp->data->msound <= MS_ANIMAL)
     (void)domonnoise(mtmp);
   else if (mtmp->data->msound >= MS_HUMANOID) {
-    if (!canspotmon(mtmp)) map_invisible(mtmp->mx, mtmp->my);
+    if (!canspotmon(mtmp))
+      map_invisible(mtmp->mx, mtmp->my);
     verbalize("I'm hungry.");
   }
 }
@@ -380,8 +396,10 @@ static int domonnoise(Monster *mtmp) {
   char verbuf[BUFSZ];
 
   /* presumably nearness and sleep checks have already been made */
-  if (!flags.soundok) return (0);
-  if (is_silent(ptr)) return (0);
+  if (!flags.soundok)
+    return (0);
+  if (is_silent(ptr))
+    return (0);
 
   /* Make sure its your role's quest quardian; adjust if not */
   if (ptr->msound == MS_GUARDIAN && ptr != &mons[urole.guardnum]) {
@@ -392,7 +410,8 @@ static int domonnoise(Monster *mtmp) {
   /* be sure to do this before talking; the monster might teleport away, in
    * which case we want to check its pre-teleport position
    */
-  if (!canspotmon(mtmp)) map_invisible(mtmp->mx, mtmp->my);
+  if (!canspotmon(mtmp))
+    map_invisible(mtmp->mx, mtmp->my);
 
   switch (ptr->msound) {
     case MS_ORACLE:
@@ -630,7 +649,8 @@ static int domonnoise(Monster *mtmp) {
       else if (mtmp->mtrapped) {
         Trap *t = t_at(mtmp->mx, mtmp->my);
 
-        if (t) t->tseen = 1;
+        if (t)
+          t->tseen = 1;
         verbl_msg = "I'm trapped!";
       } else if (mtmp->mhp < mtmp->mhpmax / 2)
         pline_msg = "asks for a potion of healing.";
@@ -708,7 +728,8 @@ static int domonnoise(Monster *mtmp) {
       }
     /* fall through */
     case MS_CUSS:
-      if (!mtmp->mpeaceful) cuss(mtmp);
+      if (!mtmp->mpeaceful)
+        cuss(mtmp);
       break;
     case MS_SPELL:
       /* deliberately vague, since it's not actually casting any spell */
@@ -814,7 +835,8 @@ static int dochat() {
   }
 
 #ifdef STEED
-  if (player.usteed && player.dz > 0) return (domonnoise(player.usteed));
+  if (player.usteed && player.dz > 0)
+    return (domonnoise(player.usteed));
 #endif
   if (player.dz) {
     pline("They won't hear you %s there.", player.dz < 0 ? "up" : "down");
@@ -847,7 +869,8 @@ static int dochat() {
   if ((!mtmp->mcanmove || mtmp->msleeping) && !mtmp->ispriest) {
     /* If it is unseen, the player can't tell the difference between
        not noticing him and just not existing, so skip the message. */
-    if (canspotmon(mtmp)) pline("%s seems not to notice you.", Monnam(mtmp));
+    if (canspotmon(mtmp))
+      pline("%s seems not to notice you.", Monnam(mtmp));
     return (0);
   }
 
@@ -855,7 +878,8 @@ static int dochat() {
   mtmp->mstrategy &= ~STRAT_WAITMASK;
 
   if (mtmp->mtame && mtmp->meating) {
-    if (!canspotmon(mtmp)) map_invisible(mtmp->mx, mtmp->my);
+    if (!canspotmon(mtmp))
+      map_invisible(mtmp->mx, mtmp->my);
     pline("%s is eating noisily.", Monnam(mtmp));
     return (0);
   }

@@ -35,8 +35,10 @@ STATIC_OVL void stoned_dialogue() {
 
   if (i > 0L && i <= SIZE(stoned_texts))
     pline(stoned_texts[SIZE(stoned_texts) - i]);
-  if (i == 5L) HFast = 0L;
-  if (i == 3L) nomul(-3, "getting stoned");
+  if (i == 5L)
+    HFast = 0L;
+  if (i == 3L)
+    nomul(-3, "getting stoned");
   exercise(A_DEX, FALSE);
 }
 
@@ -125,7 +127,8 @@ STATIC_OVL void slime_dialogue() {
   if (i == 3L) { /* limbs becoming oozy */
     HFast = 0L;  /* lose intrinsic speed */
     stop_occupation();
-    if (multi > 0) nomul(0, 0);
+    if (multi > 0)
+      nomul(0, 0);
   }
   exercise(A_DEX, FALSE);
 }
@@ -148,7 +151,8 @@ void nh_timeout() {
   int m_idx;
   int baseluck = (flags.moonphase == FULL_MOON) ? 1 : 0;
 
-  if (flags.friday13) baseluck -= 1;
+  if (flags.friday13)
+    baseluck -= 1;
 
   if (player.uluck != baseluck &&
       moves % (player.uhave.amulet || player.ugangr ? 300 : 600) == 0) {
@@ -165,18 +169,24 @@ void nh_timeout() {
     else if (player.uluck < baseluck && (nostone || time_luck > 0))
       player.uluck++;
   }
-  if (player.uinvulnerable) return; /* things past this point could kill you */
-  if (Stoned) stoned_dialogue();
-  if (Slimed) slime_dialogue();
-  if (Vomiting) vomiting_dialogue();
-  if (Strangled) choke_dialogue();
+  if (player.uinvulnerable)
+    return; /* things past this point could kill you */
+  if (Stoned)
+    stoned_dialogue();
+  if (Slimed)
+    slime_dialogue();
+  if (Vomiting)
+    vomiting_dialogue();
+  if (Strangled)
+    choke_dialogue();
   if (player.mtimedone && !--player.mtimedone) {
     if (Unchanging)
       player.mtimedone = rnd(100 * youmonst.data->mlevel + 1);
     else
       rehumanize();
   }
-  if (player.ucreamed) player.ucreamed--;
+  if (player.ucreamed)
+    player.ucreamed--;
 
   /* Dissipate spell-based protection. */
   if (player.usptime) {
@@ -322,7 +332,8 @@ void nh_timeout() {
           /* from outside means slippery ice; don't reset
              counter if that's the only fumble reason */
           HFumbling &= ~FROMOUTSIDE;
-          if (Fumbling) HFumbling += rnd(20);
+          if (Fumbling)
+            HFumbling += rnd(20);
           break;
         case DETECT_MONSTERS:
           see_monsters();
@@ -390,7 +401,8 @@ void hatch_egg(genericptr_t arg, long timeout) {
 
   egg = (Object *)arg;
   /* sterilized while waiting */
-  if (egg->corpsenm == NON_PM) return;
+  if (egg->corpsenm == NON_PM)
+    return;
 
   mon = mon2 = (Monster *)0;
   mnum = big_to_little(egg->corpsenm);
@@ -415,13 +427,16 @@ void hatch_egg(genericptr_t arg, long timeout) {
             (carried(egg) && mon->data->mlet == S_DRAGON)) {
           if ((mon2 = tamedog(mon, nullptr)) != 0) {
             mon = mon2;
-            if (carried(egg) && mon->data->mlet != S_DRAGON) mon->mtame = 20;
+            if (carried(egg) && mon->data->mlet != S_DRAGON)
+              mon->mtame = 20;
           }
         }
-        if (mvitals[mnum].mvflags & G_EXTINCT) break; /* just made last one */
+        if (mvitals[mnum].mvflags & G_EXTINCT)
+          break;    /* just made last one */
         mon2 = mon; /* in case makemon() fails on 2nd egg */
       }
-      if (!mon) mon = mon2;
+      if (!mon)
+        mon = mon2;
       hatchcount -= i;
       egg->quan -= (long)hatchcount;
     }
@@ -515,7 +530,8 @@ void hatch_egg(genericptr_t arg, long timeout) {
         break;
     }
 
-    if (cansee_hatchspot && knows_egg) learn_egg_type(mnum);
+    if (cansee_hatchspot && knows_egg)
+      learn_egg_type(mnum);
 
     if (egg->quan > 0) {
       /* still some eggs left */
@@ -533,7 +549,8 @@ void hatch_egg(genericptr_t arg, long timeout) {
       RemoveObjectFromStorage(egg);
       obfree(egg, nullptr);
     }
-    if (redraw) newsym(x, y);
+    if (redraw)
+      newsym(x, y);
   }
 }
 
@@ -569,7 +586,8 @@ STATIC_OVL void slip_or_trip() {
   char buf[BUFSZ];
   bool on_foot = TRUE;
 #ifdef STEED
-  if (player.usteed) on_foot = FALSE;
+  if (player.usteed)
+    on_foot = FALSE;
 #endif
 
   if (otmp && on_foot && !player.uinwater && is_pool(player.ux, player.uy))
@@ -671,7 +689,8 @@ STATIC_OVL void lantern_message(Object *obj) {
   switch (obj->where) {
     case OBJ_INVENT:
       Your("lantern is getting dim.");
-      if (Hallucination) pline("Batteries have not been invented yet.");
+      if (Hallucination)
+        pline("Batteries have not been invented yet.");
       break;
     case OBJ_FLOOR:
       You("see a lantern getting dim.");
@@ -814,7 +833,8 @@ void burn_object(genericptr_t arg, long timeout) {
           break;
       }
 
-      if (obj->age) begin_burn(obj, TRUE);
+      if (obj->age)
+        begin_burn(obj, TRUE);
 
       break;
 
@@ -823,7 +843,8 @@ void burn_object(genericptr_t arg, long timeout) {
     case WAX_CANDLE:
       switch (obj->age) {
         case 75:
-          if (canseeit) switch (obj->where) {
+          if (canseeit)
+            switch (obj->where) {
               case OBJ_INVENT:
               case OBJ_MINVENT:
                 pline("%s %scandle%s getting short.", whose,
@@ -838,7 +859,8 @@ void burn_object(genericptr_t arg, long timeout) {
           break;
 
         case 15:
-          if (canseeit) switch (obj->where) {
+          if (canseeit)
+            switch (obj->where) {
               case OBJ_INVENT:
               case OBJ_MINVENT:
                 pline("%s %scandle%s flame%s flicker%s low!", whose,
@@ -911,7 +933,8 @@ void burn_object(genericptr_t arg, long timeout) {
           break;
       }
 
-      if (obj && obj->age) begin_burn(obj, TRUE);
+      if (obj && obj->age)
+        begin_burn(obj, TRUE);
 
       break;
 
@@ -919,7 +942,8 @@ void burn_object(genericptr_t arg, long timeout) {
       impossible("burn_object: unexpeced obj %s", xname(obj));
       break;
   }
-  if (need_newsym) newsym(x, y);
+  if (need_newsym)
+    newsym(x, y);
 }
 
 /*
@@ -958,7 +982,8 @@ void begin_burn(Object *obj, bool already_lit) {
   long turns = 0;
   bool do_timer = TRUE;
 
-  if (obj->age == 0 && obj->otyp != MAGIC_LAMP && !artifact_light(obj)) return;
+  if (obj->age == 0 && obj->otyp != MAGIC_LAMP && !artifact_light(obj))
+    return;
 
   switch (obj->otyp) {
     case MAGIC_LAMP:
@@ -1016,12 +1041,14 @@ void begin_burn(Object *obj, bool already_lit) {
     if (start_timer(turns, TIMER_OBJECT, BURN_OBJECT, (genericptr_t)obj)) {
       obj->lamplit = 1;
       obj->age -= turns;
-      if (carried(obj) && !already_lit) update_inventory();
+      if (carried(obj) && !already_lit)
+        update_inventory();
     } else {
       obj->lamplit = 0;
     }
   } else {
-    if (carried(obj) && !already_lit) update_inventory();
+    if (carried(obj) && !already_lit)
+      update_inventory();
   }
 
   if (obj->lamplit && !already_lit) {
@@ -1044,13 +1071,15 @@ void end_burn(Object *obj, bool timer_attached) {
     return;
   }
 
-  if (obj->otyp == MAGIC_LAMP || artifact_light(obj)) timer_attached = FALSE;
+  if (obj->otyp == MAGIC_LAMP || artifact_light(obj))
+    timer_attached = FALSE;
 
   if (!timer_attached) {
     /* [DS] Cleanup explicitly, since timer cleanup won't happen */
     del_light_source(LS_OBJECT, (genericptr_t)obj);
     obj->lamplit = 0;
-    if (obj->where == OBJ_INVENT) update_inventory();
+    if (obj->where == OBJ_INVENT)
+      update_inventory();
   } else if (!stop_timer(BURN_OBJECT, (genericptr_t)obj))
     impossible("end_burn: obj %s not timed!", xname(obj));
 }
@@ -1075,7 +1104,8 @@ static void cleanup_burn(genericptr_t arg, long expire_time) {
 
   obj->lamplit = 0;
 
-  if (obj->where == OBJ_INVENT) update_inventory();
+  if (obj->where == OBJ_INVENT)
+    update_inventory();
 }
 
 #endif /* OVL0 */
@@ -1088,7 +1118,8 @@ void do_storms() {
   int count;
 
   /* no lightning if not the air level or too often, even then */
-  if (!Is_airlevel(&player.uz) || rn2(8)) return;
+  if (!Is_airlevel(&player.uz) || rn2(8))
+    return;
 
   /* the number of strikes is 8-log2(nstrike) */
   for (nstrike = rnd(64); nstrike <= 64; nstrike *= 2) {
@@ -1257,7 +1288,8 @@ int wiz_timeout_queue() {
   char buf[BUFSZ];
 
   win = create_nhwindow(NHW_MENU); /* corner text window */
-  if (win == WIN_ERR) return 0;
+  if (win == WIN_ERR)
+    return 0;
 
   sprintf(buf, "Current time = %ld.", monstermoves);
   putstr(win, 0, buf);
@@ -1305,7 +1337,8 @@ void run_timers() {
     curr = timer_base;
     timer_base = curr->next;
 
-    if (curr->kind == TIMER_OBJECT) ((Object *)(curr->arg))->timed--;
+    if (curr->kind == TIMER_OBJECT)
+      ((Object *)(curr->arg))->timed--;
     (*timeout_funcs[curr->func_index].f)(curr->arg, curr->timeout);
     free((genericptr_t)curr);
   }
@@ -1317,7 +1350,8 @@ void run_timers() {
 bool start_timer(long when, short kind, short func_index, genericptr_t arg) {
   TimerElement *gnu;
 
-  if (func_index < 0 || func_index >= NUM_TIME_FUNCS) panic("start_timer");
+  if (func_index < 0 || func_index >= NUM_TIME_FUNCS)
+    panic("start_timer");
 
   gnu = (TimerElement *)alloc(sizeof(TimerElement));
   gnu->next = 0;
@@ -1348,7 +1382,8 @@ long stop_timer(short func_index, genericptr_t arg) {
 
   if (doomed) {
     timeout = doomed->timeout;
-    if (doomed->kind == TIMER_OBJECT) ((Object *)arg)->timed--;
+    if (doomed->kind == TIMER_OBJECT)
+      ((Object *)arg)->timed--;
     if (timeout_funcs[doomed->func_index].cleanup)
       (*timeout_funcs[doomed->func_index].cleanup)(arg, timeout);
     free((genericptr_t)doomed);
@@ -1370,7 +1405,8 @@ void obj_move_timers(Object *src, Object *dest) {
       dest->timed++;
       count++;
     }
-  if (count != src->timed) panic("obj_move_timers");
+  if (count != src->timed)
+    panic("obj_move_timers");
   src->timed = 0;
 }
 
@@ -1418,7 +1454,8 @@ STATIC_OVL void insert_timer(TimerElement *gnu) {
   TimerElement *curr, *prev;
 
   for (prev = 0, curr = timer_base; curr; prev = curr, curr = curr->next)
-    if (curr->timeout >= gnu->timeout) break;
+    if (curr->timeout >= gnu->timeout)
+      break;
 
   gnu->next = curr;
   if (prev)
@@ -1432,7 +1469,8 @@ STATIC_OVL TimerElement *remove_timer(TimerElement **base, short func_index,
   TimerElement *prev, *curr;
 
   for (prev = 0, curr = *base; curr; prev = curr, curr = curr->next)
-    if (curr->func_index == func_index && curr->arg == arg) break;
+    if (curr->func_index == func_index && curr->arg == arg)
+      break;
 
   if (curr) {
     if (prev)
@@ -1517,10 +1555,12 @@ STATIC_OVL bool mon_is_local(Monster *mon) {
   Monster *curr;
 
   for (curr = migrating_mons; curr; curr = curr->nmon)
-    if (curr == mon) return FALSE;
+    if (curr == mon)
+      return FALSE;
   /* `mydogs' is used during level changes, never saved and restored */
   for (curr = mydogs; curr; curr = curr->nmon)
-    if (curr == mon) return FALSE;
+    if (curr == mon)
+      return FALSE;
   return TRUE;
 }
 
@@ -1557,7 +1597,8 @@ STATIC_OVL int maybe_write_timer(int fd, int range, bool write_it) {
 
       if (!timer_is_local(curr)) {
         count++;
-        if (write_it) write_timer(fd, curr);
+        if (write_it)
+          write_timer(fd, curr);
       }
 
     } else {
@@ -1565,7 +1606,8 @@ STATIC_OVL int maybe_write_timer(int fd, int range, bool write_it) {
 
       if (timer_is_local(curr)) {
         count++;
-        if (write_it) write_timer(fd, curr);
+        if (write_it)
+          write_timer(fd, curr);
       }
     }
   }
@@ -1633,7 +1675,8 @@ void restore_timers(int fd, int range, bool ghostly, long adjust) {
   while (count-- > 0) {
     curr = (TimerElement *)alloc(sizeof(TimerElement));
     mread(fd, (genericptr_t)curr, sizeof(TimerElement));
-    if (ghostly) curr->timeout += adjust;
+    if (ghostly)
+      curr->timeout += adjust;
     insert_timer(curr);
   }
 }
@@ -1652,7 +1695,8 @@ void relink_timers(bool ghostly) {
         } else
           nid = (unsigned long)curr->arg;
         curr->arg = (genericptr_t)find_oid(nid);
-        if (!curr->arg) panic("cant find o_id %ld", nid);
+        if (!curr->arg)
+          panic("cant find o_id %ld", nid);
         curr->needs_fixup = 0;
       } else if (curr->kind == TIMER_MONSTER) {
         panic("relink_timers: no monster timer implemented");

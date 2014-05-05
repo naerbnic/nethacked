@@ -52,13 +52,16 @@ STATIC_OVL void on_goal() {
     Qstat(made_goal) = 1;
   } else {
     qt_pager(QT_NEXTGOAL);
-    if (Qstat(made_goal) < 7) Qstat(made_goal)++;
+    if (Qstat(made_goal) < 7)
+      Qstat(made_goal)++;
   }
 }
 
 void onquest() {
-  if (player.uevent.qcompleted || Not_firsttime) return;
-  if (!Is_special(&player.uz)) return;
+  if (player.uevent.qcompleted || Not_firsttime)
+    return;
+  if (!Is_special(&player.uz))
+    return;
 
   if (Is_qstart(&player.uz))
     on_start();
@@ -146,7 +149,8 @@ STATIC_OVL void expulsion(bool seal) {
        If monster movement is in progress, any who haven't moved
        yet will now miss out on a chance to wander through it... */
     for (t = ftrap; t; t = t->ntrap)
-      if (t->ttyp == MAGIC_PORTAL) break;
+      if (t->ttyp == MAGIC_PORTAL)
+        break;
     if (t)
       deltrap(t); /* (display might be briefly out of sync) */
     else if (!reexpelled)
@@ -165,12 +169,14 @@ void finish_quest(Object *obj) {
   if (player.uhave.amulet) { /* unlikely but not impossible */
     qt_pager(QT_HASAMULET);
     /* leader IDs the real amulet but ignores any fakes */
-    if ((otmp = carrying(AMULET_OF_YENDOR)) != 0) fully_identify_obj(otmp);
+    if ((otmp = carrying(AMULET_OF_YENDOR)) != 0)
+      fully_identify_obj(otmp);
   } else {
     qt_pager(!Qstat(got_thanks) ? QT_OFFEREDIT : QT_OFFEREDIT2);
     /* should have obtained bell during quest;
        if not, suggest returning for it now */
-    if ((otmp = carrying(BELL_OF_OPENING)) == 0) com_pager(5);
+    if ((otmp = carrying(BELL_OF_OPENING)) == 0)
+      com_pager(5);
   }
   Qstat(got_thanks) = TRUE;
 
@@ -185,14 +191,16 @@ void finish_quest(Object *obj) {
 
 STATIC_OVL void chat_with_leader() {
   /*	Rule 0:	Cheater checks.					*/
-  if (player.uhave.questart && !Qstat(met_nemesis)) Qstat(cheater) = TRUE;
+  if (player.uhave.questart && !Qstat(met_nemesis))
+    Qstat(cheater) = TRUE;
 
   /*	It is possible for you to get the amulet without completing
    *	the quest.  If so, try to induce the player to quest.
    */
   if (Qstat(got_thanks)) {
     /*	Rule 1:	You've gone back with/without the amulet.	*/
-    if (player.uhave.amulet) finish_quest(nullptr);
+    if (player.uhave.amulet)
+      finish_quest(nullptr);
 
     /*	Rule 2:	You've gone back before going for the amulet.	*/
     else
@@ -204,7 +212,8 @@ STATIC_OVL void chat_with_leader() {
     Object *otmp;
 
     for (otmp = invent; otmp; otmp = otmp->nobj)
-      if (is_quest_artifact(otmp)) break;
+      if (is_quest_artifact(otmp))
+        break;
 
     finish_quest(otmp);
 
@@ -222,7 +231,8 @@ STATIC_OVL void chat_with_leader() {
       qt_pager(QT_NEXTLEADER);
     /* the quest leader might have passed through the portal into
        the regular dungeon; none of the remaining make sense there */
-    if (!on_level(&player.uz, &qstart_level)) return;
+    if (!on_level(&player.uz, &qstart_level))
+      return;
 
     if (not_capable()) {
       qt_pager(QT_BADLEVEL);
@@ -257,7 +267,8 @@ void leader_speaks(Monster *mtmp) {
   }
   /* the quest leader might have passed through the portal into the
      regular dungeon; if so, mustn't perform "backwards expulsion" */
-  if (!on_level(&player.uz, &qstart_level)) return;
+  if (!on_level(&player.uz, &qstart_level))
+    return;
 
   if (Qstat(pissed_off)) {
     qt_pager(QT_LASTLEADER);
@@ -269,7 +280,8 @@ void leader_speaks(Monster *mtmp) {
 STATIC_OVL void chat_with_nemesis() {
   /*	The nemesis will do most of the talking, but... */
   qt_pager(rn1(10, QT_DISCOURAGE));
-  if (!Qstat(met_nemesis)) Qstat(met_nemesis++);
+  if (!Qstat(met_nemesis))
+    Qstat(met_nemesis++);
 }
 
 void nemesis_speaks() {
@@ -284,7 +296,8 @@ void nemesis_speaks() {
       qt_pager(QT_OTHERNEMESIS);
     else if (!rn2(5))
       qt_pager(rn1(10, QT_DISCOURAGE));
-    if (Qstat(made_goal) < 7) Qstat(made_goal)++;
+    if (Qstat(made_goal) < 7)
+      Qstat(made_goal)++;
     Qstat(met_nemesis) = TRUE;
   } else /* he will spit out random maledictions */
       if (!rn2(5))
@@ -302,7 +315,8 @@ STATIC_OVL void chat_with_guardian() {
 STATIC_OVL void prisoner_speaks(Monster *mtmp) {
   if (mtmp->data == &mons[PM_PRISONER] && (mtmp->mstrategy & STRAT_WAITMASK)) {
     /* Awaken the prisoner */
-    if (canseemon(mtmp)) pline("%s speaks:", Monnam(mtmp));
+    if (canseemon(mtmp))
+      pline("%s speaks:", Monnam(mtmp));
     verbalize("I'm finally free!");
     mtmp->mstrategy &= ~STRAT_WAITMASK;
     mtmp->mpeaceful = 1;

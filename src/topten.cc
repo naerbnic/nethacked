@@ -174,8 +174,10 @@ STATIC_OVL void readentry(FILE *rfile, struct toptenentry *tt) {
 
   /* check old score entries for Y2K problem and fix whenever found */
   if (tt->points > 0) {
-    if (tt->birthdate < 19000000L) tt->birthdate += 19000000L;
-    if (tt->deathdate < 19000000L) tt->deathdate += 19000000L;
+    if (tt->birthdate < 19000000L)
+      tt->birthdate += 19000000L;
+    if (tt->deathdate < 19000000L)
+      tt->deathdate += 19000000L;
   }
 }
 
@@ -334,7 +336,8 @@ void topten(int how) {
    * topten uses alloc() several times, which will lead to
    * problems if the panic was the result of an alloc() failure.
    */
-  if (program_state.panicking) return;
+  if (program_state.panicking)
+    return;
 
   if (flags.toptenwin) {
     toptenwin = create_nhwindow(NHW_TEXT);
@@ -394,9 +397,12 @@ void topten(int how) {
 #ifdef LOG_MOVES
   /* jl 08.2000 - 09.2003 */
   sprintf(buf, " {%ld}", moves);
-  if (strlen(t0->death) + strlen(buf) < DTHSZ) strcat(t0->death, buf);
-  if (wizard && strlen(t0->death) < DTHSZ - 6) strcat(t0->death, " {wiz}");
-  if (discover && strlen(t0->death) < DTHSZ - 6) strcat(t0->death, " {exp}");
+  if (strlen(t0->death) + strlen(buf) < DTHSZ)
+    strcat(t0->death, buf);
+  if (wizard && strlen(t0->death) < DTHSZ - 6)
+    strcat(t0->death, " {wiz}");
+  if (discover && strlen(t0->death) < DTHSZ - 6)
+    strcat(t0->death, " {exp}");
 #endif
   t0->birthdate = yyyymmdd(player.ubirthday);
 
@@ -445,7 +451,8 @@ void topten(int how) {
 #endif /* XLOGFILE */
 
   if (wizard || discover) {
-    if (how != PANICKED) HUP {
+    if (how != PANICKED)
+      HUP {
         char pbuf[BUFSZ];
         topten_print("");
         sprintf(
@@ -463,7 +470,8 @@ void topten(int how) {
     goto showwin;
   }
 
-  if (!lock_file(RECORD, SCOREPREFIX, 60)) goto destroywin;
+  if (!lock_file(RECORD, SCOREPREFIX, 60))
+    goto destroywin;
 
 #ifdef UPDATE_RECORD_IN_PLACE
   rfile = fopen_datafile(RECORD, "r+", SCOREPREFIX);
@@ -483,14 +491,16 @@ void topten(int how) {
 #endif
 
   /* assure minimum number of points */
-  if (t0->points < POINTSMIN) t0->points = 0;
+  if (t0->points < POINTSMIN)
+    t0->points = 0;
 
   t1 = tt_head = newttentry();
   tprev = 0;
   /* rank0: -1 undefined, 0 not_on_list, n n_th on list */
   for (rank = 1;;) {
     readentry(rfile, t1);
-    if (t1->points < POINTSMIN) t1->points = 0;
+    if (t1->points < POINTSMIN)
+      t1->points = 0;
     if (rank0 < 0 && t1->points < t0->points) {
       rank0 = rank++;
       if (tprev == 0)
@@ -507,7 +517,8 @@ void topten(int how) {
     } else
       tprev = t1;
 
-    if (t1->points == 0) break;
+    if (t1->points == 0)
+      break;
     if (
 #ifdef PERS_IS_UID
             t1->uid == t0->uid &&
@@ -559,7 +570,8 @@ void topten(int how) {
 #endif /* UPDATE_RECORD_IN_PLACE */
     if (rank0 > 0) {
       if (rank0 <= 10) {
-        if (!done_stopprint) topten_print("You made the top ten list!");
+        if (!done_stopprint)
+          topten_print("You made the top ten list!");
 #ifdef DUMP_LOG
         dump("", "You made the top ten list!");
 #endif
@@ -567,20 +579,25 @@ void topten(int how) {
         char pbuf[BUFSZ];
         sprintf(pbuf, "You reached the %d%s place on the top %d list.", rank0,
                 ordin(rank0), ENTRYMAX);
-        if (!done_stopprint) topten_print(pbuf);
+        if (!done_stopprint)
+          topten_print(pbuf);
 #ifdef DUMP_LOG
         dump("", pbuf);
 #endif
       }
-      if (!done_stopprint) topten_print("");
+      if (!done_stopprint)
+        topten_print("");
 #ifdef DUMP_LOG
       dump("", "");
 #endif
     }
   }
-  if (rank0 == 0) rank0 = rank1;
-  if (rank0 <= 0) rank0 = rank;
-  if (!done_stopprint) outheader();
+  if (rank0 == 0)
+    rank0 = rank1;
+  if (rank0 <= 0)
+    rank0 = rank;
+  if (!done_stopprint)
+    outheader();
   t1 = tt_head;
   for (rank = 1; t1->points != 0; rank++, t1 = t1->tt_next) {
     if (flg
@@ -602,7 +619,8 @@ void topten(int how) {
       continue;
     if (rank == rank0 - flags.end_around &&
         rank0 > flags.end_top + flags.end_around + 1 && !flags.end_own) {
-      if (!done_stopprint) topten_print("");
+      if (!done_stopprint)
+        topten_print("");
 #ifdef DUMP_LOG
       dump("", "");
 #endif
@@ -617,7 +635,8 @@ void topten(int how) {
     }
   }
   if (rank0 >= rank)
-    if (!done_stopprint) outentry(0, t0, TRUE);
+    if (!done_stopprint)
+      outentry(0, t0, TRUE);
 #ifdef UPDATE_RECORD_IN_PLACE
   if (flg) {
 #ifdef TRUNCATE_FILE
@@ -644,9 +663,11 @@ void topten(int how) {
   free_ttlist(tt_head);
 
 showwin:
-  if (flags.toptenwin && !done_stopprint) display_nhwindow(toptenwin, 1);
+  if (flags.toptenwin && !done_stopprint)
+    display_nhwindow(toptenwin, 1);
 destroywin:
-  if (!t0_used) dealloc_ttentry(t0);
+  if (!t0_used)
+    dealloc_ttentry(t0);
   if (flags.toptenwin) {
     destroy_nhwindow(toptenwin);
     toptenwin = WIN_ERR;
@@ -659,9 +680,11 @@ STATIC_OVL void outheader() {
 
   strcpy(linebuf, " No  Points     Name");
   bp = eos(linebuf);
-  while (bp < linebuf + COLNO - 9) *bp++ = ' ';
+  while (bp < linebuf + COLNO - 9)
+    *bp++ = ' ';
   strcpy(bp, "Hp [max]");
-  if (!done_stopprint) topten_print(linebuf);
+  if (!done_stopprint)
+    topten_print(linebuf);
 #ifdef DUMP_LOG
   dump("", linebuf);
 #endif
@@ -682,7 +705,8 @@ STATIC_OVL void outentry(int rank, struct toptenentry *t1, int so) {
 
   sprintf(eos(linebuf), " %10ld  %.10s", t1->points, t1->name);
   sprintf(eos(linebuf), "-%s", t1->plrole);
-  if (t1->plrace[0] != '?') sprintf(eos(linebuf), "-%s", t1->plrace);
+  if (t1->plrace[0] != '?')
+    sprintf(eos(linebuf), "-%s", t1->plrace);
   /* Printing of gender and alignment is intentional.  It has been
    * part of the NetHack Geek Code, and illustrates a proper way to
    * specify a character from the command line.
@@ -757,7 +781,8 @@ STATIC_OVL void outentry(int rank, struct toptenentry *t1, int so) {
     }
 
     /* kludge for "quit while already on Charon's boat" */
-    if (!strncmp(t1->death, "quit ", 5)) strcat(linebuf, t1->death + 4);
+    if (!strncmp(t1->death, "quit ", 5))
+      strcat(linebuf, t1->death + 4);
   }
   strcat(linebuf, ".");
 
@@ -777,18 +802,22 @@ STATIC_OVL void outentry(int rank, struct toptenentry *t1, int so) {
       ;
     /* special case: if about to wrap in the middle of maximum
        dungeon depth reached, wrap in front of it instead */
-    if (bp > linebuf + 5 && !strncmp(bp - 5, " [max", 5)) bp -= 5;
+    if (bp > linebuf + 5 && !strncmp(bp - 5, " [max", 5))
+      bp -= 5;
     strcpy(linebuf3, bp + 1);
     *bp = 0;
     if (so) {
-      while (bp < linebuf + (COLNO - 1)) *bp++ = ' ';
+      while (bp < linebuf + (COLNO - 1))
+        *bp++ = ' ';
       *bp = 0;
-      if (!done_stopprint) topten_print_bold(linebuf);
+      if (!done_stopprint)
+        topten_print_bold(linebuf);
 #ifdef DUMP_LOG
       dump("*", linebuf[0] == ' ' ? linebuf + 1 : linebuf);
 #endif
     } else {
-      if (!done_stopprint) topten_print(linebuf);
+      if (!done_stopprint)
+        topten_print(linebuf);
 #ifdef DUMP_LOG
       dump(" ", linebuf[0] == ' ' ? linebuf + 1 : linebuf);
 #endif
@@ -802,7 +831,8 @@ STATIC_OVL void outentry(int rank, struct toptenentry *t1, int so) {
 
   if (bp <= linebuf + hppos) {
     /* pad any necessary blanks to the hit point entry */
-    while (bp < linebuf + hppos) *bp++ = ' ';
+    while (bp < linebuf + hppos)
+      *bp++ = ' ';
     strcpy(bp, hpbuf);
     sprintf(eos(bp), " %s[%d]",
             (t1->maxhp < 10) ? "  " : (t1->maxhp < 100) ? " " : "", t1->maxhp);
@@ -810,10 +840,13 @@ STATIC_OVL void outentry(int rank, struct toptenentry *t1, int so) {
 
   if (so) {
     bp = eos(linebuf);
-    if (so >= COLNO) so = COLNO - 1;
-    while (bp < linebuf + so) *bp++ = ' ';
+    if (so >= COLNO)
+      so = COLNO - 1;
+    while (bp < linebuf + so)
+      *bp++ = ' ';
     *bp = 0;
-    if (!done_stopprint) topten_print_bold(linebuf);
+    if (!done_stopprint)
+      topten_print_bold(linebuf);
   } else if (!done_stopprint)
     topten_print(linebuf);
 #ifdef DUMP_LOG
@@ -831,7 +864,8 @@ STATIC_OVL int score_wanted(bool current_ver, int rank, struct toptenentry *t1,
     return 0;
 
 #ifdef PERS_IS_UID
-  if (!playerct && t1->uid == uid) return 1;
+  if (!playerct && t1->uid == uid)
+    return 1;
 #endif
 
   for (i = 0; i < playerct; i++) {
@@ -856,18 +890,30 @@ STATIC_OVL int score_wanted(bool current_ver, int rank, struct toptenentry *t1,
 long encodeconduct(void) {
   long e = 0L;
 
-  if (!player.uconduct.food) e |= 0x001L;
-  if (!player.uconduct.unvegan) e |= 0x002L;
-  if (!player.uconduct.unvegetarian) e |= 0x004L;
-  if (!player.uconduct.gnostic) e |= 0x008L;
-  if (!player.uconduct.weaphit) e |= 0x010L;
-  if (!player.uconduct.killer) e |= 0x020L;
-  if (!player.uconduct.literate) e |= 0x040L;
-  if (!player.uconduct.polypiles) e |= 0x080L;
-  if (!player.uconduct.polyselfs) e |= 0x100L;
-  if (!player.uconduct.wishes) e |= 0x200L;
-  if (!player.uconduct.wisharti) e |= 0x400L;
-  if (!num_genocides()) e |= 0x800L;
+  if (!player.uconduct.food)
+    e |= 0x001L;
+  if (!player.uconduct.unvegan)
+    e |= 0x002L;
+  if (!player.uconduct.unvegetarian)
+    e |= 0x004L;
+  if (!player.uconduct.gnostic)
+    e |= 0x008L;
+  if (!player.uconduct.weaphit)
+    e |= 0x010L;
+  if (!player.uconduct.killer)
+    e |= 0x020L;
+  if (!player.uconduct.literate)
+    e |= 0x040L;
+  if (!player.uconduct.polypiles)
+    e |= 0x080L;
+  if (!player.uconduct.polyselfs)
+    e |= 0x100L;
+  if (!player.uconduct.wishes)
+    e |= 0x200L;
+  if (!player.uconduct.wisharti)
+    e |= 0x400L;
+  if (!num_genocides())
+    e |= 0x800L;
 
   return e;
 }
@@ -895,18 +941,30 @@ long encodeachieve(void) {
 
   r = 0;
 
-  if (achieve.get_bell) r |= 1L << 0;
-  if (achieve.enter_gehennom) r |= 1L << 1;
-  if (achieve.get_candelabrum) r |= 1L << 2;
-  if (achieve.get_book) r |= 1L << 3;
-  if (achieve.perform_invocation) r |= 1L << 4;
-  if (achieve.get_amulet) r |= 1L << 5;
-  if (In_endgame(&player.uz)) r |= 1L << 6;
-  if (Is_astralevel(&player.uz)) r |= 1L << 7;
-  if (achieve.ascended) r |= 1L << 8;
-  if (achieve.get_luckstone) r |= 1L << 9;
-  if (achieve.finish_sokoban) r |= 1L << 10;
-  if (achieve.killed_medusa) r |= 1L << 11;
+  if (achieve.get_bell)
+    r |= 1L << 0;
+  if (achieve.enter_gehennom)
+    r |= 1L << 1;
+  if (achieve.get_candelabrum)
+    r |= 1L << 2;
+  if (achieve.get_book)
+    r |= 1L << 3;
+  if (achieve.perform_invocation)
+    r |= 1L << 4;
+  if (achieve.get_amulet)
+    r |= 1L << 5;
+  if (In_endgame(&player.uz))
+    r |= 1L << 6;
+  if (Is_astralevel(&player.uz))
+    r |= 1L << 7;
+  if (achieve.ascended)
+    r |= 1L << 8;
+  if (achieve.get_luckstone)
+    r |= 1L << 9;
+  if (achieve.finish_sokoban)
+    r |= 1L << 10;
+  if (achieve.killed_medusa)
+    r |= 1L << 11;
 
   return r;
 }
@@ -969,7 +1027,8 @@ void prscore(int argc, char **argv) {
     players = (const char **)0;
 #else
     player0 = plname;
-    if (!*player0) player0 = "hackplayer";
+    if (!*player0)
+      player0 = "hackplayer";
     playerct = 1;
     players = &player0;
 #endif
@@ -982,7 +1041,8 @@ void prscore(int argc, char **argv) {
   t1 = tt_head = newttentry();
   for (rank = 1;; rank++) {
     readentry(rfile, t1);
-    if (t1->points == 0) break;
+    if (t1->points == 0)
+      break;
     if (!match_found &&
         score_wanted(current_ver, rank, t1, playerct, players, uid))
       match_found = TRUE;
@@ -1009,7 +1069,8 @@ void prscore(int argc, char **argv) {
     if (playerct < 1)
       strcat(pbuf, "you.");
     else {
-      if (playerct > 1) strcat(pbuf, "any of ");
+      if (playerct > 1)
+        strcat(pbuf, "any of ");
       for (i = 0; i < playerct; i++) {
         /* stop printing players if there are too many to fit */
         if (strlen(pbuf) + strlen(players[i]) + 2 >= BUFSZ) {
@@ -1051,7 +1112,8 @@ STATIC_OVL int classmon(char *plch, bool fem) {
         return PM_HUMAN;
     }
   /* this might be from a 3.2.x score for former Elf class */
-  if (!strcmp(plch, "E")) return PM_RANGER;
+  if (!strcmp(plch, "E"))
+    return PM_RANGER;
 
   impossible("What weird role is this? (%s)", plch);
   return (PM_HUMAN_MUMMY);
@@ -1068,7 +1130,8 @@ Object *tt_oname(Object *otmp) {
   FILE *rfile;
   struct toptenentry tt_buf;
 
-  if (!otmp) return ((Object *)0);
+  if (!otmp)
+    return ((Object *)0);
 
   rfile = fopen_datafile(RECORD, "r", SCOREPREFIX);
   if (!rfile) {
@@ -1081,7 +1144,8 @@ Object *tt_oname(Object *otmp) {
 pickentry:
   for (i = rank; i; i--) {
     readentry(rfile, tt);
-    if (tt->points == 0) break;
+    if (tt->points == 0)
+      break;
   }
 
   if (tt->points == 0) {
@@ -1093,11 +1157,13 @@ pickentry:
     otmp = (Object *)0;
   } else {
     /* reset timer in case corpse started out as lizard or troll */
-    if (otmp->otyp == CORPSE) obj_stop_timers(otmp);
+    if (otmp->otyp == CORPSE)
+      obj_stop_timers(otmp);
     otmp->corpsenm = classmon(tt->plrole, (tt->plgend[0] == 'F'));
     otmp->owt = GetWeight(otmp);
     otmp = oname(otmp, tt->name);
-    if (otmp->otyp == CORPSE) StartCorpseTimeout(otmp);
+    if (otmp->otyp == CORPSE)
+      StartCorpseTimeout(otmp);
   }
 
   (void)fclose(rfile);
@@ -1109,11 +1175,13 @@ pickentry:
 /* follows deals with that; I admit it's ugly. (KL) */
 /* Now generally available (KL) */
 STATIC_OVL void nsb_mung_line(char *p) {
-  while ((p = index(p, ' ')) != 0) *p = '|';
+  while ((p = index(p, ' ')) != 0)
+    *p = '|';
 }
 
 STATIC_OVL void nsb_unmung_line(char *p) {
-  while ((p = index(p, '|')) != 0) *p = ' ';
+  while ((p = index(p, '|')) != 0)
+    *p = ' ';
 }
 #endif /* NO_SCAN_BRACK */
 

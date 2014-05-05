@@ -94,7 +94,8 @@ static bool intersect(NhRect *r1, NhRect *r2, NhRect *r3) {
   r3->hx = (r2->hx > r1->hx ? r1->hx : r2->hx);
   r3->hy = (r2->hy > r1->hy ? r1->hy : r2->hy);
 
-  if (r3->lx > r3->hx || r3->ly > r3->hy) return FALSE;
+  if (r3->lx > r3->hx || r3->ly > r3->hy)
+    return FALSE;
   return TRUE;
 }
 
@@ -106,7 +107,8 @@ void remove_rect(NhRect *r) {
   int ind;
 
   ind = get_rect_ind(r);
-  if (ind >= 0) rect[ind] = rect[--rect_cnt];
+  if (ind >= 0)
+    rect[ind] = rect[--rect_cnt];
 }
 
 /*
@@ -116,12 +118,14 @@ void remove_rect(NhRect *r) {
 void add_rect(NhRect *r) {
   if (rect_cnt >= MAXRECT) {
 #ifdef WIZARD
-    if (wizard) pline("MAXRECT may be too small.");
+    if (wizard)
+      pline("MAXRECT may be too small.");
 #endif
     return;
   }
   /* Check that this NhRect is not included in another one */
-  if (get_rect(r)) return;
+  if (get_rect(r))
+    return;
   rect[rect_cnt] = *r;
   rect_cnt++;
 }
@@ -142,7 +146,8 @@ void split_rects(NhRect *r1, NhRect *r2) {
 
   /* Walk down since rect_cnt & rect[] will change... */
   for (i = rect_cnt - 1; i >= 0; i--)
-    if (intersect(&rect[i], r2, &r)) split_rects(&rect[i], &r);
+    if (intersect(&rect[i], r2, &r))
+      split_rects(&rect[i], &r);
 
   if (r2->ly - old_r.ly - 1 >
       (old_r.hy < ROWNO - 1 ? 2 * YLIM : YLIM + 1) + 4) {

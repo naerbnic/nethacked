@@ -74,7 +74,8 @@ void amulet() {
     }
   }
 
-  if (!flags.no_of_wizards) return;
+  if (!flags.no_of_wizards)
+    return;
   /* find Wizard, and wake him if necessary */
   for (mtmp = fmon; mtmp; mtmp = mtmp->nmon)
     if (!mtmp->dead() && mtmp->iswiz && mtmp->msleeping && !rn2(40)) {
@@ -93,7 +94,8 @@ int mon_has_amulet(Monster *mtmp) {
   Object *otmp;
 
   for (otmp = mtmp->minvent; otmp; otmp = otmp->nobj)
-    if (otmp->otyp == AMULET_OF_YENDOR) return (1);
+    if (otmp->otyp == AMULET_OF_YENDOR)
+      return (1);
   return (0);
 }
 
@@ -147,7 +149,8 @@ STATIC_OVL bool mon_has_arti(Monster *mtmp, short otyp) {
 
   for (otmp = mtmp->minvent; otmp; otmp = otmp->nobj) {
     if (otyp) {
-      if (otmp->otyp == otyp) return (1);
+      if (otmp->otyp == otyp)
+        return (1);
     } else if (is_quest_artifact(otmp))
       return (1);
   }
@@ -160,7 +163,8 @@ STATIC_OVL Monster *other_mon_has_arti(Monster *mtmp, short otyp) {
   for (mtmp2 = fmon; mtmp2; mtmp2 = mtmp2->nmon)
     /* no need for !DEADMONSTER check here since they have no inventory */
     if (mtmp2 != mtmp)
-      if (mon_has_arti(mtmp2, otyp)) return (mtmp2);
+      if (mon_has_arti(mtmp2, otyp))
+        return (mtmp2);
 
   return ((Monster *)0);
 }
@@ -170,7 +174,8 @@ STATIC_OVL Object *on_ground(short otyp) {
 
   for (otmp = fobj; otmp; otmp = otmp->nobj)
     if (otyp) {
-      if (otmp->otyp == otyp) return (otmp);
+      if (otmp->otyp == otyp)
+        return (otmp);
     } else if (is_quest_artifact(otmp))
       return (otmp);
   return (nullptr);
@@ -199,7 +204,8 @@ STATIC_OVL long target_on(int mask, Monster *mtmp) {
   Object *otmp;
   Monster *mtmp2;
 
-  if (!M_Wants(mask)) return (STRAT_NONE);
+  if (!M_Wants(mask))
+    return (STRAT_NONE);
 
   otyp = which_arti(mask);
   if (!mon_has_arti(mtmp, otyp)) {
@@ -230,7 +236,8 @@ STATIC_OVL long strategy(Monster *mtmp) {
       return (STRAT_HEAL);
 
     case 1: /* the wiz is less cautious */
-      if (mtmp->data != &mons[PM_WIZARD_OF_YENDOR]) return (STRAT_HEAL);
+      if (mtmp->data != &mons[PM_WIZARD_OF_YENDOR])
+        return (STRAT_HEAL);
     /* else fall through */
 
     case 2:
@@ -243,19 +250,28 @@ STATIC_OVL long strategy(Monster *mtmp) {
   }
 
   if (flags.made_amulet)
-    if ((strat = target_on(M3_WANTSAMUL, mtmp)) != STRAT_NONE) return (strat);
+    if ((strat = target_on(M3_WANTSAMUL, mtmp)) != STRAT_NONE)
+      return (strat);
 
   if (player.uevent.invoked) { /* priorities change once gate opened */
 
-    if ((strat = target_on(M3_WANTSARTI, mtmp)) != STRAT_NONE) return (strat);
-    if ((strat = target_on(M3_WANTSBOOK, mtmp)) != STRAT_NONE) return (strat);
-    if ((strat = target_on(M3_WANTSBELL, mtmp)) != STRAT_NONE) return (strat);
-    if ((strat = target_on(M3_WANTSCAND, mtmp)) != STRAT_NONE) return (strat);
+    if ((strat = target_on(M3_WANTSARTI, mtmp)) != STRAT_NONE)
+      return (strat);
+    if ((strat = target_on(M3_WANTSBOOK, mtmp)) != STRAT_NONE)
+      return (strat);
+    if ((strat = target_on(M3_WANTSBELL, mtmp)) != STRAT_NONE)
+      return (strat);
+    if ((strat = target_on(M3_WANTSCAND, mtmp)) != STRAT_NONE)
+      return (strat);
   } else {
-    if ((strat = target_on(M3_WANTSBOOK, mtmp)) != STRAT_NONE) return (strat);
-    if ((strat = target_on(M3_WANTSBELL, mtmp)) != STRAT_NONE) return (strat);
-    if ((strat = target_on(M3_WANTSCAND, mtmp)) != STRAT_NONE) return (strat);
-    if ((strat = target_on(M3_WANTSARTI, mtmp)) != STRAT_NONE) return (strat);
+    if ((strat = target_on(M3_WANTSBOOK, mtmp)) != STRAT_NONE)
+      return (strat);
+    if ((strat = target_on(M3_WANTSBELL, mtmp)) != STRAT_NONE)
+      return (strat);
+    if ((strat = target_on(M3_WANTSCAND, mtmp)) != STRAT_NONE)
+      return (strat);
+    if ((strat = target_on(M3_WANTSARTI, mtmp)) != STRAT_NONE)
+      return (strat);
   }
   return (dstrat);
 }
@@ -272,7 +288,8 @@ int tactics(Monster *mtmp) {
       mtmp->mavenge = 1; /* covetous monsters attack while fleeing */
       if (In_W_tower(mtmp->mx, mtmp->my, &player.uz) ||
           (mtmp->iswiz && !xupstair && !mon_has_amulet(mtmp))) {
-        if (!rn2(3 + mtmp->mhp / 10)) (void)rloc(mtmp, FALSE);
+        if (!rn2(3 + mtmp->mhp / 10))
+          (void)rloc(mtmp, FALSE);
       } else if (xupstair && (mtmp->mx != xupstair || mtmp->my != yupstair)) {
         (void)mnearto(mtmp, xupstair, yupstair, TRUE);
       }
@@ -285,7 +302,8 @@ int tactics(Monster *mtmp) {
     /* fall through :-) */
 
     case STRAT_NONE: /* harrass */
-      if (!rn2(!mtmp->mflee ? 5 : 33)) mnexto(mtmp);
+      if (!rn2(!mtmp->mflee ? 5 : 33))
+        mnexto(mtmp);
       return (0);
 
     default: /* kill, maim, pillage! */
@@ -321,7 +339,8 @@ int tactics(Monster *mtmp) {
             return (0);
         } else {
           /* a monster is standing on it - cause some trouble */
-          if (!rn2(5)) mnexto(mtmp);
+          if (!rn2(5))
+            mnexto(mtmp);
           return (0);
         }
       } else { /* a monster has it - 'port beside it. */
@@ -437,9 +456,11 @@ void resurrect() {
           !mon_has_amulet(mtmp) &&
           (elapsed = monstermoves - mtmp->mlstmv) > 0L) {
         mon_catchup_elapsed_time(mtmp, elapsed);
-        if (elapsed >= LARGEST_INT) elapsed = LARGEST_INT - 1;
+        if (elapsed >= LARGEST_INT)
+          elapsed = LARGEST_INT - 1;
         elapsed /= 50L;
-        if (mtmp->msleeping && rn2((int)elapsed + 1)) mtmp->msleeping = 0;
+        if (mtmp->msleeping && rn2((int)elapsed + 1))
+          mtmp->msleeping = 0;
         if (mtmp->mfrozen == 1) /* would unfreeze on next move */
           mtmp->mfrozen = 0, mtmp->mcanmove = 1;
         if (mtmp->mcanmove && !mtmp->msleeping) {
@@ -473,7 +494,8 @@ void intervene() {
       You_feel("vaguely nervous.");
       break;
     case 2:
-      if (!Blind) You("notice a %s glow surrounding you.", hcolor(NH_BLACK));
+      if (!Blind)
+        You("notice a %s glow surrounding you.", hcolor(NH_BLACK));
       rndcurse();
       break;
     case 3:

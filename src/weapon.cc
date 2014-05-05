@@ -116,7 +116,8 @@ int hitval(Object *otmp, Monster *mon) {
   MonsterType *ptr = mon->data;
   bool Is_weapon = (otmp->oclass == WEAPON_CLASS || is_weptool(otmp));
 
-  if (Is_weapon) tmp += otmp->spe;
+  if (Is_weapon)
+    tmp += otmp->spe;
 
   /*	Put weapon specific "to hit" bonuses in below:		*/
   tmp += objects[otmp->otyp].oc_hitbon;
@@ -124,9 +125,11 @@ int hitval(Object *otmp, Monster *mon) {
   /*	Put weapon vs. monster type "to hit" bonuses in below:	*/
 
   /* Blessed weapons used against undead or demons */
-  if (Is_weapon && otmp->blessed && (is_demon(ptr) || is_undead(ptr))) tmp += 2;
+  if (Is_weapon && otmp->blessed && (is_demon(ptr) || is_undead(ptr)))
+    tmp += 2;
 
-  if (is_spear(otmp) && index(kebabable, ptr->mlet)) tmp += 2;
+  if (is_spear(otmp) && index(kebabable, ptr->mlet))
+    tmp += 2;
 
   /* trident is highly effective against swimmers */
   if (otmp->otyp == TRIDENT && is_swimmer(ptr)) {
@@ -137,15 +140,18 @@ int hitval(Object *otmp, Monster *mon) {
   }
 
   /* Picks used against xorns and earth elementals */
-  if (is_pick(otmp) && (passes_walls(ptr) && thick_skinned(ptr))) tmp += 2;
+  if (is_pick(otmp) && (passes_walls(ptr) && thick_skinned(ptr)))
+    tmp += 2;
 
 #ifdef INVISIBLE_OBJECTS
   /* Invisible weapons against monsters who can't see invisible */
-  if (otmp->oinvis && !perceives(ptr)) tmp += 3;
+  if (otmp->oinvis && !perceives(ptr))
+    tmp += 3;
 #endif
 
   /* Check specially named weapon "to hit" bonuses */
-  if (otmp->oartifact) tmp += spec_abon(otmp, mon);
+  if (otmp->oartifact)
+    tmp += spec_abon(otmp, mon);
 
   return tmp;
 }
@@ -181,10 +187,12 @@ int dmgval(Object *otmp, Monster *mon) {
   MonsterType *ptr = mon->data;
   bool Is_weapon = (otmp->oclass == WEAPON_CLASS || is_weptool(otmp));
 
-  if (otyp == CREAM_PIE) return 0;
+  if (otyp == CREAM_PIE)
+    return 0;
 
   if (bigmonst(ptr)) {
-    if (objects[otyp].oc_wldam) tmp = rnd(objects[otyp].oc_wldam);
+    if (objects[otyp].oc_wldam)
+      tmp = rnd(objects[otyp].oc_wldam);
     switch (otyp) {
       case IRON_CHAIN:
       case CROSSBOW_BOLT:
@@ -221,7 +229,8 @@ int dmgval(Object *otmp, Monster *mon) {
         break;
     }
   } else {
-    if (objects[otyp].oc_wsdam) tmp = rnd(objects[otyp].oc_wsdam);
+    if (objects[otyp].oc_wsdam)
+      tmp = rnd(objects[otyp].oc_wsdam);
     switch (otyp) {
       case IRON_CHAIN:
       case CROSSBOW_BOLT:
@@ -255,13 +264,15 @@ int dmgval(Object *otmp, Monster *mon) {
   if (Is_weapon) {
     tmp += otmp->spe;
     /* negative enchantment mustn't produce negative damage */
-    if (tmp < 0) tmp = 0;
+    if (tmp < 0)
+      tmp = 0;
   }
 
   if (objects[otyp].oc_material <= LEATHER && thick_skinned(ptr))
     /* thick skinned/scaled creatures don't feel it */
     tmp = 0;
-  if (ptr == &mons[PM_SHADE] && objects[otyp].oc_material != SILVER) tmp = 0;
+  if (ptr == &mons[PM_SHADE] && objects[otyp].oc_material != SILVER)
+    tmp = 0;
 
   /* "very heavy iron ball"; weight increase is in increments of 160 */
   if (otyp == HEAVY_IRON_BALL && tmp > 0) {
@@ -270,7 +281,8 @@ int dmgval(Object *otmp, Monster *mon) {
     if ((int)otmp->owt > wt) {
       wt = ((int)otmp->owt - wt) / 160;
       tmp += rnd(4 * wt);
-      if (tmp > 25) tmp = 25; /* objects[].oc_wldam */
+      if (tmp > 25)
+        tmp = 25; /* objects[].oc_wldam */
     }
   }
 
@@ -279,8 +291,10 @@ int dmgval(Object *otmp, Monster *mon) {
       otmp->oclass == CHAIN_CLASS) {
     int bonus = 0;
 
-    if (otmp->blessed && (is_undead(ptr) || is_demon(ptr))) bonus += rnd(4);
-    if (is_axe(otmp) && is_wooden(ptr)) bonus += rnd(4);
+    if (otmp->blessed && (is_undead(ptr) || is_demon(ptr)))
+      bonus += rnd(4);
+    if (is_axe(otmp) && is_wooden(ptr))
+      bonus += rnd(4);
     if (objects[otyp].oc_material == SILVER && hates_silver(ptr))
       bonus += rnd(20);
 
@@ -299,7 +313,8 @@ int dmgval(Object *otmp, Monster *mon) {
        there ought to some penalty for using damaged gear
        so always subtract erosion even for blunt weapons. */
     tmp -= greatest_erosion(otmp);
-    if (tmp < 1) tmp = 1;
+    if (tmp < 1)
+      tmp = 1;
   }
 
   return (tmp);
@@ -309,8 +324,9 @@ int dmgval(Object *otmp, Monster *mon) {
 #ifdef OVL0
 
 STATIC_DCL Object *oselect(Monster *, int);
-#define Oselect(x) \
-  if ((otmp = oselect(mtmp, x)) != 0) return (otmp);
+#define Oselect(x)                    \
+  if ((otmp = oselect(mtmp, x)) != 0) \
+    return (otmp);
 
 STATIC_OVL Object *oselect(Monster *mtmp, int x) {
   Object *otmp;
@@ -414,9 +430,12 @@ Object *select_rwep(Monster *mtmp) {
       switch (-prop) {
         case P_BOW:
           propellor = (oselect(mtmp, YUMI));
-          if (!propellor) propellor = (oselect(mtmp, ELVEN_BOW));
-          if (!propellor) propellor = (oselect(mtmp, BOW));
-          if (!propellor) propellor = (oselect(mtmp, ORCISH_BOW));
+          if (!propellor)
+            propellor = (oselect(mtmp, ELVEN_BOW));
+          if (!propellor)
+            propellor = (oselect(mtmp, BOW));
+          if (!propellor)
+            propellor = (oselect(mtmp, ORCISH_BOW));
           break;
         case P_SLING:
           propellor = (oselect(mtmp, SLING));
@@ -444,7 +463,8 @@ Object *select_rwep(Monster *mtmp) {
           return (otmp);
       } else
         for (otmp = mtmp->minvent; otmp; otmp = otmp->nobj) {
-          if (otmp->otyp == LOADSTONE && !otmp->cursed) return otmp;
+          if (otmp->otyp == LOADSTONE && !otmp->cursed)
+            return otmp;
         }
     }
   }
@@ -494,7 +514,8 @@ Object *select_hwep(Monster *mtmp) {
   /* big weapon is basically the same as bimanual */
   /* all monsters can wield the remaining weapons */
   for (i = 0; i < SIZE(hwep); i++) {
-    if (hwep[i] == CORPSE && !(mtmp->misc_worn_check & W_ARMG)) continue;
+    if (hwep[i] == CORPSE && !(mtmp->misc_worn_check & W_ARMG))
+      continue;
     if (((strong && !wearing_shield) || !objects[hwep[i]].oc_bimanual) &&
         (objects[hwep[i]].oc_material != SILVER || !hates_silver(mtmp->data)))
       Oselect(hwep[i]);
@@ -510,9 +531,11 @@ Object *select_hwep(Monster *mtmp) {
 void possibly_unwield(Monster *mon, bool polyspot) {
   Object *obj, *mw_tmp;
 
-  if (!(mw_tmp = mon->weapon())) return;
+  if (!(mw_tmp = mon->weapon()))
+    return;
   for (obj = mon->minvent; obj; obj = obj->nobj)
-    if (obj == mw_tmp) break;
+    if (obj == mw_tmp)
+      break;
   if (!obj) { /* The weapon was stolen or destroyed */
     mon->ResetWeapon();
     mon->weapon_check = NEED_WEAPON;
@@ -529,7 +552,8 @@ void possibly_unwield(Monster *mon, bool polyspot) {
     }
     /* might be dropping object into water or lava */
     if (!flooreffects(obj, mon->mx, mon->my, "drop")) {
-      if (polyspot) bypass_obj(obj);
+      if (polyspot)
+        bypass_obj(obj);
       PlaceObject(obj, mon->mx, mon->my);
       stackobj(obj);
     }
@@ -560,7 +584,8 @@ int mon_wield_item(Monster *mon) {
   Object *obj;
 
   /* This case actually should never happen */
-  if (mon->weapon_check == NO_WEAPON_WANTED) return 0;
+  if (mon->weapon_check == NO_WEAPON_WANTED)
+    return 0;
   switch (mon->weapon_check) {
     case NEED_HTH_WEAPON:
       obj = select_hwep(mon);
@@ -578,15 +603,18 @@ int mon_wield_item(Monster *mon) {
     case NEED_AXE:
       /* currently, only 2 types of axe */
       obj = m_carrying(mon, BATTLE_AXE);
-      if (!obj || which_armor(mon, W_ARMS)) obj = m_carrying(mon, AXE);
+      if (!obj || which_armor(mon, W_ARMS))
+        obj = m_carrying(mon, AXE);
       break;
     case NEED_PICK_OR_AXE:
       /* prefer pick for fewer switches on most levels */
       obj = m_carrying(mon, DWARVISH_MATTOCK);
-      if (!obj) obj = m_carrying(mon, BATTLE_AXE);
+      if (!obj)
+        obj = m_carrying(mon, BATTLE_AXE);
       if (!obj || which_armor(mon, W_ARMS)) {
         obj = m_carrying(mon, PICK_AXE);
-        if (!obj) obj = m_carrying(mon, AXE);
+        if (!obj)
+          obj = m_carrying(mon, AXE);
       }
       break;
     default:
@@ -610,7 +638,8 @@ int mon_wield_item(Monster *mon) {
         char welded_buf[BUFSZ];
         const char *mon_hand = mbodypart(mon, HAND);
 
-        if (bimanual(mw_tmp)) mon_hand = makeplural(mon_hand);
+        if (bimanual(mw_tmp))
+          mon_hand = makeplural(mon_hand);
         sprintf(welded_buf, "%s welded to %s %s", otense(mw_tmp, "are"),
                 mhis(mon), mon_hand);
 
@@ -657,7 +686,8 @@ int abon() {
   int sbon;
   int str = ACURR(A_STR), dex = ACURR(A_DEX);
 
-  if (Upolyd) return (adj_lev(&mons[player.umonnum]) - 3);
+  if (Upolyd)
+    return (adj_lev(&mons[player.umonnum]) - 3);
   if (str < 6)
     sbon = -2;
   else if (str < 8)
@@ -694,7 +724,8 @@ int abon() {
 int dbon() {
   int str = ACURR(A_STR);
 
-  if (Upolyd) return (0);
+  if (Upolyd)
+    return (0);
 
   if (str < 6)
     return (-1);
@@ -755,7 +786,8 @@ STATIC_OVL int slots_required(int skill) {
    *	basic -> skilled	2
    *	skilled -> expert	3
    */
-  if (skill <= P_LAST_WEAPON || skill == P_TWO_WEAPON_COMBAT) return tmp;
+  if (skill <= P_LAST_WEAPON || skill == P_TWO_WEAPON_COMBAT)
+    return tmp;
 
   /* Fewer slots used up for unarmed or martial.
    *	unskilled -> basic	1
@@ -855,15 +887,18 @@ int enhance_skill(bool want_dump)
 #ifdef DUMP_LOG
   if (!want_dump)
 #endif
-    if (wizard && yn("Advance skills without practice?") == 'y') speedy = TRUE;
+    if (wizard && yn("Advance skills without practice?") == 'y')
+      speedy = TRUE;
 #endif
 
   do {
     /* find longest available skill name, count those that can advance */
     to_advance = eventually_advance = maxxed_cnt = 0;
     for (longest = 0, i = 0; i < P_NUM_SKILLS; i++) {
-      if (P_RESTRICTED(i)) continue;
-      if ((len = strlen(P_NAME(i))) > longest) longest = len;
+      if (P_RESTRICTED(i))
+        continue;
+      if ((len = strlen(P_NAME(i))) > longest)
+        longest = len;
       if (can_advance(i, speedy))
         to_advance++;
       else if (could_advance(i))
@@ -935,7 +970,8 @@ int enhance_skill(bool want_dump)
         } else {
 #endif
 
-          if (P_RESTRICTED(i)) continue;
+          if (P_RESTRICTED(i))
+            continue;
           /*
            * Sigh, this assumes a monospaced font unless
            * iflags.menu_tab_sep is set in which case it puts
@@ -1001,7 +1037,8 @@ int enhance_skill(bool want_dump)
         /* check for more skills able to advance, if so then .. */
         for (n = i = 0; i < P_NUM_SKILLS; i++) {
           if (can_advance(i, speedy)) {
-            if (!speedy) You_feel("you could be more dangerous!");
+            if (!speedy)
+              You_feel("you could be more dangerous!");
             n++;
             break;
           }
@@ -1044,11 +1081,14 @@ void add_weapon_skill(int n) {
   int i, before, after;
 
   for (i = 0, before = 0; i < P_NUM_SKILLS; i++)
-    if (can_advance(i, FALSE)) before++;
+    if (can_advance(i, FALSE))
+      before++;
   player.weapon_slots += n;
   for (i = 0, after = 0; i < P_NUM_SKILLS; i++)
-    if (can_advance(i, FALSE)) after++;
-  if (before < after) give_may_advance_msg(P_NONE);
+    if (can_advance(i, FALSE))
+      after++;
+  if (before < after)
+    give_may_advance_msg(P_NONE);
 }
 
 void lose_weapon_skill(int n) {
@@ -1060,7 +1100,8 @@ void lose_weapon_skill(int n) {
       player.weapon_slots--;
     } else if (player.skills_advanced) {
       skill = player.skill_record[--player.skills_advanced];
-      if (P_SKILL(skill) <= P_UNSKILLED) panic("lose_weapon_skill (%d)", skill);
+      if (P_SKILL(skill) <= P_UNSKILLED)
+        panic("lose_weapon_skill (%d)", skill);
       P_SKILL(skill)--; /* drop skill one level */
       /* Lost skill might have taken more than one slot; refund rest. */
       player.weapon_slots = slots_required(skill) - 1;
@@ -1086,7 +1127,8 @@ int weapon_type(Object *obj) {
 }
 
 int uwep_skill_type() {
-  if (player.twoweap) return P_TWO_WEAPON_COMBAT;
+  if (player.twoweap)
+    return P_TWO_WEAPON_COMBAT;
   return weapon_type(uwep);
 }
 
@@ -1125,7 +1167,8 @@ int weapon_hit_bonus(Object *weapon) {
     }
   } else if (type == P_TWO_WEAPON_COMBAT) {
     skill = P_SKILL(P_TWO_WEAPON_COMBAT);
-    if (P_SKILL(wep_type) < skill) skill = P_SKILL(wep_type);
+    if (P_SKILL(wep_type) < skill)
+      skill = P_SKILL(wep_type);
     switch (skill) {
       default:
         impossible(bad_skill, skill); /* fall through */
@@ -1174,7 +1217,8 @@ int weapon_hit_bonus(Object *weapon) {
       case P_EXPERT:
         break;
     }
-    if (player.twoweap) bonus -= 2;
+    if (player.twoweap)
+      bonus -= 2;
   }
 #endif
 
@@ -1216,7 +1260,8 @@ int weapon_dam_bonus(Object *weapon) {
     }
   } else if (type == P_TWO_WEAPON_COMBAT) {
     skill = P_SKILL(P_TWO_WEAPON_COMBAT);
-    if (P_SKILL(wep_type) < skill) skill = P_SKILL(wep_type);
+    if (P_SKILL(wep_type) < skill)
+      skill = P_SKILL(wep_type);
     switch (skill) {
       default:
       case P_ISRESTRICTED:
@@ -1290,7 +1335,8 @@ void skill_init(const struct def_skill *class_skill) {
   /* Set skill for all weapons in inventory to be basic */
   for (obj = invent; obj; obj = obj->nobj) {
     skill = weapon_type(obj);
-    if (skill != P_NONE) P_SKILL(skill) = P_BASIC;
+    if (skill != P_NONE)
+      P_SKILL(skill) = P_BASIC;
   }
 
   /* set skills for magic */
@@ -1319,7 +1365,8 @@ void skill_init(const struct def_skill *class_skill) {
 
 /* Roles that start with a horse know how to ride it */
 #ifdef STEED
-  if (urole.petnum == PM_PONY) P_SKILL(P_RIDING) = P_BASIC;
+  if (urole.petnum == PM_PONY)
+    P_SKILL(P_RIDING) = P_BASIC;
 #endif
 
   /*

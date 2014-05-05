@@ -19,8 +19,10 @@ void initrack() { utcnt = utpnt = 0; }
 
 /* add to track */
 void settrack() {
-  if (utcnt < UTSZ) utcnt++;
-  if (utpnt == UTSZ) utpnt = 0;
+  if (utcnt < UTSZ)
+    utcnt++;
+  if (utpnt == UTSZ)
+    utpnt = 0;
   utrack[utpnt].x = player.ux;
   utrack[utpnt].y = player.uy;
   utpnt++;
@@ -44,7 +46,8 @@ coord *gettrack(int x, int y) {
     if (ndist > 2) {
       ndist -= 2; /* be careful due to extra decrement at top of loop */
       cnt -= ndist;
-      if (cnt <= 0) return (coord *)0; /* too far away, no matches possible */
+      if (cnt <= 0)
+        return (coord *)0; /* too far away, no matches possible */
       if (tc < &utrack[ndist])
         tc += (UTSZ - ndist);
       else

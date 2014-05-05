@@ -113,7 +113,8 @@ char *getrumor(int truth, char *rumor_buf, bool exclude_cookie) {
         (void)dlb_fseek(rumors, beginning, SEEK_SET);
         (void)dlb_fgets(line, sizeof line, rumors);
       }
-      if ((endp = index(line, '\n')) != 0) *endp = 0;
+      if ((endp = index(line, '\n')) != 0)
+        *endp = 0;
       strcat(rumor_buf, xcrypt(line, xbuf));
     } while (count++ < 50 && exclude_cookie &&
              (strstri(rumor_buf, "fortune") || strstri(rumor_buf, "pity")));
@@ -140,13 +141,15 @@ void outrumor(int truth, int mechanism) {
     if (is_fainted() && mechanism == BY_COOKIE)
       return;
     else if (Blind) {
-      if (mechanism == BY_COOKIE) pline(fortune_msg);
+      if (mechanism == BY_COOKIE)
+        pline(fortune_msg);
       pline("What a pity that you cannot read it!");
       return;
     }
   }
   line = getrumor(truth, buf, reading ? FALSE : TRUE);
-  if (!*line) line = "NetHack rumors file closed for renovation.";
+  if (!*line)
+    line = "NetHack rumors file closed for renovation.";
   switch (mechanism) {
     case BY_ORACLE:
       /* Oracle delivers the rumor */
@@ -227,14 +230,17 @@ void outoracle(bool special, bool delphi) {
     if (oracle_flg == 0) { /* if this is the first outoracle() */
       init_oracles(oracles);
       oracle_flg = 1;
-      if (oracle_cnt == 0) return;
+      if (oracle_cnt == 0)
+        return;
     }
     /* oracle_loc[0] is the special oracle;		*/
     /* oracle_loc[1..oracle_cnt-1] are normal ones	*/
-    if (oracle_cnt <= 1 && !special) return; /*(shouldn't happen)*/
+    if (oracle_cnt <= 1 && !special)
+      return; /*(shouldn't happen)*/
     oracle_idx = special ? 0 : rnd((int)oracle_cnt - 1);
     (void)dlb_fseek(oracles, oracle_loc[oracle_idx], SEEK_SET);
-    if (!special) oracle_loc[oracle_idx] = oracle_loc[--oracle_cnt];
+    if (!special)
+      oracle_loc[oracle_idx] = oracle_loc[--oracle_cnt];
 
     tmpwin = create_nhwindow(NHW_TEXT);
     if (delphi)
@@ -246,7 +252,8 @@ void outoracle(bool special, bool delphi) {
     putstr(tmpwin, 0, "");
 
     while (dlb_fgets(line, COLNO, oracles) && strcmp(line, "---\n")) {
-      if ((endp = index(line, '\n')) != 0) *endp = 0;
+      if ((endp = index(line, '\n')) != 0)
+        *endp = 0;
       putstr(tmpwin, 0, xcrypt(line, xbuf));
     }
     display_nhwindow(tmpwin, TRUE);
@@ -310,7 +317,8 @@ int doconsult(Monster *oracl) {
         return 0;
       sprintf(qbuf, "\"Then dost thou desire a major one?\" (%d %s)",
               major_cost, currency((long)major_cost));
-      if (yn(qbuf) != 'y') return 0;
+      if (yn(qbuf) != 'y')
+        return 0;
 #ifndef GOLDOBJ
       u_pay =
           (player.ugold < (long)major_cost ? (int)player.ugold : major_cost);

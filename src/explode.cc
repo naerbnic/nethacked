@@ -181,15 +181,18 @@ void explode(int x, int y, int type, int dam, char olet, int expltype) {
         unmap_object(i + x - 1, j + y - 1);
         newsym(i + x - 1, j + y - 1);
       }
-      if (cansee(i + x - 1, j + y - 1)) visible = TRUE;
-      if (explmask[i][j] == 1) any_shield = TRUE;
+      if (cansee(i + x - 1, j + y - 1))
+        visible = TRUE;
+      if (explmask[i][j] == 1)
+        any_shield = TRUE;
     }
 
   if (visible) {
     /* Start the explosion */
     for (i = 0; i < 3; i++)
       for (j = 0; j < 3; j++) {
-        if (explmask[i][j] == 2) continue;
+        if (explmask[i][j] == 2)
+          continue;
         tmp_at(starting ? DISP_BEAM : DISP_CHANGE,
                explosion_to_glyph(expltype, expl[i][j]));
         tmp_at(i + x - 1, j + y - 1);
@@ -232,13 +235,15 @@ void explode(int x, int y, int type, int dam, char olet, int expltype) {
       str = "explosion";
       generic = TRUE;
     }
-    if (flags.soundok) You_hear("a blast.");
+    if (flags.soundok)
+      You_hear("a blast.");
   }
 
   if (dam)
     for (i = 0; i < 3; i++)
       for (j = 0; j < 3; j++) {
-        if (explmask[i][j] == 2) continue;
+        if (explmask[i][j] == 2)
+          continue;
         if (i + x - 1 == player.ux && j + y - 1 == player.uy)
           uhurt = (explmask[i][j] == 1) ? 1 : 2;
         idamres = idamnonres = 0;
@@ -251,7 +256,8 @@ void explode(int x, int y, int type, int dam, char olet, int expltype) {
         if (!mtmp && i + x - 1 == player.ux && j + y - 1 == player.uy)
           mtmp = player.usteed;
 #endif
-        if (!mtmp) continue;
+        if (!mtmp)
+          continue;
         if (player.uswallow && mtmp == player.ustuck) {
           if (is_animal(player.ustuck->data))
             pline("%s gets %s!", Monnam(player.ustuck),
@@ -287,7 +293,8 @@ void explode(int x, int y, int type, int dam, char olet, int expltype) {
                                               : (adtyp == AD_ACID) ? "burned"
                                                                    : "fried");
         } else if (cansee(i + x - 1, j + y - 1)) {
-          if (mtmp->m_ap_type) seemimic(mtmp);
+          if (mtmp->m_ap_type)
+            seemimic(mtmp);
           pline("%s is caught in the %s!", Monnam(mtmp), str);
         }
 
@@ -312,7 +319,8 @@ void explode(int x, int y, int type, int dam, char olet, int expltype) {
               pline("%s resists the %s!", Monnam(mtmp), str);
             mdam = dam / 2;
           }
-          if (mtmp == player.ustuck) mdam *= 2;
+          if (mtmp == player.ustuck)
+            mdam *= 2;
           if (resists_cold(mtmp) && adtyp == AD_FIRE)
             mdam *= 2;
           else if (resists_fire(mtmp) && adtyp == AD_COLD)
@@ -336,13 +344,15 @@ void explode(int x, int y, int type, int dam, char olet, int expltype) {
         flags.verbose && olet != SCROLL_CLASS)
       You("are caught in the %s!", str);
     /* do property damage first, in case we end up leaving bones */
-    if (adtyp == AD_FIRE) burn_away_slime();
+    if (adtyp == AD_FIRE)
+      burn_away_slime();
     if (Invulnerable) {
       damu = 0;
       You("are unharmed!");
     } else if (Half_physical_damage && adtyp == AD_PHYS)
       damu = (damu + 1) / 2;
-    if (adtyp == AD_FIRE) (void)burnarmor(&youmonst);
+    if (adtyp == AD_FIRE)
+      (void)burnarmor(&youmonst);
     destroy_item(SCROLL_CLASS, (int)adtyp);
     destroy_item(SPBOOK_CLASS, (int)adtyp);
     destroy_item(POTION_CLASS, (int)adtyp);
@@ -364,7 +374,8 @@ void explode(int x, int y, int type, int dam, char olet, int expltype) {
       } else {
         if (olet == MON_EXPLODE) {
           /* killer handled by caller */
-          if (str != killer_buf && !generic) strcpy(killer_buf, str);
+          if (str != killer_buf && !generic)
+            strcpy(killer_buf, str);
           killer_format = KILLED_BY_AN;
         } else if (type >= 0 && olet != SCROLL_CLASS) {
           killer_format = NO_KILLER_PREFIX;
@@ -398,7 +409,8 @@ void explode(int x, int y, int type, int dam, char olet, int expltype) {
 
   /* explosions are noisy */
   i = dam * dam;
-  if (i < 50) i = 50; /* in case random damage is very small */
+  if (i < 50)
+    i = 50; /* in case random damage is very small */
   wake_nearto(x, y, i);
 }
 #endif /* OVL0 */
@@ -443,7 +455,8 @@ long scatter(int sx, int sy, int blastforce, unsigned int scflags,
   while ((otmp = individual_object ? obj : level.objects[sx][sy]) != 0) {
     if (otmp->quan > 1L) {
       qtmp = otmp->quan - 1;
-      if (qtmp > LARGEST_INT) qtmp = LARGEST_INT;
+      if (qtmp > LARGEST_INT)
+        qtmp = LARGEST_INT;
       qtmp = (long)rnd((int)qtmp);
       otmp = SplitObject(otmp, qtmp);
     } else {
@@ -467,7 +480,8 @@ long scatter(int sx, int sy, int blastforce, unsigned int scflags,
       } else {
         Trap *trap;
 
-        if ((trap = t_at(sx, sy)) && trap->ttyp == STATUE_TRAP) deltrap(trap);
+        if ((trap = t_at(sx, sy)) && trap->ttyp == STATUE_TRAP)
+          deltrap(trap);
         pline("%s.", Tobjnam(otmp, "crumble"));
         (void)break_statue(otmp);
         PlaceObject(otmp, sx, sy); /* put fragments on floor */
@@ -478,7 +492,8 @@ long scatter(int sx, int sy, int blastforce, unsigned int scflags,
     } else if ((scflags & MAY_DESTROY) &&
                (!rn2(10) || (objects[otmp->otyp].oc_material == GLASS ||
                              otmp->otyp == EGG))) {
-      if (breaks(otmp, (xchar)sx, (xchar)sy)) used_up = TRUE;
+      if (breaks(otmp, (xchar)sx, (xchar)sy))
+        used_up = TRUE;
     }
 
     if (!used_up) {
@@ -491,9 +506,11 @@ long scatter(int sx, int sy, int blastforce, unsigned int scflags,
       stmp->dx = xdir[tmp];
       stmp->dy = ydir[tmp];
       tmp = blastforce - (otmp->owt / 40);
-      if (tmp < 1) tmp = 1;
+      if (tmp < 1)
+        tmp = 1;
       stmp->range = rnd(tmp); /* anywhere up to that determ. by wt */
-      if (farthest < stmp->range) farthest = stmp->range;
+      if (farthest < stmp->range)
+        farthest = stmp->range;
       stmp->stopped = FALSE;
       if (!schain)
         schain = stmp;
@@ -529,9 +546,11 @@ long scatter(int sx, int sy, int blastforce, unsigned int scflags,
           if (scflags & MAY_HITYOU) {
             int hitvalu, hitu;
 
-            if (multi) nomul(0, 0);
+            if (multi)
+              nomul(0, 0);
             hitvalu = 8 + stmp->obj->spe;
-            if (bigmonst(youmonst.data)) hitvalu++;
+            if (bigmonst(youmonst.data))
+              hitvalu++;
             hitu = thitu(hitvalu, dmgval(stmp->obj, &youmonst), stmp->obj,
                          (char *)0);
             if (hitu) {
@@ -557,7 +576,8 @@ long scatter(int sx, int sy, int blastforce, unsigned int scflags,
     x = stmp->ox;
     y = stmp->oy;
     if (stmp->obj) {
-      if (x != sx || y != sy) total += stmp->obj->quan;
+      if (x != sx || y != sy)
+        total += stmp->obj->quan;
       PlaceObject(stmp->obj, x, y);
       stackobj(stmp->obj);
     }

@@ -96,7 +96,8 @@ Object *MakeRandomObject(char oclass, bool artif) {
 
   int i = bases[(int)oclass];
   int prob = rnd(1000);
-  while ((prob -= objects[i].oc_prob) > 0) i++;
+  while ((prob -= objects[i].oc_prob) > 0)
+    i++;
 
   if (objects[i].oc_class != oclass || !OBJ_NAME(objects[i]))
     panic("probtype error, oclass=%d i=%d", (int)oclass, i);
@@ -140,7 +141,8 @@ STATIC_OVL void AddRandomBoxContents(Object *box) {
   for (n = rn2(n + 1); n > 0; n--) {
     Object *otmp;
     if (box->otyp == ICE_BOX) {
-      if (!(otmp = MakeSpecificObject(CORPSE, TRUE, TRUE))) continue;
+      if (!(otmp = MakeSpecificObject(CORPSE, TRUE, TRUE)))
+        continue;
       /* Note: setting age to 0 is correct.  Age has a different
        * from usual meaning for objects stored in ice boxes. -KAA
        */
@@ -155,7 +157,8 @@ STATIC_OVL void AddRandomBoxContents(Object *box) {
 
       for (tprob = rnd(100); (tprob -= iprobs->iprob) > 0; iprobs++)
         ;
-      if (!(otmp = MakeRandomObject(iprobs->iclass, TRUE))) continue;
+      if (!(otmp = MakeRandomObject(iprobs->iclass, TRUE)))
+        continue;
 
       /* handle a couple of special cases */
       if (otmp->oclass == COIN_CLASS) {
@@ -165,7 +168,8 @@ STATIC_OVL void AddRandomBoxContents(Object *box) {
       } else
         while (otmp->otyp == ROCK) {
           otmp->otyp = rnd_class(DILITHIUM_CRYSTAL, LOADSTONE);
-          if (otmp->quan > 2L) otmp->quan = 1L;
+          if (otmp->quan > 2L)
+            otmp->quan = 1L;
           otmp->owt = GetWeight(otmp);
         }
       if (box->otyp == BAG_OF_HOLDING) {
@@ -186,7 +190,8 @@ STATIC_OVL void AddRandomBoxContents(Object *box) {
 int PickRandomMonsterTypeIndex() {
   /* Plan A: get a level-appropriate common monster */
   MonsterType *ptr = rndmonst();
-  if (ptr) return (monsndx(ptr));
+  if (ptr)
+    return (monsndx(ptr));
 
   /* Plan B: get any common monster */
   int i;
@@ -212,10 +217,11 @@ Object *SplitObject(Object *obj, long num) {
   otmp = newobj(obj->oxlth + obj->onamelth);
   *otmp = *obj; /* copies whole structure */
   otmp->o_id = flags.ident++;
-  if (!otmp->o_id) otmp->o_id = flags.ident++; /* ident overflowed */
-  otmp->timed = 0;                             /* not timed, yet */
-  otmp->lamplit = 0;                           /* ditto */
-  otmp->owornmask = 0L;                        /* new object isn't worn */
+  if (!otmp->o_id)
+    otmp->o_id = flags.ident++; /* ident overflowed */
+  otmp->timed = 0;              /* not timed, yet */
+  otmp->lamplit = 0;            /* ditto */
+  otmp->owornmask = 0L;         /* new object isn't worn */
   obj->quan -= num;
   obj->owt = GetWeight(obj);
   otmp->quan = num;
@@ -223,14 +229,19 @@ Object *SplitObject(Object *obj, long num) {
   obj->nobj = otmp;
   /* Only set nexthere when on the floor, nexthere is also used */
   /* as a back pointer to the container object when contained. */
-  if (obj->where == OBJ_FLOOR) obj->nexthere = otmp;
+  if (obj->where == OBJ_FLOOR)
+    obj->nexthere = otmp;
   if (obj->oxlth)
     (void)memcpy((genericptr_t)otmp->oextra, (genericptr_t)obj->oextra,
                  obj->oxlth);
-  if (obj->onamelth) (void)strncpy(ONAME(otmp), ONAME(obj), (int)obj->onamelth);
-  if (obj->unpaid) splitbill(obj, otmp);
-  if (obj->timed) obj_split_timers(obj, otmp);
-  if (obj_sheds_light(obj)) obj_split_light_source(obj, otmp);
+  if (obj->onamelth)
+    (void)strncpy(ONAME(otmp), ONAME(obj), (int)obj->onamelth);
+  if (obj->unpaid)
+    splitbill(obj, otmp);
+  if (obj->timed)
+    obj_split_timers(obj, otmp);
+  if (obj_sheds_light(obj))
+    obj_split_light_source(obj, otmp);
   return otmp;
 }
 
@@ -300,19 +311,22 @@ void ReplaceObject(Object *obj, Object *otmp) {
 void CreateBillDummyObject(Object *otmp) {
   Object *dummy;
 
-  if (otmp->unpaid) subfrombill(otmp, shop_keeper(*player.ushops));
+  if (otmp->unpaid)
+    subfrombill(otmp, shop_keeper(*player.ushops));
   dummy = newobj(otmp->oxlth + otmp->onamelth);
   *dummy = *otmp;
   dummy->where = OBJ_FREE;
   dummy->o_id = flags.ident++;
-  if (!dummy->o_id) dummy->o_id = flags.ident++; /* ident overflowed */
+  if (!dummy->o_id)
+    dummy->o_id = flags.ident++; /* ident overflowed */
   dummy->timed = 0;
   if (otmp->oxlth)
     (void)memcpy((genericptr_t)dummy->oextra, (genericptr_t)otmp->oextra,
                  otmp->oxlth);
   if (otmp->onamelth)
     (void)strncpy(ONAME(dummy), ONAME(otmp), (int)otmp->onamelth);
-  if (Is_candle(dummy)) dummy->lamplit = 0;
+  if (Is_candle(dummy))
+    dummy->lamplit = 0;
   addtobill(dummy, FALSE, TRUE, TRUE);
   otmp->no_charge = 1;
   otmp->unpaid = 0;
@@ -332,7 +346,8 @@ Object *MakeSpecificObject(int otyp, bool init, bool artif) {
   *otmp = zeroobj;
   otmp->age = monstermoves;
   otmp->o_id = flags.ident++;
-  if (!otmp->o_id) otmp->o_id = flags.ident++; /* ident overflowed */
+  if (!otmp->o_id)
+    otmp->o_id = flags.ident++; /* ident overflowed */
   otmp->quan = 1L;
   otmp->oclass = let;
   otmp->otyp = otyp;
@@ -341,11 +356,13 @@ Object *MakeSpecificObject(int otyp, bool init, bool artif) {
   if ((otmp->otyp >= ELVEN_SHIELD && otmp->otyp <= ORCISH_SHIELD) ||
       otmp->otyp == SHIELD_OF_REFLECTION)
     otmp->dknown = 0;
-  if (!objects[otmp->otyp].oc_uses_known) otmp->known = 1;
+  if (!objects[otmp->otyp].oc_uses_known)
+    otmp->known = 1;
 #ifdef INVISIBLE_OBJECTS
   otmp->oinvis = !rn2(1250);
 #endif
-  if (init) switch (let) {
+  if (init)
+    switch (let) {
       case WEAPON_CLASS:
         otmp->quan = is_multigen(otmp) ? (long)rn1(6, 6) : 1L;
         if (!rn2(11)) {
@@ -356,9 +373,11 @@ Object *MakeSpecificObject(int otyp, bool init, bool artif) {
           otmp->spe = -rne(3);
         } else
           BlessOrCurse(otmp, 10);
-        if (is_poisonable(otmp) && !rn2(100)) otmp->opoisoned = 1;
+        if (is_poisonable(otmp) && !rn2(100))
+          otmp->opoisoned = 1;
 
-        if (artif && !rn2(20)) otmp = mk_artifact(otmp, (aligntyp)A_NONE);
+        if (artif && !rn2(20))
+          otmp = mk_artifact(otmp, (aligntyp)A_NONE);
         break;
       case FOOD_CLASS:
         otmp->oeaten = 0;
@@ -500,7 +519,8 @@ Object *MakeSpecificObject(int otyp, bool init, bool artif) {
         }
         break;
       case AMULET_CLASS:
-        if (otmp->otyp == AMULET_OF_YENDOR) flags.made_amulet = TRUE;
+        if (otmp->otyp == AMULET_OF_YENDOR)
+          flags.made_amulet = TRUE;
         if (rn2(10) && (otmp->otyp == AMULET_OF_STRANGULATION ||
                         otmp->otyp == AMULET_OF_CHANGE ||
                         otmp->otyp == AMULET_OF_RESTFUL_SLEEP)) {
@@ -536,7 +556,8 @@ Object *MakeSpecificObject(int otyp, bool init, bool artif) {
           otmp->spe = rne(3);
         } else
           BlessOrCurse(otmp, 10);
-        if (artif && !rn2(40)) otmp = mk_artifact(otmp, (aligntyp)A_NONE);
+        if (artif && !rn2(40))
+          otmp = mk_artifact(otmp, (aligntyp)A_NONE);
         /* simulate lacquered armor for samurai */
         if (Role_if(PM_SAMURAI) && otmp->otyp == SPLINT_MAIL &&
             (moves <= 1 || In_quest(&player.uz))) {
@@ -567,9 +588,11 @@ Object *MakeSpecificObject(int otyp, bool init, bool artif) {
               otmp->spe = rn2(2) ? rne(3) : -rne(3);
           }
           /* make useless +0 rings much less common */
-          if (otmp->spe == 0) otmp->spe = rn2(4) - rn2(3);
+          if (otmp->spe == 0)
+            otmp->spe = rn2(4) - rn2(3);
           /* negative rings are usually cursed */
-          if (otmp->spe < 0 && rn2(5)) Curse(otmp);
+          if (otmp->spe < 0 && rn2(5))
+            Curse(otmp);
         } else if (rn2(10) && (otmp->otyp == RIN_TELEPORTATION ||
                                otmp->otyp == RIN_POLYMORPH ||
                                otmp->otyp == RIN_AGGRAVATE_MONSTER ||
@@ -624,7 +647,8 @@ void StartCorpseTimeout(Object *body) {
 #define ROT_AGE (250L)         /* age when corpses rot away */
 
   /* lizards and lichen don't rot or revive */
-  if (body->corpsenm == PM_LIZARD || body->corpsenm == PM_LICHEN) return;
+  if (body->corpsenm == PM_LIZARD || body->corpsenm == PM_LICHEN)
+    return;
 
   action = ROT_CORPSE;             /* default action: rot away */
   rot_adjust = in_mklev ? 25 : 10; /* give some variation */
@@ -642,7 +666,8 @@ void StartCorpseTimeout(Object *body) {
      */
     action = REVIVE_MON;
     for (when = 12L; when < 500L; when++)
-      if (!rn2(3)) break;
+      if (!rn2(3))
+        break;
 
   } else if (mons[body->corpsenm].mlet == S_TROLL && !body->norevive) {
     long age;
@@ -654,13 +679,15 @@ void StartCorpseTimeout(Object *body) {
       }
   }
 
-  if (body->norevive) body->norevive = 0;
+  if (body->norevive)
+    body->norevive = 0;
   start_timer(when, TIMER_OBJECT, action, (genericptr_t)body);
 }
 
 void Bless(Object *otmp) {
 #ifdef GOLDOBJ
-  if (otmp->oclass == COIN_CLASS) return;
+  if (otmp->oclass == COIN_CLASS)
+    return;
 #endif
   otmp->cursed = 0;
   otmp->blessed = 1;
@@ -683,15 +710,18 @@ void Unbless(Object *otmp) {
 
 void Curse(Object *otmp) {
 #ifdef GOLDOBJ
-  if (otmp->oclass == COIN_CLASS) return;
+  if (otmp->oclass == COIN_CLASS)
+    return;
 #endif
   otmp->blessed = 0;
   otmp->cursed = 1;
   /* welded two-handed weapon interferes with some armor removal */
-  if (otmp == uwep && bimanual(uwep)) reset_remarm();
+  if (otmp == uwep && bimanual(uwep))
+    reset_remarm();
   /* rules at top of wield.c state that twoweapon cannot be done
      with cursed alternate weapon */
-  if (otmp == uswapwep && player.twoweap) drop_uswapwep();
+  if (otmp == uswapwep && player.twoweap)
+    drop_uswapwep();
   /* some cursed items need immediate updating */
   if (carried(otmp) && confers_luck(otmp))
     set_moreluck();
@@ -717,7 +747,8 @@ void Uncurse(Object *otmp) {
 }
 
 void BlessOrCurse(Object *otmp, int chance) {
-  if (otmp->blessed || otmp->cursed) return;
+  if (otmp->blessed || otmp->cursed)
+    return;
 
   if (!rn2(chance)) {
     if (!rn2(2)) {
@@ -781,7 +812,8 @@ int GetWeight(Object *obj) {
     long long_wt = obj->quan * (long)mons[obj->corpsenm].cwt;
 
     wt = (long_wt > LARGEST_INT) ? LARGEST_INT : (int)long_wt;
-    if (obj->oeaten) wt = eaten_stat(wt, obj);
+    if (obj->oeaten)
+      wt = eaten_stat(wt, obj);
     return wt;
   } else if (obj->oclass == FOOD_CLASS && obj->oeaten) {
     return eaten_stat((int)obj->quan * wt, obj);
@@ -802,7 +834,8 @@ Object *MakeRandomTreefruitAt(int x, int y) {
 Object *MakeGold(long amount, int x, int y) {
   Object *gold = g_at(x, y);
 
-  if (amount <= 0L) amount = (long)(1 + rnd(level_difficulty() + 2) * rnd(30));
+  if (amount <= 0L)
+    amount = (long)(1 + rnd(level_difficulty() + 2) * rnd(30));
   if (gold) {
     gold->quan += amount;
   } else {
@@ -835,17 +868,20 @@ Object *MakeCorpseOrStatue(int objtype, Monster *mtmp, MonsterType *ptr, int x,
     impossible("making corpstat type %d", objtype);
   if (x == 0 && y == 0) { /* special case - random placement */
     otmp = MakeSpecificObject(objtype, init, FALSE);
-    if (otmp) rloco(otmp);
+    if (otmp)
+      rloco(otmp);
   } else
     otmp = MakeSpecificObjectAt(objtype, x, y, init, FALSE);
   if (otmp) {
     if (mtmp) {
       Object *otmp2;
 
-      if (!ptr) ptr = mtmp->data;
+      if (!ptr)
+        ptr = mtmp->data;
       /* save_mtraits frees original data pointed to by otmp */
       otmp2 = SaveMonsterIntoObject(otmp, mtmp);
-      if (otmp2) otmp = otmp2;
+      if (otmp2)
+        otmp = otmp2;
     }
     /* use the corpse or statue produced by MakeSpecificObject() as-is
      unless `ptr' is non-null */
@@ -872,7 +908,8 @@ Object *AttachMonsterIdToObject(Object *obj, unsigned mid) {
   Object *otmp;
   int lth, namelth;
 
-  if (!mid || !obj) return nullptr;
+  if (!mid || !obj)
+    return nullptr;
   lth = sizeof(mid);
   namelth = obj->onamelth ? strlen(ONAME(obj)) + 1 : 0;
   if (namelth)
@@ -883,7 +920,8 @@ Object *AttachMonsterIdToObject(Object *obj, unsigned mid) {
     otmp->oxlth = sizeof(mid);
     memcpy((genericptr_t)otmp->oextra, (genericptr_t) & mid, sizeof(mid));
   }
-  if (otmp && otmp->oxlth) otmp->oattached = OATTACHED_M_ID; /* mark it */
+  if (otmp && otmp->oxlth)
+    otmp->oattached = OATTACHED_M_ID; /* mark it */
   return otmp;
 }
 
@@ -897,7 +935,8 @@ static Object *SaveMonsterIntoObject(Object *obj, Monster *mtmp) {
   // TODO(BNC): Good place for using a buffer?
   if (otmp && otmp->oxlth) {
     Monster *mtmp2 = (Monster *)otmp->oextra;
-    if (mtmp->data) mtmp2->mnum = monsndx(mtmp->data);
+    if (mtmp->data)
+      mtmp2->mnum = monsndx(mtmp->data);
     /* invalidate pointers */
     /* m_id is needed to know if this is a revived quest leader */
     /* but m_id must be cleared when loading bones */
@@ -940,7 +979,8 @@ Object *NewTopTenObject(int objtype, int x, int y) {
   if (otmp) {
     /* tt_oname will return null if the scoreboard is empty */
     Object *otmp2 = tt_oname(otmp);
-    if (otmp2) otmp = otmp2;
+    if (otmp2)
+      otmp = otmp2;
   }
   return otmp;
 }
@@ -952,7 +992,8 @@ Object *MakeNamedCorpseOrStatue(int objtype, MonsterType *ptr, int x, int y,
 
   otmp = MakeCorpseOrStatue(objtype, (Monster *)0, ptr, x, y,
                             (bool)(objtype != STATUE));
-  if (nm) otmp = oname(otmp, nm);
+  if (nm)
+    otmp = oname(otmp, nm);
   return (otmp);
 }
 
@@ -960,7 +1001,8 @@ bool IsFlammable(Object *otmp) {
   int otyp = otmp->otyp;
   int omat = objects[otyp].oc_material;
 
-  if (objects[otyp].oc_oprop == FIRE_RES || otyp == WAN_FIRE) return FALSE;
+  if (objects[otyp].oc_oprop == FIRE_RES || otyp == WAN_FIRE)
+    return FALSE;
 
   return ((bool)((omat <= WOOD && omat != LIQUID) || omat == PLASTIC));
 }
@@ -981,10 +1023,12 @@ bool IsRottable(Object *otmp) {
 void PlaceObject(Object *otmp, int x, int y) {
   Object *otmp2 = level.objects[x][y];
 
-  if (otmp->where != OBJ_FREE) panic("place_object: obj not free");
+  if (otmp->where != OBJ_FREE)
+    panic("place_object: obj not free");
 
   obj_no_longer_held(otmp);
-  if (otmp->otyp == BOULDER) block_point(x, y); /* vision */
+  if (otmp->otyp == BOULDER)
+    block_point(x, y); /* vision */
 
   /* obj goes under boulders */
   if (otmp2 && (otmp2->otyp == BOULDER)) {
@@ -1004,7 +1048,8 @@ void PlaceObject(Object *otmp, int x, int y) {
   /* add to floor chain */
   otmp->nobj = fobj;
   fobj = otmp;
-  if (otmp->timed) UpdateObjectTimerState(otmp, x, y, 0);
+  if (otmp->timed)
+    UpdateObjectTimerState(otmp, x, y, 0);
 }
 
 #define ON_ICE(a) ((a)->recharged)
@@ -1017,7 +1062,8 @@ void ApplyIceEffectsAt(int x, int y, bool do_buried) {
   Object *otmp;
 
   for (otmp = level.objects[x][y]; otmp; otmp = otmp->nexthere) {
-    if (otmp->timed) UpdateObjectTimerState(otmp, x, y, 0);
+    if (otmp->timed)
+      UpdateObjectTimerState(otmp, x, y, 0);
   }
   if (do_buried) {
     for (otmp = level.buriedobjlist; otmp; otmp = otmp->nobj) {
@@ -1121,11 +1167,14 @@ void RemoveObjectFromFloor(Object *otmp) {
   xchar x = otmp->ox;
   xchar y = otmp->oy;
 
-  if (otmp->where != OBJ_FLOOR) panic("remove_object: obj not on floor");
-  if (otmp->otyp == BOULDER) unblock_point(x, y); /* vision */
+  if (otmp->where != OBJ_FLOOR)
+    panic("remove_object: obj not on floor");
+  if (otmp->otyp == BOULDER)
+    unblock_point(x, y); /* vision */
   extract_nexthere(otmp, &level.objects[x][y]);
   ExtractObjectFromList(otmp, &fobj);
-  if (otmp->timed) UpdateObjectTimerState(otmp, x, y, 0);
+  if (otmp->timed)
+    UpdateObjectTimerState(otmp, x, y, 0);
 }
 
 /* throw away all of a monster's inventory */
@@ -1200,7 +1249,8 @@ void ExtractObjectFromList(Object *obj, Object **head_ptr) {
       break;
     }
   }
-  if (!curr) panic("extract_nobj: object lost");
+  if (!curr)
+    panic("extract_nobj: object lost");
   obj->where = OBJ_FREE;
 }
 
@@ -1223,7 +1273,8 @@ void extract_nexthere(Object *obj, Object **head_ptr) {
       break;
     }
   }
-  if (!curr) panic("extract_nexthere: object lost");
+  if (!curr)
+    panic("extract_nexthere: object lost");
 }
 
 /*
@@ -1234,11 +1285,13 @@ void extract_nexthere(Object *obj, Object **head_ptr) {
 int AddObjectToMonsterInventory(Monster *mon, Object *obj) {
   Object *otmp;
 
-  if (obj->where != OBJ_FREE) panic("add_to_minv: obj not free");
+  if (obj->where != OBJ_FREE)
+    panic("add_to_minv: obj not free");
 
   /* merge if possible */
   for (otmp = mon->minvent; otmp; otmp = otmp->nobj)
-    if (merged(&otmp, &obj)) return 1; /* obj merged and then free'd */
+    if (merged(&otmp, &obj))
+      return 1; /* obj merged and then free'd */
   /* else insert; don't bother forcing it to end of chain */
   obj->where = OBJ_MINVENT;
   obj->ocarry = mon;
@@ -1254,13 +1307,15 @@ int AddObjectToMonsterInventory(Monster *mon, Object *obj) {
 Object *AddObjectToContainer(Object *container, Object *obj) {
   Object *otmp;
 
-  if (obj->where != OBJ_FREE) panic("add_to_container: obj not free");
+  if (obj->where != OBJ_FREE)
+    panic("add_to_container: obj not free");
   if (container->where != OBJ_INVENT && container->where != OBJ_MINVENT)
     obj_no_longer_held(obj);
 
   /* merge if possible */
   for (otmp = container->cobj; otmp; otmp = otmp->nobj)
-    if (merged(&otmp, &obj)) return (otmp);
+    if (merged(&otmp, &obj))
+      return (otmp);
 
   obj->where = OBJ_CONTAINED;
   obj->ocontainer = container;
@@ -1270,7 +1325,8 @@ Object *AddObjectToContainer(Object *container, Object *obj) {
 }
 
 void AddObjectToMigrationList(Object *obj) {
-  if (obj->where != OBJ_FREE) panic("add_to_migration: obj not free");
+  if (obj->where != OBJ_FREE)
+    panic("add_to_migration: obj not free");
 
   obj->where = OBJ_MIGRATING;
   obj->nobj = migrating_objs;
@@ -1278,7 +1334,8 @@ void AddObjectToMigrationList(Object *obj) {
 }
 
 void AddToBuriedList(Object *obj) {
-  if (obj->where != OBJ_FREE) panic("add_to_buried: obj not free");
+  if (obj->where != OBJ_FREE)
+    panic("add_to_buried: obj not free");
 
   obj->where = OBJ_BURIED;
   obj->nobj = level.buriedobjlist;
@@ -1301,10 +1358,12 @@ STATIC_OVL void RefreshContainerWeight(Object *container) {
  * them to be deallocated.
  */
 void DeallocateObject(Object *obj) {
-  if (obj->where != OBJ_FREE) panic("dealloc_obj: obj not free");
+  if (obj->where != OBJ_FREE)
+    panic("dealloc_obj: obj not free");
 
   /* free up any timers attached to the object */
-  if (obj->timed) obj_stop_timers(obj);
+  if (obj->timed)
+    obj_stop_timers(obj);
 
   /*
    * Free up any light sources attached to the object.
@@ -1314,9 +1373,11 @@ void DeallocateObject(Object *obj) {
    * list must track all objects that can have a light source
    * attached to it (and also requires lamplit to be set).
    */
-  if (obj_sheds_light(obj)) del_light_source(LS_OBJECT, (genericptr_t)obj);
+  if (obj_sheds_light(obj))
+    del_light_source(LS_OBJECT, (genericptr_t)obj);
 
-  if (obj == thrownobj) thrownobj = (Object *)0;
+  if (obj == thrownobj)
+    thrownobj = (Object *)0;
 
   free((genericptr_t)obj);
 }

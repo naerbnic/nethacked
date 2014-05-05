@@ -67,7 +67,8 @@ Monster *make_familiar(Object *otmp, xchar x, xchar y, bool quietly) {
     } else {
       pm = rndmonst();
       if (!pm) {
-        if (!quietly) There("seems to be nothing available for a familiar.");
+        if (!quietly)
+          There("seems to be nothing available for a familiar.");
         break;
       }
     }
@@ -80,26 +81,31 @@ Monster *make_familiar(Object *otmp, xchar x, xchar y, bool quietly) {
     }
   } while (!mtmp && --trycnt > 0);
 
-  if (!mtmp) return (Monster *)0;
+  if (!mtmp)
+    return (Monster *)0;
 
-  if (is_pool(mtmp->mx, mtmp->my) && minliquid(mtmp)) return (Monster *)0;
+  if (is_pool(mtmp->mx, mtmp->my) && minliquid(mtmp))
+    return (Monster *)0;
 
   initedog(mtmp);
   mtmp->msleeping = 0;
   if (otmp) {         /* figurine; resulting monster might not become a pet */
     chance = rn2(10); /* 0==tame, 1==peaceful, 2==hostile */
-    if (chance > 2) chance = otmp->blessed ? 0 : !otmp->cursed ? 1 : 2;
+    if (chance > 2)
+      chance = otmp->blessed ? 0 : !otmp->cursed ? 1 : 2;
     /* 0,1,2:  b=80%,10,10; nc=10%,80,10; c=10%,10,80 */
     if (chance > 0) {
       mtmp->mtame = 0;   /* not tame after all */
       if (chance == 2) { /* hostile (cursed figurine) */
-        if (!quietly) You("get a bad feeling about this.");
+        if (!quietly)
+          You("get a bad feeling about this.");
         mtmp->mpeaceful = 0;
         set_malign(mtmp);
       }
     }
     /* if figurine has been named, give same name to the monster */
-    if (otmp->onamelth) mtmp = christen_monst(mtmp, ONAME(otmp));
+    if (otmp->onamelth)
+      mtmp = christen_monst(mtmp, ONAME(otmp));
   }
   set_malign(mtmp); /* more alignment changes */
   newsym(mtmp->mx, mtmp->my);
@@ -121,7 +127,8 @@ Monster *makedog() {
   int pettype;
   static int petname_used = 0;
 
-  if (preferred_pet == 'n') return ((Monster *)0);
+  if (preferred_pet == 'n')
+    return ((Monster *)0);
 
   pettype = pet_type();
   if (pettype == PM_LITTLE_DOG)
@@ -134,21 +141,27 @@ Monster *makedog() {
   /* default pet names */
   if (!*petname && pettype == PM_LITTLE_DOG) {
     /* All of these names were for dogs. */
-    if (Role_if(PM_CAVEMAN)) petname = "Slasher";  /* The Warrior */
-    if (Role_if(PM_SAMURAI)) petname = "Hachi";    /* Shibuya Station */
-    if (Role_if(PM_BARBARIAN)) petname = "Idefix"; /* Obelix */
-    if (Role_if(PM_RANGER)) petname = "Sirius";    /* Orion's dog */
+    if (Role_if(PM_CAVEMAN))
+      petname = "Slasher"; /* The Warrior */
+    if (Role_if(PM_SAMURAI))
+      petname = "Hachi"; /* Shibuya Station */
+    if (Role_if(PM_BARBARIAN))
+      petname = "Idefix"; /* Obelix */
+    if (Role_if(PM_RANGER))
+      petname = "Sirius"; /* Orion's dog */
   }
 
   mtmp = makemon(&mons[pettype], player.ux, player.uy, MM_EDOG);
 
-  if (!mtmp) return ((Monster *)0); /* pets were genocided */
+  if (!mtmp)
+    return ((Monster *)0); /* pets were genocided */
 
 #ifdef STEED
   /* Horses already wear a saddle */
   if (pettype == PM_PONY &&
       !!(otmp = MakeSpecificObject(SADDLE, TRUE, FALSE))) {
-    if (mpickobj(mtmp, otmp)) panic("merged saddle?");
+    if (mpickobj(mtmp, otmp))
+      panic("merged saddle?");
     mtmp->misc_worn_check |= W_SADDLE;
     otmp->dknown = otmp->bknown = otmp->rknown = 1;
     otmp->owornmask = W_SADDLE;
@@ -157,7 +170,8 @@ Monster *makedog() {
   }
 #endif
 
-  if (!petname_used++ && *petname) mtmp = christen_monst(mtmp, petname);
+  if (!petname_used++ && *petname)
+    mtmp = christen_monst(mtmp, petname);
 
   initedog(mtmp);
   return (mtmp);
@@ -171,7 +185,8 @@ void update_mlstmv() {
   /* monst->mlstmv used to be updated every time `monst' actually moved,
      but that is no longer the case so we just do a blanket assignment */
   for (mon = fmon; mon; mon = mon->nmon)
-    if (!mon->dead()) mon->mlstmv = monstermoves;
+    if (!mon->dead())
+      mon->mlstmv = monstermoves;
 }
 
 void losedogs() {
@@ -203,7 +218,8 @@ void mon_arrive(Monster *mtmp, bool with_you) {
 
   mtmp->nmon = fmon;
   fmon = mtmp;
-  if (mtmp->isshk) set_residency(mtmp, FALSE);
+  if (mtmp->isshk)
+    set_residency(mtmp, FALSE);
 
   num_segs = mtmp->wormno;
   /* baby long worms have no tail so don't use is_longworm() */
@@ -233,7 +249,8 @@ void mon_arrive(Monster *mtmp, bool with_you) {
   mtmp->mtrack[1].x = mtmp->mtrack[1].y = 0;
 
 #ifdef STEED
-  if (mtmp == player.usteed) return; /* don't place steed on the map */
+  if (mtmp == player.usteed)
+    return; /* don't place steed on the map */
 #endif
   if (with_you) {
     /* When a monster accompanies you, sometimes it will arrive
@@ -303,7 +320,8 @@ void mon_arrive(Monster *mtmp, bool with_you) {
       }
       /* find the arrival portal */
       for (t = ftrap; t; t = t->ntrap)
-        if (t->ttyp == MAGIC_PORTAL) break;
+        if (t->ttyp == MAGIC_PORTAL)
+          break;
       if (t) {
         xlocale = t->tx, ylocale = t->ty;
         break;
@@ -353,7 +371,8 @@ void mon_arrive(Monster *mtmp, bool with_you) {
       while ((obj = mtmp->minvent) != 0) {
         RemoveObjectFromStorage(obj);
         obj_no_longer_held(obj);
-        if (obj->owornmask & W_WEP) setmnotwielded(mtmp, obj);
+        if (obj->owornmask & W_WEP)
+          setmnotwielded(mtmp, obj);
         obj->owornmask = 0L;
         if (xlocale && ylocale)
           PlaceObject(obj, xlocale, ylocale);
@@ -418,9 +437,12 @@ void mon_catchup_elapsed_time(Monster *mtmp, long nmv) {
   }
 
   /* might recover from temporary trouble */
-  if (mtmp->mtrapped && rn2(imv + 1) > 40 / 2) mtmp->mtrapped = 0;
-  if (mtmp->mconf && rn2(imv + 1) > 50 / 2) mtmp->mconf = 0;
-  if (mtmp->mstun && rn2(imv + 1) > 10 / 2) mtmp->mstun = 0;
+  if (mtmp->mtrapped && rn2(imv + 1) > 40 / 2)
+    mtmp->mtrapped = 0;
+  if (mtmp->mconf && rn2(imv + 1) > 50 / 2)
+    mtmp->mconf = 0;
+  if (mtmp->mstun && rn2(imv + 1) > 10 / 2)
+    mtmp->mstun = 0;
 
   /* might finish eating or be able to use special ability again */
   if (imv > mtmp->meating)
@@ -462,7 +484,8 @@ void mon_catchup_elapsed_time(Monster *mtmp, long nmv) {
   }
 
   /* recover lost hit points */
-  if (!regenerates(mtmp->data)) imv /= 20;
+  if (!regenerates(mtmp->data))
+    imv /= 20;
   if (mtmp->mhp + imv >= mtmp->mhpmax)
     mtmp->mhp = mtmp->mhpmax;
   else
@@ -481,8 +504,10 @@ void keepdogs(bool pets_only) {
 
   for (mtmp = fmon; mtmp; mtmp = mtmp2) {
     mtmp2 = mtmp->nmon;
-    if (mtmp->dead()) continue;
-    if (pets_only && !mtmp->mtame) continue;
+    if (mtmp->dead())
+      continue;
+    if (pets_only && !mtmp->mtame)
+      continue;
     if (((monnear(mtmp, player.ux, player.uy) && levl_follower(mtmp)) ||
 #ifdef STEED
          (mtmp == player.usteed) ||
@@ -504,18 +529,21 @@ void keepdogs(bool pets_only) {
         !(mtmp->mstrategy & STRAT_WAITFORU)) {
       stay_behind = FALSE;
       if (mtmp->mtame && mtmp->meating) {
-        if (canseemon(mtmp)) pline("%s is still eating.", Monnam(mtmp));
+        if (canseemon(mtmp))
+          pline("%s is still eating.", Monnam(mtmp));
         stay_behind = TRUE;
       } else if (mon_has_amulet(mtmp)) {
         if (canseemon(mtmp))
           pline("%s seems very disoriented for a moment.", Monnam(mtmp));
         stay_behind = TRUE;
       } else if (mtmp->mtame && mtmp->mtrapped) {
-        if (canseemon(mtmp)) pline("%s is still trapped.", Monnam(mtmp));
+        if (canseemon(mtmp))
+          pline("%s is still trapped.", Monnam(mtmp));
         stay_behind = TRUE;
       }
 #ifdef STEED
-      if (mtmp == player.usteed) stay_behind = FALSE;
+      if (mtmp == player.usteed)
+        stay_behind = FALSE;
 #endif
       if (stay_behind) {
         if (mtmp->mleashed) {
@@ -525,7 +553,8 @@ void keepdogs(bool pets_only) {
         }
         continue;
       }
-      if (mtmp->isshk) set_residency(mtmp, TRUE);
+      if (mtmp->isshk)
+        set_residency(mtmp, TRUE);
 
       if (mtmp->wormno) {
         int cnt;
@@ -538,7 +567,8 @@ void keepdogs(bool pets_only) {
 
       /* set minvent's obj->no_charge to 0 */
       for (obj = mtmp->minvent; obj; obj = obj->nobj) {
-        if (Has_contents(obj)) picked_container(obj); /* does the right thing */
+        if (Has_contents(obj))
+          picked_container(obj); /* does the right thing */
         obj->no_charge = 0;
       }
 
@@ -572,7 +602,8 @@ void migrate_to_level(Monster *mtmp, xchar tolev, xchar xyloc, coord *cc) {
   xchar xyflags;
   int num_segs = 0; /* count of worm segments */
 
-  if (mtmp->isshk) set_residency(mtmp, TRUE);
+  if (mtmp->isshk)
+    set_residency(mtmp, TRUE);
 
   if (mtmp->wormno) {
     int cnt;
@@ -584,7 +615,8 @@ void migrate_to_level(Monster *mtmp, xchar tolev, xchar xyloc, coord *cc) {
 
   /* set minvent's obj->no_charge to 0 */
   for (obj = mtmp->minvent; obj; obj = obj->nobj) {
-    if (Has_contents(obj)) picked_container(obj); /* does the right thing */
+    if (Has_contents(obj))
+      picked_container(obj); /* does the right thing */
     obj->no_charge = 0;
   }
 
@@ -602,7 +634,8 @@ void migrate_to_level(Monster *mtmp, xchar tolev, xchar xyloc, coord *cc) {
   /* overload mtmp->[mx,my], mtmp->[mux,muy], and mtmp->mtrack[] as */
   /* destination codes (setup flag bits before altering mx or my) */
   xyflags = (depth(&new_lev) < depth(&player.uz)); /* 1 => up */
-  if (In_W_tower(mtmp->mx, mtmp->my, &player.uz)) xyflags |= 2;
+  if (In_W_tower(mtmp->mx, mtmp->my, &player.uz))
+    xyflags |= 2;
   mtmp->wormno = num_segs;
   mtmp->mlstmv = monstermoves;
   mtmp->mtrack[1].x = cc ? cc->x : mtmp->mx;
@@ -642,7 +675,8 @@ int dogfood(Monster *mon, Object *obj) {
                    ? DOGFOOD
                    : TABU;
 
-      if (!carni && !herbi) return (obj->cursed ? UNDEF : APPORT);
+      if (!carni && !herbi)
+        return (obj->cursed ? UNDEF : APPORT);
 
       /* a starving pet will eat almost anything */
       starving = (mon->mtame && !mon->isminion && EDOG(mon)->mhpmax_penalty);
@@ -683,7 +717,8 @@ int dogfood(Monster *mon, Object *obj) {
                       ? DOGFOOD
                       : ((herbi || starving) ? ACCFOOD : MANFOOD));
         default:
-          if (starving) return ACCFOOD;
+          if (starving)
+            return ACCFOOD;
           return (obj->otyp > SLIME_MOLD ? (carni ? ACCFOOD : MANFOOD)
                                          : (herbi ? ACCFOOD : MANFOOD));
       }
@@ -773,13 +808,15 @@ Monster *tamedog(Monster *mtmp, Object *obj) {
       (obj && dogfood(mtmp, obj) >= MANFOOD))
     return (Monster *)0;
 
-  if (mtmp->m_id == quest_status.leader_m_id) return ((Monster *)0);
+  if (mtmp->m_id == quest_status.leader_m_id)
+    return ((Monster *)0);
 
   /* make a new monster which has the pet extension */
   mtmp2 = newmonst(sizeof(struct edog) + mtmp->mnamelth);
   *mtmp2 = *mtmp;
   mtmp2->mxlth = sizeof(struct edog);
-  if (mtmp->mnamelth) strcpy(mtmp2->name(), mtmp->name());
+  if (mtmp->mnamelth)
+    strcpy(mtmp2->name(), mtmp->name());
   initedog(mtmp2);
   replmon(mtmp, mtmp2);
   /* `mtmp' is now obsolete */
@@ -813,7 +850,8 @@ void wary_dog(Monster *mtmp, bool was_dead) {
   bool quietly = was_dead;
 
   mtmp->meating = 0;
-  if (!mtmp->mtame) return;
+  if (!mtmp->mtame)
+    return;
   edog = !mtmp->isminion ? EDOG(mtmp) : 0;
 
   /* if monster was starving when it died, undo that now */
@@ -826,7 +864,8 @@ void wary_dog(Monster *mtmp, bool was_dead) {
   if (edog && (edog->killed_by_u == 1 || edog->abuse > 2)) {
     mtmp->mpeaceful = mtmp->mtame = 0;
     if (edog->abuse >= 0 && edog->abuse < 10)
-      if (!rn2(edog->abuse + 1)) mtmp->mpeaceful = 1;
+      if (!rn2(edog->abuse + 1))
+        mtmp->mpeaceful = 1;
     if (!quietly && cansee(mtmp->mx, mtmp->my)) {
       if (haseyes(youmonst.data)) {
         if (haseyes(mtmp->data))
@@ -846,7 +885,8 @@ void wary_dog(Monster *mtmp, bool was_dead) {
     newsym(mtmp->mx, mtmp->my);
     /* a life-saved monster might be leashed;
        don't leave it that way if it's no longer tame */
-    if (mtmp->mleashed) m_unleash(mtmp, TRUE);
+    if (mtmp->mleashed)
+      m_unleash(mtmp, TRUE);
   }
 
   /* if its still a pet, start a clean pet-slate now */
@@ -867,16 +907,19 @@ void wary_dog(Monster *mtmp, bool was_dead) {
 }
 
 void abuse_dog(Monster *mtmp) {
-  if (!mtmp->mtame) return;
+  if (!mtmp->mtame)
+    return;
 
   if (Aggravate_monster || Conflict)
     mtmp->mtame /= 2;
   else
     mtmp->mtame--;
 
-  if (mtmp->mtame && !mtmp->isminion) EDOG(mtmp)->abuse++;
+  if (mtmp->mtame && !mtmp->isminion)
+    EDOG(mtmp)->abuse++;
 
-  if (!mtmp->mtame && mtmp->mleashed) m_unleash(mtmp, TRUE);
+  if (!mtmp->mtame && mtmp->mleashed)
+    m_unleash(mtmp, TRUE);
 
   /* don't make a sound if pet is in the middle of leaving the level */
   /* newsym isn't necessary in this case either */
@@ -886,7 +929,8 @@ void abuse_dog(Monster *mtmp) {
     else
       growl(mtmp); /* give them a moment's worry */
 
-    if (!mtmp->mtame) newsym(mtmp->mx, mtmp->my);
+    if (!mtmp->mtame)
+      newsym(mtmp->mx, mtmp->my);
   }
 }
 

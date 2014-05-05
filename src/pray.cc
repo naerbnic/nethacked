@@ -132,28 +132,37 @@ STATIC_OVL int in_trouble() {
   /*
    * major troubles
    */
-  if (Stoned) return (TROUBLE_STONED);
-  if (Slimed) return (TROUBLE_SLIMED);
-  if (Strangled) return (TROUBLE_STRANGLED);
-  if (player.utrap && player.utraptype == TT_LAVA) return (TROUBLE_LAVA);
-  if (Sick) return (TROUBLE_SICK);
-  if (player.uhs >= WEAK) return (TROUBLE_STARVING);
+  if (Stoned)
+    return (TROUBLE_STONED);
+  if (Slimed)
+    return (TROUBLE_SLIMED);
+  if (Strangled)
+    return (TROUBLE_STRANGLED);
+  if (player.utrap && player.utraptype == TT_LAVA)
+    return (TROUBLE_LAVA);
+  if (Sick)
+    return (TROUBLE_SICK);
+  if (player.uhs >= WEAK)
+    return (TROUBLE_STARVING);
   if (Upolyd ? (player.mh <= 5 || player.mh * 7 <= player.mhmax)
              : (player.uhp <= 5 || player.uhp * 7 <= player.uhpmax))
     return TROUBLE_HIT;
-  if (player.ulycn >= LOW_PM) return (TROUBLE_LYCANTHROPE);
+  if (player.ulycn >= LOW_PM)
+    return (TROUBLE_LYCANTHROPE);
   if (near_capacity() >= EXT_ENCUMBER && AMAX(A_STR) - ABASE(A_STR) > 3)
     return (TROUBLE_COLLAPSING);
 
   for (i = -1; i <= 1; i++)
     for (j = -1; j <= 1; j++) {
-      if (!i && !j) continue;
+      if (!i && !j)
+        continue;
       if (!isok(player.ux + i, player.uy + j) ||
           IS_ROCK(levl[player.ux + i][player.uy + j].typ) ||
           (blocked_boulder(i, j) && !throws_rocks(youmonst.data)))
         count++;
     }
-  if (count == 8 && !Passes_walls) return (TROUBLE_STUCK_IN_WALL);
+  if (count == 8 && !Passes_walls)
+    return (TROUBLE_STUCK_IN_WALL);
 
   if (Cursed_obj(uarmf, LEVITATION_BOOTS) ||
       stuck_ring(uleft, RIN_LEVITATION) || stuck_ring(uright, RIN_LEVITATION))
@@ -162,41 +171,52 @@ STATIC_OVL int in_trouble() {
     /* for bag/box access [cf use_container()]...
        make sure it's a case that we know how to handle;
        otherwise "fix all troubles" would get stuck in a loop */
-    if (welded(uwep)) return TROUBLE_UNUSEABLE_HANDS;
+    if (welded(uwep))
+      return TROUBLE_UNUSEABLE_HANDS;
     if (Upolyd && nohands(youmonst.data) &&
         (!Unchanging || ((otmp = unchanger()) != 0 && otmp->cursed)))
       return TROUBLE_UNUSEABLE_HANDS;
   }
-  if (Blindfolded && ublindf->cursed) return (TROUBLE_CURSED_BLINDFOLD);
+  if (Blindfolded && ublindf->cursed)
+    return (TROUBLE_CURSED_BLINDFOLD);
 
   /*
    * minor troubles
    */
-  if (Punished) return (TROUBLE_PUNISHED);
+  if (Punished)
+    return (TROUBLE_PUNISHED);
   if (Cursed_obj(uarmg, GAUNTLETS_OF_FUMBLING) ||
       Cursed_obj(uarmf, FUMBLE_BOOTS))
     return TROUBLE_FUMBLING;
-  if (worst_cursed_item()) return TROUBLE_CURSED_ITEMS;
+  if (worst_cursed_item())
+    return TROUBLE_CURSED_ITEMS;
 #ifdef STEED
   if (player.usteed) { /* can't voluntarily dismount from a cursed saddle */
     otmp = which_armor(player.usteed, W_SADDLE);
-    if (Cursed_obj(otmp, SADDLE)) return TROUBLE_SADDLE;
+    if (Cursed_obj(otmp, SADDLE))
+      return TROUBLE_SADDLE;
   }
 #endif
 
-  if (Blinded > 1 && haseyes(youmonst.data)) return (TROUBLE_BLIND);
+  if (Blinded > 1 && haseyes(youmonst.data))
+    return (TROUBLE_BLIND);
   for (i = 0; i < A_MAX; i++)
-    if (ABASE(i) < AMAX(i)) return (TROUBLE_POISONED);
+    if (ABASE(i) < AMAX(i))
+      return (TROUBLE_POISONED);
   if (Wounded_legs
 #ifdef STEED
       && !player.usteed
 #endif
       )
     return (TROUBLE_WOUNDED_LEGS);
-  if (player.uhs >= HUNGRY) return (TROUBLE_HUNGRY);
-  if (HStun) return (TROUBLE_STUNNED);
-  if (HConfusion) return (TROUBLE_CONFUSED);
-  if (Hallucination) return (TROUBLE_HALLUCINATION);
+  if (player.uhs >= HUNGRY)
+    return (TROUBLE_HUNGRY);
+  if (HStun)
+    return (TROUBLE_STUNNED);
+  if (HConfusion)
+    return (TROUBLE_CONFUSED);
+  if (Hallucination)
+    return (TROUBLE_HALLUCINATION);
   return (0);
 }
 
@@ -207,7 +227,8 @@ STATIC_OVL Object *worst_cursed_item() {
   /* if strained or worse, check for loadstone first */
   if (near_capacity() >= HVY_ENCUMBER) {
     for (otmp = invent; otmp; otmp = otmp->nobj)
-      if (Cursed_obj(otmp, LOADSTONE)) return otmp;
+      if (Cursed_obj(otmp, LOADSTONE))
+        return otmp;
   }
   /* weapon takes precedence if it is interfering
      with taking off a ring or putting on a shield */
@@ -249,8 +270,10 @@ STATIC_OVL Object *worst_cursed_item() {
     /* all worn items ought to be handled by now */
   } else {
     for (otmp = invent; otmp; otmp = otmp->nobj) {
-      if (!otmp->cursed) continue;
-      if (otmp->otyp == LOADSTONE || confers_luck(otmp)) break;
+      if (!otmp->cursed)
+        continue;
+      if (otmp->otyp == LOADSTONE || confers_luck(otmp))
+        break;
     }
   }
   return otmp;
@@ -290,7 +313,8 @@ STATIC_OVL void fix_worst_trouble(int trouble) {
       /* teleport should always succeed, but if not,
        * just untrap them.
        */
-      if (!safe_teleds(FALSE)) player.utrap = 0;
+      if (!safe_teleds(FALSE))
+        player.utrap = 0;
       break;
     case TROUBLE_STARVING:
       losestr(-1);
@@ -311,11 +335,14 @@ STATIC_OVL void fix_worst_trouble(int trouble) {
       You_feel("much better.");
       if (Upolyd) {
         player.mhmax += rnd(5);
-        if (player.mhmax <= 5) player.mhmax = 5 + 1;
+        if (player.mhmax <= 5)
+          player.mhmax = 5 + 1;
         player.mh = player.mhmax;
       }
-      if (player.uhpmax < player.ulevel * 5 + 11) player.uhpmax += rnd(5);
-      if (player.uhpmax <= 5) player.uhpmax = 5 + 1;
+      if (player.uhpmax < player.ulevel * 5 + 11)
+        player.uhpmax += rnd(5);
+      if (player.uhpmax <= 5)
+        player.uhpmax = 5 + 1;
       player.uhp = player.uhpmax;
       flags.botl = 1;
       break;
@@ -332,9 +359,11 @@ STATIC_OVL void fix_worst_trouble(int trouble) {
       if (Cursed_obj(uarmf, LEVITATION_BOOTS)) {
         otmp = uarmf;
       } else if ((otmp = stuck_ring(uleft, RIN_LEVITATION)) != 0) {
-        if (otmp == uleft) what = leftglow;
+        if (otmp == uleft)
+          what = leftglow;
       } else if ((otmp = stuck_ring(uright, RIN_LEVITATION)) != 0) {
-        if (otmp == uright) what = rightglow;
+        if (otmp == uright)
+          what = rightglow;
       }
       goto decurse;
     case TROUBLE_UNUSEABLE_HANDS:
@@ -500,7 +529,8 @@ STATIC_OVL void god_zaps_you(aligntyp resp_god) {
         !uarmc)
       (void)destroy_arm(uarm);
 #ifdef TOURIST
-    if (uarmu && !uarm && !uarmc) (void)destroy_arm(uarmu);
+    if (uarmu && !uarm && !uarmc)
+      (void)destroy_arm(uarmu);
 #endif
     if (!Disint_resistance)
       fry_by_god(resp_god);
@@ -532,7 +562,8 @@ STATIC_OVL void fry_by_god(aligntyp resp_god) {
 STATIC_OVL void angrygods(aligntyp resp_god) {
   int maxanger;
 
-  if (Inhell) resp_god = A_NONE;
+  if (Inhell)
+    resp_god = A_NONE;
   player.ublessed = 0;
 
   /* changed from tmp = player.ugangr + abs (player.uluck) -- rph */
@@ -602,7 +633,8 @@ STATIC_OVL void angrygods(aligntyp resp_god) {
 
 /* helper to print "str appears at your feet", or appropriate */
 static void at_your_feet(const char *str) {
-  if (Blind) str = Something;
+  if (Blind)
+    str = Something;
   if (player.uswallow) {
     /* barrier between you and the floor */
     pline("%s %s into %s %s.", str, vtense(str, "drop"),
@@ -669,7 +701,8 @@ STATIC_OVL void gcrownu() {
        currently wielded weapon rather than the book */
     for (sp_no = 0; sp_no < MAXSPELL; sp_no++)
       if (spl_book[sp_no].sp_id == class_gift) {
-        if (ok_wep(uwep)) obj = uwep; /* to be blessed,&c */
+        if (ok_wep(uwep))
+          obj = uwep; /* to be blessed,&c */
         break;
       }
   } else if (Role_if(PM_MONK) && (!uwep || !uwep->oartifact) &&
@@ -684,9 +717,11 @@ STATIC_OVL void gcrownu() {
       if (class_gift != STRANGE_OBJECT) {
         ; /* already got bonus above */
       } else if (obj && obj->otyp == LONG_SWORD && !obj->oartifact) {
-        if (!Blind) Your("sword shines brightly for a moment.");
+        if (!Blind)
+          Your("sword shines brightly for a moment.");
         obj = oname(obj, artiname(ART_EXCALIBUR));
-        if (obj && obj->oartifact == ART_EXCALIBUR) player.ugifts++;
+        if (obj && obj->oartifact == ART_EXCALIBUR)
+          player.ugifts++;
       }
       /* acquire Excalibur's skill regardless of weapon or gift */
       unrestrict_weapon_skill(P_LONG_SWORD);
@@ -746,7 +781,8 @@ STATIC_OVL void gcrownu() {
     obj->oeroded = obj->oeroded2 = 0;
     obj->oerodeproof = TRUE;
     obj->bknown = obj->rknown = TRUE;
-    if (obj->spe < 1) obj->spe = 1;
+    if (obj->spe < 1)
+      obj->spe = 1;
     /* acquire skill in this weapon */
     unrestrict_weapon_skill(weapon_type(obj));
   } else if (class_gift == STRANGE_OBJECT) {
@@ -792,11 +828,13 @@ STATIC_OVL void pleased(aligntyp g_align) {
 
   if (!trouble && player.ualign.record >= DEVOUT) {
     /* if hero was in trouble, but got better, no special favor */
-    if (p_trouble == 0) pat_on_head = 1;
+    if (p_trouble == 0)
+      pat_on_head = 1;
   } else {
     int action = rn1(Luck + (on_altar() ? 3 + on_shrine() : 2), 1);
 
-    if (!on_altar()) action = min(action, 3);
+    if (!on_altar())
+      action = min(action, 3);
     if (player.ualign.record < STRIDENT)
       action = (player.ualign.record > 0 || !rnl(2)) ? 1 : 0;
 
@@ -812,11 +850,13 @@ STATIC_OVL void pleased(aligntyp g_align) {
       case 3:
         fix_worst_trouble(trouble);
       case 2:
-        while ((trouble = in_trouble()) > 0) fix_worst_trouble(trouble);
+        while ((trouble = in_trouble()) > 0)
+          fix_worst_trouble(trouble);
         break;
 
       case 1:
-        if (trouble > 0) fix_worst_trouble(trouble);
+        if (trouble > 0)
+          fix_worst_trouble(trouble);
       case 0:
         break; /* your god blows you off, too bad */
     }
@@ -825,7 +865,8 @@ STATIC_OVL void pleased(aligntyp g_align) {
   /* note: can't get pat_on_head unless all troubles have just been
      fixed or there were no troubles to begin with; hallucination
      won't be in effect so special handling for it is superfluous */
-  if (pat_on_head) switch (rn2((Luck + 6) >> 1)) {
+  if (pat_on_head)
+    switch (rn2((Luck + 6) >> 1)) {
       case 0:
         break;
       case 1:
@@ -891,7 +932,8 @@ STATIC_OVL void pleased(aligntyp g_align) {
         }
       /* Otherwise, falls into next case */
       case 2:
-        if (!Blind) You("are surrounded by %s glow.", an(hcolor(NH_GOLDEN)));
+        if (!Blind)
+          You("are surrounded by %s glow.", an(hcolor(NH_GOLDEN)));
         /* if any levels have been lost (and not yet regained),
            treat this effect like blessed full healing */
         if (player.ulevel < player.ulevelmax) {
@@ -899,13 +941,17 @@ STATIC_OVL void pleased(aligntyp g_align) {
           pluslvl(FALSE);
         } else {
           player.uhpmax += 5;
-          if (Upolyd) player.mhmax += 5;
+          if (Upolyd)
+            player.mhmax += 5;
         }
         player.uhp = player.uhpmax;
-        if (Upolyd) player.mh = player.mhmax;
+        if (Upolyd)
+          player.mh = player.mhmax;
         ABASE(A_STR) = AMAX(A_STR);
-        if (player.uhunger < 900) init_uhunger();
-        if (player.uluck < 0) player.uluck = 0;
+        if (player.uhunger < 900)
+          init_uhunger();
+        if (player.uluck < 0)
+          player.uluck = 0;
         make_blinded(0L, TRUE);
         flags.botl = 1;
         break;
@@ -927,7 +973,8 @@ STATIC_OVL void pleased(aligntyp g_align) {
             }
           }
         }
-        if (any) update_inventory();
+        if (any)
+          update_inventory();
         break;
       }
       case 5: {
@@ -936,7 +983,8 @@ STATIC_OVL void pleased(aligntyp g_align) {
         if (!(HTelepat & INTRINSIC)) {
           HTelepat |= FROMOUTSIDE;
           pline(msg, "Telepathy");
-          if (Blind) see_monsters();
+          if (Blind)
+            see_monsters();
         } else if (!(HFast & INTRINSIC)) {
           HFast |= FROMOUTSIDE;
           pline(msg, "Speed");
@@ -946,7 +994,8 @@ STATIC_OVL void pleased(aligntyp g_align) {
         } else {
           if (!(HProtection & INTRINSIC)) {
             HProtection |= FROMOUTSIDE;
-            if (!player.ublessed) player.ublessed = rn1(3, 2);
+            if (!player.ublessed)
+              player.ublessed = rn1(3, 2);
           } else
             player.ublessed++;
           pline(msg, "my protection");
@@ -974,7 +1023,8 @@ STATIC_OVL void pleased(aligntyp g_align) {
         while (--trycnt > 0) {
           if (otmp->otyp != SPE_BLANK_PAPER) {
             for (sp_no = 0; sp_no < MAXSPELL; sp_no++)
-              if (spl_book[sp_no].sp_id == otmp->otyp) break;
+              if (spl_book[sp_no].sp_id == otmp->otyp)
+                break;
             if (sp_no == MAXSPELL && !P_RESTRICTED(spell_skilltype(otmp->otyp)))
               break; /* usable, but not yet known */
           } else {
@@ -996,9 +1046,11 @@ STATIC_OVL void pleased(aligntyp g_align) {
   player.ublesscnt = rnz(350);
   kick_on_butt = player.uevent.udemigod ? 1 : 0;
 #ifdef ELBERETH
-  if (player.uevent.uhand_of_elbereth) kick_on_butt++;
+  if (player.uevent.uhand_of_elbereth)
+    kick_on_butt++;
 #endif
-  if (kick_on_butt) player.ublesscnt += kick_on_butt * rnz(1000);
+  if (kick_on_butt)
+    player.ublesscnt += kick_on_butt * rnz(1000);
 
   return;
 }
@@ -1060,7 +1112,8 @@ STATIC_OVL void gods_upset(aligntyp g_align) {
 static const char sacrifice_types[] = {FOOD_CLASS, AMULET_CLASS, 0};
 
 STATIC_OVL void consume_offering(Object *otmp) {
-  if (Hallucination) switch (rn2(3)) {
+  if (Hallucination)
+    switch (rn2(3)) {
       case 0:
         Your("sacrifice sprouts wings and a propeller and roars away!");
         break;
@@ -1097,9 +1150,11 @@ int dosacrifice() {
   }
 
   if (In_endgame(&player.uz)) {
-    if (!(otmp = getobj(sacrifice_types, "sacrifice"))) return 0;
+    if (!(otmp = getobj(sacrifice_types, "sacrifice")))
+      return 0;
   } else {
-    if (!(otmp = floorfood("sacrifice", 1))) return 0;
+    if (!(otmp = floorfood("sacrifice", 1)))
+      return 0;
   }
 /*
   Was based on nutritional value and aging behavior (< 50 moves).
@@ -1127,7 +1182,8 @@ int dosacrifice() {
     if (otmp->corpsenm == PM_ACID_BLOB ||
         (monstermoves <= PeekAtIcedCorpseAge(otmp) + 50)) {
       value = monstr[otmp->corpsenm] + 1;
-      if (otmp->oeaten) value = eaten_stat(value, otmp);
+      if (otmp->oeaten)
+        value = eaten_stat(value, otmp);
     }
 
     if (your_race(ptr)) {
@@ -1180,7 +1236,8 @@ int dosacrifice() {
         adjalign(-5);
         player.ugangr += 3;
         (void)adjattrib(A_WIS, -1, TRUE);
-        if (!Inhell) angrygods(player.ualign.type);
+        if (!Inhell)
+          angrygods(player.ualign.type);
         change_luck(-5);
       } else
         adjalign(5);
@@ -1199,7 +1256,8 @@ int dosacrifice() {
       value = -1;
       HAggravate_monster |= FROMOUTSIDE;
     } else if (is_undead(ptr)) { /* Not demons--no demon corpses */
-      if (player.ualign.type != A_CHAOTIC) value += 1;
+      if (player.ualign.type != A_CHAOTIC)
+        value += 1;
     } else if (is_unicorn(ptr)) {
       int unicalign = sgn(ptr->maligntyp);
 
@@ -1239,7 +1297,8 @@ int dosacrifice() {
       return 1;
     } else {
       /* The final Test.	Did you win? */
-      if (uamul == otmp) Amulet_off();
+      if (uamul == otmp)
+        Amulet_off();
       player.uevent.ascended = 1;
       if (carried(otmp))
         useup(otmp); /* well, it's gone now */
@@ -1276,7 +1335,8 @@ int dosacrifice() {
   } /* real Amulet */
 
   if (otmp->otyp == FAKE_AMULET_OF_YENDOR) {
-    if (flags.soundok) You_hear("a nearby thunderclap.");
+    if (flags.soundok)
+      You_hear("a nearby thunderclap.");
     if (!otmp->known) {
       You("realize you have made a %s.", Hallucination ? "boo-boo" : "mistake");
       otmp->known = TRUE;
@@ -1345,7 +1405,8 @@ int dosacrifice() {
           godvoice(altaralign, "Suffer, infidel!");
           change_luck(-5);
           (void)adjattrib(A_WIS, -2, TRUE);
-          if (!Inhell) angrygods(player.ualign.type);
+          if (!Inhell)
+            angrygods(player.ualign.type);
         }
         return (1);
       } else {
@@ -1393,18 +1454,21 @@ int dosacrifice() {
     if (player.ugangr) {
       player.ugangr -=
           ((value * (player.ualign.type == A_CHAOTIC ? 2 : 3)) / MAXVALUE);
-      if (player.ugangr < 0) player.ugangr = 0;
+      if (player.ugangr < 0)
+        player.ugangr = 0;
       if (player.ugangr != saved_anger) {
         if (player.ugangr) {
           pline("%s seems %s.", u_gname(),
                 Hallucination ? "groovy" : "slightly mollified");
 
-          if ((int)player.uluck < 0) change_luck(1);
+          if ((int)player.uluck < 0)
+            change_luck(1);
         } else {
           pline("%s seems %s.", u_gname(),
                 Hallucination ? "cosmic (not a new fact)" : "mollified");
 
-          if ((int)player.uluck < 0) player.uluck = 0;
+          if ((int)player.uluck < 0)
+            player.uluck = 0;
         }
       } else { /* not satisfied yet */
         if (Hallucination)
@@ -1413,27 +1477,32 @@ int dosacrifice() {
           You("have a feeling of inadequacy.");
       }
     } else if (ugod_is_angry()) {
-      if (value > MAXVALUE) value = MAXVALUE;
-      if (value > -player.ualign.record) value = -player.ualign.record;
+      if (value > MAXVALUE)
+        value = MAXVALUE;
+      if (value > -player.ualign.record)
+        value = -player.ualign.record;
       adjalign(value);
       You_feel("partially absolved.");
     } else if (player.ublesscnt > 0) {
       player.ublesscnt -=
           ((value * (player.ualign.type == A_CHAOTIC ? 500 : 300)) / MAXVALUE);
-      if (player.ublesscnt < 0) player.ublesscnt = 0;
+      if (player.ublesscnt < 0)
+        player.ublesscnt = 0;
       if (player.ublesscnt != saved_cnt) {
         if (player.ublesscnt) {
           if (Hallucination)
             You("realize that the gods are not like you and I.");
           else
             You("have a hopeful feeling.");
-          if ((int)player.uluck < 0) change_luck(1);
+          if ((int)player.uluck < 0)
+            change_luck(1);
         } else {
           if (Hallucination)
             pline("Overall, there is a smell of fried onions.");
           else
             You("have a feeling of reconciliation.");
-          if ((int)player.uluck < 0) player.uluck = 0;
+          if ((int)player.uluck < 0)
+            player.uluck = 0;
         }
       }
     } else {
@@ -1446,8 +1515,10 @@ int dosacrifice() {
           !rn2(10 + (2 * player.ugifts * nartifacts))) {
         otmp = mk_artifact(nullptr, a_align(player.ux, player.uy));
         if (otmp) {
-          if (otmp->spe < 0) otmp->spe = 0;
-          if (otmp->cursed) Uncurse(otmp);
+          if (otmp->spe < 0)
+            otmp->spe = 0;
+          if (otmp->cursed)
+            Uncurse(otmp);
           otmp->oerodeproof = TRUE;
           dropy(otmp);
           at_your_feet("An object");
@@ -1462,7 +1533,8 @@ int dosacrifice() {
         }
       }
       change_luck((value * LUCKMAX) / (MAXVALUE * 2));
-      if ((int)player.uluck < 0) player.uluck = 0;
+      if ((int)player.uluck < 0)
+        player.uluck = 0;
       if (player.uluck != saved_luck) {
         if (Blind)
           You("think %s brushed your %s.", something, body_part(FOOT));
@@ -1491,7 +1563,8 @@ bool can_pray(bool praying) {
     return FALSE;
   }
 
-  if (praying) You("begin praying to %s.", align_gname(p_aligntyp));
+  if (praying)
+    You("begin praying to %s.", align_gname(p_aligntyp));
 
   if (player.ualign.type && player.ualign.type == -p_aligntyp)
     alignment = -player.ualign.record; /* Opposite alignment altar */
@@ -1526,7 +1599,8 @@ bool can_pray(bool praying) {
 int dopray() {
   /* Confirm accidental slips of Alt-P */
   if (flags.prayconfirm)
-    if (yn("Are you sure you want to pray?") == 'n') return 0;
+    if (yn("Are you sure you want to pray?") == 'n')
+      return 0;
 
   player.uconduct.gnostic++;
   /* Praying implies that the hero is conscious and since we have
@@ -1536,16 +1610,20 @@ int dopray() {
   flags.soundok = 1;
 
   /* set up p_type and p_alignment */
-  if (!can_pray(TRUE)) return 0;
+  if (!can_pray(TRUE))
+    return 0;
 
 #ifdef WIZARD
   if (wizard && p_type >= 0) {
     if (yn("Force the gods to be pleased?") == 'y') {
       player.ublesscnt = 0;
-      if (player.uluck < 0) player.uluck = 0;
-      if (player.ualign.record <= 0) player.ualign.record = 1;
+      if (player.uluck < 0)
+        player.uluck = 0;
+      if (player.ualign.record <= 0)
+        player.ualign.record = 1;
       player.ugangr = 0;
-      if (p_type < 2) p_type = 3;
+      if (p_type < 2)
+        p_type = 3;
     }
   }
 #endif
@@ -1555,7 +1633,8 @@ int dopray() {
 
   if (p_type == 3 && !Inhell) {
     /* if you've been true to your god you can't die while you pray */
-    if (!Blind) You("are surrounded by a shimmering light.");
+    if (!Blind)
+      You("are surrounded by a shimmering light.");
     player.uinvulnerable = TRUE;
   }
 
@@ -1607,7 +1686,8 @@ STATIC_PTR int prayer_done() /* M. Stephenson (1.0.3b) */
       pleased(alignment);
   } else {
     /* coaligned */
-    if (on_altar()) (void)water_prayer(TRUE);
+    if (on_altar())
+      (void)water_prayer(TRUE);
     pleased(alignment); /* nice */
   }
   return (1);
@@ -1659,7 +1739,8 @@ int doturn() {
   for (mtmp = fmon; mtmp; mtmp = mtmp2) {
     mtmp2 = mtmp->nmon;
 
-    if (mtmp->dead()) continue;
+    if (mtmp->dead())
+      continue;
     if (!cansee(mtmp->mx, mtmp->my) || distu(mtmp->mx, mtmp->my) > range)
       continue;
 
@@ -1668,7 +1749,8 @@ int doturn() {
          (is_demon(mtmp->data) && (player.ulevel > (MAXULEV / 2))))) {
       mtmp->msleeping = 0;
       if (Confusion) {
-        if (!once++) pline("Unfortunately, your voice falters.");
+        if (!once++)
+          pline("Unfortunately, your voice falters.");
         mtmp->mflee = 0;
         mtmp->mfrozen = 0;
         mtmp->mcanmove = 1;
@@ -1713,7 +1795,8 @@ const char *a_gname() { return (a_gname_at(player.ux, player.uy)); }
 
 /* returns the name of an altar's deity */
 const char *a_gname_at(xchar x, xchar y) {
-  if (!IS_ALTAR(levl[x][y].typ)) return ((char *)0);
+  if (!IS_ALTAR(levl[x][y].typ))
+    return ((char *)0);
 
   return align_gname(a_align(x, y));
 }
@@ -1742,7 +1825,8 @@ const char *align_gname(aligntyp alignment) {
       gnam = "someone";
       break;
   }
-  if (*gnam == '_') ++gnam;
+  if (*gnam == '_')
+    ++gnam;
   return gnam;
 }
 
@@ -1752,7 +1836,8 @@ const char *halu_gname(aligntyp alignment) {
   const char *gnam;
   int which;
 
-  if (!Hallucination) return align_gname(alignment);
+  if (!Hallucination)
+    return align_gname(alignment);
 
   which = randrole();
   switch (rn2(3)) {
@@ -1769,8 +1854,10 @@ const char *halu_gname(aligntyp alignment) {
       gnam = 0;
       break; /* lint suppression */
   }
-  if (!gnam) gnam = Moloch;
-  if (*gnam == '_') ++gnam;
+  if (!gnam)
+    gnam = Moloch;
+  if (*gnam == '_')
+    ++gnam;
   return gnam;
 }
 
@@ -1792,7 +1879,8 @@ const char *align_gtitle(aligntyp alignment) {
       gnam = 0;
       break;
   }
-  if (gnam && *gnam == '_') result = "goddess";
+  if (gnam && *gnam == '_')
+    result = "goddess";
   return result;
 }
 
@@ -1816,7 +1904,8 @@ STATIC_OVL bool blocked_boulder(int dx, int dy) {
 
   for (otmp = level.objects[player.ux + dx][player.uy + dy]; otmp;
        otmp = otmp->nexthere) {
-    if (otmp->otyp == BOULDER) count += otmp->quan;
+    if (otmp->otyp == BOULDER)
+      count += otmp->quan;
   }
 
   switch (count) {
@@ -1829,9 +1918,12 @@ STATIC_OVL bool blocked_boulder(int dx, int dy) {
   one; don't force them to push it first to find out */
   }
 
-  if (!isok(player.ux + 2 * dx, player.uy + 2 * dy)) return TRUE;
-  if (IS_ROCK(levl[player.ux + 2 * dx][player.uy + 2 * dy].typ)) return TRUE;
-  if (sobj_at(BOULDER, player.ux + 2 * dx, player.uy + 2 * dy)) return TRUE;
+  if (!isok(player.ux + 2 * dx, player.uy + 2 * dy))
+    return TRUE;
+  if (IS_ROCK(levl[player.ux + 2 * dx][player.uy + 2 * dy].typ))
+    return TRUE;
+  if (sobj_at(BOULDER, player.ux + 2 * dx, player.uy + 2 * dy))
+    return TRUE;
 
   return FALSE;
 }

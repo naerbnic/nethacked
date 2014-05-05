@@ -97,9 +97,11 @@ STATIC_OVL int spell_let_to_idx(char ilet) {
   int indx;
 
   indx = ilet - 'a';
-  if (indx >= 0 && indx < 26) return indx;
+  if (indx >= 0 && indx < 26)
+    return indx;
   indx = ilet - 'A';
-  if (indx >= 0 && indx < 26) return indx + 26;
+  if (indx >= 0 && indx < 26)
+    return indx + 26;
   return -1;
 }
 
@@ -210,8 +212,10 @@ STATIC_OVL void deadbook(Object *book2) {
 
     if (!player.uhave.bell || !player.uhave.menorah) {
       pline("A chill runs down your %s.", body_part(SPINE));
-      if (!player.uhave.bell) You_hear("a faint chime...");
-      if (!player.uhave.menorah) pline("Vlad's doppelganger is amused.");
+      if (!player.uhave.bell)
+        You_hear("a faint chime...");
+      if (!player.uhave.menorah)
+        pline("Vlad's doppelganger is amused.");
       return;
     }
 
@@ -244,7 +248,8 @@ STATIC_OVL void deadbook(Object *book2) {
       /* in case you haven't killed the Wizard yet, behave as if
          you just did */
       player.uevent.udemigod = 1; /* wizdead() */
-      if (!player.udg_cnt || player.udg_cnt > soon) player.udg_cnt = soon;
+      if (!player.udg_cnt || player.udg_cnt > soon)
+        player.udg_cnt = soon;
     } else { /* at least one artifact not prepared properly */
       You("have a feeling that %s is amiss...", something);
       goto raise_dead;
@@ -274,14 +279,16 @@ STATIC_OVL void deadbook(Object *book2) {
   } else if (book2->blessed) {
     for (mtmp = fmon; mtmp; mtmp = mtmp2) {
       mtmp2 = mtmp->nmon; /* tamedog() changes chain */
-      if (mtmp->dead()) continue;
+      if (mtmp->dead())
+        continue;
 
       if (is_undead(mtmp->data) && cansee(mtmp->mx, mtmp->my)) {
         mtmp->mpeaceful = TRUE;
         if (sgn(mtmp->data->maligntyp) == sgn(player.ualign.type) &&
             distu(mtmp->mx, mtmp->my) < 4)
           if (mtmp->mtame) {
-            if (mtmp->mtame < 20) mtmp->mtame++;
+            if (mtmp->mtame < 20)
+              mtmp->mtame++;
           } else
             (void)tamedog(mtmp, nullptr);
         else
@@ -310,7 +317,8 @@ STATIC_PTR int learn() {
   bool costly = TRUE;
 
   /* JDS: lenses give 50% faster reading; 33% smaller read time */
-  if (delay && ublindf && ublindf->otyp == LENSES && rn2(2)) delay++;
+  if (delay && ublindf && ublindf->otyp == LENSES && rn2(2))
+    delay++;
   if (Confusion) { /* became confused while learning */
     (void)confused_book(book);
     book = 0;                       /* no longer studying */
@@ -360,7 +368,8 @@ STATIC_PTR int learn() {
       break;
     }
   }
-  if (i == MAXSPELL) impossible("Too many spells memorized!");
+  if (i == MAXSPELL)
+    impossible("Too many spells memorized!");
 
   if (book->cursed) { /* maybe a demon cursed it */
     if (cursed_book(book)) {
@@ -369,7 +378,8 @@ STATIC_PTR int learn() {
       return 0;
     }
   }
-  if (costly) check_unpaid(book);
+  if (costly)
+    check_unpaid(book);
   book = 0;
   return (0);
 }
@@ -447,7 +457,8 @@ int study_book(Object *spellbook) {
       nomul(delay, "reading a book"); /* study time */
       delay = 0;
       if (gone || !rn2(3)) {
-        if (!gone) pline_The("spellbook crumbles to dust!");
+        if (!gone)
+          pline_The("spellbook crumbles to dust!");
         if (!objects[spellbook->otyp].oc_name_known &&
             !objects[spellbook->otyp].oc_uname)
           docall(spellbook);
@@ -477,14 +488,16 @@ int study_book(Object *spellbook) {
 /* a spellbook has been destroyed or the character has changed levels;
    the stored address for the current book is no longer valid */
 void book_disappears(Object *obj) {
-  if (obj == book) book = nullptr;
+  if (obj == book)
+    book = nullptr;
 }
 
 /* renaming an object usually results in it having a different address;
    so the sequence start reading, get interrupted, name the book, resume
    reading would read the "new" book from scratch */
 void book_substitution(Object *old_obj, Object *new_obj) {
-  if (old_obj == book) book = new_obj;
+  if (old_obj == book)
+    book = new_obj;
 }
 
 /* called from moveloop() */
@@ -497,7 +510,8 @@ void age_spells() {
    * does not alter the loss of memory.
    */
   for (i = 0; i < MAXSPELL && spellid(i) != NO_SPELL; i++)
-    if (spellknow(i)) decrnknow(i);
+    if (spellknow(i))
+      decrnknow(i);
   return;
 }
 
@@ -530,9 +544,11 @@ STATIC_OVL bool getspell(int *spell_no) {
 
     for (;;) {
       sprintf(qbuf, "Cast which spell? [%s ?]", lets);
-      if ((ilet = yn_function(qbuf, (char *)0, '\0')) == '?') break;
+      if ((ilet = yn_function(qbuf, (char *)0, '\0')) == '?')
+        break;
 
-      if (index(quitchars, ilet)) return FALSE;
+      if (index(quitchars, ilet))
+        return FALSE;
 
       idx = spell_let_to_idx(ilet);
       if (idx >= 0 && idx < nspells) {
@@ -549,7 +565,8 @@ STATIC_OVL bool getspell(int *spell_no) {
 int docast() {
   int spell_no;
 
-  if (getspell(&spell_no)) return spelleffects(spell_no, FALSE);
+  if (getspell(&spell_no))
+    return spelleffects(spell_no, FALSE);
   return 0;
 }
 
@@ -627,7 +644,8 @@ STATIC_OVL void cast_protection() {
     player.uspellprot += gain;
     player.uspmtime =
         P_SKILL(spell_skilltype(SPE_PROTECTION)) == P_EXPERT ? 20 : 10;
-    if (!player.usptime) player.usptime = player.uspmtime;
+    if (!player.usptime)
+      player.usptime = player.uspmtime;
     find_ac();
   } else {
     Your("skin feels warm for a moment.");
@@ -726,7 +744,8 @@ int spelleffects(int spell, bool atme) {
        * understand quite well how to cast spells.
        */
       intell = acurr(A_INT);
-      if (!Role_if(PM_WIZARD)) intell = 10;
+      if (!Role_if(PM_WIZARD))
+        intell = 10;
       switch (intell) {
         case 25:
         case 24:
@@ -752,7 +771,8 @@ int spelleffects(int spell, bool atme) {
        * this is low enough that they must eat before
        * casting anything else except detect food
        */
-      if (hungr > player.uhunger - 3) hungr = player.uhunger - 3;
+      if (hungr > player.uhunger - 3)
+        hungr = player.uhunger - 3;
       morehungry(hungr);
     }
   }
@@ -865,7 +885,8 @@ int spelleffects(int spell, bool atme) {
     case SPE_DETECT_FOOD:
     case SPE_CAUSE_FEAR:
       /* high skill yields effect equivalent to blessed scroll */
-      if (role_skill >= P_SKILLED) pseudo->blessed = 1;
+      if (role_skill >= P_SKILLED)
+        pseudo->blessed = 1;
     /* fall through */
     case SPE_CHARM_MONSTER:
     case SPE_MAGIC_MAPPING:
@@ -881,7 +902,8 @@ int spelleffects(int spell, bool atme) {
     case SPE_LEVITATION:
     case SPE_RESTORE_ABILITY:
       /* high skill yields effect equivalent to blessed potion */
-      if (role_skill >= P_SKILLED) pseudo->blessed = 1;
+      if (role_skill >= P_SKILLED)
+        pseudo->blessed = 1;
     /* fall through */
     case SPE_INVISIBILITY:
       (void)peffects(pseudo);
@@ -891,7 +913,8 @@ int spelleffects(int spell, bool atme) {
       healup(0, 0, FALSE, TRUE);
       break;
     case SPE_CURE_SICKNESS:
-      if (Sick) You("are no longer ill.");
+      if (Sick)
+        You("are no longer ill.");
       if (Slimed) {
         pline_The("slime disappears!");
         Slimed = 0;
@@ -903,7 +926,8 @@ int spelleffects(int spell, bool atme) {
       (void)make_familiar(nullptr, player.ux, player.uy, FALSE);
       break;
     case SPE_CLAIRVOYANCE:
-      if (!BClairvoyant) do_vicinity_map();
+      if (!BClairvoyant)
+        do_vicinity_map();
       /* at present, only one thing blocks clairvoyance */
       else if (uarmh && uarmh->otyp == CORNUTHAUM)
         You("sense a pointy hat on top of your %s.", body_part(HEAD));
@@ -912,7 +936,8 @@ int spelleffects(int spell, bool atme) {
       cast_protection();
       break;
     case SPE_JUMPING:
-      if (!jump(max(role_skill, 1))) pline(nothing_happens);
+      if (!jump(max(role_skill, 1)))
+        pline(nothing_happens);
       break;
     default:
       impossible("Unknown spell %d attempted.", spell);
@@ -969,10 +994,12 @@ void losespells() {
   int n, nzap, i;
 
   book = 0;
-  for (n = 0; n < MAXSPELL && spellid(n) != NO_SPELL; n++) continue;
+  for (n = 0; n < MAXSPELL && spellid(n) != NO_SPELL; n++)
+    continue;
   if (n) {
     nzap = (rnd(n) + confused) ? 1 : 0;
-    if (nzap > n) nzap = n;
+    if (nzap > n)
+      nzap = n;
     for (i = n - nzap; i < n; i++) {
       spellid(i) = NO_SPELL;
       exercise(A_WIS, FALSE); /* ouch! */
@@ -991,7 +1018,8 @@ int dovspell() {
   else {
     while (dospellmenu("Currently known spells", SPELLMENU_VIEW, &splnum)) {
       sprintf(qbuf, "Reordering spells; swap '%c' with", spellet(splnum));
-      if (!dospellmenu(qbuf, splnum, &othnum)) break;
+      if (!dospellmenu(qbuf, splnum, &othnum))
+        break;
 
       spl_tmp = spl_book[splnum];
       spl_book[splnum] = spl_book[othnum];
@@ -1048,11 +1076,13 @@ STATIC_OVL bool dospellmenu(const char *prompt, int splaction, int *spell_no) {
     *spell_no = selected[0].item.a_int - 1;
     /* menu selection for `PICK_ONE' does not
        de-select any preselected entry */
-    if (n > 1 && *spell_no == splaction) *spell_no = selected[1].item.a_int - 1;
+    if (n > 1 && *spell_no == splaction)
+      *spell_no = selected[1].item.a_int - 1;
     free((genericptr_t)selected);
     /* default selection of preselected spell means that
        user chose not to swap it with anything */
-    if (*spell_no == splaction) return FALSE;
+    if (*spell_no == splaction)
+      return FALSE;
     return TRUE;
   } else if (splaction >= 0) {
     /* explicit de-selection of preselected spell means that
@@ -1120,14 +1150,18 @@ STATIC_OVL int percent_success(int spell) {
         (uarmc && uarmc->otyp == ROBE) ? urole.spelarmr / 2 : urole.spelarmr;
   else if (uarmc && uarmc->otyp == ROBE)
     splcaster -= urole.spelarmr;
-  if (uarms) splcaster += urole.spelshld;
+  if (uarms)
+    splcaster += urole.spelshld;
 
   if (uarmh && is_metallic(uarmh) && uarmh->otyp != HELM_OF_BRILLIANCE)
     splcaster += uarmhbon;
-  if (uarmg && is_metallic(uarmg)) splcaster += uarmgbon;
-  if (uarmf && is_metallic(uarmf)) splcaster += uarmfbon;
+  if (uarmg && is_metallic(uarmg))
+    splcaster += uarmgbon;
+  if (uarmf && is_metallic(uarmf))
+    splcaster += uarmfbon;
 
-  if (spellid(spell) == urole.spelspec) splcaster += urole.spelsbon;
+  if (spellid(spell) == urole.spelspec)
+    splcaster += urole.spelsbon;
 
   /* `healing spell' bonus */
   if (spellid(spell) == SPE_HEALING || spellid(spell) == SPE_EXTRA_HEALING ||
@@ -1137,7 +1171,8 @@ STATIC_OVL int percent_success(int spell) {
       spellid(spell) == SPE_REMOVE_CURSE)
     splcaster += special;
 
-  if (splcaster > 20) splcaster = 20;
+  if (splcaster > 20)
+    splcaster = 20;
 
   /* Calculate learned ability */
 
@@ -1174,8 +1209,10 @@ STATIC_OVL int percent_success(int spell) {
    * specter of overflowing 16-bit ints (and permit wearing a
    * shield to raise the chances :-).
    */
-  if (chance < 0) chance = 0;
-  if (chance > 120) chance = 120;
+  if (chance < 0)
+    chance = 0;
+  if (chance > 120)
+    chance = 120;
 
   /* Wearing anything but a light shield makes it very awkward
    * to cast a spell.  The penalty is not quite so bad for the
@@ -1198,8 +1235,10 @@ STATIC_OVL int percent_success(int spell) {
   chance = chance * (20 - splcaster) / 15 - splcaster;
 
   /* Clamp to percentile */
-  if (chance > 100) chance = 100;
-  if (chance < 0) chance = 0;
+  if (chance > 100)
+    chance = 100;
+  if (chance < 0)
+    chance = 0;
 
   return chance;
 }

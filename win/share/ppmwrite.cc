@@ -131,7 +131,8 @@ int main(int argc, char *argv[]) {
     exit(EXIT_FAILURE);
   }
 
-  if (!fopen_text_file(argv[1], RDTMODE)) exit(EXIT_FAILURE);
+  if (!fopen_text_file(argv[1], RDTMODE))
+    exit(EXIT_FAILURE);
 
   init_colormap();
 
@@ -140,7 +141,8 @@ int main(int argc, char *argv[]) {
     exit(EXIT_FAILURE);
   }
 
-  while (read_text_tile(pixels)) (void)write_ppm_tile(pixels);
+  while (read_text_tile(pixels))
+    (void)write_ppm_tile(pixels);
 
   (void)fclose_text_file();
   (void)fclose_ppm_file();

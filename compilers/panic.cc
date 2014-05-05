@@ -17,7 +17,8 @@ void raw_panic(char const *, ...);
 void raw_panic(char const *str, ...) {
   va_list args;
   va_start(args, str);
-  if (panicking) abort(); /* avoid loops - this should never happen*/
+  if (panicking)
+    abort(); /* avoid loops - this should never happen*/
   panicking = true;
   fputs(" ERROR:  ", stderr);
   vfprintf(stderr, str, args);

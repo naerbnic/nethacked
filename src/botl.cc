@@ -63,13 +63,17 @@ const char *rank_of(int lev, short monnum, bool female) {
 
   /* Find the role */
   for (role = (struct Role *)roles; role->name.m; role++)
-    if (monnum == role->malenum || monnum == role->femalenum) break;
-  if (!role->name.m) role = &urole;
+    if (monnum == role->malenum || monnum == role->femalenum)
+      break;
+  if (!role->name.m)
+    role = &urole;
 
   /* Find the rank */
   for (i = xlev_to_rank((int)lev); i >= 0; i--) {
-    if (female && role->rank[i].f) return (role->rank[i].f);
-    if (role->rank[i].m) return (role->rank[i].m);
+    if (female && role->rank[i].f)
+      return (role->rank[i].f);
+    if (role->rank[i].m)
+      return (role->rank[i].m);
   }
 
   /* Try the role name, instead */
@@ -92,14 +96,18 @@ int title_to_mon(const char *str, int *rank_indx, int *title_length) {
     for (j = 0; j < 9; j++) {
       if (roles[i].rank[j].m &&
           !strncmpi(str, roles[i].rank[j].m, strlen(roles[i].rank[j].m))) {
-        if (rank_indx) *rank_indx = j;
-        if (title_length) *title_length = strlen(roles[i].rank[j].m);
+        if (rank_indx)
+          *rank_indx = j;
+        if (title_length)
+          *title_length = strlen(roles[i].rank[j].m);
         return roles[i].malenum;
       }
       if (roles[i].rank[j].f &&
           !strncmpi(str, roles[i].rank[j].f, strlen(roles[i].rank[j].f))) {
-        if (rank_indx) *rank_indx = j;
-        if (title_length) *title_length = strlen(roles[i].rank[j].f);
+        if (rank_indx)
+          *rank_indx = j;
+        if (title_length)
+          *title_length = strlen(roles[i].rank[j].f);
         return ((roles[i].femalenum != NON_PM) ? roles[i].femalenum
                                                : roles[i].malenum);
       }
@@ -113,8 +121,10 @@ int title_to_mon(const char *str, int *rank_indx, int *title_length) {
 void max_rank_sz() {
   int i, r, maxr = 0;
   for (i = 0; i < 9; i++) {
-    if (urole.rank[i].m && (r = strlen(urole.rank[i].m)) > maxr) maxr = r;
-    if (urole.rank[i].f && (r = strlen(urole.rank[i].f)) > maxr) maxr = r;
+    if (urole.rank[i].m && (r = strlen(urole.rank[i].m)) > maxr)
+      maxr = r;
+    if (urole.rank[i].f && (r = strlen(urole.rank[i].f)) > maxr)
+      maxr = r;
   }
   mrank_sz = maxr;
   return;
@@ -129,12 +139,14 @@ long botl_score() {
 #ifndef GOLDOBJ
   long ugold = player.ugold + hidden_gold();
 
-  if ((ugold -= player.ugold0) < 0L) ugold = 0L;
+  if ((ugold -= player.ugold0) < 0L)
+    ugold = 0L;
   return ugold + player.urexp + (long)(50 * (deepest - 1))
 #else
   long umoney = money_cnt(invent) + hidden_gold();
 
-  if ((umoney -= player.umoney0) < 0L) umoney = 0L;
+  if ((umoney -= player.umoney0) < 0L)
+    umoney = 0L;
   return umoney + player.urexp + (long)(50 * (deepest - 1))
 #endif
          + (long)(deepest > 30 ? 10000 : deepest > 20 ? 1000 * (deepest - 20)
@@ -155,7 +167,8 @@ STATIC_OVL void bot1()
   int i, j;
 
   strcpy(newbot1, plname);
-  if ('a' <= newbot1[0] && newbot1[0] <= 'z') newbot1[0] += 'A' - 'a';
+  if ('a' <= newbot1[0] && newbot1[0] <= 'z')
+    newbot1[0] += 'A' - 'a';
   newbot1[10] = 0;
   sprintf(nb = eos(newbot1), " the ");
 
@@ -195,7 +208,8 @@ STATIC_OVL void bot1()
               ? "  Chaotic"
               : (player.ualign.type == A_NEUTRAL) ? "  Neutral" : "  Lawful");
 #ifdef SCORE_ON_BOTL
-  if (flags.showscore) sprintf(nb = eos(nb), " S:%ld", botl_score());
+  if (flags.showscore)
+    sprintf(nb = eos(nb), " S:%ld", botl_score());
 #endif
 #ifdef DUMP_LOG
 }
@@ -238,7 +252,8 @@ void bot2str(char *newbot2) {
   hp = Upolyd ? player.mh : player.uhp;
   hpmax = Upolyd ? player.mhmax : player.uhpmax;
 
-  if (hp < 0) hp = 0;
+  if (hp < 0)
+    hp = 0;
   (void)describe_level(newbot2);
   sprintf(nb = eos(newbot2),
 #ifdef HPMON
@@ -273,22 +288,28 @@ void bot2str(char *newbot2) {
       hpcolor = CLR_GREEN;
     } else if (hp <= (hpmax / 3)) {
       hpcolor = CLR_RED;
-      if (hp <= (hpmax / 10)) hpattr = ATR_BLINK;
+      if (hp <= (hpmax / 10))
+        hpattr = ATR_BLINK;
     } else {
       hpcolor = CLR_YELLOW;
     }
-    if (hpcolor != NO_COLOR) term_start_color(hpcolor);
-    if (hpattr != ATR_NONE) term_start_attr(hpattr);
+    if (hpcolor != NO_COLOR)
+      term_start_color(hpcolor);
+    if (hpattr != ATR_NONE)
+      term_start_attr(hpattr);
     putstr(WIN_STATUS, hpattr, newbot2);
-    if (hpattr != ATR_NONE) term_end_attr(hpattr);
-    if (hpcolor != NO_COLOR) term_end_color();
+    if (hpattr != ATR_NONE)
+      term_end_attr(hpattr);
+    if (hpcolor != NO_COLOR)
+      term_end_color();
   }
 #endif /* TEXTCOLOR */
   sprintf(nb = eos(newbot2), " Pw:%d(%d) AC:%-2d", player.uen, player.uenmax,
           player.uac);
 #endif /* HPMON */
 
-  if (Upolyd) sprintf(nb = eos(nb), " HD:%d", mons[player.umonnum].mlevel);
+  if (Upolyd)
+    sprintf(nb = eos(nb), " HD:%d", mons[player.umonnum].mlevel);
 #ifdef EXP_ON_BOTL
   else if (flags.showexp)
     sprintf(nb = eos(nb), " Xp:%u/%-1ld", player.ulevel, player.uexp);
@@ -296,7 +317,8 @@ void bot2str(char *newbot2) {
   else
     sprintf(nb = eos(nb), " Exp:%u", player.ulevel);
 
-  if (flags.time) sprintf(nb = eos(nb), " T:%ld", moves);
+  if (flags.time)
+    sprintf(nb = eos(nb), " T:%ld", moves);
 
 #ifdef REALTIME_ON_BOTL
   if (iflags.showrealtime) {
@@ -310,16 +332,24 @@ void bot2str(char *newbot2) {
     sprintf(nb = eos(nb), " ");
     strcat(newbot2, hu_stat[player.uhs]);
   }
-  if (Confusion) sprintf(nb = eos(nb), " Conf");
+  if (Confusion)
+    sprintf(nb = eos(nb), " Conf");
   if (Sick) {
-    if (player.usick_type & SICK_VOMITABLE) sprintf(nb = eos(nb), " FoodPois");
-    if (player.usick_type & SICK_NONVOMITABLE) sprintf(nb = eos(nb), " Ill");
+    if (player.usick_type & SICK_VOMITABLE)
+      sprintf(nb = eos(nb), " FoodPois");
+    if (player.usick_type & SICK_NONVOMITABLE)
+      sprintf(nb = eos(nb), " Ill");
   }
-  if (Blind) sprintf(nb = eos(nb), " Blind");
-  if (Stunned) sprintf(nb = eos(nb), " Stun");
-  if (Hallucination) sprintf(nb = eos(nb), " Hallu");
-  if (Slimed) sprintf(nb = eos(nb), " Slime");
-  if (cap > UNENCUMBERED) sprintf(nb = eos(nb), " %s", enc_stat[cap]);
+  if (Blind)
+    sprintf(nb = eos(nb), " Blind");
+  if (Stunned)
+    sprintf(nb = eos(nb), " Stun");
+  if (Hallucination)
+    sprintf(nb = eos(nb), " Hallu");
+  if (Slimed)
+    sprintf(nb = eos(nb), " Slime");
+  if (cap > UNENCUMBERED)
+    sprintf(nb = eos(nb), " %s", enc_stat[cap]);
 }
 STATIC_OVL void bot2() {
   char newbot2[MAXCO];

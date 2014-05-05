@@ -455,7 +455,8 @@ void (*ascgraphics_mode_callback)() = 0; /* set in tty_start_screen() */
 int def_char_to_objclass(char ch) {
   int i;
   for (i = 1; i < MAXOCLASSES; i++)
-    if (ch == def_oc_syms[i]) break;
+    if (ch == def_oc_syms[i])
+      break;
   return i;
 }
 
@@ -466,7 +467,8 @@ int def_char_to_objclass(char ch) {
 int def_char_to_monclass(char ch) {
   int i;
   for (i = 1; i < MAXMCLASSES; i++)
-    if (def_monsyms[i] == ch) break;
+    if (def_monsyms[i] == ch)
+      break;
   return i;
 }
 
@@ -485,7 +487,8 @@ void switch_graphics(int gr_set_flag) {
     case ASCII_GRAPHICS:
       assign_graphics((uchar *)0, 0, MAXPCHARS, 0);
 #ifdef PC9800
-      if (ascgraphics_mode_callback) (*ascgraphics_mode_callback)();
+      if (ascgraphics_mode_callback)
+        (*ascgraphics_mode_callback)();
 #endif
       break;
 #ifdef ASCIIGRAPH
@@ -503,7 +506,8 @@ void switch_graphics(int gr_set_flag) {
       iflags.DECgraphics = FALSE;
       assign_graphics(ibm_graphics, SIZE(ibm_graphics), MAXPCHARS, 0);
 #ifdef PC9800
-      if (ibmgraphics_mode_callback) (*ibmgraphics_mode_callback)();
+      if (ibmgraphics_mode_callback)
+        (*ibmgraphics_mode_callback)();
 #endif
       break;
 #endif /* ASCIIGRAPH */
@@ -515,7 +519,8 @@ void switch_graphics(int gr_set_flag) {
       iflags.DECgraphics = TRUE;
       iflags.IBMgraphics = FALSE;
       assign_graphics(dec_graphics, SIZE(dec_graphics), MAXPCHARS, 0);
-      if (decgraphics_mode_callback) (*decgraphics_mode_callback)();
+      if (decgraphics_mode_callback)
+        (*decgraphics_mode_callback)();
       break;
 #endif /* TERMLIB */
   }
@@ -579,11 +584,14 @@ void assign_rogue_graphics(bool is_rlevel) {
                  sizeof monsyms);
 
     /* Use a loop: char != uchar on some machines. */
-    for (i = 0; i < MAXMCLASSES; i++) monsyms[i] = def_monsyms[i];
+    for (i = 0; i < MAXMCLASSES; i++)
+      monsyms[i] = def_monsyms[i];
 #if defined(ASCIIGRAPH)
-    if (iflags.IBMgraphics) monsyms[S_HUMAN] = 0x01; /* smiley face */
+    if (iflags.IBMgraphics)
+      monsyms[S_HUMAN] = 0x01; /* smiley face */
 #endif
-    for (i = 0; i < MAXPCHARS; i++) showsyms[i] = defsyms[i].sym;
+    for (i = 0; i < MAXPCHARS; i++)
+      showsyms[i] = defsyms[i].sym;
 
 /*
  * Some day if these rogue showsyms get much more extensive than this,
