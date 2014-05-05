@@ -375,7 +375,7 @@ STATIC_OVL void newmail(struct mail_info *info) {
         if (namelth <= 0 || namelth >= (int)obj->objname.size())
           impossible("mail delivery screwed up");
         else
-          *(ONAME(obj) + namelth) = '\0';
+          ONAME(obj).resize(namelth);
         /* Note: renaming object will discard the hidden command. */
       }
     }

@@ -303,9 +303,9 @@ E void heal_legs();
 /* ### do_name.c ### */
 
 E int getpos(coord *, bool, const char *);
-E Monster *christen_monst(Monster *, const char *);
+E Monster *christen_monst(Monster *, std::string const&);
 E int do_mname();
-E Object *oname(Object *, const char *);
+E Object *oname(Object *, std::string const&);
 E int ddocall();
 E void docall(Object *);
 E const char *rndghostname();

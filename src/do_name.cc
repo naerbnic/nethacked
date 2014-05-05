@@ -3,8 +3,11 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 #include <string.h>
+#include <string>
 
 #include "hack.h"
+
+using std::string;
 
 #ifdef OVLB
 
@@ -200,22 +203,23 @@ int getpos(coord *cc, bool force, const char *goal) {
   return result;
 }
 
-Monster *christen_monst(Monster *mtmp, const char *name) {
+Monster *christen_monst(Monster *mtmp, string const& name) {
   int lth;
   Monster *mtmp2;
   char buf[PL_PSIZ];
 
-  /* dogname & catname are PL_PSIZ arrays; object names have same limit */
-  lth = *name ? (int)(strlen(name) + 1) : 0;
-  if (lth > PL_PSIZ) {
-    lth = PL_PSIZ;
-    name = strncpy(buf, name, PL_PSIZ - 1);
-    buf[PL_PSIZ - 1] = '\0';
+  string new_name;
+  if (name.size() >= PL_PSIZ) {
+    new_name = name.substr(0, PL_PSIZ - 1);
+  } else {
+    new_name = name;
   }
+
+  /* dogname & catname are PL_PSIZ arrays; object names have same limit */
   if (lth == mtmp->mnamelth) {
     /* don't need to allocate a new monst struct */
     if (lth)
-      strcpy(mtmp->name(), name);
+      strcpy(mtmp->name(), new_name.c_str());
     return mtmp;
   }
   mtmp2 = newmonst(mtmp->mxlth + lth);
@@ -224,7 +228,7 @@ Monster *christen_monst(Monster *mtmp, const char *name) {
                mtmp->mxlth);
   mtmp2->mnamelth = lth;
   if (lth)
-    strcpy(mtmp2->name(), name);
+    strcpy(mtmp2->name(), new_name.c_str());
   replmon(mtmp, mtmp2);
   return (mtmp2);
 }
@@ -394,30 +398,25 @@ Object *ReallocateExtraObjectSpace(Object *obj, int oextra_size,
   return otmp;
 }
 
-Object *oname(Object *obj, const char *name) {
+Object *oname(Object *obj, string const& name) {
   int lth;
   char buf[PL_PSIZ];
 
-  lth = *name ? (int)(strlen(name) + 1) : 0;
-  if (lth > PL_PSIZ) {
-    lth = PL_PSIZ;
-    name = strncpy(buf, name, PL_PSIZ - 1);
-    buf[PL_PSIZ - 1] = '\0';
+  string new_name;
+  if (name.size() >= PL_PSIZ) {
+    new_name = name.substr(0, PL_PSIZ - 1);
+  } else {
+    new_name = name;
   }
+
   /* If named artifact exists in the game, do not create another.
    * Also trying to create an artifact shouldn't de-artifact
    * it (e.g. Excalibur from prayer). In this case the object
    * will retain its current name. */
-  if (obj->oartifact || (lth && exist_artifact(obj->otyp, name)))
+  if (obj->oartifact || (!new_name.empty() && exist_artifact(obj->otyp, new_name)))
     return obj;
 
-  if (lth == obj->objname.size()) {
-    /* no need to replace entire object */
-    obj->objname = name;
-  } else {
-    obj = ReallocateExtraObjectSpace(obj, obj->oxlth, (genericptr_t)obj->oextra,
-                                     lth, name);
-  }
+  obj->objname = new_name;
   if (lth)
     artifact_exists(obj, name, TRUE);
   if (obj->oartifact) {
@@ -670,13 +669,8 @@ char *x_monnam(
   if (do_hallu) {
     strcat(buf, rndmonnam());
     name_at_start = FALSE;
-<<<<<<< Updated upstream
   } else if (mtmp->mnamelth) {
     char *name = mtmp->name();
-=======
-  } else if (!mtmp->name_.empty()) {
-    char const* name = mtmp->name_.c_str();
->>>>>>> Stashed changes
 
     if (mdat == &mons[PM_GHOST]) {
       sprintf(eos(buf), "%s ghost", s_suffix(name));
