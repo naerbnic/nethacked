@@ -1414,7 +1414,7 @@ STATIC_OVL int gem_accept(Monster *mon, Object *obj) {
       goto nopick;
     }
     /* making guesses */
-  } else if (obj->onamelth || objects[obj->otyp].oc_uname) {
+  } else if (obj->has_name() || objects[obj->otyp].oc_uname) {
     if (is_gem) {
       if (is_buddy) {
         strcat(buf, addluck);

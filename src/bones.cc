@@ -61,8 +61,7 @@ STATIC_OVL void resetobjs(Object *ochain, bool restore) {
          (restore && (exist_artifact(otmp->otyp, ONAME(otmp)) ||
                       is_quest_artifact(otmp))))) {
       otmp->oartifact = 0;
-      otmp->onamelth = 0;
-      *ONAME(otmp) = '\0';
+      otmp->objname = "";
     } else if (otmp->oartifact && restore)
       artifact_exists(otmp, ONAME(otmp), TRUE);
     if (!restore) {

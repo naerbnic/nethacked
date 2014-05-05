@@ -168,7 +168,7 @@ char *simple_typename(int otyp) {
 }
 
 bool obj_is_pname(Object *obj) {
-  return ((bool)(obj->dknown && obj->known && obj->onamelth &&
+  return ((bool)(obj->dknown && obj->known && obj->has_name() &&
                  /* Since there aren't any objects which are both
                     artifacts and unique, the last check is redundant. */
                  obj->oartifact && !objects[obj->otyp].oc_unique));
@@ -474,7 +474,7 @@ char *xname2(Object *obj, bool ignore_oquan)
     if (obj->quan != 1L)
       strcpy(buf, makeplural(buf));
 
-  if (obj->onamelth && obj->dknown) {
+  if (obj->has_name() && obj->dknown) {
     strcat(buf, " named ");
   nameit:
     strcat(buf, ONAME(obj));
@@ -873,7 +873,7 @@ char *killer_xname(Object *obj) {
   obj->opoisoned = 0;
   /* strip user-supplied name; artifacts keep theirs */
   if (!obj->oartifact)
-    obj->onamelth = 0;
+    obj->objname = "";
   /* temporarily identify the type of object */
   save_ocknown = objects[obj->otyp].oc_name_known;
   objects[obj->otyp].oc_name_known = 1;

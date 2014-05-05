@@ -649,6 +649,7 @@ STATIC_OVL void saveobjchn(int fd, Object *otmp, int mode) {
   while (otmp) {
     otmp2 = otmp->nobj;
     if (perform_bwrite(mode)) {
+      //FIXME: This will break horribly
       xl = otmp->oxlth + otmp->onamelth;
       bwrite(fd, (genericptr_t) & xl, sizeof(int));
       bwrite(fd, (genericptr_t)otmp, xl + sizeof(Object));

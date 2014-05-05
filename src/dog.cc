@@ -104,7 +104,7 @@ Monster *make_familiar(Object *otmp, xchar x, xchar y, bool quietly) {
       }
     }
     /* if figurine has been named, give same name to the monster */
-    if (otmp->onamelth)
+    if (otmp->has_name())
       mtmp = christen_monst(mtmp, ONAME(otmp));
   }
   set_malign(mtmp); /* more alignment changes */

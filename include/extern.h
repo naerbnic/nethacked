@@ -5,6 +5,8 @@
 #ifndef EXTERN_H
 #define EXTERN_H
 
+#include <string>
+
 #define E extern
 
 /* ### alloc.c ### */
@@ -57,8 +59,8 @@ E void restore_artifacts(int);
 E const char *artiname(int);
 E Object *mk_artifact(Object *, ALIGNTYP_P);
 E const char *artifact_name(const char *, short *);
-E bool exist_artifact(int, const char *);
-E void artifact_exists(Object *, const char *, bool);
+E bool exist_artifact(int, std::string const&);
+E void artifact_exists(Object *, std::string const&, bool);
 E int nartifact_exist();
 E bool spec_ability(Object *, unsigned long);
 E bool confers_luck(Object *);

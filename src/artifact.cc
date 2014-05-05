@@ -3,6 +3,7 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 #include <string.h>
+#include <string>
 
 #include "hack.h"
 #include "artifact.h"
@@ -11,6 +12,8 @@
 #else
 STATIC_DCL Artifact artilist[];
 #endif
+
+using std::string;
 /*
  * Note:  both artilist[] and artiexist[] have a dummy element #0,
  *	  so loops over them should normally start at #1.  The primary
@@ -177,23 +180,23 @@ const char *artifact_name(const char *name, short *otyp) {
   return nullptr;
 }
 
-bool exist_artifact(int otyp, const char *name) {
+bool exist_artifact(int otyp, string const& name) {
   const Artifact *a;
   bool *arex;
 
-  if (otyp && *name)
+  if (otyp && !name.empty())
     for (a = artilist + 1, arex = artiexist + 1; a->otyp; a++, arex++)
-      if ((int)a->otyp == otyp && !strcmp(a->name, name))
+      if ((int)a->otyp == otyp && name == a->name)
         return *arex;
   return FALSE;
 }
 
-void artifact_exists(Object *otmp, const char *name, bool mod) {
+void artifact_exists(Object *otmp, string const& name, bool mod) {
   const Artifact *a;
 
-  if (otmp && *name)
+  if (otmp && !name.empty())
     for (a = artilist + 1; a->otyp; a++)
-      if (a->otyp == otmp->otyp && !strcmp(a->name, name)) {
+      if (a->otyp == otmp->otyp && name == a->name) {
         int m = a - artilist;
         otmp->oartifact = (char)(mod ? m : 0);
         otmp->age = 0;

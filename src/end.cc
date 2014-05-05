@@ -977,7 +977,7 @@ die:
           makeknown(otmp->otyp);
           otmp->known = 1;  /* for fake amulets */
           otmp->dknown = 1; /* seen it (blindness fix) */
-          otmp->onamelth = 0;
+          otmp->objname = "";
           otmp->quan = count;
           sprintf(pbuf, "%8ld %s (worth %ld %s),", count, xname(otmp),
                   count * (long)objects[typ].oc_cost, currency(2L));

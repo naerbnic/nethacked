@@ -372,7 +372,7 @@ STATIC_OVL void newmail(struct mail_info *info) {
       obj = oname(obj, info->object_nam);
       if (info->response_cmd) { /*(hide extension of the obj name)*/
         int namelth = info->response_cmd - info->object_nam - 1;
-        if (namelth <= 0 || namelth >= (int)obj->onamelth)
+        if (namelth <= 0 || namelth >= (int)obj->objname.size())
           impossible("mail delivery screwed up");
         else
           *(ONAME(obj) + namelth) = '\0';

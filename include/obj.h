@@ -5,6 +5,8 @@
 #ifndef OBJ_H
 #define OBJ_H
 
+#include <string>
+
 // Forward declarations
 struct Object;
 struct Monster;
@@ -106,18 +108,23 @@ struct Object {
 
   unsigned oeaten; /* nutrition left in food, if partly eaten */
   long age;        /* creation date */
+  std::string objname;
 
-  uchar onamelth; /* length of name (following oxlth) */
+  //uchar onamelth; /* length of name (following oxlth) */
   short oxlth;    /* length of following data */
                   /* in order to prevent alignment problems oextra should
                      be (or follow) a long int */
   long owornmask;
   long oextra[1]; /* used for name of ordinary objects - length
                      is flexible; amount for tmp gold objects */
+
+  bool has_name() {
+    return !objname.empty();
+  }
 };
 
 #define newobj(xl) (Object *) alloc((unsigned)(xl) + sizeof(Object))
-#define ONAME(otmp) (((char *)(otmp)->oextra) + (otmp)->oxlth)
+#define ONAME(otmp) ((otmp)->objname)
 
 /* Weapons and weapon-tools */
 /* KMH -- now based on skill categories.  Formerly:

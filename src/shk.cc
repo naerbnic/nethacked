@@ -2190,7 +2190,7 @@ STATIC_OVL void sub_one_frombill(Object *obj, Monster *shkp) {
       otmp->where = OBJ_FREE;
       otmp->quan = (bp->bquan -= obj->quan);
       otmp->owt = 0; /* superfluous */
-      otmp->onamelth = 0;
+      otmp->objname = "";
       otmp->oxlth = 0;
       otmp->oattached = OATTACHED_NOTHING;
       bp->useup = 1;

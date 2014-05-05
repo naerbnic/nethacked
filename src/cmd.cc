@@ -2137,7 +2137,7 @@ STATIC_OVL void count_obj(Object *chain, long *total_count, long *total_size,
   for (count = size = 0, obj = chain; obj; obj = obj->nobj) {
     if (top) {
       count++;
-      size += sizeof(Object) + obj->oxlth + obj->onamelth;
+      size += sizeof(Object) + obj->oxlth;
     }
     if (recurse && obj->cobj)
       count_obj(obj->cobj, total_count, total_size, TRUE, TRUE);

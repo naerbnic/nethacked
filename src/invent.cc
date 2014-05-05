@@ -189,7 +189,7 @@ int merged(Object **potmp, Object **pobj) {
       otmp->owt = GetWeight(otmp);
     else
       otmp->owt += obj->owt;
-    if (!otmp->onamelth && obj->onamelth)
+    if (!otmp->has_name() && obj->has_name())
       otmp = *potmp = oname(otmp, ONAME(obj));
     RemoveObjectFromStorage(obj);
 
@@ -2462,10 +2462,8 @@ STATIC_OVL bool mergable(Object *otmp, Object *obj) {
     return FALSE;
 
   /* if they have names, make sure they're the same */
-  if ((obj->onamelth != otmp->onamelth &&
-       ((obj->onamelth && otmp->onamelth) || obj->otyp == CORPSE)) ||
-      (obj->onamelth && otmp->onamelth &&
-       strncmp(ONAME(obj), ONAME(otmp), (int)obj->onamelth)))
+  if (((obj->has_name() && otmp->has_name()) || obj->otyp == CORPSE) &&
+      obj->objname == otmp->objname)
     return FALSE;
 
   /* for the moment, any additional information is incompatible */

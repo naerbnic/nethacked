@@ -352,18 +352,9 @@ Object *ReallocateExtraObjectSpace(Object *obj, int oextra_size,
   }
   otmp->oxlth = oextra_size;
 
-  otmp->onamelth = oname_size;
+  otmp->objname = std::string(name, name + oname_size);
   otmp->timed = 0;   /* not timed, yet */
   otmp->lamplit = 0; /* ditto */
-  /* __GNUC__ note:  if the assignment of otmp->onamelth immediately
-     precedes this `if' statement, a gcc bug will miscompile the
-     test on vax (`insv' instruction used to store bitfield does
-     not set condition codes, but optimizer behaves as if it did).
-     gcc-2.7.2.1 finally fixed this. */
-  if (oname_size) {
-    if (name)
-      strcpy(ONAME(otmp), name);
-  }
 
   if (obj->owornmask) {
     bool save_twoweap = player.twoweap;
@@ -420,10 +411,9 @@ Object *oname(Object *obj, const char *name) {
   if (obj->oartifact || (lth && exist_artifact(obj->otyp, name)))
     return obj;
 
-  if (lth == obj->onamelth) {
+  if (lth == obj->objname.size()) {
     /* no need to replace entire object */
-    if (lth)
-      strcpy(ONAME(obj), name);
+    obj->objname = name;
   } else {
     obj = ReallocateExtraObjectSpace(obj, obj->oxlth, (genericptr_t)obj->oextra,
                                      lth, name);
@@ -502,7 +492,7 @@ void docall(Object *obj) {
     return; /* probably blind */
   otemp = *obj;
   otemp.quan = 1L;
-  otemp.onamelth = 0;
+  otemp.objname = "";
   otemp.oxlth = 0;
   if (objects[otemp.otyp].oc_class == POTION_CLASS && otemp.fromsink)
     /* kludge, meaning it's sink water */
@@ -680,8 +670,13 @@ char *x_monnam(
   if (do_hallu) {
     strcat(buf, rndmonnam());
     name_at_start = FALSE;
+<<<<<<< Updated upstream
   } else if (mtmp->mnamelth) {
     char *name = mtmp->name();
+=======
+  } else if (!mtmp->name_.empty()) {
+    char const* name = mtmp->name_.c_str();
+>>>>>>> Stashed changes
 
     if (mdat == &mons[PM_GHOST]) {
       sprintf(eos(buf), "%s ghost", s_suffix(name));

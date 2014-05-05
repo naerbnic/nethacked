@@ -218,7 +218,7 @@ Object *SplitObject(Object *obj, long num) {
 
   if (obj->cobj || num <= 0L || obj->quan <= num)
     panic("splitobj"); /* can't split containers */
-  otmp = newobj(obj->oxlth + obj->onamelth);
+  otmp = newobj(obj->oxlth);
   *otmp = *obj; /* copies whole structure */
   otmp->o_id = flags.ident++;
   if (!otmp->o_id)
@@ -238,8 +238,7 @@ Object *SplitObject(Object *obj, long num) {
   if (obj->oxlth)
     (void)memcpy((genericptr_t)otmp->oextra, (genericptr_t)obj->oextra,
                  obj->oxlth);
-  if (obj->onamelth)
-    (void)strncpy(ONAME(otmp), ONAME(obj), (int)obj->onamelth);
+  otmp->objname = obj->objname;
   if (obj->unpaid)
     splitbill(obj, otmp);
   if (obj->timed)
@@ -317,7 +316,7 @@ void CreateBillDummyObject(Object *otmp) {
 
   if (otmp->unpaid)
     subfrombill(otmp, shop_keeper(*player.ushops));
-  dummy = newobj(otmp->oxlth + otmp->onamelth);
+  dummy = newobj(otmp->oxlth);
   *dummy = *otmp;
   dummy->where = OBJ_FREE;
   dummy->o_id = flags.ident++;
@@ -327,8 +326,7 @@ void CreateBillDummyObject(Object *otmp) {
   if (otmp->oxlth)
     (void)memcpy((genericptr_t)dummy->oextra, (genericptr_t)otmp->oextra,
                  otmp->oxlth);
-  if (otmp->onamelth)
-    (void)strncpy(ONAME(dummy), ONAME(otmp), (int)otmp->onamelth);
+  dummy->objname = otmp->objname;
   if (Is_candle(dummy))
     dummy->lamplit = 0;
   addtobill(dummy, FALSE, TRUE, TRUE);
@@ -915,7 +913,7 @@ Object *AttachMonsterIdToObject(Object *obj, unsigned mid) {
   if (!mid || !obj)
     return nullptr;
   lth = sizeof(mid);
-  namelth = obj->onamelth ? strlen(ONAME(obj)) + 1 : 0;
+  namelth = obj->has_name() ? obj->objname.size(): 0;
   if (namelth)
     otmp = ReallocateExtraObjectSpace(obj, lth, (genericptr_t) & mid, namelth,
                                       ONAME(obj));
