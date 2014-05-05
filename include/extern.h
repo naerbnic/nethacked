@@ -821,7 +821,7 @@ E void readmail(Object *);
 
 /* ### makemon.c ### */
 
-E bool is_home_elemental(MonsterType *);
+E bool IsLevelHomeOfElementalType(MonsterType *);
 E Monster *clone_mon(Monster *, xchar, xchar);
 E Monster *makemon(MonsterType *, int, int, int);
 E bool create_critters(int, MonsterType *);

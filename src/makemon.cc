@@ -25,7 +25,7 @@ STATIC_VAR Monster zeromonst;
 STATIC_DCL bool uncommon(int);
 STATIC_DCL int align_shift(MonsterType *);
 #endif /* OVL0 */
-STATIC_DCL bool wrong_elem_type(MonsterType *);
+STATIC_DCL bool IsLevelWrongElementalType(MonsterType *);
 STATIC_DCL void m_initgrp(Monster *, int, int, int);
 STATIC_DCL void m_initthrow(Monster *, int, int);
 STATIC_DCL void m_initweap(Monster *);
@@ -41,7 +41,7 @@ extern const int monstr[];
 #define tooweak(monindx, lev) (monstr[monindx] < lev)
 
 #ifdef OVLB
-bool is_home_elemental(MonsterType *ptr) {
+bool IsLevelHomeOfElementalType(MonsterType *ptr) {
   if (ptr->mlet == S_ELEMENTAL)
     switch (monsndx(ptr)) {
       case PM_AIR_ELEMENTAL:
@@ -59,9 +59,9 @@ bool is_home_elemental(MonsterType *ptr) {
 /*
  * Return true if the given monster cannot exist on this elemental level.
  */
-STATIC_OVL bool wrong_elem_type(MonsterType *ptr) {
+STATIC_OVL bool IsLevelWrongElementalType(MonsterType *ptr) {
   if (ptr->mlet == S_ELEMENTAL) {
-    return ((bool)(!is_home_elemental(ptr)));
+    return ((bool)(!IsLevelHomeOfElementalType(ptr)));
   } else if (Is_earthlevel(&player.uz)) {
     /* no restrictions? */
   } else if (Is_waterlevel(&player.uz)) {
@@ -83,44 +83,10 @@ STATIC_OVL bool wrong_elem_type(MonsterType *ptr) {
 STATIC_OVL void m_initgrp(Monster *mtmp, int x, int y, int n) {
   coord mm;
   int cnt = rnd(n);
-  Monster *mon;
-#if defined(__GNUC__) && (defined(HPUX) || defined(DGUX))
-  /* There is an unresolved problem with several people finding that
-   * the game hangs eating CPU; if interrupted and restored, the level
-   * will be filled with monsters.  Of those reports giving system type,
-   * there were two DG/UX and two HP-UX, all using gcc as the compiler.
-   * hcroft@hpopb1.cern.ch, using gcc 2.6.3 on HP-UX, says that the
-   * problem went away for him and another reporter-to-newsgroup
-   * after adding this debugging code.  This has almost got to be a
-   * compiler bug, but until somebody tracks it down and gets it fixed,
-   * might as well go with the "but it went away when I tried to find
-   * it" code.
-   */
-  int cnttmp, cntdiv;
-
-  cnttmp = cnt;
-#ifdef DEBUG
-  pline("init group call x=%d,y=%d,n=%d,cnt=%d.", x, y, n, cnt);
-#endif
-  cntdiv = ((player.ulevel < 3) ? 4 : (player.ulevel < 5) ? 2 : 1);
-#endif
   /* Tuning: cut down on swarming at low character levels [mrs] */
   cnt /= (player.ulevel < 3) ? 4 : (player.ulevel < 5) ? 2 : 1;
-#if defined(__GNUC__) && (defined(HPUX) || defined(DGUX))
-  if (cnt != (cnttmp / cntdiv)) {
-    pline("cnt=%d using %d, cnttmp=%d, cntdiv=%d", cnt,
-          (player.ulevel < 3) ? 4 : (player.ulevel < 5) ? 2 : 1, cnttmp,
-          cntdiv);
-  }
-#endif
   if (!cnt)
     cnt++;
-#if defined(__GNUC__) && (defined(HPUX) || defined(DGUX))
-  if (cnt < 0)
-    cnt = 1;
-  if (cnt > 10)
-    cnt = 10;
-#endif
 
   mm.x = x;
   mm.y = y;
@@ -133,7 +99,7 @@ STATIC_OVL void m_initgrp(Monster *mtmp, int x, int y, int n) {
      * smaller group.
      */
     if (enexto(&mm, mm.x, mm.y, mtmp->data)) {
-      mon = makemon(mtmp->data, mm.x, mm.y, NO_MM_FLAGS);
+      Monster* mon = makemon(mtmp->data, mm.x, mm.y, NO_MM_FLAGS);
       mon->mpeaceful = FALSE;
       mon->mavenge = 0;
       set_malign(mon);
@@ -981,7 +947,7 @@ Monster *makemon(MonsterType *ptr, int x, int y, int mmflags) {
     mtmp->mhpmax = mtmp->mhp = rnd(4);
   } else {
     mtmp->mhpmax = mtmp->mhp = d((int)mtmp->m_lev, 8);
-    if (is_home_elemental(ptr))
+    if (IsLevelHomeOfElementalType(ptr))
       mtmp->mhpmax = (mtmp->mhp *= 3);
   }
 
@@ -1291,7 +1257,7 @@ MonsterType *rndmonst() {
       if (upper && !isupper(def_monsyms[(int)(ptr->mlet)]))
         continue;
 #endif
-      if (elemlevel && wrong_elem_type(ptr))
+      if (elemlevel && IsLevelWrongElementalType(ptr))
         continue;
       if (uncommon(mndx))
         continue;
@@ -1469,7 +1435,7 @@ MonsterType *grow_up(Monster *mtmp, Monster *victim) {
       hp_threshold = 4;
     else if (is_golem(ptr)) /* strange creatures */
       hp_threshold = ((mtmp->mhpmax / 10) + 1) * 10 - 1;
-    else if (is_home_elemental(ptr))
+    else if (IsLevelHomeOfElementalType(ptr))
       hp_threshold *= 3;
     lev_limit = 3 * (int)ptr->mlevel / 2; /* same as adj_lev() */
     /* If they can grow up, be sure the level is high enough for that */

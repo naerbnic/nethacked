@@ -454,7 +454,7 @@ int polymon(int mntmp) {
       player.mhmax = rnd(4);
     else
       player.mhmax = d(mlvl, 8);
-    if (is_home_elemental(&mons[mntmp]))
+    if (IsLevelHomeOfElementalType(&mons[mntmp]))
       player.mhmax *= 3;
   }
   player.mh = player.mhmax;
