@@ -10,31 +10,27 @@
 #include "config.h"
 
 #if defined(WIZARD)
-char *fmt_ptr(const void*,char *);
+char *fmt_ptr(const void *, char *);
 #endif
 
+long *alloc(unsigned int lth) {
+  genericptr_t ptr;
 
-long* alloc(unsigned int lth)
-{
-	genericptr_t ptr;
-
-	ptr = malloc(lth);
-	return((long *) ptr);
+  ptr = malloc(lth);
+  return ((long *)ptr);
 }
-
 
 #if defined(WIZARD)
 
-# define PTR_FMT "%p"
-# define PTR_TYP genericptr_t
+#define PTR_FMT "%p"
+#define PTR_TYP genericptr_t
 
 /* format a pointer for display purposes; caller supplies the result buffer */
-char * fmt_ptr(const void* ptr, char *buf) {
-	sprintf(buf, PTR_FMT, (PTR_TYP)ptr);
-	return buf;
+char *fmt_ptr(const void *ptr, char *buf) {
+  sprintf(buf, PTR_FMT, (PTR_TYP)ptr);
+  return buf;
 }
 
 #endif
-
 
 /*alloc.c*/

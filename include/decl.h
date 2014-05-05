@@ -15,7 +15,7 @@ E int hackpid;
 E int locknum;
 #ifdef DEF_PAGER
 E char *catmore;
-#endif	/* DEF_PAGER */
+#endif /* DEF_PAGER */
 
 E char SAVEF[];
 
@@ -29,7 +29,7 @@ E int warnlevel;
 E int nroom;
 E int occtime;
 
-#define WARNCOUNT 6			/* number of different warning levels */
+#define WARNCOUNT 6 /* number of different warning levels */
 E uchar warnsyms[WARNCOUNT];
 
 E int x_maze_max, y_maze_max;
@@ -39,101 +39,101 @@ E int otg_temp;
 E int in_doagain;
 #endif
 
-E struct dgn_topology {		/* special dungeon levels for speed */
-    d_level	d_oracle_level;
-    d_level	d_bigroom_level;	/* unused */
+E struct dgn_topology {/* special dungeon levels for speed */
+  d_level d_oracle_level;
+  d_level d_bigroom_level; /* unused */
 #ifdef REINCARNATION
-    d_level	d_rogue_level;
+  d_level d_rogue_level;
 #endif
-    d_level	d_medusa_level;
-    d_level	d_stronghold_level;
-    d_level	d_valley_level;
-    d_level	d_wiz1_level;
-    d_level	d_wiz2_level;
-    d_level	d_wiz3_level;
-    d_level	d_juiblex_level;
-    d_level	d_orcus_level;
-    d_level	d_baalzebub_level;	/* unused */
-    d_level	d_asmodeus_level;	/* unused */
-    d_level	d_portal_level;		/* only in goto_level() [do.c] */
-    d_level	d_sanctum_level;
-    d_level	d_earth_level;
-    d_level	d_water_level;
-    d_level	d_fire_level;
-    d_level	d_air_level;
-    d_level	d_astral_level;
-    xchar	d_tower_dnum;
-    xchar	d_sokoban_dnum;
-    xchar	d_mines_dnum, d_quest_dnum;
-    d_level	d_qstart_level, d_qlocate_level, d_nemesis_level;
-    d_level	d_knox_level;
+  d_level d_medusa_level;
+  d_level d_stronghold_level;
+  d_level d_valley_level;
+  d_level d_wiz1_level;
+  d_level d_wiz2_level;
+  d_level d_wiz3_level;
+  d_level d_juiblex_level;
+  d_level d_orcus_level;
+  d_level d_baalzebub_level; /* unused */
+  d_level d_asmodeus_level;  /* unused */
+  d_level d_portal_level;    /* only in goto_level() [do.c] */
+  d_level d_sanctum_level;
+  d_level d_earth_level;
+  d_level d_water_level;
+  d_level d_fire_level;
+  d_level d_air_level;
+  d_level d_astral_level;
+  xchar d_tower_dnum;
+  xchar d_sokoban_dnum;
+  xchar d_mines_dnum, d_quest_dnum;
+  d_level d_qstart_level, d_qlocate_level, d_nemesis_level;
+  d_level d_knox_level;
 #ifdef RECORD_ACHIEVE
-    d_level     d_mineend_level;
-    d_level     d_sokoend_level;
+  d_level d_mineend_level;
+  d_level d_sokoend_level;
 #endif
 } dungeon_topology;
 /* macros for accesing the dungeon levels by their old names */
-#define oracle_level		(dungeon_topology.d_oracle_level)
-#define bigroom_level		(dungeon_topology.d_bigroom_level)
+#define oracle_level (dungeon_topology.d_oracle_level)
+#define bigroom_level (dungeon_topology.d_bigroom_level)
 #ifdef REINCARNATION
-#define rogue_level		(dungeon_topology.d_rogue_level)
+#define rogue_level (dungeon_topology.d_rogue_level)
 #endif
-#define medusa_level		(dungeon_topology.d_medusa_level)
-#define stronghold_level	(dungeon_topology.d_stronghold_level)
-#define valley_level		(dungeon_topology.d_valley_level)
-#define wiz1_level		(dungeon_topology.d_wiz1_level)
-#define wiz2_level		(dungeon_topology.d_wiz2_level)
-#define wiz3_level		(dungeon_topology.d_wiz3_level)
-#define juiblex_level		(dungeon_topology.d_juiblex_level)
-#define orcus_level		(dungeon_topology.d_orcus_level)
-#define baalzebub_level		(dungeon_topology.d_baalzebub_level)
-#define asmodeus_level		(dungeon_topology.d_asmodeus_level)
-#define portal_level		(dungeon_topology.d_portal_level)
-#define sanctum_level		(dungeon_topology.d_sanctum_level)
-#define earth_level		(dungeon_topology.d_earth_level)
-#define water_level		(dungeon_topology.d_water_level)
-#define fire_level		(dungeon_topology.d_fire_level)
-#define air_level		(dungeon_topology.d_air_level)
-#define astral_level		(dungeon_topology.d_astral_level)
-#define tower_dnum		(dungeon_topology.d_tower_dnum)
-#define sokoban_dnum		(dungeon_topology.d_sokoban_dnum)
-#define mines_dnum		(dungeon_topology.d_mines_dnum)
-#define quest_dnum		(dungeon_topology.d_quest_dnum)
-#define qstart_level		(dungeon_topology.d_qstart_level)
-#define qlocate_level		(dungeon_topology.d_qlocate_level)
-#define nemesis_level		(dungeon_topology.d_nemesis_level)
-#define knox_level		(dungeon_topology.d_knox_level)
+#define medusa_level (dungeon_topology.d_medusa_level)
+#define stronghold_level (dungeon_topology.d_stronghold_level)
+#define valley_level (dungeon_topology.d_valley_level)
+#define wiz1_level (dungeon_topology.d_wiz1_level)
+#define wiz2_level (dungeon_topology.d_wiz2_level)
+#define wiz3_level (dungeon_topology.d_wiz3_level)
+#define juiblex_level (dungeon_topology.d_juiblex_level)
+#define orcus_level (dungeon_topology.d_orcus_level)
+#define baalzebub_level (dungeon_topology.d_baalzebub_level)
+#define asmodeus_level (dungeon_topology.d_asmodeus_level)
+#define portal_level (dungeon_topology.d_portal_level)
+#define sanctum_level (dungeon_topology.d_sanctum_level)
+#define earth_level (dungeon_topology.d_earth_level)
+#define water_level (dungeon_topology.d_water_level)
+#define fire_level (dungeon_topology.d_fire_level)
+#define air_level (dungeon_topology.d_air_level)
+#define astral_level (dungeon_topology.d_astral_level)
+#define tower_dnum (dungeon_topology.d_tower_dnum)
+#define sokoban_dnum (dungeon_topology.d_sokoban_dnum)
+#define mines_dnum (dungeon_topology.d_mines_dnum)
+#define quest_dnum (dungeon_topology.d_quest_dnum)
+#define qstart_level (dungeon_topology.d_qstart_level)
+#define qlocate_level (dungeon_topology.d_qlocate_level)
+#define nemesis_level (dungeon_topology.d_nemesis_level)
+#define knox_level (dungeon_topology.d_knox_level)
 #ifdef RECORD_ACHIEVE
-#define mineend_level           (dungeon_topology.d_mineend_level)
-#define sokoend_level           (dungeon_topology.d_sokoend_level)
+#define mineend_level (dungeon_topology.d_mineend_level)
+#define sokoend_level (dungeon_topology.d_sokoend_level)
 #endif
 
-E stairway dnstair, upstair;		/* stairs up and down */
-#define xdnstair	(dnstair.sx)
-#define ydnstair	(dnstair.sy)
-#define xupstair	(upstair.sx)
-#define yupstair	(upstair.sy)
+E stairway dnstair, upstair; /* stairs up and down */
+#define xdnstair (dnstair.sx)
+#define ydnstair (dnstair.sy)
+#define xupstair (upstair.sx)
+#define yupstair (upstair.sy)
 
-E stairway dnladder, upladder;		/* ladders up and down */
-#define xdnladder	(dnladder.sx)
-#define ydnladder	(dnladder.sy)
-#define xupladder	(upladder.sx)
-#define yupladder	(upladder.sy)
+E stairway dnladder, upladder; /* ladders up and down */
+#define xdnladder (dnladder.sx)
+#define ydnladder (dnladder.sy)
+#define xupladder (upladder.sx)
+#define yupladder (upladder.sy)
 
 E stairway sstairs;
 
-E dest_area updest, dndest;	/* level-change destination areas */
+E dest_area updest, dndest; /* level-change destination areas */
 
 E coord inv_pos;
 E dungeon dungeons[];
 E s_level *sp_levchn;
-#define dunlev_reached(x)	(dungeons[(x)->dnum].dunlev_ureached)
+#define dunlev_reached(x) (dungeons[(x)->dnum].dunlev_ureached)
 
 #include "quest.h"
 E struct q_score quest_status;
 
 E char pl_character[PL_CSIZ];
-E char pl_race;		/* character's race */
+E char pl_race; /* character's race */
 
 E char pl_fruit[PL_FSIZ];
 E int current_fruit;
@@ -145,15 +145,15 @@ E char tune[6];
 E struct linfo level_info[MAXLINFO];
 
 E struct sinfo {
-	int gameover;		/* self explanatory? */
-	int stopprint;		/* inhibit further end of game disclosure */
-	int done_hup;		/* SIGHUP or moral equivalent received
-				 * -- no more screen output */
-	int something_worth_saving;	/* in case of panic */
-	int panicking;		/* `panic' is in progress */
-	int in_impossible;
+  int gameover;               /* self explanatory? */
+  int stopprint;              /* inhibit further end of game disclosure */
+  int done_hup;               /* SIGHUP or moral equivalent received
+                               * -- no more screen output */
+  int something_worth_saving; /* in case of panic */
+  int panicking;              /* `panic' is in progress */
+  int in_impossible;
 #ifdef PANICLOG
-	int in_paniclog;
+  int in_paniclog;
 #endif
 } program_state;
 
@@ -172,8 +172,8 @@ E const char disclosure_options[];
 E int smeq[];
 E int doorindex;
 E char *save_cm;
-#define KILLED_BY_AN	 0
-#define KILLED_BY	 1
+#define KILLED_BY_AN 0
+#define KILLED_BY 1
 #define NO_KILLER_PREFIX 2
 E int killer_format;
 E const char *killer;
@@ -183,7 +183,7 @@ E long done_money;
 #endif
 E char killer_buf[BUFSZ];
 #ifdef DUMP_LOG
-E char dump_fn[];		/* dumpfile name (dump patch) */
+E char dump_fn[]; /* dumpfile name (dump patch) */
 #endif
 E const char *configfile;
 E char plname[PL_NSIZ];
@@ -191,7 +191,7 @@ E char dogname[];
 E char catname[];
 E char horsename[];
 E char preferred_pet;
-E const char *occtxt;			/* defined when occupation != NULL */
+E const char *occtxt; /* defined when occupation != NULL */
 E const char *nomovemsg;
 E const char nul[];
 E char lock[];
@@ -199,16 +199,20 @@ E char lock[];
 E const char sdir[], ndir[];
 E const schar xdir[], ydir[], zdir[];
 
-E schar tbx, tby;		/* set in mthrowu.c */
+E schar tbx, tby; /* set in mthrowu.c */
 
-E struct multishot { int n, i; short o; bool s; } m_shot;
+E struct multishot {
+  int n, i;
+  short o;
+  bool s;
+} m_shot;
 
-E struct dig_info {		/* apply.c, hack.c */
-	int	effort;
-	d_level level;
-	coord	pos;
-	long lastdigtime;
-	bool down, chew, warned, quiet;
+E struct dig_info {/* apply.c, hack.c */
+  int effort;
+  d_level level;
+  coord pos;
+  long lastdigtime;
+  bool down, chew, warned, quiet;
 } digging;
 
 E long moves, monstermoves;
@@ -225,117 +229,112 @@ E bool in_steed_dismounting;
 E const int shield_static[];
 
 #include "spell.h"
-E struct spell spl_book[];	/* sized in decl.c */
+E struct spell spl_book[]; /* sized in decl.c */
 
 #include "color.h"
 #ifdef TEXTCOLOR
 E const int zapcolors[];
 #endif
 
-E const char def_oc_syms[MAXOCLASSES];	/* default class symbols */
-E uchar oc_syms[MAXOCLASSES];		/* current class symbols */
-E const char def_monsyms[MAXMCLASSES];	/* default class symbols */
-E uchar monsyms[MAXMCLASSES];		/* current class symbols */
+E const char def_oc_syms[MAXOCLASSES]; /* default class symbols */
+E uchar oc_syms[MAXOCLASSES];          /* current class symbols */
+E const char def_monsyms[MAXMCLASSES]; /* default class symbols */
+E uchar monsyms[MAXMCLASSES];          /* current class symbols */
 
 #include "obj.h"
-E Object *invent,
-	*uarm, *uarmc, *uarmh, *uarms, *uarmg, *uarmf,
+E Object *invent, *uarm, *uarmc, *uarmh, *uarms, *uarmg, *uarmf,
 #ifdef TOURIST
-	*uarmu,				/* under-wear, so to speak */
+    *uarmu, /* under-wear, so to speak */
 #endif
-	*uskin, *uamul, *uleft, *uright, *ublindf,
-	*uwep, *uswapwep, *uquiver;
+    *uskin, *uamul, *uleft, *uright, *ublindf, *uwep, *uswapwep, *uquiver;
 
-E Object *uchain;		/* defined only when punished */
+E Object *uchain; /* defined only when punished */
 E Object *uball;
 E Object *migrating_objs;
 E Object *billobjs;
-E Object zeroobj;		/* init'd and defined in decl.c */
+E Object zeroobj; /* init'd and defined in decl.c */
 
 #include "you.h"
 E struct Player player;
 
 #include "onames.h"
-#ifndef PM_H		/* (pm.h has already been included via youprop.h) */
+#ifndef PM_H /* (pm.h has already been included via youprop.h) */
 #include "pm.h"
 #endif
 
-E Monster youmonst;	/* init'd and defined in decl.c */
+E Monster youmonst; /* init'd and defined in decl.c */
 E Monster *mydogs, *migrating_mons;
 
 E struct mvitals {
-	uchar	born;
-	uchar	died;
-	uchar	mvflags;
+  uchar born;
+  uchar died;
+  uchar mvflags;
 } mvitals[NUMMONS];
 
 E struct c_color_names {
-    const char	*const c_black, *const c_amber, *const c_golden,
-		*const c_light_blue,*const c_red, *const c_green,
-		*const c_silver, *const c_blue, *const c_purple,
-		*const c_white;
+  const char *const c_black, *const c_amber, *const c_golden,
+      *const c_light_blue, *const c_red, *const c_green, *const c_silver,
+      *const c_blue, *const c_purple, *const c_white;
 } c_color_names;
-#define NH_BLACK		c_color_names.c_black
-#define NH_AMBER		c_color_names.c_amber
-#define NH_GOLDEN		c_color_names.c_golden
-#define NH_LIGHT_BLUE		c_color_names.c_light_blue
-#define NH_RED			c_color_names.c_red
-#define NH_GREEN		c_color_names.c_green
-#define NH_SILVER		c_color_names.c_silver
-#define NH_BLUE			c_color_names.c_blue
-#define NH_PURPLE		c_color_names.c_purple
-#define NH_WHITE		c_color_names.c_white
+#define NH_BLACK c_color_names.c_black
+#define NH_AMBER c_color_names.c_amber
+#define NH_GOLDEN c_color_names.c_golden
+#define NH_LIGHT_BLUE c_color_names.c_light_blue
+#define NH_RED c_color_names.c_red
+#define NH_GREEN c_color_names.c_green
+#define NH_SILVER c_color_names.c_silver
+#define NH_BLUE c_color_names.c_blue
+#define NH_PURPLE c_color_names.c_purple
+#define NH_WHITE c_color_names.c_white
 
 /* The names of the colors used for gems, etc. */
 E const char *c_obj_colors[];
 
 E struct c_common_strings {
-    const char	*const c_nothing_happens, *const c_thats_enough_tries,
-		*const c_silly_thing_to, *const c_shudder_for_moment,
-		*const c_something, *const c_Something,
-		*const c_You_can_move_again,
-		*const c_Never_mind, *c_vision_clears,
-		*const c_the_your[2];
+  const char *const c_nothing_happens, *const c_thats_enough_tries,
+      *const c_silly_thing_to, *const c_shudder_for_moment, *const c_something,
+      *const c_Something, *const c_You_can_move_again, *const c_Never_mind,
+      *c_vision_clears, *const c_the_your[2];
 } c_common_strings;
-#define nothing_happens    c_common_strings.c_nothing_happens
+#define nothing_happens c_common_strings.c_nothing_happens
 #define thats_enough_tries c_common_strings.c_thats_enough_tries
-#define silly_thing_to	   c_common_strings.c_silly_thing_to
+#define silly_thing_to c_common_strings.c_silly_thing_to
 #define shudder_for_moment c_common_strings.c_shudder_for_moment
-#define something	   c_common_strings.c_something
-#define Something	   c_common_strings.c_Something
+#define something c_common_strings.c_something
+#define Something c_common_strings.c_Something
 #define You_can_move_again c_common_strings.c_You_can_move_again
-#define Never_mind	   c_common_strings.c_Never_mind
-#define vision_clears	   c_common_strings.c_vision_clears
-#define the_your	   c_common_strings.c_the_your
+#define Never_mind c_common_strings.c_Never_mind
+#define vision_clears c_common_strings.c_vision_clears
+#define the_your c_common_strings.c_the_your
 
 /* material strings */
 E const char *materialnm[];
 
 /* Monster name articles */
-#define ARTICLE_NONE	0
-#define ARTICLE_THE	1
-#define ARTICLE_A	2
-#define ARTICLE_YOUR	3
+#define ARTICLE_NONE 0
+#define ARTICLE_THE 1
+#define ARTICLE_A 2
+#define ARTICLE_YOUR 3
 
 /* Monster name suppress masks */
-#define SUPPRESS_IT		0x01
-#define SUPPRESS_INVISIBLE	0x02
-#define SUPPRESS_HALLUCINATION  0x04
-#define SUPPRESS_SADDLE		0x08
-#define EXACT_NAME		0x0F
+#define SUPPRESS_IT 0x01
+#define SUPPRESS_INVISIBLE 0x02
+#define SUPPRESS_HALLUCINATION 0x04
+#define SUPPRESS_SADDLE 0x08
+#define EXACT_NAME 0x0F
 
 /* Vision */
-E bool vision_full_recalc;	/* TRUE if need vision recalc */
-E char **viz_array;		/* could see/in sight row pointers */
+E bool vision_full_recalc; /* TRUE if need vision recalc */
+E char **viz_array;        /* could see/in sight row pointers */
 
 /* Window system stuff */
 E winid WIN_MESSAGE, WIN_STATUS;
 E winid WIN_MAP, WIN_INVEN;
 E char toplines[];
 #ifndef TCAP_H
-E struct tc_gbl_data {	/* also declared in tcap.h */
-    char *tc_AS, *tc_AE;	/* graphics start and end (tty font swapping) */
-    int   tc_LI,  tc_CO;	/* lines and columns */
+E struct tc_gbl_data { /* also declared in tcap.h */
+  char *tc_AS, *tc_AE; /* graphics start and end (tty font swapping) */
+  int tc_LI, tc_CO;    /* lines and columns */
 } tc_gbl_data;
 #define AS tc_gbl_data.tc_AS
 #define AE tc_gbl_data.tc_AE
@@ -344,27 +343,28 @@ E struct tc_gbl_data {	/* also declared in tcap.h */
 #endif
 
 /* xxxexplain[] is in drawing.c */
-E const char * const monexplain[], invisexplain[], * const objexplain[], * const oclass_names[];
+E const char *const monexplain[], invisexplain[], *const objexplain[],
+    *const oclass_names[];
 
 /* Some systems want to use full pathnames for some subsets of file names,
  * rather than assuming that they're all in the current directory.  This
  * provides all the subclasses that seem reasonable, and sets up for all
  * prefixes being null.  Port code can set those that it wants.
  */
-#define HACKPREFIX	0
-#define LEVELPREFIX	1
-#define SAVEPREFIX	2
-#define BONESPREFIX	3
-#define DATAPREFIX	4	/* this one must match hardcoded value in dlb.c */
-#define SCOREPREFIX	5
-#define LOCKPREFIX	6
-#define CONFIGPREFIX	7
-#define TROUBLEPREFIX	8
-#define PREFIX_COUNT	9
+#define HACKPREFIX 0
+#define LEVELPREFIX 1
+#define SAVEPREFIX 2
+#define BONESPREFIX 3
+#define DATAPREFIX 4 /* this one must match hardcoded value in dlb.c */
+#define SCOREPREFIX 5
+#define LOCKPREFIX 6
+#define CONFIGPREFIX 7
+#define TROUBLEPREFIX 8
+#define PREFIX_COUNT 9
 /* used in files.c; xxconf.h can override if needed */
-# ifndef FQN_MAX_FILENAME
+#ifndef FQN_MAX_FILENAME
 #define FQN_MAX_FILENAME 512
-# endif
+#endif
 
 #if defined(NOCWD_ASSUMPTIONS) || defined(VAR_PLAYGROUND)
 /* the bare-bones stuff is unconditional above to simplify coding; for
@@ -380,45 +380,45 @@ E char *fqn_prefix_names[PREFIX_COUNT];
 
 #ifdef AUTOPICKUP_EXCEPTIONS
 struct autopickup_exception {
-	char *pattern;
-	bool grab;
-	struct autopickup_exception *next;
+  char *pattern;
+  bool grab;
+  struct autopickup_exception *next;
 };
 #endif /* AUTOPICKUP_EXCEPTIONS */
 
 struct _plinemsg {
-    xchar msgtype;
-    char *pattern;
-    struct _plinemsg *next;
+  xchar msgtype;
+  char *pattern;
+  struct _plinemsg *next;
 };
 
 E struct _plinemsg *pline_msg;
 
-#define MSGTYP_NORMAL	0
-#define MSGTYP_NOREP	1
-#define MSGTYP_NOSHOW	2
-#define MSGTYP_STOP	3
+#define MSGTYP_NORMAL 0
+#define MSGTYP_NOREP 1
+#define MSGTYP_NOSHOW 2
+#define MSGTYP_STOP 3
 
 #ifdef RECORD_ACHIEVE
 struct u_achieve {
-        Bitfield(get_bell,1);        /* You have obtained the bell of 
-                                      * opening */
-        Bitfield(get_candelabrum,1); /* You have obtained the candelabrum */
-        Bitfield(get_book,1);        /* You have obtained the book of 
-                                      * the dead */
-        Bitfield(enter_gehennom,1);  /* Entered Gehennom (including the 
-                                      * Valley) by any means */
-        Bitfield(perform_invocation,1); /* You have performed the invocation
-                                         * ritual */
-        Bitfield(get_amulet,1);      /* You have obtained the amulet
-                                      * of Yendor */
-        Bitfield(ascended,1);        /* You ascended to demigod[dess]hood.
-                                      * Not quite the same as 
-                                      * player.uevent.ascended. */
-        Bitfield(get_luckstone,1);   /* You obtained the luckstone at the
-                                      * end of the mines. */
-        Bitfield(finish_sokoban,1);  /* You obtained the sokoban prize. */
-        Bitfield(killed_medusa,1);   /* You defeated Medusa. */
+  Bitfield(get_bell, 1);           /* You have obtained the bell of
+                                    * opening */
+  Bitfield(get_candelabrum, 1);    /* You have obtained the candelabrum */
+  Bitfield(get_book, 1);           /* You have obtained the book of
+                                    * the dead */
+  Bitfield(enter_gehennom, 1);     /* Entered Gehennom (including the
+                                    * Valley) by any means */
+  Bitfield(perform_invocation, 1); /* You have performed the invocation
+                                    * ritual */
+  Bitfield(get_amulet, 1);         /* You have obtained the amulet
+                                    * of Yendor */
+  Bitfield(ascended, 1);           /* You ascended to demigod[dess]hood.
+                                    * Not quite the same as
+                                    * player.uevent.ascended. */
+  Bitfield(get_luckstone, 1);      /* You obtained the luckstone at the
+                                    * end of the mines. */
+  Bitfield(finish_sokoban, 1);     /* You obtained the sokoban prize. */
+  Bitfield(killed_medusa, 1);      /* You defeated Medusa. */
 };
 
 E struct u_achieve achieve;

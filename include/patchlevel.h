@@ -3,26 +3,26 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 /* NetHacked 3.4.3 */
-#define VERSION_MAJOR	3
-#define VERSION_MINOR	4
+#define VERSION_MAJOR 3
+#define VERSION_MINOR 4
 /*
  * PATCHLEVEL is updated for each release.
  */
-#define PATCHLEVEL	4
+#define PATCHLEVEL 4
 /*
  * Incrementing EDITLEVEL can be used to force invalidation of old bones
  * and save files.
  */
-#define EDITLEVEL	0
+#define EDITLEVEL 0
 
 #define COPYRIGHT_BANNER_A \
-"NetHacked, gold standard vanilla NetHack, Copyright 2011"
+  "NetHacked, gold standard vanilla NetHack, Copyright 2011"
 
-#define COPYRIGHT_BANNER_B \
-"         based on NetHack by Stichting Mathematisch Centrum & M. Stephenson."
+#define COPYRIGHT_BANNER_B                                            \
+  "         based on NetHack by Stichting Mathematisch Centrum & M. " \
+  "Stephenson."
 
-#define COPYRIGHT_BANNER_C \
-"         See license for details."
+#define COPYRIGHT_BANNER_C "         See license for details."
 
 /*
  * If two or more successive releases have compatible data files, define
@@ -33,8 +33,7 @@
  * PP = patch level, ee = edit level, L = literal suffix "L",
  * with all four numbers specified as two hexadecimal digits.
  */
-#define VERSION_COMPATIBILITY 0x03040000L	/* 3.4.0-0 */
-
+#define VERSION_COMPATIBILITY 0x03040000L /* 3.4.0-0 */
 
 /*****************************************************************************/
 /* Version 3.4.x */
@@ -85,7 +84,7 @@
  *  Eliminated a few potentially fatal bugs including one for stone-to-flesh,
  *	trouble-fixing during prayer, riding down stairs while punished,
  *	polyd player demon summoning, throwing digging tools into shops, and
- *	a couple from having the vision system enabled at inappropriate times 
+ *	a couple from having the vision system enabled at inappropriate times
  *  Corrected some incorrect calculations in final scoring
  *  Enhanced config file processing and alert to duplication of entries
  *  Player selection prompt enhancements for TTY and X11

@@ -5,55 +5,54 @@
 
 #include "hack.h"
 
-#define UTSZ	50
+#define UTSZ 50
 
 STATIC_VAR int utcnt, utpnt;
 STATIC_VAR coord utrack[UTSZ];
 
 #ifdef OVLB
 
-void initrack() {
-	utcnt = utpnt = 0;
-}
+void initrack() { utcnt = utpnt = 0; }
 
 #endif /* OVLB */
 #ifdef OVL1
 
 /* add to track */
 void settrack() {
-	if(utcnt < UTSZ) utcnt++;
-	if(utpnt == UTSZ) utpnt = 0;
-	utrack[utpnt].x = player.ux;
-	utrack[utpnt].y = player.uy;
-	utpnt++;
+  if (utcnt < UTSZ) utcnt++;
+  if (utpnt == UTSZ) utpnt = 0;
+  utrack[utpnt].x = player.ux;
+  utrack[utpnt].y = player.uy;
+  utpnt++;
 }
 
 #endif /* OVL1 */
 #ifdef OVL0
 
-coord * gettrack(int x, int y) {
-    int cnt, ndist;
-    coord *tc;
-    cnt = utcnt;
-    for(tc = &utrack[utpnt]; cnt--; ){
-	if(tc == utrack) tc = &utrack[UTSZ-1];
-	else tc--;
-	ndist = distmin(x,y,tc->x,tc->y);
+coord *gettrack(int x, int y) {
+  int cnt, ndist;
+  coord *tc;
+  cnt = utcnt;
+  for (tc = &utrack[utpnt]; cnt--;) {
+    if (tc == utrack)
+      tc = &utrack[UTSZ - 1];
+    else
+      tc--;
+    ndist = distmin(x, y, tc->x, tc->y);
 
-	/* if far away, skip track entries til we're closer */
-	if(ndist > 2) {
-	    ndist -= 2; /* be careful due to extra decrement at top of loop */
-	    cnt -= ndist;
-	    if(cnt <= 0)
-		return (coord *) 0; /* too far away, no matches possible */
-	    if(tc < &utrack[ndist])
-		tc += (UTSZ-ndist);
-	    else
-		tc -= ndist;
-	} else if(ndist <= 1)
-	    return(ndist ? tc : 0);
-    }
-    return (coord *)0;
+    /* if far away, skip track entries til we're closer */
+    if (ndist > 2) {
+      ndist -= 2; /* be careful due to extra decrement at top of loop */
+      cnt -= ndist;
+      if (cnt <= 0) return (coord *)0; /* too far away, no matches possible */
+      if (tc < &utrack[ndist])
+        tc += (UTSZ - ndist);
+      else
+        tc -= ndist;
+    } else if (ndist <= 1)
+      return (ndist ? tc : 0);
+  }
+  return (coord *)0;
 }
 
 #endif /* OVL0 */

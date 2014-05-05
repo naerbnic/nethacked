@@ -22,8 +22,8 @@
  */
 
 struct Attack {
-	uchar		aatyp;
-	uchar		adtyp, damn, damd;
+  uchar aatyp;
+  uchar adtyp, damn, damd;
 };
 
 /*	Max # of attacks for any given monster.
@@ -37,32 +37,31 @@ constexpr int NATTK = 6;
 constexpr int WT_HUMAN = 1450;
 
 struct MonsterType {
-	const char	*mname;			/* full name */
-	char		mlet;			/* symbol */
-	schar		mlevel,			/* base monster level */
-			mmove,			/* move speed */
-			ac,			/* (base) armor class */
-			mr;			/* (base) magic resistance */
-	aligntyp	maligntyp;		/* basic monster alignment */
-	unsigned short	geno;			/* creation/geno mask value */
-	struct	Attack	mattk[NATTK];		/* attacks matrix */
-	unsigned short	cwt,			/* weight of corpse */
-			cnutrit;		/* its nutritional value */
-	short		pxlth;			/* length of extension */
-	uchar		msound;			/* noise it makes (6 bits) */
-	uchar		msize;			/* physical size (3 bits) */
-	uchar		mresists;		/* resistances */
-	uchar		mconveys;		/* conveyed by eating */
-	unsigned long	mflags1,		/* bool bitflags */
-			mflags2;		/* more bool bitflags */
-	unsigned short	mflags3;		/* yet more bool bitflags */
-# ifdef TEXTCOLOR
-	uchar		mcolor;			/* color to use */
-# endif
+  const char *mname;          /* full name */
+  char mlet;                  /* symbol */
+  schar mlevel,               /* base monster level */
+      mmove,                  /* move speed */
+      ac,                     /* (base) armor class */
+      mr;                     /* (base) magic resistance */
+  aligntyp maligntyp;         /* basic monster alignment */
+  unsigned short geno;        /* creation/geno mask value */
+  struct Attack mattk[NATTK]; /* attacks matrix */
+  unsigned short cwt,         /* weight of corpse */
+      cnutrit;                /* its nutritional value */
+  short pxlth;                /* length of extension */
+  uchar msound;               /* noise it makes (6 bits) */
+  uchar msize;                /* physical size (3 bits) */
+  uchar mresists;             /* resistances */
+  uchar mconveys;             /* conveyed by eating */
+  unsigned long mflags1,      /* bool bitflags */
+      mflags2;                /* more bool bitflags */
+  unsigned short mflags3;     /* yet more bool bitflags */
+#ifdef TEXTCOLOR
+  uchar mcolor; /* color to use */
+#endif
 };
 
-extern MonsterType
-		mons[];		/* the master list of monster types */
+extern MonsterType mons[]; /* the master list of monster types */
 
 #define VERY_SLOW 3
 #define SLOW_SPEED 9
@@ -70,10 +69,10 @@ extern MonsterType
 #define FAST_SPEED 15
 #define VERY_FAST 24
 
-#define NON_PM		PM_PLAYERMON		/* "not a monster" */
-#define LOW_PM		(NON_PM+1)		/* first monster in mons[] */
-#define SPECIAL_PM	PM_LONG_WORM_TAIL	/* [normal] < ~ < [special] */
-	/* mons[SPECIAL_PM] through mons[NUMMONS-1], inclusive, are
-	   never generated randomly and cannot be polymorphed into */
+#define NON_PM PM_PLAYERMON          /* "not a monster" */
+#define LOW_PM (NON_PM + 1)          /* first monster in mons[] */
+#define SPECIAL_PM PM_LONG_WORM_TAIL /* [normal] < ~ < [special] */
+/* mons[SPECIAL_PM] through mons[NUMMONS-1], inclusive, are
+   never generated randomly and cannot be polymorphed into */
 
 #endif /* PERMONST_H */

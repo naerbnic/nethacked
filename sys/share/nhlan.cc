@@ -28,19 +28,17 @@
 /* Port specific code needs to implement these routines for LAN_MAIL */
 extern char *get_username(int *);
 extern bool mail_check();
-extern bool mail_fetch(struct lan_mail_struct *); 
+extern bool mail_fetch(struct lan_mail_struct *);
 extern void mail_init(char *);
 extern void mail_finish();
 
 struct lan_mail_struct mailmessage;
 #endif /* LAN_MAIL */
 
-
-void init_lan_features()
-{
-	lan_username();
+void init_lan_features() {
+  lan_username();
 #ifdef LAN_MAIL
-	lan_mail_init();
+  lan_mail_init();
 #endif
 #ifdef LAN_SHARED_BONES
 #endif
@@ -53,17 +51,17 @@ void init_lan_features()
 char lusername[MAX_LAN_USERNAME];
 int lusername_size = MAX_LAN_USERNAME;
 
-char *lan_username()
-{
-	char *lu;
-	lu = get_username(&lusername_size);
-	if (lu) {
-	 strcpy(lusername, lu);
-	 return lusername;
-	} else return (char *)0;
+char *lan_username() {
+  char *lu;
+  lu = get_username(&lusername_size);
+  if (lu) {
+    strcpy(lusername, lu);
+    return lusername;
+  } else
+    return (char *)0;
 }
 
-# ifdef LAN_MAIL
+#ifdef LAN_MAIL
 #if 0
 static void mail_by_pline(struct lan_mail_struct *msg) {
 	long	size;
@@ -78,82 +76,78 @@ static void mail_by_pline(struct lan_mail_struct *msg) {
 #endif /* 0 */
 
 static void mail_by_window(struct lan_mail_struct *msg) {
-	char buf[BUFSZ];
-	winid datawin = create_nhwindow(NHW_TEXT);
-	char *get, *put;
-	int ccount = 0;
-	
-	get = msg->body;
-	put = buf;
-	while (*get) {
-	     if (ccount > 79) {
-	     	*put = '\0';
-	     	putstr(datawin, 0, buf);
-	     	put = buf;
-		ccount = 0;
-	     }
-	     if (*get == '\r') {
-		get++;
-	     } else if (*get == '\n') { 
-	     	*put = '\0';
-	     	putstr(datawin, 0, buf);
-	     	put = buf;
-	     	get++;
-		ccount = 0;
-	     } else if (!isprint(*get)) {
-		get++;
-	     } else {
-	 	*put++ = *get++;
-		ccount++;
-	     }
-	}
-	*put = '\0';
-	putstr(datawin, 0, buf);
-	putstr(datawin, 0, "");	       
-	display_nhwindow(datawin, TRUE);
-	destroy_nhwindow(datawin);
+  char buf[BUFSZ];
+  winid datawin = create_nhwindow(NHW_TEXT);
+  char *get, *put;
+  int ccount = 0;
+
+  get = msg->body;
+  put = buf;
+  while (*get) {
+    if (ccount > 79) {
+      *put = '\0';
+      putstr(datawin, 0, buf);
+      put = buf;
+      ccount = 0;
+    }
+    if (*get == '\r') {
+      get++;
+    } else if (*get == '\n') {
+      *put = '\0';
+      putstr(datawin, 0, buf);
+      put = buf;
+      get++;
+      ccount = 0;
+    } else if (!isprint(*get)) {
+      get++;
+    } else {
+      *put++ = *get++;
+      ccount++;
+    }
+  }
+  *put = '\0';
+  putstr(datawin, 0, buf);
+  putstr(datawin, 0, "");
+  display_nhwindow(datawin, TRUE);
+  destroy_nhwindow(datawin);
 }
 
 /* this returns TRUE if there is mail ready to be read */
-bool lan_mail_check()
-{
-	if (flags.biff) {
-		if (mail_check()) return TRUE;
-	}
-	return FALSE;
+bool lan_mail_check() {
+  if (flags.biff) {
+    if (mail_check()) return TRUE;
+  }
+  return FALSE;
 }
 
 void lan_mail_read(Object *otmp) {
-	if (flags.biff) {
-		(void) mail_fetch(&mailmessage);
-		/* after a successful fetch iflags.lan_mail_fetched
-		 * should be TRUE.  If it isn't then we don't
-		 * trust the contents of mailmessage.  This
-		 * ensures that things work correctly across
-		 * save/restores where mailmessage isn't
-		 * saved (nor should it be since it may be
-		 * way out of context by then).
-		 */
-		 if (iflags.lan_mail_fetched) {
-		    if (mailmessage.body_in_ram) {
-		    	mail_by_window(&mailmessage);
-		 	return;
-		    }
-		 }
-	}
-	pline_The("text has faded and is no longer readable.");
+  if (flags.biff) {
+    (void)mail_fetch(&mailmessage);
+    /* after a successful fetch iflags.lan_mail_fetched
+     * should be TRUE.  If it isn't then we don't
+     * trust the contents of mailmessage.  This
+     * ensures that things work correctly across
+     * save/restores where mailmessage isn't
+     * saved (nor should it be since it may be
+     * way out of context by then).
+     */
+    if (iflags.lan_mail_fetched) {
+      if (mailmessage.body_in_ram) {
+        mail_by_window(&mailmessage);
+        return;
+      }
+    }
+  }
+  pline_The("text has faded and is no longer readable.");
 }
 
-void lan_mail_init()
-{
-	if (!flags.biff) return;
-	(void) mail_init(lusername);
+void lan_mail_init() {
+  if (!flags.biff) return;
+  (void)mail_init(lusername);
 }
 
-void lan_mail_finish()
-{
-	if (iflags.lan_mail)
-		(void) mail_finish();
+void lan_mail_finish() {
+  if (iflags.lan_mail) (void)mail_finish();
 }
 
 /* If ever called, the underlying mail system ran into trouble
@@ -162,22 +156,21 @@ void lan_mail_finish()
  * may already be unavailable. Just clean up the NetHack side
  * of things to prevent a crash.
  */
-void lan_mail_terminate()
-{
-	/* Step 1. Clear iflags.lan_mail to indicate "not inited" */
-	iflags.lan_mail = FALSE;
+void lan_mail_terminate() {
+  /* Step 1. Clear iflags.lan_mail to indicate "not inited" */
+  iflags.lan_mail = FALSE;
 
-	/* Step 2. Clear iflags.lan_mail_fetched */
-	iflags.lan_mail_fetched = FALSE;
+  /* Step 2. Clear iflags.lan_mail_fetched */
+  iflags.lan_mail_fetched = FALSE;
 
-	/* Once having gotten to this point, the only
-	   way to resume NetHack mail features again is
-	   to Save/Quit game, or for the user to clear
-	   iflags.biff and then set it once again,
-	   which triggers mail initialization */
+  /* Once having gotten to this point, the only
+     way to resume NetHack mail features again is
+     to Save/Quit game, or for the user to clear
+     iflags.biff and then set it once again,
+     which triggers mail initialization */
 }
 
-# endif /*LAN_MAIL*/
+#endif /*LAN_MAIL*/
 
 #endif /*LAN_FEATURES*/
 /*nhlan.c*/

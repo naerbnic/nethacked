@@ -13,23 +13,23 @@
  *			between unlike platforms)
  */
 
-# ifdef LAN_FEATURES
-#  ifdef LAN_MAIL
+#ifdef LAN_FEATURES
+#ifdef LAN_MAIL
 #define MAIL
-#define MAILCKFREQ	  50
+#define MAILCKFREQ 50
 
 #ifndef MAX_BODY_SIZE
 #define MAX_BODY_SIZE 1024
 #endif
 
 struct lan_mail_struct {
-	char sender[120];
-	char subject[120];
-	bool body_in_ram;	/* TRUE means body in memory not file */
-	char filename[_MAX_PATH];
-	char body[MAX_BODY_SIZE];
+  char sender[120];
+  char subject[120];
+  bool body_in_ram; /* TRUE means body in memory not file */
+  char filename[_MAX_PATH];
+  char body[MAX_BODY_SIZE];
 };
-#  endif
+#endif
 
-# endif /*LAN_FEATURES*/
+#endif /*LAN_FEATURES*/
 #endif /*NHLAN_H*/

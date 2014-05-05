@@ -6,7 +6,7 @@
 #define COORD_H
 
 struct coord {
-	xchar x,y;
+  xchar x, y;
 };
 
 #endif /* COORD_H */
