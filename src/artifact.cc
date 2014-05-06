@@ -3,6 +3,8 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 #include <string.h>
+
+#include <algorithm>
 #include <string>
 
 #include "hack.h"
@@ -255,14 +257,21 @@ bool arti_reflects(Object *obj) {
 #ifdef OVLB
 
 /* returns 1 if name is restricted for otmp->otyp */
-bool restrict_name(Object *otmp, const char *name) {
+bool restrict_name(Object *otmp, string const& name) {
   const Artifact *a;
   const char *aname;
 
-  if (!*name)
+  string lower_name = name;
+
+  std::transform(lower_name.begin(), lower_name.end(), lower_name.begin(), ::tolower);
+
+  if (name.empty())
     return FALSE;
-  if (!strncmpi(name, "the ", 4))
-    name += 4;
+  string new_name;
+  if (lower_name.substr(0, 4) == "the ")
+    new_name = name.substr(4);
+  else
+    new_name = name;
 
   /* Since almost every artifact is SPFX_RESTR, it doesn't cost
      us much to do the string comparison before the spfx check.
@@ -274,7 +283,7 @@ bool restrict_name(Object *otmp, const char *name) {
     aname = a->name;
     if (!strncmpi(aname, "the ", 4))
       aname += 4;
-    if (!strcmp(aname, name))
+    if (new_name == aname)
       return ((bool)((a->spfx & (SPFX_NOGEN | SPFX_RESTR)) != 0 ||
                      otmp->quan > 1L));
   }

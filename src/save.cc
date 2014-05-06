@@ -565,6 +565,10 @@ void bflush(int fd) {
 void bwrite(int fd, void const* loc, unsigned num) {
   bool failed;
 
+  if (num == 0) {
+    return;
+  }
+
   if (buffering) {
     if (fd != bw_fd)
       panic("unbuffered write to fd %d (!= %d)", fd, bw_fd);

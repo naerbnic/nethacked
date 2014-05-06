@@ -632,7 +632,7 @@ Monster *revive(Object *obj) {
           obj->oattached = OATTACHED_NOTHING;
         }
         /* Monster retains its name */
-        if (obj->has_name)
+        if (obj->has_name())
           mtmp = christen_monst(mtmp, ONAME(obj));
         /* flag the quest leader as alive. */
         if (mtmp->data->msound == MS_LEADER ||
@@ -3705,7 +3705,7 @@ void fracture_rock(Object *obj) {
   obj->owt = GetWeight(obj);
   obj->oclass = GEM_CLASS;
   obj->known = FALSE;
-  obj->onamelth = ""; /* no names */
+  obj->objname = ""; /* no names */
   obj->oxlth = 0;    /* no extra data */
   obj->oattached = OATTACHED_NOTHING;
   if (obj->where == OBJ_FLOOR) {

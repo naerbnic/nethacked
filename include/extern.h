@@ -65,7 +65,7 @@ E int nartifact_exist();
 E bool spec_ability(Object *, unsigned long);
 E bool confers_luck(Object *);
 E bool arti_reflects(Object *);
-E bool restrict_name(Object *, const char *);
+E bool restrict_name(Object *, std::string const&);
 E bool defends(int, Object *);
 E bool protects(int, Object *);
 E void set_artifact_intrinsic(Object *, bool, long);
