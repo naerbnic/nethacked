@@ -329,6 +329,8 @@ E const char *roguename();
 #endif
 E Object *ReallocateExtraObjectSpace(Object *, int, genericptr_t, int,
                                      const char *);
+E Object *ReallocateExtraObjectSpace(Object *obj, int oextra_size,
+                                     genericptr_t oextra_src, std::string const& name);
 E char *coyotename(Monster *, char *);
 
 /* ### do_wear.c ### */
@@ -1531,7 +1533,7 @@ E void savelev(int, xchar, int);
 E void bufon(int);
 E void bufoff(int);
 E void bflush(int);
-E void bwrite(int, genericptr_t, unsigned int);
+E void bwrite(int, void const*, unsigned int);
 E void bclose(int);
 E void savefruitchn(int, int);
 E void free_dungeons();

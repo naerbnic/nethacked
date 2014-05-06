@@ -3,10 +3,14 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 #include <string.h>
+#include <memory>
+#include <string>
 
 #include "hack.h"
 #include "lev.h"
 #include "tcap.h" /* for TERMLIB and ASCIIGRAPH */
+
+using std::string;
 
 #ifdef USE_TILES
 extern void substitute_tiles(d_level *); /* from tile.c */
@@ -176,6 +180,9 @@ STATIC_OVL Object *restobjchn(int fd, bool ghostly, bool frozen) {
   int xl;
 
   while (1) {
+    // TODO(BNC): This is a hack that gets around writing garbage data
+    // to a type that is otherwise unknown. Should be removed eventually.
+    // Don't try this at home, kids.
     mread(fd, (genericptr_t) & xl, sizeof(xl));
     if (xl == -1)
       break;
@@ -185,6 +192,16 @@ STATIC_OVL Object *restobjchn(int fd, bool ghostly, bool frozen) {
     else
       otmp2->nobj = otmp;
     mread(fd, (genericptr_t)otmp, (unsigned)xl + sizeof(Object));
+
+    int namelen;
+    mread(fd, &namelen, sizeof(namelen));
+    if (namelen > 0) {
+      std::unique_ptr<char> contents(new char[namelen]);
+      mread(fd, contents.get(), namelen);
+      new(&otmp->objname) string(contents.get(), contents.get() + namelen);
+    } else {
+      new(&otmp->objname) string("");
+    }
     if (ghostly) {
       unsigned nid = flags.ident++;
       add_id_mapping(otmp->o_id, nid);

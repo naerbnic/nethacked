@@ -562,7 +562,7 @@ void bflush(int fd) {
   return;
 }
 
-void bwrite(int fd, genericptr_t loc, unsigned num) {
+void bwrite(int fd, void const* loc, unsigned num) {
   bool failed;
 
   if (buffering) {
@@ -649,10 +649,20 @@ STATIC_OVL void saveobjchn(int fd, Object *otmp, int mode) {
   while (otmp) {
     otmp2 = otmp->nobj;
     if (perform_bwrite(mode)) {
+      // Since we're using C++ strings in Objects, we will do the following
+      // instead.
+      // Write the extra length
+      // Write the object contents with the extra length (the objname field
+      // will be garbage data)
+      // Write the objname length
+      // Write the contents of objname.
       //FIXME: This will break horribly
-      xl = otmp->oxlth + otmp->onamelth;
+      xl = otmp->oxlth;
       bwrite(fd, (genericptr_t) & xl, sizeof(int));
       bwrite(fd, (genericptr_t)otmp, xl + sizeof(Object));
+      int namelen = otmp->objname.size();
+      bwrite(fd, (genericptr_t)&namelen, sizeof(int));
+      bwrite(fd, (genericptr_t)otmp->objname.data(), namelen);
     }
     if (Has_contents(otmp))
       saveobjchn(fd, otmp->cobj, mode);

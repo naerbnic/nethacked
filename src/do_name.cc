@@ -344,9 +344,18 @@ void do_oname(Object *obj) {
 Object *ReallocateExtraObjectSpace(Object *obj, int oextra_size,
                                    genericptr_t oextra_src, int oname_size,
                                    const char *name) {
+  return ReallocateExtraObjectSpace(obj, oextra_size, oextra_src,
+      string(name, name + oname_size));
+}
+
+/*
+ * Allocate a new and possibly larger storage space for an obj.
+ */
+Object *ReallocateExtraObjectSpace(Object *obj, int oextra_size,
+                                   genericptr_t oextra_src, string const& name) {
   Object *otmp;
 
-  otmp = newobj(oextra_size + oname_size);
+  otmp = newobj(oextra_size);
   *otmp = *obj; /* the cobj pointer is copied to otmp */
   if (oextra_size) {
     if (oextra_src)
@@ -356,7 +365,7 @@ Object *ReallocateExtraObjectSpace(Object *obj, int oextra_size,
   }
   otmp->oxlth = oextra_size;
 
-  otmp->objname = std::string(name, name + oname_size);
+  otmp->objname = name;
   otmp->timed = 0;   /* not timed, yet */
   otmp->lamplit = 0; /* ditto */
 

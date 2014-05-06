@@ -477,7 +477,7 @@ char *xname2(Object *obj, bool ignore_oquan)
   if (obj->has_name() && obj->dknown) {
     strcat(buf, " named ");
   nameit:
-    strcat(buf, ONAME(obj));
+    strcat(buf, ONAME(obj).c_str());
   }
 
   if (!strncmpi(buf, "the ", 4))

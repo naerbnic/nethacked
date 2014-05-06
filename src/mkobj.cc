@@ -915,8 +915,7 @@ Object *AttachMonsterIdToObject(Object *obj, unsigned mid) {
   lth = sizeof(mid);
   namelth = obj->has_name() ? obj->objname.size(): 0;
   if (namelth)
-    otmp = ReallocateExtraObjectSpace(obj, lth, (genericptr_t) & mid, namelth,
-                                      ONAME(obj));
+    otmp = ReallocateExtraObjectSpace(obj, lth, (genericptr_t) & mid, ONAME(obj));
   else {
     otmp = obj;
     otmp->oxlth = sizeof(mid);
@@ -930,9 +929,8 @@ Object *AttachMonsterIdToObject(Object *obj, unsigned mid) {
 static Object *SaveMonsterIntoObject(Object *obj, Monster *mtmp) {
   // Add the monster structure into the object's extra space
   int lth = sizeof(Monster) + mtmp->mxlth + mtmp->mnamelth;
-  int namelth = obj->onamelth ? strlen(ONAME(obj)) + 1 : 0;
   Object *otmp = ReallocateExtraObjectSpace(obj, lth, (genericptr_t)mtmp,
-                                            namelth, ONAME(obj));
+                                            ONAME(obj));
 
   // TODO(BNC): Good place for using a buffer?
   if (otmp && otmp->oxlth) {
