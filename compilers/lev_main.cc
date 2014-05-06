@@ -1422,11 +1422,7 @@ char SAVEF[ARBITRARY_SIZE];
 /* termcap.c */
 struct tc_lcl_data tc_lcl_data;
 #ifdef TEXTCOLOR
-#ifdef TOS
-const char *hilites[CLR_MAX];
-#else
 char *hilites[CLR_MAX];
-#endif
 #endif
 /* trap.c */
 const char *traps[TRAPNUM];

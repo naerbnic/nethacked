@@ -117,11 +117,7 @@ long rsrc_dlb_ftell(dlb *dp);
 #endif
 
 #define RDTMODE "r"
-#if defined(TOS) && defined(DLB)
-#define WRTMODE "w+b"
-#else
 #define WRTMODE "w+"
-#endif
 #define RDBMODE "rb"
 #define WRBMODE "w+b"
 

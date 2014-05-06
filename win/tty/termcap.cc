@@ -34,9 +34,7 @@ void nocmov(int, int);
 #if defined(TEXTCOLOR) && defined(TERMLIB)
 #ifdef OVLB
 #if !defined(TERMINFO)
-#ifndef TOS
 static void analyze_seq(char *, int *, int *);
-#endif
 #endif
 static void init_hilite();
 static void kill_hilite();
@@ -71,11 +69,7 @@ STATIC_VAR char tbuf[512];
 #endif
 
 #ifdef TEXTCOLOR
-#ifdef TOS
-const char *hilites[CLR_MAX]; /* terminal escapes for the various colors */
-#else
 char *hilites[CLR_MAX]; /* terminal escapes for the various colors */
-#endif
 #endif
 
 #ifdef OVLB
@@ -89,11 +83,7 @@ extern bool HE_resets_AS;
 
 #ifndef TERMLIB
 STATIC_VAR char tgotobuf[20];
-#ifdef TOS
-#define tgoto(fmt, x, y) (sprintf(tgotobuf, fmt, y + ' ', x + ' '), tgotobuf)
-#else
 #define tgoto(fmt, x, y) (sprintf(tgotobuf, fmt, y + 1, x + 1), tgotobuf)
-#endif
 #endif /* TERMLIB */
 
 #ifdef OVLB
@@ -107,78 +97,11 @@ void tty_startup(int *wid, int *hgt) {
 
   term = getenv("TERM");
 
-#if defined(TOS) && defined(__GNUC__)
-  if (!term)
-    term = "builtin"; /* library has a default */
-#endif
   if (!term)
 #endif
 #ifndef ANSI_DEFAULT
     error("Can't get TERM.");
 #else
-#ifdef TOS
-  {
-    CO = 80;
-    LI = 25;
-    TI = VS = VE = TE = nullstr;
-    HO = "\033H";
-    CE = "\033K"; /* the VT52 termcap */
-    UP = "\033A";
-    nh_CM = "\033Y%c%c"; /* used with function tgoto() */
-    nh_ND = "\033C";
-    XD = "\033B";
-    BC = "\033D";
-    SO = "\033p";
-    SE = "\033q";
-    /* HI and HE will be updated in init_hilite if we're using color */
-    nh_HI = "\033p";
-    nh_HE = "\033q";
-    *wid = CO;
-    *hgt = LI;
-    CL = "\033E"; /* last thing set */
-    return;
-  }
-#else /* TOS */
-  {
-    HO = "\033[H";
-    /*		nh_CD = "\033[J"; */
-    CE = "\033[K"; /* the ANSI termcap */
-#ifndef TERMLIB
-    nh_CM = "\033[%d;%dH";
-#else
-    nh_CM = "\033[%i%d;%dH";
-#endif
-    UP = "\033[A";
-    nh_ND = "\033[C";
-    XD = "\033[B";
-    BC = "\033[D";
-    nh_HI = SO = "\033[1m";
-    nh_US = "\033[4m";
-    MR = "\033[7m";
-    TI = nh_HE = ME = SE = nh_UE = "\033[0m";
-    /* strictly, SE should be 2, and nh_UE should be 24,
-       but we can't trust all ANSI emulators to be
-       that complete.  -3. */
-    AS = "\016";
-    AE = "\017";
-    TE = VS = VE = nullstr;
-#ifdef TEXTCOLOR
-    for (i = 0; i < CLR_MAX / 2; i++)
-      if (i != CLR_BLACK) {
-        hilites[i | BRIGHT] = (char *)alloc(sizeof("\033[1;3%dm"));
-        sprintf(hilites[i | BRIGHT], "\033[1;3%dm", i);
-        if (i != CLR_GRAY) {
-          hilites[i] = (char *)alloc(sizeof("\033[0;3%dm"));
-          sprintf(hilites[i], "\033[0;3%dm", i);
-        }
-      }
-#endif
-    *wid = CO;
-    *hgt = LI;
-    CL = "\033[2J"; /* last thing set */
-    return;
-  }
-#endif /* TOS */
 #endif /* ANSI_DEFAULT */
 
 #ifdef TERMLIB
@@ -296,14 +219,7 @@ void tty_startup(int *wid, int *hgt) {
   MD = Tgetstr("md");
 #endif
 #ifdef TEXTCOLOR
-#if defined(TOS) && defined(__GNUC__)
-  if (!strcmp(term, "builtin") || !strcmp(term, "tw52") ||
-      !strcmp(term, "st52")) {
-    init_hilite();
-  }
-#else
   init_hilite();
-#endif
 #endif
   *wid = CO;
   *hgt = LI;
@@ -861,7 +777,6 @@ static void kill_hilite() {
 
 #else /* UNIX && TERMINFO */
 
-#ifndef TOS
 /* find the foreground and background colors set by nh_HI or nh_HE */
 static void analyze_seq(char *str, int *fg, int *bg) {
   int c, code;
@@ -904,7 +819,6 @@ static void analyze_seq(char *str, int *fg, int *bg) {
     c++;
   }
 }
-#endif
 
 /*
  * Sets up highlighting sequences, using ANSI escape sequences (highlight code
@@ -914,48 +828,6 @@ static void analyze_seq(char *str, int *fg, int *bg) {
 
 static void init_hilite() {
   int c;
-#ifdef TOS
-  extern unsigned long tos_numcolors; /* in tos.c */
-  static char NOCOL[] = "\033b0", COLHE[] = "\033q\033b0";
-
-  if (tos_numcolors <= 2) {
-    return;
-  }
-  /* Under TOS, the "bright" and "dim" colors are reversed. Moreover,
-   * on the Falcon the dim colors are *really* dim; so we make most
-   * of the colors the bright versions, with a few exceptions where
-   * the dim ones look OK.
-   */
-  hilites[0] = NOCOL;
-  for (c = 1; c < SIZE(hilites); c++) {
-    char *foo;
-    foo = (char *)alloc(sizeof("\033b0"));
-    if (tos_numcolors > 4)
-      sprintf(foo, "\033b%c", (c & ~BRIGHT) + '0');
-    else
-      strcpy(foo, "\033b0");
-    hilites[c] = foo;
-  }
-
-  if (tos_numcolors == 4) {
-    TI = "\033b0\033c3\033E\033e";
-    TE = "\033b3\033c0\033J";
-    nh_HE = COLHE;
-    hilites[CLR_GREEN] = hilites[CLR_GREEN | BRIGHT] = "\033b2";
-    hilites[CLR_RED] = hilites[CLR_RED | BRIGHT] = "\033b1";
-  } else {
-    sprintf(hilites[CLR_BROWN], "\033b%c", (CLR_BROWN ^ BRIGHT) + '0');
-    sprintf(hilites[CLR_GREEN], "\033b%c", (CLR_GREEN ^ BRIGHT) + '0');
-
-    TI = "\033b0\033c\017\033E\033e";
-    TE = "\033b\017\033c0\033J";
-    nh_HE = COLHE;
-    hilites[CLR_WHITE] = hilites[CLR_BLACK] = NOCOL;
-    hilites[NO_COLOR] = hilites[CLR_GRAY];
-  }
-
-#else /* TOS */
-
   int backg, foreg, hi_backg, hi_foreg;
 
   for (c = 0; c < SIZE(hilites); c++)
@@ -979,12 +851,9 @@ static void init_hilite() {
         strcat(hilites[c], "m");
       }
     }
-
-#endif /* TOS */
 }
 
 static void kill_hilite() {
-#ifndef TOS
   int c;
 
   for (c = 0; c < CLR_MAX / 2; c++) {
@@ -995,9 +864,6 @@ static void kill_hilite() {
     if (hilites[c | BRIGHT] && (hilites[c | BRIGHT] != nh_HI))
       free((genericptr_t)hilites[c | BRIGHT]), hilites[c | BRIGHT] = 0;
   }
-#endif
-  return;
-}
 #endif /* UNIX */
 #endif /* TEXTCOLOR */
 

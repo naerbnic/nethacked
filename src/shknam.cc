@@ -118,9 +118,8 @@ static const char *const shktools[] = {
     // Previously Amiga specific
     "Falo",        "Nosid-da\'r", "Ekim-p",      "Rebrol-nek", "Noslo",
     "Yl-rednow",   "Mured-oog",   "Ivrajimsal",
-#ifdef TOS
+    // Previously Atari TOS specific
     "Nivram",
-#endif
     // Previously VMS specific
     "Lez-tneg",    "Ytnu-haled",  "Niknar",      0};
 

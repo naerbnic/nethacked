@@ -2,6 +2,8 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include "json_spirit.h"
+
 #include "hack.h"
 #include "lev.h"
 #include "quest.h"
@@ -320,9 +322,6 @@ void savestateinlock() {
 #endif
 
 void savelev(int fd, xchar lev, int mode) {
-#ifdef TOS
-  short tlev;
-#endif
 
   /* if we're tearing down the current level without saving anything
      (which happens upon entrance to the endgame or after an aborted
@@ -342,13 +341,7 @@ void savelev(int fd, xchar lev, int mode) {
   if (lev >= 0 && lev <= maxledgerno())
     level_info[lev].flags |= VISITED;
   bwrite(fd, (genericptr_t) & hackpid, sizeof(hackpid));
-#ifdef TOS
-  tlev = lev;
-  tlev &= 0x00ff;
-  bwrite(fd, (genericptr_t) & tlev, sizeof(tlev));
-#else
   bwrite(fd, (genericptr_t) & lev, sizeof(lev));
-#endif
 #ifdef RLECOMP
   {
     /* perform run-length encoding of rm structs */
