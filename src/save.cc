@@ -2,7 +2,7 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
-#include "json/json.h"
+#include "json_spirit.h"
 
 #include "hack.h"
 #include "lev.h"
