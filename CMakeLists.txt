@@ -17,6 +17,8 @@ IF(JSON_CPP_INCLUDE_DIR AND JSON_CPP_LIBRARY)
   SET(JSON_CPP_INCLUDE_DIRS ${JSON_CPP_INCLUDE_DIR})
 ENDIF()
 
+MESSAGE(${JSON_CPP_LIBRARY})
+
 IF(JSON_CPP_FOUND)
   INCLUDE_DIRECTORIES(${JSON_CPP_INCLUDE_DIRS})
 ENDIF()
@@ -26,8 +28,11 @@ LIST(APPEND CMAKE_CXX_FLAGS "-std=c++11 -Wno-deprecated-register")
 ADD_EXECUTABLE(makedefs
   util/makedefs.cc
   cxx/buffer.cc
+  cxx/json_helpers.cc
   entitylib/objects.cc
   entitylib/monst.cc)
+
+TARGET_LINK_LIBRARIES(makedefs ${JSON_CPP_LIBRARIES})
 
 FUNCTION(RUN_MAKEDEFS output opt)
   ADD_CUSTOM_COMMAND(
@@ -96,6 +101,7 @@ ADD_EXECUTABLE(dgn_comp
   src/decl.cc
   src/drawing.cc
   cxx/buffer.cc
+  cxx/json_helpers.cc
   include/pm.h
   include/onames.h
   include/date.h)
