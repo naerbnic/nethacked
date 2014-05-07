@@ -918,7 +918,7 @@ static bool h_filter(char *line) {
   return skip;
 }
 
-static const char *special_oracle[] = {
+static std::vector<char const*> special_oracle = {
     "\"...it is rather disconcerting to be "
     "confronted with the",
     "following theorem from [Baker, Gill, "

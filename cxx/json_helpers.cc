@@ -34,15 +34,18 @@ public:
         if (IsSubstringAtIndex("//")) {
           // End of line comment. Find the end of the line.
           Skip(2);
-          AdvanceToAfterNextNewlineOrEOF();
+          SkipToNextNewlineOrEOF();
         } else if (IsSubstringAtIndex("/*")) {
           // Multiline comment. Find the end of the terminator, or an
           // error otherwise.
 
           Skip(2);
-          if (!AdvanceAfterClosingMultilineComment()) {
+          if (!SkipToAfterClosingMultilineComment()) {
             return false;
           }
+          // A multiline comment acts as whitespace, so insert at least one
+          // space, so that "a/* foo */b" gets treated as two symbols.
+          Emit(' ');
         } else {
           // This is a non-special slash. Not sure what it's doing here,
           // but we're not actually parsing the file, so...
@@ -59,7 +62,7 @@ public:
 
   bool HandleStringCharacter() {
     switch (CurrChar()) {
-      case '\'': {
+      case '\\': {
         // Other than a unicode escape (which has exactly four hex digits
         // after it) all escapes are exactly one character. We can just
         // skip that character in terms of checking state to handle pretty
@@ -136,13 +139,17 @@ private:
     return true;
   }
 
+  void Emit(char c) {
+    output_->push_back(c);
+  }
+
   bool Advance(int n) {
     if (CharsLeft() < n) {
       return false;
     }
 
     for (int i = 0; i < n; i++) {
-      output_->push_back(str_[curr_index_ + i]);
+      Emit(str_[curr_index_ + i]);
     }
     curr_index_ += n;
     return true;
@@ -157,21 +164,21 @@ private:
         str_.substr(curr_index_, curr_index_ + substring.size());
   }
 
-  void AdvanceToAfterNextNewlineOrEOF() {
+  void SkipToNextNewlineOrEOF() {
     while (curr_index_ < str_.size()) {
       // Not the most efficient, but that's not the point
+      // Handle all three newline styles, just in case. The order is important
+      // as it will find any newline in the stream of the three standard
+      // types.
       if (IsSubstringAtIndex("\n")) {
-        curr_index_ += 1;
         return;
       }
 
       if (IsSubstringAtIndex("\r\n")) {
-        curr_index_ += 2;
         return;
       }
 
       if (IsSubstringAtIndex("\r")) {
-        curr_index_ += 1;
         return;
       }
 
@@ -179,7 +186,7 @@ private:
     }
   }
 
-  bool AdvanceAfterClosingMultilineComment() {
+  bool SkipToAfterClosingMultilineComment() {
     while (curr_index_ < str_.size()) {
       if (IsSubstringAtIndex("*/")) {
         curr_index_ += 2;
