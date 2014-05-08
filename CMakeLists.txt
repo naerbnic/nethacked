@@ -25,6 +25,12 @@ ENDIF()
 
 LIST(APPEND CMAKE_CXX_FLAGS "-std=c++11 -Wno-deprecated-register")
 
+ADD_EXECUTABLE(cxx_test
+  cxx/buffer.cc
+  cxx/json_helpers.cc
+  cxx/test_main.cc)
+TARGET_LINK_LIBRARIES(cxx_test ${JSON_SPIRIT_LIBRARIES})
+
 ADD_EXECUTABLE(makedefs
   util/makedefs.cc
   cxx/buffer.cc

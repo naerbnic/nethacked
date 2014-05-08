@@ -7,6 +7,8 @@
 
 #include "json_helpers.h"
 
+#include <iostream>
+
 using std::string;
 
 class JsonCommentStripper {
@@ -160,8 +162,9 @@ private:
       return false;
     }
 
-    return substring ==
-        str_.substr(curr_index_, curr_index_ + substring.size());
+    string test_string = str_.substr(curr_index_, substring.size());
+
+    return substring == test_string;
   }
 
   void SkipToNextNewlineOrEOF() {
