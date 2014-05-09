@@ -49,20 +49,6 @@ char *fmt_ptr(const void *, char *);
 
 /* ### dog.c ### */
 
-void initedog(Monster *);
-Monster *make_familiar(Object *, xchar, xchar, bool);
-Monster *makedog();
-void update_mlstmv();
-void losedogs();
-void mon_arrive(Monster *, bool);
-void mon_catchup_elapsed_time(Monster *, long);
-void keepdogs(bool);
-void migrate_to_level(Monster *, xchar, xchar, coord *);
-int dogfood(Monster *, Object *);
-Monster *tamedog(Monster *, Object *);
-void abuse_dog(Monster *);
-void wary_dog(Monster *, bool);
-
 /* ### dogmove.c ### */
 
 int dog_nutrition(Monster *, Object *);

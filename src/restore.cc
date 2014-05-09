@@ -7,6 +7,7 @@
 #include <string>
 
 #include "hack.h"
+#include "dog.h"
 
 #include "allmain.h"
 #include "artifact.h"
