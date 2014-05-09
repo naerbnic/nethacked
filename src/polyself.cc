@@ -13,6 +13,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "do_wear.h"
 #include "do_name.h"
 #include "do.h"
 #include "dig.h"
