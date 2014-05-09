@@ -10,6 +10,7 @@
 #include "artifact.h"
 #include "apply.h"
 #include "ball.h"
+#include "botl.h"
 #include "eshk.h"
 
 /*#define DEBUG*/

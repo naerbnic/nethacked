@@ -12,6 +12,7 @@
 
 #include "apply.h"
 #include "artifact.h"
+#include "botl.h"
 
 STATIC_DCL void simple_look(Object *, bool);
 #ifndef GOLDOBJ

@@ -6,6 +6,8 @@
 
 #include "hack.h"
 
+#include "botl.h"
+
 struct trobj {
   short trotyp;
   schar trspe;

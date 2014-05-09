@@ -7,6 +7,7 @@
 #include "hack.h"
 
 #include "artifact.h"
+#include "botl.h"
 
 /* "an uncursed greased partly eaten guardian naga hatchling [corpse]" */
 #define PREFIX 80 /* (56) */

@@ -119,6 +119,8 @@
 #include <string.h>
 
 #include "hack.h"
+
+#include "botl.h"
 #include "region.h"
 
 STATIC_DCL void display_monster(xchar, xchar, Monster *, int, xchar);

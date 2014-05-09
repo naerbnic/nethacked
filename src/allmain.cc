@@ -10,6 +10,7 @@
 
 #include "apply.h"
 #include "artifact.h"
+#include "botl.h"
 
 #ifdef POSITIONBAR
 STATIC_DCL void do_positionbar();

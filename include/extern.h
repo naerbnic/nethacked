@@ -31,54 +31,7 @@ E char *fmt_ptr(const void *, char *);
 
 /* ### botl.c ### */
 
-E int xlev_to_rank(int);
-E int title_to_mon(const char *, int *, int *);
-E void max_rank_sz();
-#ifdef SCORE_ON_BOTL
-E long botl_score();
-#endif
-E int describe_level(char *);
-E const char *rank_of(int, short, bool);
-E void bot();
-#ifdef DUMP_LOG
-E void bot1str(char *);
-E void bot2str(char *);
-#endif
-
 /* ### cmd.c ### */
-
-E void reset_occupations();
-E void set_occupation(int (*)(void), const char *, int);
-#ifdef REDO
-E char pgetchar();
-E void pushch(char);
-E void savech(char);
-#endif
-#ifdef WIZARD
-E void add_debug_extended_commands();
-#endif /* WIZARD */
-E void rhack(char *);
-E int doextlist();
-E int extcmd_via_menu();
-E void enlightenment(int);
-E void show_conduct(int);
-#ifdef DUMP_LOG
-E void dump_enlightenment(int);
-E void dump_conduct(int);
-#endif
-E int xytod(schar, schar);
-E void dtoxy(coord *, int);
-E int movecmd(char);
-E int getdir(const char *);
-E void confdir();
-E int isok(int, int);
-E int get_adjacent_loc(const char *, const char *, xchar, xchar, coord *);
-E const char *click_to_cmd(int, int, int);
-E char readchar();
-#ifdef WIZARD
-E void sanity_check();
-#endif
-E char yn_function(const char *, const char *, char);
 
 /* ### dbridge.c ### */
 

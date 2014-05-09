@@ -7,6 +7,7 @@
 #include "hack.h"
 
 #include "artifact.h"
+#include "botl.h"
 
 STATIC_DCL const char *dev_name();
 STATIC_DCL void get_mplname(Monster *, char *);

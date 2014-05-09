@@ -9,6 +9,8 @@
  */
 
 #include "hack.h"
+
+#include "botl.h"
 #include "dlb.h"
 #ifdef SHORT_FILENAMES
 #include "patchlev.h"

@@ -8,6 +8,7 @@
 #include "hack.h"
 
 #include "artifact.h"
+#include "botl.h"
 
 using std::string;
 

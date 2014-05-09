@@ -9,6 +9,7 @@
 #include "hack.h"
 
 #include "artifact.h"
+#include "botl.h"
 #include "edog.h"
 
 #ifdef OVLB

@@ -9,6 +9,7 @@
 #include "allmain.h"
 #include "apply.h"
 #include "artifact.h"
+#include "botl.h"
 
 /* #define DEBUG */ /* uncomment to enable new eat code debugging */
 

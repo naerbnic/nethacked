@@ -7,6 +7,7 @@
 #include "hack.h"
 
 #include "artifact.h"
+#include "botl.h"
 #include "eshk.h"
 #include "epri.h"
 

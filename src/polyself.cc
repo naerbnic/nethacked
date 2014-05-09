@@ -15,6 +15,7 @@
 #include "hack.h"
 
 #include "artifact.h"
+#include "botl.h"
 
 #ifdef OVLB
 STATIC_DCL void polyman(const char *, const char *);

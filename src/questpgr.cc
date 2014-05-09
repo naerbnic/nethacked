@@ -7,6 +7,7 @@
 #include "hack.h"
 
 #include "artifact.h"
+#include "botl.h"
 #include "dlb.h"
 
 /*  quest-specific pager routines. */
