@@ -43,43 +43,6 @@ E char *fmt_ptr(const void *, char *);
 
 /* ### display.c ### */
 
-#ifdef INVISIBLE_OBJECTS
-E Object *vobj_at(xchar, xchar);
-#endif /* INVISIBLE_OBJECTS */
-E void magic_map_background(xchar, xchar, int);
-E void map_background(xchar, xchar, int);
-E void map_trap(Trap *, int);
-E void map_object(Object *, int);
-E void map_invisible(xchar, xchar);
-E void unmap_object(int, int);
-E void map_location(int, int, int);
-E void feel_location(xchar, xchar);
-E void newsym(int, int);
-E void shieldeff(xchar, xchar);
-E void tmp_at(int, int);
-E void swallowed(int);
-E void under_ground(int);
-E void under_water(int);
-E void see_monsters();
-E void set_mimic_blocking();
-E void see_objects();
-E void see_traps();
-E void curs_on_u();
-E int doredraw();
-E void docrt();
-E void show_glyph(int, int, int);
-E void clear_glyph_buffer();
-E void row_refresh(int, int, int);
-E void cls();
-E void flush_screen(int);
-#ifdef DUMP_LOG
-E void dump_screen();
-#endif
-E int back_to_glyph(xchar, xchar);
-E int zapdir_to_glyph(int, int, int);
-E int glyph_at(xchar, xchar);
-E void set_wall_state();
-
 /* ### do.c ### */
 
 E int dodrop();

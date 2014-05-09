@@ -386,4 +386,44 @@
    (glyph) < (GLYPH_SWALLOW_OFF + (NUMMONS << 3)))
 #define glyph_is_warning(glyph) \
   ((glyph) >= GLYPH_WARNING_OFF && (glyph) < (GLYPH_WARNING_OFF + WARNCOUNT))
+
+
+
+#ifdef INVISIBLE_OBJECTS
+Object *vobj_at(xchar, xchar);
+#endif /* INVISIBLE_OBJECTS */
+void magic_map_background(xchar, xchar, int);
+void map_background(xchar, xchar, int);
+void map_trap(Trap *, int);
+void map_object(Object *, int);
+void map_invisible(xchar, xchar);
+void unmap_object(int, int);
+void map_location(int, int, int);
+void feel_location(xchar, xchar);
+void newsym(int, int);
+void shieldeff(xchar, xchar);
+void tmp_at(int, int);
+void swallowed(int);
+void under_ground(int);
+void under_water(int);
+void see_monsters();
+void set_mimic_blocking();
+void see_objects();
+void see_traps();
+void curs_on_u();
+int doredraw();
+void docrt();
+void show_glyph(int, int, int);
+void clear_glyph_buffer();
+void row_refresh(int, int, int);
+void cls();
+void flush_screen(int);
+#ifdef DUMP_LOG
+void dump_screen();
+#endif
+int back_to_glyph(xchar, xchar);
+int zapdir_to_glyph(int, int, int);
+int glyph_at(xchar, xchar);
+void set_wall_state();
+
 #endif /* DISPLAY_H */
