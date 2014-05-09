@@ -9,6 +9,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "drawing.h"
 #include "dog.h"
 #include "do_name.h"
 #include "dig.h"

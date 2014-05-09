@@ -5,6 +5,7 @@
 /* main.c - Unix NetHack */
 
 #include "hack.h"
+#include "drawing.h"
 #include "do_wear.h"
 #include "cmd.h"
 

@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "drawing.h"
 #include "dlb.h"
 
 #include "wintty.h" /* more() */

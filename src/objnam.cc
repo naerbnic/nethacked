@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "drawing.h"
 #include "do_name.h"
 
 #include "artifact.h"

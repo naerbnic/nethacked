@@ -80,7 +80,6 @@ bool hurtle_step(genericptr_t, int, int);
 #endif /* !MAKEDEFS_C && !LEV_LEX_C */
 
 /* ### drawing.c ### */
-#include "drawing.h"
 
 #if !defined(MAKEDEFS_C) && !defined(LEV_LEX_C)
 /* ### dungeon.c ### */
