@@ -37,8 +37,6 @@ E char *fmt_ptr(const void *, char *);
 
 /* ### decl.c ### */
 
-E void decl_init();
-
 /* ### detect.c ### */
 
 E Object *o_in(Object *, char);

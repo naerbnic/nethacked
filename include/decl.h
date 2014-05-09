@@ -435,4 +435,6 @@ E struct realtime_data {
 
 #undef E
 
+void decl_init();
+
 #endif /* DECL_H */
