@@ -7,6 +7,7 @@
 
 #include <signal.h>
 #include "hack.h"
+#include "eat.h"
 #include "dog.h"
 #include "do_wear.h"
 #include "do.h"

@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "eat.h"
 #include "dothrow.h"
 #include "dokick.h"
 #include "dog.h"

@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "eat.h"
 #include "do_wear.h"
 
 #include "botl.h"

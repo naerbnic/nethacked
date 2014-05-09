@@ -8,6 +8,7 @@
 #include <string>
 
 #include "hack.h"
+#include "eat.h"
 #include "cmd.h"
 
 #include "artifact.h"
