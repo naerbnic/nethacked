@@ -119,6 +119,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "cmd.h"
 
 #include "botl.h"
 #include "region.h"

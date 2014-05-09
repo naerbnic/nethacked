@@ -29,6 +29,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "cmd.h"
 
 STATIC_DCL void awaken_monsters(int);
 STATIC_DCL void put_monsters_to_sleep(int);

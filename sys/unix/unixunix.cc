@@ -5,6 +5,7 @@
 /* This file collects some Unix dependencies */
 
 #include "hack.h" /* mainly for index() which depends on BSD */
+#include "cmd.h"
 
 #include <errno.h>
 #include <sys/stat.h>

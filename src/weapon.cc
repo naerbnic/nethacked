@@ -10,6 +10,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "cmd.h"
 
 #include "artifact.h"
 

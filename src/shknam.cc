@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "cmd.h"
 #include "eshk.h"
 
 extern const struct shclass shtypes[];

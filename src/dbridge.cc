@@ -13,6 +13,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "cmd.h"
 
 #ifdef OVLB
 STATIC_DCL void get_wall_for_db(int *, int *);

@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "cmd.h"
 #include "sp_lev.h"
 
 #define HEIGHT (ROWNO - 1)

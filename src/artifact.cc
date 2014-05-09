@@ -9,6 +9,7 @@
 #include <string>
 
 #include "hack.h"
+#include "cmd.h"
 #include "artifact.h"
 #ifdef OVLB
 #include "artilist.h"

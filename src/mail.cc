@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "cmd.h"
 
 #ifdef MAIL
 #include "mail.h"

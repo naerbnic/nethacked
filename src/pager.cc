@@ -8,6 +8,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "cmd.h"
 #include "dlb.h"
 
 STATIC_DCL bool is_swallow_sym(int);

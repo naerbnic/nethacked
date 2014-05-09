@@ -16,6 +16,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "cmd.h"
 
 #ifdef OVLB
 STATIC_DCL bool isbig(struct mkroom *);

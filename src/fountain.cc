@@ -5,6 +5,7 @@
 /* Code for drinking from fountains. */
 
 #include "hack.h"
+#include "cmd.h"
 
 #include "artifact.h"
 

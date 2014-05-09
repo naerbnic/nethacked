@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "cmd.h"
 #include "edog.h"
 #ifdef USER_SOUNDS
 #ifdef USER_SOUNDS_REGEX
