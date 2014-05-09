@@ -62,13 +62,6 @@
 
 /* ### exper.c ### */
 
-int experience(Monster *, int);
-void more_experienced(int, int);
-void losexp(const char *);
-void newexplevel();
-void pluslvl(bool);
-long rndexp(bool);
-
 /* ### explode.c ### */
 
 void explode(int, int, int, int, char, int);

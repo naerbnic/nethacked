@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "exper.h"
 #include "end.h"
 #include "do_wear.h"
 #include "do_name.h"

@@ -9,6 +9,7 @@
 #include <string>
 
 #include "hack.h"
+#include "exper.h"
 #include "do_name.h"
 #include "do.h"
 #include "detect.h"
