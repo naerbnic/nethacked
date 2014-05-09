@@ -2,10 +2,12 @@
 /* Copyright (c) Izchak Miller, Mike Stephenson, Steve Linhart, 1989. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include "dokick.h"
+
 #include <string.h>
 
 #include "hack.h"
-#include "dokick.h"
+#include "dothrow.h"
 #include "dog.h"
 #include "do_name.h"
 #include "do.h"
