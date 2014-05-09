@@ -5,4 +5,6 @@
 // Allocates memory similar to malloc()
 long *alloc(unsigned int);
 
+char *fmt_ptr(const void *, char *);
+
 #endif  // ALLOC_H_
