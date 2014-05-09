@@ -64,10 +64,6 @@
 
 /* ### explode.c ### */
 
-void explode(int, int, int, int, char, int);
-long scatter(int, int, int, unsigned int, Object *);
-void splatter_burning_oil(int, int);
-
 /* ### extralev.c ### */
 
 #ifdef REINCARNATION

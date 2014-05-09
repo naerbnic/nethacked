@@ -2,6 +2,8 @@
 /*	Copyright (C) 1990 by Ken Arromdee */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include "explode.h"
+
 #include <string.h>
 
 #include "hack.h"
