@@ -6,6 +6,7 @@
 #include "ball.h"
 
 #include "hack.h"
+#include "dbridge.h"
 
 STATIC_DCL int bc_order();
 STATIC_DCL void litter();

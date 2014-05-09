@@ -10,6 +10,8 @@
  * deal with players as well. - 11/89
  */
 
+#include "dbridge.h"
+
 #include <string.h>
 
 #include "hack.h"

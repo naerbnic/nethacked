@@ -11,6 +11,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "dbridge.h"
 
 #include "allmain.h"
 #include "apply.h"

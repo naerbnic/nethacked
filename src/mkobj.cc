@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "dbridge.h"
 
 #include "artifact.h"
 #include "prop.h"

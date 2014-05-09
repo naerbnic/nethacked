@@ -8,6 +8,7 @@
 using std::vector;
 
 #include "hack.h"
+#include "dbridge.h"
 
 #include "allmain.h"
 #include "apply.h"

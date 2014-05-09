@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "dbridge.h"
 
 #include "apply.h"
 #include "edog.h"

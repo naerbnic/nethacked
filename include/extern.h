@@ -35,17 +35,6 @@ E char *fmt_ptr(const void *, char *);
 
 /* ### dbridge.c ### */
 
-E bool is_pool(int, int);
-E bool is_lava(int, int);
-E bool is_ice(int, int);
-E int is_drawbridge_wall(int, int);
-E bool is_db_wall(int, int);
-E bool find_drawbridge(int *, int *);
-E bool create_drawbridge(int, int, int, bool);
-E void open_drawbridge(int, int);
-E void close_drawbridge(int, int);
-E void destroy_drawbridge(int, int);
-
 /* ### decl.c ### */
 
 E void decl_init();
