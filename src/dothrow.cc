@@ -10,6 +10,7 @@
 
 #include "apply.h"
 #include "artifact.h"
+#include "ball.h"
 #include "edog.h"
 
 STATIC_DCL int throw_obj(Object *, int);

@@ -3,6 +3,7 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 /* Ball & Chain =============================================================*/
+#include "ball.h"
 
 #include "hack.h"
 

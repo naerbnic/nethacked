@@ -5,6 +5,8 @@
 #include <string.h>
 
 #include "hack.h"
+
+#include "ball.h"
 #include "sp_lev.h"
 #include "lev.h" /* save & restore info */
 

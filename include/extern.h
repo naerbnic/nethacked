@@ -27,16 +27,6 @@ E char *fmt_ptr(const void *, char *);
 
 /* ### ball.c ### */
 
-E void ballfall();
-E void placebc();
-E void unplacebc();
-E void set_bc(int);
-E void move_bc(int, int, xchar, xchar, xchar, xchar);
-E bool drag_ball(xchar, xchar, int *, xchar *, xchar *, xchar *, xchar *,
-                 bool *, bool);
-E void drop_ball(xchar, xchar);
-E void drag_down();
-
 /* ### bones.c ### */
 
 E bool can_make_bones();

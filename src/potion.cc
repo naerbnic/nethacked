@@ -8,6 +8,7 @@
 
 #include "apply.h"
 #include "artifact.h"
+#include "ball.h"
 
 #ifdef OVLB
 bool notonhead = FALSE;

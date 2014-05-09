@@ -7,6 +7,7 @@
 #include "hack.h"
 
 #include "apply.h"
+#include "ball.h"
 
 #ifdef OVL1
 STATIC_DCL void maybe_wail();

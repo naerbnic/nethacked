@@ -9,6 +9,7 @@
 #include "allmain.h"
 #include "artifact.h"
 #include "apply.h"
+#include "ball.h"
 #include "eshk.h"
 
 /*#define DEBUG*/

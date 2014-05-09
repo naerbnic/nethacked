@@ -8,6 +8,7 @@
 
 #include "apply.h"
 #include "artifact.h"
+#include "ball.h"
 
 /* KMH -- Copied from pray.c; this really belongs in a header file */
 #define DEVOUT 14

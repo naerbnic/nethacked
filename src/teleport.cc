@@ -7,6 +7,7 @@
 #include "hack.h"
 
 #include "apply.h"
+#include "ball.h"
 
 STATIC_DCL bool tele_jump_ok(int, int, int, int);
 STATIC_DCL bool teleok(int, int, bool);

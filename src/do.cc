@@ -10,6 +10,7 @@
 
 #include "apply.h"
 #include "artifact.h"
+#include "ball.h"
 #include "lev.h"
 
 #ifdef SINKS

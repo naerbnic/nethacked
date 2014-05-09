@@ -8,6 +8,7 @@
 
 #include "allmain.h"
 #include "artifact.h"
+#include "ball.h"
 
 #ifndef OVLB
 

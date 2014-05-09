@@ -8,6 +8,7 @@
 
 #include "allmain.h"
 #include "apply.h"
+#include "ball.h"
 
 extern const char *const destroy_strings[]; /* from zap.c */
 
