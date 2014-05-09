@@ -7,6 +7,9 @@
 #ifndef ATTRIB_H
 #define ATTRIB_H
 
+#include "config.h"
+#include "obj.h"
+
 #define A_STR 0
 #define A_INT 1
 #define A_WIS 2
