@@ -8,6 +8,7 @@
 
 #include "allmain.h"
 #include "apply.h"
+#include "artifact.h"
 
 /* #define DEBUG */ /* uncomment to enable new eat code debugging */
 

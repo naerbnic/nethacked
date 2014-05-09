@@ -6,6 +6,8 @@
 
 #include "hack.h"
 
+#include "artifact.h"
+
 /* KMH -- Differences between the three weapon slots.
  *
  * The main weapon (uwep):

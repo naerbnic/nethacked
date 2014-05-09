@@ -11,6 +11,8 @@
 
 #include "hack.h"
 
+#include "artifact.h"
+
 #ifdef DUMP_LOG
 STATIC_DCL int enhance_skill(bool);
 #endif

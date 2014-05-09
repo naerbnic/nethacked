@@ -5,7 +5,10 @@
 #ifndef ARTIFACT_H
 #define ARTIFACT_H
 
+#include "obj.h"
 #include "permonst.h"
+#include "prop.h"
+#include "wintype.h"
 
 #define SPFX_NONE 0x0000000L    /* no special effects, just a bonus */
 #define SPFX_NOGEN 0x0000001L   /* item is special, bequeathed by gods */
@@ -61,5 +64,35 @@ struct Artifact {
 #define CREATE_PORTAL (LAST_PROP + 7)
 #define ENLIGHTENING (LAST_PROP + 8)
 #define CREATE_AMMO (LAST_PROP + 9)
+
+extern void init_artifacts();
+extern void save_artifacts(int);
+extern void restore_artifacts(int);
+extern const char *artiname(int);
+extern Object *mk_artifact(Object *, ALIGNTYP_P);
+extern const char *artifact_name(const char *, short *);
+extern bool exist_artifact(int, std::string const&);
+extern void artifact_exists(Object *, std::string const&, bool);
+extern int nartifact_exist();
+extern bool spec_ability(Object *, unsigned long);
+extern bool confers_luck(Object *);
+extern bool arti_reflects(Object *);
+extern bool restrict_name(Object *, std::string const&);
+extern bool defends(int, Object *);
+extern bool protects(int, Object *);
+extern void set_artifact_intrinsic(Object *, bool, long);
+extern int touch_artifact(Object *, Monster *);
+extern int spec_abon(Object *, Monster *);
+extern int spec_dbon(Object *, Monster *, int);
+extern void discover_artifact(xchar);
+extern bool undiscovered_artifact(xchar);
+extern int disp_artifact_discoveries(winid);
+extern bool artifact_hit(Monster *, Monster *, Object *, int *, int);
+extern int doinvoke();
+extern void arti_speak(Object *);
+extern bool artifact_light(Object *);
+extern long spec_m2(Object *);
+extern bool artifact_has_invprop(Object *, uchar);
+extern long arti_cost(Object *);
 
 #endif /* ARTIFACT_H */

@@ -9,6 +9,7 @@
 #include "hack.h"
 
 #include "apply.h"
+#include "artifact.h"
 #include "lev.h"
 
 #ifdef SINKS

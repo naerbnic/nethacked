@@ -6,6 +6,8 @@
 
 #include "hack.h"
 
+#include "artifact.h"
+
 STATIC_DCL const char *dev_name();
 STATIC_DCL void get_mplname(Monster *, char *);
 STATIC_DCL void mk_mplayer_armor(Monster *, short);

@@ -5,6 +5,8 @@
 #include <string.h>
 
 #include "hack.h"
+
+#include "artifact.h"
 #include "lev.h" /* save & restore info */
 #include "range.h"
 

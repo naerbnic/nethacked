@@ -9,6 +9,7 @@
 #include "hack.h"
 
 #include "allmain.h"
+#include "artifact.h"
 #include "lev.h"
 #include "tcap.h" /* for TERMLIB and ASCIIGRAPH */
 

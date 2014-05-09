@@ -7,6 +7,7 @@
 #include "hack.h"
 
 #include "apply.h"
+#include "artifact.h"
 
 #ifdef OVLB
 bool notonhead = FALSE;

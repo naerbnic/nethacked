@@ -7,6 +7,7 @@
 #include "hack.h"
 
 #include "apply.h"
+#include "artifact.h"
 
 STATIC_DCL bool known_hitum(Monster *, int *, struct Attack *);
 STATIC_DCL void steal_it(Monster *, struct Attack *);

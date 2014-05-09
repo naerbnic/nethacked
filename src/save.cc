@@ -7,6 +7,7 @@
 #include "hack.h"
 
 #include "allmain.h"
+#include "artifact.h"
 #include "lev.h"
 #include "quest.h"
 

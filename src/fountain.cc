@@ -6,6 +6,8 @@
 
 #include "hack.h"
 
+#include "artifact.h"
+
 STATIC_DCL void dowatersnakes();
 STATIC_DCL void dowaterdemon();
 STATIC_DCL void dowaternymph();

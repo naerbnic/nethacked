@@ -7,6 +7,7 @@
 #include "hack.h"
 
 #include "apply.h"
+#include "artifact.h"
 
 #define NOINVSYM '#'
 #define CONTAINED_SYM '>' /* designator for inside a container */

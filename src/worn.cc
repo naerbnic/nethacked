@@ -6,6 +6,8 @@
 
 #include "hack.h"
 
+#include "artifact.h"
+
 STATIC_DCL void m_lose_armor(Monster *, Object *);
 STATIC_DCL void m_dowear_type(Monster *, long, bool, bool);
 STATIC_DCL int extra_pref(Monster *, Object *);

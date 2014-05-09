@@ -8,6 +8,7 @@
 
 #include "hack.h"
 
+#include "artifact.h"
 #include "edog.h"
 
 #ifdef OVLB

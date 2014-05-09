@@ -7,6 +7,8 @@
 
 #include "hack.h"
 
+#include "artifact.h"
+
 using std::string;
 
 #ifdef OVLB

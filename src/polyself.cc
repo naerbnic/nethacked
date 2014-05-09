@@ -14,6 +14,8 @@
 
 #include "hack.h"
 
+#include "artifact.h"
+
 #ifdef OVLB
 STATIC_DCL void polyman(const char *, const char *);
 STATIC_DCL void break_armor();

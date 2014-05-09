@@ -11,6 +11,7 @@ using std::vector;
 
 #include "allmain.h"
 #include "apply.h"
+#include "artifact.h"
 #include "lev.h" /* for checking save modes */
 
 STATIC_DCL void stoned_dialogue();

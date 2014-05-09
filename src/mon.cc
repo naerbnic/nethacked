@@ -14,6 +14,7 @@
 
 #include "allmain.h"
 #include "apply.h"
+#include "artifact.h"
 #include "mfndpos.h"
 #include "edog.h"
 

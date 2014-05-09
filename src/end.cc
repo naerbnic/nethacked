@@ -7,6 +7,7 @@
 
 #include "hack.h"
 #include "allmain.h"
+#include "artifact.h"
 #include "eshk.h"
 #ifndef NO_SIGNAL
 #include <signal.h>

@@ -5,6 +5,8 @@
 #include <string.h>
 
 #include "hack.h"
+
+#include "artifact.h"
 #include "prop.h"
 
 STATIC_DCL void AddRandomBoxContents(Object *);

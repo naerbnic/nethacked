@@ -6,6 +6,8 @@
 
 #include "hack.h"
 
+#include "artifact.h"
+
 /* #define DEBUG */ /* uncomment for debugging info */
 
 #ifdef OVLB

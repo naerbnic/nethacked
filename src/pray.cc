@@ -5,6 +5,8 @@
 #include <string.h>
 
 #include "hack.h"
+
+#include "artifact.h"
 #include "epri.h"
 
 STATIC_PTR int prayer_done();

@@ -9,6 +9,7 @@
 #include "hack.h"
 
 #include "apply.h"
+#include "artifact.h"
 
 #ifdef POSITIONBAR
 STATIC_DCL void do_positionbar();

@@ -11,6 +11,7 @@
 #include "hack.h"
 
 #include "apply.h"
+#include "artifact.h"
 
 STATIC_DCL void simple_look(Object *, bool);
 #ifndef GOLDOBJ

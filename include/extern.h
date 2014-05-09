@@ -23,36 +23,6 @@ E char *fmt_ptr(const void *, char *);
 
 /* ### artifact.c ### */
 
-E void init_artifacts();
-E void save_artifacts(int);
-E void restore_artifacts(int);
-E const char *artiname(int);
-E Object *mk_artifact(Object *, ALIGNTYP_P);
-E const char *artifact_name(const char *, short *);
-E bool exist_artifact(int, std::string const&);
-E void artifact_exists(Object *, std::string const&, bool);
-E int nartifact_exist();
-E bool spec_ability(Object *, unsigned long);
-E bool confers_luck(Object *);
-E bool arti_reflects(Object *);
-E bool restrict_name(Object *, std::string const&);
-E bool defends(int, Object *);
-E bool protects(int, Object *);
-E void set_artifact_intrinsic(Object *, bool, long);
-E int touch_artifact(Object *, Monster *);
-E int spec_abon(Object *, Monster *);
-E int spec_dbon(Object *, Monster *, int);
-E void discover_artifact(xchar);
-E bool undiscovered_artifact(xchar);
-E int disp_artifact_discoveries(winid);
-E bool artifact_hit(Monster *, Monster *, Object *, int *, int);
-E int doinvoke();
-E void arti_speak(Object *);
-E bool artifact_light(Object *);
-E long spec_m2(Object *);
-E bool artifact_has_invprop(Object *, uchar);
-E long arti_cost(Object *);
-
 /* ### attrib.c ### */
 
 E bool adjattrib(int, int, int);
