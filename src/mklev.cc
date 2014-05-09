@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "extralev.h"
 #include "end.h"
 #include "sp_lev.h"
 #include "dbridge.h"

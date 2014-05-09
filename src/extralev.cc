@@ -2,6 +2,8 @@
 /*	Copyright 1988, 1989 by Ken Arromdee				*/
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include "extralev.h"
+
 /*
  * Support code for "rogue"-style level.
  */

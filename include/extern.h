@@ -66,12 +66,6 @@
 
 /* ### extralev.c ### */
 
-#ifdef REINCARNATION
-void makeroguerooms();
-void corr(int, int);
-void makerogueghost();
-#endif
-
 /* ### files.c ### */
 
 char *fname_encode(const char *, char, char *, char *, int);
