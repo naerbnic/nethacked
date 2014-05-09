@@ -4,6 +4,8 @@
 
 /*  attribute modification routines. */
 
+#include "attrib.h"
+
 #include "hack.h"
 
 #include "artifact.h"

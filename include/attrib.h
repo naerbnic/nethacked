@@ -43,4 +43,22 @@ struct Attributes {
                                                         : urace.attrmax[x])
 #define ATTRMIN(x) (urace.attrmin[x])
 
+extern bool adjattrib(int, int, int);
+extern void change_luck(schar);
+extern int stone_luck(bool);
+extern void set_moreluck();
+extern void gainstr(Object *, int);
+extern void losestr(int);
+extern void restore_attrib();
+extern void exercise(int, bool);
+extern void exerchk();
+extern void reset_attribute_clock();
+extern void init_attr(int);
+extern void redist_attr();
+extern void adjabil(int, int);
+extern int newhp();
+extern schar acurr(int);
+extern schar acurrstr();
+extern void adjalign(int);
+
 #endif /* ATTRIB_H */

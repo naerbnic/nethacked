@@ -25,24 +25,6 @@ E char *fmt_ptr(const void *, char *);
 
 /* ### attrib.c ### */
 
-E bool adjattrib(int, int, int);
-E void change_luck(schar);
-E int stone_luck(bool);
-E void set_moreluck();
-E void gainstr(Object *, int);
-E void losestr(int);
-E void restore_attrib();
-E void exercise(int, bool);
-E void exerchk();
-E void reset_attribute_clock();
-E void init_attr(int);
-E void redist_attr();
-E void adjabil(int, int);
-E int newhp();
-E schar acurr(int);
-E schar acurrstr();
-E void adjalign(int);
-
 /* ### ball.c ### */
 
 E void ballfall();
