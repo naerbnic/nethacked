@@ -5,6 +5,8 @@
 #include <string.h>
 
 #include "hack.h"
+
+#include "apply.h"
 #include "artifact.h"
 #include "edog.h"
 

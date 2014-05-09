@@ -8,6 +8,8 @@
 #include <stdio.h>
 #include <cstdint>
 
+#include "config.h"
+
 /* #define BETA	*/ /* if a beta-test copy	[MRS] */
 
 /*

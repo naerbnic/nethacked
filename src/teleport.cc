@@ -6,6 +6,8 @@
 
 #include "hack.h"
 
+#include "apply.h"
+
 STATIC_DCL bool tele_jump_ok(int, int, int, int);
 STATIC_DCL bool teleok(int, int, bool);
 STATIC_DCL void vault_tele();

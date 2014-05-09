@@ -7,6 +7,8 @@
 #include <string.h>
 
 #include "hack.h"
+
+#include "apply.h"
 #include "edog.h"
 
 STATIC_DCL int throw_obj(Object *, int);

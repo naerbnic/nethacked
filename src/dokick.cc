@@ -5,6 +5,8 @@
 #include <string.h>
 
 #include "hack.h"
+
+#include "apply.h"
 #include "eshk.h"
 
 #define is_bigfoot(x) ((x) == &mons[PM_SASQUATCH])

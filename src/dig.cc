@@ -7,6 +7,7 @@
 #include "hack.h"
 
 #include "allmain.h"
+#include "apply.h"
 #include "edog.h"
 /* #define DEBUG */ /* turn on for diagnostics */
 

@@ -7,6 +7,8 @@
 #include <string.h>
 
 #include "hack.h"
+
+#include "apply.h"
 #include "lev.h"
 
 #ifdef SINKS

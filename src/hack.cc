@@ -6,6 +6,8 @@
 
 #include "hack.h"
 
+#include "apply.h"
+
 #ifdef OVL1
 STATIC_DCL void maybe_wail();
 #endif /*OVL1*/

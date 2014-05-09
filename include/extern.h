@@ -21,27 +21,6 @@ E char *fmt_ptr(const void *, char *);
 
 /* ### apply.c ### */
 
-E int doapply();
-E int dorub();
-E int dojump();
-E int jump(int);
-E int number_leashed();
-E void o_unleash(Object *);
-E void m_unleash(Monster *, bool);
-E void unleash_all();
-E bool next_to_u();
-E Object *get_mleash(Monster *);
-E void check_leash(xchar, xchar);
-E bool um_dist(xchar, xchar, xchar);
-E bool snuff_candle(Object *);
-E bool snuff_lit(Object *);
-E bool catch_lit(Object *);
-E void use_unicorn_horn(Object *);
-E bool tinnable(Object *);
-E void reset_trapset();
-E void fig_transform(genericptr_t, long);
-E int unfixable_trouble_count(bool);
-
 /* ### artifact.c ### */
 
 E void init_artifacts();

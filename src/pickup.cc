@@ -10,6 +10,8 @@
 
 #include "hack.h"
 
+#include "apply.h"
+
 STATIC_DCL void simple_look(Object *, bool);
 #ifndef GOLDOBJ
 STATIC_DCL bool query_classes(char *, bool *, bool *, const char *, Object *,

@@ -7,6 +7,7 @@
 #include "hack.h"
 
 #include "allmain.h"
+#include "apply.h"
 
 STATIC_PTR int stealarm();
 

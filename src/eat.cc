@@ -7,6 +7,7 @@
 #include "hack.h"
 
 #include "allmain.h"
+#include "apply.h"
 
 /* #define DEBUG */ /* uncomment to enable new eat code debugging */
 

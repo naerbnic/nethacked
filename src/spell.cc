@@ -7,6 +7,7 @@
 #include "hack.h"
 
 #include "allmain.h"
+#include "apply.h"
 
 static schar delay;  /* moves left for this spell */
 static Object *book; /* last/current book being xscribed */

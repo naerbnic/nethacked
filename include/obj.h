@@ -7,6 +7,8 @@
 
 #include <string>
 
+#include "global.h"
+
 // Forward declarations
 struct Object;
 struct Monster;

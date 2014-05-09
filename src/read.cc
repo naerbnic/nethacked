@@ -6,6 +6,8 @@
 
 #include "hack.h"
 
+#include "apply.h"
+
 /* KMH -- Copied from pray.c; this really belongs in a header file */
 #define DEVOUT 14
 #define STRIDENT 4

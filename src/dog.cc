@@ -5,6 +5,8 @@
 #include <string.h>
 
 #include "hack.h"
+
+#include "apply.h"
 #include "edog.h"
 
 #ifdef OVLB

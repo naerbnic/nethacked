@@ -2,9 +2,12 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include "apply.h"
+
 #include <string.h>
 
 #include "hack.h"
+
 #include "edog.h"
 
 #ifdef OVLB

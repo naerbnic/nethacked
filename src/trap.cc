@@ -7,6 +7,7 @@
 #include "hack.h"
 
 #include "allmain.h"
+#include "apply.h"
 
 extern const char *const destroy_strings[]; /* from zap.c */
 

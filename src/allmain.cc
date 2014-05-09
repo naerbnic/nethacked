@@ -8,6 +8,8 @@
 #include <signal.h>
 #include "hack.h"
 
+#include "apply.h"
+
 #ifdef POSITIONBAR
 STATIC_DCL void do_positionbar();
 #endif

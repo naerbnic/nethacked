@@ -6,6 +6,8 @@
 
 #include "hack.h"
 
+#include "apply.h"
+
 #ifdef STEED
 
 /* Monsters that might be ridden */

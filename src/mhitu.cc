@@ -7,6 +7,7 @@
 #include "hack.h"
 
 #include "allmain.h"
+#include "apply.h"
 #include "artifact.h"
 
 STATIC_VAR Object *otmp;
