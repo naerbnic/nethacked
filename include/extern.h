@@ -1303,13 +1303,6 @@ void play_sound_for_message(const char *);
 
 /* ### sp_lev.c ### */
 
-bool check_room(xchar *, xchar *, xchar *, xchar *, bool);
-bool create_room(xchar, xchar, xchar, xchar, xchar, xchar, xchar, xchar);
-void create_secret_door(struct mkroom *, xchar);
-bool dig_corridor(coord *, coord *, bool, schar, schar);
-void fill_room(struct mkroom *, bool);
-bool load_special(const char *);
-
 /* ### spell.c ### */
 
 int study_book(Object *);
