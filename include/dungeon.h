@@ -161,4 +161,52 @@ struct linfo {
                            */
 };
 
+void save_dungeon(int, bool, bool);
+void restore_dungeon(int);
+void insert_branch(branch *, bool);
+void init_dungeons();
+s_level *find_level(const char *);
+s_level *Is_special(d_level *);
+branch *Is_branchlev(d_level *);
+xchar ledger_no(d_level *);
+xchar maxledgerno();
+schar depth(d_level *);
+xchar dunlev(d_level *);
+xchar dunlevs_in_dungeon(d_level *);
+xchar ledger_to_dnum(xchar);
+xchar ledger_to_dlev(xchar);
+xchar deepest_lev_reached(bool);
+bool on_level(d_level *, d_level *);
+void next_level(bool);
+void prev_level(bool);
+void u_on_newpos(int, int);
+void u_on_sstairs();
+void u_on_upstairs();
+void u_on_dnstairs();
+bool On_stairs(xchar, xchar);
+void get_level(d_level *, int);
+bool Is_botlevel(d_level *);
+bool Can_fall_thru(d_level *);
+bool Can_dig_down(d_level *);
+bool Can_rise_up(int, int, d_level *);
+bool In_quest(d_level *);
+bool In_mines(d_level *);
+branch *dungeon_branch(const char *);
+bool at_dgn_entrance(const char *);
+bool In_hell(d_level *);
+bool In_V_tower(d_level *);
+bool On_W_tower_level(d_level *);
+bool In_W_tower(int, int, d_level *);
+void find_hell(d_level *);
+void goto_hell(bool, bool);
+void assign_level(d_level *, d_level *);
+void assign_rnd_level(d_level *, d_level *, int);
+int induced_align(int);
+bool Invocation_lev(d_level *);
+xchar level_difficulty();
+schar lev_by_name(const char *);
+#ifdef WIZARD
+schar print_dungeon(bool, schar *, xchar *);
+#endif
+
 #endif /* DUNGEON_H */
