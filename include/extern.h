@@ -53,14 +53,6 @@ char *fmt_ptr(const void *, char *);
 
 /* ### dokick.c ### */
 
-bool ghitm(Monster *, Object *);
-void container_impact_dmg(Object *);
-int dokick();
-bool ship_object(Object *, xchar, xchar, bool);
-void obj_delivery();
-schar down_gate(xchar, xchar);
-void impact_drop(Object *, xchar, xchar, xchar);
-
 /* ### dothrow.c ### */
 
 int dothrow();
