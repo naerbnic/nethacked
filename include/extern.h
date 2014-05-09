@@ -51,38 +51,14 @@
 
 /* ### drawing.c ### */
 
-#if !defined(MAKEDEFS_C) && !defined(LEV_LEX_C)
 /* ### dungeon.c ### */
 
 /* ### eat.c ### */
 
-#endif /* !MAKEDEFS_C && !LEV_LEX_C */
 /* ### end.c ### */
 
 #if !defined(MAKEDEFS_C) && !defined(LEV_LEX_C)
 /* ### engrave.c ### */
-
-char *random_engraving(char *);
-void wipeout_text(char *, int, unsigned);
-bool can_reach_floor();
-const char *surface(int, int);
-const char *ceiling(int, int);
-struct engr *engr_at(xchar, xchar);
-#ifdef ELBERETH
-int sengr_at(const char *, xchar, xchar);
-#endif
-void u_wipe_engr(int);
-void wipe_engr_at(xchar, xchar, xchar);
-void read_engr_at(int, int);
-void make_engr_at(int, int, const char *, long, xchar);
-void del_engr_at(int, int);
-int freehand();
-int doengrave();
-void save_engravings(int, int);
-void rest_engravings(int);
-void del_engr(struct engr *);
-void rloc_engr(struct engr *);
-void make_grave(int, int, const char *);
 
 /* ### exper.c ### */
 
