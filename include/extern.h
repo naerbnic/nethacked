@@ -51,10 +51,6 @@ char *fmt_ptr(const void *, char *);
 
 /* ### dogmove.c ### */
 
-int dog_nutrition(Monster *, Object *);
-int dog_eat(Monster *, Object *, int, int, bool);
-int dog_move(Monster *, int);
-
 /* ### dokick.c ### */
 
 bool ghitm(Monster *, Object *);

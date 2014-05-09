@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "dogmove.h"
 #include "do_name.h"
 #include "dig.h"
 #include "dbridge.h"

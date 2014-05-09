@@ -2,10 +2,12 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include "dog.h"
+
 #include <string.h>
 
 #include "hack.h"
-#include "dog.h"
+#include "dogmove.h"
 #include "do_name.h"
 #include "do.h"
 #include "dbridge.h"
