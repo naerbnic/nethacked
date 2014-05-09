@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "do.h"
 
 STATIC_DCL int cost(Object *);
 

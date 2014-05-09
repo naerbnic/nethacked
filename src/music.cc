@@ -29,6 +29,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "do.h"
 #include "dbridge.h"
 #include "cmd.h"
 

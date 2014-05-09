@@ -4,6 +4,8 @@
 
 /* Contains code for 'd', 'D' (drop), '>', '<' (up, down) */
 
+#include "do.h"
+
 #include <string.h>
 
 #include "hack.h"

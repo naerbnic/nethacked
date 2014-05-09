@@ -15,6 +15,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "do.h"
 #include "cmd.h"
 
 #ifdef OVLB

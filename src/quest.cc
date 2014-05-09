@@ -3,6 +3,7 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 #include "hack.h"
+#include "do.h"
 #include "cmd.h"
 
 /*  quest dungeon branch routines. */

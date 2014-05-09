@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "do.h"
 #include "dgn_file.h"
 #include "dlb.h"
 
