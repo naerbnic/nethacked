@@ -6,6 +6,8 @@
 
 #include "hack.h"
 
+#include "allmain.h"
+
 #ifndef OVLB
 
 STATIC_DCL long takeoff_mask, taking_off;

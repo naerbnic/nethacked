@@ -5,6 +5,8 @@
 #include "json_spirit.h"
 
 #include "hack.h"
+
+#include "allmain.h"
 #include "lev.h"
 #include "quest.h"
 

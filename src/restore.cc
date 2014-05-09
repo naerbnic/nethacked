@@ -7,6 +7,8 @@
 #include <string>
 
 #include "hack.h"
+
+#include "allmain.h"
 #include "lev.h"
 #include "tcap.h" /* for TERMLIB and ASCIIGRAPH */
 

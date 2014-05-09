@@ -5,6 +5,9 @@
 #include <string.h>
 
 #include "hack.h"
+
+#include "allmain.h"
+
 /* #define DEBUG */ /* uncomment to enable new eat code debugging */
 
 #ifdef DEBUG

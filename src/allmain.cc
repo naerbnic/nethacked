@@ -3,6 +3,7 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 /* various code that was replicated in *main.c */
+#include "allmain.h"
 
 #include <signal.h>
 #include "hack.h"

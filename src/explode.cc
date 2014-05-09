@@ -6,6 +6,8 @@
 
 #include "hack.h"
 
+#include "allmain.h"
+
 #ifdef OVL0
 
 /* Note: Arrays are column first, while the screen is row first */

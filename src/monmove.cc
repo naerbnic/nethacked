@@ -5,6 +5,8 @@
 #include <string.h>
 
 #include "hack.h"
+
+#include "allmain.h"
 #include "mfndpos.h"
 #include "artifact.h"
 #include "epri.h"

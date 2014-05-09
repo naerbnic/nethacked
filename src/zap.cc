@@ -6,6 +6,8 @@
 
 #include "hack.h"
 
+#include "allmain.h"
+
 /* Disintegration rays have special treatment; corpses are never left.
  * But the routine which calculates the damage is separate from the routine
  * which kills the monster.  The damage routine returns this cookie to

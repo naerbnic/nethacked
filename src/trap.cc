@@ -6,6 +6,8 @@
 
 #include "hack.h"
 
+#include "allmain.h"
+
 extern const char *const destroy_strings[]; /* from zap.c */
 
 STATIC_DCL void dofiretrap(Object *);

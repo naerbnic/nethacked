@@ -4,6 +4,8 @@
 
 #include "hack.h"
 
+#include "allmain.h"
+
 STATIC_PTR int picklock();
 STATIC_PTR int forcelock();
 

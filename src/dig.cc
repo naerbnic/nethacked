@@ -5,6 +5,8 @@
 #include <string.h>
 
 #include "hack.h"
+
+#include "allmain.h"
 #include "edog.h"
 /* #define DEBUG */ /* turn on for diagnostics */
 

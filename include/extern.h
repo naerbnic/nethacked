@@ -19,15 +19,6 @@ E char *fmt_ptr(const void *, char *);
 
 /* ### allmain.c ### */
 
-E void moveloop();
-E void stop_occupation();
-E void display_gamewindows();
-E void newgame();
-E void welcome(bool);
-#if defined(RECORD_REALTIME) || defined(REALTIME_ON_BOTL)
-E time_t get_realtime();
-#endif
-
 /* ### apply.c ### */
 
 E int doapply();

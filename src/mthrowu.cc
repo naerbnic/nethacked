@@ -6,6 +6,8 @@
 
 #include "hack.h"
 
+#include "allmain.h"
+
 STATIC_DCL int drop_throw(Object *, bool, int, int);
 
 #define URETREATING(x, y) \

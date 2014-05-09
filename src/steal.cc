@@ -6,6 +6,8 @@
 
 #include "hack.h"
 
+#include "allmain.h"
+
 STATIC_PTR int stealarm();
 
 #ifdef OVLB

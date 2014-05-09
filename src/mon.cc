@@ -7,12 +7,14 @@
 #define MKROOM_H
 #endif
 
+#include <ctype.h>
 #include <string.h>
 
 #include "hack.h"
+
+#include "allmain.h"
 #include "mfndpos.h"
 #include "edog.h"
-#include <ctype.h>
 
 STATIC_DCL bool restrap(Monster *);
 STATIC_DCL long mm_aggression(Monster *, Monster *);

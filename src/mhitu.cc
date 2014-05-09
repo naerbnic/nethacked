@@ -5,6 +5,8 @@
 #include <string.h>
 
 #include "hack.h"
+
+#include "allmain.h"
 #include "artifact.h"
 
 STATIC_VAR Object *otmp;

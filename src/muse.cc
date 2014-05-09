@@ -9,6 +9,8 @@
 #include <string.h>
 
 #include "hack.h"
+
+#include "allmain.h"
 #include "edog.h"
 
 extern const int monstr[];

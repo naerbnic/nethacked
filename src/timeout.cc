@@ -8,6 +8,8 @@
 using std::vector;
 
 #include "hack.h"
+
+#include "allmain.h"
 #include "lev.h" /* for checking save modes */
 
 STATIC_DCL void stoned_dialogue();

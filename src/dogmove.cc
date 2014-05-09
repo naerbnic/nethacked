@@ -6,6 +6,7 @@
 
 #include "hack.h"
 
+#include "allmain.h"
 #include "mfndpos.h"
 #include "edog.h"
 
