@@ -1,0 +1,5 @@
+#!/bin/bash
+new_file=$1
+shift
+sed -i '' -e "/#include \"hack.h\"/a\\
+#include \"${new_file}\"" "$@"

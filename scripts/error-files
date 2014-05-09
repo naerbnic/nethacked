@@ -1,0 +1,2 @@
+#!/bin/bash
+make --keep-going 2>&1 | grep error: | cut -f 1 -d : | sort | uniq
