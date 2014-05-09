@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "dig.h"
 #include "cmd.h"
 
 #include "allmain.h"

@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "dig.h"
 #include "detect.h"
 #include "dbridge.h"
 #include "cmd.h"

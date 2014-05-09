@@ -41,29 +41,6 @@ E char *fmt_ptr(const void *, char *);
 
 /* ### dig.c ### */
 
-E bool is_digging();
-E int holetime();
-E bool dig_check(Monster *, bool, int, int);
-E void digactualhole(int, int, Monster *, int);
-E bool dighole(bool);
-E int use_pick_axe(Object *);
-E int use_pick_axe2(Object *);
-E bool mdig_tunnel(Monster *);
-E void watch_dig(Monster *, xchar, xchar, bool);
-E void zap_dig();
-E Object *bury_an_obj(Object *);
-E void bury_objs(int, int);
-E void unearth_objs(int, int);
-E void rot_organic(genericptr_t, long);
-E void rot_corpse(genericptr_t, long);
-#if 0
-E void bury_monst(Monster *);
-E void bury_you();
-E void unearth_you();
-E void escape_tomb();
-E void bury_obj(Object *);
-#endif
-
 /* ### display.c ### */
 
 #ifdef INVISIBLE_OBJECTS
