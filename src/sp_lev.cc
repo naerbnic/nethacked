@@ -12,6 +12,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "end.h"
 #include "drawing.h"
 #include "do_name.h"
 #include "dbridge.h"

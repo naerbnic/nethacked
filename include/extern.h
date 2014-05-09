@@ -59,19 +59,6 @@
 #endif /* !MAKEDEFS_C && !LEV_LEX_C */
 /* ### end.c ### */
 
-void done1(int);
-int done2();
-void done_in_by(Monster *);
-void panic(const char *, ...) PRINTF_F(1, 2);
-void done(int);
-void container_contents(Object *, bool, bool);
-#ifdef DUMP_LOG
-void dump(char const *, char const *);
-void do_containerconts(Object *, bool, bool, bool, bool);
-#endif
-void terminate(int);
-int num_genocides();
-
 #if !defined(MAKEDEFS_C) && !defined(LEV_LEX_C)
 /* ### engrave.c ### */
 

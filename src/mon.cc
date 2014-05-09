@@ -11,6 +11,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "end.h"
 #include "dog.h"
 #include "do_name.h"
 #include "do.h"

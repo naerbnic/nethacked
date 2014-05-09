@@ -10,6 +10,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "end.h"
 #include "do_name.h"
 #include "do.h"
 #include "dbridge.h"

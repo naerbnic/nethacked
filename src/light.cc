@@ -3,6 +3,7 @@
 /* NetHack may be freely redistributed.  See license for details.	*/
 
 #include "hack.h"
+#include "end.h"
 
 #include "artifact.h"
 #include "lev.h" /* for checking save modes */

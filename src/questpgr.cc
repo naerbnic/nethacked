@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "end.h"
 
 #include "artifact.h"
 #include "botl.h"

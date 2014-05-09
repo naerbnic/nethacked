@@ -119,6 +119,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "end.h"
 #include "dbridge.h"
 #include "cmd.h"
 

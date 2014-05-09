@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "end.h"
 
 STATIC_DCL long newuexp(int);
 STATIC_DCL int enermod(int);

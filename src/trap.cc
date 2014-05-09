@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "end.h"
 #include "dokick.h"
 #include "dog.h"
 #include "do_wear.h"

@@ -9,6 +9,7 @@
  */
 
 #include "hack.h"
+#include "end.h"
 #include "cmd.h"
 
 #include "botl.h"

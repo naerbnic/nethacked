@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "end.h"
 #include "drawing.h"
 #include "dlb.h"
 

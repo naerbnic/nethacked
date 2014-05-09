@@ -7,6 +7,7 @@
 
 /* We could include only config.h, except for the overlay definitions... */
 #include "hack.h"
+#include "end.h"
 /*=
     Assorted 'small' utility routines.	They're virtually independent of
 NetHack, except that rounddiv may call panic().

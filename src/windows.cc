@@ -3,6 +3,7 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 #include "hack.h"
+#include "end.h"
 #include "wintty.h"
 
 STATIC_DCL void def_raw_print(const char *s);

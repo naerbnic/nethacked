@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "end.h"
 #include "dothrow.h"
 #include "do_name.h"
 #include "cmd.h"
