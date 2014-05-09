@@ -7,6 +7,7 @@
  */
 
 #include "hack.h"
+#include "do_name.h"
 
 #ifdef REINCARNATION
 

@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "do_name.h"
 #include "lev.h"
 
 #define newseg() (struct wseg *) alloc(sizeof(struct wseg))

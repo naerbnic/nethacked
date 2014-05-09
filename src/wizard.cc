@@ -8,6 +8,7 @@
 /*	       - generalized for 3.1 (mike@bullns.on01.bull.ca) */
 
 #include "hack.h"
+#include "do_name.h"
 #include "qtext.h"
 #include "epri.h"
 

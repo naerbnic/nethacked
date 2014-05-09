@@ -6,6 +6,7 @@
 #include <stdarg.h>
 
 #include "hack.h"
+#include "do_name.h"
 #include "epri.h"
 #ifdef WIZARD
 #include "edog.h"

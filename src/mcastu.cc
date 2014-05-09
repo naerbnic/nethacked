@@ -3,6 +3,7 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 #include "hack.h"
+#include "do_name.h"
 
 /* monster mage spells */
 #define MGC_PSI_BOLT 0

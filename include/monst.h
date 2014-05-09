@@ -6,6 +6,7 @@
 #define MONST_H
 
 #include "alloc.h"
+#include "config.h"
 #include "permonst.h"
 
 // Forward declarations
