@@ -29,10 +29,6 @@ E char *fmt_ptr(const void *, char *);
 
 /* ### bones.c ### */
 
-E bool can_make_bones();
-E void savebones(Object *);
-E int getbones();
-
 /* ### botl.c ### */
 
 E int xlev_to_rank(int);

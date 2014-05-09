@@ -5,6 +5,8 @@
 #include <string.h>
 
 #include "hack.h"
+
+#include "bones.h"
 /* #define DEBUG */ /* uncomment to enable code debugging */
 
 #ifdef DEBUG
