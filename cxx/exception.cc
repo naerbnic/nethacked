@@ -12,7 +12,7 @@
 using std::string;
 using std::endl;
 
-char const* Exception::what() const throw() {
+char const* Exception::what() const noexcept {
   if (!what_message_) {
     std::stringstream stream;
     stream << message_ << endl;
@@ -32,5 +32,5 @@ char const* Exception::what() const throw() {
 }
 
 Exception::Exception(string const& message)
-    : message_(message), stack_trace_(StackTrace::GetCurrent(1)){}
+    : message_(message), stack_trace_(StackTrace::GetCurrent(2)){}
 

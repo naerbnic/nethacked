@@ -16,10 +16,9 @@
 
 class Exception : public std::exception {
 public:
-  char const* what() const throw() override;
-
-protected:
   Exception(std::string const& message);
+
+  char const* what() const noexcept override;
 
 private:
   std::string message_;

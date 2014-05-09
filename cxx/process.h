@@ -11,6 +11,13 @@
 #include <string>
 #include <vector>
 
+#include "exception.h"
+
+class ProcessException : public Exception {
+public:
+  ProcessException(std::string const& message) : Exception(message) {}
+};
+
 std::string CallExecutable(
     std::string const& path,
     std::vector<std::string> const& arguments);

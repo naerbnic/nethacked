@@ -11,6 +11,7 @@
 #include <sys/types.h>
 
 #include "process.h"
+#include "exception.h"
 
 using std::string;
 using std::vector;
@@ -20,15 +21,13 @@ extern char **environ;
 string CallExecutable(string const& path, vector<string> const& arguments) {
   int stdin_pipe[2] = {};
   if (pipe(stdin_pipe) < 0) {
-    std::cerr << "Couldn't create pipe: " << errno << std::endl;
-    exit(1);
+    throw ProcessException(string("Couldn't create pipe: ") + strerror(errno));
   }
 
   pid_t child_pid = fork();
 
   if (child_pid < 0) {
-    std::cerr << "Couldn't fork: " << errno << std::endl;
-    exit(1);
+    throw ProcessException(string("Couldn't fork: ") + strerror(errno));
   } else if (child_pid == 0) {
     // We're in the child. Close stdin and reopen stdout as the write end of
     // the pipe.
@@ -48,7 +47,8 @@ string CallExecutable(string const& path, vector<string> const& arguments) {
 
     execve(path.c_str(), (char * const *)args, environ);
 
-    std::cerr << "Couldn't execute child process: " << strerror(errno) << std::endl;
+    std::cout << "Couldn't execute child process: " << strerror(errno) << std::endl;
+    exit(255);
   }
 
   // We're in the parent. Close the write end of the pipe.
@@ -67,8 +67,7 @@ string CallExecutable(string const& path, vector<string> const& arguments) {
     if (num_read >= 0) {
       child_output.append(buffer, buffer + num_read);
     } else if (num_read < 0 && errno != EAGAIN) {
-      std::cerr << "Couldn't read from pipe: " << strerror(errno) << std::endl;
-      exit(1);
+      throw ProcessException(string("Couldn't read from pipe: ") + strerror(errno));
     }
   }
 
