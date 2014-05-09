@@ -7,11 +7,9 @@
 
 #include <string>
 
-#define E extern
-
 /* ### alloc.c ### */
 
-E char *fmt_ptr(const void *, char *);
+char *fmt_ptr(const void *, char *);
 
 /* This next pre-processor directive covers almost the entire file,
  * interrupted only occasionally to pick up specific functions as needed. */
@@ -45,151 +43,151 @@ E char *fmt_ptr(const void *, char *);
 
 /* ### do.c ### */
 
-E int dodrop();
-E bool boulder_hits_pool(Object *, int, int, bool);
-E bool flooreffects(Object *, int, int, const char *);
-E void doaltarobj(Object *);
-E bool canletgo(Object *, const char *);
-E void dropx(Object *);
-E void dropy(Object *);
-E void obj_no_longer_held(Object *);
-E int doddrop();
-E int dodown();
-E int doup();
+int dodrop();
+bool boulder_hits_pool(Object *, int, int, bool);
+bool flooreffects(Object *, int, int, const char *);
+void doaltarobj(Object *);
+bool canletgo(Object *, const char *);
+void dropx(Object *);
+void dropy(Object *);
+void obj_no_longer_held(Object *);
+int doddrop();
+int dodown();
+int doup();
 #ifdef INSURANCE
-E void save_currentstate();
+void save_currentstate();
 #endif
-E void goto_level(d_level *, bool, bool, bool);
-E void schedule_goto(d_level *, bool, bool, int, const char *, const char *);
-E void deferred_goto();
-E bool revive_corpse(Object *);
-E void revive_mon(genericptr_t, long);
-E int donull();
-E int dowipe();
-E void set_wounded_legs(long, int);
-E void heal_legs();
+void goto_level(d_level *, bool, bool, bool);
+void schedule_goto(d_level *, bool, bool, int, const char *, const char *);
+void deferred_goto();
+bool revive_corpse(Object *);
+void revive_mon(genericptr_t, long);
+int donull();
+int dowipe();
+void set_wounded_legs(long, int);
+void heal_legs();
 
 /* ### do_name.c ### */
 
-E int getpos(coord *, bool, const char *);
-E Monster *christen_monst(Monster *, std::string const&);
-E int do_mname();
-E Object *oname(Object *, std::string const&);
-E int ddocall();
-E void docall(Object *);
-E const char *rndghostname();
-E char *x_monnam(Monster *, int, const char *, int, bool);
-E char *l_monnam(Monster *);
-E char *mon_nam(Monster *);
-E char *noit_mon_nam(Monster *);
-E char *Monnam(Monster *);
-E char *noit_Monnam(Monster *);
-E char *m_monnam(Monster *);
-E char *y_monnam(Monster *);
-E char *Adjmonnam(Monster *, const char *);
-E char *Amonnam(Monster *);
-E char *a_monnam(Monster *);
-E char *distant_monnam(Monster *, int, char *);
-E const char *rndmonnam();
-E const char *hcolor(const char *);
-E const char *rndcolor();
+int getpos(coord *, bool, const char *);
+Monster *christen_monst(Monster *, std::string const&);
+int do_mname();
+Object *oname(Object *, std::string const&);
+int ddocall();
+void docall(Object *);
+const char *rndghostname();
+char *x_monnam(Monster *, int, const char *, int, bool);
+char *l_monnam(Monster *);
+char *mon_nam(Monster *);
+char *noit_mon_nam(Monster *);
+char *Monnam(Monster *);
+char *noit_Monnam(Monster *);
+char *m_monnam(Monster *);
+char *y_monnam(Monster *);
+char *Adjmonnam(Monster *, const char *);
+char *Amonnam(Monster *);
+char *a_monnam(Monster *);
+char *distant_monnam(Monster *, int, char *);
+const char *rndmonnam();
+const char *hcolor(const char *);
+const char *rndcolor();
 #ifdef REINCARNATION
-E const char *roguename();
+const char *roguename();
 #endif
-E Object *ReallocateExtraObjectSpace(Object *, int, genericptr_t, int,
+Object *ReallocateExtraObjectSpace(Object *, int, genericptr_t, int,
                                      const char *);
-E Object *ReallocateExtraObjectSpace(Object *obj, int oextra_size,
+Object *ReallocateExtraObjectSpace(Object *obj, int oextra_size,
                                      genericptr_t oextra_src, std::string const& name);
-E char *coyotename(Monster *, char *);
+char *coyotename(Monster *, char *);
 
 /* ### do_wear.c ### */
 
-E void off_msg(Object *);
-E void set_wear();
-E bool donning(Object *);
-E void cancel_don();
-E int Armor_off();
-E int Armor_gone();
-E int Helmet_off();
-E int Gloves_off();
-E int Boots_off();
-E int Cloak_off();
-E int Shield_off();
+void off_msg(Object *);
+void set_wear();
+bool donning(Object *);
+void cancel_don();
+int Armor_off();
+int Armor_gone();
+int Helmet_off();
+int Gloves_off();
+int Boots_off();
+int Cloak_off();
+int Shield_off();
 #ifdef TOURIST
-E int Shirt_off();
+int Shirt_off();
 #endif
-E void Amulet_off();
-E void Ring_on(Object *);
-E void Ring_off(Object *);
-E void Ring_gone(Object *);
-E void Blindf_on(Object *);
-E void Blindf_off(Object *);
-E int dotakeoff();
-E int doremring();
-E int cursed(Object *);
-E int armoroff(Object *);
-E int canwearobj(Object *, long *, bool);
-E int dowear();
-E int doputon();
-E void find_ac();
-E void glibr();
-E Object *some_armor(Monster *);
-E void erode_armor(Monster *, bool);
-E Object *stuck_ring(Object *, int);
-E Object *unchanger();
-E void reset_remarm();
-E int doddoremarm();
-E int destroy_arm(Object *);
-E void adj_abon(Object *, schar);
+void Amulet_off();
+void Ring_on(Object *);
+void Ring_off(Object *);
+void Ring_gone(Object *);
+void Blindf_on(Object *);
+void Blindf_off(Object *);
+int dotakeoff();
+int doremring();
+int cursed(Object *);
+int armoroff(Object *);
+int canwearobj(Object *, long *, bool);
+int dowear();
+int doputon();
+void find_ac();
+void glibr();
+Object *some_armor(Monster *);
+void erode_armor(Monster *, bool);
+Object *stuck_ring(Object *, int);
+Object *unchanger();
+void reset_remarm();
+int doddoremarm();
+int destroy_arm(Object *);
+void adj_abon(Object *, schar);
 
 /* ### dog.c ### */
 
-E void initedog(Monster *);
-E Monster *make_familiar(Object *, xchar, xchar, bool);
-E Monster *makedog();
-E void update_mlstmv();
-E void losedogs();
-E void mon_arrive(Monster *, bool);
-E void mon_catchup_elapsed_time(Monster *, long);
-E void keepdogs(bool);
-E void migrate_to_level(Monster *, xchar, xchar, coord *);
-E int dogfood(Monster *, Object *);
-E Monster *tamedog(Monster *, Object *);
-E void abuse_dog(Monster *);
-E void wary_dog(Monster *, bool);
+void initedog(Monster *);
+Monster *make_familiar(Object *, xchar, xchar, bool);
+Monster *makedog();
+void update_mlstmv();
+void losedogs();
+void mon_arrive(Monster *, bool);
+void mon_catchup_elapsed_time(Monster *, long);
+void keepdogs(bool);
+void migrate_to_level(Monster *, xchar, xchar, coord *);
+int dogfood(Monster *, Object *);
+Monster *tamedog(Monster *, Object *);
+void abuse_dog(Monster *);
+void wary_dog(Monster *, bool);
 
 /* ### dogmove.c ### */
 
-E int dog_nutrition(Monster *, Object *);
-E int dog_eat(Monster *, Object *, int, int, bool);
-E int dog_move(Monster *, int);
+int dog_nutrition(Monster *, Object *);
+int dog_eat(Monster *, Object *, int, int, bool);
+int dog_move(Monster *, int);
 
 /* ### dokick.c ### */
 
-E bool ghitm(Monster *, Object *);
-E void container_impact_dmg(Object *);
-E int dokick();
-E bool ship_object(Object *, xchar, xchar, bool);
-E void obj_delivery();
-E schar down_gate(xchar, xchar);
-E void impact_drop(Object *, xchar, xchar, xchar);
+bool ghitm(Monster *, Object *);
+void container_impact_dmg(Object *);
+int dokick();
+bool ship_object(Object *, xchar, xchar, bool);
+void obj_delivery();
+schar down_gate(xchar, xchar);
+void impact_drop(Object *, xchar, xchar, xchar);
 
 /* ### dothrow.c ### */
 
-E int dothrow();
-E int dofire();
-E void hitfloor(Object *);
-E void hurtle(int, int, int, bool);
-E void mhurtle(Monster *, int, int, int);
-E void throwit(Object *, long, bool);
-E int omon_adj(Monster *, Object *, bool);
-E int thitmonst(Monster *, Object *);
-E int hero_breaks(Object *, xchar, xchar, bool);
-E int breaks(Object *, xchar, xchar);
-E bool breaktest(Object *);
-E bool walk_path(coord *, coord *, bool (*)(genericptr_t, int, int),
+int dothrow();
+int dofire();
+void hitfloor(Object *);
+void hurtle(int, int, int, bool);
+void mhurtle(Monster *, int, int, int);
+void throwit(Object *, long, bool);
+int omon_adj(Monster *, Object *, bool);
+int thitmonst(Monster *, Object *);
+int hero_breaks(Object *, xchar, xchar, bool);
+int breaks(Object *, xchar, xchar);
+bool breaktest(Object *);
+bool walk_path(coord *, coord *, bool (*)(genericptr_t, int, int),
                  genericptr_t);
-E bool hurtle_step(genericptr_t, int, int);
+bool hurtle_step(genericptr_t, int, int);
 #endif /* !MAKEDEFS_C && !LEV_LEX_C */
 
 /* ### drawing.c ### */
@@ -198,490 +196,490 @@ E bool hurtle_step(genericptr_t, int, int);
 #if !defined(MAKEDEFS_C) && !defined(LEV_LEX_C)
 /* ### dungeon.c ### */
 
-E void save_dungeon(int, bool, bool);
-E void restore_dungeon(int);
-E void insert_branch(branch *, bool);
-E void init_dungeons();
-E s_level *find_level(const char *);
-E s_level *Is_special(d_level *);
-E branch *Is_branchlev(d_level *);
-E xchar ledger_no(d_level *);
-E xchar maxledgerno();
-E schar depth(d_level *);
-E xchar dunlev(d_level *);
-E xchar dunlevs_in_dungeon(d_level *);
-E xchar ledger_to_dnum(xchar);
-E xchar ledger_to_dlev(xchar);
-E xchar deepest_lev_reached(bool);
-E bool on_level(d_level *, d_level *);
-E void next_level(bool);
-E void prev_level(bool);
-E void u_on_newpos(int, int);
-E void u_on_sstairs();
-E void u_on_upstairs();
-E void u_on_dnstairs();
-E bool On_stairs(xchar, xchar);
-E void get_level(d_level *, int);
-E bool Is_botlevel(d_level *);
-E bool Can_fall_thru(d_level *);
-E bool Can_dig_down(d_level *);
-E bool Can_rise_up(int, int, d_level *);
-E bool In_quest(d_level *);
-E bool In_mines(d_level *);
-E branch *dungeon_branch(const char *);
-E bool at_dgn_entrance(const char *);
-E bool In_hell(d_level *);
-E bool In_V_tower(d_level *);
-E bool On_W_tower_level(d_level *);
-E bool In_W_tower(int, int, d_level *);
-E void find_hell(d_level *);
-E void goto_hell(bool, bool);
-E void assign_level(d_level *, d_level *);
-E void assign_rnd_level(d_level *, d_level *, int);
-E int induced_align(int);
-E bool Invocation_lev(d_level *);
-E xchar level_difficulty();
-E schar lev_by_name(const char *);
+void save_dungeon(int, bool, bool);
+void restore_dungeon(int);
+void insert_branch(branch *, bool);
+void init_dungeons();
+s_level *find_level(const char *);
+s_level *Is_special(d_level *);
+branch *Is_branchlev(d_level *);
+xchar ledger_no(d_level *);
+xchar maxledgerno();
+schar depth(d_level *);
+xchar dunlev(d_level *);
+xchar dunlevs_in_dungeon(d_level *);
+xchar ledger_to_dnum(xchar);
+xchar ledger_to_dlev(xchar);
+xchar deepest_lev_reached(bool);
+bool on_level(d_level *, d_level *);
+void next_level(bool);
+void prev_level(bool);
+void u_on_newpos(int, int);
+void u_on_sstairs();
+void u_on_upstairs();
+void u_on_dnstairs();
+bool On_stairs(xchar, xchar);
+void get_level(d_level *, int);
+bool Is_botlevel(d_level *);
+bool Can_fall_thru(d_level *);
+bool Can_dig_down(d_level *);
+bool Can_rise_up(int, int, d_level *);
+bool In_quest(d_level *);
+bool In_mines(d_level *);
+branch *dungeon_branch(const char *);
+bool at_dgn_entrance(const char *);
+bool In_hell(d_level *);
+bool In_V_tower(d_level *);
+bool On_W_tower_level(d_level *);
+bool In_W_tower(int, int, d_level *);
+void find_hell(d_level *);
+void goto_hell(bool, bool);
+void assign_level(d_level *, d_level *);
+void assign_rnd_level(d_level *, d_level *, int);
+int induced_align(int);
+bool Invocation_lev(d_level *);
+xchar level_difficulty();
+schar lev_by_name(const char *);
 #ifdef WIZARD
-E schar print_dungeon(bool, schar *, xchar *);
+schar print_dungeon(bool, schar *, xchar *);
 #endif
 
 /* ### eat.c ### */
 
-E bool is_edible(Object *);
-E void init_uhunger();
-E int Hear_again();
-E void reset_eat();
-E int doeat();
-E void gethungry();
-E void morehungry(int);
-E void lesshungry(int);
-E bool is_fainted();
-E void reset_faint();
-E void violated_vegetarian();
+bool is_edible(Object *);
+void init_uhunger();
+int Hear_again();
+void reset_eat();
+int doeat();
+void gethungry();
+void morehungry(int);
+void lesshungry(int);
+bool is_fainted();
+void reset_faint();
+void violated_vegetarian();
 #if 0
-E void sync_hunger();
+void sync_hunger();
 #endif
-E void newuhs(bool);
-E Object *floorfood(const char *, int);
-E void vomit();
-E int eaten_stat(int, Object *);
-E void food_disappears(Object *);
-E void food_substitution(Object *, Object *);
-E void fix_petrification();
-E void consume_oeaten(Object *, int);
-E bool maybe_finished_meal(bool);
+void newuhs(bool);
+Object *floorfood(const char *, int);
+void vomit();
+int eaten_stat(int, Object *);
+void food_disappears(Object *);
+void food_substitution(Object *, Object *);
+void fix_petrification();
+void consume_oeaten(Object *, int);
+bool maybe_finished_meal(bool);
 
 #endif /* !MAKEDEFS_C && !LEV_LEX_C */
 /* ### end.c ### */
 
-E void done1(int);
-E int done2();
-E void done_in_by(Monster *);
-E void panic(const char *, ...) PRINTF_F(1, 2);
-E void done(int);
-E void container_contents(Object *, bool, bool);
+void done1(int);
+int done2();
+void done_in_by(Monster *);
+void panic(const char *, ...) PRINTF_F(1, 2);
+void done(int);
+void container_contents(Object *, bool, bool);
 #ifdef DUMP_LOG
-E void dump(char const *, char const *);
-E void do_containerconts(Object *, bool, bool, bool, bool);
+void dump(char const *, char const *);
+void do_containerconts(Object *, bool, bool, bool, bool);
 #endif
-E void terminate(int);
-E int num_genocides();
+void terminate(int);
+int num_genocides();
 
 #if !defined(MAKEDEFS_C) && !defined(LEV_LEX_C)
 /* ### engrave.c ### */
 
-E char *random_engraving(char *);
-E void wipeout_text(char *, int, unsigned);
-E bool can_reach_floor();
-E const char *surface(int, int);
-E const char *ceiling(int, int);
-E struct engr *engr_at(xchar, xchar);
+char *random_engraving(char *);
+void wipeout_text(char *, int, unsigned);
+bool can_reach_floor();
+const char *surface(int, int);
+const char *ceiling(int, int);
+struct engr *engr_at(xchar, xchar);
 #ifdef ELBERETH
-E int sengr_at(const char *, xchar, xchar);
+int sengr_at(const char *, xchar, xchar);
 #endif
-E void u_wipe_engr(int);
-E void wipe_engr_at(xchar, xchar, xchar);
-E void read_engr_at(int, int);
-E void make_engr_at(int, int, const char *, long, xchar);
-E void del_engr_at(int, int);
-E int freehand();
-E int doengrave();
-E void save_engravings(int, int);
-E void rest_engravings(int);
-E void del_engr(struct engr *);
-E void rloc_engr(struct engr *);
-E void make_grave(int, int, const char *);
+void u_wipe_engr(int);
+void wipe_engr_at(xchar, xchar, xchar);
+void read_engr_at(int, int);
+void make_engr_at(int, int, const char *, long, xchar);
+void del_engr_at(int, int);
+int freehand();
+int doengrave();
+void save_engravings(int, int);
+void rest_engravings(int);
+void del_engr(struct engr *);
+void rloc_engr(struct engr *);
+void make_grave(int, int, const char *);
 
 /* ### exper.c ### */
 
-E int experience(Monster *, int);
-E void more_experienced(int, int);
-E void losexp(const char *);
-E void newexplevel();
-E void pluslvl(bool);
-E long rndexp(bool);
+int experience(Monster *, int);
+void more_experienced(int, int);
+void losexp(const char *);
+void newexplevel();
+void pluslvl(bool);
+long rndexp(bool);
 
 /* ### explode.c ### */
 
-E void explode(int, int, int, int, char, int);
-E long scatter(int, int, int, unsigned int, Object *);
-E void splatter_burning_oil(int, int);
+void explode(int, int, int, int, char, int);
+long scatter(int, int, int, unsigned int, Object *);
+void splatter_burning_oil(int, int);
 
 /* ### extralev.c ### */
 
 #ifdef REINCARNATION
-E void makeroguerooms();
-E void corr(int, int);
-E void makerogueghost();
+void makeroguerooms();
+void corr(int, int);
+void makerogueghost();
 #endif
 
 /* ### files.c ### */
 
-E char *fname_encode(const char *, char, char *, char *, int);
-E char *fname_decode(char, char *, char *, int);
-E const char *fqname(const char *, int, int);
-E FILE *fopen_datafile(const char *, const char *, int);
-E bool uptodate(int, const char *);
-E void store_version(int);
-E void set_levelfile_name(char *, int);
-E int create_levelfile(int, char *);
-E int open_levelfile(int, char *);
-E void delete_levelfile(int);
-E void clearlocks();
-E int create_bonesfile(d_level *, char **, char *);
-E void commit_bonesfile(d_level *);
-E int open_bonesfile(d_level *, char **);
-E int delete_bonesfile(d_level *);
-E void compress_bonesfile();
-E void set_savefile_name();
+char *fname_encode(const char *, char, char *, char *, int);
+char *fname_decode(char, char *, char *, int);
+const char *fqname(const char *, int, int);
+FILE *fopen_datafile(const char *, const char *, int);
+bool uptodate(int, const char *);
+void store_version(int);
+void set_levelfile_name(char *, int);
+int create_levelfile(int, char *);
+int open_levelfile(int, char *);
+void delete_levelfile(int);
+void clearlocks();
+int create_bonesfile(d_level *, char **, char *);
+void commit_bonesfile(d_level *);
+int open_bonesfile(d_level *, char **);
+int delete_bonesfile(d_level *);
+void compress_bonesfile();
+void set_savefile_name();
 #ifdef INSURANCE
-E void save_savefile_name(int);
+void save_savefile_name(int);
 #endif
 #if defined(WIZARD)
-E void set_error_savefile();
+void set_error_savefile();
 #endif
-E int create_savefile();
-E int open_savefile();
-E int delete_savefile();
-E int restore_saved_game();
-E void compress(const char *);
-E void uncompress(const char *);
-E bool lock_file(const char *, int, int);
-E void unlock_file(const char *);
+int create_savefile();
+int open_savefile();
+int delete_savefile();
+int restore_saved_game();
+void compress(const char *);
+void uncompress(const char *);
+bool lock_file(const char *, int, int);
+void unlock_file(const char *);
 #ifdef USER_SOUNDS
-E bool can_read_file(const char *);
+bool can_read_file(const char *);
 #endif
-E void read_config_file(const char *);
-E void check_recordfile(const char *);
+void read_config_file(const char *);
+void check_recordfile(const char *);
 #if defined(WIZARD)
-E void read_wizkit();
+void read_wizkit();
 #endif
-E void paniclog(const char *, const char *);
-E int validate_prefix_locations(char *);
-E char **get_saved_games();
-E void free_saved_games(char **);
+void paniclog(const char *, const char *);
+int validate_prefix_locations(char *);
+char **get_saved_games();
+void free_saved_games(char **);
 #ifdef SELF_RECOVER
-E bool recover_savefile();
+bool recover_savefile();
 #endif
 #ifdef HOLD_LOCKFILE_OPEN
-E void really_close();
+void really_close();
 #endif
 
 /* ### fountain.c ### */
 
-E void floating_above(const char *);
-E void dogushforth(int);
-E void dryup(xchar, xchar, bool);
-E void drinkfountain();
-E void dipfountain(Object *);
+void floating_above(const char *);
+void dogushforth(int);
+void dryup(xchar, xchar, bool);
+void drinkfountain();
+void dipfountain(Object *);
 #ifdef SINKS
-E void breaksink(int, int);
-E void drinksink();
+void breaksink(int, int);
+void drinksink();
 #endif
 
 /* ### hack.c ### */
 
-E bool revive_nasty(int, int, const char *);
-E void movobj(Object *, xchar, xchar);
-E bool may_dig(xchar, xchar);
-E bool may_passwall(xchar, xchar);
-E bool bad_rock(MonsterType *, xchar, xchar);
-E bool invocation_pos(xchar, xchar);
-E bool test_move(int, int, int, int, int);
-E void domove();
-E void invocation_message();
-E void spoteffects(bool);
-E char *in_rooms(xchar, xchar, int);
-E bool in_town(int, int);
-E void check_special_room(bool);
-E int dopickup();
-E void lookaround();
-E int monster_nearby();
-E void nomul(int, const char *);
-E void unmul(const char *);
-E void losehp(int, const char *, bool);
-E int weight_cap();
-E int inv_weight();
-E int near_capacity();
-E int calc_capacity(int);
-E int max_capacity();
-E bool check_capacity(const char *);
-E int inv_cnt();
+bool revive_nasty(int, int, const char *);
+void movobj(Object *, xchar, xchar);
+bool may_dig(xchar, xchar);
+bool may_passwall(xchar, xchar);
+bool bad_rock(MonsterType *, xchar, xchar);
+bool invocation_pos(xchar, xchar);
+bool test_move(int, int, int, int, int);
+void domove();
+void invocation_message();
+void spoteffects(bool);
+char *in_rooms(xchar, xchar, int);
+bool in_town(int, int);
+void check_special_room(bool);
+int dopickup();
+void lookaround();
+int monster_nearby();
+void nomul(int, const char *);
+void unmul(const char *);
+void losehp(int, const char *, bool);
+int weight_cap();
+int inv_weight();
+int near_capacity();
+int calc_capacity(int);
+int max_capacity();
+bool check_capacity(const char *);
+int inv_cnt();
 #ifdef GOLDOBJ
-E long money_cnt(Object *);
+long money_cnt(Object *);
 #endif
 
 /* ### hacklib.c ### */
 
-E bool digit(char);
-E bool letter(char);
-E char highc(char);
-E char lowc(char);
-E char *lcase(char *);
-E char *upstart(char *);
-E char *mungspaces(char *);
-E char *eos(char *);
-E char *strkitten(char *, char);
-E char *s_suffix(const char *);
-E char *xcrypt(const char *, char *);
-E bool onlyspace(const char *);
-E char *tabexpand(char *);
-E char *visctrl(char);
-E const char *ordin(int);
-E char *sitoa(int);
-E int sgn(int);
-E int rounddiv(long, int);
-E int dist2(int, int, int, int);
-E int distmin(int, int, int, int);
-E bool online2(int, int, int, int);
-E bool pmatch(const char *, const char *);
+bool digit(char);
+bool letter(char);
+char highc(char);
+char lowc(char);
+char *lcase(char *);
+char *upstart(char *);
+char *mungspaces(char *);
+char *eos(char *);
+char *strkitten(char *, char);
+char *s_suffix(const char *);
+char *xcrypt(const char *, char *);
+bool onlyspace(const char *);
+char *tabexpand(char *);
+char *visctrl(char);
+const char *ordin(int);
+char *sitoa(int);
+int sgn(int);
+int rounddiv(long, int);
+int dist2(int, int, int, int);
+int distmin(int, int, int, int);
+bool online2(int, int, int, int);
+bool pmatch(const char *, const char *);
 #ifndef STRNCMPI
-E int strncmpi(const char *, const char *, int);
+int strncmpi(const char *, const char *, int);
 #endif
 #ifndef STRSTRI
-E char *strstri(const char *, const char *);
+char *strstri(const char *, const char *);
 #endif
-E bool fuzzymatch(const char *, const char *, const char *, bool);
-E void setrandom();
-E int getyear();
+bool fuzzymatch(const char *, const char *, const char *, bool);
+void setrandom();
+int getyear();
 #if 0
-E char *yymmdd(time_t);
+char *yymmdd(time_t);
 #endif
-E long yyyymmdd(time_t);
-E int phase_of_the_moon();
-E bool friday_13th();
-E int night();
-E int midnight();
+long yyyymmdd(time_t);
+int phase_of_the_moon();
+bool friday_13th();
+int night();
+int midnight();
 
 /* ### invent.c ### */
 
-E void assigninvlet(Object *);
-E Object *merge_choice(Object *, Object *);
-E int merged(Object **, Object **);
-E void addinv_core1(Object *);
-E void addinv_core2(Object *);
-E Object *addinv(Object *);
-E Object *hold_another_object(Object *, const char *, const char *,
+void assigninvlet(Object *);
+Object *merge_choice(Object *, Object *);
+int merged(Object **, Object **);
+void addinv_core1(Object *);
+void addinv_core2(Object *);
+Object *addinv(Object *);
+Object *hold_another_object(Object *, const char *, const char *,
                               const char *);
-E void useupall(Object *);
-E void useup(Object *);
-E void consume_obj_charge(Object *, bool);
-E void freeinv_core(Object *);
-E void freeinv(Object *);
-E void delallobj(int, int);
-E void delobj(Object *);
-E Object *sobj_at(int, int, int);
-E Object *carrying(int);
-E bool have_lizard();
-E Object *o_on(unsigned int, Object *);
-E bool obj_here(Object *, int, int);
-E bool wearing_armor();
-E bool is_worn(Object *);
-E Object *g_at(int, int);
-E Object *mkgoldobj(long);
-E Object *getobj(const char *, const char *);
-E int ggetobj(const char *, int (*)(Object *), int, bool, unsigned *);
-E void fully_identify_obj(Object *);
-E int identify(Object *);
-E void identify_pack(int);
-E int askchain(Object **, const char *, int, int (*)(Object *),
+void useupall(Object *);
+void useup(Object *);
+void consume_obj_charge(Object *, bool);
+void freeinv_core(Object *);
+void freeinv(Object *);
+void delallobj(int, int);
+void delobj(Object *);
+Object *sobj_at(int, int, int);
+Object *carrying(int);
+bool have_lizard();
+Object *o_on(unsigned int, Object *);
+bool obj_here(Object *, int, int);
+bool wearing_armor();
+bool is_worn(Object *);
+Object *g_at(int, int);
+Object *mkgoldobj(long);
+Object *getobj(const char *, const char *);
+int ggetobj(const char *, int (*)(Object *), int, bool, unsigned *);
+void fully_identify_obj(Object *);
+int identify(Object *);
+void identify_pack(int);
+int askchain(Object **, const char *, int, int (*)(Object *),
                int (*)(Object *), int, const char *);
-E void prinv(const char *, Object *, long);
-E char *xprname(Object *, const char *, char, bool, long, long);
-E int ddoinv();
-E char display_inventory(const char *, bool);
+void prinv(const char *, Object *, long);
+char *xprname(Object *, const char *, char, bool, long, long);
+int ddoinv();
+char display_inventory(const char *, bool);
 #ifdef DUMP_LOG
-E char dump_inventory(const char *, bool, bool);
+char dump_inventory(const char *, bool, bool);
 #endif
-E int display_binventory(int, int, bool);
-E Object *display_cinventory(Object *);
-E Object *display_minventory(Monster *, int, char *);
-E int dotypeinv();
-E const char *dfeature_at(int, int, char *);
-E int look_here(int, bool);
-E int dolook();
-E bool will_feel_cockatrice(Object *, bool);
-E void feel_cockatrice(Object *, bool);
-E void stackobj(Object *);
-E int doprgold();
-E int doprwep();
-E int doprarm();
-E int doprring();
-E int dopramulet();
-E int doprtool();
-E int doprinuse();
-E void useupf(Object *, long);
-E char *let_to_name(char, bool);
-E void free_invbuf();
-E void reassign();
-E int doorganize();
-E int count_unpaid(Object *);
-E int count_buc(Object *, int);
-E void carry_obj_effects(Object *);
-E const char *currency(long);
-E void silly_thing(const char *, Object *);
+int display_binventory(int, int, bool);
+Object *display_cinventory(Object *);
+Object *display_minventory(Monster *, int, char *);
+int dotypeinv();
+const char *dfeature_at(int, int, char *);
+int look_here(int, bool);
+int dolook();
+bool will_feel_cockatrice(Object *, bool);
+void feel_cockatrice(Object *, bool);
+void stackobj(Object *);
+int doprgold();
+int doprwep();
+int doprarm();
+int doprring();
+int dopramulet();
+int doprtool();
+int doprinuse();
+void useupf(Object *, long);
+char *let_to_name(char, bool);
+void free_invbuf();
+void reassign();
+int doorganize();
+int count_unpaid(Object *);
+int count_buc(Object *, int);
+void carry_obj_effects(Object *);
+const char *currency(long);
+void silly_thing(const char *, Object *);
 
 /* ### ioctl.c ### */
 
-E void getwindowsz();
-E void getioctls();
-E void setioctls();
+void getwindowsz();
+void getioctls();
+void setioctls();
 #ifdef SUSPEND
-E int dosuspend();
+int dosuspend();
 #endif /* SUSPEND */
 
 /* ### light.c ### */
 
-E void new_light_source(xchar, xchar, int, int, genericptr_t);
-E void del_light_source(int, genericptr_t);
-E void do_light_sources(char **);
-E Monster *find_mid(unsigned, unsigned);
-E void save_light_sources(int, int, int);
-E void restore_light_sources(int);
-E void relink_light_sources(bool);
-E void obj_move_light_source(Object *, Object *);
-E bool any_light_source();
-E void snuff_light_source(int, int);
-E bool obj_sheds_light(Object *);
-E bool obj_is_burning(Object *);
-E void obj_split_light_source(Object *, Object *);
-E void obj_merge_light_sources(Object *, Object *);
-E int candle_light_range(Object *);
+void new_light_source(xchar, xchar, int, int, genericptr_t);
+void del_light_source(int, genericptr_t);
+void do_light_sources(char **);
+Monster *find_mid(unsigned, unsigned);
+void save_light_sources(int, int, int);
+void restore_light_sources(int);
+void relink_light_sources(bool);
+void obj_move_light_source(Object *, Object *);
+bool any_light_source();
+void snuff_light_source(int, int);
+bool obj_sheds_light(Object *);
+bool obj_is_burning(Object *);
+void obj_split_light_source(Object *, Object *);
+void obj_merge_light_sources(Object *, Object *);
+int candle_light_range(Object *);
 #ifdef WIZARD
-E int wiz_light_sources();
+int wiz_light_sources();
 #endif
 
 /* ### lock.c ### */
 
-E bool picking_lock(int *, int *);
-E bool picking_at(int, int);
-E void reset_pick();
-E int pick_lock(Object *);
-E int doforce();
-E bool boxlock(Object *, Object *);
-E bool doorlock(Object *, int, int);
-E int doopen();
-E int doclose();
+bool picking_lock(int *, int *);
+bool picking_at(int, int);
+void reset_pick();
+int pick_lock(Object *);
+int doforce();
+bool boxlock(Object *, Object *);
+bool doorlock(Object *, int, int);
+int doopen();
+int doclose();
 
 /* ### mail.c ### */
 
 #ifdef MAIL
-E void getmailstatus();
-E void ckmailstatus();
-E void readmail(Object *);
+void getmailstatus();
+void ckmailstatus();
+void readmail(Object *);
 #endif /* MAIL */
 
 /* ### makemon.c ### */
 
-E bool IsLevelHomeOfElementalType(MonsterType *);
-E Monster *clone_mon(Monster *, xchar, xchar);
-E Monster *makemon(MonsterType *, int, int, int);
-E bool create_critters(int, MonsterType *);
-E MonsterType *rndmonst();
-E void reset_rndmonst(int);
-E MonsterType *mkclass(char, int);
-E int adj_lev(MonsterType *);
-E MonsterType *grow_up(Monster *, Monster *);
-E int mongets(Monster *, int);
-E int golemhp(int);
-E bool peace_minded(MonsterType *);
-E void set_malign(Monster *);
-E void set_mimic_sym(Monster *);
-E int mbirth_limit(int);
-E void mimic_hit_msg(Monster *, short);
+bool IsLevelHomeOfElementalType(MonsterType *);
+Monster *clone_mon(Monster *, xchar, xchar);
+Monster *makemon(MonsterType *, int, int, int);
+bool create_critters(int, MonsterType *);
+MonsterType *rndmonst();
+void reset_rndmonst(int);
+MonsterType *mkclass(char, int);
+int adj_lev(MonsterType *);
+MonsterType *grow_up(Monster *, Monster *);
+int mongets(Monster *, int);
+int golemhp(int);
+bool peace_minded(MonsterType *);
+void set_malign(Monster *);
+void set_mimic_sym(Monster *);
+int mbirth_limit(int);
+void mimic_hit_msg(Monster *, short);
 #ifdef GOLDOBJ
-E void mkmonmoney(Monster *, long);
+void mkmonmoney(Monster *, long);
 #endif
-E void bagotricks(Object *);
-E bool propagate(int, bool, bool);
+void bagotricks(Object *);
+bool propagate(int, bool, bool);
 
 /* ### mapglyph.c ### */
 
-E void mapglyph(int, int *, int *, unsigned *, int, int);
+void mapglyph(int, int *, int *, unsigned *, int, int);
 
 /* ### mcastu.c ### */
 
-E int castmu(Monster *, struct Attack *, bool, bool);
-E int buzzmu(Monster *, struct Attack *);
+int castmu(Monster *, struct Attack *, bool, bool);
+int buzzmu(Monster *, struct Attack *);
 
 /* ### mhitm.c ### */
 
-E int fightm(Monster *);
-E int mattackm(Monster *, Monster *);
-E int noattacks(MonsterType *);
-E int sleep_monst(Monster *, int, int);
-E void slept_monst(Monster *);
-E long attk_protection(int);
+int fightm(Monster *);
+int mattackm(Monster *, Monster *);
+int noattacks(MonsterType *);
+int sleep_monst(Monster *, int, int);
+void slept_monst(Monster *);
+long attk_protection(int);
 
 /* ### mhitu.c ### */
 
-E const char *mpoisons_subj(Monster *, struct Attack *);
-E void u_slow_down();
-E Monster *cloneu();
-E void expels(Monster *, MonsterType *, bool);
-E struct Attack *getmattk(MonsterType *, int, int *, struct Attack *);
-E int mattacku(Monster *);
-E int magic_negation(Monster *);
-E int gazemu(Monster *, struct Attack *);
-E void mdamageu(Monster *, int);
-E int could_seduce(Monster *, Monster *, struct Attack *);
+const char *mpoisons_subj(Monster *, struct Attack *);
+void u_slow_down();
+Monster *cloneu();
+void expels(Monster *, MonsterType *, bool);
+struct Attack *getmattk(MonsterType *, int, int *, struct Attack *);
+int mattacku(Monster *);
+int magic_negation(Monster *);
+int gazemu(Monster *, struct Attack *);
+void mdamageu(Monster *, int);
+int could_seduce(Monster *, Monster *, struct Attack *);
 #ifdef SEDUCE
-E int doseduce(Monster *);
+int doseduce(Monster *);
 #endif
 
 /* ### minion.c ### */
 
-E void msummon(Monster *);
-E void summon_minion(ALIGNTYP_P, bool);
-E int demon_talk(Monster *);
-E long bribe(Monster *);
-E int dprince(ALIGNTYP_P);
-E int dlord(ALIGNTYP_P);
-E int llord();
-E int ndemon(ALIGNTYP_P);
-E int lminion();
+void msummon(Monster *);
+void summon_minion(ALIGNTYP_P, bool);
+int demon_talk(Monster *);
+long bribe(Monster *);
+int dprince(ALIGNTYP_P);
+int dlord(ALIGNTYP_P);
+int llord();
+int ndemon(ALIGNTYP_P);
+int lminion();
 
 /* ### mklev.c ### */
 
-E void sort_rooms();
-E void add_room(int, int, int, int, bool, schar, bool);
-E void add_subroom(struct mkroom *, int, int, int, int, bool, schar, bool);
-E void makecorridors();
-E void add_door(int, int, struct mkroom *);
-E void mklev();
+void sort_rooms();
+void add_room(int, int, int, int, bool, schar, bool);
+void add_subroom(struct mkroom *, int, int, int, int, bool, schar, bool);
+void makecorridors();
+void add_door(int, int, struct mkroom *);
+void mklev();
 #ifdef SPECIALIZATION
-E void topologize(struct mkroom *, bool);
+void topologize(struct mkroom *, bool);
 #else
-E void topologize(struct mkroom *);
+void topologize(struct mkroom *);
 #endif
-E void place_branch(branch *, xchar, xchar);
-E bool occupied(xchar, xchar);
-E int okdoor(xchar, xchar);
-E void dodoor(int, int, struct mkroom *);
-E void mktrap(int, int, struct mkroom *, coord *);
-E void mkstairs(xchar, xchar, char, struct mkroom *);
-E void mkinvokearea();
+void place_branch(branch *, xchar, xchar);
+bool occupied(xchar, xchar);
+int okdoor(xchar, xchar);
+void dodoor(int, int, struct mkroom *);
+void mktrap(int, int, struct mkroom *, coord *);
+void mkstairs(xchar, xchar, char, struct mkroom *);
+void mkinvokearea();
 
 /* ### mkmap.c ### */
 
@@ -690,1126 +688,1124 @@ void remove_rooms(int, int, int, int);
 
 /* ### mkmaze.c ### */
 
-E void wallification(int, int, int, int);
-E void walkfrom(int, int);
-E void makemaz(const char *);
-E void mazexy(coord *);
-E void bound_digging();
-E void mkportal(xchar, xchar, xchar, xchar);
-E bool bad_location(xchar, xchar, xchar, xchar, xchar, xchar);
-E void place_lregion(xchar, xchar, xchar, xchar, xchar, xchar, xchar, xchar,
+void wallification(int, int, int, int);
+void walkfrom(int, int);
+void makemaz(const char *);
+void mazexy(coord *);
+void bound_digging();
+void mkportal(xchar, xchar, xchar, xchar);
+bool bad_location(xchar, xchar, xchar, xchar, xchar, xchar);
+void place_lregion(xchar, xchar, xchar, xchar, xchar, xchar, xchar, xchar,
                      xchar, d_level *);
-E void movebubbles();
-E void water_friction();
-E void save_waterlevel(int, int);
-E void restore_waterlevel(int);
-E const char *waterbody_name(xchar, xchar);
+void movebubbles();
+void water_friction();
+void save_waterlevel(int, int);
+void restore_waterlevel(int);
+const char *waterbody_name(xchar, xchar);
 
 /* ### mkobj.c ### */
 
-E Object *MakeRandomObjectAt(char, int, int, bool);
-E Object *MakeSpecificObjectAt(int, int, int, bool, bool);
-E Object *MakeRandomObject(char, bool);
-E int PickRandomMonsterTypeIndex();
-E Object *SplitObject(Object *, long);
-E void ReplaceObject(Object *, Object *);
-E void CreateBillDummyObject(Object *);
-E Object *MakeSpecificObject(int, bool, bool);
-E int GetBUCSign(Object *);
-E int GetWeight(Object *);
-E Object *MakeGold(long, int, int);
-E Object *MakeCorpseOrStatue(int, Monster *, MonsterType *, int, int, bool);
-E Object *AttachMonsterIdToObject(Object *, unsigned);
-E Monster *NewMonsterFromObject(Object *, bool);
-E Object *NewTopTenObject(int, int, int);
-E Object *MakeNamedCorpseOrStatue(int, MonsterType *, int, int, const char *);
-E Object *MakeRandomTreefruitAt(int, int);
-E void StartCorpseTimeout(Object *);
-E void Bless(Object *);
-E void Unbless(Object *);
-E void Curse(Object *);
-E void Uncurse(Object *);
-E void BlessOrCurse(Object *, int);
-E bool IsFlammable(Object *);
-E bool IsRottable(Object *);
-E void PlaceObject(Object *, int, int);
-E void RemoveObjectFromFloor(Object *);
-E void DiscardMonsterInventory(Monster *);
-E void RemoveObjectFromStorage(Object *);
-E void ExtractObjectFromList(Object *, Object **);
-E void extract_nexthere(Object *, Object **);
-E int AddObjectToMonsterInventory(Monster *, Object *);
-E Object *AddObjectToContainer(Object *, Object *);
-E void AddObjectToMigrationList(Object *);
-E void AddToBuriedList(Object *);
-E void DeallocateObject(Object *);
-E void ApplyIceEffectsAt(int, int, bool);
-E long PeekAtIcedCorpseAge(Object *);
+Object *MakeRandomObjectAt(char, int, int, bool);
+Object *MakeSpecificObjectAt(int, int, int, bool, bool);
+Object *MakeRandomObject(char, bool);
+int PickRandomMonsterTypeIndex();
+Object *SplitObject(Object *, long);
+void ReplaceObject(Object *, Object *);
+void CreateBillDummyObject(Object *);
+Object *MakeSpecificObject(int, bool, bool);
+int GetBUCSign(Object *);
+int GetWeight(Object *);
+Object *MakeGold(long, int, int);
+Object *MakeCorpseOrStatue(int, Monster *, MonsterType *, int, int, bool);
+Object *AttachMonsterIdToObject(Object *, unsigned);
+Monster *NewMonsterFromObject(Object *, bool);
+Object *NewTopTenObject(int, int, int);
+Object *MakeNamedCorpseOrStatue(int, MonsterType *, int, int, const char *);
+Object *MakeRandomTreefruitAt(int, int);
+void StartCorpseTimeout(Object *);
+void Bless(Object *);
+void Unbless(Object *);
+void Curse(Object *);
+void Uncurse(Object *);
+void BlessOrCurse(Object *, int);
+bool IsFlammable(Object *);
+bool IsRottable(Object *);
+void PlaceObject(Object *, int, int);
+void RemoveObjectFromFloor(Object *);
+void DiscardMonsterInventory(Monster *);
+void RemoveObjectFromStorage(Object *);
+void ExtractObjectFromList(Object *, Object **);
+void extract_nexthere(Object *, Object **);
+int AddObjectToMonsterInventory(Monster *, Object *);
+Object *AddObjectToContainer(Object *, Object *);
+void AddObjectToMigrationList(Object *);
+void AddToBuriedList(Object *);
+void DeallocateObject(Object *);
+void ApplyIceEffectsAt(int, int, bool);
+long PeekAtIcedCorpseAge(Object *);
 #ifdef WIZARD
-E void SanityCheckObjects();
+void SanityCheckObjects();
 #endif
 
 /* ### mkroom.c ### */
 
-E void mkroom(int);
-E void fill_zoo(struct mkroom *);
-E bool nexttodoor(int, int);
-E bool has_dnstairs(struct mkroom *);
-E bool has_upstairs(struct mkroom *);
-E int somex(struct mkroom *);
-E int somey(struct mkroom *);
-E bool inside_room(struct mkroom *, xchar, xchar);
-E bool somexy(struct mkroom *, coord *);
-E void mkundead(coord *, bool, int);
-E MonsterType *courtmon();
-E void save_rooms(int);
-E void rest_rooms(int);
-E struct mkroom *search_special(schar);
+void mkroom(int);
+void fill_zoo(struct mkroom *);
+bool nexttodoor(int, int);
+bool has_dnstairs(struct mkroom *);
+bool has_upstairs(struct mkroom *);
+int somex(struct mkroom *);
+int somey(struct mkroom *);
+bool inside_room(struct mkroom *, xchar, xchar);
+bool somexy(struct mkroom *, coord *);
+void mkundead(coord *, bool, int);
+MonsterType *courtmon();
+void save_rooms(int);
+void rest_rooms(int);
+struct mkroom *search_special(schar);
 
 /* ### mon.c ### */
 
-E int undead_to_corpse(int);
-E int genus(int, int);
-E int pm_to_cham(int);
-E int minliquid(Monster *);
-E int movemon();
-E int meatmetal(Monster *);
-E int meatobj(Monster *);
-E void mpickgold(Monster *);
-E bool mpickstuff(Monster *, const char *);
-E int curr_mon_load(Monster *);
-E int max_mon_load(Monster *);
-E bool can_carry(Monster *, Object *);
-E int mfndpos(Monster *, coord *, long *, long);
-E bool monnear(Monster *, int, int);
-E void dmonsfree();
-E int mcalcmove(Monster *);
-E void mcalcdistress();
-E void replmon(Monster *, Monster *);
-E void relmon(Monster *);
-E Object *mlifesaver(Monster *);
-E bool corpse_chance(Monster *, Monster *, bool);
-E void mondead(Monster *);
-E void mondied(Monster *);
-E void mongone(Monster *);
-E void monstone(Monster *);
-E void monkilled(Monster *, const char *, int);
-E void unstuck(Monster *);
-E void killed(Monster *);
-E void xkilled(Monster *, int);
-E void mon_to_stone(Monster *);
-E void mnexto(Monster *);
-E bool mnearto(Monster *, xchar, xchar, bool);
-E void poisontell(int);
-E void poisoned(const char *, int, const char *, int);
-E void m_respond(Monster *);
-E void setmangry(Monster *);
-E void wakeup(Monster *);
-E void wake_nearby();
-E void wake_nearto(int, int, int);
-E void seemimic(Monster *);
-E void rescham();
-E void restartcham();
-E void restore_cham(Monster *);
-E void mon_animal_list(bool);
-E int newcham(Monster *, MonsterType *, bool, bool);
-E int can_be_hatched(int);
-E int egg_type_from_parent(int, bool);
-E bool dead_species(int, bool);
-E void kill_genocided_monsters();
-E void golemeffects(Monster *, int, int);
-E bool angry_guards(bool);
-E void pacify_guards();
+int undead_to_corpse(int);
+int genus(int, int);
+int pm_to_cham(int);
+int minliquid(Monster *);
+int movemon();
+int meatmetal(Monster *);
+int meatobj(Monster *);
+void mpickgold(Monster *);
+bool mpickstuff(Monster *, const char *);
+int curr_mon_load(Monster *);
+int max_mon_load(Monster *);
+bool can_carry(Monster *, Object *);
+int mfndpos(Monster *, coord *, long *, long);
+bool monnear(Monster *, int, int);
+void dmonsfree();
+int mcalcmove(Monster *);
+void mcalcdistress();
+void replmon(Monster *, Monster *);
+void relmon(Monster *);
+Object *mlifesaver(Monster *);
+bool corpse_chance(Monster *, Monster *, bool);
+void mondead(Monster *);
+void mondied(Monster *);
+void mongone(Monster *);
+void monstone(Monster *);
+void monkilled(Monster *, const char *, int);
+void unstuck(Monster *);
+void killed(Monster *);
+void xkilled(Monster *, int);
+void mon_to_stone(Monster *);
+void mnexto(Monster *);
+bool mnearto(Monster *, xchar, xchar, bool);
+void poisontell(int);
+void poisoned(const char *, int, const char *, int);
+void m_respond(Monster *);
+void setmangry(Monster *);
+void wakeup(Monster *);
+void wake_nearby();
+void wake_nearto(int, int, int);
+void seemimic(Monster *);
+void rescham();
+void restartcham();
+void restore_cham(Monster *);
+void mon_animal_list(bool);
+int newcham(Monster *, MonsterType *, bool, bool);
+int can_be_hatched(int);
+int egg_type_from_parent(int, bool);
+bool dead_species(int, bool);
+void kill_genocided_monsters();
+void golemeffects(Monster *, int, int);
+bool angry_guards(bool);
+void pacify_guards();
 
 /* ### mondata.c ### */
 
-E void set_mon_data(Monster *, MonsterType *, int);
-E struct Attack *attacktype_fordmg(MonsterType *, int, int);
-E bool attacktype(MonsterType *, int);
-E bool poly_when_stoned(MonsterType *);
-E bool resists_drli(Monster *);
-E bool resists_magm(Monster *);
-E bool resists_blnd(Monster *);
-E bool can_blnd(Monster *, Monster *, uchar, Object *);
-E bool ranged_attk(MonsterType *);
-E bool hates_silver(MonsterType *);
-E bool passes_bars(MonsterType *);
-E bool can_track(MonsterType *);
-E bool breakarm(MonsterType *);
-E bool sliparm(MonsterType *);
-E bool sticks(MonsterType *);
-E int num_horns(MonsterType *);
+void set_mon_data(Monster *, MonsterType *, int);
+struct Attack *attacktype_fordmg(MonsterType *, int, int);
+bool attacktype(MonsterType *, int);
+bool poly_when_stoned(MonsterType *);
+bool resists_drli(Monster *);
+bool resists_magm(Monster *);
+bool resists_blnd(Monster *);
+bool can_blnd(Monster *, Monster *, uchar, Object *);
+bool ranged_attk(MonsterType *);
+bool hates_silver(MonsterType *);
+bool passes_bars(MonsterType *);
+bool can_track(MonsterType *);
+bool breakarm(MonsterType *);
+bool sliparm(MonsterType *);
+bool sticks(MonsterType *);
+int num_horns(MonsterType *);
 /* E bool canseemon(struct monst *); */
-E struct Attack *dmgtype_fromattack(MonsterType *, int, int);
-E bool dmgtype(MonsterType *, int);
-E int max_passive_dmg(Monster *, Monster *);
-E int monsndx(MonsterType *);
-E int name_to_mon(const char *);
-E int gender(Monster *);
-E int pronoun_gender(Monster *);
-E bool levl_follower(Monster *);
-E int little_to_big(int);
-E int big_to_little(int);
-E const char *locomotion(const MonsterType *, const char *);
-E const char *stagger(const MonsterType *, const char *);
-E const char *on_fire(MonsterType *, struct Attack *);
-E const MonsterType *raceptr(Monster *);
+struct Attack *dmgtype_fromattack(MonsterType *, int, int);
+bool dmgtype(MonsterType *, int);
+int max_passive_dmg(Monster *, Monster *);
+int monsndx(MonsterType *);
+int name_to_mon(const char *);
+int gender(Monster *);
+int pronoun_gender(Monster *);
+bool levl_follower(Monster *);
+int little_to_big(int);
+int big_to_little(int);
+const char *locomotion(const MonsterType *, const char *);
+const char *stagger(const MonsterType *, const char *);
+const char *on_fire(MonsterType *, struct Attack *);
+const MonsterType *raceptr(Monster *);
 
 /* ### monmove.c ### */
 
-E bool itsstuck(Monster *);
-E bool mb_trapped(Monster *);
-E void mon_regen(Monster *, bool);
-E int dochugw(Monster *);
-E bool onscary(int, int, Monster *);
-E void monflee(Monster *, int, bool, bool);
-E int dochug(Monster *);
-E int m_move(Monster *, int);
-E bool closed_door(int, int);
-E bool accessible(int, int);
-E void set_apparxy(Monster *);
-E bool can_ooze(Monster *);
+bool itsstuck(Monster *);
+bool mb_trapped(Monster *);
+void mon_regen(Monster *, bool);
+int dochugw(Monster *);
+bool onscary(int, int, Monster *);
+void monflee(Monster *, int, bool, bool);
+int dochug(Monster *);
+int m_move(Monster *, int);
+bool closed_door(int, int);
+bool accessible(int, int);
+void set_apparxy(Monster *);
+bool can_ooze(Monster *);
 
 /* ### monst.c ### */
 
-E void monst_init();
+void monst_init();
 
 /* ### monstr.c ### */
 
-E void monstr_init();
+void monstr_init();
 
 /* ### mplayer.c ### */
 
-E Monster *mk_mplayer(MonsterType *, xchar, xchar, bool);
-E void create_mplayers(int, bool);
-E void mplayer_talk(Monster *);
+Monster *mk_mplayer(MonsterType *, xchar, xchar, bool);
+void create_mplayers(int, bool);
+void mplayer_talk(Monster *);
 
 /* ### mthrowu.c ### */
 
-E int thitu(int, int, Object *, const char *);
-E int ohitmon(Monster *, Object *, int, bool);
-E void thrwmu(Monster *);
-E int spitmu(Monster *, struct Attack *);
-E int breamu(Monster *, struct Attack *);
-E bool linedup(xchar, xchar, xchar, xchar);
-E bool lined_up(Monster *);
-E Object *m_carrying(Monster *, int);
-E void m_useup(Monster *, Object *);
-E void m_throw(Monster *, int, int, int, int, int, Object *);
-E bool hits_bars(Object **, int, int, int, int);
+int thitu(int, int, Object *, const char *);
+int ohitmon(Monster *, Object *, int, bool);
+void thrwmu(Monster *);
+int spitmu(Monster *, struct Attack *);
+int breamu(Monster *, struct Attack *);
+bool linedup(xchar, xchar, xchar, xchar);
+bool lined_up(Monster *);
+Object *m_carrying(Monster *, int);
+void m_useup(Monster *, Object *);
+void m_throw(Monster *, int, int, int, int, int, Object *);
+bool hits_bars(Object **, int, int, int, int);
 
 /* ### muse.c ### */
 
-E bool find_defensive(Monster *);
-E int use_defensive(Monster *);
-E int rnd_defensive_item(Monster *);
-E bool find_offensive(Monster *);
-E int use_offensive(Monster *);
-E int rnd_offensive_item(Monster *);
-E bool find_misc(Monster *);
-E int use_misc(Monster *);
-E int rnd_misc_item(Monster *);
-E bool searches_for_item(Monster *, Object *);
-E bool mon_reflects(Monster *, const char *);
-E bool ureflects(const char *, const char *);
-E bool munstone(Monster *, bool);
+bool find_defensive(Monster *);
+int use_defensive(Monster *);
+int rnd_defensive_item(Monster *);
+bool find_offensive(Monster *);
+int use_offensive(Monster *);
+int rnd_offensive_item(Monster *);
+bool find_misc(Monster *);
+int use_misc(Monster *);
+int rnd_misc_item(Monster *);
+bool searches_for_item(Monster *, Object *);
+bool mon_reflects(Monster *, const char *);
+bool ureflects(const char *, const char *);
+bool munstone(Monster *, bool);
 
 /* ### music.c ### */
 
-E void awaken_soldiers();
-E int do_play_instrument(Object *);
+void awaken_soldiers();
+int do_play_instrument(Object *);
 
 /* ### nhlan.c ### */
 #ifdef LAN_FEATURES
-E void init_lan_features();
-E char *lan_username();
+void init_lan_features();
+char *lan_username();
 #ifdef LAN_MAIL
-E bool lan_mail_check();
-E void lan_mail_read(Object *);
-E void lan_mail_init();
-E void lan_mail_finish();
-E void lan_mail_terminate();
+bool lan_mail_check();
+void lan_mail_read(Object *);
+void lan_mail_init();
+void lan_mail_finish();
+void lan_mail_terminate();
 #endif
 #endif
 
 /* ### o_init.c ### */
 
-E void init_objects();
-E int find_skates();
-E void oinit();
-E void savenames(int, int);
-E void restnames(int);
-E void discover_object(int, bool, bool);
-E void undiscover_object(int);
-E int dodiscovered();
+void init_objects();
+int find_skates();
+void oinit();
+void savenames(int, int);
+void restnames(int);
+void discover_object(int, bool, bool);
+void undiscover_object(int);
+int dodiscovered();
 
 /* ### objects.c ### */
 
-E void objects_init();
+void objects_init();
 
 /* ### objnam.c ### */
 
-E char *obj_typename(int);
-E char *simple_typename(int);
-E bool obj_is_pname(Object *);
-E char *distant_name(Object *, char *(*)(Object *));
-E char *fruitname(bool);
-E char *xname(Object *);
-E char *mshot_xname(Object *);
-E bool the_unique_obj(Object *obj);
-E char *doname(Object *);
-E bool not_fully_identified(Object *);
-E char *corpse_xname(Object *, bool);
-E char *cxname(Object *);
+char *obj_typename(int);
+char *simple_typename(int);
+bool obj_is_pname(Object *);
+char *distant_name(Object *, char *(*)(Object *));
+char *fruitname(bool);
+char *xname(Object *);
+char *mshot_xname(Object *);
+bool the_unique_obj(Object *obj);
+char *doname(Object *);
+bool not_fully_identified(Object *);
+char *corpse_xname(Object *, bool);
+char *cxname(Object *);
 #ifdef SORTLOOT
-E char *cxname2(Object *);
+char *cxname2(Object *);
 #endif
-E char *killer_xname(Object *);
-E const char *singular(Object *, char *(*)(Object *));
-E char *an(const char *);
-E char *An(const char *);
-E char *The(const char *);
-E char *the(const char *);
-E char *aobjnam(Object *, const char *);
-E char *Tobjnam(Object *, const char *);
-E char *otense(Object *, const char *);
-E char *vtense(const char *, const char *);
-E char *Doname2(Object *);
-E char *yname(Object *);
-E char *Yname2(Object *);
-E char *ysimple_name(Object *);
-E char *Ysimple_name2(Object *);
-E char *makeplural(const char *);
-E char *makesingular(const char *);
-E Object *readobjnam(char *, Object *, bool);
-E int rnd_class(int, int);
-E const char *cloak_simple_name(Object *);
-E const char *mimic_obj_name(Monster *);
+char *killer_xname(Object *);
+const char *singular(Object *, char *(*)(Object *));
+char *an(const char *);
+char *An(const char *);
+char *The(const char *);
+char *the(const char *);
+char *aobjnam(Object *, const char *);
+char *Tobjnam(Object *, const char *);
+char *otense(Object *, const char *);
+char *vtense(const char *, const char *);
+char *Doname2(Object *);
+char *yname(Object *);
+char *Yname2(Object *);
+char *ysimple_name(Object *);
+char *Ysimple_name2(Object *);
+char *makeplural(const char *);
+char *makesingular(const char *);
+Object *readobjnam(char *, Object *, bool);
+int rnd_class(int, int);
+const char *cloak_simple_name(Object *);
+const char *mimic_obj_name(Monster *);
 
 /* ### options.c ### */
 
-E bool match_optname(const char *, const char *, int, bool);
-E void initoptions();
-E void parseoptions(char *, bool, bool);
-E int doset();
-E int dotogglepickup();
-E void option_help();
-E void next_opt(winid, const char *);
-E int fruitadd(char *);
-E int choose_classes_menu(const char *, int, bool, char *, char *);
-E void add_menu_cmd_alias(char, char);
-E char map_menu_cmd(char);
-E void assign_warnings(uchar *);
-E char *nh_getenv(const char *);
-E void set_duplicate_opt_detection(int);
-E void set_wc_option_mod_status(unsigned long, int);
-E void set_wc2_option_mod_status(unsigned long, int);
-E void set_option_mod_status(const char *, int);
+bool match_optname(const char *, const char *, int, bool);
+void initoptions();
+void parseoptions(char *, bool, bool);
+int doset();
+int dotogglepickup();
+void option_help();
+void next_opt(winid, const char *);
+int fruitadd(char *);
+int choose_classes_menu(const char *, int, bool, char *, char *);
+void add_menu_cmd_alias(char, char);
+char map_menu_cmd(char);
+void assign_warnings(uchar *);
+char *nh_getenv(const char *);
+void set_duplicate_opt_detection(int);
+void set_wc_option_mod_status(unsigned long, int);
+void set_wc2_option_mod_status(unsigned long, int);
+void set_option_mod_status(const char *, int);
 #ifdef AUTOPICKUP_EXCEPTIONS
-E int add_autopickup_exception(const char *);
-E void free_autopickup_exceptions();
+int add_autopickup_exception(const char *);
+void free_autopickup_exceptions();
 #endif /* AUTOPICKUP_EXCEPTIONS */
 #ifdef MENU_COLOR
-E bool add_menu_coloring(char *);
+bool add_menu_coloring(char *);
 #endif /* MENU_COLOR */
 
 /* ### pager.c ### */
 
-E int dowhatis();
-E int doquickwhatis();
-E int doidtrap();
-E int dowhatdoes();
-E char *dowhatdoes_core(char, char *);
-E int dohelp();
-E int dohistory();
+int dowhatis();
+int doquickwhatis();
+int doidtrap();
+int dowhatdoes();
+char *dowhatdoes_core(char, char *);
+int dohelp();
+int dohistory();
 
 /* ### pickup.c ### */
 
 #ifdef GOLDOBJ
-E int collect_obj_classes(char *, Object *, bool, bool (*)(Object *), int *);
+int collect_obj_classes(char *, Object *, bool, bool (*)(Object *), int *);
 #else
-E int collect_obj_classes(char *, Object *, bool, bool, bool (*)(Object *),
+int collect_obj_classes(char *, Object *, bool, bool, bool (*)(Object *),
                           int *);
 #endif
-E void add_valid_menu_class(int);
-E bool allow_all(Object *);
-E bool allow_category(Object *);
-E bool is_worn_by_type(Object *);
-E int pickup(int);
-E int pickup_object(Object *, long, bool);
-E int query_category(const char *, Object *, int, menu_item **, int);
-E int query_objlist(const char *, Object *, int, menu_item **, int,
+void add_valid_menu_class(int);
+bool allow_all(Object *);
+bool allow_category(Object *);
+bool is_worn_by_type(Object *);
+int pickup(int);
+int pickup_object(Object *, long, bool);
+int query_category(const char *, Object *, int, menu_item **, int);
+int query_objlist(const char *, Object *, int, menu_item **, int,
                     bool (*)(Object *));
-E Object *pick_obj(Object *);
-E int encumber_msg();
-E int doloot();
-E int use_container(Object *, int);
-E int loot_mon(Monster *, int *, bool *);
-E const char *safe_qbuf(const char *, unsigned, const char *, const char *,
+Object *pick_obj(Object *);
+int encumber_msg();
+int doloot();
+int use_container(Object *, int);
+int loot_mon(Monster *, int *, bool *);
+const char *safe_qbuf(const char *, unsigned, const char *, const char *,
                         const char *);
-E bool is_autopickup_exception(Object *, bool);
+bool is_autopickup_exception(Object *, bool);
 
 /* ### pline.c ### */
 
-E void msgpline_add(int, char *);
-E void msgpline_free();
-E void pline(const char *, ...) PRINTF_F(1, 2);
-E void Norep(const char *, ...) PRINTF_F(1, 2);
-E void free_youbuf();
-E void You(const char *, ...) PRINTF_F(1, 2);
-E void Your(const char *, ...) PRINTF_F(1, 2);
-E void You_feel(const char *, ...) PRINTF_F(1, 2);
-E void You_cant(const char *, ...) PRINTF_F(1, 2);
-E void You_hear(const char *, ...) PRINTF_F(1, 2);
-E void pline_The(const char *, ...) PRINTF_F(1, 2);
-E void There(const char *, ...) PRINTF_F(1, 2);
-E void verbalize(const char *, ...) PRINTF_F(1, 2);
-E void raw_printf(const char *, ...) PRINTF_F(1, 2);
-E void impossible(const char *, ...) PRINTF_F(1, 2);
-E const char *align_str(ALIGNTYP_P);
-E void mstatusline(Monster *);
-E void ustatusline();
-E void self_invis_message();
+void msgpline_add(int, char *);
+void msgpline_free();
+void pline(const char *, ...) PRINTF_F(1, 2);
+void Norep(const char *, ...) PRINTF_F(1, 2);
+void free_youbuf();
+void You(const char *, ...) PRINTF_F(1, 2);
+void Your(const char *, ...) PRINTF_F(1, 2);
+void You_feel(const char *, ...) PRINTF_F(1, 2);
+void You_cant(const char *, ...) PRINTF_F(1, 2);
+void You_hear(const char *, ...) PRINTF_F(1, 2);
+void pline_The(const char *, ...) PRINTF_F(1, 2);
+void There(const char *, ...) PRINTF_F(1, 2);
+void verbalize(const char *, ...) PRINTF_F(1, 2);
+void raw_printf(const char *, ...) PRINTF_F(1, 2);
+void impossible(const char *, ...) PRINTF_F(1, 2);
+const char *align_str(ALIGNTYP_P);
+void mstatusline(Monster *);
+void ustatusline();
+void self_invis_message();
 
 /* ### polyself.c ### */
 
-E void set_uasmon();
-E void change_sex();
-E void polyself(bool);
-E int polymon(int);
-E void rehumanize();
-E int dobreathe();
-E int dospit();
-E int doremove();
-E int dospinweb();
-E int dosummon();
-E int dogaze();
-E int dohide();
-E int domindblast();
-E void skinback(bool);
-E const char *mbodypart(Monster *, int);
-E const char *body_part(int);
-E int poly_gender();
-E void ugolemeffects(int, int);
+void set_uasmon();
+void change_sex();
+void polyself(bool);
+int polymon(int);
+void rehumanize();
+int dobreathe();
+int dospit();
+int doremove();
+int dospinweb();
+int dosummon();
+int dogaze();
+int dohide();
+int domindblast();
+void skinback(bool);
+const char *mbodypart(Monster *, int);
+const char *body_part(int);
+int poly_gender();
+void ugolemeffects(int, int);
 
 /* ### potion.c ### */
 
-E void set_itimeout(long *, long);
-E void incr_itimeout(long *, int);
-E void make_confused(long, bool);
-E void make_stunned(long, bool);
-E void make_blinded(long, bool);
-E void make_sick(long, const char *, bool, int);
-E void make_vomiting(long, bool);
-E bool make_hallucinated(long, bool, long);
-E int dodrink();
-E int dopotion(Object *);
-E int peffects(Object *);
-E void healup(int, int, bool, bool);
-E void strange_feeling(Object *, const char *);
-E void potionhit(Monster *, Object *, bool);
-E void potionbreathe(Object *);
-E bool get_wet(Object *);
-E int dodip();
-E void djinni_from_bottle(Object *);
-E Monster *split_mon(Monster *, Monster *);
-E const char *bottlename();
+void set_itimeout(long *, long);
+void incr_itimeout(long *, int);
+void make_confused(long, bool);
+void make_stunned(long, bool);
+void make_blinded(long, bool);
+void make_sick(long, const char *, bool, int);
+void make_vomiting(long, bool);
+bool make_hallucinated(long, bool, long);
+int dodrink();
+int dopotion(Object *);
+int peffects(Object *);
+void healup(int, int, bool, bool);
+void strange_feeling(Object *, const char *);
+void potionhit(Monster *, Object *, bool);
+void potionbreathe(Object *);
+bool get_wet(Object *);
+int dodip();
+void djinni_from_bottle(Object *);
+Monster *split_mon(Monster *, Monster *);
+const char *bottlename();
 
 /* ### pray.c ### */
 
-E int dosacrifice();
-E bool can_pray(bool);
-E int dopray();
-E const char *u_gname();
-E int doturn();
-E const char *a_gname();
-E const char *a_gname_at(xchar x, xchar y);
-E const char *align_gname(ALIGNTYP_P);
-E const char *halu_gname(ALIGNTYP_P);
-E const char *align_gtitle(ALIGNTYP_P);
-E void altar_wrath(int, int);
+int dosacrifice();
+bool can_pray(bool);
+int dopray();
+const char *u_gname();
+int doturn();
+const char *a_gname();
+const char *a_gname_at(xchar x, xchar y);
+const char *align_gname(ALIGNTYP_P);
+const char *halu_gname(ALIGNTYP_P);
+const char *align_gtitle(ALIGNTYP_P);
+void altar_wrath(int, int);
 
 /* ### priest.c ### */
 
-E int move_special(Monster *, bool, schar, bool, bool, xchar, xchar, xchar,
+int move_special(Monster *, bool, schar, bool, bool, xchar, xchar, xchar,
                    xchar);
-E char temple_occupied(char *);
-E int pri_move(Monster *);
-E void priestini(d_level *, struct mkroom *, int, int, bool);
-E char *priestname(Monster *, char *);
-E bool p_coaligned(Monster *);
-E Monster *findpriest(char);
-E void intemple(int);
-E void priest_talk(Monster *);
-E Monster *mk_roamer(MonsterType *, ALIGNTYP_P, xchar, xchar, bool);
-E void reset_hostility(Monster *);
-E bool in_your_sanctuary(Monster *, xchar, xchar);
-E void ghod_hitsu(Monster *);
-E void angry_priest();
-E void clearpriests();
-E void restpriest(Monster *, bool);
+char temple_occupied(char *);
+int pri_move(Monster *);
+void priestini(d_level *, struct mkroom *, int, int, bool);
+char *priestname(Monster *, char *);
+bool p_coaligned(Monster *);
+Monster *findpriest(char);
+void intemple(int);
+void priest_talk(Monster *);
+Monster *mk_roamer(MonsterType *, ALIGNTYP_P, xchar, xchar, bool);
+void reset_hostility(Monster *);
+bool in_your_sanctuary(Monster *, xchar, xchar);
+void ghod_hitsu(Monster *);
+void angry_priest();
+void clearpriests();
+void restpriest(Monster *, bool);
 
 /* ### quest.c ### */
 
-E void onquest();
-E void nemdead();
-E void artitouch();
-E bool ok_to_quest();
-E void leader_speaks(Monster *);
-E void nemesis_speaks();
-E void quest_chat(Monster *);
-E void quest_talk(Monster *);
-E void quest_stat_check(Monster *);
-E void finish_quest(Object *);
+void onquest();
+void nemdead();
+void artitouch();
+bool ok_to_quest();
+void leader_speaks(Monster *);
+void nemesis_speaks();
+void quest_chat(Monster *);
+void quest_talk(Monster *);
+void quest_stat_check(Monster *);
+void finish_quest(Object *);
 
 /* ### questpgr.c ### */
 
-E void load_qtlist();
-E void unload_qtlist();
-E short quest_info(int);
-E const char *ldrname();
-E bool is_quest_artifact(Object *);
-E void com_pager(int);
-E void qt_pager(int);
-E MonsterType *qt_montype();
+void load_qtlist();
+void unload_qtlist();
+short quest_info(int);
+const char *ldrname();
+bool is_quest_artifact(Object *);
+void com_pager(int);
+void qt_pager(int);
+MonsterType *qt_montype();
 
 /* ### random.c ### */
 
 #if defined(RANDOM) && !defined(__GO32__) /* djgpp has its own random */
-E void srandom(unsigned);
-E char *initstate(unsigned, char *, int);
-E char *setstate(char *);
-E long random();
+void srandom(unsigned);
+char *initstate(unsigned, char *, int);
+char *setstate(char *);
+long random();
 #endif /* RANDOM */
 
 /* ### read.c ### */
 
-E int doread();
-E bool is_chargeable(Object *);
-E void recharge(Object *, int);
-E void forget_objects(int);
-E void forget_levels(int);
-E void forget_traps();
-E void forget_map(int);
-E int seffects(Object *);
-E void litroom(bool, Object *);
-E void do_genocide(int);
-E void punish(Object *);
-E void unpunish();
-E bool cant_create(int *, bool);
+int doread();
+bool is_chargeable(Object *);
+void recharge(Object *, int);
+void forget_objects(int);
+void forget_levels(int);
+void forget_traps();
+void forget_map(int);
+int seffects(Object *);
+void litroom(bool, Object *);
+void do_genocide(int);
+void punish(Object *);
+void unpunish();
+bool cant_create(int *, bool);
 #ifdef WIZARD
-E bool create_particular();
+bool create_particular();
 #endif
 
 /* ### rect.c ### */
 
-E void init_rect();
-E NhRect *get_rect(NhRect *);
-E NhRect *rnd_rect();
-E void remove_rect(NhRect *);
-E void add_rect(NhRect *);
-E void split_rects(NhRect *, NhRect *);
+void init_rect();
+NhRect *get_rect(NhRect *);
+NhRect *rnd_rect();
+void remove_rect(NhRect *);
+void add_rect(NhRect *);
+void split_rects(NhRect *, NhRect *);
 
 /* ## region.c ### */
-E void clear_regions();
-E void run_regions();
-E bool in_out_region(xchar, xchar);
-E bool m_in_out_region(Monster *, xchar, xchar);
-E void update_player_regions();
-E void update_monster_region(Monster *);
-E NhRegion *visible_region_at(xchar, xchar);
-E void show_region(NhRegion *, xchar, xchar);
-E void save_regions(int, int);
-E void rest_regions(int, bool);
-E NhRegion *create_gas_cloud(xchar, xchar, int, int);
+void clear_regions();
+void run_regions();
+bool in_out_region(xchar, xchar);
+bool m_in_out_region(Monster *, xchar, xchar);
+void update_player_regions();
+void update_monster_region(Monster *);
+NhRegion *visible_region_at(xchar, xchar);
+void show_region(NhRegion *, xchar, xchar);
+void save_regions(int, int);
+void rest_regions(int, bool);
+NhRegion *create_gas_cloud(xchar, xchar, int, int);
 
 /* ### restore.c ### */
 
-E void inven_inuse(bool);
-E int dorecover(int);
-E void trickery(char *);
-E void getlev(int, int, xchar, bool);
-E void minit();
-E bool lookup_id_mapping(unsigned long, unsigned long *);
+void inven_inuse(bool);
+int dorecover(int);
+void trickery(char *);
+void getlev(int, int, xchar, bool);
+void minit();
+bool lookup_id_mapping(unsigned long, unsigned long *);
 #ifdef ZEROCOMP
-E int mread(int, genericptr_t, unsigned int);
+int mread(int, genericptr_t, unsigned int);
 #else
-E void mread(int, genericptr_t, unsigned int);
+void mread(int, genericptr_t, unsigned int);
 #endif
 
 /* ### rip.c ### */
 
-E void genl_outrip(winid, int);
+void genl_outrip(winid, int);
 
 /* ### rnd.c ### */
 
-E void check_reseed();
-E int rn2(int);
-E int rnl(int);
-E int rnd(int);
-E int d(int, int);
-E int rne(int);
-E int rnz(int);
+void check_reseed();
+int rn2(int);
+int rnl(int);
+int rnd(int);
+int d(int, int);
+int rne(int);
+int rnz(int);
 
 /* ### role.c ### */
 
-E bool validrole(int);
-E bool validrace(int, int);
-E bool validgend(int, int, int);
-E bool validalign(int, int, int);
-E int randrole();
-E int randrace(int);
-E int randgend(int, int);
-E int randalign(int, int);
-E int str2role(char *);
-E int str2race(char *);
-E int str2gend(char *);
-E int str2align(char *);
-E bool ok_role(int, int, int, int);
-E int pick_role(int, int, int, int);
-E bool ok_race(int, int, int, int);
-E int pick_race(int, int, int, int);
-E bool ok_gend(int, int, int, int);
-E int pick_gend(int, int, int, int);
-E bool ok_align(int, int, int, int);
-E int pick_align(int, int, int, int);
-E void role_init();
-E void rigid_role_checks();
-E void plnamesuffix();
-E const char *Hello(Monster *);
-E const char *Goodbye();
-E char *build_plselection_prompt(char *, int, int, int, int, int);
-E char *root_plselection_prompt(char *, int, int, int, int, int);
+bool validrole(int);
+bool validrace(int, int);
+bool validgend(int, int, int);
+bool validalign(int, int, int);
+int randrole();
+int randrace(int);
+int randgend(int, int);
+int randalign(int, int);
+int str2role(char *);
+int str2race(char *);
+int str2gend(char *);
+int str2align(char *);
+bool ok_role(int, int, int, int);
+int pick_role(int, int, int, int);
+bool ok_race(int, int, int, int);
+int pick_race(int, int, int, int);
+bool ok_gend(int, int, int, int);
+int pick_gend(int, int, int, int);
+bool ok_align(int, int, int, int);
+int pick_align(int, int, int, int);
+void role_init();
+void rigid_role_checks();
+void plnamesuffix();
+const char *Hello(Monster *);
+const char *Goodbye();
+char *build_plselection_prompt(char *, int, int, int, int, int);
+char *root_plselection_prompt(char *, int, int, int, int, int);
 
 /* ### rumors.c ### */
 
-E char *getrumor(int, char *, bool);
-E void outrumor(int, int);
-E void outoracle(bool, bool);
-E void save_oracles(int, int);
-E void restore_oracles(int);
-E int doconsult(Monster *);
+char *getrumor(int, char *, bool);
+void outrumor(int, int);
+void outoracle(bool, bool);
+void save_oracles(int, int);
+void restore_oracles(int);
+int doconsult(Monster *);
 
 /* ### save.c ### */
 
-E int dosave();
-E void hangup(int);
-E int dosave0();
+int dosave();
+void hangup(int);
+int dosave0();
 #ifdef INSURANCE
-E void savestateinlock();
+void savestateinlock();
 #endif
-E void savelev(int, xchar, int);
-E void bufon(int);
-E void bufoff(int);
-E void bflush(int);
-E void bwrite(int, void const*, unsigned int);
-E void bclose(int);
-E void savefruitchn(int, int);
-E void free_dungeons();
-E void freedynamicdata();
+void savelev(int, xchar, int);
+void bufon(int);
+void bufoff(int);
+void bflush(int);
+void bwrite(int, void const*, unsigned int);
+void bclose(int);
+void savefruitchn(int, int);
+void free_dungeons();
+void freedynamicdata();
 
 /* ### shk.c ### */
 
 #ifdef GOLDOBJ
-E long money2mon(Monster *, long);
-E void money2u(Monster *, long);
+long money2mon(Monster *, long);
+void money2u(Monster *, long);
 #endif
-E char *shkname(Monster *);
-E void shkgone(Monster *);
-E void set_residency(Monster *, bool);
-E void replshk(Monster *, Monster *);
-E void restshk(Monster *, bool);
-E char inside_shop(xchar, xchar);
-E void u_left_shop(char *, bool);
-E void remote_burglary(xchar, xchar);
-E void u_entered_shop(char *);
-E bool same_price(Object *, Object *);
-E void shopper_financial_report();
-E int inhishop(Monster *);
-E Monster *shop_keeper(char);
-E bool tended_shop(struct mkroom *);
-E void delete_contents(Object *);
-E void obfree(Object *, Object *);
-E void home_shk(Monster *, bool);
-E void make_happy_shk(Monster *, bool);
-E void hot_pursuit(Monster *);
-E void make_angry_shk(Monster *, xchar, xchar);
-E int dopay();
-E bool paybill(int);
-E void finish_paybill();
-E Object *find_oid(unsigned);
-E long contained_cost(Object *, Monster *, long, bool, bool);
-E long contained_gold(Object *);
-E void picked_container(Object *);
-E long unpaid_cost(Object *);
-E void addtobill(Object *, bool, bool, bool);
-E void splitbill(Object *, Object *);
-E void subfrombill(Object *, Monster *);
-E long stolen_value(Object *, xchar, xchar, bool, bool);
-E void sellobj_state(int);
-E void sellobj(Object *, xchar, xchar);
-E int doinvbill(int);
-E Monster *shkcatch(Object *, xchar, xchar);
-E void add_damage(xchar, xchar, long);
-E int repair_damage(Monster *, struct damage *, bool);
-E int shk_move(Monster *);
-E void after_shk_move(Monster *);
-E bool is_fshk(Monster *);
-E void shopdig(int);
-E void pay_for_damage(const char *, bool);
-E bool costly_spot(xchar, xchar);
-E Object *shop_object(xchar, xchar);
-E void price_quote(Object *);
-E void shk_chat(Monster *);
-E void check_unpaid_usage(Object *, bool);
-E void check_unpaid(Object *);
-E void costly_gold(xchar, xchar, long);
-E bool block_door(xchar, xchar);
-E bool block_entry(xchar, xchar);
-E char *shk_your(char *, Object *);
-E char *Shk_Your(char *, Object *);
+char *shkname(Monster *);
+void shkgone(Monster *);
+void set_residency(Monster *, bool);
+void replshk(Monster *, Monster *);
+void restshk(Monster *, bool);
+char inside_shop(xchar, xchar);
+void u_left_shop(char *, bool);
+void remote_burglary(xchar, xchar);
+void u_entered_shop(char *);
+bool same_price(Object *, Object *);
+void shopper_financial_report();
+int inhishop(Monster *);
+Monster *shop_keeper(char);
+bool tended_shop(struct mkroom *);
+void delete_contents(Object *);
+void obfree(Object *, Object *);
+void home_shk(Monster *, bool);
+void make_happy_shk(Monster *, bool);
+void hot_pursuit(Monster *);
+void make_angry_shk(Monster *, xchar, xchar);
+int dopay();
+bool paybill(int);
+void finish_paybill();
+Object *find_oid(unsigned);
+long contained_cost(Object *, Monster *, long, bool, bool);
+long contained_gold(Object *);
+void picked_container(Object *);
+long unpaid_cost(Object *);
+void addtobill(Object *, bool, bool, bool);
+void splitbill(Object *, Object *);
+void subfrombill(Object *, Monster *);
+long stolen_value(Object *, xchar, xchar, bool, bool);
+void sellobj_state(int);
+void sellobj(Object *, xchar, xchar);
+int doinvbill(int);
+Monster *shkcatch(Object *, xchar, xchar);
+void add_damage(xchar, xchar, long);
+int repair_damage(Monster *, struct damage *, bool);
+int shk_move(Monster *);
+void after_shk_move(Monster *);
+bool is_fshk(Monster *);
+void shopdig(int);
+void pay_for_damage(const char *, bool);
+bool costly_spot(xchar, xchar);
+Object *shop_object(xchar, xchar);
+void price_quote(Object *);
+void shk_chat(Monster *);
+void check_unpaid_usage(Object *, bool);
+void check_unpaid(Object *);
+void costly_gold(xchar, xchar, long);
+bool block_door(xchar, xchar);
+bool block_entry(xchar, xchar);
+char *shk_your(char *, Object *);
+char *Shk_Your(char *, Object *);
 
 /* ### shknam.c ### */
 
-E void stock_room(int, struct mkroom *);
-E bool saleable(Monster *, Object *);
-E int get_shop_item(int);
+void stock_room(int, struct mkroom *);
+bool saleable(Monster *, Object *);
+int get_shop_item(int);
 
 /* ### sit.c ### */
 
-E void take_gold();
-E int dosit();
-E void rndcurse();
-E void attrcurse();
+void take_gold();
+int dosit();
+void rndcurse();
+void attrcurse();
 
 /* ### sounds.c ### */
 
-E void dosounds();
-E const char *growl_sound(Monster *);
-E void growl(Monster *);
-E void yelp(Monster *);
-E void whimper(Monster *);
-E void beg(Monster *);
-E int dotalk();
+void dosounds();
+const char *growl_sound(Monster *);
+void growl(Monster *);
+void yelp(Monster *);
+void whimper(Monster *);
+void beg(Monster *);
+int dotalk();
 #ifdef USER_SOUNDS
-E int add_sound_mapping(const char *);
-E void play_sound_for_message(const char *);
+int add_sound_mapping(const char *);
+void play_sound_for_message(const char *);
 #endif
 
 /* ### sp_lev.c ### */
 
-E bool check_room(xchar *, xchar *, xchar *, xchar *, bool);
-E bool create_room(xchar, xchar, xchar, xchar, xchar, xchar, xchar, xchar);
-E void create_secret_door(struct mkroom *, xchar);
-E bool dig_corridor(coord *, coord *, bool, schar, schar);
-E void fill_room(struct mkroom *, bool);
-E bool load_special(const char *);
+bool check_room(xchar *, xchar *, xchar *, xchar *, bool);
+bool create_room(xchar, xchar, xchar, xchar, xchar, xchar, xchar, xchar);
+void create_secret_door(struct mkroom *, xchar);
+bool dig_corridor(coord *, coord *, bool, schar, schar);
+void fill_room(struct mkroom *, bool);
+bool load_special(const char *);
 
 /* ### spell.c ### */
 
-E int study_book(Object *);
-E void book_disappears(Object *);
-E void book_substitution(Object *, Object *);
-E void age_spells();
-E int docast();
-E int spell_skilltype(int);
-E int spelleffects(int, bool);
-E void losespells();
-E int dovspell();
-E void initialspell(Object *);
+int study_book(Object *);
+void book_disappears(Object *);
+void book_substitution(Object *, Object *);
+void age_spells();
+int docast();
+int spell_skilltype(int);
+int spelleffects(int, bool);
+void losespells();
+int dovspell();
+void initialspell(Object *);
 
 /* ### steal.c ### */
 
 #ifdef GOLDOBJ
-E long somegold(long);
+long somegold(long);
 #else
-E long somegold();
+long somegold();
 #endif
-E void stealgold(Monster *);
-E void remove_worn_item(Object *, bool);
-E int steal(Monster *, char *);
-E int mpickobj(Monster *, Object *);
-E void stealamulet(Monster *);
-E void mdrop_special_objs(Monster *);
-E void relobj(Monster *, int, bool);
+void stealgold(Monster *);
+void remove_worn_item(Object *, bool);
+int steal(Monster *, char *);
+int mpickobj(Monster *, Object *);
+void stealamulet(Monster *);
+void mdrop_special_objs(Monster *);
+void relobj(Monster *, int, bool);
 #ifdef GOLDOBJ
-E Object *findgold(Object *);
+Object *findgold(Object *);
 #endif
 
 /* ### steed.c ### */
 
 #ifdef STEED
-E void rider_cant_reach();
-E bool can_saddle(Monster *);
-E int use_saddle(Object *);
-E bool can_ride(Monster *);
-E int doride();
-E bool mount_steed(Monster *, bool);
-E void exercise_steed();
-E void kick_steed();
-E void dismount_steed(int);
-E void place_monster(Monster *, int, int);
+void rider_cant_reach();
+bool can_saddle(Monster *);
+int use_saddle(Object *);
+bool can_ride(Monster *);
+int doride();
+bool mount_steed(Monster *, bool);
+void exercise_steed();
+void kick_steed();
+void dismount_steed(int);
+void place_monster(Monster *, int, int);
 #endif
 
 /* ### teleport.c ### */
 
-E bool goodpos(int, int, Monster *, unsigned);
-E bool enexto(coord *, xchar, xchar, MonsterType *);
-E bool enexto_core(coord *, xchar, xchar, MonsterType *, unsigned);
-E void teleds(int, int, bool);
-E bool safe_teleds(bool);
-E bool teleport_pet(Monster *, bool);
-E void tele();
-E int dotele();
-E void level_tele();
-E void domagicportal(Trap *);
-E void tele_trap(Trap *);
-E void level_tele_trap(Trap *);
-E void rloc_to(Monster *, int, int);
-E bool rloc(Monster *, bool);
-E bool tele_restrict(Monster *);
-E void mtele_trap(Monster *, Trap *, int);
-E int mlevel_tele_trap(Monster *, Trap *, bool, int);
-E void rloco(Object *);
-E int random_teleport_level();
-E bool u_teleport_mon(Monster *, bool);
+bool goodpos(int, int, Monster *, unsigned);
+bool enexto(coord *, xchar, xchar, MonsterType *);
+bool enexto_core(coord *, xchar, xchar, MonsterType *, unsigned);
+void teleds(int, int, bool);
+bool safe_teleds(bool);
+bool teleport_pet(Monster *, bool);
+void tele();
+int dotele();
+void level_tele();
+void domagicportal(Trap *);
+void tele_trap(Trap *);
+void level_tele_trap(Trap *);
+void rloc_to(Monster *, int, int);
+bool rloc(Monster *, bool);
+bool tele_restrict(Monster *);
+void mtele_trap(Monster *, Trap *, int);
+int mlevel_tele_trap(Monster *, Trap *, bool, int);
+void rloco(Object *);
+int random_teleport_level();
+bool u_teleport_mon(Monster *, bool);
 
 /* ### tile.c ### */
 #ifdef USE_TILES
-E void substitute_tiles(d_level *);
+void substitute_tiles(d_level *);
 #endif
 
 /* ### timeout.c ### */
 
-E void burn_away_slime();
-E void nh_timeout();
-E void fall_asleep(int, bool);
-E void attach_egg_hatch_timeout(Object *);
-E void attach_fig_transform_timeout(Object *);
-E void kill_egg(Object *);
-E void hatch_egg(genericptr_t, long);
-E void learn_egg_type(int);
-E void burn_object(genericptr_t, long);
-E void begin_burn(Object *, bool);
-E void end_burn(Object *, bool);
-E void do_storms();
-E bool start_timer(long, short, short, genericptr_t);
-E long stop_timer(short, genericptr_t);
-E void run_timers();
-E void obj_move_timers(Object *, Object *);
-E void obj_split_timers(Object *, Object *);
-E void obj_stop_timers(Object *);
-E bool obj_is_local(Object *);
-E void save_timers(int, int, int);
-E void restore_timers(int, int, bool, long);
-E void relink_timers(bool);
+void burn_away_slime();
+void nh_timeout();
+void fall_asleep(int, bool);
+void attach_egg_hatch_timeout(Object *);
+void attach_fig_transform_timeout(Object *);
+void kill_egg(Object *);
+void hatch_egg(genericptr_t, long);
+void learn_egg_type(int);
+void burn_object(genericptr_t, long);
+void begin_burn(Object *, bool);
+void end_burn(Object *, bool);
+void do_storms();
+bool start_timer(long, short, short, genericptr_t);
+long stop_timer(short, genericptr_t);
+void run_timers();
+void obj_move_timers(Object *, Object *);
+void obj_split_timers(Object *, Object *);
+void obj_stop_timers(Object *);
+bool obj_is_local(Object *);
+void save_timers(int, int, int);
+void restore_timers(int, int, bool, long);
+void relink_timers(bool);
 #ifdef WIZARD
-E int wiz_timeout_queue();
-E void timer_sanity_check();
+int wiz_timeout_queue();
+void timer_sanity_check();
 #endif
 
 /* ### topten.c ### */
 
-E void topten(int);
-E void prscore(int, char **);
-E Object *tt_oname(Object *);
+void topten(int);
+void prscore(int, char **);
+Object *tt_oname(Object *);
 
 /* ### track.c ### */
 
-E void initrack();
-E void settrack();
-E coord *gettrack(int, int);
+void initrack();
+void settrack();
+coord *gettrack(int, int);
 
 /* ### trap.c ### */
 
-E bool burnarmor(Monster *);
-E bool rust_dmg(Object *, const char *, int, bool, Monster *);
-E void grease_protect(Object *, const char *, Monster *);
-E Trap *maketrap(int, int, int);
-E void fall_through(bool);
-E Monster *animate_statue(Object *, xchar, xchar, int, int *);
-E Monster *activate_statue_trap(Trap *, xchar, xchar, bool);
-E void dotrap(Trap *, unsigned);
-E void seetrap(Trap *);
-E int mintrap(Monster *);
-E void instapetrify(const char *);
-E void minstapetrify(Monster *, bool);
-E void selftouch(const char *);
-E void mselftouch(Monster *, const char *, bool);
-E void float_up();
-E void fill_pit(int, int);
-E int float_down(long, long);
-E int fire_damage(Object *, bool, bool, xchar, xchar);
-E bool water_damage(Object *, bool, bool);
-E bool drown();
-E void drain_en(int);
-E int dountrap();
-E int untrap(bool);
-E bool chest_trap(Object *, int, bool);
-E void deltrap(Trap *);
-E bool delfloortrap(Trap *);
-E Trap *t_at(int, int);
-E void b_trapped(const char *, int);
-E bool unconscious();
-E bool lava_effects();
-E void blow_up_landmine(Trap *);
-E int launch_obj(short, int, int, int, int, int);
+bool burnarmor(Monster *);
+bool rust_dmg(Object *, const char *, int, bool, Monster *);
+void grease_protect(Object *, const char *, Monster *);
+Trap *maketrap(int, int, int);
+void fall_through(bool);
+Monster *animate_statue(Object *, xchar, xchar, int, int *);
+Monster *activate_statue_trap(Trap *, xchar, xchar, bool);
+void dotrap(Trap *, unsigned);
+void seetrap(Trap *);
+int mintrap(Monster *);
+void instapetrify(const char *);
+void minstapetrify(Monster *, bool);
+void selftouch(const char *);
+void mselftouch(Monster *, const char *, bool);
+void float_up();
+void fill_pit(int, int);
+int float_down(long, long);
+int fire_damage(Object *, bool, bool, xchar, xchar);
+bool water_damage(Object *, bool, bool);
+bool drown();
+void drain_en(int);
+int dountrap();
+int untrap(bool);
+bool chest_trap(Object *, int, bool);
+void deltrap(Trap *);
+bool delfloortrap(Trap *);
+Trap *t_at(int, int);
+void b_trapped(const char *, int);
+bool unconscious();
+bool lava_effects();
+void blow_up_landmine(Trap *);
+int launch_obj(short, int, int, int, int, int);
 
 /* ### u_init.c ### */
 
-E void u_init();
+void u_init();
 
 /* ### uhitm.c ### */
 
-E void hurtmarmor(Monster *, int);
-E bool attack_checks(Monster *, Object *);
-E void check_caitiff(Monster *);
-E schar find_roll_to_hit(Monster *);
-E bool attack(Monster *);
-E bool hmon(Monster *, Object *, int);
-E int damageum(Monster *, struct Attack *);
-E void missum(Monster *, struct Attack *);
-E int passive(Monster *, bool, int, uchar);
-E void passive_obj(Monster *, Object *, struct Attack *);
-E void stumble_onto_mimic(Monster *);
-E int flash_hits_mon(Monster *, Object *);
+void hurtmarmor(Monster *, int);
+bool attack_checks(Monster *, Object *);
+void check_caitiff(Monster *);
+schar find_roll_to_hit(Monster *);
+bool attack(Monster *);
+bool hmon(Monster *, Object *, int);
+int damageum(Monster *, struct Attack *);
+void missum(Monster *, struct Attack *);
+int passive(Monster *, bool, int, uchar);
+void passive_obj(Monster *, Object *, struct Attack *);
+void stumble_onto_mimic(Monster *);
+int flash_hits_mon(Monster *, Object *);
 
 /* ### unixmain.c ### */
 
 #ifdef PORT_HELP
-E void port_help();
+void port_help();
 #endif
 
 /* ### unixtty.c ### */
 
-E void gettty();
-E void settty(const char *);
-E void setftty();
-E void intron();
-E void introff();
-E void ErrMsg(const char *, ...) PRINTF_F(1, 2);
-E void VErrMsg(const char *, va_list);
-E void error(const char *, ...) PRINTF_F(1, 2);
+void gettty();
+void settty(const char *);
+void setftty();
+void intron();
+void introff();
+void ErrMsg(const char *, ...) PRINTF_F(1, 2);
+void VErrMsg(const char *, va_list);
+void error(const char *, ...) PRINTF_F(1, 2);
 
 /* ### unixunix.c ### */
 
-E void getlock();
-E void regularize(char *);
+void getlock();
+void regularize(char *);
 #if defined(TIMED_DELAY) && !defined(msleep) && defined(SYSV)
-E void msleep(unsigned);
+void msleep(unsigned);
 #endif
 #ifdef SHELL
-E int dosh();
+int dosh();
 #endif /* SHELL */
 #if defined(SHELL) || defined(DEF_PAGER) || defined(DEF_MAILREADER)
-E int child(int);
+int child(int);
 #endif
 
 /* ### vault.c ### */
 
-E bool grddead(Monster *);
-E char vault_occupied(char *);
-E void invault();
-E int gd_move(Monster *);
-E void paygd();
-E long hidden_gold();
-E bool gd_sound();
+bool grddead(Monster *);
+char vault_occupied(char *);
+void invault();
+int gd_move(Monster *);
+void paygd();
+long hidden_gold();
+bool gd_sound();
 
 /* ### version.c ### */
 
-E char *version_string(char *);
-E char *getversionstring(char *);
-E int doversion();
-E int doextversion();
-E bool check_version(struct version_info *, const char *, bool);
-E unsigned long get_feature_notice_ver(char *);
-E unsigned long get_current_feature_ver();
+char *version_string(char *);
+char *getversionstring(char *);
+int doversion();
+int doextversion();
+bool check_version(struct version_info *, const char *, bool);
+unsigned long get_feature_notice_ver(char *);
+unsigned long get_current_feature_ver();
 #ifdef RUNTIME_PORT_ID
-E void append_port_id(char *);
+void append_port_id(char *);
 #endif
 
 /* ### video.c ### */
 
 #ifdef VIDEOSHADES
-E int assign_videoshades(char *);
-E int assign_videocolors(char *);
+int assign_videoshades(char *);
+int assign_videocolors(char *);
 #endif
 
 /* ### vis_tab.c ### */
 
 #ifdef VISION_TABLES
-E void vis_tab_init();
+void vis_tab_init();
 #endif
 
 /* ### vision.c ### */
 
-E void vision_init();
-E int does_block(int, int, struct rm *);
-E void vision_reset();
-E void vision_recalc(int);
-E void block_point(int, int);
-E void unblock_point(int, int);
-E bool clear_path(int, int, int, int);
-E void do_clear_area(int, int, int, void (*)(int, int, genericptr_t),
+void vision_init();
+int does_block(int, int, struct rm *);
+void vision_reset();
+void vision_recalc(int);
+void block_point(int, int);
+void unblock_point(int, int);
+bool clear_path(int, int, int, int);
+void do_clear_area(int, int, int, void (*)(int, int, genericptr_t),
                      genericptr_t);
 
 /* ### weapon.c ### */
 
-E int hitval(Object *, Monster *);
-E int dmgval(Object *, Monster *);
-E Object *select_rwep(Monster *);
-E Object *select_hwep(Monster *);
-E void possibly_unwield(Monster *, bool);
-E int mon_wield_item(Monster *);
-E int abon();
-E int dbon();
-E int enhance_weapon_skill();
+int hitval(Object *, Monster *);
+int dmgval(Object *, Monster *);
+Object *select_rwep(Monster *);
+Object *select_hwep(Monster *);
+void possibly_unwield(Monster *, bool);
+int mon_wield_item(Monster *);
+int abon();
+int dbon();
+int enhance_weapon_skill();
 #ifdef DUMP_LOG
-E void dump_weapon_skill();
+void dump_weapon_skill();
 #endif
-E void unrestrict_weapon_skill(int);
-E void use_skill(int, int);
-E void add_weapon_skill(int);
-E void lose_weapon_skill(int);
-E int weapon_type(Object *);
-E int uwep_skill_type();
-E int weapon_hit_bonus(Object *);
-E int weapon_dam_bonus(Object *);
-E void skill_init(const struct def_skill *);
+void unrestrict_weapon_skill(int);
+void use_skill(int, int);
+void add_weapon_skill(int);
+void lose_weapon_skill(int);
+int weapon_type(Object *);
+int uwep_skill_type();
+int weapon_hit_bonus(Object *);
+int weapon_dam_bonus(Object *);
+void skill_init(const struct def_skill *);
 
 /* ### were.c ### */
 
-E void were_change(Monster *);
-E void new_were(Monster *);
-E int were_summon(MonsterType *, bool, int *, char *);
-E void you_were();
-E void you_unwere(bool);
+void were_change(Monster *);
+void new_were(Monster *);
+int were_summon(MonsterType *, bool, int *, char *);
+void you_were();
+void you_unwere(bool);
 
 /* ### wield.c ### */
 
-E void setuwep(Object *);
-E void setuqwep(Object *);
-E void setuswapwep(Object *);
-E int dowield();
-E int doswapweapon();
-E int dowieldquiver();
-E bool wield_tool(Object *, const char *);
-E int can_twoweapon();
-E void drop_uswapwep();
-E int dotwoweapon();
-E void uwepgone();
-E void uswapwepgone();
-E void uqwepgone();
-E void untwoweapon();
-E void erode_obj(Object *, bool, bool);
-E int chwepon(Object *, int);
-E int welded(Object *);
-E void weldmsg(Object *);
-E void setmnotwielded(Monster *, Object *);
+void setuwep(Object *);
+void setuqwep(Object *);
+void setuswapwep(Object *);
+int dowield();
+int doswapweapon();
+int dowieldquiver();
+bool wield_tool(Object *, const char *);
+int can_twoweapon();
+void drop_uswapwep();
+int dotwoweapon();
+void uwepgone();
+void uswapwepgone();
+void uqwepgone();
+void untwoweapon();
+void erode_obj(Object *, bool, bool);
+int chwepon(Object *, int);
+int welded(Object *);
+void weldmsg(Object *);
+void setmnotwielded(Monster *, Object *);
 
 /* ### windows.c ### */
 
-E void choose_windows(const char *);
-E char genl_message_menu(char, int, const char *);
-E void genl_preference_update(const char *);
+void choose_windows(const char *);
+char genl_message_menu(char, int, const char *);
+void genl_preference_update(const char *);
 
 /* ### wizard.c ### */
 
-E void amulet();
-E int mon_has_amulet(Monster *);
-E int mon_has_special(Monster *);
-E int tactics(Monster *);
-E void aggravate();
-E void clonewiz();
-E int pick_nasty();
-E int nasty(Monster *);
-E void resurrect();
-E void intervene();
-E void wizdead();
-E void cuss(Monster *);
+void amulet();
+int mon_has_amulet(Monster *);
+int mon_has_special(Monster *);
+int tactics(Monster *);
+void aggravate();
+void clonewiz();
+int pick_nasty();
+int nasty(Monster *);
+void resurrect();
+void intervene();
+void wizdead();
+void cuss(Monster *);
 
 /* ### worm.c ### */
 
-E int get_wormno();
-E void initworm(Monster *, int);
-E void worm_move(Monster *);
-E void worm_nomove(Monster *);
-E void wormgone(Monster *);
-E void wormhitu(Monster *);
-E void cutworm(Monster *, xchar, xchar, Object *);
-E void see_wsegs(Monster *);
-E void detect_wsegs(Monster *, bool);
-E void save_worm(int, int);
-E void rest_worm(int);
-E void place_wsegs(Monster *);
-E void remove_worm(Monster *);
-E void place_worm_tail_randomly(Monster *, xchar, xchar);
-E int count_wsegs(Monster *);
-E bool worm_known(Monster *);
+int get_wormno();
+void initworm(Monster *, int);
+void worm_move(Monster *);
+void worm_nomove(Monster *);
+void wormgone(Monster *);
+void wormhitu(Monster *);
+void cutworm(Monster *, xchar, xchar, Object *);
+void see_wsegs(Monster *);
+void detect_wsegs(Monster *, bool);
+void save_worm(int, int);
+void rest_worm(int);
+void place_wsegs(Monster *);
+void remove_worm(Monster *);
+void place_worm_tail_randomly(Monster *, xchar, xchar);
+int count_wsegs(Monster *);
+bool worm_known(Monster *);
 
 /* ### worn.c ### */
 
-E void setworn(Object *, long);
-E void setnotworn(Object *);
-E void mon_set_minvis(Monster *);
-E void mon_adjust_speed(Monster *, int, Object *);
-E void update_mon_intrinsics(Monster *, Object *, bool, bool);
-E int find_mac(Monster *);
-E void m_dowear(Monster *, bool);
-E Object *which_armor(Monster *, long);
-E void mon_break_armor(Monster *, bool);
-E void bypass_obj(Object *);
-E void clear_bypasses();
-E int racial_exception(Monster *, Object *);
+void setworn(Object *, long);
+void setnotworn(Object *);
+void mon_set_minvis(Monster *);
+void mon_adjust_speed(Monster *, int, Object *);
+void update_mon_intrinsics(Monster *, Object *, bool, bool);
+int find_mac(Monster *);
+void m_dowear(Monster *, bool);
+Object *which_armor(Monster *, long);
+void mon_break_armor(Monster *, bool);
+void bypass_obj(Object *);
+void clear_bypasses();
+int racial_exception(Monster *, Object *);
 
 /* ### write.c ### */
 
-E int dowrite(Object *);
+int dowrite(Object *);
 
 /* ### zap.c ### */
 
-E int bhitm(Monster *, Object *);
-E void probe_monster(Monster *);
-E bool get_obj_location(Object *, xchar *, xchar *, int);
-E bool get_mon_location(Monster *, xchar *, xchar *, int);
-E Monster *get_container_location(Object *obj, int *, int *);
-E Monster *montraits(Object *, coord *);
-E Monster *revive(Object *);
-E int unturn_dead(Monster *);
-E void cancel_item(Object *);
-E bool drain_item(Object *);
-E Object *poly_obj(Object *, int);
-E bool obj_resists(Object *, int, int);
-E bool obj_shudders(Object *);
-E void do_osshock(Object *);
-E int bhito(Object *, Object *);
-E int bhitpile(Object *, int (*)(Object *, Object *), int, int);
-E int zappable(Object *);
-E void zapnodir(Object *);
-E int dozap();
-E int zapyourself(Object *, bool);
-E bool cancel_monst(Monster *, Object *, bool, bool, bool);
-E void weffects(Object *);
-E int spell_damage_bonus();
-E const char *exclam(int force);
-E void hit(const char *, Monster *, const char *);
-E void miss(const char *, Monster *);
-E Monster *bhit(int, int, int, int, int (*)(Monster *, Object *),
+int bhitm(Monster *, Object *);
+void probe_monster(Monster *);
+bool get_obj_location(Object *, xchar *, xchar *, int);
+bool get_mon_location(Monster *, xchar *, xchar *, int);
+Monster *get_container_location(Object *obj, int *, int *);
+Monster *montraits(Object *, coord *);
+Monster *revive(Object *);
+int unturn_dead(Monster *);
+void cancel_item(Object *);
+bool drain_item(Object *);
+Object *poly_obj(Object *, int);
+bool obj_resists(Object *, int, int);
+bool obj_shudders(Object *);
+void do_osshock(Object *);
+int bhito(Object *, Object *);
+int bhitpile(Object *, int (*)(Object *, Object *), int, int);
+int zappable(Object *);
+void zapnodir(Object *);
+int dozap();
+int zapyourself(Object *, bool);
+bool cancel_monst(Monster *, Object *, bool, bool, bool);
+void weffects(Object *);
+int spell_damage_bonus();
+const char *exclam(int force);
+void hit(const char *, Monster *, const char *);
+void miss(const char *, Monster *);
+Monster *bhit(int, int, int, int, int (*)(Monster *, Object *),
                 int (*)(Object *, Object *), Object *, bool *);
-E Monster *boomhit(int, int);
-E int burn_floor_paper(int, int, bool, bool);
-E void buzz(int, int, xchar, xchar, int, int);
-E void melt_ice(xchar, xchar);
-E int zap_over_floor(xchar, xchar, int, bool *);
-E void fracture_rock(Object *);
-E bool break_statue(Object *);
-E void destroy_item(int, int);
-E int destroy_mitem(Monster *, int, int);
-E int resist(Monster *, char, int, int);
-E void makewish();
+Monster *boomhit(int, int);
+int burn_floor_paper(int, int, bool, bool);
+void buzz(int, int, xchar, xchar, int, int);
+void melt_ice(xchar, xchar);
+int zap_over_floor(xchar, xchar, int, bool *);
+void fracture_rock(Object *);
+bool break_statue(Object *);
+void destroy_item(int, int);
+int destroy_mitem(Monster *, int, int);
+int resist(Monster *, char, int, int);
+void makewish();
 
 #endif /* !MAKEDEFS_C && !LEV_LEX_C */
-
-#undef E
 
 #endif /* EXTERN_H */
