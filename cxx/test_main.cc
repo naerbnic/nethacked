@@ -4,9 +4,11 @@
 
 #include <iostream>
 
+#include "stacktrace.h"
 #include "str_format.h"
 #include "json_helpers.h"
 #include "json_spirit.h"
+#include "process.h"
 
 using std::cout;
 using std::endl;
@@ -34,4 +36,7 @@ int main(int argc, char const* argv[]) {
   json_spirit::read(result, parse_result);
 
   cout << parse_result.get_array()[0].get_str() << std::endl;
+
+  StackTrace trace = StackTrace::GetCurrent(1);
+  cout << trace.ToString();
 }

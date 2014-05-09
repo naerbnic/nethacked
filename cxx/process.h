@@ -8,10 +8,11 @@
 #ifndef PROCESS_H_
 #define PROCESS_H_
 
-class ProcessExecutor {
-public:
-  ProcessExecutor();
-  virtual ~ProcessExecutor();
-};
+#include <string>
+#include <vector>
+
+std::string CallExecutable(
+    std::string const& path,
+    std::vector<std::string> const& arguments);
 
 #endif /* PROCESS_H_ */

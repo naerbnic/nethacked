@@ -26,6 +26,9 @@ ENDIF()
 LIST(APPEND CMAKE_CXX_FLAGS "-std=c++11 -Wno-deprecated-register")
 
 ADD_EXECUTABLE(cxx_test
+  cxx/process.cc
+  cxx/exception.cc
+  cxx/stacktrace.cc
   cxx/buffer.cc
   cxx/json_helpers.cc
   cxx/test_main.cc)
