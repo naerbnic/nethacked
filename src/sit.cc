@@ -3,6 +3,7 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 #include "hack.h"
+#include "detect.h"
 #include "dbridge.h"
 #include "artifact.h"
 

@@ -39,25 +39,6 @@ E char *fmt_ptr(const void *, char *);
 
 /* ### detect.c ### */
 
-E Object *o_in(Object *, char);
-E Object *o_material(Object *, unsigned);
-E int gold_detect(Object *);
-E int food_detect(Object *);
-E int object_detect(Object *, int);
-E int monster_detect(Object *, int);
-E int trap_detect(Object *);
-E const char *level_distance(d_level *);
-E void use_crystal_ball(Object *);
-E void do_mapping();
-E void do_vicinity_map();
-E void cvt_sdoor_to_door(struct rm *);
-E int findit();
-E int openit();
-E void find_trap(Trap *);
-E int dosearch0(int);
-E int dosearch();
-E void sokoban_detect();
-
 /* ### dig.c ### */
 
 E bool is_digging();

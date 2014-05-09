@@ -7,6 +7,8 @@
  * command.
  */
 
+#include "detect.h"
+
 #include <string.h>
 
 #include "hack.h"

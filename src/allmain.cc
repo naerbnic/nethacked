@@ -7,6 +7,7 @@
 
 #include <signal.h>
 #include "hack.h"
+#include "detect.h"
 #include "dbridge.h"
 #include "cmd.h"
 

@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "detect.h"
 
 #include "apply.h"
 #include "artifact.h"
