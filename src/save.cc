@@ -5,6 +5,7 @@
 #include "json_spirit.h"
 
 #include "hack.h"
+#include "files.h"
 #include "end.h"
 #include "eat.h"
 #include "cmd.h"

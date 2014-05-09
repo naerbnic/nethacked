@@ -7,6 +7,7 @@
 #include <string>
 
 #include "hack.h"
+#include "files.h"
 #include "end.h"
 #include "drawing.h"
 #include "dog.h"
