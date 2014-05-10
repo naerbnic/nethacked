@@ -9,6 +9,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "unixtty.h"
 #include "uhitm.h"
 #include "track.h"
 #include "teleport.h"

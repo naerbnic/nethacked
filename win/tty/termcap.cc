@@ -13,6 +13,7 @@ extern char *tparam();
 #undef clear_screen
 
 #include "hack.h"
+#include "unixtty.h"
 #include "hacklib.h"
 
 #if !defined(NO_TERMS)

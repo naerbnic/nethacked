@@ -7,6 +7,7 @@
 
 #include <signal.h>
 #include "hack.h"
+#include "unixtty.h"
 #include "u_init.h"
 #include "track.h"
 #include "teleport.h"

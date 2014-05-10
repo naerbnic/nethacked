@@ -9,6 +9,7 @@
  */
 
 #include "hack.h"
+#include "unixtty.h"
 #include "role.h"
 #include "pline.h"
 #include "options.h"

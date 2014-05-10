@@ -11,6 +11,7 @@
 #include <stdarg.h>
 
 #include "hack.h"
+#include "unixtty.h"
 #include "ioctl.h"
 
 /*
