@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "objnam.h"
 #include "o_init.h"
 #include "music.h"
 #include "muse.h"

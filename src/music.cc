@@ -29,6 +29,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "objnam.h"
 #include "o_init.h"
 #include "monmove.h"
 #include "mon.h"

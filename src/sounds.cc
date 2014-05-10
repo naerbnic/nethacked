@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "objnam.h"
 #include "mplayer.h"
 #include "mon.h"
 #include "minion.h"

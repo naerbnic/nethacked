@@ -16,6 +16,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "options.h"
 #include "mkobj.h"
 #include "mklev.h"
 #include "minion.h"

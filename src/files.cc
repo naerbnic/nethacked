@@ -7,6 +7,8 @@
 #include <string.h>
 
 #include "hack.h"
+#include "options.h"
+#include "objnam.h"
 #include "invent.h"
 #include "hacklib.h"
 #include "end.h"

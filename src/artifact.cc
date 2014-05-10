@@ -9,6 +9,7 @@
 #include <string>
 
 #include "hack.h"
+#include "objnam.h"
 #include "monmove.h"
 #include "mkobj.h"
 #include "invent.h"

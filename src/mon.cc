@@ -11,6 +11,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "objnam.h"
 #include "o_init.h"
 #include "muse.h"
 #include "mthrowu.h"

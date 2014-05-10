@@ -7,6 +7,9 @@
 #include <string.h>
 
 #include "hack.h"
+#include "pager.h"
+#include "options.h"
+#include "objnam.h"
 #include "o_init.h"
 #include "mkobj.h"
 #include "lock.h"

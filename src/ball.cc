@@ -6,6 +6,7 @@
 #include "ball.h"
 
 #include "hack.h"
+#include "objnam.h"
 #include "mkobj.h"
 #include "invent.h"
 #include "hacklib.h"

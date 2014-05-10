@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "objnam.h"
 #include "muse.h"
 #include "mthrowu.h"
 #include "monmove.h"

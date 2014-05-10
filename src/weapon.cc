@@ -10,6 +10,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "objnam.h"
 #include "mthrowu.h"
 #include "mkobj.h"
 #include "makemon.h"

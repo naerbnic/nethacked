@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "objnam.h"
 #include "invent.h"
 #include "hacklib.h"
 

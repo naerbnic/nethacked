@@ -3,6 +3,7 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 #include "hack.h"
+#include "objnam.h"
 #include "muse.h"
 #include "mthrowu.h"
 #include "mhitu.h"

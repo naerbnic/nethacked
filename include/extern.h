@@ -132,79 +132,9 @@
 
 /* ### objnam.c ### */
 
-char *obj_typename(int);
-char *simple_typename(int);
-bool obj_is_pname(Object *);
-char *distant_name(Object *, char *(*)(Object *));
-char *fruitname(bool);
-char *xname(Object *);
-char *mshot_xname(Object *);
-bool the_unique_obj(Object *obj);
-char *doname(Object *);
-bool not_fully_identified(Object *);
-char *corpse_xname(Object *, bool);
-char *cxname(Object *);
-#ifdef SORTLOOT
-char *cxname2(Object *);
-#endif
-char *killer_xname(Object *);
-const char *singular(Object *, char *(*)(Object *));
-char *an(const char *);
-char *An(const char *);
-char *The(const char *);
-char *the(const char *);
-char *aobjnam(Object *, const char *);
-char *Tobjnam(Object *, const char *);
-char *otense(Object *, const char *);
-char *vtense(const char *, const char *);
-char *Doname2(Object *);
-char *yname(Object *);
-char *Yname2(Object *);
-char *ysimple_name(Object *);
-char *Ysimple_name2(Object *);
-char *makeplural(const char *);
-char *makesingular(const char *);
-Object *readobjnam(char *, Object *, bool);
-int rnd_class(int, int);
-const char *cloak_simple_name(Object *);
-const char *mimic_obj_name(Monster *);
-
 /* ### options.c ### */
 
-bool match_optname(const char *, const char *, int, bool);
-void initoptions();
-void parseoptions(char *, bool, bool);
-int doset();
-int dotogglepickup();
-void option_help();
-void next_opt(winid, const char *);
-int fruitadd(char *);
-int choose_classes_menu(const char *, int, bool, char *, char *);
-void add_menu_cmd_alias(char, char);
-char map_menu_cmd(char);
-void assign_warnings(uchar *);
-char *nh_getenv(const char *);
-void set_duplicate_opt_detection(int);
-void set_wc_option_mod_status(unsigned long, int);
-void set_wc2_option_mod_status(unsigned long, int);
-void set_option_mod_status(const char *, int);
-#ifdef AUTOPICKUP_EXCEPTIONS
-int add_autopickup_exception(const char *);
-void free_autopickup_exceptions();
-#endif /* AUTOPICKUP_EXCEPTIONS */
-#ifdef MENU_COLOR
-bool add_menu_coloring(char *);
-#endif /* MENU_COLOR */
-
 /* ### pager.c ### */
-
-int dowhatis();
-int doquickwhatis();
-int doidtrap();
-int dowhatdoes();
-char *dowhatdoes_core(char, char *);
-int dohelp();
-int dohistory();
 
 /* ### pickup.c ### */
 

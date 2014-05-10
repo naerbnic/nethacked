@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "objnam.h"
 #include "o_init.h"
 #include "mkobj.h"
 #include "makemon.h"

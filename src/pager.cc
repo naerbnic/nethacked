@@ -8,6 +8,9 @@
 #include <string.h>
 
 #include "hack.h"
+#include "pager.h"
+#include "options.h"
+#include "objnam.h"
 #include "monmove.h"
 #include "mkobj.h"
 #include "invent.h"

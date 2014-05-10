@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "objnam.h"
 #include "hacklib.h"
 
 STATIC_DCL void center(int, char *);
