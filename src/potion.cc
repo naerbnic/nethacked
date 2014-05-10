@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "fountain.h"
 #include "explode.h"
 #include "exper.h"
 #include "eat.h"

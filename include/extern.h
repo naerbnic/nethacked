@@ -70,16 +70,6 @@
 
 /* ### fountain.c ### */
 
-void floating_above(const char *);
-void dogushforth(int);
-void dryup(xchar, xchar, bool);
-void drinkfountain();
-void dipfountain(Object *);
-#ifdef SINKS
-void breaksink(int, int);
-void drinksink();
-#endif
-
 /* ### hack.c ### */
 
 bool revive_nasty(int, int, const char *);

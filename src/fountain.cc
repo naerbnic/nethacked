@@ -4,6 +4,8 @@
 
 /* Code for drinking from fountains. */
 
+#include "fountain.h"
+
 #include "hack.h"
 #include "exper.h"
 #include "eat.h"
