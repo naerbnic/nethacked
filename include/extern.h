@@ -114,11 +114,7 @@
 
 /* ### monst.c ### */
 
-void monst_init();
-
 /* ### monstr.c ### */
-
-void monstr_init();
 
 /* ### mplayer.c ### */
 
