@@ -7,6 +7,8 @@
 #include <string.h>
 
 #include "hack.h"
+#include "version.h"
+#include "unixunix.h"
 #include "role.h"
 #include "pline.h"
 #include "options.h"

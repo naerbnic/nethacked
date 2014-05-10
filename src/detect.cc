@@ -12,6 +12,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "vault.h"
 #include "rnd.h"
 #include "potion.h"
 #include "polyself.h"

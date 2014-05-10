@@ -8,6 +8,8 @@
 #include <stdarg.h>
 
 #include "hack.h"
+#include "vault.h"
+#include "unixunix.h"
 #include "topten.h"
 #include "shk.h"
 #include "save.h"

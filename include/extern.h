@@ -210,47 +210,11 @@
 
 /* ### unixunix.c ### */
 
-void getlock();
-void regularize(char *);
-#if defined(TIMED_DELAY) && !defined(msleep) && defined(SYSV)
-void msleep(unsigned);
-#endif
-#ifdef SHELL
-int dosh();
-#endif /* SHELL */
-#if defined(SHELL) || defined(DEF_PAGER) || defined(DEF_MAILREADER)
-int child(int);
-#endif
-
 /* ### vault.c ### */
-
-bool grddead(Monster *);
-char vault_occupied(char *);
-void invault();
-int gd_move(Monster *);
-void paygd();
-long hidden_gold();
-bool gd_sound();
 
 /* ### version.c ### */
 
-char *version_string(char *);
-char *getversionstring(char *);
-int doversion();
-int doextversion();
-bool check_version(struct version_info *, const char *, bool);
-unsigned long get_feature_notice_ver(char *);
-unsigned long get_current_feature_ver();
-#ifdef RUNTIME_PORT_ID
-void append_port_id(char *);
-#endif
-
 /* ### video.c ### */
-
-#ifdef VIDEOSHADES
-int assign_videoshades(char *);
-int assign_videocolors(char *);
-#endif
 
 /* ### vis_tab.c ### */
 

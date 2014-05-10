@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "vault.h"
 #include "rnd.h"
 #include "polyself.h"
 #include "o_init.h"

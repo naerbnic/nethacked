@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "unixunix.h"
 #include "teleport.h"
 #include "steed.h"
 #include "role.h"
