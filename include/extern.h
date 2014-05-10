@@ -218,10 +218,6 @@
 
 /* ### vis_tab.c ### */
 
-#ifdef VISION_TABLES
-void vis_tab_init();
-#endif
-
 /* ### vision.c ### */
 
 void vision_init();
