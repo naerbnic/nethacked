@@ -12,6 +12,8 @@
 #include <string.h>
 
 #include "hack.h"
+#include "shknam.h"
+#include "shk.h"
 #include "rnd.h"
 #include "priest.h"
 #include "pline.h"

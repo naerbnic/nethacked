@@ -5,6 +5,7 @@
 #include "lock.h"
 
 #include "hack.h"
+#include "shk.h"
 #include "rnd.h"
 #include "potion.h"
 #include "pline.h"

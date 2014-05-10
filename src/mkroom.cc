@@ -16,6 +16,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "shknam.h"
 #include "save.h"
 #include "rnd.h"
 #include "restore.h"

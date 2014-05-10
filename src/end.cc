@@ -8,6 +8,7 @@
 #include <stdarg.h>
 
 #include "hack.h"
+#include "shk.h"
 #include "save.h"
 #include "role.h"
 #include "restore.h"

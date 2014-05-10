@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "shk.h"
 #include "rnd.h"
 #include "polyself.h"
 #include "pline.h"

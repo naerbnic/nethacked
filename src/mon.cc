@@ -11,6 +11,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "shk.h"
 #include "rnd.h"
 #include "read.h"
 #include "questpgr.h"

@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "shk.h"
 #include "hacklib.h"
 #include "end.h"
 

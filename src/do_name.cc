@@ -8,6 +8,7 @@
 #include <string>
 
 #include "hack.h"
+#include "shk.h"
 #include "rnd.h"
 #include "priest.h"
 #include "polyself.h"
