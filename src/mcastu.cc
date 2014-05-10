@@ -3,6 +3,8 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 #include "hack.h"
+#include "muse.h"
+#include "mthrowu.h"
 #include "mhitu.h"
 #include "makemon.h"
 #include "hacklib.h"

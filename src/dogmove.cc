@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "mthrowu.h"
 #include "monmove.h"
 #include "mon.h"
 #include "mkobj.h"

@@ -118,39 +118,9 @@
 
 /* ### mplayer.c ### */
 
-Monster *mk_mplayer(MonsterType *, xchar, xchar, bool);
-void create_mplayers(int, bool);
-void mplayer_talk(Monster *);
-
 /* ### mthrowu.c ### */
 
-int thitu(int, int, Object *, const char *);
-int ohitmon(Monster *, Object *, int, bool);
-void thrwmu(Monster *);
-int spitmu(Monster *, struct Attack *);
-int breamu(Monster *, struct Attack *);
-bool linedup(xchar, xchar, xchar, xchar);
-bool lined_up(Monster *);
-Object *m_carrying(Monster *, int);
-void m_useup(Monster *, Object *);
-void m_throw(Monster *, int, int, int, int, int, Object *);
-bool hits_bars(Object **, int, int, int, int);
-
 /* ### muse.c ### */
-
-bool find_defensive(Monster *);
-int use_defensive(Monster *);
-int rnd_defensive_item(Monster *);
-bool find_offensive(Monster *);
-int use_offensive(Monster *);
-int rnd_offensive_item(Monster *);
-bool find_misc(Monster *);
-int use_misc(Monster *);
-int rnd_misc_item(Monster *);
-bool searches_for_item(Monster *, Object *);
-bool mon_reflects(Monster *, const char *);
-bool ureflects(const char *, const char *);
-bool munstone(Monster *, bool);
 
 /* ### music.c ### */
 
