@@ -7,6 +7,7 @@
 #include <string>
 
 #include "hack.h"
+#include "light.h"
 #include "invent.h"
 #include "files.h"
 #include "end.h"

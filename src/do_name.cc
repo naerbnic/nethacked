@@ -8,6 +8,7 @@
 #include <string>
 
 #include "hack.h"
+#include "light.h"
 #include "invent.h"
 #include "hacklib.h"
 #include "eat.h"

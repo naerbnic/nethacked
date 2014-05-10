@@ -2,6 +2,8 @@
 /* Copyright (c) Dean Luick, 1994					*/
 /* NetHack may be freely redistributed.  See license for details.	*/
 
+#include "light.h"
+
 #include "hack.h"
 #include "end.h"
 
