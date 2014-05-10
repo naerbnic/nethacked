@@ -236,8 +236,6 @@
 
 /* ### write.c ### */
 
-int dowrite(Object *);
-
 /* ### zap.c ### */
 
 int bhitm(Monster *, Object *);
