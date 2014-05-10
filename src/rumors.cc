@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "pline.h"
 #include "invent.h"
 #include "hacklib.h"
 #include "exper.h"

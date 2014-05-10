@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "pline.h"
 #include "options.h"
 #include "o_init.h"
 #include "mkobj.h"

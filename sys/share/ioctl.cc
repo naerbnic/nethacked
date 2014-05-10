@@ -11,6 +11,7 @@
 #include <sys/ioctl.h>
 
 #include "hack.h"
+#include "pline.h"
 
 #if defined(BSD_JOB_CONTROL) || defined(_BULL_SOURCE)
 #ifdef HPUX

@@ -5,6 +5,8 @@
 /* main.c - Unix NetHack */
 
 #include "hack.h"
+#include "pline.h"
+#include "pickup.h"
 #include "options.h"
 #include "mail.h"
 #include "hacklib.h"

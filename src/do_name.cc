@@ -8,6 +8,7 @@
 #include <string>
 
 #include "hack.h"
+#include "pline.h"
 #include "options.h"
 #include "objnam.h"
 #include "o_init.h"

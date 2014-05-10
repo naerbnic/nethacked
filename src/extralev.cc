@@ -9,6 +9,7 @@
  */
 
 #include "hack.h"
+#include "pline.h"
 #include "mkobj.h"
 #include "mklev.h"
 #include "makemon.h"

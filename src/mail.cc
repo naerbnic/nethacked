@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "pline.h"
 #include "options.h"
 #include "mon.h"
 #include "mkobj.h"

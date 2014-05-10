@@ -3,6 +3,7 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 #include "hack.h"
+#include "pline.h"
 
 int get_rect_ind(NhRect *);
 

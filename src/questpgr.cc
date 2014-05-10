@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "pline.h"
 #include "objnam.h"
 #include "makemon.h"
 #include "hacklib.h"

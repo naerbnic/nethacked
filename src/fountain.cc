@@ -7,6 +7,7 @@
 #include "fountain.h"
 
 #include "hack.h"
+#include "pline.h"
 #include "objnam.h"
 #include "monmove.h"
 #include "mon.h"

@@ -9,6 +9,8 @@
 #include <string.h>
 
 #include "hack.h"
+#include "pline.h"
+#include "pickup.h"
 #include "objnam.h"
 #include "o_init.h"
 #include "mkobj.h"

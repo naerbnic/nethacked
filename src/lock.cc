@@ -5,6 +5,8 @@
 #include "lock.h"
 
 #include "hack.h"
+#include "pline.h"
+#include "pickup.h"
 #include "objnam.h"
 #include "monmove.h"
 #include "mon.h"

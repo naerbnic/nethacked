@@ -9,6 +9,7 @@
  */
 
 #include "hack.h"
+#include "pline.h"
 #include "options.h"
 #include "objnam.h"
 #include "mapglyph.h"

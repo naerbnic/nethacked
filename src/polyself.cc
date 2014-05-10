@@ -13,6 +13,8 @@
 #include <string.h>
 
 #include "hack.h"
+#include "pline.h"
+#include "pickup.h"
 #include "objnam.h"
 #include "mon.h"
 #include "mkobj.h"

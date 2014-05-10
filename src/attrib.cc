@@ -7,6 +7,8 @@
 #include "attrib.h"
 
 #include "hack.h"
+#include "pline.h"
+#include "pickup.h"
 #include "invent.h"
 #include "hacklib.h"
 

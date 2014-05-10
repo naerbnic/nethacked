@@ -7,6 +7,8 @@
 #include <string.h>
 
 #include "hack.h"
+#include "pline.h"
+#include "pickup.h"
 #include "pager.h"
 #include "options.h"
 #include "objnam.h"

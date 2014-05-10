@@ -138,51 +138,7 @@
 
 /* ### pickup.c ### */
 
-#ifdef GOLDOBJ
-int collect_obj_classes(char *, Object *, bool, bool (*)(Object *), int *);
-#else
-int collect_obj_classes(char *, Object *, bool, bool, bool (*)(Object *),
-                          int *);
-#endif
-void add_valid_menu_class(int);
-bool allow_all(Object *);
-bool allow_category(Object *);
-bool is_worn_by_type(Object *);
-int pickup(int);
-int pickup_object(Object *, long, bool);
-int query_category(const char *, Object *, int, menu_item **, int);
-int query_objlist(const char *, Object *, int, menu_item **, int,
-                    bool (*)(Object *));
-Object *pick_obj(Object *);
-int encumber_msg();
-int doloot();
-int use_container(Object *, int);
-int loot_mon(Monster *, int *, bool *);
-const char *safe_qbuf(const char *, unsigned, const char *, const char *,
-                        const char *);
-bool is_autopickup_exception(Object *, bool);
-
 /* ### pline.c ### */
-
-void msgpline_add(int, char *);
-void msgpline_free();
-void pline(const char *, ...) PRINTF_F(1, 2);
-void Norep(const char *, ...) PRINTF_F(1, 2);
-void free_youbuf();
-void You(const char *, ...) PRINTF_F(1, 2);
-void Your(const char *, ...) PRINTF_F(1, 2);
-void You_feel(const char *, ...) PRINTF_F(1, 2);
-void You_cant(const char *, ...) PRINTF_F(1, 2);
-void You_hear(const char *, ...) PRINTF_F(1, 2);
-void pline_The(const char *, ...) PRINTF_F(1, 2);
-void There(const char *, ...) PRINTF_F(1, 2);
-void verbalize(const char *, ...) PRINTF_F(1, 2);
-void raw_printf(const char *, ...) PRINTF_F(1, 2);
-void impossible(const char *, ...) PRINTF_F(1, 2);
-const char *align_str(ALIGNTYP_P);
-void mstatusline(Monster *);
-void ustatusline();
-void self_invis_message();
 
 /* ### polyself.c ### */
 

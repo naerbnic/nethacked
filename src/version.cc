@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "pline.h"
 #include "date.h"
 /*
  * All the references to the contents of patchlevel.h have been moved
