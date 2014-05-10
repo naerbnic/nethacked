@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "worm.h"
 #include "teleport.h"
 #include "save.h"
 #include "rnd.h"

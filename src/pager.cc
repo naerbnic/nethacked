@@ -8,6 +8,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "worm.h"
 #include "unixtty.h"
 #include "rnd.h"
 #include "pline.h"

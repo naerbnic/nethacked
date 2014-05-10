@@ -230,52 +230,9 @@
 
 /* ### wizard.c ### */
 
-void amulet();
-int mon_has_amulet(Monster *);
-int mon_has_special(Monster *);
-int tactics(Monster *);
-void aggravate();
-void clonewiz();
-int pick_nasty();
-int nasty(Monster *);
-void resurrect();
-void intervene();
-void wizdead();
-void cuss(Monster *);
-
 /* ### worm.c ### */
 
-int get_wormno();
-void initworm(Monster *, int);
-void worm_move(Monster *);
-void worm_nomove(Monster *);
-void wormgone(Monster *);
-void wormhitu(Monster *);
-void cutworm(Monster *, xchar, xchar, Object *);
-void see_wsegs(Monster *);
-void detect_wsegs(Monster *, bool);
-void save_worm(int, int);
-void rest_worm(int);
-void place_wsegs(Monster *);
-void remove_worm(Monster *);
-void place_worm_tail_randomly(Monster *, xchar, xchar);
-int count_wsegs(Monster *);
-bool worm_known(Monster *);
-
 /* ### worn.c ### */
-
-void setworn(Object *, long);
-void setnotworn(Object *);
-void mon_set_minvis(Monster *);
-void mon_adjust_speed(Monster *, int, Object *);
-void update_mon_intrinsics(Monster *, Object *, bool, bool);
-int find_mac(Monster *);
-void m_dowear(Monster *, bool);
-Object *which_armor(Monster *, long);
-void mon_break_armor(Monster *, bool);
-void bypass_obj(Object *);
-void clear_bypasses();
-int racial_exception(Monster *, Object *);
 
 /* ### write.c ### */
 

@@ -7,6 +7,7 @@
 #include "fountain.h"
 
 #include "hack.h"
+#include "worm.h"
 #include "steal.h"
 #include "shk.h"
 #include "rnd.h"

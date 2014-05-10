@@ -29,6 +29,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "worm.h"
 #include "shk.h"
 #include "rnd.h"
 #include "pline.h"

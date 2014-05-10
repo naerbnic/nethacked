@@ -8,6 +8,8 @@
 #include <string>
 
 #include "hack.h"
+#include "worn.h"
+#include "worm.h"
 #include "wield.h"
 #include "shk.h"
 #include "rnd.h"

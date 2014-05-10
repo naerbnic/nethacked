@@ -5,6 +5,7 @@
 #include "json_spirit.h"
 
 #include "hack.h"
+#include "worm.h"
 #include "save.h"
 #include "rumors.h"
 #include "restore.h"

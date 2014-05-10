@@ -5,6 +5,8 @@
 #include <string.h>
 
 #include "hack.h"
+#include "worm.h"
+#include "wizard.h"
 #include "track.h"
 #include "teleport.h"
 #include "steed.h"

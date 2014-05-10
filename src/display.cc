@@ -119,6 +119,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "worm.h"
 #include "rnd.h"
 #include "pline.h"
 #include "invent.h"

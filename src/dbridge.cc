@@ -15,6 +15,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "worm.h"
 #include "teleport.h"
 #include "steed.h"
 #include "rnd.h"

@@ -10,6 +10,8 @@
 #include <string.h>
 
 #include "hack.h"
+#include "worn.h"
+#include "worm.h"
 #include "wield.h"
 #include "rnd.h"
 #include "polyself.h"

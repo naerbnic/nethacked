@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "worn.h"
 #include "role.h"
 #include "rnd.h"
 #include "pline.h"

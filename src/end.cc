@@ -8,6 +8,7 @@
 #include <stdarg.h>
 
 #include "hack.h"
+#include "worm.h"
 #include "weapon.h"
 #include "vault.h"
 #include "unixunix.h"

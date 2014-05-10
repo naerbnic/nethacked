@@ -5,6 +5,8 @@
 #include <string.h>
 
 #include "hack.h"
+#include "worm.h"
+#include "wizard.h"
 #include "vault.h"
 #include "shk.h"
 #include "rumors.h"

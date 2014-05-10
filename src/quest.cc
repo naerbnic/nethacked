@@ -3,6 +3,7 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 #include "hack.h"
+#include "worm.h"
 #include "rnd.h"
 #include "questpgr.h"
 #include "pline.h"

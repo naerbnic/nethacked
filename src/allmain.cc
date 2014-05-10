@@ -7,6 +7,8 @@
 
 #include <signal.h>
 #include "hack.h"
+#include "worn.h"
+#include "wizard.h"
 #include "were.h"
 #include "vault.h"
 #include "unixtty.h"

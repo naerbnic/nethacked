@@ -5,6 +5,8 @@
 #include <string.h>
 
 #include "hack.h"
+#include "worn.h"
+#include "wizard.h"
 #include "wield.h"
 #include "were.h"
 #include "weapon.h"

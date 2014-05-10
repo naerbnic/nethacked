@@ -6,6 +6,7 @@
 #include <stdarg.h>
 
 #include "hack.h"
+#include "worn.h"
 #include "polyself.h"
 #include "objnam.h"
 #include "hacklib.h"
