@@ -15,6 +15,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "hacklib.h"
 #include "end.h"
 #include "do_name.h"
 #include "do.h"

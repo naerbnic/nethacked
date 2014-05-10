@@ -8,6 +8,7 @@
 #include <stdarg.h>
 
 #include "hack.h"
+#include "hacklib.h"
 #include "files.h"
 #include "eat.h"
 #include "dog.h"

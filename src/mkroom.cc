@@ -16,6 +16,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "hacklib.h"
 #include "cmd.h"
 
 #ifdef OVLB

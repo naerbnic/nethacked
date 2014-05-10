@@ -3,6 +3,8 @@
 /* Copyright (c) Robert Patrick Rankin, 1991		  */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include "hacklib.h"
+
 #include <string.h>
 
 /* We could include only config.h, except for the overlay definitions... */

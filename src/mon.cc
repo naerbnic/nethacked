@@ -11,6 +11,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "hacklib.h"
 #include "fountain.h"
 #include "explode.h"
 #include "exper.h"

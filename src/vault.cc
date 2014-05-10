@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "hacklib.h"
 #include "end.h"
 #include "eat.h"
 #include "do_name.h"

@@ -7,6 +7,7 @@
 #include "fountain.h"
 
 #include "hack.h"
+#include "hacklib.h"
 #include "exper.h"
 #include "eat.h"
 #include "do_name.h"

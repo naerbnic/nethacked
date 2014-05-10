@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "hacklib.h"
 
 #include "artifact.h"
 #include "lev.h" /* save & restore info */

@@ -4,6 +4,7 @@
 /* track.c - version 1.0.2 */
 
 #include "hack.h"
+#include "hacklib.h"
 
 #define UTSZ 50
 

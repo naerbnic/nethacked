@@ -13,6 +13,7 @@ struct instance_flags iflags; /* provide linkage */
 #define static
 #else
 #include "hack.h"
+#include "hacklib.h"
 #include "files.h"
 #include "drawing.h"
 #include "tcap.h"

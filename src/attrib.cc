@@ -7,6 +7,7 @@
 #include "attrib.h"
 
 #include "hack.h"
+#include "hacklib.h"
 
 #include "artifact.h"
 

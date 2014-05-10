@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "hacklib.h"
 #include "fountain.h"
 #include "files.h"
 #include "exper.h"

@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "hacklib.h"
 #include "eat.h"
 #include "dog.h"
 #include "do_name.h"

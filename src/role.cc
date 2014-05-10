@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "hacklib.h"
 
 /*** Table of all roles ***/
 /* According to AD&D, HD for some classes (ex. Wizard) should be smaller

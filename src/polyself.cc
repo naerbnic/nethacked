@@ -13,6 +13,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "hacklib.h"
 #include "exper.h"
 #include "end.h"
 #include "eat.h"

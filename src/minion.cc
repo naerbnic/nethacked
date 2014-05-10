@@ -3,6 +3,7 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 #include "hack.h"
+#include "hacklib.h"
 #include "do_name.h"
 #include "emin.h"
 #include "epri.h"
