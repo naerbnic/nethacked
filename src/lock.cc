@@ -5,6 +5,7 @@
 #include "lock.h"
 
 #include "hack.h"
+#include "potion.h"
 #include "pline.h"
 #include "pickup.h"
 #include "objnam.h"

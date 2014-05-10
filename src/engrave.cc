@@ -7,6 +7,8 @@
 #include <string.h>
 
 #include "hack.h"
+#include "potion.h"
+#include "polyself.h"
 #include "pline.h"
 #include "objnam.h"
 #include "o_init.h"

@@ -3,6 +3,8 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 #include "hack.h"
+#include "potion.h"
+#include "polyself.h"
 #include "pline.h"
 #include "objnam.h"
 #include "muse.h"
