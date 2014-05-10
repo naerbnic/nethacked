@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "mhitm.h"
 #include "mcastu.h"
 #include "lock.h"
 #include "invent.h"

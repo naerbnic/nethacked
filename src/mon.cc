@@ -11,6 +11,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "mhitm.h"
 #include "makemon.h"
 #include "light.h"
 #include "invent.h"

@@ -92,13 +92,6 @@
 
 /* ### mhitm.c ### */
 
-int fightm(Monster *);
-int mattackm(Monster *, Monster *);
-int noattacks(MonsterType *);
-int sleep_monst(Monster *, int, int);
-void slept_monst(Monster *);
-long attk_protection(int);
-
 /* ### mhitu.c ### */
 
 const char *mpoisons_subj(Monster *, struct Attack *);

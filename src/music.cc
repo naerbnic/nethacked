@@ -29,6 +29,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "mhitm.h"
 #include "invent.h"
 #include "hacklib.h"
 #include "dog.h"
