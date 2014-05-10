@@ -9,6 +9,7 @@
 #include <string>
 
 #include "hack.h"
+#include "teleport.h"
 #include "save.h"
 #include "rumors.h"
 #include "rnd.h"

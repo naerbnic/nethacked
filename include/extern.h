@@ -190,66 +190,11 @@
 
 /* ### teleport.c ### */
 
-bool goodpos(int, int, Monster *, unsigned);
-bool enexto(coord *, xchar, xchar, MonsterType *);
-bool enexto_core(coord *, xchar, xchar, MonsterType *, unsigned);
-void teleds(int, int, bool);
-bool safe_teleds(bool);
-bool teleport_pet(Monster *, bool);
-void tele();
-int dotele();
-void level_tele();
-void domagicportal(Trap *);
-void tele_trap(Trap *);
-void level_tele_trap(Trap *);
-void rloc_to(Monster *, int, int);
-bool rloc(Monster *, bool);
-bool tele_restrict(Monster *);
-void mtele_trap(Monster *, Trap *, int);
-int mlevel_tele_trap(Monster *, Trap *, bool, int);
-void rloco(Object *);
-int random_teleport_level();
-bool u_teleport_mon(Monster *, bool);
-
 /* ### tile.c ### */
-#ifdef USE_TILES
-void substitute_tiles(d_level *);
-#endif
 
 /* ### timeout.c ### */
 
-void burn_away_slime();
-void nh_timeout();
-void fall_asleep(int, bool);
-void attach_egg_hatch_timeout(Object *);
-void attach_fig_transform_timeout(Object *);
-void kill_egg(Object *);
-void hatch_egg(genericptr_t, long);
-void learn_egg_type(int);
-void burn_object(genericptr_t, long);
-void begin_burn(Object *, bool);
-void end_burn(Object *, bool);
-void do_storms();
-bool start_timer(long, short, short, genericptr_t);
-long stop_timer(short, genericptr_t);
-void run_timers();
-void obj_move_timers(Object *, Object *);
-void obj_split_timers(Object *, Object *);
-void obj_stop_timers(Object *);
-bool obj_is_local(Object *);
-void save_timers(int, int, int);
-void restore_timers(int, int, bool, long);
-void relink_timers(bool);
-#ifdef WIZARD
-int wiz_timeout_queue();
-void timer_sanity_check();
-#endif
-
 /* ### topten.c ### */
-
-void topten(int);
-void prscore(int, char **);
-Object *tt_oname(Object *);
 
 /* ### track.c ### */
 

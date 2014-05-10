@@ -16,6 +16,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "teleport.h"
 #include "shknam.h"
 #include "save.h"
 #include "rnd.h"

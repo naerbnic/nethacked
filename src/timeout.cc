@@ -8,6 +8,7 @@
 using std::vector;
 
 #include "hack.h"
+#include "teleport.h"
 #include "steed.h"
 #include "shk.h"
 #include "save.h"

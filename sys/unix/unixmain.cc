@@ -5,6 +5,7 @@
 /* main.c - Unix NetHack */
 
 #include "hack.h"
+#include "topten.h"
 #include "save.h"
 #include "role.h"
 #include "restore.h"
