@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "read.h"
 #include "priest.h"
 #include "pline.h"
 #include "objnam.h"

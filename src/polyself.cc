@@ -13,6 +13,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "read.h"
 #include "potion.h"
 #include "polyself.h"
 #include "pline.h"

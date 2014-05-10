@@ -3,6 +3,7 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 #include "hack.h"
+#include "read.h"
 #include "pray.h"
 #include "potion.h"
 #include "polyself.h"
