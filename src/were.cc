@@ -5,6 +5,8 @@
 #include <string.h>
 
 #include "hack.h"
+#include "were.h"
+#include "weapon.h"
 #include "rnd.h"
 #include "polyself.h"
 #include "pline.h"

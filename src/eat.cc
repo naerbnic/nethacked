@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "were.h"
 #include "steed.h"
 #include "shk.h"
 #include "rumors.h"

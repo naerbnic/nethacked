@@ -7,6 +7,7 @@
 #include "attrib.h"
 
 #include "hack.h"
+#include "weapon.h"
 #include "rnd.h"
 #include "pline.h"
 #include "pickup.h"

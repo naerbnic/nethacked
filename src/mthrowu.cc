@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "weapon.h"
 #include "uhitm.h"
 #include "shk.h"
 #include "rnd.h"

@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "weapon.h"
 #include "teleport.h"
 #include "shk.h"
 #include "rumors.h"

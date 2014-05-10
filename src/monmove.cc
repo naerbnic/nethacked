@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "weapon.h"
 #include "vault.h"
 #include "track.h"
 #include "teleport.h"

@@ -11,6 +11,8 @@
 #include <string.h>
 
 #include "hack.h"
+#include "were.h"
+#include "weapon.h"
 #include "vault.h"
 #include "teleport.h"
 #include "steed.h"

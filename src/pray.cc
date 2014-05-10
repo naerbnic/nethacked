@@ -5,6 +5,8 @@
 #include <string.h>
 
 #include "hack.h"
+#include "were.h"
+#include "weapon.h"
 #include "teleport.h"
 #include "sit.h"
 #include "role.h"

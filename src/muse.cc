@@ -9,6 +9,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "weapon.h"
 #include "teleport.h"
 #include "steed.h"
 #include "steal.h"
