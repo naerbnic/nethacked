@@ -206,10 +206,6 @@
 
 /* ### unixmain.c ### */
 
-#ifdef PORT_HELP
-void port_help();
-#endif
-
 /* ### unixtty.c ### */
 
 void gettty();
