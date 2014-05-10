@@ -16,6 +16,9 @@
 #include <string.h>
 
 #include "hack.h"
+#include "mkobj.h"
+#include "mklev.h"
+#include "minion.h"
 #include "makemon.h"
 #include "invent.h"
 #include "hacklib.h"

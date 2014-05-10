@@ -7,6 +7,8 @@
 
 #include <signal.h>
 #include "hack.h"
+#include "mkmaze.h"
+#include "mklev.h"
 #include "makemon.h"
 #include "mail.h"
 #include "hacklib.h"

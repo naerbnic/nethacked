@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "minion.h"
 #include "mhitu.h"
 #include "invent.h"
 #include "hacklib.h"

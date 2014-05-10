@@ -5,6 +5,8 @@
 #include <string.h>
 
 #include "hack.h"
+#include "mkobj.h"
+#include "mkmaze.h"
 #include "mhitu.h"
 #include "mhitm.h"
 #include "makemon.h"

@@ -12,6 +12,10 @@
 #include <string.h>
 
 #include "hack.h"
+#include "mkobj.h"
+#include "mkmaze.h"
+#include "mkmap.h"
+#include "mklev.h"
 #include "makemon.h"
 #include "invent.h"
 #include "hacklib.h"

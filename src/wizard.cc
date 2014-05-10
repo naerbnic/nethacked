@@ -8,6 +8,8 @@
 /*	       - generalized for 3.1 (mike@bullns.on01.bull.ca) */
 
 #include "hack.h"
+#include "mkobj.h"
+#include "minion.h"
 #include "makemon.h"
 #include "hacklib.h"
 #include "dog.h"

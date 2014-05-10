@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "mkobj.h"
 #include "invent.h"
 #include "do_name.h"
 #include "do.h"

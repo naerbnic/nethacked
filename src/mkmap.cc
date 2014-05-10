@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "mklev.h"
 #include "cmd.h"
 #include "sp_lev.h"
 

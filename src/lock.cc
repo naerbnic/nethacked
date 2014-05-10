@@ -5,6 +5,7 @@
 #include "lock.h"
 
 #include "hack.h"
+#include "mkobj.h"
 #include "invent.h"
 #include "hacklib.h"
 #include "do_name.h"

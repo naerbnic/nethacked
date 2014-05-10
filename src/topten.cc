@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "mkobj.h"
 #include "hacklib.h"
 #include "files.h"
 #include "end.h"

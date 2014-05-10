@@ -9,6 +9,7 @@
 #include <string>
 
 #include "hack.h"
+#include "mkobj.h"
 #include "invent.h"
 #include "hacklib.h"
 #include "exper.h"

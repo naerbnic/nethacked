@@ -96,102 +96,13 @@
 
 /* ### minion.c ### */
 
-void msummon(Monster *);
-void summon_minion(ALIGNTYP_P, bool);
-int demon_talk(Monster *);
-long bribe(Monster *);
-int dprince(ALIGNTYP_P);
-int dlord(ALIGNTYP_P);
-int llord();
-int ndemon(ALIGNTYP_P);
-int lminion();
-
 /* ### mklev.c ### */
-
-void sort_rooms();
-void add_room(int, int, int, int, bool, schar, bool);
-void add_subroom(struct mkroom *, int, int, int, int, bool, schar, bool);
-void makecorridors();
-void add_door(int, int, struct mkroom *);
-void mklev();
-#ifdef SPECIALIZATION
-void topologize(struct mkroom *, bool);
-#else
-void topologize(struct mkroom *);
-#endif
-void place_branch(branch *, xchar, xchar);
-bool occupied(xchar, xchar);
-int okdoor(xchar, xchar);
-void dodoor(int, int, struct mkroom *);
-void mktrap(int, int, struct mkroom *, coord *);
-void mkstairs(xchar, xchar, char, struct mkroom *);
-void mkinvokearea();
 
 /* ### mkmap.c ### */
 
-void flood_fill_rm(int, int, int, bool, bool);
-void remove_rooms(int, int, int, int);
-
 /* ### mkmaze.c ### */
 
-void wallification(int, int, int, int);
-void walkfrom(int, int);
-void makemaz(const char *);
-void mazexy(coord *);
-void bound_digging();
-void mkportal(xchar, xchar, xchar, xchar);
-bool bad_location(xchar, xchar, xchar, xchar, xchar, xchar);
-void place_lregion(xchar, xchar, xchar, xchar, xchar, xchar, xchar, xchar,
-                     xchar, d_level *);
-void movebubbles();
-void water_friction();
-void save_waterlevel(int, int);
-void restore_waterlevel(int);
-const char *waterbody_name(xchar, xchar);
-
 /* ### mkobj.c ### */
-
-Object *MakeRandomObjectAt(char, int, int, bool);
-Object *MakeSpecificObjectAt(int, int, int, bool, bool);
-Object *MakeRandomObject(char, bool);
-int PickRandomMonsterTypeIndex();
-Object *SplitObject(Object *, long);
-void ReplaceObject(Object *, Object *);
-void CreateBillDummyObject(Object *);
-Object *MakeSpecificObject(int, bool, bool);
-int GetBUCSign(Object *);
-int GetWeight(Object *);
-Object *MakeGold(long, int, int);
-Object *MakeCorpseOrStatue(int, Monster *, MonsterType *, int, int, bool);
-Object *AttachMonsterIdToObject(Object *, unsigned);
-Monster *NewMonsterFromObject(Object *, bool);
-Object *NewTopTenObject(int, int, int);
-Object *MakeNamedCorpseOrStatue(int, MonsterType *, int, int, const char *);
-Object *MakeRandomTreefruitAt(int, int);
-void StartCorpseTimeout(Object *);
-void Bless(Object *);
-void Unbless(Object *);
-void Curse(Object *);
-void Uncurse(Object *);
-void BlessOrCurse(Object *, int);
-bool IsFlammable(Object *);
-bool IsRottable(Object *);
-void PlaceObject(Object *, int, int);
-void RemoveObjectFromFloor(Object *);
-void DiscardMonsterInventory(Monster *);
-void RemoveObjectFromStorage(Object *);
-void ExtractObjectFromList(Object *, Object **);
-void extract_nexthere(Object *, Object **);
-int AddObjectToMonsterInventory(Monster *, Object *);
-Object *AddObjectToContainer(Object *, Object *);
-void AddObjectToMigrationList(Object *);
-void AddToBuriedList(Object *);
-void DeallocateObject(Object *);
-void ApplyIceEffectsAt(int, int, bool);
-long PeekAtIcedCorpseAge(Object *);
-#ifdef WIZARD
-void SanityCheckObjects();
-#endif
 
 /* ### mkroom.c ### */
 
