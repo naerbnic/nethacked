@@ -32,4 +32,16 @@ struct lan_mail_struct {
 #endif
 
 #endif /*LAN_FEATURES*/
+#ifdef LAN_FEATURES
+void init_lan_features();
+char *lan_username();
+#ifdef LAN_MAIL
+bool lan_mail_check();
+void lan_mail_read(Object *);
+void lan_mail_init();
+void lan_mail_finish();
+void lan_mail_terminate();
+#endif
+#endif
+
 #endif /*NHLAN_H*/

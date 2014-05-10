@@ -185,4 +185,37 @@
 #define befriend_with_obj(ptr, obj) \
   ((obj)->oclass == FOOD_CLASS && is_domestic(ptr))
 
+
+void set_mon_data(Monster *, MonsterType *, int);
+struct Attack *attacktype_fordmg(MonsterType *, int, int);
+bool attacktype(MonsterType *, int);
+bool poly_when_stoned(MonsterType *);
+bool resists_drli(Monster *);
+bool resists_magm(Monster *);
+bool resists_blnd(Monster *);
+bool can_blnd(Monster *, Monster *, uchar, Object *);
+bool ranged_attk(MonsterType *);
+bool hates_silver(MonsterType *);
+bool passes_bars(MonsterType *);
+bool can_track(MonsterType *);
+bool breakarm(MonsterType *);
+bool sliparm(MonsterType *);
+bool sticks(MonsterType *);
+int num_horns(MonsterType *);
+/* E bool canseemon(struct monst *); */
+struct Attack *dmgtype_fromattack(MonsterType *, int, int);
+bool dmgtype(MonsterType *, int);
+int max_passive_dmg(Monster *, Monster *);
+int monsndx(MonsterType *);
+int name_to_mon(const char *);
+int gender(Monster *);
+int pronoun_gender(Monster *);
+bool levl_follower(Monster *);
+int little_to_big(int);
+int big_to_little(int);
+const char *locomotion(const MonsterType *, const char *);
+const char *stagger(const MonsterType *, const char *);
+const char *on_fire(MonsterType *, struct Attack *);
+const MonsterType *raceptr(Monster *);
+
 #endif /* MONDATA_H */

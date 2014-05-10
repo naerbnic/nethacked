@@ -5,6 +5,8 @@
 #ifndef VAULT_H
 #define VAULT_H
 
+#include "monst.h"
+
 #define FCSIZ (ROWNO + COLNO)
 struct fakecorridor {
   xchar fx, fy, ftyp;
@@ -23,5 +25,14 @@ struct egd {
 };
 
 #define EGD(mon) ((struct egd *)&(mon)->mextra[0])
+
+
+bool grddead(Monster *);
+char vault_occupied(char *);
+void invault();
+int gd_move(Monster *);
+void paygd();
+long hidden_gold();
+bool gd_sound();
 
 #endif /* VAULT_H */

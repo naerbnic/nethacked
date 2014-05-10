@@ -190,4 +190,7 @@ struct Monster {
 #define MSLOW 1 /* slow monster */
 #define MFAST 2 /* speeded monster */
 
+
+void monst_init();
+
 #endif /* MONST_H */

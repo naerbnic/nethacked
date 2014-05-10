@@ -254,4 +254,5 @@ bool dig_corridor(coord *, coord *, bool, schar, schar);
 void fill_room(struct mkroom *, bool);
 bool load_special(const char *);
 
+
 #endif /* SP_LEV_H */

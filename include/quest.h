@@ -38,4 +38,16 @@ struct q_score {            /* Quest "scorecard" */
 #define MIN_QUEST_LEVEL 14 /* at least this player.ulevel to start */
 /* note: exp.lev. 14 is threshold level for 5th rank (class title, role.c) */
 
+
+void onquest();
+void nemdead();
+void artitouch();
+bool ok_to_quest();
+void leader_speaks(Monster *);
+void nemesis_speaks();
+void quest_chat(Monster *);
+void quest_talk(Monster *);
+void quest_stat_check(Monster *);
+void finish_quest(Object *);
+
 #endif /* QUEST_H */
