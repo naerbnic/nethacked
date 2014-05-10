@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "uhitm.h"
 #include "teleport.h"
 #include "steed.h"
 #include "rnd.h"

@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "track.h"
 #include "teleport.h"
 #include "steed.h"
 #include "steal.h"

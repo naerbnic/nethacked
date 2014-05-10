@@ -6,6 +6,7 @@
 #include "ball.h"
 
 #include "hack.h"
+#include "uhitm.h"
 #include "rnd.h"
 #include "polyself.h"
 #include "pline.h"
