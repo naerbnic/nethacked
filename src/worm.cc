@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "restore.h"
 #include "pline.h"
 #include "mhitu.h"
 #include "makemon.h"

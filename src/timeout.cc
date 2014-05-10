@@ -8,6 +8,7 @@
 using std::vector;
 
 #include "hack.h"
+#include "restore.h"
 #include "potion.h"
 #include "polyself.h"
 #include "pline.h"

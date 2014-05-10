@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "restore.h"
 #include "pray.h"
 #include "potion.h"
 #include "polyself.h"

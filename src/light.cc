@@ -5,6 +5,7 @@
 #include "light.h"
 
 #include "hack.h"
+#include "restore.h"
 #include "pline.h"
 #include "end.h"
 

@@ -16,6 +16,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "restore.h"
 #include "priest.h"
 #include "pline.h"
 #include "options.h"

@@ -9,6 +9,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "restore.h"
 #include "read.h"
 #include "questpgr.h"
 #include "priest.h"

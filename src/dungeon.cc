@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "restore.h"
 #include "pline.h"
 #include "hacklib.h"
 #include "end.h"
