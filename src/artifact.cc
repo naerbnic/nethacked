@@ -9,6 +9,8 @@
 #include <string>
 
 #include "hack.h"
+#include "save.h"
+#include "rumors.h"
 #include "rnd.h"
 #include "restore.h"
 #include "read.h"

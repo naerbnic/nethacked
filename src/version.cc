@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "save.h"
 #include "restore.h"
 #include "pline.h"
 #include "date.h"

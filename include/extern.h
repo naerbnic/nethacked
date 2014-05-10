@@ -170,30 +170,7 @@
 
 /* ### rumors.c ### */
 
-char *getrumor(int, char *, bool);
-void outrumor(int, int);
-void outoracle(bool, bool);
-void save_oracles(int, int);
-void restore_oracles(int);
-int doconsult(Monster *);
-
 /* ### save.c ### */
-
-int dosave();
-void hangup(int);
-int dosave0();
-#ifdef INSURANCE
-void savestateinlock();
-#endif
-void savelev(int, xchar, int);
-void bufon(int);
-void bufoff(int);
-void bflush(int);
-void bwrite(int, void const*, unsigned int);
-void bclose(int);
-void savefruitchn(int, int);
-void free_dungeons();
-void freedynamicdata();
 
 /* ### shk.c ### */
 

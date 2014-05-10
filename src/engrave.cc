@@ -7,6 +7,8 @@
 #include <string.h>
 
 #include "hack.h"
+#include "save.h"
+#include "rumors.h"
 #include "rnd.h"
 #include "restore.h"
 #include "pray.h"

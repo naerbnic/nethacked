@@ -5,6 +5,8 @@
 #include "json_spirit.h"
 
 #include "hack.h"
+#include "save.h"
+#include "rumors.h"
 #include "restore.h"
 #include "questpgr.h"
 #include "pline.h"
