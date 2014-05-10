@@ -11,6 +11,7 @@
 #include <stdarg.h>
 
 #include "hack.h"
+#include "ioctl.h"
 
 /*
  * The distinctions here are not BSD - rest but rather USG - rest, as

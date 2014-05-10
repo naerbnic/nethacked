@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "ioctl.h"
 #include "invent.h"
 #include "hacklib.h"
 #include "fountain.h"

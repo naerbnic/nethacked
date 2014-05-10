@@ -6,6 +6,8 @@
    systems (e.g. MUNIX) the include files <termio.h> and <sgtty.h>
    define the same constants, and the C preprocessor complains. */
 
+#include "ioctl.h"
+
 #include <sys/ioctl.h>
 
 #include "hack.h"

@@ -78,13 +78,6 @@
 
 /* ### ioctl.c ### */
 
-void getwindowsz();
-void getioctls();
-void setioctls();
-#ifdef SUSPEND
-int dosuspend();
-#endif /* SUSPEND */
-
 /* ### light.c ### */
 
 void new_light_source(xchar, xchar, int, int, genericptr_t);
