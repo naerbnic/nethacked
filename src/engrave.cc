@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "invent.h"
 #include "hacklib.h"
 #include "exper.h"
 #include "do_name.h"

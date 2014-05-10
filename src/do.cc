@@ -9,6 +9,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "invent.h"
 #include "hacklib.h"
 #include "fountain.h"
 #include "files.h"

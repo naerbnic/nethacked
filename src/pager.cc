@@ -8,6 +8,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "invent.h"
 #include "hacklib.h"
 #include "do_name.h"
 #include "dbridge.h"

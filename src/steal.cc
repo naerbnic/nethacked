@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "invent.h"
 #include "hacklib.h"
 #include "eat.h"
 #include "do_wear.h"

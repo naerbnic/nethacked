@@ -8,6 +8,7 @@
 using std::vector;
 
 #include "hack.h"
+#include "invent.h"
 #include "hacklib.h"
 #include "end.h"
 #include "eat.h"

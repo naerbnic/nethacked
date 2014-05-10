@@ -12,6 +12,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "invent.h"
 #include "hacklib.h"
 #include "drawing.h"
 #include "do_name.h"
