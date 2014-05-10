@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "mhitu.h"
 #include "mhitm.h"
 #include "makemon.h"
 #include "invent.h"
