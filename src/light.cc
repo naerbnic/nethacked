@@ -5,6 +5,7 @@
 #include "light.h"
 
 #include "hack.h"
+#include "zap.h"
 #include "shk.h"
 #include "save.h"
 #include "restore.h"

@@ -16,6 +16,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "zap.h"
 #include "teleport.h"
 #include "shknam.h"
 #include "save.h"

@@ -8,6 +8,7 @@
 using std::vector;
 
 #include "hack.h"
+#include "zap.h"
 #include "worm.h"
 #include "teleport.h"
 #include "steed.h"

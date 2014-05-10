@@ -5,6 +5,7 @@
 #include "lock.h"
 
 #include "hack.h"
+#include "zap.h"
 #include "worm.h"
 #include "uhitm.h"
 #include "shk.h"

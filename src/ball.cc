@@ -6,6 +6,7 @@
 #include "ball.h"
 
 #include "hack.h"
+#include "zap.h"
 #include "worn.h"
 #include "wield.h"
 #include "uhitm.h"

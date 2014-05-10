@@ -3,6 +3,7 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 #include "hack.h"
+#include "zap.h"
 #include "worn.h"
 #include "wizard.h"
 #include "teleport.h"

@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "zap.h"
 #include "worm.h"
 #include "weapon.h"
 #include "shk.h"

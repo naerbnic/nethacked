@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "zap.h"
 #include "worm.h"
 #include "wizard.h"
 #include "weapon.h"
