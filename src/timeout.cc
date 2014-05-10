@@ -8,6 +8,7 @@
 using std::vector;
 
 #include "hack.h"
+#include "mon.h"
 #include "mkobj.h"
 #include "makemon.h"
 #include "light.h"

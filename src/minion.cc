@@ -3,6 +3,7 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 #include "hack.h"
+#include "mon.h"
 #include "minion.h"
 #include "makemon.h"
 #include "invent.h"

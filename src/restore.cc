@@ -7,6 +7,7 @@
 #include <string>
 
 #include "hack.h"
+#include "mon.h"
 #include "mkobj.h"
 #include "mkmaze.h"
 #include "makemon.h"

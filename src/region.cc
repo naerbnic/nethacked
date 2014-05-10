@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "mon.h"
 #include "light.h"
 #include "do_name.h"
 #include "cmd.h"

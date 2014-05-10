@@ -29,6 +29,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "mon.h"
 #include "mkobj.h"
 #include "mhitm.h"
 #include "invent.h"

@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "mon.h"
 #include "mkobj.h"
 #include "light.h"
 #include "invent.h"
