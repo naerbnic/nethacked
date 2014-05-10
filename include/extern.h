@@ -184,17 +184,6 @@
 
 /* ### spell.c ### */
 
-int study_book(Object *);
-void book_disappears(Object *);
-void book_substitution(Object *, Object *);
-void age_spells();
-int docast();
-int spell_skilltype(int);
-int spelleffects(int, bool);
-void losespells();
-int dovspell();
-void initialspell(Object *);
-
 /* ### steal.c ### */
 
 #ifdef GOLDOBJ
