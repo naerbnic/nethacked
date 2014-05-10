@@ -9,6 +9,7 @@
  */
 
 #include "hack.h"
+#include "mapglyph.h"
 #include "ioctl.h"
 #include "hacklib.h"
 #include "files.h"

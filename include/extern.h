@@ -88,8 +88,6 @@
 
 /* ### mapglyph.c ### */
 
-void mapglyph(int, int *, int *, unsigned *, int, int);
-
 /* ### mcastu.c ### */
 
 int castmu(Monster *, struct Attack *, bool, bool);
