@@ -164,8 +164,6 @@
 
 /* ### rip.c ### */
 
-void genl_outrip(winid, int);
-
 /* ### rnd.c ### */
 
 void check_reseed();
