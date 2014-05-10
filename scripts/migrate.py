@@ -35,8 +35,8 @@ def create_header(f, basename, text):
 #endif  // {0}
 """
     file_contents = template.format(guard, text)
-    print ('=== {0} ==='.format(f))
-    print (file_contents)
+    print ('=== CREATE: {0}'.format(f))
+    dump_file(f, file_contents)
 
 def find_last(lst, pred):
     for i in range(len(lst) - 1, -1, -1):
@@ -46,9 +46,9 @@ def find_last(lst, pred):
 def update_header(f, basename, text):
     lines = file_lines(f)
     endif_index = find_last(lines, lambda x: re.search(r'^#endif', x))
-    print ("==> UPDATE: {0}: {1}".format(f, endif_index))
+    print ("==> UPDATE: {0}".format(f, endif_index))
     lines[endif_index:endif_index] = [text]
-    print (''.join(lines))
+    dump_file(f, ''.join(lines))
 
 
 def handle_header(basename, text):
@@ -61,6 +61,10 @@ def handle_header(basename, text):
 def file_lines(name):
     with open(name, 'r') as f:
         return list(f)
+
+def dump_file(name, text):
+    with open(name, 'w') as f:
+        f.write(text)
 
 def process_file(file_name):
     with open(file_name, 'r') as f:
