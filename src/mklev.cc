@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "makemon.h"
 #include "invent.h"
 #include "extralev.h"
 #include "end.h"

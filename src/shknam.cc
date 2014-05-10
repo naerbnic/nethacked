@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "makemon.h"
 #include "hacklib.h"
 #include "detect.h"
 #include "cmd.h"

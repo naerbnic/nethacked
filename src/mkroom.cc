@@ -16,6 +16,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "makemon.h"
 #include "invent.h"
 #include "hacklib.h"
 #include "cmd.h"

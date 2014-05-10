@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "makemon.h"
 #include "end.h"
 
 STATIC_DCL long newuexp(int);

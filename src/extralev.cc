@@ -9,6 +9,7 @@
  */
 
 #include "hack.h"
+#include "makemon.h"
 #include "do_name.h"
 
 #ifdef REINCARNATION
