@@ -152,23 +152,7 @@
 
 /* ### questpgr.c ### */
 
-void load_qtlist();
-void unload_qtlist();
-short quest_info(int);
-const char *ldrname();
-bool is_quest_artifact(Object *);
-void com_pager(int);
-void qt_pager(int);
-MonsterType *qt_montype();
-
 /* ### random.c ### */
-
-#if defined(RANDOM) && !defined(__GO32__) /* djgpp has its own random */
-void srandom(unsigned);
-char *initstate(unsigned, char *, int);
-char *setstate(char *);
-long random();
-#endif /* RANDOM */
 
 /* ### read.c ### */
 

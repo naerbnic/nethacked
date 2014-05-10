@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "questpgr.h"
 #include "potion.h"
 #include "polyself.h"
 #include "pline.h"

@@ -7,6 +7,7 @@
 
 #include <signal.h>
 #include "hack.h"
+#include "questpgr.h"
 #include "polyself.h"
 #include "pline.h"
 #include "pickup.h"

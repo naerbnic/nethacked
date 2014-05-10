@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "questpgr.h"
 #include "polyself.h"
 #include "pline.h"
 #include "objnam.h"

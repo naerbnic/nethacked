@@ -11,6 +11,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "questpgr.h"
 #include "priest.h"
 #include "potion.h"
 #include "polyself.h"
