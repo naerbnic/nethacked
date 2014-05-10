@@ -304,4 +304,35 @@ extern coord bhitpos; /* place where throw or zap hits or stops */
  */
 #define CFDECLSPEC
 
+
+bool revive_nasty(int, int, const char *);
+void movobj(Object *, xchar, xchar);
+bool may_dig(xchar, xchar);
+bool may_passwall(xchar, xchar);
+bool bad_rock(MonsterType *, xchar, xchar);
+bool invocation_pos(xchar, xchar);
+bool test_move(int, int, int, int, int);
+void domove();
+void invocation_message();
+void spoteffects(bool);
+char *in_rooms(xchar, xchar, int);
+bool in_town(int, int);
+void check_special_room(bool);
+int dopickup();
+void lookaround();
+int monster_nearby();
+void nomul(int, const char *);
+void unmul(const char *);
+void losehp(int, const char *, bool);
+int weight_cap();
+int inv_weight();
+int near_capacity();
+int calc_capacity(int);
+int max_capacity();
+bool check_capacity(const char *);
+int inv_cnt();
+#ifdef GOLDOBJ
+long money_cnt(Object *);
+#endif
+
 #endif /* HACK_H */
