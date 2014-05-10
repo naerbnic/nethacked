@@ -90,9 +90,6 @@
 
 /* ### mcastu.c ### */
 
-int castmu(Monster *, struct Attack *, bool, bool);
-int buzzmu(Monster *, struct Attack *);
-
 /* ### mhitm.c ### */
 
 int fightm(Monster *);
