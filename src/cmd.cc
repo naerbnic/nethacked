@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "o_init.h"
 #include "mkobj.h"
 #include "lock.h"
 #include "light.h"

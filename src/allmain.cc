@@ -7,6 +7,8 @@
 
 #include <signal.h>
 #include "hack.h"
+#include "objects.h"
+#include "o_init.h"
 #include "monstr.h"
 #include "mon.h"
 #include "mkmaze.h"

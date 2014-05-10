@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "o_init.h"
 #include "mkobj.h"
 #include "mkmaze.h"
 #include "mklev.h"

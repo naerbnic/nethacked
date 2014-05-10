@@ -9,6 +9,8 @@
 #include <string.h>
 
 #include "hack.h"
+#include "o_init.h"
+#include "music.h"
 #include "mthrowu.h"
 #include "monmove.h"
 #include "mon.h"

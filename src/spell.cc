@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "o_init.h"
 #include "monmove.h"
 #include "mkobj.h"
 #include "mklev.h"

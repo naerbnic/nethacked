@@ -5,6 +5,7 @@
 #include "json_spirit.h"
 
 #include "hack.h"
+#include "o_init.h"
 #include "mon.h"
 #include "mkobj.h"
 #include "mkmaze.h"

@@ -12,6 +12,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "o_init.h"
 #include "mon.h"
 #include "mhitu.h"
 #include "invent.h"

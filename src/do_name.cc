@@ -8,6 +8,7 @@
 #include <string>
 
 #include "hack.h"
+#include "o_init.h"
 #include "mon.h"
 #include "mkobj.h"
 #include "light.h"

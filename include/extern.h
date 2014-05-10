@@ -124,36 +124,11 @@
 
 /* ### music.c ### */
 
-void awaken_soldiers();
-int do_play_instrument(Object *);
-
 /* ### nhlan.c ### */
-#ifdef LAN_FEATURES
-void init_lan_features();
-char *lan_username();
-#ifdef LAN_MAIL
-bool lan_mail_check();
-void lan_mail_read(Object *);
-void lan_mail_init();
-void lan_mail_finish();
-void lan_mail_terminate();
-#endif
-#endif
 
 /* ### o_init.c ### */
 
-void init_objects();
-int find_skates();
-void oinit();
-void savenames(int, int);
-void restnames(int);
-void discover_object(int, bool, bool);
-void undiscover_object(int);
-int dodiscovered();
-
 /* ### objects.c ### */
-
-void objects_init();
 
 /* ### objnam.c ### */
 
