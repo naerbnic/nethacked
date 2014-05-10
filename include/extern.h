@@ -178,24 +178,7 @@
 
 /* ### sit.c ### */
 
-void take_gold();
-int dosit();
-void rndcurse();
-void attrcurse();
-
 /* ### sounds.c ### */
-
-void dosounds();
-const char *growl_sound(Monster *);
-void growl(Monster *);
-void yelp(Monster *);
-void whimper(Monster *);
-void beg(Monster *);
-int dotalk();
-#ifdef USER_SOUNDS
-int add_sound_mapping(const char *);
-void play_sound_for_message(const char *);
-#endif
 
 /* ### sp_lev.c ### */
 

@@ -5,6 +5,8 @@
 #include <string.h>
 
 #include "hack.h"
+#include "sounds.h"
+#include "sit.h"
 #include "rnd.h"
 #include "read.h"
 #include "questpgr.h"

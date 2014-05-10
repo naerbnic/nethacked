@@ -7,6 +7,7 @@
 
 #include <signal.h>
 #include "hack.h"
+#include "sounds.h"
 #include "role.h"
 #include "rnd.h"
 #include "questpgr.h"

@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "sit.h"
 #include "role.h"
 #include "rnd.h"
 #include "read.h"

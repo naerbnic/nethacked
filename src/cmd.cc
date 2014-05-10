@@ -7,6 +7,8 @@
 #include <string.h>
 
 #include "hack.h"
+#include "sounds.h"
+#include "sit.h"
 #include "shk.h"
 #include "save.h"
 #include "rnd.h"
