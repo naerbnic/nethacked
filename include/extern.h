@@ -82,16 +82,6 @@
 
 /* ### lock.c ### */
 
-bool picking_lock(int *, int *);
-bool picking_at(int, int);
-void reset_pick();
-int pick_lock(Object *);
-int doforce();
-bool boxlock(Object *, Object *);
-bool doorlock(Object *, int, int);
-int doopen();
-int doclose();
-
 /* ### mail.c ### */
 
 #ifdef MAIL
