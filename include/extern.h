@@ -84,12 +84,6 @@
 
 /* ### mail.c ### */
 
-#ifdef MAIL
-void getmailstatus();
-void ckmailstatus();
-void readmail(Object *);
-#endif /* MAIL */
-
 /* ### makemon.c ### */
 
 bool IsLevelHomeOfElementalType(MonsterType *);

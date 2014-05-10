@@ -7,6 +7,7 @@
 
 #include <signal.h>
 #include "hack.h"
+#include "mail.h"
 #include "hacklib.h"
 #include "end.h"
 #include "eat.h"
