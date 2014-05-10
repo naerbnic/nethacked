@@ -8,6 +8,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "rnd.h"
 #include "pline.h"
 #include "pager.h"
 #include "options.h"

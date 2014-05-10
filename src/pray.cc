@@ -5,6 +5,8 @@
 #include <string.h>
 
 #include "hack.h"
+#include "role.h"
+#include "rnd.h"
 #include "read.h"
 #include "priest.h"
 #include "pray.h"

@@ -9,6 +9,7 @@
  */
 
 #include "hack.h"
+#include "role.h"
 #include "pline.h"
 #include "options.h"
 #include "objnam.h"

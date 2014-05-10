@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "rnd.h"
 #include "potion.h"
 #include "pline.h"
 #include "monmove.h"

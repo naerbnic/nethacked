@@ -7,6 +7,8 @@
 #include <string.h>
 
 #include "hack.h"
+#include "role.h"
+#include "rnd.h"
 #include "pline.h"
 #include "options.h"
 #include "mon.h"

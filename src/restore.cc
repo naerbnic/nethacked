@@ -7,6 +7,7 @@
 #include <string>
 
 #include "hack.h"
+#include "role.h"
 #include "restore.h"
 #include "questpgr.h"
 #include "priest.h"

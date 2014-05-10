@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "rnd.h"
 #include "polyself.h"
 #include "o_init.h"
 #include "mkobj.h"

@@ -119,6 +119,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "rnd.h"
 #include "pline.h"
 #include "invent.h"
 #include "hacklib.h"

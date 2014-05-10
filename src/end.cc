@@ -8,6 +8,7 @@
 #include <stdarg.h>
 
 #include "hack.h"
+#include "role.h"
 #include "restore.h"
 #include "priest.h"
 #include "pline.h"

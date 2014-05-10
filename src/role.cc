@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "rnd.h"
 #include "hacklib.h"
 
 /*** Table of all roles ***/

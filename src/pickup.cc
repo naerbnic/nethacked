@@ -9,6 +9,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "rnd.h"
 #include "polyself.h"
 #include "pline.h"
 #include "pickup.h"

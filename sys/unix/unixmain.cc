@@ -5,6 +5,7 @@
 /* main.c - Unix NetHack */
 
 #include "hack.h"
+#include "role.h"
 #include "restore.h"
 #include "pline.h"
 #include "pickup.h"

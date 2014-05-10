@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "rnd.h"
 #include "priest.h"
 #include "potion.h"
 #include "polyself.h"

@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "rnd.h"
 #include "questpgr.h"
 #include "potion.h"
 #include "polyself.h"

@@ -8,6 +8,7 @@
 /*	       - generalized for 3.1 (mike@bullns.on01.bull.ca) */
 
 #include "hack.h"
+#include "rnd.h"
 #include "questpgr.h"
 #include "pline.h"
 #include "objnam.h"

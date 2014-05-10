@@ -13,6 +13,8 @@ struct instance_flags iflags; /* provide linkage */
 #define static
 #else
 #include "hack.h"
+#include "role.h"
+#include "rnd.h"
 #include "pline.h"
 #include "options.h"
 #include "invent.h"

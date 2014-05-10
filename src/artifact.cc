@@ -9,6 +9,7 @@
 #include <string>
 
 #include "hack.h"
+#include "rnd.h"
 #include "restore.h"
 #include "read.h"
 #include "potion.h"
