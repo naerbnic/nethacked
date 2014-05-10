@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "steal.h"
 #include "shknam.h"
 #include "shk.h"
 #include "role.h"

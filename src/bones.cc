@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "steed.h"
 #include "save.h"
 #include "rnd.h"
 #include "restore.h"

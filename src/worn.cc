@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "steed.h"
 #include "rnd.h"
 #include "pline.h"
 #include "objnam.h"

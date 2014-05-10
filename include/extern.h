@@ -186,36 +186,7 @@
 
 /* ### steal.c ### */
 
-#ifdef GOLDOBJ
-long somegold(long);
-#else
-long somegold();
-#endif
-void stealgold(Monster *);
-void remove_worn_item(Object *, bool);
-int steal(Monster *, char *);
-int mpickobj(Monster *, Object *);
-void stealamulet(Monster *);
-void mdrop_special_objs(Monster *);
-void relobj(Monster *, int, bool);
-#ifdef GOLDOBJ
-Object *findgold(Object *);
-#endif
-
 /* ### steed.c ### */
-
-#ifdef STEED
-void rider_cant_reach();
-bool can_saddle(Monster *);
-int use_saddle(Object *);
-bool can_ride(Monster *);
-int doride();
-bool mount_steed(Monster *, bool);
-void exercise_steed();
-void kick_steed();
-void dismount_steed(int);
-void place_monster(Monster *, int, int);
-#endif
 
 /* ### teleport.c ### */
 

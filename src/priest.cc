@@ -5,6 +5,8 @@
 #include <string.h>
 
 #include "hack.h"
+#include "steed.h"
+#include "steal.h"
 #include "shk.h"
 #include "rnd.h"
 #include "priest.h"
