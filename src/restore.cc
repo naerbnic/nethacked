@@ -7,6 +7,7 @@
 #include <string>
 
 #include "hack.h"
+#include "priest.h"
 #include "polyself.h"
 #include "pline.h"
 #include "options.h"

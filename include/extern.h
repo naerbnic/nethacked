@@ -146,50 +146,9 @@
 
 /* ### pray.c ### */
 
-int dosacrifice();
-bool can_pray(bool);
-int dopray();
-const char *u_gname();
-int doturn();
-const char *a_gname();
-const char *a_gname_at(xchar x, xchar y);
-const char *align_gname(ALIGNTYP_P);
-const char *halu_gname(ALIGNTYP_P);
-const char *align_gtitle(ALIGNTYP_P);
-void altar_wrath(int, int);
-
 /* ### priest.c ### */
 
-int move_special(Monster *, bool, schar, bool, bool, xchar, xchar, xchar,
-                   xchar);
-char temple_occupied(char *);
-int pri_move(Monster *);
-void priestini(d_level *, struct mkroom *, int, int, bool);
-char *priestname(Monster *, char *);
-bool p_coaligned(Monster *);
-Monster *findpriest(char);
-void intemple(int);
-void priest_talk(Monster *);
-Monster *mk_roamer(MonsterType *, ALIGNTYP_P, xchar, xchar, bool);
-void reset_hostility(Monster *);
-bool in_your_sanctuary(Monster *, xchar, xchar);
-void ghod_hitsu(Monster *);
-void angry_priest();
-void clearpriests();
-void restpriest(Monster *, bool);
-
 /* ### quest.c ### */
-
-void onquest();
-void nemdead();
-void artitouch();
-bool ok_to_quest();
-void leader_speaks(Monster *);
-void nemesis_speaks();
-void quest_chat(Monster *);
-void quest_talk(Monster *);
-void quest_stat_check(Monster *);
-void finish_quest(Object *);
 
 /* ### questpgr.c ### */
 

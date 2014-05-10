@@ -11,6 +11,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "priest.h"
 #include "potion.h"
 #include "polyself.h"
 #include "pline.h"

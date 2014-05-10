@@ -5,6 +5,8 @@
 #include <string.h>
 
 #include "hack.h"
+#include "priest.h"
+#include "pray.h"
 #include "polyself.h"
 #include "pline.h"
 #include "pickup.h"

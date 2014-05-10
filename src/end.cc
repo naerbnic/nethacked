@@ -8,6 +8,7 @@
 #include <stdarg.h>
 
 #include "hack.h"
+#include "priest.h"
 #include "pline.h"
 #include "objnam.h"
 #include "o_init.h"
