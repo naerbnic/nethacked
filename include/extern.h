@@ -226,31 +226,7 @@
 
 /* ### wield.c ### */
 
-void setuwep(Object *);
-void setuqwep(Object *);
-void setuswapwep(Object *);
-int dowield();
-int doswapweapon();
-int dowieldquiver();
-bool wield_tool(Object *, const char *);
-int can_twoweapon();
-void drop_uswapwep();
-int dotwoweapon();
-void uwepgone();
-void uswapwepgone();
-void uqwepgone();
-void untwoweapon();
-void erode_obj(Object *, bool, bool);
-int chwepon(Object *, int);
-int welded(Object *);
-void weldmsg(Object *);
-void setmnotwielded(Monster *, Object *);
-
 /* ### windows.c ### */
-
-void choose_windows(const char *);
-char genl_message_menu(char, int, const char *);
-void genl_preference_update(const char *);
 
 /* ### wizard.c ### */
 

@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "wield.h"
 #include "weapon.h"
 #include "version.h"
 #include "unixunix.h"

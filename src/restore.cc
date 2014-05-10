@@ -7,6 +7,7 @@
 #include <string>
 
 #include "hack.h"
+#include "wield.h"
 #include "unixtty.h"
 #include "steed.h"
 #include "shk.h"

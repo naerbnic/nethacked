@@ -8,6 +8,7 @@
 #include <string>
 
 #include "hack.h"
+#include "wield.h"
 #include "shk.h"
 #include "rnd.h"
 #include "priest.h"

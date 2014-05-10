@@ -10,6 +10,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "wield.h"
 #include "rnd.h"
 #include "polyself.h"
 #include "pline.h"

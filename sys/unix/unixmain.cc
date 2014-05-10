@@ -5,6 +5,7 @@
 /* main.c - Unix NetHack */
 
 #include "hack.h"
+#include "windows.h"
 #include "unixunix.h"
 #include "topten.h"
 #include "save.h"

@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "wield.h"
 #include "were.h"
 #include "steed.h"
 #include "shk.h"

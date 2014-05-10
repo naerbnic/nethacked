@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "hack.h"
+#include "wield.h"
 #include "teleport.h"
 #include "shk.h"
 #include "save.h"
