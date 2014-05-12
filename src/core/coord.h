@@ -5,6 +5,8 @@
 #ifndef COORD_H
 #define COORD_H
 
+#include "core/global.h"
+
 struct coord {
   xchar x, y;
 };
