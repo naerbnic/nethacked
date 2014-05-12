@@ -3,6 +3,7 @@
 #ifndef MKOBJ_H_
 #define MKOBJ_H_
 
+#include "core/config.h"
 #include "core/obj.h"
 #include "core/permonst.h"
 
