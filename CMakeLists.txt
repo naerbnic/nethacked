@@ -1,7 +1,7 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
 PROJECT(nethacked)
 
-INCLUDE_DIRECTORIES(BEFORE ${CMAKE_SOURCE_DIR}/include)
+INCLUDE_DIRECTORIES(BEFORE ${CMAKE_SOURCE_DIR}/src)
 
 # Configure JSON Sprit.
 # Right now, this is manual.
@@ -53,10 +53,10 @@ ADD_EXECUTABLE(dlb
   util/dlb_main.cc)
 
 # Executions for makedepends to generate appropriate files
-RUN_MAKEDEFS(include/pm.h p)
-RUN_MAKEDEFS(include/onames.h o)
-RUN_MAKEDEFS(include/vis_tab.h y include/vis_tab.h)
-RUN_MAKEDEFS(include/date.h u)
+RUN_MAKEDEFS(src/core/pm.h p)
+RUN_MAKEDEFS(src/core/onames.h o)
+RUN_MAKEDEFS(src/core/vis_tab.h y src/core/vis_tab.h)
+RUN_MAKEDEFS(src/core/date.h u)
 
 RUN_MAKEDEFS(src/core/monstr.cc m)
 RUN_MAKEDEFS(src/core/vis_tab.cc z ../src/core/vis_tab.cc)
@@ -109,9 +109,9 @@ ADD_EXECUTABLE(dgn_comp
   src/core/drawing.cc
   cxx/buffer.cc
   cxx/json_helpers.cc
-  include/pm.h
-  include/onames.h
-  include/date.h)
+  src/core/pm.h
+  src/core/onames.h
+  src/core/date.h)
 
 ADD_CUSTOM_COMMAND(
   OUTPUT dat/dungeon
@@ -274,9 +274,9 @@ ADD_EXECUTABLE(lev_comp
   src/core/decl.cc
   src/core/drawing.cc
 
-  include/pm.h
-  include/onames.h
-  include/date.h)
+  src/core/pm.h
+  src/core/onames.h
+  src/core/date.h)
 
 ADD_EXECUTABLE(nethacked
   # Base Source
@@ -405,9 +405,9 @@ ADD_EXECUTABLE(nethacked
   src/core/vis_tab.cc
 
   # Generated Headers
-  include/pm.h
-  include/onames.h
-  include/date.h)
+  src/core/pm.h
+  src/core/onames.h
+  src/core/date.h)
 
 FIND_PACKAGE(CURSES)
 TARGET_LINK_LIBRARIES(nethacked ${CURSES_LIBRARIES} ${JSON_SPIRIT_LIBRARIES})
