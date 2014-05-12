@@ -5,9 +5,7 @@
 #ifndef HACK_H
 #define HACK_H
 
-#ifndef CONFIG_H
 #include "core/config.h"
-#endif
 
 /*	For debugging beta code.	*/
 #ifdef BETA
@@ -289,13 +287,6 @@ extern coord bhitpos; /* place where throw or zap hits or stops */
 #define STATIC_VAR static
 
 #define STATIC_PTR static
-
-/* The function argument to qsort() requires a particular
- * calling convention under WINCE which is not the default
- * in that environment.
- */
-#define CFDECLSPEC
-
 
 bool revive_nasty(int, int, const char *);
 void movobj(Object *, xchar, xchar);
