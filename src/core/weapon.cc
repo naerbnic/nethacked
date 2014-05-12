@@ -10,6 +10,7 @@
 #include <string.h>
 
 #include "core/hack.h"
+#include "core/youprop.h"
 #include "core/worn.h"
 #include "core/worm.h"
 #include "core/wield.h"

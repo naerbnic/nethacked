@@ -8,6 +8,7 @@
 #include <stdarg.h>
 
 #include "core/hack.h"
+#include "core/youprop.h"
 #include "core/worm.h"
 #include "core/weapon.h"
 #include "core/vault.h"

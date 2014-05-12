@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "core/hack.h"
+#include "core/youprop.h"
 #include "core/zap.h"
 #include "core/wizard.h"
 #include "core/wield.h"

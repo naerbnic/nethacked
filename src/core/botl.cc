@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "core/hack.h"
+#include "core/youprop.h"
 #include "core/hacklib.h"
 #if defined(HPMON) && defined(TEXTCOLOR)
 #ifndef WINTTY_H

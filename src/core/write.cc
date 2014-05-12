@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "core/hack.h"
+#include "core/youprop.h"
 #include "core/shk.h"
 #include "core/rnd.h"
 #include "core/polyself.h"

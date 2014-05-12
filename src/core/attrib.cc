@@ -7,6 +7,7 @@
 #include "core/attrib.h"
 
 #include "core/hack.h"
+#include "core/youprop.h"
 #include "core/weapon.h"
 #include "core/rnd.h"
 #include "core/pline.h"

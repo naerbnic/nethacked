@@ -3,6 +3,7 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 #include "core/hack.h"
+#include "core/youprop.h"
 #include "core/mkroom.h"
 #include "core/zap.h"
 #include "core/worn.h"

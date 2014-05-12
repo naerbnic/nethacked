@@ -7,6 +7,7 @@
 
 #include <signal.h>
 #include "core/hack.h"
+#include "core/youprop.h"
 #include "core/worn.h"
 #include "core/wizard.h"
 #include "core/were.h"

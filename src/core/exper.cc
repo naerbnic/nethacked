@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "core/hack.h"
+#include "core/youprop.h"
 #include "core/worn.h"
 #include "core/role.h"
 #include "core/rnd.h"

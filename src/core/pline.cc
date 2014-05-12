@@ -6,6 +6,7 @@
 #include <stdarg.h>
 
 #include "core/hack.h"
+#include "core/youprop.h"
 #include "core/worn.h"
 #include "core/polyself.h"
 #include "core/objnam.h"

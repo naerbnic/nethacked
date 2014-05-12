@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "core/hack.h"
+#include "core/youprop.h"
 #include "core/save.h"
 #include "core/rnd.h"
 #include "core/restore.h"

@@ -3,6 +3,7 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 #include "core/hack.h"
+#include "core/youprop.h"
 #include "core/worm.h"
 #include "core/rnd.h"
 #include "core/questpgr.h"

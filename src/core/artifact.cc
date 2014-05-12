@@ -9,6 +9,7 @@
 #include <string>
 
 #include "core/hack.h"
+#include "core/youprop.h"
 #include "core/zap.h"
 #include "core/worm.h"
 #include "core/teleport.h"

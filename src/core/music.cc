@@ -29,6 +29,7 @@
 #include <string.h>
 
 #include "core/hack.h"
+#include "core/youprop.h"
 #include "core/mkroom.h"
 #include "core/zap.h"
 #include "core/worm.h"

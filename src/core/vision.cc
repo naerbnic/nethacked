@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "core/hack.h"
+#include "core/youprop.h"
 #include "core/mkroom.h"
 #include "core/light.h"
 #include "core/end.h"

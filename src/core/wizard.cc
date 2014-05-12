@@ -8,6 +8,7 @@
 /*	       - generalized for 3.1 (mike@bullns.on01.bull.ca) */
 
 #include "core/hack.h"
+#include "core/youprop.h"
 #include "core/teleport.h"
 #include "core/steal.h"
 #include "core/sit.h"

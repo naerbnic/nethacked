@@ -6,6 +6,7 @@
 #include "core/ball.h"
 
 #include "core/hack.h"
+#include "core/youprop.h"
 #include "core/zap.h"
 #include "core/worn.h"
 #include "core/wield.h"
