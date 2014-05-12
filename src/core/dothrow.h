@@ -8,6 +8,7 @@
 #ifndef DOTHROW_H_
 #define DOTHROW_H_
 
+#include "core/global.h"
 #include "core/coord.h"
 #include "core/monst.h"
 #include "core/obj.h"

@@ -4,6 +4,8 @@
 
 /* Contains code for 't' (throw) */
 
+#include "core/dothrow.h"
+
 #include <string.h>
 
 #include "core/hack.h"
@@ -32,7 +34,6 @@
 #include "core/hacklib.h"
 #include "core/explode.h"
 #include "core/end.h"
-#include "core/dothrow.h"
 #include "core/dokick.h"
 #include "core/dog.h"
 #include "core/do_name.h"
