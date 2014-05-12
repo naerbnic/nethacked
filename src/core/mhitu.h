@@ -3,6 +3,9 @@
 #ifndef MHITU_H_
 #define MHITU_H_
 
+#include "core/monst.h"
+#include "core/permonst.h"
+
 const char *mpoisons_subj(Monster *, struct Attack *);
 void u_slow_down();
 Monster *cloneu();

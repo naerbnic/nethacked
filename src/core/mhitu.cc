@@ -2,6 +2,8 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include "core/mhitu.h"
+
 #include <string.h>
 
 #include "core/hack.h"
@@ -30,7 +32,6 @@
 #include "core/monmove.h"
 #include "core/mon.h"
 #include "core/minion.h"
-#include "core/mhitu.h"
 #include "core/mhitm.h"
 #include "core/mcastu.h"
 #include "core/makemon.h"
