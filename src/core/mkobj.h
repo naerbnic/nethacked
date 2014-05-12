@@ -3,6 +3,9 @@
 #ifndef MKOBJ_H_
 #define MKOBJ_H_
 
+#include "core/obj.h"
+#include "core/permonst.h"
+
 Object *MakeRandomObjectAt(char, int, int, bool);
 Object *MakeSpecificObjectAt(int, int, int, bool, bool);
 Object *MakeRandomObject(char, bool);

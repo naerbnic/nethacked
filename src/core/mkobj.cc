@@ -2,6 +2,8 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include "core/mkobj.h"
+
 #include <string.h>
 
 #include "core/hack.h"
@@ -13,7 +15,6 @@
 #include "core/pline.h"
 #include "core/objnam.h"
 #include "core/mon.h"
-#include "core/mkobj.h"
 #include "core/makemon.h"
 #include "core/light.h"
 #include "core/invent.h"
