@@ -134,7 +134,6 @@ pick_move:
 
 #endif /* OVLB */
 
-#ifdef OVL0
 
 char temple_occupied(char *array) {
   char *ptr;
@@ -145,7 +144,6 @@ char temple_occupied(char *array) {
   return ('\0');
 }
 
-#endif /* OVL0 */
 #ifdef OVLB
 
 STATIC_OVL bool histemple_at(Monster *priest, xchar x, xchar y) {

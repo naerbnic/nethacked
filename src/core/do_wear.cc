@@ -1583,7 +1583,6 @@ int doputon() {
 
 #endif /* OVLB */
 
-#ifdef OVL0
 
 void find_ac() {
   int uac = mons[player.umonnum].ac;
@@ -1619,7 +1618,6 @@ void find_ac() {
   }
 }
 
-#endif /* OVL0 */
 #ifdef OVLB
 
 void glibr() {

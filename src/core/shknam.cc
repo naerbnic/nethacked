@@ -530,7 +530,6 @@ void stock_room(int shp_indx, struct mkroom *sroom) {
 }
 
 #endif /* OVLB */
-#ifdef OVL0
 
 /* does shkp's shop stock this item type? */
 bool saleable(Monster *shkp, Object *obj) {
@@ -560,6 +559,5 @@ int get_shop_item(int type) {
   return shp->iprobs[i].itype;
 }
 
-#endif /* OVL0 */
 
 /*shknam.c*/

@@ -44,14 +44,12 @@
 
 extern bool notonhead;
 
-#ifdef OVL0
 
 STATIC_DCL int disturb(Monster *);
 STATIC_DCL void distfleeck(Monster *, int *, int *, int *);
 STATIC_DCL int m_arrival(Monster *);
 STATIC_DCL void watch_on_duty(Monster *);
 
-#endif /* OVL0 */
 #ifdef OVLB
 
 bool /* TRUE : mtmp died */ mb_trapped(Monster *mtmp) {
@@ -75,7 +73,6 @@ bool /* TRUE : mtmp died */ mb_trapped(Monster *mtmp) {
 }
 
 #endif /* OVLB */
-#ifdef OVL0
 
 STATIC_OVL void watch_on_duty(Monster *mtmp) {
   int x, y;
@@ -103,7 +100,6 @@ STATIC_OVL void watch_on_duty(Monster *mtmp) {
   }
 }
 
-#endif /* OVL0 */
 #ifdef OVL1
 
 int dochugw(Monster *mtmp) {
@@ -163,7 +159,6 @@ bool onscary(int x, int y, Monster *mtmp) {
 }
 
 #endif /* OVL2 */
-#ifdef OVL0
 
 /* regenerate lost hit points */
 void mon_regen(Monster *mon, bool digest_meal) {
@@ -1262,7 +1257,6 @@ postmov:
   return (mmoved);
 }
 
-#endif /* OVL0 */
 #ifdef OVL2
 
 bool closed_door(int x, int y) {
@@ -1275,7 +1269,6 @@ bool accessible(int x, int y) {
 }
 
 #endif /* OVL2 */
-#ifdef OVL0
 
 /* decide where the monster thinks you are standing */
 void set_apparxy(Monster *mtmp) {
@@ -1402,6 +1395,5 @@ bool can_ooze(Monster *mtmp) {
   return TRUE;
 }
 
-#endif /* OVL0 */
 
 /*monmove.c*/

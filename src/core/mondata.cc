@@ -35,7 +35,6 @@ void set_mon_data(Monster *mon, MonsterType *ptr, int flag) {
 }
 
 #endif /* OVLB */
-#ifdef OVL0
 
 struct Attack *attacktype_fordmg(MonsterType *ptr, int atyp, int dtyp) {
   struct Attack *a;
@@ -51,7 +50,6 @@ bool attacktype(MonsterType *ptr, int atyp) {
   return attacktype_fordmg(ptr, atyp, AD_ANY) ? TRUE : FALSE;
 }
 
-#endif /* OVL0 */
 #ifdef OVLB
 
 bool poly_when_stoned(MonsterType *ptr) {
@@ -203,7 +201,6 @@ bool can_blnd(Monster *magr, Monster *mdef, uchar aatyp, Object *obj) {
 }
 
 #endif /* OVLB */
-#ifdef OVL0
 
 /* returns TRUE if monster can attack at range */
 bool ranged_attk(MonsterType *ptr) {
@@ -240,7 +237,6 @@ bool passes_bars(MonsterType *mptr) {
                 verysmall(mptr) || (slithy(mptr) && !bigmonst(mptr)));
 }
 
-#endif /* OVL0 */
 #ifdef OVL1
 
 /* returns TRUE if monster can track well */
@@ -336,7 +332,6 @@ int max_passive_dmg(Monster *mdef, Monster *magr) {
 }
 
 #endif /* OVL1 */
-#ifdef OVL0
 
 /* return an index into the mons array */
 int monsndx(MonsterType *ptr) {
@@ -352,7 +347,6 @@ int monsndx(MonsterType *ptr) {
   return (i);
 }
 
-#endif /* OVL0 */
 #ifdef OVL1
 
 int name_to_mon(const char *in_str) {

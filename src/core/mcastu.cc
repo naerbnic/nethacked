@@ -59,7 +59,6 @@ STATIC_DCL void cast_cleric_spell(Monster *, int, int);
 STATIC_DCL bool is_undirected_spell(unsigned int, int);
 STATIC_DCL bool spell_would_be_useless(Monster *, unsigned int, int);
 
-#ifdef OVL0
 
 extern const char *const flash_types[]; /* from zap.c */
 
@@ -89,7 +88,6 @@ void cursetxt(Monster *mtmp, bool undirected) {
   }
 }
 
-#endif /* OVL0 */
 #ifdef OVLB
 
 /* convert a level based random selection into a specific mage spell;
@@ -749,7 +747,6 @@ bool spell_would_be_useless(Monster *mtmp, unsigned int adtyp, int spellnum) {
 }
 
 #endif /* OVLB */
-#ifdef OVL0
 
 /* convert 1..10 to 0..9; add 10 for second group (spell casting) */
 #define ad_to_typ(k) (10 + (int)k - 1)
@@ -779,6 +776,5 @@ int buzzmu(Monster *mtmp, struct Attack *mattk) {
   return (1);
 }
 
-#endif /* OVL0 */
 
 /*mcastu.c*/

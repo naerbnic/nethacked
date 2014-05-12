@@ -687,7 +687,6 @@ int newhp() {
 }
 
 #endif /* OVLB */
-#ifdef OVL0
 
 schar acurr(int x) {
   int tmp = (player.abon.a[x] + player.atemp.a[x] + player.acurr.a[x]);
@@ -734,7 +733,6 @@ schar acurrstr() {
     return ((schar)(str - 100));
 }
 
-#endif /* OVL0 */
 #ifdef OVL2
 
 /* avoid possible problems with alignment overflow, and provide a centralized

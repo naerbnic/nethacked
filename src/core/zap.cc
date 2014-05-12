@@ -84,10 +84,8 @@ STATIC_DCL bool zap_steed(Object *);
 #ifdef OVLB
 STATIC_DCL int zap_hit(int, int);
 #endif
-#ifdef OVL0
 STATIC_DCL void backfire(Object *);
 STATIC_DCL int spell_hit_bonus(int);
-#endif
 
 #define ZT_MAGIC_MISSILE (AD_MAGM - 1)
 #define ZT_FIRE (AD_FIRE - 1)
@@ -981,7 +979,6 @@ bool drain_item(Object *obj) {
 }
 
 #endif /*OVLB*/
-#ifdef OVL0
 
 bool obj_resists(Object *obj, int ochance, int achance) {
   if (obj->otyp == AMULET_OF_YENDOR || obj->otyp == SPE_BOOK_OF_THE_DEAD ||
@@ -1013,7 +1010,6 @@ bool obj_shudders(Object *obj) {
 
   return ((bool)(!rn2(zap_odds)));
 }
-#endif /*OVL0*/
 #ifdef OVLB
 
 /* Use up at least minwt number of things made of material mat.
@@ -1787,7 +1783,6 @@ void zapnodir(Object *obj) {
   }
 }
 #endif /*OVL1*/
-#ifdef OVL0
 
 STATIC_OVL void backfire(Object *otmp) {
   otmp->in_use = TRUE; /* in case losehp() is fatal */
@@ -2184,7 +2179,6 @@ STATIC_OVL bool zap_steed(Object *obj) {
 }
 #endif
 
-#endif /*OVL0*/
 #ifdef OVL3
 
 /*
@@ -2458,7 +2452,6 @@ void weffects(Object *obj) {
   return;
 }
 #endif /*OVLB*/
-#ifdef OVL0
 
 /*
  * Generate the to damage bonus for a spell. Based on the hero's intelligence
@@ -2543,7 +2536,6 @@ void miss(const char *str, Monster *mtmp) {
             ? mon_nam(mtmp)
             : "it");
 }
-#endif /*OVL0*/
 #ifdef OVL1
 
 /*
@@ -3500,7 +3492,6 @@ void buzz(int type, int nd, xchar sx, xchar sy, int dx, int dy) {
   bhitpos = save_bhitpos;
 }
 #endif /*OVLB*/
-#ifdef OVL0
 
 void melt_ice(xchar x, xchar y) {
   struct rm *lev = &levl[x][y];
@@ -3738,7 +3729,6 @@ int zap_over_floor(xchar x, xchar y, int type, bool *shopdamage) {
   return rangemod;
 }
 
-#endif /*OVL0*/
 #ifdef OVL3
 
 /* fractured by pick-axe or wand of striking */

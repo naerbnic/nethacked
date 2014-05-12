@@ -983,7 +983,6 @@ bool mpickstuff(Monster *mtmp, const char *str) {
 }
 
 #endif /* OVL2 */
-#ifdef OVL0
 
 int curr_mon_load(Monster *mtmp) {
   int curload = 0;
@@ -1276,7 +1275,6 @@ nexttry: /* eels prefer the water, but if there is no water nearby,
   return (cnt);
 }
 
-#endif /* OVL0 */
 #ifdef OVL1
 
 /* Monster against monster special attacks; for the specified monster

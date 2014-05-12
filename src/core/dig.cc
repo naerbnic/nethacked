@@ -1076,7 +1076,6 @@ void watch_dig(Monster *mtmp, xchar x, xchar y, bool zap) {
 }
 
 #endif /* OVLB */
-#ifdef OVL0
 
 /* Return TRUE if monster died, FALSE otherwise.  Called from m_move(). */
 bool mdig_tunnel(Monster *mtmp) {
@@ -1147,7 +1146,6 @@ bool mdig_tunnel(Monster *mtmp) {
   return FALSE;
 }
 
-#endif /* OVL0 */
 #ifdef OVL3
 
 /* digging via wand zap or spell cast */

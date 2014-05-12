@@ -68,9 +68,7 @@ STATIC_DCL void dosinkring(Object *);
 STATIC_PTR int drop(Object *);
 STATIC_PTR int wipeoff();
 
-#ifdef OVL0
 STATIC_DCL int menu_drop(int);
-#endif
 #ifdef OVL2
 STATIC_DCL int currentlevel_rewrite();
 STATIC_DCL void final_level();
@@ -100,7 +98,6 @@ int dodrop() {
 }
 
 #endif /* OVLB */
-#ifdef OVL0
 
 /* Called when a boulder is dropped, thrown, or pushed.  If it ends up
  * in a pool, it either fills the pool up or sinks away.  In either case,
@@ -260,7 +257,6 @@ bool flooreffects(Object *obj, int x, int y, const char *verb) {
   return FALSE;
 }
 
-#endif /* OVL0 */
 #ifdef OVLB
 
 /* obj is an object dropped on an altar */
@@ -429,7 +425,6 @@ void dosinkring(Object *obj) {
 #endif
 
 #endif /* OVLB */
-#ifdef OVL0
 
 /* some common tests when trying to drop or throw items */
 bool canletgo(Object *obj, const char *word) {
@@ -753,7 +748,6 @@ drop_done:
   return n_dropped;
 }
 
-#endif /* OVL0 */
 #ifdef OVL2
 
 /* on a ladder, used in goto_level */

@@ -2759,7 +2759,6 @@ void confdir() {
 }
 
 #endif /* OVLB */
-#ifdef OVL0
 
 int isok(int x, int y) {
   /* x corresponds to curx, so x==1 is the first column. Ach. %% */
@@ -2942,7 +2941,6 @@ STATIC_OVL char *parse() {
   return (in_line);
 }
 
-#endif /* OVL0 */
 #ifdef OVLB
 
 static void end_of_input() {
@@ -2956,7 +2954,6 @@ static void end_of_input() {
 }
 
 #endif /* OVLB */
-#ifdef OVL0
 
 char readchar() {
   int sym;
@@ -3063,7 +3060,6 @@ int wiz_port_debug() {
 }
 #endif /*PORT_DEBUG*/
 
-#endif /* OVL0 */
 #ifdef OVLB
 /*
  *   Parameter validator for generic yes/no function to prevent

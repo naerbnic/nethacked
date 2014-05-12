@@ -125,7 +125,6 @@ Monster *findgd() {
 }
 
 #endif /* OVLB */
-#ifdef OVL0
 
 char vault_occupied(char *array) {
   char *ptr;
@@ -375,7 +374,6 @@ void invault() {
   }
 }
 
-#endif /* OVL0 */
 #ifdef OVLB
 
 STATIC_OVL void move_gold(Object *gold, int vroom) {

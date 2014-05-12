@@ -753,7 +753,6 @@ bool lined_up(Monster *mtmp) {
 }
 
 #endif /* OVL1 */
-#ifdef OVL0
 
 /* Check if a monster is carrying a particular item.
  */
@@ -832,6 +831,5 @@ bool hits_bars(Object **obj_p, int x, int y, int always_hit, int whodidit) {
   return hits;
 }
 
-#endif /* OVL0 */
 
 /*mthrowu.c*/

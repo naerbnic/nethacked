@@ -629,7 +629,6 @@ void delobj(Object *obj) {
 }
 
 #endif /* OVL2 */
-#ifdef OVL0
 
 Object *sobj_at(int n, int x, int y) {
   Object *otmp;
@@ -640,7 +639,6 @@ Object *sobj_at(int n, int x, int y) {
   return (nullptr);
 }
 
-#endif /* OVL0 */
 #ifdef OVLB
 
 Object *carrying(int type) {

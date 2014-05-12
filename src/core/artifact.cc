@@ -243,7 +243,6 @@ int nartifact_exist() {
   return a;
 }
 #endif /* OVLB */
-#ifdef OVL0
 
 bool spec_ability(Object *otmp, unsigned long abil) {
   const Artifact *arti = get_artifact(otmp);
@@ -275,7 +274,6 @@ bool arti_reflects(Object *obj) {
   return FALSE;
 }
 
-#endif /* OVL0 */
 #ifdef OVLB
 
 /* returns 1 if name is restricted for otmp->otyp */

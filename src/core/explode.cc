@@ -28,7 +28,6 @@
 
 #include "core/allmain.h"
 
-#ifdef OVL0
 
 /* Note: Arrays are column first, while the screen is row first */
 static int expl[3][3] = {{S_explode1, S_explode4, S_explode7},
@@ -435,7 +434,6 @@ void explode(int x, int y, int type, int dam, char olet, int expltype) {
     i = 50; /* in case random damage is very small */
   wake_nearto(x, y, i);
 }
-#endif /* OVL0 */
 #ifdef OVL1
 
 struct scatter_chain {

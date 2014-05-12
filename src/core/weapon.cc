@@ -340,7 +340,6 @@ int dmgval(Object *otmp, Monster *mon) {
 }
 
 #endif /* OVLB */
-#ifdef OVL0
 
 STATIC_DCL Object *oselect(Monster *, int);
 #define Oselect(x)                    \
@@ -736,7 +735,6 @@ int abon() {
     return (sbon + dex - 14);
 }
 
-#endif /* OVL0 */
 #ifdef OVL1
 
 /* damage bonus for strength */

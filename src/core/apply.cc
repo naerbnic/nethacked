@@ -561,7 +561,6 @@ bool next_to_u() {
 }
 
 #endif /* OVL1 */
-#ifdef OVL0
 
 void check_leash(xchar x, xchar y) {
   Object *otmp;
@@ -628,7 +627,6 @@ void check_leash(xchar x, xchar y) {
   }
 }
 
-#endif /* OVL0 */
 #ifdef OVLB
 
 #define WEAK 3 /* from eat.c */

@@ -551,7 +551,6 @@ void stealamulet(Monster *mtmp) {
 }
 
 #endif /* OVLB */
-#ifdef OVL0
 
 /* drop one object taken from a (possibly dead) monster's inventory */
 STATIC_OVL void mdrop_obj(Monster *mon, Object *obj, bool verbosely) {
@@ -652,6 +651,5 @@ void relobj(Monster *mtmp, int show, bool is_pet) {
     newsym(omx, omy);
 }
 
-#endif /* OVL0 */
 
 /*steal.c*/

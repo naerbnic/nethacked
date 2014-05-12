@@ -519,7 +519,6 @@ char *mshot_xname(Object *obj) {
 }
 
 #endif /* OVL1 */
-#ifdef OVL0
 
 /* used for naming "the unique_item" instead of "a unique_item" */
 bool the_unique_obj(Object *obj) {
@@ -806,7 +805,6 @@ char *doname(Object *obj) {
   return (bp);
 }
 
-#endif /* OVL0 */
 #ifdef OVLB
 
 /* used from invent.c */
@@ -1206,7 +1204,6 @@ static const char wrpsym[] = {
     ARMOR_CLASS,  TOOL_CLASS,   FOOD_CLASS,   FOOD_CLASS};
 
 #endif /* OVLB */
-#ifdef OVL0
 
 /* Plural routine; chiefly used for user-defined fruits.  We have to try to
  * account for everything reasonable the player has; something unreasonable
@@ -1427,7 +1424,6 @@ bottom:
   return str;
 }
 
-#endif /* OVL0 */
 
 struct o_range {
   const char *name, oclass;

@@ -127,7 +127,6 @@ void getmailstatus() {
 }
 
 #endif /* OVLB */
-#ifdef OVL0
 
 /*
  * Pick coordinates for a starting position for the mail daemon.  Called
@@ -496,7 +495,6 @@ void readmail(Object *otmp) { lan_mail_read(otmp); }
 
 #endif /* LAN_MAIL */
 
-#endif /* OVL0 */
 
 #endif /* MAIL */
 

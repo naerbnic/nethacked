@@ -37,7 +37,6 @@ static int dochat();
 
 #endif /* OVLB */
 
-#ifdef OVL0
 
 static int mon_in_room(Monster *, int);
 
@@ -254,7 +253,6 @@ void dosounds() {
   }
 }
 
-#endif /* OVL0 */
 #ifdef OVLB
 
 static const char *const h_sounds[] = {

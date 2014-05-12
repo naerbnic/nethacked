@@ -1291,7 +1291,6 @@ const char *mbodypart(Monster *mon, int part) {
 const char *body_part(int part) { return mbodypart(&youmonst, part); }
 
 #endif /* OVL1 */
-#ifdef OVL0
 
 int poly_gender() {
   /* Returns gender of polymorphed player; 0/1=same meaning as flags.female,
@@ -1302,7 +1301,6 @@ int poly_gender() {
   return flags.female;
 }
 
-#endif /* OVL0 */
 #ifdef OVLB
 
 void ugolemeffects(int damtype, int dam) {

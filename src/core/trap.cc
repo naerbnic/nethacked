@@ -3772,7 +3772,6 @@ bool chest_trap(Object *obj, int bodypart, bool disarm) {
 }
 
 #endif /* OVLB */
-#ifdef OVL0
 
 Trap *t_at(int x, int y) {
   Trap *trap = ftrap;
@@ -3784,7 +3783,6 @@ Trap *t_at(int x, int y) {
   return (nullptr);
 }
 
-#endif /* OVL0 */
 #ifdef OVLB
 
 void deltrap(Trap *trap) {

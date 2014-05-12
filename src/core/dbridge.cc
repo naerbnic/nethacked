@@ -49,7 +49,6 @@ STATIC_DCL bool e_jumps(struct entity *);
 STATIC_DCL void do_entity(struct entity *);
 #endif /* OVLB */
 
-#ifdef OVL0
 
 bool is_pool(int x, int y) {
   schar ltyp;
@@ -89,7 +88,6 @@ bool is_ice(int x, int y) {
   return FALSE;
 }
 
-#endif /* OVL0 */
 
 #ifdef OVL1
 

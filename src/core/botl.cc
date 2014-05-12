@@ -14,7 +14,6 @@
 #endif
 #endif
 
-#ifdef OVL0
 extern const char *hu_stat[]; /* defined in eat.c */
 
 const char *const enc_stat[] = {"",         "Burdened",  "Stressed",
@@ -22,7 +21,6 @@ const char *const enc_stat[] = {"",         "Burdened",  "Stressed",
 
 STATIC_DCL void bot1();
 STATIC_DCL void bot2();
-#endif /* OVL0 */
 
 /* MAXCO must hold longest uncompressed status line, and must be larger
  * than COLNO
@@ -134,7 +132,6 @@ void max_rank_sz() {
 }
 
 #endif /* OVLB */
-#ifdef OVL0
 
 #ifdef SCORE_ON_BOTL
 long botl_score() {
@@ -367,6 +364,5 @@ void bot() {
   flags.botl = flags.botlx = 0;
 }
 
-#endif /* OVL0 */
 
 /*botl.c*/

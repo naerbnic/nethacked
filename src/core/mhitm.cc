@@ -1215,7 +1215,6 @@ STATIC_OVL int mdamagem(Monster *magr, Monster *mdef, struct Attack *mattk) {
 
 #endif /* OVLB */
 
-#ifdef OVL0
 
 /* returns 1 if monster doesn't attack */
 int noattacks(MonsterType *ptr) {
@@ -1254,7 +1253,6 @@ void slept_monst(Monster *mon) {
   }
 }
 
-#endif /* OVL0 */
 #ifdef OVLB
 
 STATIC_OVL void mrustm(Monster *magr, Monster *mdef, Object *obj) {

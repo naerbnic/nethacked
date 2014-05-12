@@ -112,7 +112,6 @@ char *mungspaces(char *bp) {
 
 #endif /* OVLB */
 
-#ifdef OVL0
 /* return the end of a string (pointing at '\0') */
 char *eos(char *s) {
   while (*s)
@@ -160,7 +159,6 @@ char *xcrypt(char const *str, char *buf) {
   *q = '\0';
   return buf;
 }
-#endif /* OVL0 */
 
 #ifdef OVL2
 /* is a string entirely whitespace? */
@@ -266,7 +264,6 @@ int rounddiv(long x, int y) {
 }
 #endif /* OVLB */
 
-#ifdef OVL0
 /* distance between two points, in moves */
 int distmin(int x0, int y0, int x1, int y1) {
   int dx = x0 - x1, dy = y0 - y1;
@@ -295,7 +292,6 @@ bool online2(int x0, int y0, int x1, int y1) {
   return ((bool)(!dy || !dx || (dy == dx) || (dy + dx == 0))); /* (dy == -dx) */
 }
 
-#endif /* OVL0 */
 #ifdef OVLB
 
 /* match a string against a pattern */

@@ -2121,7 +2121,6 @@ STATIC_OVL int bite() {
 }
 
 #endif /* OVLB */
-#ifdef OVL0
 
 void gethungry() /* as time goes by - called by moveloop() and domove() */
 {
@@ -2172,7 +2171,6 @@ void gethungry() /* as time goes by - called by moveloop() and domove() */
   newuhs(TRUE);
 }
 
-#endif /* OVL0 */
 #ifdef OVLB
 
 /* called after vomiting and after performing feats of magic */
@@ -2235,7 +2233,6 @@ int unfaint() {
 }
 
 #endif /* OVLB */
-#ifdef OVL0
 
 bool is_fainted() { return ((bool)(player.uhs == FAINTED)); }
 
@@ -2385,7 +2382,6 @@ void newuhs(bool incr) {
   }
 }
 
-#endif /* OVL0 */
 #ifdef OVLB
 
 /* Returns an object representing food.  Object may be either on floor or

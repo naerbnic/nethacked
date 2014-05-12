@@ -219,7 +219,6 @@ int forcelock() {
 }
 
 #endif /* OVLB */
-#ifdef OVL0
 
 void reset_pick() {
   xlock.usedtime = xlock.chance = xlock.picktyp = 0;
@@ -227,7 +226,6 @@ void reset_pick() {
   xlock.box = 0;
 }
 
-#endif /* OVL0 */
 #ifdef OVLB
 
 /* pick a lock with a given object */

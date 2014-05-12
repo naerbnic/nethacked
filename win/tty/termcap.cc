@@ -389,7 +389,6 @@ void tty_end_screen() {
 
 #endif /* OVLB */
 
-#ifdef OVL0
 /* Note to OVLx tinkerers.  The placement of this overlay controls the location
    of the function xputc().  This function is not currently in trampoli.[ch]
    files for what is deemed to be performance reasons.  If this define is moved
@@ -475,7 +474,6 @@ void cl_end() {
   }
 }
 
-#endif /* OVL0 */
 #ifdef OVLB
 
 void clear_screen() {
@@ -489,7 +487,6 @@ void clear_screen() {
 }
 
 #endif /* OVLB */
-#ifdef OVL0
 
 void home() {
   if (HO)
@@ -536,7 +533,6 @@ void m_end() {
 }
 #endif
 
-#endif /* OVL0 */
 #ifdef OVLB
 
 void backsp() { xputs(BC); }
@@ -549,7 +545,6 @@ void tty_nhbell() {
 }
 
 #endif /* OVLB */
-#ifdef OVL0
 
 #ifdef ASCIIGRAPH
 void graph_on() {
@@ -563,7 +558,6 @@ void graph_off() {
 }
 #endif
 
-#endif /* OVL0 */
 #ifdef OVL1
 
 static const short tmspc10[] = {/* from termcap */

@@ -288,7 +288,6 @@ void expels(Monster *mtmp, MonsterType *mdat, bool message) {
 }
 
 #endif /* OVLB */
-#ifdef OVL0
 
 /* select a monster's next attack, possibly substituting for its usual one */
 struct Attack *getmattk(MonsterType *mptr, int indx, int prev_result[],
@@ -718,7 +717,6 @@ int mattacku(Monster *mtmp) {
   return (0);
 }
 
-#endif /* OVL0 */
 #ifdef OVLB
 
 /*

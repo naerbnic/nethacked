@@ -11,7 +11,6 @@ extern int rand();
 #define RND(x) (int)(Rand() % (long)(x))
 #endif /* LINT */
 
-#ifdef OVL0
 
 static int reseed_period = 0;
 static int reseed_count = 0;
@@ -47,7 +46,6 @@ int rn2(int x) {
 #endif
 }
 
-#endif /* OVL0 */
 #ifdef OVLB
 
 /* 0 <= rnl(x) < x; sometimes subtracting Luck */
@@ -75,7 +73,6 @@ int rnl(int x) {
 }
 
 #endif /* OVLB */
-#ifdef OVL0
 
 /* 1 <= rnd(x) <= x */
 int rnd(int x) {
@@ -92,7 +89,6 @@ int rnd(int x) {
 #endif
 }
 
-#endif /* OVL0 */
 #ifdef OVL1
 
 /* n <= d(n,x) <= (n*x) */

@@ -58,7 +58,6 @@ static const unsigned wizapp[] = {
     PM_COCKATRICE, PM_FLOATING_EYE, PM_GUARDIAN_NAGA, PM_TRAPPER};
 
 #endif /* OVLB */
-#ifdef OVL0
 
 /* If you've found the Amulet, make the Wizard appear after some time */
 /* Also, give hints about portal locations, if amulet is worn/wielded -dlc */
@@ -102,7 +101,6 @@ void amulet() {
     }
 }
 
-#endif /* OVL0 */
 #ifdef OVLB
 
 int mon_has_amulet(Monster *mtmp) {

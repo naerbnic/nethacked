@@ -1020,7 +1020,6 @@ STATIC_OVL long cheapest_item(Monster *shkp) {
   return (gmin);
 }
 #endif /*OVL3*/
-#ifdef OVL0
 
 int dopay() {
   struct eshk *eshkp;
@@ -1405,7 +1404,6 @@ proceed:
               shtypes[eshkp->shoptype - SHOPBASE].name);
   return (1);
 }
-#endif /*OVL0*/
 #ifdef OVL3
 
 /* return 2 if used-up portion paid */
@@ -2815,7 +2813,6 @@ void add_damage(xchar x, xchar y, long cost) {
 }
 
 #endif /*OVLB*/
-#ifdef OVL0
 
 /*
  * Do something about damage. Either (!croaked) try to repair it, or
@@ -3038,7 +3035,6 @@ int repair_damage(Monster *shkp, struct damage *tmp_dam, bool catchup) {
 #undef vert
 #undef horiz
 }
-#endif /*OVL0*/
 #ifdef OVL3
 /*
  * shk_move: return 1: moved  0: didn't  -1: let m_move do it  -2: died
@@ -3426,7 +3422,6 @@ void pay_for_damage(const char *dmgstr, bool cant_mollify) {
   }
 }
 #endif /*OVLB*/
-#ifdef OVL0
 /* called in dokick.c when we kick an object that might be in a store */
 bool costly_spot(xchar x, xchar y) {
   Monster *shkp;
@@ -3440,7 +3435,6 @@ bool costly_spot(xchar x, xchar y) {
   return ((bool)(inside_shop(x, y) &&
                  !(x == ESHK(shkp)->shk.x && y == ESHK(shkp)->shk.y)));
 }
-#endif /*OVL0*/
 #ifdef OVLB
 
 /* called by dotalk(sounds.c) when #chatting; returns obj if location

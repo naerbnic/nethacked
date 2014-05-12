@@ -43,7 +43,6 @@
 
 extern bool notonhead;
 
-#ifdef OVL0
 
 STATIC_DCL bool dog_hunger(Monster *, struct edog *);
 STATIC_DCL int dog_invent(Monster *, struct edog *, int);
@@ -80,7 +79,6 @@ STATIC_OVL Object *DROPPABLES(Monster *mon) {
 
 static const char nofetch[] = {BALL_CLASS, CHAIN_CLASS, ROCK_CLASS, 0};
 
-#endif /* OVL0 */
 
 STATIC_OVL bool cursed_object_at(int, int);
 
@@ -243,7 +241,6 @@ int dog_eat(Monster *mtmp, Object *obj, int x, int y, bool devour) {
 }
 
 #endif /* OVLB */
-#ifdef OVL0
 
 /* hunger effects -- returns TRUE on starvation */
 STATIC_OVL bool dog_hunger(Monster *mtmp, struct edog *edog) {
@@ -884,7 +881,6 @@ STATIC_OVL bool can_reach_location(Monster *mon, xchar mx, xchar my, xchar fx,
   return FALSE;
 }
 
-#endif /* OVL0 */
 #ifdef OVLB
 
 /*ARGSUSED*/ /* do_clear_area client */

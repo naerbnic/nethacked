@@ -173,7 +173,6 @@ void burn_away_slime() {
 }
 
 #endif /* OVLB */
-#ifdef OVL0
 
 void nh_timeout() {
   struct Property *upp;
@@ -374,7 +373,6 @@ void nh_timeout() {
   run_timers();
 }
 
-#endif /* OVL0 */
 #ifdef OVL1
 
 void fall_asleep(int how_long, bool wakeup_msg) {
@@ -1115,7 +1113,6 @@ void end_burn(Object *obj, bool timer_attached) {
 }
 
 #endif /* OVL1 */
-#ifdef OVL0
 
 /*
  * Cleanup a burning object if timer stopped.
@@ -1138,7 +1135,6 @@ static void cleanup_burn(genericptr_t arg, long expire_time) {
     update_inventory();
 }
 
-#endif /* OVL0 */
 #ifdef OVL1
 
 void do_storms() {
@@ -1180,7 +1176,6 @@ void do_storms() {
 }
 #endif /* OVL1 */
 
-#ifdef OVL0
 /* ------------------------------------------------------------------------- */
 /*
  * Generic Timeout Functions.
@@ -1736,6 +1731,5 @@ void relink_timers(bool ghostly) {
   }
 }
 
-#endif /* OVL0 */
 
 /*timeout.c*/

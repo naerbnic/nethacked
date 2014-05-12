@@ -30,7 +30,6 @@ void settrack() {
 }
 
 #endif /* OVL1 */
-#ifdef OVL0
 
 coord *gettrack(int x, int y) {
   int cnt, ndist;
@@ -59,6 +58,5 @@ coord *gettrack(int x, int y) {
   return nullptr;
 }
 
-#endif /* OVL0 */
 
 /*track.c*/

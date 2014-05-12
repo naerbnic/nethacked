@@ -562,7 +562,6 @@ bool has_upstairs(struct mkroom *sroom) {
 }
 
 #endif /* OVLB */
-#ifdef OVL0
 
 int somex(struct mkroom *croom) {
   return rn2(croom->hx - croom->lx + 1) + croom->lx;
@@ -645,7 +644,6 @@ struct mkroom *search_special(schar type) {
   return (struct mkroom *)0;
 }
 
-#endif /* OVL0 */
 #ifdef OVLB
 
 MonsterType *courtmon() {

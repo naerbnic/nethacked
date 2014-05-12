@@ -48,7 +48,6 @@
 STATIC_DCL void do_positionbar();
 #endif
 
-#ifdef OVL0
 
 void moveloop() {
   int moveamt = 0, wtcap = 0, change = 0;
@@ -473,7 +472,6 @@ void moveloop() {
   }
 }
 
-#endif /* OVL0 */
 #ifdef OVL1
 
 void stop_occupation() {

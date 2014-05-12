@@ -19,7 +19,6 @@
 #include "core/do_name.h"
 #include "core/cmd.h"
 
-#ifdef OVL0
 
 void were_change(Monster *mon) {
   if (!is_were(mon->data))
@@ -53,7 +52,6 @@ void were_change(Monster *mon) {
   }
 }
 
-#endif /* OVL0 */
 #ifdef OVLB
 
 STATIC_DCL int counter_were(int);

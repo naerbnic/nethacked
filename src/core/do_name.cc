@@ -555,7 +555,6 @@ void docall(Object *obj) {
 }
 
 #endif /*OVLB*/
-#ifdef OVL0
 
 static const char *const ghostnames[] = {
     /* these names should have length < PL_NSIZ */
@@ -768,7 +767,6 @@ char *x_monnam(
   }
 }
 
-#endif /* OVL0 */
 #ifdef OVLB
 
 char *l_monnam(Monster *mtmp) {
@@ -777,7 +775,6 @@ char *l_monnam(Monster *mtmp) {
 }
 
 #endif /* OVLB */
-#ifdef OVL0
 
 char *mon_nam(Monster *mtmp) {
   return (x_monnam(mtmp, ARTICLE_THE, nullptr,
@@ -831,7 +828,6 @@ char *y_monnam(Monster *mtmp) {
   return x_monnam(mtmp, prefix, nullptr, suppression_flag, FALSE);
 }
 
-#endif /* OVL0 */
 #ifdef OVLB
 
 char *Adjmonnam(Monster *mtmp, const char *adj) {

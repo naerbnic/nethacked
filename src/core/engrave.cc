@@ -192,7 +192,6 @@ bool can_reach_floor() {
                  Is_waterlevel(&player.uz)));
 }
 #endif /* OVLB */
-#ifdef OVL0
 
 const char *surface(int x, int y) {
   struct rm *lev = &levl[x][y];
@@ -273,7 +272,6 @@ int sengr_at(const char *s, xchar x, xchar y) {
 }
 #endif /* ELBERETH */
 
-#endif /* OVL0 */
 #ifdef OVL2
 
 void u_wipe_engr(int cnt) {

@@ -50,10 +50,8 @@ STATIC_VAR Monster zeromonst;
   (mptr->mlet == S_HUMAN && Role_if(role_pm) &&  \
    (mptr->msound == MS_LEADER || mptr->msound == MS_NEMESIS))
 
-#ifdef OVL0
 STATIC_DCL bool uncommon(int);
 STATIC_DCL int align_shift(MonsterType *);
-#endif /* OVL0 */
 STATIC_DCL bool IsLevelWrongElementalType(MonsterType *);
 STATIC_DCL void m_initgrp(Monster *, int, int, int);
 STATIC_DCL void m_initthrow(Monster *, int, int);
@@ -1184,7 +1182,6 @@ bool create_critters(int cnt, MonsterType *mptr) {
 }
 
 #endif /* OVL1 */
-#ifdef OVL0
 
 STATIC_OVL bool uncommon(int mndx) {
   if (mons[mndx].geno & (G_NOGEN | G_UNIQ))
@@ -1339,7 +1336,6 @@ void reset_rndmonst(int mndx) {
   } /* note: safe to ignore extinction of unique monsters */
 }
 
-#endif /* OVL0 */
 #ifdef OVL1
 
 /*	The routine below is used to make one of the multiple types
