@@ -4,12 +4,12 @@
 
 #include <iostream>
 
-#include "exception.h"
-#include "stacktrace.h"
-#include "str_format.h"
-#include "json_helpers.h"
+#include "cxx/exception.h"
+#include "cxx/stacktrace.h"
+#include "cxx/str_format.h"
+#include "cxx/json_helpers.h"
+#include "cxx/process.h"
 #include "json_spirit.h"
-#include "process.h"
 
 using std::cout;
 using std::endl;

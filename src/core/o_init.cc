@@ -16,7 +16,7 @@
 
 #include "core/artifact.h"
 #include "core/lev.h" /* save & restore info */
-#include "range.h"
+#include "cxx/range.h"
 
 STATIC_DCL void setgemprobs(d_level *);
 STATIC_DCL void shuffle(int, int, bool);

@@ -23,19 +23,19 @@ ENDIF()
 
 LIST(APPEND CMAKE_CXX_FLAGS "-std=c++11 -Wno-deprecated-register -Wno-format-security -Wno-writable-strings")
 
-ADD_EXECUTABLE(cxx_test
-  cxx/process.cc
-  cxx/exception.cc
-  cxx/stacktrace.cc
-  cxx/buffer.cc
-  cxx/json_helpers.cc
-  cxx/test_main.cc)
-TARGET_LINK_LIBRARIES(cxx_test ${JSON_SPIRIT_LIBRARIES})
+ADD_EXECUTABLE(src/cxx_test
+  src/cxx/process.cc
+  src/cxx/exception.cc
+  src/cxx/stacktrace.cc
+  src/cxx/buffer.cc
+  src/cxx/json_helpers.cc
+  src/cxx/test_main.cc)
+TARGET_LINK_LIBRARIES(src/cxx_test ${JSON_SPIRIT_LIBRARIES})
 
 ADD_EXECUTABLE(makedefs
   util/makedefs.cc
-  cxx/buffer.cc
-  cxx/json_helpers.cc
+  src/cxx/buffer.cc
+  src/cxx/json_helpers.cc
   entitylib/objects.cc
   entitylib/monst.cc)
 
@@ -69,7 +69,7 @@ RUN_MAKEDEFS(dat/options v)
 RUN_MAKEDEFS(dat/dungeon.pdf e)
 
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
-INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/cxx)
+INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/src)
 
 FIND_PACKAGE(BISON)
 
@@ -107,8 +107,8 @@ ADD_EXECUTABLE(dgn_comp
   src/core/alloc.cc
   src/core/decl.cc
   src/core/drawing.cc
-  cxx/buffer.cc
-  cxx/json_helpers.cc
+  src/cxx/buffer.cc
+  src/cxx/json_helpers.cc
   src/core/pm.h
   src/core/onames.h
   src/core/date.h)

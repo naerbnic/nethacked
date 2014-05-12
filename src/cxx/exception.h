@@ -12,7 +12,7 @@
 #include <memory>
 #include <string>
 
-#include "stacktrace.h"
+#include "cxx/stacktrace.h"
 
 class Exception : public std::exception {
 public:

@@ -10,8 +10,8 @@
 #include <unistd.h>
 #include <sys/types.h>
 
-#include "process.h"
-#include "exception.h"
+#include "cxx/process.h"
+#include "cxx/exception.h"
 
 using std::string;
 using std::vector;

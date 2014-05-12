@@ -11,7 +11,7 @@
 #include <string>
 #include <vector>
 
-#include "exception.h"
+#include "cxx/exception.h"
 
 class ProcessException : public Exception {
 public:

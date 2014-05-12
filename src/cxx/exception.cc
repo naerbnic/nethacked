@@ -5,7 +5,7 @@
  *      Author: brianchin
  */
 
-#include "exception.h"
+#include "cxx/exception.h"
 
 #include <sstream>
 

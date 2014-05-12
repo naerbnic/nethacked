@@ -8,8 +8,8 @@
 #include <string.h>
 #include <vector>
 
-#include "buffer.h"
-#include "range.h"
+#include "cxx/buffer.h"
+#include "cxx/range.h"
 
 Buffer Buffer::OfBorrowed(void *data, size_t size) {
   if (size == 0) {

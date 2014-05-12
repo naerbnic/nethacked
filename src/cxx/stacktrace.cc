@@ -6,7 +6,7 @@
 #include <sstream>
 #include <vector>
 
-#include "stacktrace.h"
+#include "cxx/stacktrace.h"
 #include "process.h"
 
 using std::string;
