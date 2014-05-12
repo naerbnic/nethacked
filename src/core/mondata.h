@@ -5,6 +5,9 @@
 #ifndef MONDATA_H
 #define MONDATA_H
 
+#include "core/monst.h"
+#include "core/permonst.h"
+
 #define verysmall(ptr) ((ptr)->msize < MZ_SMALL)
 #define bigmonst(ptr) ((ptr)->msize >= MZ_LARGE)
 

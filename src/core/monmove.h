@@ -3,6 +3,8 @@
 #ifndef MONMOVE_H_
 #define MONMOVE_H_
 
+#include "core/monst.h"
+
 bool itsstuck(Monster *);
 bool mb_trapped(Monster *);
 void mon_regen(Monster *, bool);
