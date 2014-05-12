@@ -2175,7 +2175,6 @@ STATIC_OVL bool zap_steed(Object *obj) {
 }
 #endif
 
-#ifdef OVL3
 
 /*
  * cancel a monster (possibly the hero).  inventory is cancelled only
@@ -2392,7 +2391,6 @@ STATIC_OVL bool zap_updown(Object *obj) {
   return disclose;
 }
 
-#endif /*OVL3*/
 #ifdef OVLB
 
 /* called for various wand and spell effects - M. Stephenson */
@@ -3723,7 +3721,6 @@ int zap_over_floor(xchar x, xchar y, int type, bool *shopdamage) {
   return rangemod;
 }
 
-#ifdef OVL3
 
 /* fractured by pick-axe or wand of striking */
 void fracture_rock(Object *obj) {
@@ -4025,7 +4022,6 @@ int destroy_mitem(Monster *mtmp, int osym, int dmgtyp) {
   return (tmp);
 }
 
-#endif /*OVL3*/
 
 int resist(Monster *mtmp, char oclass, int damage, int tell) {
   int resisted;

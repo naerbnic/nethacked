@@ -1146,7 +1146,6 @@ bool mdig_tunnel(Monster *mtmp) {
   return FALSE;
 }
 
-#ifdef OVL3
 
 /* digging via wand zap or spell cast */
 void zap_dig() {
@@ -1550,6 +1549,5 @@ int wiz_debug_cmd() {
 }
 
 #endif /* DEBUG */
-#endif /* OVL3 */
 
 /*dig.c*/

@@ -48,7 +48,6 @@
  * across saves and restores.
  */
 
-#ifdef OVL3
 
 /* flags */
 #define LSF_SHOW 0x1        /* display the light source */
@@ -585,6 +584,5 @@ int wiz_light_sources() {
 
 #endif /* WIZARD */
 
-#endif /* OVL3 */
 
 /*light.c*/

@@ -1330,7 +1330,6 @@ void blow_up_landmine(Trap *trap) {
 }
 
 #endif /* OVLB */
-#ifdef OVL3
 
 /*
  * Move obj from (x1,y1) to (x2,y2)
@@ -1571,7 +1570,6 @@ int launch_obj(short otyp, int x1, int y1, int x2, int y2, int style) {
     return 2;
 }
 
-#endif /* OVL3 */
 #ifdef OVLB
 
 void seetrap(Trap *trap) {
@@ -1582,7 +1580,6 @@ void seetrap(Trap *trap) {
 }
 
 #endif /* OVLB */
-#ifdef OVL3
 
 STATIC_OVL int mkroll_launch(Trap *ttmp, xchar x, xchar y, short otyp,
                              long ocount) {
@@ -1665,7 +1662,6 @@ STATIC_OVL bool isclearpath(coord *cc, int distance, schar dx, schar dy) {
   cc->y = y;
   return TRUE;
 }
-#endif /* OVL3 */
 
 int mintrap(Monster *mtmp) {
   Trap *trap = t_at(mtmp->mx, mtmp->my);

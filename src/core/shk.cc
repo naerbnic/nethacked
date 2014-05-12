@@ -263,7 +263,6 @@ void restshk(Monster *shkp, bool ghostly) {
 }
 
 #endif /* OVLB */
-#ifdef OVL3
 
 /* Clear the unpaid bit on all of the objects in the list. */
 STATIC_OVL void clear_unpaid(Object *list) {
@@ -274,7 +273,6 @@ STATIC_OVL void clear_unpaid(Object *list) {
     list = list->nobj;
   }
 }
-#endif /*OVL3*/
 #ifdef OVLB
 
 /* either you paid or left the shop or the shopkeeper died */
@@ -794,7 +792,6 @@ void obfree(Object *obj, Object *merge) {
   DeallocateObject(obj);
 }
 #endif /* OVLB */
-#ifdef OVL3
 
 STATIC_OVL long check_credit(long tmp, Monster *shkp) {
   long credit = ESHK(shkp)->credit;
@@ -834,7 +831,6 @@ STATIC_OVL void pay(long tmp, Monster *shkp) {
     ESHK(shkp)->robbed = robbed;
   }
 }
-#endif /*OVL3*/
 #ifdef OVLB
 
 /* return shkp to home position */
@@ -1000,7 +996,6 @@ STATIC_VAR const char no_money[];
 STATIC_VAR const char not_enough_money[];
 #endif /*OVLB*/
 
-#ifdef OVL3
 
 /* delivers the cheapest item on the list */
 STATIC_OVL long cheapest_item(Monster *shkp) {
@@ -1015,7 +1010,6 @@ STATIC_OVL long cheapest_item(Monster *shkp) {
   }
   return (gmin);
 }
-#endif /*OVL3*/
 
 int dopay() {
   struct eshk *eshkp;
@@ -1400,7 +1394,6 @@ proceed:
               shtypes[eshkp->shoptype - SHOPBASE].name);
   return (1);
 }
-#ifdef OVL3
 
 /* return 2 if used-up portion paid */
 /*	  1 if paid successfully    */
@@ -1502,7 +1495,6 @@ STATIC_OVL int dopayobj(Monster *shkp, struct bill_x *bp, Object **obj_p,
     update_inventory(); /* Done just once in dopay() if !itemize. */
   return buy;
 }
-#endif /*OVL3*/
 #ifdef OVLB
 
 static coord repo_location; /* repossession context */
@@ -1742,7 +1734,6 @@ Object *find_oid(unsigned id) {
   return nullptr;
 }
 #endif /*OVLB*/
-#ifdef OVL3
 
 /* calculate the value that the shk will charge for [one of] an object */
 STATIC_OVL long get_cost(Object *obj, Monster *shkp) {
@@ -1827,7 +1818,6 @@ STATIC_OVL long get_cost(Object *obj, Monster *shkp) {
     tmp += (tmp + 2L) / 3L;
   return tmp;
 }
-#endif /*OVL3*/
 #ifdef OVLB
 
 /* returns the price of a container's content.  the price
@@ -1907,7 +1897,6 @@ void picked_container(Object *obj) {
   }
 }
 #endif /*OVLB*/
-#ifdef OVL3
 
 /* calculate how much the shk will pay when buying [all of] an object */
 STATIC_OVL long set_cost(Object *obj, Monster *shkp) {
@@ -1940,7 +1929,6 @@ STATIC_OVL long set_cost(Object *obj, Monster *shkp) {
   return tmp;
 }
 
-#endif /*OVL3*/
 #ifdef OVLB
 
 /* called from doinv(invent.c) for inventory of unpaid objects */
@@ -2261,7 +2249,6 @@ void subfrombill(Object *obj, Monster *shkp) {
 }
 
 #endif /*OVLB*/
-#ifdef OVL3
 
 STATIC_OVL long stolen_container(Object *obj, Monster *shkp, long price,
                                  bool ininv) {
@@ -2297,7 +2284,6 @@ STATIC_OVL long stolen_container(Object *obj, Monster *shkp, long price,
 
   return (price);
 }
-#endif /*OVL3*/
 #ifdef OVLB
 
 long stolen_value(Object *obj, xchar x, xchar y, bool peaceful, bool silent) {
@@ -3031,7 +3017,6 @@ int repair_damage(Monster *shkp, struct damage *tmp_dam, bool catchup) {
 #undef vert
 #undef horiz
 }
-#ifdef OVL3
 /*
  * shk_move: return 1: moved  0: didn't  -1: let m_move do it  -2: died
  */
@@ -3152,7 +3137,6 @@ void after_shk_move(Monster *shkp) {
   }
 }
 
-#endif /*OVL3*/
 #ifdef OVLB
 
 /* for use in levl_follower (mondata.c) */
@@ -3499,7 +3483,6 @@ void price_quote(Object *first_obj) {
   destroy_nhwindow(tmpwin);
 }
 #endif /*OVLB*/
-#ifdef OVL3
 
 STATIC_OVL const char *shk_embellish(Object *itm, long cost) {
   if (!rn2(3)) {
@@ -3534,7 +3517,6 @@ STATIC_OVL const char *shk_embellish(Object *itm, long cost) {
   }
   return ".";
 }
-#endif /*OVL3*/
 #ifdef OVLB
 
 /* First 4 supplied by Ronen and Tamar, remainder by development team */
@@ -3629,7 +3611,6 @@ STATIC_OVL void kops_gone(bool silent) {
 #endif /* KOPS */
 
 #endif /*OVLB*/
-#ifdef OVL3
 
 STATIC_OVL long cost_per_charge(Monster *shkp, Object *otmp, bool altusage) {
   long tmp = 0L;
@@ -3681,7 +3662,6 @@ STATIC_OVL long cost_per_charge(Monster *shkp, Object *otmp, bool altusage) {
   }
   return (tmp);
 }
-#endif /*OVL3*/
 #ifdef OVLB
 
 /* Charge the player for partial use of an unpaid object.

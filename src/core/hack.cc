@@ -551,7 +551,6 @@ bool invocation_pos(xchar x, xchar y) {
       (bool)(Invocation_lev(&player.uz) && x == inv_pos.x && y == inv_pos.y));
 }
 
-#ifdef OVL3
 
 /* return TRUE if (dx,dy) is an OK place to move
  * mode is one of DO_MOVE, TEST_MOVE or TEST_TRAV
@@ -1473,7 +1472,6 @@ void invocation_message() {
   }
 }
 
-#endif /* OVL3 */
 
 void spoteffects(bool pick) {
   Monster *mtmp;

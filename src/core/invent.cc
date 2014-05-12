@@ -528,7 +528,6 @@ void consume_obj_charge(Object *obj, bool maybe_unpaid) {
 }
 
 #endif /* OVLB */
-#ifdef OVL3
 
 /*
 Adjust hero's attributes as if this object was being removed from the
@@ -601,7 +600,6 @@ void delallobj(int x, int y) {
   }
 }
 
-#endif /* OVL3 */
 
 /* destroy object in fobj chain (if unpaid, it remains on the bill) */
 void delobj(Object *obj) {

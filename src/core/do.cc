@@ -1460,7 +1460,6 @@ void deferred_goto() {
     free((genericptr_t)dfr_post_msg), dfr_post_msg = 0;
 }
 
-#ifdef OVL3
 
 /*
  * Return TRUE if we created a monster for the corpse.  If successful, the
@@ -1564,7 +1563,6 @@ void revive_mon(genericptr_t arg, long timeout) {
 
 int donull() { return (1); /* Do nothing, but let other things happen */ }
 
-#endif /* OVL3 */
 #ifdef OVLB
 
 STATIC_PTR int wipeoff() {
