@@ -2,6 +2,8 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include "core/mcastu.h"
+
 #include "core/hack.h"
 #include "core/zap.h"
 #include "core/worn.h"
