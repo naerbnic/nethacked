@@ -3013,7 +3013,6 @@ int dountrap() {
   return untrap(FALSE);
 }
 #endif /* OVLB */
-#ifdef OVL2
 
 /* Probability of disabling a trap.  Helge Hafting */
 STATIC_OVL int untrap_prob(Trap *ttmp) {
@@ -3583,7 +3582,6 @@ int untrap(bool force) {
     return (1);
   }
 }
-#endif /* OVL2 */
 #ifdef OVLB
 
 /* only called when the player is doing something to the chest directly */

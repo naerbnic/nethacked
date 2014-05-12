@@ -4026,7 +4026,6 @@ int destroy_mitem(Monster *mtmp, int osym, int dmgtyp) {
 }
 
 #endif /*OVL3*/
-#ifdef OVL2
 
 int resist(Monster *mtmp, char oclass, int damage, int tell) {
   int resisted;
@@ -4137,6 +4136,5 @@ retry:
   }
 }
 
-#endif /*OVL2*/
 
 /*zap.c*/

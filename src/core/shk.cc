@@ -3831,7 +3831,6 @@ bool block_entry(xchar x, xchar y) {
 }
 
 #endif /* OVLB */
-#ifdef OVL2
 
 char *shk_your(char *buf, Object *obj) {
   if (!shk_owns(buf, obj) && !mon_owns(buf, obj))
@@ -3864,7 +3863,6 @@ STATIC_OVL char *mon_owns(char *buf, Object *obj) {
   return nullptr;
 }
 
-#endif /* OVL2 */
 #ifdef OVLB
 
 #ifdef __SASC

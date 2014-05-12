@@ -522,7 +522,6 @@ void mon_catchup_elapsed_time(Monster *mtmp, long nmv) {
 }
 
 #endif /* OVLB */
-#ifdef OVL2
 
 /* called when you move to another level */
 void keepdogs(bool pets_only) {
@@ -622,7 +621,6 @@ void keepdogs(bool pets_only) {
   }
 }
 
-#endif /* OVL2 */
 #ifdef OVLB
 
 void migrate_to_level(Monster *mtmp, xchar tolev, xchar xyloc, coord *cc) {

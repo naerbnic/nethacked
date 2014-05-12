@@ -956,7 +956,6 @@ const char *roguename() {
 #endif /* REINCARNATION */
 #endif /* OVLB */
 
-#ifdef OVL2
 
 static const char *const hcolors[] = {
     "ultraviolet",  "infrared",          "bluish-orange", "reddish-green",
@@ -1004,6 +1003,5 @@ char *coyotename(Monster *mtmp, char *buf) {
   }
   return buf;
 }
-#endif /* OVL2 */
 
 /*do_name.c*/

@@ -158,7 +158,6 @@ char *xcrypt(char const *str, char *buf) {
   return buf;
 }
 
-#ifdef OVL2
 /* is a string entirely whitespace? */
 bool onlyspace(const char *s) {
   for (; *s; s++)
@@ -166,7 +165,6 @@ bool onlyspace(const char *s) {
       return FALSE;
   return TRUE;
 }
-#endif /* OVL2 */
 
 #ifdef OVLB
 /* expand tabs into proper number of spaces */
@@ -213,7 +211,6 @@ char *visctrl(char c) {
 }
 #endif /* OVLB */
 
-#ifdef OVL2
 /* return the ordinal suffix of a number */
 const char *ordin(int n) {
   int dd = n % 10;
@@ -222,7 +219,6 @@ const char *ordin(int n) {
              ? "th"
              : (dd == 1) ? "st" : (dd == 2) ? "nd" : "rd";
 }
-#endif /* OVL2 */
 
 /* make a signed digit string from a number */
 char *sitoa(int n) {
@@ -313,7 +309,6 @@ pmatch_top:
 }
 #endif /* OVLB */
 
-#ifdef OVL2
 #ifndef STRNCMPI
 /* case insensitive counted string comparison */
 int strncmpi(const char *s1, const char *s2, int n) {
@@ -332,7 +327,6 @@ int strncmpi(const char *s1, const char *s2, int n) {
   return 0; /* s1 == s2 */
 }
 #endif /* STRNCMPI */
-#endif /* OVL2 */
 
 #ifdef OVLB
 #ifndef STRSTRI
@@ -404,7 +398,6 @@ bool fuzzymatch(const char *s1, const char *s2, const char *ignore_chars,
 }
 
 #endif /* OVLB */
-#ifdef OVL2
 
 /*
  * Time routines
@@ -546,6 +539,5 @@ int night() {
 }
 
 int midnight() { return (getlt()->tm_hour == 0); }
-#endif /* OVL2 */
 
 /*hacklib.c*/

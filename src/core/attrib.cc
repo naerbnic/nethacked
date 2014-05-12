@@ -731,7 +731,6 @@ schar acurrstr() {
     return ((schar)(str - 100));
 }
 
-#ifdef OVL2
 
 /* avoid possible problems with alignment overflow, and provide a centralized
  * location for any future alignment limits
@@ -749,6 +748,5 @@ void adjalign(int n) {
   }
 }
 
-#endif /* OVL2 */
 
 /*attrib.c*/

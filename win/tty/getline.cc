@@ -190,7 +190,6 @@ void xwaitforspace(const char *s) {
   }
 }
 
-#ifdef OVL2
 
 /*
  * Implement extended command completion by using this hook into
@@ -268,6 +267,5 @@ int tty_get_ext_cmd() {
   return i;
 }
 
-#endif /* OVL2 */
 
 /*getline.c*/

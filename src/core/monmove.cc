@@ -140,7 +140,6 @@ int dochugw(Monster *mtmp) {
   return (rd);
 }
 
-#ifdef OVL2
 
 bool onscary(int x, int y, Monster *mtmp) {
   if (mtmp->isshk || mtmp->isgd || mtmp->iswiz || !mtmp->mcansee ||
@@ -156,7 +155,6 @@ bool onscary(int x, int y, Monster *mtmp) {
                 || (mtmp->data->mlet == S_VAMPIRE && IS_ALTAR(levl[x][y].typ)));
 }
 
-#endif /* OVL2 */
 
 /* regenerate lost hit points */
 void mon_regen(Monster *mon, bool digest_meal) {
@@ -1255,7 +1253,6 @@ postmov:
   return (mmoved);
 }
 
-#ifdef OVL2
 
 bool closed_door(int x, int y) {
   return ((bool)(IS_DOOR(levl[x][y].typ) &&
@@ -1266,7 +1263,6 @@ bool accessible(int x, int y) {
   return ((bool)(ACCESSIBLE(levl[x][y].typ) && !closed_door(x, y)));
 }
 
-#endif /* OVL2 */
 
 /* decide where the monster thinks you are standing */
 void set_apparxy(Monster *mtmp) {

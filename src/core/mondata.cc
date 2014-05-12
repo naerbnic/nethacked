@@ -458,7 +458,6 @@ int name_to_mon(const char *in_str) {
   return mntmp;
 }
 
-#ifdef OVL2
 
 /* returns 3 values (0=male, 1=female, 2=none) */
 int gender(Monster *mtmp) {
@@ -478,7 +477,6 @@ int pronoun_gender(Monster *mtmp) {
              : 2;
 }
 
-#endif /* OVL2 */
 #ifdef OVLB
 
 /* used for nearby monsters when you go to another level */

@@ -63,11 +63,9 @@
 
 STATIC_DCL bool restrap(Monster *);
 STATIC_DCL long mm_aggression(Monster *, Monster *);
-#ifdef OVL2
 STATIC_DCL int pick_animal();
 STATIC_DCL int select_newcham_form(Monster *);
 STATIC_DCL void kill_eggs(Object *);
-#endif
 
 #ifdef REINCARNATION
 #define LEVEL_SPECIFIC_NOCORPSE(mdat) \
@@ -933,7 +931,6 @@ void mpickgold(Monster *mtmp) {
   }
 }
 #endif /* OVLB */
-#ifdef OVL2
 
 bool mpickstuff(Monster *mtmp, const char *str) {
   Object *otmp, *otmp2;
@@ -978,7 +975,6 @@ bool mpickstuff(Monster *mtmp, const char *str) {
   return FALSE;
 }
 
-#endif /* OVL2 */
 
 int curr_mon_load(Monster *mtmp) {
   int curload = 0;
@@ -2111,7 +2107,6 @@ void m_respond(Monster *mtmp) {
 }
 
 #endif /* OVLB */
-#ifdef OVL2
 
 void setmangry(Monster *mtmp) {
   mtmp->mstrategy &= ~STRAT_WAITMASK;
@@ -2692,7 +2687,6 @@ void kill_genocided_monsters() {
   kill_eggs(level.buriedobjlist);
 }
 
-#endif /* OVL2 */
 #ifdef OVLB
 
 void golemeffects(Monster *mon, int damtype, int dam) {

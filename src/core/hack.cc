@@ -54,7 +54,6 @@ STATIC_DCL void move_update(bool);
 
 #define IS_SHOP(x) (rooms[x].rtype >= SHOPBASE)
 
-#ifdef OVL2
 
 bool revive_nasty(int x, int y, const char *msg) {
   Object *otmp, *otmp2;
@@ -465,7 +464,6 @@ STATIC_OVL int still_chewing(xchar x, xchar y) {
   return 0;
 }
 
-#endif /* OVL2 */
 #ifdef OVLB
 
 void movobj(Object *obj, xchar ox, xchar oy) {
@@ -1476,7 +1474,6 @@ void invocation_message() {
 }
 
 #endif /* OVL3 */
-#ifdef OVL2
 
 void spoteffects(bool pick) {
   Monster *mtmp;
@@ -1830,7 +1827,6 @@ void check_special_room(bool newlev) {
   return;
 }
 
-#endif /* OVL2 */
 #ifdef OVLB
 
 int dopickup() {
@@ -1904,7 +1900,6 @@ int dopickup() {
 }
 
 #endif /* OVLB */
-#ifdef OVL2
 
 /* stop running if we see something interesting */
 /* turn around a corner if that is the only way we can proceed */
@@ -2101,7 +2096,6 @@ void unmul(const char *msg_override) {
   afternmv = 0;
 }
 
-#endif /* OVL2 */
 
 STATIC_OVL void maybe_wail() {
   static short powers[] = {TELEPORT,         SEE_INVIS, POISON_RES, COLD_RES,

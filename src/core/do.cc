@@ -69,11 +69,9 @@ STATIC_PTR int drop(Object *);
 STATIC_PTR int wipeoff();
 
 STATIC_DCL int menu_drop(int);
-#ifdef OVL2
 STATIC_DCL int currentlevel_rewrite();
 STATIC_DCL void final_level();
 /* static bool badspot(xchar,xchar); */
-#endif
 
 #ifdef OVLB
 
@@ -748,7 +746,6 @@ drop_done:
   return n_dropped;
 }
 
-#ifdef OVL2
 
 /* on a ladder, used in goto_level */
 static bool at_ladder = FALSE;
@@ -1463,7 +1460,6 @@ void deferred_goto() {
     free((genericptr_t)dfr_post_msg), dfr_post_msg = 0;
 }
 
-#endif /* OVL2 */
 #ifdef OVL3
 
 /*

@@ -602,7 +602,6 @@ void delallobj(int x, int y) {
 }
 
 #endif /* OVL3 */
-#ifdef OVL2
 
 /* destroy object in fobj chain (if unpaid, it remains on the bill) */
 void delobj(Object *obj) {
@@ -624,7 +623,6 @@ void delobj(Object *obj) {
   obfree(obj, nullptr); /* frees contents also */
 }
 
-#endif /* OVL2 */
 
 Object *sobj_at(int n, int x, int y) {
   Object *otmp;
@@ -685,7 +683,6 @@ bool obj_here(Object *obj, int x, int y) {
 }
 
 #endif /* OVLB */
-#ifdef OVL2
 
 Object *g_at(int x, int y) {
   Object *obj = level.objects[x][y];
@@ -697,7 +694,6 @@ Object *g_at(int x, int y) {
   return (nullptr);
 }
 
-#endif /* OVL2 */
 #ifdef OVLB
 #ifndef GOLDOBJ
 /* Make a gold object from the hero's gold. */
@@ -1568,7 +1564,6 @@ void identify_pack(int id_limit) {
 }
 
 #endif /* OVLB */
-#ifdef OVL2
 
 /* should of course only be called for things in invent */
 STATIC_OVL char obj_to_let(Object *obj) {
@@ -1594,7 +1589,6 @@ void prinv(const char *prefix, Object *obj, long quan) {
         xprname(obj, nullptr, obj_to_let(obj), TRUE, 0L, quan));
 }
 
-#endif /* OVL2 */
 
 char *xprname(Object *obj, const char *txt, char let, bool dot, long cost,
               long quan) {

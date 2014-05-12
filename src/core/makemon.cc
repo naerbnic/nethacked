@@ -149,7 +149,6 @@ void m_initthrow(Monster *mtmp, int otyp, int oquan) {
 }
 
 #endif /* OVLB */
-#ifdef OVL2
 
 STATIC_OVL void m_initweap(Monster *mtmp) {
   MonsterType *ptr = mtmp->data;
@@ -493,7 +492,6 @@ STATIC_OVL void m_initweap(Monster *mtmp) {
     (void)mongets(mtmp, rnd_offensive_item(mtmp));
 }
 
-#endif /* OVL2 */
 
 #ifdef GOLDOBJ
 /*

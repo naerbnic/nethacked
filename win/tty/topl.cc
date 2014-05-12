@@ -164,7 +164,6 @@ void addtopl(const char *s) {
   ttyDisplay->toplin = 1;
 }
 
-#ifdef OVL2
 
 void more() {
   struct WinDesc *cw = wins[WIN_MESSAGE];
@@ -449,6 +448,5 @@ clean_up:
   return q;
 }
 
-#endif /* OVL2 */
 
 /*topl.c*/

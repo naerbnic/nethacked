@@ -272,14 +272,12 @@ int sengr_at(const char *s, xchar x, xchar y) {
 }
 #endif /* ELBERETH */
 
-#ifdef OVL2
 
 void u_wipe_engr(int cnt) {
   if (can_reach_floor())
     wipe_engr_at(player.ux, player.uy, cnt);
 }
 
-#endif /* OVL2 */
 
 void wipe_engr_at(xchar x, xchar y, xchar cnt) {
   struct engr *ep = engr_at(x, y);
@@ -299,7 +297,6 @@ void wipe_engr_at(xchar x, xchar y, xchar cnt) {
   }
 }
 
-#ifdef OVL2
 
 void read_engr_at(int x, int y) {
   struct engr *ep = engr_at(x, y);
@@ -368,7 +365,6 @@ void read_engr_at(int x, int y) {
   }
 }
 
-#endif /* OVL2 */
 #ifdef OVLB
 
 void make_engr_at(int x, int y, const char *s, long e_time, xchar e_type) {
