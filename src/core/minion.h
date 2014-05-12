@@ -3,6 +3,9 @@
 #ifndef MINION_H_
 #define MINION_H_
 
+#include "core/global.h"
+#include "core/monst.h"
+
 void msummon(Monster *);
 void summon_minion(ALIGNTYP_P, bool);
 int demon_talk(Monster *);

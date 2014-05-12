@@ -2,6 +2,8 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include "core/mklev.h"
+
 #include <string.h>
 
 #include "core/hack.h"
@@ -13,7 +15,6 @@
 #include "core/o_init.h"
 #include "core/mkobj.h"
 #include "core/mkmaze.h"
-#include "core/mklev.h"
 #include "core/makemon.h"
 #include "core/invent.h"
 #include "core/extralev.h"

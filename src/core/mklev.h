@@ -3,6 +3,10 @@
 #ifndef MKLEV_H_
 #define MKLEV_H_
 
+#include "core/dungeon.h"
+#include "core/global.h"
+#include "core/mkroom.h"
+
 void sort_rooms();
 void add_room(int, int, int, int, bool, schar, bool);
 void add_subroom(struct mkroom *, int, int, int, int, bool, schar, bool);

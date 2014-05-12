@@ -2,6 +2,8 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include "core/minion.h"
+
 #include "core/hack.h"
 #include "core/wizard.h"
 #include "core/teleport.h"
@@ -9,7 +11,6 @@
 #include "core/pray.h"
 #include "core/pline.h"
 #include "core/mon.h"
-#include "core/minion.h"
 #include "core/makemon.h"
 #include "core/invent.h"
 #include "core/hacklib.h"
