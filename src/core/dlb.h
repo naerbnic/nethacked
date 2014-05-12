@@ -6,6 +6,8 @@
 #define DLB_H
 /* definitions for data library */
 
+#include "core/config.h"
+
 #ifdef DLB
 
 /* implementations */

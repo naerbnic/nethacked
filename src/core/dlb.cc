@@ -2,8 +2,9 @@
 /* Copyright (c) Kenneth Lorber, Bethesda, Maryland, 1993. */
 /* NetHack may be freely redistributed.  See license for details. */
 
-#include "core/config.h"
 #include "core/dlb.h"
+
+#include "core/config.h"
 
 #ifdef __DJGPP__
 #include <string.h>
