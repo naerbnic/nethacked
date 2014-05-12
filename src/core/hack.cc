@@ -41,9 +41,7 @@
 #include "core/apply.h"
 #include "core/ball.h"
 
-#ifdef OVL1
 STATIC_DCL void maybe_wail();
-#endif /*OVL1*/
 STATIC_DCL int moverock();
 STATIC_DCL int still_chewing(xchar, xchar);
 #ifdef SINKS
@@ -542,7 +540,6 @@ bool may_passwall(xchar x, xchar y) {
 }
 
 #endif /* OVLB */
-#ifdef OVL1
 
 bool bad_rock(MonsterType *mdat, xchar x, xchar y) {
   return ((bool)((In_sokoban(&player.uz) && sobj_at(BOULDER, x, y)) ||
@@ -556,7 +553,6 @@ bool invocation_pos(xchar x, xchar y) {
       (bool)(Invocation_lev(&player.uz) && x == inv_pos.x && y == inv_pos.y));
 }
 
-#endif /* OVL1 */
 #ifdef OVL3
 
 /* return TRUE if (dx,dy) is an OK place to move
@@ -2106,7 +2102,6 @@ void unmul(const char *msg_override) {
 }
 
 #endif /* OVL2 */
-#ifdef OVL1
 
 STATIC_OVL void maybe_wail() {
   static short powers[] = {TELEPORT,         SEE_INVIS, POISON_RES, COLD_RES,
@@ -2268,7 +2263,6 @@ bool check_capacity(const char *str) {
   return 0;
 }
 
-#endif /* OVL1 */
 #ifdef OVLB
 
 int inv_cnt() {

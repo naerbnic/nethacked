@@ -89,7 +89,6 @@ int rnd(int x) {
 #endif
 }
 
-#ifdef OVL1
 
 /* n <= d(n,x) <= (n*x) */
 int d(int n, int x) {
@@ -107,7 +106,6 @@ int d(int n, int x) {
   return (tmp); /* Alea iacta est. -- J.C. */
 }
 
-#endif /* OVL1 */
 #ifdef OVLB
 
 int rne(int x) {

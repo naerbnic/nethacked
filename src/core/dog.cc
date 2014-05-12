@@ -677,7 +677,6 @@ void migrate_to_level(Monster *mtmp, xchar tolev, xchar xyloc, coord *cc) {
 }
 
 #endif /* OVLB */
-#ifdef OVL1
 
 /* return quality of food; the lower the better */
 /* fungi will eat even tainted food */
@@ -773,7 +772,6 @@ int dogfood(Monster *mon, Object *obj) {
   }
 }
 
-#endif /* OVL1 */
 #ifdef OVLB
 
 Monster *tamedog(Monster *mtmp, Object *obj) {

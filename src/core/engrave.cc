@@ -280,7 +280,6 @@ void u_wipe_engr(int cnt) {
 }
 
 #endif /* OVL2 */
-#ifdef OVL1
 
 void wipe_engr_at(xchar x, xchar y, xchar cnt) {
   struct engr *ep = engr_at(x, y);
@@ -300,7 +299,6 @@ void wipe_engr_at(xchar x, xchar y, xchar cnt) {
   }
 }
 
-#endif /* OVL1 */
 #ifdef OVL2
 
 void read_engr_at(int x, int y) {

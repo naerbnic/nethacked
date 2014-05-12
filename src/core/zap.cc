@@ -410,7 +410,6 @@ void probe_monster(Monster *mtmp) {
 }
 
 #endif /*OVLB*/
-#ifdef OVL1
 
 /*
  * Return the object's physical location.  This only makes sense for
@@ -776,7 +775,6 @@ int unturn_dead(Monster *mon) {
   }
   return res;
 }
-#endif /*OVL1*/
 
 #ifdef OVLB
 static const char charged_objs[] = {WAND_CLASS, WEAPON_CLASS, ARMOR_CLASS, 0};
@@ -1720,7 +1718,6 @@ int bhitpile(Object *obj, int (*fhito)(Object *, Object *), int tx, int ty) {
   return hitanything;
 }
 #endif /*OVLB*/
-#ifdef OVL1
 
 /*
  * zappable - returns 1 if zap is available, 0 otherwise.
@@ -1782,7 +1779,6 @@ void zapnodir(Object *obj) {
     more_experienced(0, 10);
   }
 }
-#endif /*OVL1*/
 
 STATIC_OVL void backfire(Object *otmp) {
   otmp->in_use = TRUE; /* in case losehp() is fatal */
@@ -2536,7 +2532,6 @@ void miss(const char *str, Monster *mtmp) {
             ? mon_nam(mtmp)
             : "it");
 }
-#ifdef OVL1
 
 /*
  *  Called for the following distance effects:
@@ -3154,7 +3149,6 @@ STATIC_OVL void zhitu(int type, int nd, const char *fltxt, xchar sx, xchar sy) {
   return;
 }
 
-#endif /*OVL1*/
 #ifdef OVLB
 
 /*

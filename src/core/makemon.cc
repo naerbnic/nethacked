@@ -56,9 +56,7 @@ STATIC_DCL bool IsLevelWrongElementalType(MonsterType *);
 STATIC_DCL void m_initgrp(Monster *, int, int, int);
 STATIC_DCL void m_initthrow(Monster *, int, int);
 STATIC_DCL void m_initweap(Monster *);
-#ifdef OVL1
 STATIC_DCL void m_initinv(Monster *);
-#endif /* OVL1 */
 
 extern const int monstr[];
 
@@ -496,7 +494,6 @@ STATIC_OVL void m_initweap(Monster *mtmp) {
 }
 
 #endif /* OVL2 */
-#ifdef OVL1
 
 #ifdef GOLDOBJ
 /*
@@ -1181,7 +1178,6 @@ bool create_critters(int cnt, MonsterType *mptr) {
   return known;
 }
 
-#endif /* OVL1 */
 
 STATIC_OVL bool uncommon(int mndx) {
   if (mons[mndx].geno & (G_NOGEN | G_UNIQ))
@@ -1336,7 +1332,6 @@ void reset_rndmonst(int mndx) {
   } /* note: safe to ignore extinction of unique monsters */
 }
 
-#ifdef OVL1
 
 /*	The routine below is used to make one of the multiple types
  *	of a given monster class.  The second parameter specifies a
@@ -1427,7 +1422,6 @@ int adj_lev(MonsterType *ptr) {
   return ((tmp > tmp2) ? tmp2 : (tmp > 0 ? tmp : 0)); /* 0 lower limit */
 }
 
-#endif /* OVL1 */
 #ifdef OVLB
 
 /* `mtmp' might "grow up" into a bigger version */
@@ -1523,7 +1517,6 @@ MonsterType *grow_up(Monster *mtmp, Monster *victim) {
 }
 
 #endif /* OVLB */
-#ifdef OVL1
 
 int mongets(Monster *mtmp, int otyp) {
   Object *otmp;
@@ -1574,7 +1567,6 @@ int mongets(Monster *mtmp, int otyp) {
     return (0);
 }
 
-#endif /* OVL1 */
 #ifdef OVLB
 
 int golemhp(int type) {
@@ -1607,7 +1599,6 @@ int golemhp(int type) {
 }
 
 #endif /* OVLB */
-#ifdef OVL1
 
 /*
  *	Alignment vs. yours determines monster's attitude to you.
@@ -1709,7 +1700,6 @@ void set_malign(Monster *mtmp) {
     mtmp->malign = abs(mal);
 }
 
-#endif /* OVL1 */
 #ifdef OVLB
 
 static char syms[] = {

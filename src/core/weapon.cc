@@ -108,12 +108,10 @@ STATIC_DCL bool could_advance(int);
 STATIC_DCL bool peaked_skill(int);
 STATIC_DCL int slots_required(int);
 
-#ifdef OVL1
 
 STATIC_DCL char *skill_level_name(int, char *);
 STATIC_DCL void skill_advance(int);
 
-#endif /* OVL1 */
 
 #define P_NAME(type)                                  \
   ((skill_names_indices[type] > 0)                    \
@@ -735,7 +733,6 @@ int abon() {
     return (sbon + dex - 14);
 }
 
-#ifdef OVL1
 
 /* damage bonus for strength */
 int dbon() {
@@ -1080,7 +1077,6 @@ void unrestrict_weapon_skill(int skill) {
   }
 }
 
-#endif /* OVL1 */
 #ifdef OVLB
 
 void use_skill(int skill, int degree) {

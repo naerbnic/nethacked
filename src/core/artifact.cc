@@ -564,7 +564,6 @@ int touch_artifact(Object *obj, Monster *mon) {
 }
 
 #endif /* OVLB */
-#ifdef OVL1
 
 /* decide whether an artifact's special attacks apply against mtmp */
 STATIC_OVL int spec_applies(const Artifact *weap, Monster *mtmp) {
@@ -705,7 +704,6 @@ int disp_artifact_discoveries(winid tmpwin) {
   return i;
 }
 
-#endif /* OVL1 */
 
 #ifdef OVLB
 

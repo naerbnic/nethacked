@@ -434,7 +434,6 @@ void explode(int x, int y, int type, int dam, char olet, int expltype) {
     i = 50; /* in case random damage is very small */
   wake_nearto(x, y, i);
 }
-#ifdef OVL1
 
 struct scatter_chain {
   struct scatter_chain *next; /* pointer to next scatter item	*/
@@ -626,6 +625,5 @@ void splatter_burning_oil(int x, int y) {
   explode(x, y, ZT_SPELL_O_FIRE, d(4, 4), BURNING_OIL, EXPL_FIERY);
 }
 
-#endif /* OVL1 */
 
 /*explode.c*/

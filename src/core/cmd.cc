@@ -146,9 +146,7 @@ extern int dozap();          /**/
 extern int doorganize();     /**/
 #endif                       /* DUMB */
 
-#ifdef OVL1
 static int (*timed_occ_fn)();
-#endif /* OVL1 */
 
 STATIC_PTR int doprev_message();
 STATIC_PTR int timed_occupation();
@@ -207,7 +205,6 @@ static const char *readchar_queue = "";
 STATIC_DCL char *parse();
 STATIC_DCL bool help_dir(char, const char *);
 
-#ifdef OVL1
 
 STATIC_PTR int doprev_message() { return nh_doprev_message(); }
 
@@ -312,7 +309,6 @@ void savech(char ch) {
 }
 #endif /* REDO */
 
-#endif /* OVL1 */
 #ifdef OVLB
 
 /* here after # - now read a full-word command */
@@ -1928,7 +1924,6 @@ void dump_conduct(int final) {
 #endif /* DUMP_LOG */
 
 #endif /* OVLB */
-#ifdef OVL1
 
 #ifndef M
 #define M(c) ((c) - 128)
@@ -2748,7 +2743,6 @@ STATIC_OVL bool help_dir(char sym, const char *msg) {
   return TRUE;
 }
 
-#endif /* OVL1 */
 #ifdef OVLB
 
 void confdir() {

@@ -80,7 +80,6 @@ STATIC_DCL void kill_eggs(Object *);
 
 #if 0
 /* part of the original warning code which was replaced in 3.3.1 */
-#ifdef OVL1
 #define warnDelay 10
 long lastwarntime;
 int lastwarnlev;
@@ -90,7 +89,6 @@ const char *warnings[] = {
 };
 
 STATIC_DCL void warn_effects();
-#endif /* OVL1 */
 #endif /* 0 */
 
 #ifndef OVLB
@@ -417,7 +415,6 @@ STATIC_OVL Object *make_corpse(Monster *mtmp) {
 }
 
 #endif /* OVLB */
-#ifdef OVL1
 
 #if 0
 /* part of the original warning code which was replaced in 3.3.1 */
@@ -729,7 +726,6 @@ int movemon() {
   return somebody_can_move;
 }
 
-#endif /* OVL1 */
 #ifdef OVLB
 
 #define mstoning(obj) \
@@ -1275,7 +1271,6 @@ nexttry: /* eels prefer the water, but if there is no water nearby,
   return (cnt);
 }
 
-#ifdef OVL1
 
 /* Monster against monster special attacks; for the specified monster
    combinations, this allows one monster to attack another adjacent one
@@ -1324,7 +1319,6 @@ void dmonsfree() {
   iflags.purge_monsters = 0;
 }
 
-#endif /* OVL1 */
 #ifdef OVLB
 
 /* called when monster is moved to larger structure */

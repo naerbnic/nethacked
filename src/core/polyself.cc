@@ -1167,7 +1167,6 @@ void skinback(bool silently) {
 }
 
 #endif /* OVLB */
-#ifdef OVL1
 
 const char *mbodypart(Monster *mon, int part) {
   static const char *
@@ -1290,7 +1289,6 @@ const char *mbodypart(Monster *mon, int part) {
 
 const char *body_part(int part) { return mbodypart(&youmonst, part); }
 
-#endif /* OVL1 */
 
 int poly_gender() {
   /* Returns gender of polymorphed player; 0/1=same meaning as flags.female,

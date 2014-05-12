@@ -66,13 +66,11 @@ bool letter(char c) {
 }
 #endif /* OVLB */
 
-#ifdef OVL1
 /* force 'c' into uppercase */
 char highc(char c) { return ((char)(('a' <= c && c <= 'z') ? (c & ~040) : c)); }
 
 /* force 'c' into lowercase */
 char lowc(char c) { return ((char)(('A' <= c && c <= 'Z') ? (c | 040) : c)); }
-#endif /* OVL1 */
 
 #ifdef OVLB
 /* convert a string into all lowercase */
@@ -226,7 +224,6 @@ const char *ordin(int n) {
 }
 #endif /* OVL2 */
 
-#ifdef OVL1
 /* make a signed digit string from a number */
 char *sitoa(int n) {
   Static char buf[13];
@@ -237,7 +234,6 @@ char *sitoa(int n) {
 
 /* return the sign of a number: -1, 0, or 1 */
 int sgn(int n) { return (n < 0) ? -1 : (n != 0); }
-#endif /* OVL1 */
 
 #ifdef OVLB
 /* calculate x/y, rounding as appropriate */

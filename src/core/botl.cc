@@ -44,7 +44,6 @@ STATIC_OVL int mrank_sz = 0; /* loaded by max_rank_sz (from u_init) */
 
 STATIC_DCL const char *rank();
 
-#ifdef OVL1
 
 /* convert experience level (1..30) to rank index (0..8) */
 int xlev_to_rank(int xlev) {
@@ -116,7 +115,6 @@ int title_to_mon(const char *str, int *rank_indx, int *title_length) {
   return NON_PM;
 }
 
-#endif /* OVL1 */
 #ifdef OVLB
 
 void max_rank_sz() {

@@ -16,7 +16,6 @@ STATIC_VAR coord utrack[UTSZ];
 void initrack() { utcnt = utpnt = 0; }
 
 #endif /* OVLB */
-#ifdef OVL1
 
 /* add to track */
 void settrack() {
@@ -29,7 +28,6 @@ void settrack() {
   utpnt++;
 }
 
-#endif /* OVL1 */
 
 coord *gettrack(int x, int y) {
   int cnt, ndist;

@@ -121,7 +121,6 @@ int tty_doprev_message() {
 }
 
 #endif /* OVLB */
-#ifdef OVL1
 
 STATIC_OVL void redotoplin(const char *str) {
   int otoplin = ttyDisplay->toplin;
@@ -165,7 +164,6 @@ void addtopl(const char *s) {
   ttyDisplay->toplin = 1;
 }
 
-#endif /* OVL1 */
 #ifdef OVL2
 
 void more() {

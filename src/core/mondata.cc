@@ -237,7 +237,6 @@ bool passes_bars(MonsterType *mptr) {
                 verysmall(mptr) || (slithy(mptr) && !bigmonst(mptr)));
 }
 
-#ifdef OVL1
 
 /* returns TRUE if monster can track well */
 bool can_track(MonsterType *ptr) {
@@ -247,7 +246,6 @@ bool can_track(MonsterType *ptr) {
     return ((bool)haseyes(ptr));
 }
 
-#endif /* OVL1 */
 #ifdef OVLB
 
 /* creature will slide out of armor */
@@ -264,7 +262,6 @@ bool breakarm(MonsterType *ptr) {
           !sliparm(ptr));
 }
 #endif /* OVLB */
-#ifdef OVL1
 
 /* creature sticks other creatures it hits */
 bool sticks(MonsterType *ptr) {
@@ -331,7 +328,6 @@ int max_passive_dmg(Monster *mdef, Monster *magr) {
   return 0;
 }
 
-#endif /* OVL1 */
 
 /* return an index into the mons array */
 int monsndx(MonsterType *ptr) {
@@ -347,7 +343,6 @@ int monsndx(MonsterType *ptr) {
   return (i);
 }
 
-#ifdef OVL1
 
 int name_to_mon(const char *in_str) {
   /* Be careful.  We must check the entire string in case it was
@@ -463,7 +458,6 @@ int name_to_mon(const char *in_str) {
   return mntmp;
 }
 
-#endif /* OVL1 */
 #ifdef OVL2
 
 /* returns 3 values (0=male, 1=female, 2=none) */

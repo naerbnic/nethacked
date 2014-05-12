@@ -56,10 +56,8 @@
 STATIC_VAR Object *otmp;
 
 STATIC_DCL void urustm(Monster *, Object *);
-#ifdef OVL1
 STATIC_DCL bool u_slip_free(Monster *, struct Attack *);
 STATIC_DCL int passiveum(MonsterType *, Monster *, struct Attack *);
-#endif /* OVL1 */
 
 #ifdef OVLB
 #ifdef SEDUCE
@@ -82,7 +80,6 @@ STATIC_DCL void hitmsg(Monster *, struct Attack *);
 /* changed to a parameter to mhitu. */
 static int dieroll;
 
-#ifdef OVL1
 
 STATIC_OVL void hitmsg(Monster *mtmp, struct Attack *mattk) {
   int compat;
@@ -174,7 +171,6 @@ void u_slow_down() {
   exercise(A_DEX, FALSE);
 }
 
-#endif /* OVL1 */
 #ifdef OVLB
 
 /* monster attacked your displaced image */
@@ -786,7 +782,6 @@ STATIC_OVL void hurtarmor(int attk) {
 }
 
 #endif /* OVLB */
-#ifdef OVL1
 
 STATIC_OVL bool diseasemu(MonsterType *mdat) {
   if (Sick_resistance) {
@@ -1669,7 +1664,6 @@ STATIC_OVL int hitmu(Monster *mtmp, struct Attack *mattk) {
   return res;
 }
 
-#endif /* OVL1 */
 #ifdef OVLB
 
 /* monster swallows you, or damage if player.uswallow */
@@ -2103,7 +2097,6 @@ int gazemu(Monster *mtmp, struct Attack *mattk) {
 }
 
 #endif /* OVLB */
-#ifdef OVL1
 
 /* mtmp hits you for n points damage */
 void mdamageu(Monster *mtmp, int n) {
@@ -2119,7 +2112,6 @@ void mdamageu(Monster *mtmp, int n) {
   }
 }
 
-#endif /* OVL1 */
 #ifdef OVLB
 
 STATIC_OVL void urustm(Monster *mon, Object *obj) {
@@ -2158,7 +2150,6 @@ STATIC_OVL void urustm(Monster *mon, Object *obj) {
 }
 
 #endif /* OVLB */
-#ifdef OVL1
 
 /* returns 0 if seduction impossible,
  *	   1 if fine,
@@ -2208,7 +2199,6 @@ int could_seduce(Monster *magr, Monster *mdef, struct Attack *mattk) {
     return (pagr->mlet == S_NYMPH) ? 2 : 0;
 }
 
-#endif /* OVL1 */
 #ifdef OVLB
 
 #ifdef SEDUCE
@@ -2526,7 +2516,6 @@ STATIC_OVL void mayberem(Object *obj, const char *str) {
 
 #endif /* OVLB */
 
-#ifdef OVL1
 
 STATIC_OVL int passiveum(MonsterType *olduasmon, Monster *mtmp,
                          struct Attack *mattk) {
@@ -2698,7 +2687,6 @@ assess_dmg:
   return 1;
 }
 
-#endif /* OVL1 */
 #ifdef OVLB
 
 #include "core/edog.h"

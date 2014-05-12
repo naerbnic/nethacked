@@ -472,7 +472,6 @@ void moveloop() {
   }
 }
 
-#ifdef OVL1
 
 void stop_occupation() {
   if (occupation) {
@@ -490,7 +489,6 @@ void stop_occupation() {
   }
 }
 
-#endif /* OVL1 */
 #ifdef OVLB
 
 void display_gamewindows() {

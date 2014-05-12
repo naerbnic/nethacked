@@ -100,7 +100,6 @@ STATIC_OVL void watch_on_duty(Monster *mtmp) {
   }
 }
 
-#ifdef OVL1
 
 int dochugw(Monster *mtmp) {
   int x = mtmp->mx, y = mtmp->my;
@@ -141,7 +140,6 @@ int dochugw(Monster *mtmp) {
   return (rd);
 }
 
-#endif /* OVL1 */
 #ifdef OVL2
 
 bool onscary(int x, int y, Monster *mtmp) {

@@ -558,7 +558,6 @@ void graph_off() {
 }
 #endif
 
-#ifdef OVL1
 
 static const short tmspc10[] = {/* from termcap */
                                 0, 2000, 1333, 909, 743, 666, 500, 333, 166, 83,
@@ -595,7 +594,6 @@ void tty_delay_output() {
   }
 }
 
-#endif /* OVL1 */
 #ifdef OVLB
 
 /* free after Robert Viduya */

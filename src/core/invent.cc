@@ -38,13 +38,11 @@
 #define NOINVSYM '#'
 #define CONTAINED_SYM '>' /* designator for inside a container */
 
-#ifdef OVL1
 STATIC_DCL void reorder_invent();
 STATIC_DCL bool mergable(Object *, Object *);
 STATIC_DCL void invdisp_nothing(const char *, const char *);
 STATIC_DCL bool worn_wield_only(Object *);
 STATIC_DCL bool only_here(Object *);
-#endif /* OVL1 */
 STATIC_DCL void compactify(char *);
 STATIC_DCL bool taking_off(const char *);
 STATIC_DCL bool putting_on(const char *);
@@ -119,7 +117,6 @@ void assigninvlet(Object *otmp) {
 }
 
 #endif /* OVLB */
-#ifdef OVL1
 
 /* note: assumes ASCII; toggling a bit puts lowercase in front of uppercase */
 #define inv_rank(o) ((o)->invlet ^ 040)
@@ -421,7 +418,6 @@ void carry_obj_effects(Object *obj) {
   }
 }
 
-#endif /* OVL1 */
 #ifdef OVLB
 
 /* Add an item to the inventory unless we're fumbling or it refuses to be
@@ -717,7 +713,6 @@ Object *mkgoldobj(long q) {
 }
 #endif
 #endif /* OVLB */
-#ifdef OVL1
 
 /* compact a string of inventory letters by dashing runs of letters */
 STATIC_OVL void compactify(char *buf) {
@@ -1154,7 +1149,6 @@ void silly_thing(const char *word, Object *otmp) {
   }
 }
 
-#endif /* OVL1 */
 #ifdef OVLB
 
 STATIC_PTR int ckvalidcat(Object *otmp) {
@@ -1601,7 +1595,6 @@ void prinv(const char *prefix, Object *obj, long quan) {
 }
 
 #endif /* OVL2 */
-#ifdef OVL1
 
 char *xprname(Object *obj, const char *txt, char let, bool dot, long cost,
               long quan) {
@@ -1643,7 +1636,6 @@ char *xprname(Object *obj, const char *txt, char let, bool dot, long cost,
   return li;
 }
 
-#endif /* OVL1 */
 #ifdef OVLB
 
 /* the 'i' command */
@@ -2423,7 +2415,6 @@ void feel_cockatrice(Object *otmp, bool force_touch) {
 }
 
 #endif /* OVLB */
-#ifdef OVL1
 
 void stackobj(Object *obj) {
   Object *otmp;
@@ -2525,7 +2516,6 @@ int doprgold() {
   return 0;
 }
 
-#endif /* OVL1 */
 #ifdef OVLB
 
 int doprwep() {
@@ -2670,7 +2660,6 @@ void useupf(Object *obj, long numused) {
 
 #endif /* OVLB */
 
-#ifdef OVL1
 
 /*
  * Conversion from a class to a string for printing.
@@ -2723,7 +2712,6 @@ void free_invbuf() {
   invbufsiz = 0;
 }
 
-#endif /* OVL1 */
 #ifdef OVLB
 
 void reassign() {
@@ -2736,7 +2724,6 @@ void reassign() {
 }
 
 #endif /* OVLB */
-#ifdef OVL1
 
 /* inventory organizer by Del Lamb */
 int doorganize() {
@@ -3013,6 +3000,5 @@ int display_binventory(int x, int y, bool as_if_seen) {
   return n;
 }
 
-#endif /* OVL1 */
 
 /*invent.c*/

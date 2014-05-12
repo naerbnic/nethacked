@@ -212,7 +212,6 @@ void set_moreluck() {
 }
 
 #endif /* OVLB */
-#ifdef OVL1
 
 void restore_attrib() {
   int i;
@@ -231,7 +230,6 @@ void restore_attrib() {
   (void)encumber_msg();
 }
 
-#endif /* OVL1 */
 #ifdef OVLB
 
 #define AVAL 50 /* tune value for exercise gains */

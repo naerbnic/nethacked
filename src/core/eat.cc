@@ -118,7 +118,6 @@ const char *hu_stat[] = {"Satiated", "        ", "Hungry  ", "Weak    ",
                          "Fainting", "Fainted ", "Starved "};
 
 #endif /* OVLB */
-#ifdef OVL1
 
 /*
  * Decide whether a particular object can be eaten by the possibly
@@ -145,7 +144,6 @@ bool is_edible(Object *obj) {
   return (bool)(obj->oclass == FOOD_CLASS);
 }
 
-#endif /* OVL1 */
 #ifdef OVLB
 
 void init_uhunger() {
@@ -2539,7 +2537,6 @@ void consume_oeaten(Object *obj, int amt) {
 }
 
 #endif /* OVLB */
-#ifdef OVL1
 
 /* called when eatfood occupation has been interrupted,
    or in the case of theft, is about to be interrupted */
@@ -2554,6 +2551,5 @@ bool maybe_finished_meal(bool stopping) {
   return FALSE;
 }
 
-#endif /* OVL1 */
 
 /*eat.c*/

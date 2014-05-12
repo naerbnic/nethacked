@@ -527,7 +527,6 @@ Object *get_mleash(Monster *mtmp) {
 }
 
 #endif /* OVLB */
-#ifdef OVL1
 
 bool next_to_u() {
   Monster *mtmp;
@@ -560,7 +559,6 @@ bool next_to_u() {
   return (TRUE);
 }
 
-#endif /* OVL1 */
 
 void check_leash(xchar x, xchar y) {
   Object *otmp;

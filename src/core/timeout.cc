@@ -373,7 +373,6 @@ void nh_timeout() {
   run_timers();
 }
 
-#ifdef OVL1
 
 void fall_asleep(int how_long, bool wakeup_msg) {
   stop_occupation();
@@ -1112,7 +1111,6 @@ void end_burn(Object *obj, bool timer_attached) {
     impossible("end_burn: obj %s not timed!", xname(obj));
 }
 
-#endif /* OVL1 */
 
 /*
  * Cleanup a burning object if timer stopped.
@@ -1135,7 +1133,6 @@ static void cleanup_burn(genericptr_t arg, long expire_time) {
     update_inventory();
 }
 
-#ifdef OVL1
 
 void do_storms() {
   int nstrike;
@@ -1174,7 +1171,6 @@ void do_storms() {
   } else
     You_hear("a rumbling noise.");
 }
-#endif /* OVL1 */
 
 /* ------------------------------------------------------------------------- */
 /*

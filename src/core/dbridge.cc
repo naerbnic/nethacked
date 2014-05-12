@@ -89,7 +89,6 @@ bool is_ice(int x, int y) {
 }
 
 
-#ifdef OVL1
 
 /*
  * We want to know whether a wall (or a door) is the portcullis (passageway)
@@ -158,7 +157,6 @@ bool find_drawbridge(int *x, int *y) {
   return FALSE;
 }
 
-#endif /* OVL1 */
 #ifdef OVLB
 
 /*

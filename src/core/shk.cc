@@ -97,9 +97,7 @@ STATIC_DCL void add_one_tobill(Object *, bool);
 STATIC_DCL void dropped_container(Object *, Monster *, bool);
 STATIC_DCL void add_to_billobjs(Object *);
 STATIC_DCL void bill_box_content(Object *, bool, bool, Monster *);
-#ifdef OVL1
 static bool rob_shop(Monster *);
-#endif
 
 #ifdef OVLB
 /*
@@ -322,7 +320,6 @@ STATIC_OVL long addupbill(Monster *shkp) {
 }
 
 #endif /* OVLB */
-#ifdef OVL1
 
 #ifdef KOPS
 STATIC_OVL void call_kops(Monster *shkp, bool nearshop) {
@@ -676,7 +673,6 @@ void shopper_financial_report() {
     }
 }
 
-#endif /* OVL1 */
 #ifdef OVLB
 
 int inhishop(Monster *mtmp) {

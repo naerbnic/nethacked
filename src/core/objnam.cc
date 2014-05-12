@@ -74,7 +74,6 @@ STATIC_OVL struct Jitem Japanese_items[] = {{SHORT_SWORD, "wakizashi"},
 
 STATIC_DCL const char *Japanese_item_name(int i);
 
-#ifdef OVL1
 
 STATIC_OVL char *strprepend(char *s, const char *pref) {
   int i = (int)strlen(pref);
@@ -88,7 +87,6 @@ STATIC_OVL char *strprepend(char *s, const char *pref) {
   return (s);
 }
 
-#endif /* OVL1 */
 #ifdef OVLB
 
 /* manage a pool of BUFSZ buffers, so callers don't have to */
@@ -224,7 +222,6 @@ char *fruitname(bool juice) {
 }
 
 #endif /* OVLB */
-#ifdef OVL1
 
 char *xname(Object *obj)
 #ifdef SORTLOOT
@@ -518,7 +515,6 @@ char *mshot_xname(Object *obj) {
   return onm;
 }
 
-#endif /* OVL1 */
 
 /* used for naming "the unique_item" instead of "a unique_item" */
 bool the_unique_obj(Object *obj) {

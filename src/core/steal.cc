@@ -463,7 +463,6 @@ gotobj:
 }
 
 #endif /* OVLB */
-#ifdef OVL1
 
 /* Returns 1 if otmp is free'd, 0 otherwise. */
 int mpickobj(Monster *mtmp, Object *otmp) {
@@ -503,7 +502,6 @@ int mpickobj(Monster *mtmp, Object *otmp) {
   return freed_otmp;
 }
 
-#endif /* OVL1 */
 #ifdef OVLB
 
 void stealamulet(Monster *mtmp) {

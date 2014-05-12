@@ -12,9 +12,7 @@
 #include "core/wintty.h"
 #include "core/func_tab.h"
 
-#ifdef OVL1
 char morc = 0; /* tell the outside world what char you chose */
-#endif         /* OVL1 */
 STATIC_DCL bool ext_cmd_getlin_hook(char *);
 
 typedef bool (*getlin_hook_proc)(char *);
@@ -24,7 +22,6 @@ extern int extcmd_via_menu(); /* cmd.c */
 
 extern char erase_char, kill_char; /* from appropriate tty.c file */
 
-#ifdef OVL1
 
 /*
  * Read a line closed with '\n' into the array char bufp[BUFSZ].
@@ -193,7 +190,6 @@ void xwaitforspace(const char *s) {
   }
 }
 
-#endif /* OVL1 */
 #ifdef OVL2
 
 /*

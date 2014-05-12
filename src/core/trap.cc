@@ -1666,7 +1666,6 @@ STATIC_OVL bool isclearpath(coord *cc, int distance, schar dx, schar dy) {
   return TRUE;
 }
 #endif /* OVL3 */
-#ifdef OVL1
 
 int mintrap(Monster *mtmp) {
   Trap *trap = t_at(mtmp->mx, mtmp->my);
@@ -2186,7 +2185,6 @@ int mintrap(Monster *mtmp) {
   return mtmp->mtrapped;
 }
 
-#endif /* OVL1 */
 #ifdef OVLB
 
 /* Combine cockatrice checks into single functions to avoid repeating code. */
