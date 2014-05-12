@@ -2,6 +2,8 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985,1993. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include "core/bones.h"
+
 #include <string.h>
 
 #include "core/hack.h"

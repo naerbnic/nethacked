@@ -5,6 +5,12 @@
 #ifndef DECL_H
 #define DECL_H
 
+#include "core/dungeon.h"
+#include "core/monsym.h"
+#include "core/objclass.h"
+#include "core/obj.h"
+#include "core/wintype.h"
+
 #define E extern
 
 E int (*occupation)();

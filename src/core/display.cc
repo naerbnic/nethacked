@@ -116,6 +116,8 @@
  *		     vertical.
  */
 
+#include "core/display.h"
+
 #include <string.h>
 
 #include "core/hack.h"

@@ -2,6 +2,8 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include "core/dig.h"
+
 #include <string.h>
 
 #include "core/hack.h"
@@ -32,7 +34,6 @@
 #include "core/dog.h"
 #include "core/do_name.h"
 #include "core/do.h"
-#include "core/dig.h"
 #include "core/detect.h"
 #include "core/dbridge.h"
 #include "core/cmd.h"

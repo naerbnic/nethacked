@@ -6,6 +6,12 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
+#include "core/config.h"
+#include "core/tradstdc.h"
+#include "core/monst.h"
+#include "core/permonst.h"
+#include "core/trap.h"
+
 #ifndef VISION_H
 #include "core/vision.h"
 #endif
