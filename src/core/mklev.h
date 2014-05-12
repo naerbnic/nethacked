@@ -3,6 +3,7 @@
 #ifndef MKLEV_H_
 #define MKLEV_H_
 
+#include "core/config.h"
 #include "core/dungeon.h"
 #include "core/global.h"
 #include "core/mkroom.h"
