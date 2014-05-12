@@ -30,7 +30,6 @@
 #include "core/do.h"
 #include "core/cmd.h"
 
-#ifdef OVLB
 STATIC_DCL void get_wall_for_db(int *, int *);
 STATIC_DCL struct entity *e_at(int, int);
 STATIC_DCL void m_to_e(Monster *, int, int, struct entity *);
@@ -47,7 +46,6 @@ STATIC_DCL bool automiss(struct entity *);
 STATIC_DCL bool e_missed(struct entity *, bool);
 STATIC_DCL bool e_jumps(struct entity *);
 STATIC_DCL void do_entity(struct entity *);
-#endif /* OVLB */
 
 
 bool is_pool(int x, int y) {
@@ -157,7 +155,6 @@ bool find_drawbridge(int *x, int *y) {
   return FALSE;
 }
 
-#ifdef OVLB
 
 /*
  * Find the drawbridge wall associated with a drawbridge.
@@ -888,6 +885,5 @@ void destroy_drawbridge(int x, int y) {
   }
 }
 
-#endif /* OVLB */
 
 /*dbridge.c*/

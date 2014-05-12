@@ -48,7 +48,6 @@
 #include "core/artifact.h"
 #include "core/botl.h"
 
-#ifdef OVLB
 STATIC_DCL void polyman(const char *, const char *);
 STATIC_DCL void break_armor();
 STATIC_DCL void drop_weapon(int);
@@ -1166,7 +1165,6 @@ void skinback(bool silently) {
   }
 }
 
-#endif /* OVLB */
 
 const char *mbodypart(Monster *mon, int part) {
   static const char *
@@ -1299,7 +1297,6 @@ int poly_gender() {
   return flags.female;
 }
 
-#ifdef OVLB
 
 void ugolemeffects(int damtype, int dam) {
   int heal = 0;
@@ -1368,6 +1365,5 @@ STATIC_OVL int armor_to_dragon(int atyp) {
   }
 }
 
-#endif /* OVLB */
 
 /*polyself.c*/

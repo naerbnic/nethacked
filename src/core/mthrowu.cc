@@ -40,11 +40,6 @@ STATIC_DCL int drop_throw(Object *, bool, int, int);
 
 #define POLE_LIM 5 /* How far monsters can use pole-weapons */
 
-#ifndef OVLB
-
-STATIC_DCL const char *breathwep[];
-
-#else /* OVLB */
 
 /*
  * Keep consistent with breath weapons in zap.c, and AD_* in monattk.h.
@@ -152,7 +147,6 @@ STATIC_OVL int drop_throw(Object *obj, bool ohit, int x, int y) {
   return retvalu;
 }
 
-#endif /* OVLB */
 
 /* an object launched by someone/thing other than player attacks a monster;
    return 1 if the object has stopped moving (hit or its range used up) */
@@ -493,7 +487,6 @@ void m_throw(Monster *mon, int x, int y, int dx, int dy, int range,
   }
 }
 
-#ifdef OVLB
 
 /* Remove an item from the monster's inventory and destroy it. */
 void m_useup(Monster *mon, Object *obj) {
@@ -511,7 +504,6 @@ void m_useup(Monster *mon, Object *obj) {
   }
 }
 
-#endif /* OVLB */
 
 /* monster attempts ranged weapon attack against player */
 void thrwmu(Monster *mtmp) {
@@ -649,7 +641,6 @@ void thrwmu(Monster *mtmp) {
   nomul(0, 0);
 }
 
-#ifdef OVLB
 
 /* monster spits substance at you */
 int spitmu(Monster *mtmp, struct Attack *mattk) {
@@ -685,7 +676,6 @@ int spitmu(Monster *mtmp, struct Attack *mattk) {
   return 0;
 }
 
-#endif /* OVLB */
 
 /* monster breathes at you (ranged) */
 int breamu(Monster *mtmp, struct Attack *mattk) {

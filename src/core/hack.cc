@@ -464,7 +464,6 @@ STATIC_OVL int still_chewing(xchar x, xchar y) {
   return 0;
 }
 
-#ifdef OVLB
 
 void movobj(Object *obj, xchar ox, xchar oy) {
   /* optimize by leaving on the fobj chain? */
@@ -537,7 +536,6 @@ bool may_passwall(xchar x, xchar y) {
                   (levl[x][y].wall_info & W_NONPASSWALL)));
 }
 
-#endif /* OVLB */
 
 bool bad_rock(MonsterType *mdat, xchar x, xchar y) {
   return ((bool)((In_sokoban(&player.uz) && sobj_at(BOULDER, x, y)) ||
@@ -1825,7 +1823,6 @@ void check_special_room(bool newlev) {
   return;
 }
 
-#ifdef OVLB
 
 int dopickup() {
   int count;
@@ -1897,7 +1894,6 @@ int dopickup() {
   return (pickup(-count));
 }
 
-#endif /* OVLB */
 
 /* stop running if we see something interesting */
 /* turn around a corner if that is the only way we can proceed */
@@ -2255,7 +2251,6 @@ bool check_capacity(const char *str) {
   return 0;
 }
 
-#ifdef OVLB
 
 int inv_cnt() {
   Object *otmp = invent;
@@ -2283,6 +2278,5 @@ long money_cnt(Object *otmp) {
   return 0;
 }
 #endif
-#endif /* OVLB */
 
 /*hack.c*/

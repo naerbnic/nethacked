@@ -49,7 +49,6 @@ STATIC_DCL void see_lamp_flicker(Object *, const char *);
 STATIC_DCL void lantern_message(Object *);
 STATIC_DCL void cleanup_burn(genericptr_t, long);
 
-#ifdef OVLB
 
 /* He is being petrified - dialogue by inmet!tower */
 static vector<const char *> const stoned_texts = {
@@ -172,7 +171,6 @@ void burn_away_slime() {
   return;
 }
 
-#endif /* OVLB */
 
 void nh_timeout() {
   struct Property *upp;

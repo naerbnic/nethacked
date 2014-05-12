@@ -52,9 +52,7 @@
 #ifdef KOPS
 STATIC_DCL void makekops(coord *);
 STATIC_DCL void call_kops(Monster *, bool);
-#ifdef OVLB
 STATIC_DCL void kops_gone(bool);
-#endif /* OVLB */
 #endif /* KOPS */
 
 #define IS_SHOP(x) (rooms[x].rtype >= SHOPBASE)
@@ -99,7 +97,6 @@ STATIC_DCL void add_to_billobjs(Object *);
 STATIC_DCL void bill_box_content(Object *, bool, bool, Monster *);
 static bool rob_shop(Monster *);
 
-#ifdef OVLB
 /*
         invariants: obj->unpaid iff onbill(obj) [unless bp->useup]
                 obj->quan <= bp->bquan
@@ -262,7 +259,6 @@ void restshk(Monster *shkp, bool ghostly) {
   }
 }
 
-#endif /* OVLB */
 
 /* Clear the unpaid bit on all of the objects in the list. */
 STATIC_OVL void clear_unpaid(Object *list) {
@@ -273,7 +269,6 @@ STATIC_OVL void clear_unpaid(Object *list) {
     list = list->nobj;
   }
 }
-#ifdef OVLB
 
 /* either you paid or left the shop or the shopkeeper died */
 STATIC_OVL void setpaid(Monster *shkp) {
@@ -317,7 +312,6 @@ STATIC_OVL long addupbill(Monster *shkp) {
   return (total);
 }
 
-#endif /* OVLB */
 
 #ifdef KOPS
 STATIC_OVL void call_kops(Monster *shkp, bool nearshop) {
@@ -671,7 +665,6 @@ void shopper_financial_report() {
     }
 }
 
-#ifdef OVLB
 
 int inhishop(Monster *mtmp) {
   return (index(in_rooms(mtmp->mx, mtmp->my, SHOPBASE), ESHK(mtmp)->shoproom) &&
@@ -791,7 +784,6 @@ void obfree(Object *obj, Object *merge) {
   }
   DeallocateObject(obj);
 }
-#endif /* OVLB */
 
 STATIC_OVL long check_credit(long tmp, Monster *shkp) {
   long credit = ESHK(shkp)->credit;
@@ -831,7 +823,6 @@ STATIC_OVL void pay(long tmp, Monster *shkp) {
     ESHK(shkp)->robbed = robbed;
   }
 }
-#ifdef OVLB
 
 /* return shkp to home position */
 void home_shk(Monster *shkp, bool killkops) {
@@ -991,10 +982,6 @@ STATIC_VAR const char no_money[] = "Moreover, you%s have no money.";
 STATIC_VAR const char not_enough_money[] =
     "Besides, you don't have enough to interest %s.";
 
-#else
-STATIC_VAR const char no_money[];
-STATIC_VAR const char not_enough_money[];
-#endif /*OVLB*/
 
 
 /* delivers the cheapest item on the list */
@@ -1495,7 +1482,6 @@ STATIC_OVL int dopayobj(Monster *shkp, struct bill_x *bp, Object **obj_p,
     update_inventory(); /* Done just once in dopay() if !itemize. */
   return buy;
 }
-#ifdef OVLB
 
 static coord repo_location; /* repossession context */
 
@@ -1733,7 +1719,6 @@ Object *find_oid(unsigned id) {
   /* not found at all */
   return nullptr;
 }
-#endif /*OVLB*/
 
 /* calculate the value that the shk will charge for [one of] an object */
 STATIC_OVL long get_cost(Object *obj, Monster *shkp) {
@@ -1818,7 +1803,6 @@ STATIC_OVL long get_cost(Object *obj, Monster *shkp) {
     tmp += (tmp + 2L) / 3L;
   return tmp;
 }
-#ifdef OVLB
 
 /* returns the price of a container's content.  the price
  * of the "top" container is added in the calling functions.
@@ -1896,7 +1880,6 @@ void picked_container(Object *obj) {
       picked_container(otmp);
   }
 }
-#endif /*OVLB*/
 
 /* calculate how much the shk will pay when buying [all of] an object */
 STATIC_OVL long set_cost(Object *obj, Monster *shkp) {
@@ -1929,7 +1912,6 @@ STATIC_OVL long set_cost(Object *obj, Monster *shkp) {
   return tmp;
 }
 
-#ifdef OVLB
 
 /* called from doinv(invent.c) for inventory of unpaid objects */
 long unpaid_cost(Object *unp_obj) {
@@ -2248,7 +2230,6 @@ void subfrombill(Object *obj, Monster *shkp) {
     }
 }
 
-#endif /*OVLB*/
 
 STATIC_OVL long stolen_container(Object *obj, Monster *shkp, long price,
                                  bool ininv) {
@@ -2284,7 +2265,6 @@ STATIC_OVL long stolen_container(Object *obj, Monster *shkp, long price,
 
   return (price);
 }
-#ifdef OVLB
 
 long stolen_value(Object *obj, xchar x, xchar y, bool peaceful, bool silent) {
   long value = 0L, gvalue = 0L;
@@ -2794,7 +2774,6 @@ void add_damage(xchar x, xchar y, long cost) {
     levl[x][y].seenv = SVALL;
 }
 
-#endif /*OVLB*/
 
 /*
  * Do something about damage. Either (!croaked) try to repair it, or
@@ -3137,7 +3116,6 @@ void after_shk_move(Monster *shkp) {
   }
 }
 
-#ifdef OVLB
 
 /* for use in levl_follower (mondata.c) */
 bool is_fshk(Monster *mtmp) {
@@ -3401,7 +3379,6 @@ void pay_for_damage(const char *dmgstr, bool cant_mollify) {
     adjalign(-sgn(player.ualign.type));
   }
 }
-#endif /*OVLB*/
 /* called in dokick.c when we kick an object that might be in a store */
 bool costly_spot(xchar x, xchar y) {
   Monster *shkp;
@@ -3415,7 +3392,6 @@ bool costly_spot(xchar x, xchar y) {
   return ((bool)(inside_shop(x, y) &&
                  !(x == ESHK(shkp)->shk.x && y == ESHK(shkp)->shk.y)));
 }
-#ifdef OVLB
 
 /* called by dotalk(sounds.c) when #chatting; returns obj if location
    contains shop goods and shopkeeper is willing & able to speak */
@@ -3482,7 +3458,6 @@ void price_quote(Object *first_obj) {
   }
   destroy_nhwindow(tmpwin);
 }
-#endif /*OVLB*/
 
 STATIC_OVL const char *shk_embellish(Object *itm, long cost) {
   if (!rn2(3)) {
@@ -3517,7 +3492,6 @@ STATIC_OVL const char *shk_embellish(Object *itm, long cost) {
   }
   return ".";
 }
-#ifdef OVLB
 
 /* First 4 supplied by Ronen and Tamar, remainder by development team */
 const char *Izchak_speaks[] = {
@@ -3610,7 +3584,6 @@ STATIC_OVL void kops_gone(bool silent) {
 }
 #endif /* KOPS */
 
-#endif /*OVLB*/
 
 STATIC_OVL long cost_per_charge(Monster *shkp, Object *otmp, bool altusage) {
   long tmp = 0L;
@@ -3662,7 +3635,6 @@ STATIC_OVL long cost_per_charge(Monster *shkp, Object *otmp, bool altusage) {
   }
   return (tmp);
 }
-#ifdef OVLB
 
 /* Charge the player for partial use of an unpaid object.
  *
@@ -3810,7 +3782,6 @@ bool block_entry(xchar x, xchar y) {
   return (FALSE);
 }
 
-#endif /* OVLB */
 
 char *shk_your(char *buf, Object *obj) {
   if (!shk_owns(buf, obj) && !mon_owns(buf, obj))
@@ -3843,12 +3814,10 @@ STATIC_OVL char *mon_owns(char *buf, Object *obj) {
   return nullptr;
 }
 
-#ifdef OVLB
 
 #ifdef __SASC
 void sasc_bug(Object *op, unsigned x) { op->unpaid = x; }
 #endif
 
-#endif /* OVLB */
 
 /*shk.c*/

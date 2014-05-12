@@ -21,7 +21,6 @@ STATIC_DCL void topl_putsym(char);
 STATIC_DCL void remember_topl();
 STATIC_DCL void removetopl(int);
 
-#ifdef OVLB
 
 int tty_doprev_message() {
   struct WinDesc *cw = wins[WIN_MESSAGE];
@@ -120,7 +119,6 @@ int tty_doprev_message() {
   return 0;
 }
 
-#endif /* OVLB */
 
 STATIC_OVL void redotoplin(const char *str) {
   int otoplin = ttyDisplay->toplin;

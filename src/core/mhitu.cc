@@ -59,11 +59,9 @@ STATIC_DCL void urustm(Monster *, Object *);
 STATIC_DCL bool u_slip_free(Monster *, struct Attack *);
 STATIC_DCL int passiveum(MonsterType *, Monster *, struct Attack *);
 
-#ifdef OVLB
 #ifdef SEDUCE
 STATIC_DCL void mayberem(Object *, const char *);
 #endif
-#endif /* OVLB */
 
 STATIC_DCL bool diseasemu(MonsterType *);
 STATIC_DCL int hitmu(Monster *, struct Attack *);
@@ -171,7 +169,6 @@ void u_slow_down() {
   exercise(A_DEX, FALSE);
 }
 
-#ifdef OVLB
 
 /* monster attacked your displaced image */
 STATIC_OVL void wildmiss(Monster *mtmp, struct Attack *mattk) {
@@ -283,7 +280,6 @@ void expels(Monster *mtmp, MonsterType *mdat, bool message) {
     pline("Brrooaa...  You land hard at some distance.");
 }
 
-#endif /* OVLB */
 
 /* select a monster's next attack, possibly substituting for its usual one */
 struct Attack *getmattk(MonsterType *mptr, int indx, int prev_result[],
@@ -713,7 +709,6 @@ int mattacku(Monster *mtmp) {
   return (0);
 }
 
-#ifdef OVLB
 
 /*
  * helper function for some compilers that have trouble with hitmu
@@ -781,7 +776,6 @@ STATIC_OVL void hurtarmor(int attk) {
   }
 }
 
-#endif /* OVLB */
 
 STATIC_OVL bool diseasemu(MonsterType *mdat) {
   if (Sick_resistance) {
@@ -1664,7 +1658,6 @@ STATIC_OVL int hitmu(Monster *mtmp, struct Attack *mattk) {
   return res;
 }
 
-#ifdef OVLB
 
 /* monster swallows you, or damage if player.uswallow */
 STATIC_OVL int gulpmu(Monster *mtmp, struct Attack *mattk) {
@@ -2096,7 +2089,6 @@ int gazemu(Monster *mtmp, struct Attack *mattk) {
   return (0);
 }
 
-#endif /* OVLB */
 
 /* mtmp hits you for n points damage */
 void mdamageu(Monster *mtmp, int n) {
@@ -2112,7 +2104,6 @@ void mdamageu(Monster *mtmp, int n) {
   }
 }
 
-#ifdef OVLB
 
 STATIC_OVL void urustm(Monster *mon, Object *obj) {
   bool vis;
@@ -2149,7 +2140,6 @@ STATIC_OVL void urustm(Monster *mon, Object *obj) {
   }
 }
 
-#endif /* OVLB */
 
 /* returns 0 if seduction impossible,
  *	   1 if fine,
@@ -2199,7 +2189,6 @@ int could_seduce(Monster *magr, Monster *mdef, struct Attack *mattk) {
     return (pagr->mlet == S_NYMPH) ? 2 : 0;
 }
 
-#ifdef OVLB
 
 #ifdef SEDUCE
 /* Returns 1 if monster teleported */
@@ -2514,7 +2503,6 @@ STATIC_OVL void mayberem(Object *obj, const char *str) {
 }
 #endif /* SEDUCE */
 
-#endif /* OVLB */
 
 
 STATIC_OVL int passiveum(MonsterType *olduasmon, Monster *mtmp,
@@ -2687,7 +2675,6 @@ assess_dmg:
   return 1;
 }
 
-#ifdef OVLB
 
 #include "core/edog.h"
 Monster *cloneu() {
@@ -2709,6 +2696,5 @@ Monster *cloneu() {
   return (mon);
 }
 
-#endif /* OVLB */
 
 /*mhitu.c*/

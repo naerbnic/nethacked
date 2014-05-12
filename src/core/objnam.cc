@@ -29,9 +29,7 @@
 #define NUMOBUF 12
 
 STATIC_DCL char *strprepend(char *, const char *);
-#ifdef OVLB
 static bool wishymatch(const char *, const char *, bool);
-#endif
 static char *nextobuf();
 static void add_erosion_words(Object *, char *);
 #ifdef SORTLOOT
@@ -50,11 +48,6 @@ struct Jitem {
     (typ != DILITHIUM_CRYSTAL && typ != RUBY && typ != DIAMOND && \
      typ != SAPPHIRE && typ != BLACK_OPAL && typ != EMERALD && typ != OPAL)))
 
-#ifndef OVLB
-
-STATIC_DCL struct Jitem Japanese_items[];
-
-#else /* OVLB */
 
 STATIC_OVL struct Jitem Japanese_items[] = {{SHORT_SWORD, "wakizashi"},
                                             {BROADSWORD, "ninja-to"},
@@ -70,7 +63,6 @@ STATIC_OVL struct Jitem Japanese_items[] = {{SHORT_SWORD, "wakizashi"},
                                             {POT_BOOZE, "sake"},
                                             {0, ""}};
 
-#endif /* OVLB */
 
 STATIC_DCL const char *Japanese_item_name(int i);
 
@@ -87,7 +79,6 @@ STATIC_OVL char *strprepend(char *s, const char *pref) {
   return (s);
 }
 
-#ifdef OVLB
 
 /* manage a pool of BUFSZ buffers, so callers don't have to */
 static char *nextobuf() {
@@ -221,7 +212,6 @@ char *fruitname(bool juice) {
   return buf;
 }
 
-#endif /* OVLB */
 
 char *xname(Object *obj)
 #ifdef SORTLOOT
@@ -801,7 +791,6 @@ char *doname(Object *obj) {
   return (bp);
 }
 
-#ifdef OVLB
 
 /* used from invent.c */
 bool not_fully_identified(Object *otmp) {
@@ -1199,7 +1188,6 @@ static const char wrpsym[] = {
     AMULET_CLASS, SPBOOK_CLASS, SPBOOK_CLASS, WEAPON_CLASS, ARMOR_CLASS,
     ARMOR_CLASS,  TOOL_CLASS,   FOOD_CLASS,   FOOD_CLASS};
 
-#endif /* OVLB */
 
 /* Plural routine; chiefly used for user-defined fruits.  We have to try to
  * account for everything reasonable the player has; something unreasonable
@@ -1426,11 +1414,6 @@ struct o_range {
   int f_o_range, l_o_range;
 };
 
-#ifndef OVLB
-
-STATIC_DCL const struct o_range o_ranges[];
-
-#else /* OVLB */
 
 /* wishable subranges of objects */
 STATIC_OVL const struct o_range o_ranges[] = {
@@ -2746,6 +2729,5 @@ const char *mimic_obj_name(Monster *mtmp) {
   }
   return "whatcha-may-callit";
 }
-#endif /* OVLB */
 
 /*objnam.c*/

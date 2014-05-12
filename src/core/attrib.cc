@@ -18,7 +18,6 @@
 
 /* #define DEBUG */ /* uncomment for debugging info */
 
-#ifdef OVLB
 
 /* part of the output on gain or loss of attribute */
 static const char *const plusattr[] = {"strong", "smart", "wise",
@@ -211,7 +210,6 @@ void set_moreluck() {
     player.moreluck = -LUCKADD;
 }
 
-#endif /* OVLB */
 
 void restore_attrib() {
   int i;
@@ -230,7 +228,6 @@ void restore_attrib() {
   (void)encumber_msg();
 }
 
-#ifdef OVLB
 
 #define AVAL 50 /* tune value for exercise gains */
 
@@ -684,7 +681,6 @@ int newhp() {
   return ((hp <= 0) ? 1 : hp);
 }
 
-#endif /* OVLB */
 
 schar acurr(int x) {
   int tmp = (player.abon.a[x] + player.atemp.a[x] + player.acurr.a[x]);

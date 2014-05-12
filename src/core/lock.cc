@@ -35,7 +35,6 @@ STATIC_VAR struct xlock_s {
   int picktyp, chance, usedtime;
 } xlock;
 
-#ifdef OVLB
 
 STATIC_DCL const char *lock_action();
 STATIC_DCL bool obstructed(int, int);
@@ -218,7 +217,6 @@ int forcelock() {
   return ((xlock.usedtime = 0));
 }
 
-#endif /* OVLB */
 
 void reset_pick() {
   xlock.usedtime = xlock.chance = xlock.picktyp = 0;
@@ -226,7 +224,6 @@ void reset_pick() {
   xlock.box = 0;
 }
 
-#ifdef OVLB
 
 /* pick a lock with a given object */
 int pick_lock(Object *pick) {
@@ -971,6 +968,5 @@ STATIC_OVL void chest_shatter_msg(Object *otmp) {
   pline("%s %s!", An(thing), disposition);
 }
 
-#endif /* OVLB */
 
 /*lock.c*/

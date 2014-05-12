@@ -57,7 +57,6 @@ STATIC_DCL void newmail(struct mail_info *);
 
 extern char *viz_rmin, *viz_rmax; /* line-of-sight limits (vision.c) */
 
-#ifdef OVLB
 
 #include <sys/stat.h>
 #include <pwd.h>
@@ -126,7 +125,6 @@ void getmailstatus() {
   }
 }
 
-#endif /* OVLB */
 
 /*
  * Pick coordinates for a starting position for the mail daemon.  Called

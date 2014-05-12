@@ -489,7 +489,6 @@ void stop_occupation() {
   }
 }
 
-#ifdef OVLB
 
 void display_gamewindows() {
   WIN_MESSAGE = create_nhwindow(NHW_MESSAGE);
@@ -686,6 +685,5 @@ time_t get_realtime(void) {
 }
 #endif /* REALTIME_ON_BOTL || RECORD_REALTIME */
 
-#endif /* OVLB */
 
 /*allmain.c*/

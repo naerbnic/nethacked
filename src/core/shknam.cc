@@ -20,10 +20,6 @@
 
 extern const struct shclass shtypes[];
 
-#ifndef OVLB
-extern const struct shclass shtypes[];
-
-#else
 
 STATIC_DCL void mkshobj_at(const struct shclass *, int, int);
 STATIC_DCL void nameshk(Monster *, const char *const *);
@@ -529,7 +525,6 @@ void stock_room(int shp_indx, struct mkroom *sroom) {
   level.flags.has_shop = TRUE;
 }
 
-#endif /* OVLB */
 
 /* does shkp's shop stock this item type? */
 bool saleable(Monster *shkp, Object *obj) {

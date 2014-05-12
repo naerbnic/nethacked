@@ -35,7 +35,6 @@
 /* this matches the categorizations shown by enlightenment */
 #define ALGN_SINNED (-4) /* worse than strayed */
 
-#ifdef OVLB
 
 STATIC_DCL bool histemple_at(Monster *, xchar, xchar);
 STATIC_DCL bool has_shrine(Monster *);
@@ -132,7 +131,6 @@ pick_move:
   return (0);
 }
 
-#endif /* OVLB */
 
 
 char temple_occupied(char *array) {
@@ -144,7 +142,6 @@ char temple_occupied(char *array) {
   return ('\0');
 }
 
-#ifdef OVLB
 
 STATIC_OVL bool histemple_at(Monster *priest, xchar x, xchar y) {
   return ((bool)((EPRI(priest)->shroom == *in_rooms(x, y, TEMPLE)) &&
@@ -705,6 +702,5 @@ void restpriest(Monster *mtmp, bool ghostly) {
   }
 }
 
-#endif /* OVLB */
 
 /*priest.c*/

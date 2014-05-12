@@ -289,7 +289,6 @@ extern coord bhitpos; /* place where throw or zap hits or stops */
 #define STATIC_VAR static
 
 /* If not compiling an overlay, compile everything. */
-#define OVLB /* the base overlay segment */
 
 #define STATIC_PTR static
 

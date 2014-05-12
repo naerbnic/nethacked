@@ -43,7 +43,6 @@
 #include "core/edog.h"
 /* #define DEBUG */ /* turn on for diagnostics */
 
-#ifdef OVLB
 
 static bool did_dig_msg;
 
@@ -1075,7 +1074,6 @@ void watch_dig(Monster *mtmp, xchar x, xchar y, bool zap) {
   }
 }
 
-#endif /* OVLB */
 
 /* Return TRUE if monster died, FALSE otherwise.  Called from m_move(). */
 bool mdig_tunnel(Monster *mtmp) {

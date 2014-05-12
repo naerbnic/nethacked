@@ -29,11 +29,6 @@
 #include "core/artifact.h"
 #include "core/ball.h"
 
-#ifndef OVLB
-
-STATIC_DCL long takeoff_mask, taking_off;
-
-#else /* OVLB */
 
 STATIC_OVL long takeoff_mask = 0L;
 static long taking_off = 0L;
@@ -1581,7 +1576,6 @@ int doputon() {
   return (1);
 }
 
-#endif /* OVLB */
 
 
 void find_ac() {
@@ -1618,7 +1612,6 @@ void find_ac() {
   }
 }
 
-#ifdef OVLB
 
 void glibr() {
   Object *otmp;
@@ -2191,6 +2184,5 @@ void adj_abon(Object *otmp, schar delta) {
   }
 }
 
-#endif /* OVLB */
 
 /*do_wear.c*/

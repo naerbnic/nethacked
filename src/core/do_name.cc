@@ -32,7 +32,6 @@
 
 using std::string;
 
-#ifdef OVLB
 
 STATIC_DCL void do_oname(Object *);
 static void getpos_help(bool, const char *);
@@ -554,7 +553,6 @@ void docall(Object *obj) {
   }
 }
 
-#endif /*OVLB*/
 
 static const char *const ghostnames[] = {
     /* these names should have length < PL_NSIZ */
@@ -767,14 +765,12 @@ char *x_monnam(
   }
 }
 
-#ifdef OVLB
 
 char *l_monnam(Monster *mtmp) {
   return (x_monnam(mtmp, ARTICLE_NONE, nullptr,
                    mtmp->mnamelth ? SUPPRESS_SADDLE : 0, TRUE));
 }
 
-#endif /* OVLB */
 
 char *mon_nam(Monster *mtmp) {
   return (x_monnam(mtmp, ARTICLE_THE, nullptr,
@@ -828,7 +824,6 @@ char *y_monnam(Monster *mtmp) {
   return x_monnam(mtmp, prefix, nullptr, suppression_flag, FALSE);
 }
 
-#ifdef OVLB
 
 char *Adjmonnam(Monster *mtmp, const char *adj) {
   char *bp = x_monnam(mtmp, ARTICLE_THE, adj,
@@ -954,7 +949,6 @@ const char *roguename() {
   return rn2(3) ? (rn2(2) ? "Michael Toy" : "Kenneth Arnold") : "Glenn Wichman";
 }
 #endif /* REINCARNATION */
-#endif /* OVLB */
 
 
 static const char *const hcolors[] = {

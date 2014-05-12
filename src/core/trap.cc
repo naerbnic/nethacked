@@ -71,14 +71,6 @@ STATIC_OVL int steedintrap(Trap *, Object *);
 STATIC_OVL bool keep_saddle_with_steedcorpse(unsigned, Object *, Object *);
 #endif
 
-#ifndef OVLB
-STATIC_VAR const char *a_your[2];
-STATIC_VAR const char *A_Your[2];
-STATIC_VAR const char tower_of_flame[];
-STATIC_VAR const char *A_gush_of_water_hits;
-STATIC_VAR const char *const blindgas[6];
-
-#else
 
 STATIC_VAR const char *const a_your[2] = {"a", "your"};
 STATIC_VAR const char *const A_Your[2] = {"A", "Your"};
@@ -87,9 +79,7 @@ STATIC_VAR const char *const A_gush_of_water_hits = "A gush of water hits";
 STATIC_VAR const char *const blindgas[6] = {"humid",    "odorless", "pungent",
                                             "chilling", "acrid",    "biting"};
 
-#endif /* OVLB */
 
-#ifdef OVLB
 
 /* called when you're hit by fire (dofiretrap,buzz,zapyourself,explode) */
 bool /* returns TRUE if hit on torso */ burnarmor(Monster *victim) {
@@ -1329,7 +1319,6 @@ void blow_up_landmine(Trap *trap) {
   seetrap(trap);          /* and it isn't concealed */
 }
 
-#endif /* OVLB */
 
 /*
  * Move obj from (x1,y1) to (x2,y2)
@@ -1570,7 +1559,6 @@ int launch_obj(short otyp, int x1, int y1, int x2, int y2, int style) {
     return 2;
 }
 
-#ifdef OVLB
 
 void seetrap(Trap *trap) {
   if (!trap->tseen) {
@@ -1579,7 +1567,6 @@ void seetrap(Trap *trap) {
   }
 }
 
-#endif /* OVLB */
 
 STATIC_OVL int mkroll_launch(Trap *ttmp, xchar x, xchar y, short otyp,
                              long ocount) {
@@ -2181,7 +2168,6 @@ int mintrap(Monster *mtmp) {
   return mtmp->mtrapped;
 }
 
-#ifdef OVLB
 
 /* Combine cockatrice checks into single functions to avoid repeating code. */
 void instapetrify(const char *str) {
@@ -3008,7 +2994,6 @@ int dountrap() {
   }
   return untrap(FALSE);
 }
-#endif /* OVLB */
 
 /* Probability of disabling a trap.  Helge Hafting */
 STATIC_OVL int untrap_prob(Trap *ttmp) {
@@ -3578,7 +3563,6 @@ int untrap(bool force) {
     return (1);
   }
 }
-#ifdef OVLB
 
 /* only called when the player is doing something to the chest directly */
 bool chest_trap(Object *obj, int bodypart, bool disarm) {
@@ -3763,7 +3747,6 @@ bool chest_trap(Object *obj, int bodypart, bool disarm) {
   return FALSE;
 }
 
-#endif /* OVLB */
 
 Trap *t_at(int x, int y) {
   Trap *trap = ftrap;
@@ -3775,7 +3758,6 @@ Trap *t_at(int x, int y) {
   return (nullptr);
 }
 
-#ifdef OVLB
 
 void deltrap(Trap *trap) {
   Trap *ttmp;
@@ -3992,6 +3974,5 @@ burn_stuff:
   return (FALSE);
 }
 
-#endif /* OVLB */
 
 /*trap.c*/

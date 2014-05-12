@@ -34,20 +34,16 @@ static char *e_atr2str(int);
 void cmov(int, int);
 void nocmov(int, int);
 #if defined(TEXTCOLOR) && defined(TERMLIB)
-#ifdef OVLB
 #if !defined(TERMINFO)
 static void analyze_seq(char *, int *, int *);
 #endif
 static void init_hilite();
 static void kill_hilite();
-#endif /* OVLB */
 #endif
 
-#ifdef OVLB
 /* (see tcap.h) -- nh_CM, nh_ND, nh_CD, nh_HI,nh_HE, nh_US,nh_UE,
                         ul_hack */
 struct tc_lcl_data tc_lcl_data = {0, 0, 0, 0, 0, 0, 0, FALSE};
-#endif /* OVLB */
 
 STATIC_VAR char *HO, *CL, *CE, *UP, *XD, *BC, *SO, *SE, *TI, *TE;
 STATIC_VAR char *VS, *VE;
@@ -62,11 +58,7 @@ STATIC_VAR char *MD;     /* may already be in use below */
 STATIC_VAR char *MD;
 #endif
 STATIC_VAR int SG;
-#ifdef OVLB
 STATIC_OVL char PC = '\0';
-#else  /* OVLB */
-STATIC_DCL char PC;
-#endif /* OVLB */
 STATIC_VAR char tbuf[512];
 #endif
 
@@ -74,10 +66,8 @@ STATIC_VAR char tbuf[512];
 char *hilites[CLR_MAX]; /* terminal escapes for the various colors */
 #endif
 
-#ifdef OVLB
 static char *KS = nullptr, *KE = nullptr; /* keypad sequences */
 static char nullstr[] = "";
-#endif /* OVLB */
 
 #if defined(ASCIIGRAPH) && !defined(NO_TERMS)
 extern bool HE_resets_AS;
@@ -88,7 +78,6 @@ STATIC_VAR char tgotobuf[20];
 #define tgoto(fmt, x, y) (sprintf(tgotobuf, fmt, y + 1, x + 1), tgotobuf)
 #endif /* TERMLIB */
 
-#ifdef OVLB
 
 void tty_startup(int *wid, int *hgt) {
   int i;
@@ -387,7 +376,6 @@ void tty_end_screen() {
 
 /* Cursor movements */
 
-#endif /* OVLB */
 
 /* Note to OVLx tinkerers.  The placement of this overlay controls the location
    of the function xputc().  This function is not currently in trampoli.[ch]
@@ -474,7 +462,6 @@ void cl_end() {
   }
 }
 
-#ifdef OVLB
 
 void clear_screen() {
   /* note: if CL is null, then termcap initialization failed,
@@ -486,7 +473,6 @@ void clear_screen() {
   }
 }
 
-#endif /* OVLB */
 
 void home() {
   if (HO)
@@ -533,7 +519,6 @@ void m_end() {
 }
 #endif
 
-#ifdef OVLB
 
 void backsp() { xputs(BC); }
 
@@ -544,7 +529,6 @@ void tty_nhbell() {
   (void)fflush(stdout);
 }
 
-#endif /* OVLB */
 
 #ifdef ASCIIGRAPH
 void graph_on() {
@@ -594,7 +578,6 @@ void tty_delay_output() {
   }
 }
 
-#ifdef OVLB
 
 /* free after Robert Viduya */
 void cl_eos() {
@@ -921,7 +904,6 @@ int has_color(int color) { return hilites[color] != nullptr; }
 
 #endif /* TEXTCOLOR */
 
-#endif /* OVLB */
 
 #endif /* TTY_GRAPHICS */
 

@@ -36,7 +36,6 @@
 #include "core/apply.h"
 #include "core/edog.h"
 
-#ifdef OVLB
 
 STATIC_DCL int pet_type();
 
@@ -521,7 +520,6 @@ void mon_catchup_elapsed_time(Monster *mtmp, long nmv) {
     mtmp->mhp += imv;
 }
 
-#endif /* OVLB */
 
 /* called when you move to another level */
 void keepdogs(bool pets_only) {
@@ -621,7 +619,6 @@ void keepdogs(bool pets_only) {
   }
 }
 
-#ifdef OVLB
 
 void migrate_to_level(Monster *mtmp, xchar tolev, xchar xyloc, coord *cc) {
   Object *obj;
@@ -674,7 +671,6 @@ void migrate_to_level(Monster *mtmp, xchar tolev, xchar xyloc, coord *cc) {
   mtmp->mx = mtmp->my = 0; /* this implies migration */
 }
 
-#endif /* OVLB */
 
 /* return quality of food; the lower the better */
 /* fungi will eat even tainted food */
@@ -770,7 +766,6 @@ int dogfood(Monster *mon, Object *obj) {
   }
 }
 
-#ifdef OVLB
 
 Monster *tamedog(Monster *mtmp, Object *obj) {
   Monster *mtmp2;
@@ -959,6 +954,5 @@ void abuse_dog(Monster *mtmp) {
   }
 }
 
-#endif /* OVLB */
 
 /*dog.c*/

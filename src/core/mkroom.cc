@@ -35,7 +35,6 @@
 #include "core/hacklib.h"
 #include "core/cmd.h"
 
-#ifdef OVLB
 STATIC_DCL bool isbig(struct mkroom *);
 STATIC_DCL struct mkroom *pick_room(bool);
 STATIC_DCL void mkshop(), mkzoo(int), mkswamp();
@@ -46,13 +45,11 @@ STATIC_DCL MonsterType *antholemon();
 STATIC_DCL MonsterType *squadmon();
 STATIC_DCL void save_room(int, struct mkroom *);
 STATIC_DCL void rest_room(int, struct mkroom *);
-#endif /* OVLB */
 
 #define sq(x) ((x) * (x))
 
 extern const struct shclass shtypes[]; /* defined in shknam.c */
 
-#ifdef OVLB
 
 STATIC_OVL bool isbig(struct mkroom *sroom) {
   int area = (sroom->hx - sroom->lx + 1) * (sroom->hy - sroom->ly + 1);
@@ -561,7 +558,6 @@ bool has_upstairs(struct mkroom *sroom) {
   return FALSE;
 }
 
-#endif /* OVLB */
 
 int somex(struct mkroom *croom) {
   return rn2(croom->hx - croom->lx + 1) + croom->lx;
@@ -644,7 +640,6 @@ struct mkroom *search_special(schar type) {
   return (struct mkroom *)0;
 }
 
-#ifdef OVLB
 
 MonsterType *courtmon() {
   int i = rn2(60) + rn2(3 * level_difficulty());
@@ -755,6 +750,5 @@ void rest_rooms(int fd) {
   rooms[nroom].hx = -1; /* restore ending flags */
   subrooms.clear();
 }
-#endif /* OVLB */
 
 /*mkroom.c*/

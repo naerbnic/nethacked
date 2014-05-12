@@ -56,7 +56,6 @@ char *,bool)
 #define Static static
 #endif
 
-#ifdef OVLB
 /* is 'c' a digit? */
 bool digit(char c) { return ((bool)('0' <= c && c <= '9')); }
 
@@ -64,7 +63,6 @@ bool digit(char c) { return ((bool)('0' <= c && c <= '9')); }
 bool letter(char c) {
   return ((bool)(('@' <= c && c <= 'Z') || ('a' <= c && c <= 'z')));
 }
-#endif /* OVLB */
 
 /* force 'c' into uppercase */
 char highc(char c) { return ((char)(('a' <= c && c <= 'z') ? (c & ~040) : c)); }
@@ -72,7 +70,6 @@ char highc(char c) { return ((char)(('a' <= c && c <= 'z') ? (c & ~040) : c)); }
 /* force 'c' into lowercase */
 char lowc(char c) { return ((char)(('A' <= c && c <= 'Z') ? (c | 040) : c)); }
 
-#ifdef OVLB
 /* convert a string into all lowercase */
 char *lcase(char *s) {
   char *p;
@@ -108,7 +105,6 @@ char *mungspaces(char *bp) {
   return bp;
 }
 
-#endif /* OVLB */
 
 /* return the end of a string (pointing at '\0') */
 char *eos(char *s) {
@@ -166,7 +162,6 @@ bool onlyspace(const char *s) {
   return TRUE;
 }
 
-#ifdef OVLB
 /* expand tabs into proper number of spaces */
 char *tabexpand(char *sbuf) {
   char buf[BUFSZ];
@@ -209,7 +204,6 @@ char *visctrl(char c) {
   }
   return ccc;
 }
-#endif /* OVLB */
 
 /* return the ordinal suffix of a number */
 const char *ordin(int n) {
@@ -231,7 +225,6 @@ char *sitoa(int n) {
 /* return the sign of a number: -1, 0, or 1 */
 int sgn(int n) { return (n < 0) ? -1 : (n != 0); }
 
-#ifdef OVLB
 /* calculate x/y, rounding as appropriate */
 int rounddiv(long x, int y) {
   int r, m;
@@ -254,7 +247,6 @@ int rounddiv(long x, int y) {
 
   return divsgn * r;
 }
-#endif /* OVLB */
 
 /* distance between two points, in moves */
 int distmin(int x0, int y0, int x1, int y1) {
@@ -284,7 +276,6 @@ bool online2(int x0, int y0, int x1, int y1) {
   return ((bool)(!dy || !dx || (dy == dx) || (dy + dx == 0))); /* (dy == -dx) */
 }
 
-#ifdef OVLB
 
 /* match a string against a pattern */
 bool pmatch(const char *patrn, const char *strng) {
@@ -307,7 +298,6 @@ pmatch_top:
   else                                 /* return pmatch(patrn, strng); */
     goto pmatch_top;                   /* optimize tail recursion */
 }
-#endif /* OVLB */
 
 #ifndef STRNCMPI
 /* case insensitive counted string comparison */
@@ -328,7 +318,6 @@ int strncmpi(const char *s1, const char *s2, int n) {
 }
 #endif /* STRNCMPI */
 
-#ifdef OVLB
 #ifndef STRSTRI
 
 /* case insensitive substring search */
@@ -397,7 +386,6 @@ bool fuzzymatch(const char *s1, const char *s2, const char *ignore_chars,
   return (bool)(!c1 && !c2);
 }
 
-#endif /* OVLB */
 
 /*
  * Time routines

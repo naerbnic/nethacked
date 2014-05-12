@@ -60,10 +60,8 @@
  */
 #define MAGIC_COOKIE 1000
 
-#ifdef OVLB
 static bool obj_zapped;
 static int poly_zapped;
-#endif
 
 extern bool notonhead; /* for long worms */
 
@@ -81,9 +79,7 @@ STATIC_DCL void revive_egg(Object *);
 STATIC_DCL bool zap_steed(Object *);
 #endif
 
-#ifdef OVLB
 STATIC_DCL int zap_hit(int, int);
-#endif
 STATIC_DCL void backfire(Object *);
 STATIC_DCL int spell_hit_bonus(int);
 
@@ -103,10 +99,6 @@ STATIC_DCL int spell_hit_bonus(int);
 
 #define is_hero_spell(type) ((type) >= 10 && (type) < 20)
 
-#ifndef OVLB
-STATIC_VAR const char are_blinded_by_the_flash[];
-extern const char *const flash_types[];
-#else
 STATIC_VAR const char are_blinded_by_the_flash[] = "are blinded by the flash!";
 
 extern const char *const flash_types[];
@@ -409,7 +401,6 @@ void probe_monster(Monster *mtmp) {
   }
 }
 
-#endif /*OVLB*/
 
 /*
  * Return the object's physical location.  This only makes sense for
@@ -776,7 +767,6 @@ int unturn_dead(Monster *mon) {
   return res;
 }
 
-#ifdef OVLB
 static const char charged_objs[] = {WAND_CLASS, WEAPON_CLASS, ARMOR_CLASS, 0};
 
 STATIC_OVL void costly_cancel(Object *obj) {
@@ -976,7 +966,6 @@ bool drain_item(Object *obj) {
   return (TRUE);
 }
 
-#endif /*OVLB*/
 
 bool obj_resists(Object *obj, int ochance, int achance) {
   if (obj->otyp == AMULET_OF_YENDOR || obj->otyp == SPE_BOOK_OF_THE_DEAD ||
@@ -1008,7 +997,6 @@ bool obj_shudders(Object *obj) {
 
   return ((bool)(!rn2(zap_odds)));
 }
-#ifdef OVLB
 
 /* Use up at least minwt number of things made of material mat.
  * There's also a chance that other stuff will be used up.  Finally,
@@ -1717,7 +1705,6 @@ int bhitpile(Object *obj, int (*fhito)(Object *, Object *), int tx, int ty) {
 
   return hitanything;
 }
-#endif /*OVLB*/
 
 /*
  * zappable - returns 1 if zap is available, 0 otherwise.
@@ -2391,7 +2378,6 @@ STATIC_OVL bool zap_updown(Object *obj) {
   return disclose;
 }
 
-#ifdef OVLB
 
 /* called for various wand and spell effects - M. Stephenson */
 void weffects(Object *obj) {
@@ -2445,7 +2431,6 @@ void weffects(Object *obj) {
   }
   return;
 }
-#endif /*OVLB*/
 
 /*
  * Generate the to damage bonus for a spell. Based on the hero's intelligence
@@ -3147,7 +3132,6 @@ STATIC_OVL void zhitu(int type, int nd, const char *fltxt, xchar sx, xchar sy) {
   return;
 }
 
-#ifdef OVLB
 
 /*
  * burn scrolls and spellbooks on floor at position x,y
@@ -3483,7 +3467,6 @@ void buzz(int type, int nd, xchar sx, xchar sy, int dx, int dy) {
                    FALSE);
   bhitpos = save_bhitpos;
 }
-#endif /*OVLB*/
 
 void melt_ice(xchar x, xchar y) {
   struct rm *lev = &levl[x][y];

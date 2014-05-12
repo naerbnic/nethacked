@@ -34,7 +34,6 @@
 
 STATIC_PTR int stealarm();
 
-#ifdef OVLB
 STATIC_DCL const char *equipname(Object *);
 STATIC_DCL void mdrop_obj(Monster *, Object *, bool);
 
@@ -462,7 +461,6 @@ gotobj:
   return ((multi < 0) ? 0 : 1);
 }
 
-#endif /* OVLB */
 
 /* Returns 1 if otmp is free'd, 0 otherwise. */
 int mpickobj(Monster *mtmp, Object *otmp) {
@@ -502,7 +500,6 @@ int mpickobj(Monster *mtmp, Object *otmp) {
   return freed_otmp;
 }
 
-#ifdef OVLB
 
 void stealamulet(Monster *mtmp) {
   Object *otmp = nullptr;
@@ -548,7 +545,6 @@ void stealamulet(Monster *mtmp) {
   }
 }
 
-#endif /* OVLB */
 
 /* drop one object taken from a (possibly dead) monster's inventory */
 STATIC_OVL void mdrop_obj(Monster *mon, Object *obj, bool verbosely) {

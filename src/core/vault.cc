@@ -33,7 +33,6 @@ STATIC_DCL Monster *findgd();
 #define g_monnam(mtmp) \
   x_monnam(mtmp, ARTICLE_NONE, nullptr, SUPPRESS_IT, FALSE)
 
-#ifdef OVLB
 
 STATIC_DCL bool clear_fcorr(Monster *, bool);
 STATIC_DCL void restfakecorr(Monster *);
@@ -124,7 +123,6 @@ Monster *findgd() {
   return (nullptr);
 }
 
-#endif /* OVLB */
 
 char vault_occupied(char *array) {
   char *ptr;
@@ -374,7 +372,6 @@ void invault() {
   }
 }
 
-#ifdef OVLB
 
 STATIC_OVL void move_gold(Object *gold, int vroom) {
   xchar nx, ny;
@@ -845,6 +842,5 @@ bool gd_sound() {
     return ((bool)(grd == nullptr));
 }
 
-#endif /* OVLB */
 
 /*vault.c*/

@@ -89,9 +89,6 @@ const char *warnings[] = {
 STATIC_DCL void warn_effects();
 #endif /* 0 */
 
-#ifndef OVLB
-STATIC_VAR short cham_to_pm[];
-#else
 STATIC_DCL Object *make_corpse(Monster *);
 STATIC_DCL void m_detach(Monster *, MonsterType *);
 STATIC_DCL void lifesaved_monster(Monster *);
@@ -412,7 +409,6 @@ STATIC_OVL Object *make_corpse(Monster *mtmp) {
   return obj;
 }
 
-#endif /* OVLB */
 
 #if 0
 /* part of the original warning code which was replaced in 3.3.1 */
@@ -724,7 +720,6 @@ int movemon() {
   return somebody_can_move;
 }
 
-#ifdef OVLB
 
 #define mstoning(obj) \
   (ofood(obj) &&      \
@@ -930,7 +925,6 @@ void mpickgold(Monster *mtmp) {
     }
   }
 }
-#endif /* OVLB */
 
 bool mpickstuff(Monster *mtmp, const char *str) {
   Object *otmp, *otmp2;
@@ -1315,7 +1309,6 @@ void dmonsfree() {
   iflags.purge_monsters = 0;
 }
 
-#ifdef OVLB
 
 /* called when monster is moved to larger structure */
 void replmon(Monster *mtmp, Monster *mtmp2) {
@@ -2106,7 +2099,6 @@ void m_respond(Monster *mtmp) {
   }
 }
 
-#endif /* OVLB */
 
 void setmangry(Monster *mtmp) {
   mtmp->mstrategy &= ~STRAT_WAITMASK;
@@ -2687,7 +2679,6 @@ void kill_genocided_monsters() {
   kill_eggs(level.buriedobjlist);
 }
 
-#ifdef OVLB
 
 void golemeffects(Monster *mon, int damtype, int dam) {
   int heal = 0, slow = 0;
@@ -2792,6 +2783,5 @@ void mimic_hit_msg(Monster *mtmp, short otyp) {
       break;
   }
 }
-#endif /* OVLB */
 
 /*mon.c*/

@@ -59,9 +59,7 @@
 #include "core/lev.h"
 
 #ifdef SINKS
-#ifdef OVLB
 STATIC_DCL void trycall(Object *);
-#endif /* OVLB */
 STATIC_DCL void dosinkring(Object *);
 #endif /* SINKS */
 
@@ -73,7 +71,6 @@ STATIC_DCL int currentlevel_rewrite();
 STATIC_DCL void final_level();
 /* static bool badspot(xchar,xchar); */
 
-#ifdef OVLB
 
 static const char drop_types[] = {ALLOW_COUNT, COIN_CLASS, ALL_CLASSES, 0};
 
@@ -95,7 +92,6 @@ int dodrop() {
   return result;
 }
 
-#endif /* OVLB */
 
 /* Called when a boulder is dropped, thrown, or pushed.  If it ends up
  * in a pool, it either fills the pool up or sinks away.  In either case,
@@ -255,7 +251,6 @@ bool flooreffects(Object *obj, int x, int y, const char *verb) {
   return FALSE;
 }
 
-#ifdef OVLB
 
 /* obj is an object dropped on an altar */
 void doaltarobj(Object *obj) {
@@ -422,7 +417,6 @@ void dosinkring(Object *obj) {
 }
 #endif
 
-#endif /* OVLB */
 
 /* some common tests when trying to drop or throw items */
 bool canletgo(Object *obj, const char *word) {
@@ -1563,7 +1557,6 @@ void revive_mon(genericptr_t arg, long timeout) {
 
 int donull() { return (1); /* Do nothing, but let other things happen */ }
 
-#ifdef OVLB
 
 STATIC_PTR int wipeoff() {
   if (player.ucreamed < 4)
@@ -1643,6 +1636,5 @@ void heal_legs() {
   (void)encumber_msg();
 }
 
-#endif /* OVLB */
 
 /*do.c*/

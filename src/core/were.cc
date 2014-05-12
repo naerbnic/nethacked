@@ -52,7 +52,6 @@ void were_change(Monster *mon) {
   }
 }
 
-#ifdef OVLB
 
 STATIC_DCL int counter_were(int);
 
@@ -174,6 +173,5 @@ void you_unwere(bool purify) {
     rehumanize();
 }
 
-#endif /* OVLB */
 
 /*were.c*/

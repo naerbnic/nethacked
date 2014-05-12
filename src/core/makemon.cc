@@ -65,7 +65,6 @@ extern const int monstr[];
 #define toostrong(monindx, lev) (monstr[monindx] > lev)
 #define tooweak(monindx, lev) (monstr[monindx] < lev)
 
-#ifdef OVLB
 bool IsLevelHomeOfElementalType(MonsterType *ptr) {
   if (ptr->mlet == S_ELEMENTAL)
     switch (monsndx(ptr)) {
@@ -148,7 +147,6 @@ void m_initthrow(Monster *mtmp, int otyp, int oquan) {
   (void)mpickobj(mtmp, otmp);
 }
 
-#endif /* OVLB */
 
 STATIC_OVL void m_initweap(Monster *mtmp) {
   MonsterType *ptr = mtmp->data;
@@ -1420,7 +1418,6 @@ int adj_lev(MonsterType *ptr) {
   return ((tmp > tmp2) ? tmp2 : (tmp > 0 ? tmp : 0)); /* 0 lower limit */
 }
 
-#ifdef OVLB
 
 /* `mtmp' might "grow up" into a bigger version */
 MonsterType *grow_up(Monster *mtmp, Monster *victim) {
@@ -1514,7 +1511,6 @@ MonsterType *grow_up(Monster *mtmp, Monster *victim) {
   return ptr;
 }
 
-#endif /* OVLB */
 
 int mongets(Monster *mtmp, int otyp) {
   Object *otmp;
@@ -1565,7 +1561,6 @@ int mongets(Monster *mtmp, int otyp) {
     return (0);
 }
 
-#ifdef OVLB
 
 int golemhp(int type) {
   switch (type) {
@@ -1596,7 +1591,6 @@ int golemhp(int type) {
   }
 }
 
-#endif /* OVLB */
 
 /*
  *	Alignment vs. yours determines monster's attitude to you.
@@ -1698,7 +1692,6 @@ void set_malign(Monster *mtmp) {
     mtmp->malign = abs(mal);
 }
 
-#ifdef OVLB
 
 static char syms[] = {
     MAXOCLASSES,  MAXOCLASSES + 1, RING_CLASS,   WAND_CLASS,   WEAPON_CLASS,
@@ -1836,6 +1829,5 @@ void bagotricks(Object *bag) {
   }
 }
 
-#endif /* OVLB */
 
 /*makemon.c*/

@@ -11,11 +11,9 @@
 STATIC_VAR int utcnt, utpnt;
 STATIC_VAR coord utrack[UTSZ];
 
-#ifdef OVLB
 
 void initrack() { utcnt = utpnt = 0; }
 
-#endif /* OVLB */
 
 /* add to track */
 void settrack() {

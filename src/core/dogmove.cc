@@ -86,7 +86,6 @@ STATIC_VAR xchar gtyp, gx, gy; /* type and position of dog's current goal */
 
 STATIC_PTR void wantdoor(int, int, genericptr_t);
 
-#ifdef OVLB
 STATIC_OVL bool cursed_object_at(int x, int y) {
   Object *otmp;
 
@@ -240,7 +239,6 @@ int dog_eat(Monster *mtmp, Object *obj, int x, int y, bool devour) {
   return 1;
 }
 
-#endif /* OVLB */
 
 /* hunger effects -- returns TRUE on starvation */
 STATIC_OVL bool dog_hunger(Monster *mtmp, struct edog *edog) {
@@ -881,7 +879,6 @@ STATIC_OVL bool can_reach_location(Monster *mon, xchar mx, xchar my, xchar fx,
   return FALSE;
 }
 
-#ifdef OVLB
 
 /*ARGSUSED*/ /* do_clear_area client */
 STATIC_PTR void wantdoor(int x, int y, genericptr_t distance) {
@@ -894,6 +891,5 @@ STATIC_PTR void wantdoor(int x, int y, genericptr_t distance) {
   }
 }
 
-#endif /* OVLB */
 
 /*dogmove.c*/

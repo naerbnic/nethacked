@@ -46,7 +46,6 @@ int rn2(int x) {
 #endif
 }
 
-#ifdef OVLB
 
 /* 0 <= rnl(x) < x; sometimes subtracting Luck */
 /* good luck approaches 0, bad luck approaches (x-1) */
@@ -72,7 +71,6 @@ int rnl(int x) {
   return i;
 }
 
-#endif /* OVLB */
 
 /* 1 <= rnd(x) <= x */
 int rnd(int x) {
@@ -106,7 +104,6 @@ int d(int n, int x) {
   return (tmp); /* Alea iacta est. -- J.C. */
 }
 
-#ifdef OVLB
 
 int rne(int x) {
   int tmp, utmp;
@@ -146,6 +143,5 @@ int rnz(int i) {
   return ((int)x);
 }
 
-#endif /* OVLB */
 
 /*rnd.c*/

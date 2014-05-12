@@ -54,7 +54,6 @@ STATIC_PTR void costly_tin(const char *);
 STATIC_PTR int opentin();
 STATIC_PTR int unfaint();
 
-#ifdef OVLB
 STATIC_DCL const char *food_xname(Object *, bool);
 STATIC_DCL void choke(Object *);
 STATIC_DCL void recalc_wt();
@@ -81,7 +80,6 @@ STATIC_DCL bool maybe_cannibal(int, bool);
 
 char msgbuf[BUFSZ];
 
-#endif /* OVLB */
 
 /* hunger texts used on bottom line (each 8 chars long) */
 #define SATIATED 0
@@ -95,13 +93,6 @@ char msgbuf[BUFSZ];
 /* also used to see if you're allowed to eat cats and dogs */
 #define CANNIBAL_ALLOWED() (Role_if(PM_CAVEMAN) || Race_if(PM_ORC))
 
-#ifndef OVLB
-
-STATIC_DCL const char comestibles[];
-STATIC_DCL const char allobj[];
-STATIC_DCL bool force_save_hs;
-
-#else
 
 STATIC_OVL const char comestibles[] = {FOOD_CLASS, 0};
 
@@ -117,7 +108,6 @@ STATIC_OVL bool force_save_hs = FALSE;
 const char *hu_stat[] = {"Satiated", "        ", "Hungry  ", "Weak    ",
                          "Fainting", "Fainted ", "Starved "};
 
-#endif /* OVLB */
 
 /*
  * Decide whether a particular object can be eaten by the possibly
@@ -144,7 +134,6 @@ bool is_edible(Object *obj) {
   return (bool)(obj->oclass == FOOD_CLASS);
 }
 
-#ifdef OVLB
 
 void init_uhunger() {
   player.uhunger = 900;
@@ -2118,7 +2107,6 @@ STATIC_OVL int bite() {
   return 0;
 }
 
-#endif /* OVLB */
 
 void gethungry() /* as time goes by - called by moveloop() and domove() */
 {
@@ -2169,7 +2157,6 @@ void gethungry() /* as time goes by - called by moveloop() and domove() */
   newuhs(TRUE);
 }
 
-#ifdef OVLB
 
 /* called after vomiting and after performing feats of magic */
 void morehungry(int num) {
@@ -2230,7 +2217,6 @@ int unfaint() {
   return 0;
 }
 
-#endif /* OVLB */
 
 bool is_fainted() { return ((bool)(player.uhs == FAINTED)); }
 
@@ -2380,7 +2366,6 @@ void newuhs(bool incr) {
   }
 }
 
-#ifdef OVLB
 
 /* Returns an object representing food.  Object may be either on floor or
  * in inventory.
@@ -2536,7 +2521,6 @@ void consume_oeaten(Object *obj, int amt) {
   }
 }
 
-#endif /* OVLB */
 
 /* called when eatfood occupation has been interrupted,
    or in the case of theft, is about to be interrupted */

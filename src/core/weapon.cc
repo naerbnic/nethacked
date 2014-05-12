@@ -53,13 +53,6 @@ STATIC_DCL int enhance_skill(bool);
 
 STATIC_DCL void give_may_advance_msg(int);
 
-#ifndef OVLB
-
-STATIC_DCL const short skill_names_indices[];
-STATIC_DCL const char *odd_skill_names[];
-STATIC_DCL const char *barehands_or_martial[];
-
-#else /* OVLB */
 
 STATIC_VAR const short skill_names_indices[P_NUM_SKILLS] = {
     0,                    DAGGER,           KNIFE,
@@ -101,7 +94,6 @@ STATIC_OVL void give_may_advance_msg(int skill) {
                                                               : "fighting ");
 }
 
-#endif /* OVLB */
 
 STATIC_DCL bool can_advance(int, bool);
 STATIC_DCL bool could_advance(int);
@@ -120,7 +112,6 @@ STATIC_DCL void skill_advance(int);
              ? barehands_or_martial[martial_bonus()]  \
              : odd_skill_names[-skill_names_indices[type]])
 
-#ifdef OVLB
 static const char kebabable[] = {S_XORN, S_DRAGON, S_JABBERWOCK,
                                  S_NAGA, S_GIANT,  '\0'};
 
@@ -337,7 +328,6 @@ int dmgval(Object *otmp, Monster *mon) {
   return (tmp);
 }
 
-#endif /* OVLB */
 
 STATIC_DCL Object *oselect(Monster *, int);
 #define Oselect(x)                    \
@@ -1077,7 +1067,6 @@ void unrestrict_weapon_skill(int skill) {
   }
 }
 
-#ifdef OVLB
 
 void use_skill(int skill, int degree) {
   bool advance_before;
@@ -1410,6 +1399,5 @@ void setmnotwielded(Monster *mon, Object *obj) {
   obj->owornmask &= ~W_WEP;
 }
 
-#endif /* OVLB */
 
 /*weapon.c*/

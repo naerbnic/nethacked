@@ -31,11 +31,7 @@
 #include "core/detect.h"
 #include "core/cmd.h"
 #include "core/artifact.h"
-#ifdef OVLB
 #include "core/artilist.h"
-#else
-STATIC_DCL Artifact artilist[];
-#endif
 
 using std::string;
 /*
@@ -65,10 +61,6 @@ STATIC_DCL bool Mb_hit(Monster *magr, Monster *mdef, Object *, int *, int, bool,
    of hit points that will fit in a 15 bit integer. */
 #define FATAL_DAMAGE_MODIFIER 200
 
-#ifndef OVLB
-STATIC_DCL int spec_dbon_applies;
-STATIC_DCL xchar artidisco[NROFARTIFACTS];
-#else  /* OVLB */
 /* coordinate effects from spec_dbon() with messages in artifact_hit() */
 STATIC_OVL int spec_dbon_applies = 0;
 
@@ -242,7 +234,6 @@ int nartifact_exist() {
 
   return a;
 }
-#endif /* OVLB */
 
 bool spec_ability(Object *otmp, unsigned long abil) {
   const Artifact *arti = get_artifact(otmp);
@@ -274,7 +265,6 @@ bool arti_reflects(Object *obj) {
   return FALSE;
 }
 
-#ifdef OVLB
 
 /* returns 1 if name is restricted for otmp->otyp */
 bool restrict_name(Object *otmp, string const& name) {
@@ -563,7 +553,6 @@ int touch_artifact(Object *obj, Monster *mon) {
   return 1;
 }
 
-#endif /* OVLB */
 
 /* decide whether an artifact's special attacks apply against mtmp */
 STATIC_OVL int spec_applies(const Artifact *weap, Monster *mtmp) {
@@ -705,7 +694,6 @@ int disp_artifact_discoveries(winid tmpwin) {
 }
 
 
-#ifdef OVLB
 
 /*
  * Magicbane's intrinsic magic is incompatible with normal
@@ -1441,6 +1429,5 @@ long arti_cost(Object *otmp) {
     return (100L * (long)objects[otmp->otyp].oc_cost);
 }
 
-#endif /* OVLB */
 
 /*artifact.c*/

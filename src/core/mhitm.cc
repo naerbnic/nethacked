@@ -38,7 +38,6 @@
 
 extern bool notonhead;
 
-#ifdef OVLB
 
 static bool vis, far_noise;
 static long noisetime;
@@ -1213,7 +1212,6 @@ STATIC_OVL int mdamagem(Monster *magr, Monster *mdef, struct Attack *mattk) {
   return (MM_HIT);
 }
 
-#endif /* OVLB */
 
 
 /* returns 1 if monster doesn't attack */
@@ -1253,7 +1251,6 @@ void slept_monst(Monster *mon) {
   }
 }
 
-#ifdef OVLB
 
 STATIC_OVL void mrustm(Monster *magr, Monster *mdef, Object *obj) {
   bool is_acid;
@@ -1485,6 +1482,5 @@ long attk_protection(int aatyp) {
   return w_mask;
 }
 
-#endif /* OVLB */
 
 /*mhitm.c*/

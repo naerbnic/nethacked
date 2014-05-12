@@ -30,12 +30,10 @@
 #endif
 #endif
 
-#ifdef OVLB
 
 static int domonnoise(Monster *);
 static int dochat();
 
-#endif /* OVLB */
 
 
 static int mon_in_room(Monster *, int);
@@ -253,7 +251,6 @@ void dosounds() {
   }
 }
 
-#ifdef OVLB
 
 static const char *const h_sounds[] = {
     "beep",    "boing", "sing",   "belche",  "creak",  "cough", "rattle",
@@ -999,6 +996,5 @@ void play_sound_for_message(const char *msg) {
 
 #endif /* USER_SOUNDS */
 
-#endif /* OVLB */
 
 /*sounds.c*/

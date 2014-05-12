@@ -50,7 +50,6 @@ STATIC_DCL void distfleeck(Monster *, int *, int *, int *);
 STATIC_DCL int m_arrival(Monster *);
 STATIC_DCL void watch_on_duty(Monster *);
 
-#ifdef OVLB
 
 bool /* TRUE : mtmp died */ mb_trapped(Monster *mtmp) {
   if (flags.verbose) {
@@ -72,7 +71,6 @@ bool /* TRUE : mtmp died */ mb_trapped(Monster *mtmp) {
   return (FALSE);
 }
 
-#endif /* OVLB */
 
 STATIC_OVL void watch_on_duty(Monster *mtmp) {
   int x, y;

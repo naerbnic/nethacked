@@ -55,7 +55,6 @@
 #include "core/botl.h"
 #include "core/edog.h"
 
-#ifdef OVLB
 
 static const char tools[] = {TOOL_CLASS, WEAPON_CLASS, WAND_CLASS, 0};
 static const char tools_too[] = {ALL_CLASSES,  TOOL_CLASS, POTION_CLASS,
@@ -526,7 +525,6 @@ Object *get_mleash(Monster *mtmp) {
   return (nullptr);
 }
 
-#endif /* OVLB */
 
 bool next_to_u() {
   Monster *mtmp;
@@ -625,7 +623,6 @@ void check_leash(xchar x, xchar y) {
   }
 }
 
-#ifdef OVLB
 
 #define WEAK 3 /* from eat.c */
 
@@ -3043,6 +3040,5 @@ int unfixable_trouble_count(bool is_horn) {
   return unfixable_trbl;
 }
 
-#endif /* OVLB */
 
 /*apply.c*/

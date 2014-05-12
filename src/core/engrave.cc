@@ -34,7 +34,6 @@
 
 STATIC_VAR struct engr *head_engr;
 
-#ifdef OVLB
 /* random engravings */
 static const char *random_mesg[] = {
     "Elbereth",
@@ -191,7 +190,6 @@ bool can_reach_floor() {
                 (!Levitation || Is_airlevel(&player.uz) ||
                  Is_waterlevel(&player.uz)));
 }
-#endif /* OVLB */
 
 const char *surface(int x, int y) {
   struct rm *lev = &levl[x][y];
@@ -365,7 +363,6 @@ void read_engr_at(int x, int y) {
   }
 }
 
-#ifdef OVLB
 
 void make_engr_at(int x, int y, const char *s, long e_time, xchar e_type) {
   struct engr *ep;
@@ -1237,6 +1234,5 @@ void make_grave(int x, int y, const char *str) {
   return;
 }
 
-#endif /* OVLB */
 
 /*engrave.c*/

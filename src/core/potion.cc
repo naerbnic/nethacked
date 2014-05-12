@@ -42,7 +42,6 @@
 #include "core/artifact.h"
 #include "core/ball.h"
 
-#ifdef OVLB
 bool notonhead = FALSE;
 
 static int nothing, unkn;
@@ -2020,6 +2019,5 @@ Monster *split_mon(
   return mtmp2;
 }
 
-#endif /* OVLB */
 
 /*potion.c*/

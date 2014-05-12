@@ -20,7 +20,6 @@
 
 /*	These routines provide basic data for any type of monster. */
 
-#ifdef OVLB
 
 void set_mon_data(Monster *mon, MonsterType *ptr, int flag) {
   mon->data = ptr;
@@ -34,7 +33,6 @@ void set_mon_data(Monster *mon, MonsterType *ptr, int flag) {
   return;
 }
 
-#endif /* OVLB */
 
 struct Attack *attacktype_fordmg(MonsterType *ptr, int atyp, int dtyp) {
   struct Attack *a;
@@ -50,7 +48,6 @@ bool attacktype(MonsterType *ptr, int atyp) {
   return attacktype_fordmg(ptr, atyp, AD_ANY) ? TRUE : FALSE;
 }
 
-#ifdef OVLB
 
 bool poly_when_stoned(MonsterType *ptr) {
   return ((bool)(is_golem(ptr) && ptr != &mons[PM_STONE_GOLEM] &&
@@ -200,7 +197,6 @@ bool can_blnd(Monster *magr, Monster *mdef, uchar aatyp, Object *obj) {
   return TRUE;
 }
 
-#endif /* OVLB */
 
 /* returns TRUE if monster can attack at range */
 bool ranged_attk(MonsterType *ptr) {
@@ -246,7 +242,6 @@ bool can_track(MonsterType *ptr) {
     return ((bool)haseyes(ptr));
 }
 
-#ifdef OVLB
 
 /* creature will slide out of armor */
 bool sliparm(MonsterType *ptr) {
@@ -261,7 +256,6 @@ bool breakarm(MonsterType *ptr) {
            ptr == &mons[PM_MARILITH] || ptr == &mons[PM_WINGED_GARGOYLE]) &&
           !sliparm(ptr));
 }
-#endif /* OVLB */
 
 /* creature sticks other creatures it hits */
 bool sticks(MonsterType *ptr) {
@@ -477,7 +471,6 @@ int pronoun_gender(Monster *mtmp) {
              : 2;
 }
 
-#ifdef OVLB
 
 /* used for nearby monsters when you go to another level */
 bool levl_follower(Monster *mtmp) {
@@ -698,6 +691,5 @@ const char *on_fire(MonsterType *mptr, struct Attack *mattk) {
   return what;
 }
 
-#endif /* OVLB */
 
 /*mondata.c*/

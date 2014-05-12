@@ -88,7 +88,6 @@ void cursetxt(Monster *mtmp, bool undirected) {
   }
 }
 
-#ifdef OVLB
 
 /* convert a level based random selection into a specific mage spell;
    inappropriate choices will be screened out by spell_would_be_useless() */
@@ -746,7 +745,6 @@ bool spell_would_be_useless(Monster *mtmp, unsigned int adtyp, int spellnum) {
   return FALSE;
 }
 
-#endif /* OVLB */
 
 /* convert 1..10 to 0..9; add 10 for second group (spell casting) */
 #define ad_to_typ(k) (10 + (int)k - 1)

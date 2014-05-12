@@ -194,11 +194,9 @@ STATIC_PTR int doattributes();
 STATIC_PTR int doconduct(); /**/
 STATIC_PTR bool minimal_enlightenment();
 
-#ifdef OVLB
 STATIC_DCL void enlght_line(const char *, const char *, const char *);
 STATIC_DCL char *enlght_combatinc(const char *, int, int, char *);
 static void end_of_input();
-#endif /* OVLB */
 
 static const char *readchar_queue = "";
 
@@ -309,7 +307,6 @@ void savech(char ch) {
 }
 #endif /* REDO */
 
-#ifdef OVLB
 
 /* here after # - now read a full-word command */
 STATIC_PTR int doextcmd() {
@@ -1923,7 +1920,6 @@ void dump_conduct(int final) {
 }
 #endif /* DUMP_LOG */
 
-#endif /* OVLB */
 
 #ifndef M
 #define M(c) ((c) - 128)
@@ -2743,7 +2739,6 @@ STATIC_OVL bool help_dir(char sym, const char *msg) {
   return TRUE;
 }
 
-#ifdef OVLB
 
 void confdir() {
   int x = (player.umonnum == PM_GRID_BUG) ? 2 * rn2(4) : rn2(8);
@@ -2752,7 +2747,6 @@ void confdir() {
   return;
 }
 
-#endif /* OVLB */
 
 int isok(int x, int y) {
   /* x corresponds to curx, so x==1 is the first column. Ach. %% */
@@ -2935,7 +2929,6 @@ STATIC_OVL char *parse() {
   return (in_line);
 }
 
-#ifdef OVLB
 
 static void end_of_input() {
 #ifndef NOSAVEONHANGUP
@@ -2947,7 +2940,6 @@ static void end_of_input() {
   terminate(EXIT_SUCCESS);
 }
 
-#endif /* OVLB */
 
 char readchar() {
   int sym;
@@ -3054,7 +3046,6 @@ int wiz_port_debug() {
 }
 #endif /*PORT_DEBUG*/
 
-#ifdef OVLB
 /*
  *   Parameter validator for generic yes/no function to prevent
  *   the core from sending too long a prompt string to the
@@ -3076,6 +3067,5 @@ char yn_function(const char *query, const char *resp, char def) {
   strcat(qbuf, "...");
   return (*windowprocs.win_yn_function)(qbuf, resp, def);
 }
-#endif
 
 /*cmd.c*/

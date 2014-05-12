@@ -36,11 +36,7 @@ STATIC_DCL void bot2();
 #define MAXCO (COLNO + 20)
 #endif
 
-#ifndef OVLB
-STATIC_DCL int mrank_sz;
-#else  /* OVLB */
 STATIC_OVL int mrank_sz = 0; /* loaded by max_rank_sz (from u_init) */
-#endif /* OVLB */
 
 STATIC_DCL const char *rank();
 
@@ -115,7 +111,6 @@ int title_to_mon(const char *str, int *rank_indx, int *title_length) {
   return NON_PM;
 }
 
-#ifdef OVLB
 
 void max_rank_sz() {
   int i, r, maxr = 0;
@@ -129,7 +124,6 @@ void max_rank_sz() {
   return;
 }
 
-#endif /* OVLB */
 
 #ifdef SCORE_ON_BOTL
 long botl_score() {

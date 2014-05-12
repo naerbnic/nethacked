@@ -53,16 +53,13 @@ static char display_pickinv(const char *, bool, long *, bool, bool);
 #else
 static char display_pickinv(const char *, bool, long *);
 #endif /* DUMP_LOG */
-#ifdef OVLB
 STATIC_DCL bool this_type_only(Object *);
 STATIC_DCL void dounpaid();
 STATIC_DCL Object *find_unpaid(Object *, Object **);
 STATIC_DCL void menu_identify(int);
 STATIC_DCL bool tool_in_use(Object *);
-#endif /* OVLB */
 STATIC_DCL char obj_to_let(Object *);
 
-#ifdef OVLB
 
 static int lastinvnr = 51; /* 0 ... 51 (never saved&restored) */
 
@@ -116,7 +113,6 @@ void assigninvlet(Object *otmp) {
   lastinvnr = i;
 }
 
-#endif /* OVLB */
 
 /* note: assumes ASCII; toggling a bit puts lowercase in front of uppercase */
 #define inv_rank(o) ((o)->invlet ^ 040)
@@ -418,7 +414,6 @@ void carry_obj_effects(Object *obj) {
   }
 }
 
-#ifdef OVLB
 
 /* Add an item to the inventory unless we're fumbling or it refuses to be
  * held (via touch_artifact), and give a message.
@@ -527,7 +522,6 @@ void consume_obj_charge(Object *obj, bool maybe_unpaid) {
     update_inventory();
 }
 
-#endif /* OVLB */
 
 /*
 Adjust hero's attributes as if this object was being removed from the
@@ -631,7 +625,6 @@ Object *sobj_at(int n, int x, int y) {
   return (nullptr);
 }
 
-#ifdef OVLB
 
 Object *carrying(int type) {
   Object *otmp;
@@ -680,7 +673,6 @@ bool obj_here(Object *obj, int x, int y) {
   return (FALSE);
 }
 
-#endif /* OVLB */
 
 Object *g_at(int x, int y) {
   Object *obj = level.objects[x][y];
@@ -692,7 +684,6 @@ Object *g_at(int x, int y) {
   return (nullptr);
 }
 
-#ifdef OVLB
 #ifndef GOLDOBJ
 /* Make a gold object from the hero's gold. */
 Object *mkgoldobj(long q) {
@@ -706,7 +697,6 @@ Object *mkgoldobj(long q) {
   return (otmp);
 }
 #endif
-#endif /* OVLB */
 
 /* compact a string of inventory letters by dashing runs of letters */
 STATIC_OVL void compactify(char *buf) {
@@ -1143,7 +1133,6 @@ void silly_thing(const char *word, Object *otmp) {
   }
 }
 
-#ifdef OVLB
 
 STATIC_PTR int ckvalidcat(Object *otmp) {
   /* use allow_category() from pickup.c */
@@ -1561,7 +1550,6 @@ void identify_pack(int id_limit) {
   update_inventory();
 }
 
-#endif /* OVLB */
 
 /* should of course only be called for things in invent */
 STATIC_OVL char obj_to_let(Object *obj) {
@@ -1628,7 +1616,6 @@ char *xprname(Object *obj, const char *txt, char let, bool dot, long cost,
   return li;
 }
 
-#ifdef OVLB
 
 /* the 'i' command */
 int ddoinv() {
@@ -2406,7 +2393,6 @@ void feel_cockatrice(Object *otmp, bool force_touch) {
   }
 }
 
-#endif /* OVLB */
 
 void stackobj(Object *obj) {
   Object *otmp;
@@ -2508,7 +2494,6 @@ int doprgold() {
   return 0;
 }
 
-#ifdef OVLB
 
 int doprwep() {
   if (!uwep) {
@@ -2650,7 +2635,6 @@ void useupf(Object *obj, long numused) {
     player.uundetected = OBJ_AT(player.ux, player.uy);
 }
 
-#endif /* OVLB */
 
 
 /*
@@ -2704,7 +2688,6 @@ void free_invbuf() {
   invbufsiz = 0;
 }
 
-#ifdef OVLB
 
 void reassign() {
   int i;
@@ -2715,7 +2698,6 @@ void reassign() {
   lastinvnr = i;
 }
 
-#endif /* OVLB */
 
 /* inventory organizer by Del Lamb */
 int doorganize() {
