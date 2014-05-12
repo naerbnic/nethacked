@@ -2,6 +2,8 @@
 /* Copyright (c) David Cohrs, 1991				  */
 /* NetHack may be freely redistributed.  See license for details. */
 
+#include "core/mapglyph.h"
+
 #include "core/hack.h"
 #include "core/wintty.h" /* for prototype of has_color() only */
 #include "core/color.h"
