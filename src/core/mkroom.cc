@@ -13,6 +13,8 @@
  *	rest_rooms() -- restore rooms from file fd
  */
 
+#include "core/mkroom.h"
+
 #include <string.h>
 
 #include "core/hack.h"
