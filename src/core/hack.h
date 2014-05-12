@@ -80,7 +80,6 @@
 #define ESCAPED 14
 #define ASCENDED 15
 
-#include "core/wintype.h"
 #include "core/decl.h"
 #include "core/timeout.h"
 
