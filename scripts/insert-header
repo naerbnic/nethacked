@@ -1,5 +1,5 @@
 #!/bin/bash
 new_file=$1
 shift
-sed -i '' -e "/#include \"hack.h\"/a\\
-#include \"${new_file}\"" "$@"
+sed -i '' -e "/#include \"core\/hack.h\"/a\\
+#include \"core\/${new_file}\"" "$@"

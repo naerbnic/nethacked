@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "core/hack.h"
+#include "core/mkroom.h"
 #include "core/worm.h"
 #include "core/weapon.h"
 #include "core/teleport.h"

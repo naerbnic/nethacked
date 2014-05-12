@@ -7,6 +7,7 @@
 #include "core/fountain.h"
 
 #include "core/hack.h"
+#include "core/mkroom.h"
 #include "core/zap.h"
 #include "core/worm.h"
 #include "core/steal.h"

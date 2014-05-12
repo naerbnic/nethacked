@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "core/hack.h"
+#include "core/mkroom.h"
 #include "core/zap.h"
 #include "core/write.h"
 #include "core/worn.h"

@@ -26,6 +26,7 @@
 #endif
 
 #include "core/hack.h"
+#include "core/mkroom.h"
 #include "core/sp_lev.h"
 
 #define MAX_REGISTERS	10

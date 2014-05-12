@@ -5,6 +5,7 @@
 #include "json_spirit.h"
 
 #include "core/hack.h"
+#include "core/mkroom.h"
 #include "core/worm.h"
 #include "core/save.h"
 #include "core/rumors.h"

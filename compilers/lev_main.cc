@@ -18,6 +18,7 @@ using std::vector;
 /* although, why don't we move those special defines here.. and in dgn_main? */
 
 #include "core/hack.h"
+#include "core/mkroom.h"
 #include "core/drawing.h"
 #include "core/date.h"
 #include "core/sp_lev.h"

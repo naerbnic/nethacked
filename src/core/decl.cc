@@ -5,6 +5,7 @@
 #include "core/decl.h"
 
 #include "core/hack.h"
+#include "core/mkroom.h"
 
 int (*afternmv)();
 int (*occupation)();

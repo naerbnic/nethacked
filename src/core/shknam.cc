@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "core/hack.h"
+#include "core/mkroom.h"
 #include "core/teleport.h"
 #include "core/shknam.h"
 #include "core/shk.h"

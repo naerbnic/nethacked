@@ -80,9 +80,6 @@
 #define ESCAPED 14
 #define ASCENDED 15
 
-#include "core/dungeon.h"
-#include "core/monsym.h"
-#include "core/mkroom.h"
 #include "core/objclass.h"
 #include "core/youprop.h"
 #include "core/wintype.h"

@@ -7,6 +7,7 @@
 #include <string>
 
 #include "core/hack.h"
+#include "core/mkroom.h"
 #include "core/worn.h"
 #include "core/worm.h"
 #include "core/wield.h"
