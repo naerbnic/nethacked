@@ -2,17 +2,17 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
-#include "exper.h"
+#include "core/exper.h"
 
 #include <string.h>
 
-#include "hack.h"
-#include "worn.h"
-#include "role.h"
-#include "rnd.h"
-#include "pline.h"
-#include "makemon.h"
-#include "end.h"
+#include "core/hack.h"
+#include "core/worn.h"
+#include "core/role.h"
+#include "core/rnd.h"
+#include "core/pline.h"
+#include "core/makemon.h"
+#include "core/end.h"
 
 STATIC_DCL long newuexp(int);
 STATIC_DCL int enermod(int);

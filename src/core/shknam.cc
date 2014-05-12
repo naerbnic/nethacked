@@ -6,17 +6,17 @@
 
 #include <string.h>
 
-#include "hack.h"
-#include "teleport.h"
-#include "shknam.h"
-#include "shk.h"
-#include "rnd.h"
-#include "mkobj.h"
-#include "makemon.h"
-#include "hacklib.h"
-#include "detect.h"
-#include "cmd.h"
-#include "eshk.h"
+#include "core/hack.h"
+#include "core/teleport.h"
+#include "core/shknam.h"
+#include "core/shk.h"
+#include "core/rnd.h"
+#include "core/mkobj.h"
+#include "core/makemon.h"
+#include "core/hacklib.h"
+#include "core/detect.h"
+#include "core/cmd.h"
+#include "core/eshk.h"
 
 extern const struct shclass shtypes[];
 

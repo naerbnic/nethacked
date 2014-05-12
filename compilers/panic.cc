@@ -7,7 +7,7 @@
  *	mode for the makedefs / drg code.
  */
 
-#include "config.h"
+#include "core/config.h"
 #include <stdarg.h>
 
 /*VARARGS1*/

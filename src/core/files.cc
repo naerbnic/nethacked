@@ -2,24 +2,24 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
-#include "files.h"
+#include "core/files.h"
 
 #include <string.h>
 
-#include "hack.h"
-#include "version.h"
-#include "unixunix.h"
-#include "role.h"
-#include "pline.h"
-#include "options.h"
-#include "objnam.h"
-#include "invent.h"
-#include "hacklib.h"
-#include "end.h"
-#include "drawing.h"
-#include "dlb.h"
+#include "core/hack.h"
+#include "core/version.h"
+#include "core/unixunix.h"
+#include "core/role.h"
+#include "core/pline.h"
+#include "core/options.h"
+#include "core/objnam.h"
+#include "core/invent.h"
+#include "core/hacklib.h"
+#include "core/end.h"
+#include "core/drawing.h"
+#include "core/dlb.h"
 
-#include "wintty.h" /* more() */
+#include "core/wintty.h" /* more() */
 
 #include <ctype.h>
 

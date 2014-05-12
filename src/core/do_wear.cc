@@ -2,32 +2,32 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
-#include "do_wear.h"
+#include "core/do_wear.h"
 
 #include <string.h>
 
-#include "hack.h"
-#include "zap.h"
-#include "worn.h"
-#include "wield.h"
-#include "rnd.h"
-#include "potion.h"
-#include "polyself.h"
-#include "pline.h"
-#include "pickup.h"
-#include "objnam.h"
-#include "o_init.h"
-#include "mon.h"
-#include "mkobj.h"
-#include "invent.h"
-#include "do_name.h"
-#include "do.h"
-#include "dbridge.h"
-#include "cmd.h"
+#include "core/hack.h"
+#include "core/zap.h"
+#include "core/worn.h"
+#include "core/wield.h"
+#include "core/rnd.h"
+#include "core/potion.h"
+#include "core/polyself.h"
+#include "core/pline.h"
+#include "core/pickup.h"
+#include "core/objnam.h"
+#include "core/o_init.h"
+#include "core/mon.h"
+#include "core/mkobj.h"
+#include "core/invent.h"
+#include "core/do_name.h"
+#include "core/do.h"
+#include "core/dbridge.h"
+#include "core/cmd.h"
 
-#include "allmain.h"
-#include "artifact.h"
-#include "ball.h"
+#include "core/allmain.h"
+#include "core/artifact.h"
+#include "core/ball.h"
 
 #ifndef OVLB
 

@@ -7,7 +7,7 @@
  *  level files.  Requires that the `checkpoint' option be enabled at the
  *  time NetHack creates those level files.
  */
-#include "config.h"
+#include "core/config.h"
 #if !defined(O_WRONLY) && !defined(LSC) && !defined(AZTEC_C)
 #include <fcntl.h>
 #endif

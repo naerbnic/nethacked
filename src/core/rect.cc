@@ -2,9 +2,9 @@
 /* Copyright (c) 1990 by Jean-Christophe Collet	 */
 /* NetHack may be freely redistributed.  See license for details. */
 
-#include "hack.h"
-#include "rnd.h"
-#include "pline.h"
+#include "core/hack.h"
+#include "core/rnd.h"
+#include "core/pline.h"
 
 int get_rect_ind(NhRect *);
 

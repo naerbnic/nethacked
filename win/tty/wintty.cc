@@ -8,33 +8,33 @@
  * h+ 930227
  */
 
-#include "hack.h"
-#include "windows.h"
-#include "unixtty.h"
-#include "role.h"
-#include "pline.h"
-#include "options.h"
-#include "objnam.h"
-#include "mapglyph.h"
-#include "ioctl.h"
-#include "hacklib.h"
-#include "files.h"
-#include "end.h"
-#include "cmd.h"
+#include "core/hack.h"
+#include "core/windows.h"
+#include "core/unixtty.h"
+#include "core/role.h"
+#include "core/pline.h"
+#include "core/options.h"
+#include "core/objnam.h"
+#include "core/mapglyph.h"
+#include "core/ioctl.h"
+#include "core/hacklib.h"
+#include "core/files.h"
+#include "core/end.h"
+#include "core/cmd.h"
 
-#include "botl.h"
-#include "dlb.h"
+#include "core/botl.h"
+#include "core/dlb.h"
 #ifdef SHORT_FILENAMES
 #include "patchlev.h"
 #else
-#include "patchlevel.h"
+#include "core/patchlevel.h"
 #endif
 
 #ifndef NO_TERMS
-#include "tcap.h"
+#include "core/tcap.h"
 #endif
 
-#include "wintty.h"
+#include "core/wintty.h"
 
 #ifdef CLIPPING /* might want SIGWINCH */
 #if defined(BSD) || defined(ULTRIX) || defined(AIX_31) || defined(_BULL_SOURCE)

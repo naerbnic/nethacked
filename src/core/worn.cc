@@ -4,20 +4,20 @@
 
 #include <string.h>
 
-#include "hack.h"
-#include "worn.h"
-#include "worm.h"
-#include "steed.h"
-#include "rnd.h"
-#include "pline.h"
-#include "objnam.h"
-#include "o_init.h"
-#include "mthrowu.h"
-#include "mkobj.h"
-#include "hacklib.h"
-#include "do_name.h"
+#include "core/hack.h"
+#include "core/worn.h"
+#include "core/worm.h"
+#include "core/steed.h"
+#include "core/rnd.h"
+#include "core/pline.h"
+#include "core/objnam.h"
+#include "core/o_init.h"
+#include "core/mthrowu.h"
+#include "core/mkobj.h"
+#include "core/hacklib.h"
+#include "core/do_name.h"
 
-#include "artifact.h"
+#include "core/artifact.h"
 
 STATIC_DCL void m_lose_armor(Monster *, Object *);
 STATIC_DCL void m_dowear_type(Monster *, long, bool, bool);

@@ -129,7 +129,7 @@ E dungeon dungeons[];
 E s_level *sp_levchn;
 #define dunlev_reached(x) (dungeons[(x)->dnum].dunlev_ureached)
 
-#include "quest.h"
+#include "core/quest.h"
 E struct q_score quest_status;
 
 E char pl_character[PL_CSIZ];
@@ -228,10 +228,10 @@ E bool in_steed_dismounting;
 
 E const int shield_static[];
 
-#include "spell.h"
+#include "core/spell.h"
 E struct spell spl_book[]; /* sized in decl.c */
 
-#include "color.h"
+#include "core/color.h"
 #ifdef TEXTCOLOR
 E const int zapcolors[];
 #endif
@@ -241,7 +241,7 @@ E uchar oc_syms[MAXOCLASSES];          /* current class symbols */
 E const char def_monsyms[MAXMCLASSES]; /* default class symbols */
 E uchar monsyms[MAXMCLASSES];          /* current class symbols */
 
-#include "obj.h"
+#include "core/obj.h"
 E Object *invent, *uarm, *uarmc, *uarmh, *uarms, *uarmg, *uarmf,
 #ifdef TOURIST
     *uarmu, /* under-wear, so to speak */
@@ -254,12 +254,12 @@ E Object *migrating_objs;
 E Object *billobjs;
 E Object zeroobj; /* init'd and defined in decl.c */
 
-#include "you.h"
+#include "core/you.h"
 E struct Player player;
 
-#include "onames.h"
+#include "core/onames.h"
 #ifndef PM_H /* (pm.h has already been included via youprop.h) */
-#include "pm.h"
+#include "core/pm.h"
 #endif
 
 E Monster youmonst; /* init'd and defined in decl.c */

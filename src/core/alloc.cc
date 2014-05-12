@@ -3,12 +3,12 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 #include <stdlib.h>
-#include "alloc.h"
+#include "core/alloc.h"
 
 /* since this file is also used in auxiliary programs, don't include all the
  * function declarations for all of nethack
  */
-#include "config.h"
+#include "core/config.h"
 
 #if defined(WIZARD)
 char *fmt_ptr(const void *, char *);

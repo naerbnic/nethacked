@@ -8,10 +8,10 @@
 #ifndef DOTHROW_H_
 #define DOTHROW_H_
 
-#include "coord.h"
-#include "monst.h"
-#include "obj.h"
-#include "tradstdc.h"
+#include "core/coord.h"
+#include "core/monst.h"
+#include "core/obj.h"
+#include "core/tradstdc.h"
 
 int dothrow();
 int dofire();

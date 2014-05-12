@@ -4,8 +4,8 @@
 
 /* data librarian; only useful if you are making the library version, DLBLIB */
 
-#include "config.h"
-#include "dlb.h"
+#include "core/config.h"
+#include "core/dlb.h"
 #if !defined(O_WRONLY) && !defined(AZTEC_C)
 #include <fcntl.h>
 #endif

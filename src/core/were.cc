@@ -4,20 +4,20 @@
 
 #include <string.h>
 
-#include "hack.h"
-#include "worn.h"
-#include "worm.h"
-#include "were.h"
-#include "weapon.h"
-#include "rnd.h"
-#include "polyself.h"
-#include "pline.h"
-#include "objnam.h"
-#include "makemon.h"
-#include "hacklib.h"
-#include "dog.h"
-#include "do_name.h"
-#include "cmd.h"
+#include "core/hack.h"
+#include "core/worn.h"
+#include "core/worm.h"
+#include "core/were.h"
+#include "core/weapon.h"
+#include "core/rnd.h"
+#include "core/polyself.h"
+#include "core/pline.h"
+#include "core/objnam.h"
+#include "core/makemon.h"
+#include "core/hacklib.h"
+#include "core/dog.h"
+#include "core/do_name.h"
+#include "core/cmd.h"
 
 #ifdef OVL0
 

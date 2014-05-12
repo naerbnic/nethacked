@@ -17,23 +17,23 @@ using std::string;
 #define MAKEDEFS_C  /* use to conditionally include file sections */
 /* #define DEBUG */ /* uncomment for debugging info */
 
-#include "config.h"
-#include "permonst.h"
-#include "objclass.h"
-#include "monsym.h"
-#include "artilist.h"
-#include "dungeon.h"
-#include "obj.h"
-#include "monst.h"
-#include "you.h"
-#include "flag.h"
-#include "dlb.h"
+#include "core/config.h"
+#include "core/permonst.h"
+#include "core/objclass.h"
+#include "core/monsym.h"
+#include "core/artilist.h"
+#include "core/dungeon.h"
+#include "core/obj.h"
+#include "core/monst.h"
+#include "core/you.h"
+#include "core/flag.h"
+#include "core/dlb.h"
 
 /* version information */
 #ifdef SHORT_FILENAMES
 #include "patchlev.h"
 #else
-#include "patchlevel.h"
+#include "core/patchlevel.h"
 #endif
 
 #include <string.h>
@@ -1297,7 +1297,7 @@ void do_permonst() {
 }
 
 /*	Start of Quest text file processing. */
-#include "qtext.h"
+#include "core/qtext.h"
 
 static struct qthdr qt_hdr;
 static struct msghdr msg_hdr[N_HDR];

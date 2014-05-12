@@ -8,11 +8,11 @@
 #ifndef MAKEMON_H_
 #define MAKEMON_H_
 
-#include "config.h"
+#include "core/config.h"
 
-#include "monst.h"
-#include "obj.h"
-#include "global.h"
+#include "core/monst.h"
+#include "core/obj.h"
+#include "core/global.h"
 
 bool IsLevelHomeOfElementalType(MonsterType *);
 Monster *clone_mon(Monster *, xchar, xchar);

@@ -5,9 +5,9 @@
 
 #define LEV_LEX_C
 
-#include "hack.h"
+#include "core/hack.h"
 #include "lev_parse.hh"
-#include "sp_lev.h"
+#include "core/sp_lev.h"
 
 /* Most of these don't exist in flex, yywrap is macro and
  * yyunput is properly declared in flex.skel.

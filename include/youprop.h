@@ -5,10 +5,10 @@
 #ifndef YOUPROP_H
 #define YOUPROP_H
 
-#include "prop.h"
-#include "permonst.h"
-#include "mondata.h"
-#include "pm.h"
+#include "core/prop.h"
+#include "core/permonst.h"
+#include "core/mondata.h"
+#include "core/pm.h"
 
 /* KMH, intrinsics patch.
  * Reorganized and rewritten for >32-bit properties.

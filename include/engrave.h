@@ -5,7 +5,7 @@
 #ifndef ENGRAVE_H
 #define ENGRAVE_H
 
-#include "global.h"
+#include "core/global.h"
 
 struct engr {
   struct engr *nxt_engr;

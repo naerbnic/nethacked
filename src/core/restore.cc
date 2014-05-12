@@ -6,40 +6,40 @@
 #include <memory>
 #include <string>
 
-#include "hack.h"
-#include "worn.h"
-#include "worm.h"
-#include "wield.h"
-#include "unixtty.h"
-#include "steed.h"
-#include "shk.h"
-#include "save.h"
-#include "rumors.h"
-#include "role.h"
-#include "restore.h"
-#include "questpgr.h"
-#include "priest.h"
-#include "polyself.h"
-#include "pline.h"
-#include "options.h"
-#include "objnam.h"
-#include "o_init.h"
-#include "mon.h"
-#include "mkobj.h"
-#include "mkmaze.h"
-#include "makemon.h"
-#include "light.h"
-#include "invent.h"
-#include "files.h"
-#include "end.h"
-#include "drawing.h"
-#include "dog.h"
+#include "core/hack.h"
+#include "core/worn.h"
+#include "core/worm.h"
+#include "core/wield.h"
+#include "core/unixtty.h"
+#include "core/steed.h"
+#include "core/shk.h"
+#include "core/save.h"
+#include "core/rumors.h"
+#include "core/role.h"
+#include "core/restore.h"
+#include "core/questpgr.h"
+#include "core/priest.h"
+#include "core/polyself.h"
+#include "core/pline.h"
+#include "core/options.h"
+#include "core/objnam.h"
+#include "core/o_init.h"
+#include "core/mon.h"
+#include "core/mkobj.h"
+#include "core/mkmaze.h"
+#include "core/makemon.h"
+#include "core/light.h"
+#include "core/invent.h"
+#include "core/files.h"
+#include "core/end.h"
+#include "core/drawing.h"
+#include "core/dog.h"
 
-#include "allmain.h"
-#include "artifact.h"
-#include "botl.h"
-#include "lev.h"
-#include "tcap.h" /* for TERMLIB and ASCIIGRAPH */
+#include "core/allmain.h"
+#include "core/artifact.h"
+#include "core/botl.h"
+#include "core/lev.h"
+#include "core/tcap.h" /* for TERMLIB and ASCIIGRAPH */
 
 using std::string;
 
@@ -82,7 +82,7 @@ STATIC_DCL void add_id_mapping(unsigned, unsigned);
 static int n_ids_mapped = 0;
 static struct bucket *id_map = 0;
 
-#include "quest.h"
+#include "core/quest.h"
 
 bool restoring = FALSE;
 static struct fruit *oldfruit;

@@ -7,7 +7,7 @@
 
 #include <string>
 
-#include "global.h"
+#include "core/global.h"
 
 // Forward declarations
 struct Object;

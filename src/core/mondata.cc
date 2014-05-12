@@ -4,17 +4,17 @@
 
 #include <string.h>
 
-#include "hack.h"
-#include "worm.h"
-#include "wizard.h"
-#include "shk.h"
-#include "hacklib.h"
-#include "end.h"
+#include "core/hack.h"
+#include "core/worm.h"
+#include "core/wizard.h"
+#include "core/shk.h"
+#include "core/hacklib.h"
+#include "core/end.h"
 
-#include "artifact.h"
-#include "botl.h"
-#include "eshk.h"
-#include "epri.h"
+#include "core/artifact.h"
+#include "core/botl.h"
+#include "core/eshk.h"
+#include "core/epri.h"
 
 /*	These routines provide basic data for any type of monster. */
 

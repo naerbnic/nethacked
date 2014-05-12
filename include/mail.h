@@ -6,7 +6,7 @@
 #ifndef MAIL_H
 #define MAIL_H
 
-#include "obj.h"
+#include "core/obj.h"
 
 #define MSG_OTHER 0 /* catch-all; none of the below... */
 #define MSG_MAIL 1  /* unimportant, uninteresting mail message */

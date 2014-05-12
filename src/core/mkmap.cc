@@ -4,12 +4,12 @@
 
 #include <string.h>
 
-#include "hack.h"
-#include "rnd.h"
-#include "pline.h"
-#include "mklev.h"
-#include "cmd.h"
-#include "sp_lev.h"
+#include "core/hack.h"
+#include "core/rnd.h"
+#include "core/pline.h"
+#include "core/mklev.h"
+#include "core/cmd.h"
+#include "core/sp_lev.h"
 
 #define HEIGHT (ROWNO - 1)
 #define WIDTH (COLNO - 2)

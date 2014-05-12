@@ -10,9 +10,9 @@
 
 #include <stdarg.h>
 
-#include "hack.h"
-#include "unixtty.h"
-#include "ioctl.h"
+#include "core/hack.h"
+#include "core/unixtty.h"
+#include "core/ioctl.h"
 
 /*
  * The distinctions here are not BSD - rest but rather USG - rest, as

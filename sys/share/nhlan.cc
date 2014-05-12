@@ -19,7 +19,7 @@
  *
  */
 
-#include "hack.h"
+#include "core/hack.h"
 #include <ctype.h>
 
 #ifdef LAN_FEATURES

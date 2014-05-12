@@ -8,7 +8,7 @@
 #ifndef EXPLODE_H_
 #define EXPLODE_H_
 
-#include "obj.h"
+#include "core/obj.h"
 
 void explode(int, int, int, int, char, int);
 long scatter(int, int, int, unsigned int, Object *);

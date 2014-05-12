@@ -5,17 +5,17 @@
 #include <string.h>
 #include <stdarg.h>
 
-#include "hack.h"
-#include "worn.h"
-#include "polyself.h"
-#include "objnam.h"
-#include "hacklib.h"
-#include "files.h"
-#include "end.h"
-#include "do_name.h"
-#include "epri.h"
+#include "core/hack.h"
+#include "core/worn.h"
+#include "core/polyself.h"
+#include "core/objnam.h"
+#include "core/hacklib.h"
+#include "core/files.h"
+#include "core/end.h"
+#include "core/do_name.h"
+#include "core/epri.h"
 #ifdef WIZARD
-#include "edog.h"
+#include "core/edog.h"
 #endif
 
 #ifdef OVLB

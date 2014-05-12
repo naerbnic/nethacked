@@ -8,9 +8,9 @@
 #ifndef APPLY_H_
 #define APPLY_H_
 
-#include "obj.h"
-#include "monst.h"
-#include "tradstdc.h"
+#include "core/obj.h"
+#include "core/monst.h"
+#include "core/tradstdc.h"
 
 extern int doapply();
 extern int dorub();

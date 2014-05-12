@@ -1,38 +1,38 @@
 /*	SCCS Id: @(#)artifact.c 3.4	2003/08/11	*/
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
-#include "artifact.h"
+#include "core/artifact.h"
 
 #include <string.h>
 
 #include <algorithm>
 #include <string>
 
-#include "hack.h"
-#include "zap.h"
-#include "worm.h"
-#include "teleport.h"
-#include "save.h"
-#include "rumors.h"
-#include "rnd.h"
-#include "restore.h"
-#include "read.h"
-#include "potion.h"
-#include "polyself.h"
-#include "pline.h"
-#include "objnam.h"
-#include "monmove.h"
-#include "mkobj.h"
-#include "invent.h"
-#include "hacklib.h"
-#include "exper.h"
-#include "do_name.h"
-#include "do.h"
-#include "detect.h"
-#include "cmd.h"
-#include "artifact.h"
+#include "core/hack.h"
+#include "core/zap.h"
+#include "core/worm.h"
+#include "core/teleport.h"
+#include "core/save.h"
+#include "core/rumors.h"
+#include "core/rnd.h"
+#include "core/restore.h"
+#include "core/read.h"
+#include "core/potion.h"
+#include "core/polyself.h"
+#include "core/pline.h"
+#include "core/objnam.h"
+#include "core/monmove.h"
+#include "core/mkobj.h"
+#include "core/invent.h"
+#include "core/hacklib.h"
+#include "core/exper.h"
+#include "core/do_name.h"
+#include "core/do.h"
+#include "core/detect.h"
+#include "core/cmd.h"
+#include "core/artifact.h"
 #ifdef OVLB
-#include "artilist.h"
+#include "core/artilist.h"
 #else
 STATIC_DCL Artifact artilist[];
 #endif

@@ -5,12 +5,12 @@
 #ifndef YOU_H
 #define YOU_H
 
-#include "attrib.h"
-#include "monst.h"
+#include "core/attrib.h"
+#include "core/monst.h"
 #ifndef PROP_H
-#include "prop.h" /* (needed here for util/makedefs.c) */
+#include "core/prop.h" /* (needed here for util/makedefs.c) */
 #endif
-#include "skills.h"
+#include "core/skills.h"
 
 /*** Substructures ***/
 

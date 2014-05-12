@@ -4,27 +4,27 @@
 
 #include <string.h>
 
-#include "hack.h"
-#include "worm.h"
-#include "teleport.h"
-#include "save.h"
-#include "rnd.h"
-#include "restore.h"
-#include "pline.h"
-#include "mon.h"
-#include "mkobj.h"
-#include "mkmaze.h"
-#include "mklev.h"
-#include "makemon.h"
-#include "hacklib.h"
-#include "end.h"
-#include "detect.h"
-#include "dbridge.h"
-#include "cmd.h"
+#include "core/hack.h"
+#include "core/worm.h"
+#include "core/teleport.h"
+#include "core/save.h"
+#include "core/rnd.h"
+#include "core/restore.h"
+#include "core/pline.h"
+#include "core/mon.h"
+#include "core/mkobj.h"
+#include "core/mkmaze.h"
+#include "core/mklev.h"
+#include "core/makemon.h"
+#include "core/hacklib.h"
+#include "core/end.h"
+#include "core/detect.h"
+#include "core/dbridge.h"
+#include "core/cmd.h"
 
-#include "ball.h"
-#include "sp_lev.h"
-#include "lev.h" /* save & restore info */
+#include "core/ball.h"
+#include "core/sp_lev.h"
+#include "core/lev.h" /* save & restore info */
 
 /* from sp_lev.c, for fixup_special() */
 extern char *lev_message;

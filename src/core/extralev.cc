@@ -2,19 +2,19 @@
 /*	Copyright 1988, 1989 by Ken Arromdee				*/
 /* NetHack may be freely redistributed.  See license for details. */
 
-#include "extralev.h"
+#include "core/extralev.h"
 
 /*
  * Support code for "rogue"-style level.
  */
 
-#include "hack.h"
-#include "rnd.h"
-#include "pline.h"
-#include "mkobj.h"
-#include "mklev.h"
-#include "makemon.h"
-#include "do_name.h"
+#include "core/hack.h"
+#include "core/rnd.h"
+#include "core/pline.h"
+#include "core/mkobj.h"
+#include "core/mklev.h"
+#include "core/makemon.h"
+#include "core/do_name.h"
 
 #ifdef REINCARNATION
 

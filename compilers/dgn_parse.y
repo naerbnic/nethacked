@@ -24,9 +24,9 @@
  #pragma alloca		/* keep leading space! */
 #endif
 
-#include "config.h"
-#include "date.h"
-#include "dgn_file.h"
+#include "core/config.h"
+#include "core/date.h"
+#include "core/dgn_file.h"
 
 void yyerror(const char *);
 void yywarning(const char *);

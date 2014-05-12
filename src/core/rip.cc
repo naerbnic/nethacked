@@ -4,10 +4,10 @@
 
 #include <string.h>
 
-#include "hack.h"
-#include "pline.h"
-#include "objnam.h"
-#include "hacklib.h"
+#include "core/hack.h"
+#include "core/pline.h"
+#include "core/objnam.h"
+#include "core/hacklib.h"
 
 STATIC_DCL void center(int, char *);
 

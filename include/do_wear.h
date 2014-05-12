@@ -8,8 +8,8 @@
 #ifndef DO_WEAR_H_
 #define DO_WEAR_H_
 
-#include "monst.h"
-#include "obj.h"
+#include "core/monst.h"
+#include "core/obj.h"
 
 void off_msg(Object *);
 void set_wear();

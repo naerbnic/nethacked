@@ -1,7 +1,7 @@
 #ifndef ALLMAIN_H_
 #define ALLMAIN_H_
 
-#include "config.h"
+#include "core/config.h"
 
 extern void moveloop();
 extern void stop_occupation();

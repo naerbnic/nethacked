@@ -4,22 +4,22 @@
 
 #include <string.h>
 
-#include "hack.h"
-#include "save.h"
-#include "role.h"
-#include "rnd.h"
-#include "pline.h"
-#include "objnam.h"
-#include "mkobj.h"
-#include "hacklib.h"
-#include "files.h"
-#include "end.h"
-#include "do_name.h"
-#include "dlb.h"
+#include "core/hack.h"
+#include "core/save.h"
+#include "core/role.h"
+#include "core/rnd.h"
+#include "core/pline.h"
+#include "core/objnam.h"
+#include "core/mkobj.h"
+#include "core/hacklib.h"
+#include "core/files.h"
+#include "core/end.h"
+#include "core/do_name.h"
+#include "core/dlb.h"
 #ifdef SHORT_FILENAMES
 #include "patchlev.h"
 #else
-#include "patchlevel.h"
+#include "core/patchlevel.h"
 #endif
 
 /*

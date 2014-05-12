@@ -25,8 +25,8 @@
  #pragma alloca		/* keep leading space! */
 #endif
 
-#include "hack.h"
-#include "sp_lev.h"
+#include "core/hack.h"
+#include "core/sp_lev.h"
 
 #define MAX_REGISTERS	10
 #define ERR		(-1)

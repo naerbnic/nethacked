@@ -4,20 +4,20 @@
 
 #include <string.h>
 
-#include "hack.h"
-#include "worn.h"
-#include "teleport.h"
-#include "steal.h"
-#include "rnd.h"
-#include "pline.h"
-#include "objnam.h"
-#include "muse.h"
-#include "mkobj.h"
-#include "makemon.h"
-#include "do_name.h"
+#include "core/hack.h"
+#include "core/worn.h"
+#include "core/teleport.h"
+#include "core/steal.h"
+#include "core/rnd.h"
+#include "core/pline.h"
+#include "core/objnam.h"
+#include "core/muse.h"
+#include "core/mkobj.h"
+#include "core/makemon.h"
+#include "core/do_name.h"
 
-#include "artifact.h"
-#include "botl.h"
+#include "core/artifact.h"
+#include "core/botl.h"
 
 STATIC_DCL const char *dev_name();
 STATIC_DCL void get_mplname(Monster *, char *);

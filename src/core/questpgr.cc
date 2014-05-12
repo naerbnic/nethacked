@@ -4,22 +4,22 @@
 
 #include <string.h>
 
-#include "hack.h"
-#include "rnd.h"
-#include "pray.h"
-#include "pline.h"
-#include "objnam.h"
-#include "makemon.h"
-#include "hacklib.h"
-#include "end.h"
+#include "core/hack.h"
+#include "core/rnd.h"
+#include "core/pray.h"
+#include "core/pline.h"
+#include "core/objnam.h"
+#include "core/makemon.h"
+#include "core/hacklib.h"
+#include "core/end.h"
 
-#include "artifact.h"
-#include "botl.h"
-#include "dlb.h"
+#include "core/artifact.h"
+#include "core/botl.h"
+#include "core/dlb.h"
 
 /*  quest-specific pager routines. */
 
-#include "qtext.h"
+#include "core/qtext.h"
 
 #define QTEXT_FILE "quest.dat"
 

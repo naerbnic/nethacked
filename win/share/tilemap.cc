@@ -7,7 +7,7 @@
  *	then again with it defined to produce tiletxt.{o,obj}.
  */
 
-#include "hack.h"
+#include "core/hack.h"
 
 const char *tilename(int, int);
 void init_tilemap();

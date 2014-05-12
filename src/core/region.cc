@@ -4,19 +4,19 @@
 
 #include <string.h>
 
-#include "hack.h"
-#include "save.h"
-#include "rnd.h"
-#include "restore.h"
-#include "potion.h"
-#include "polyself.h"
-#include "pline.h"
-#include "objnam.h"
-#include "mon.h"
-#include "light.h"
-#include "do_name.h"
-#include "cmd.h"
-#include "lev.h"
+#include "core/hack.h"
+#include "core/save.h"
+#include "core/rnd.h"
+#include "core/restore.h"
+#include "core/potion.h"
+#include "core/polyself.h"
+#include "core/pline.h"
+#include "core/objnam.h"
+#include "core/mon.h"
+#include "core/light.h"
+#include "core/do_name.h"
+#include "core/cmd.h"
+#include "core/lev.h"
 
 /*
  * This should really go into the level structure, but

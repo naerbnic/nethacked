@@ -4,13 +4,13 @@
 
 /* This file collects some Unix dependencies */
 
-#include "hack.h" /* mainly for index() which depends on BSD */
-#include "unixunix.h"
-#include "unixtty.h"
-#include "pline.h"
-#include "files.h"
-#include "end.h"
-#include "cmd.h"
+#include "core/hack.h" /* mainly for index() which depends on BSD */
+#include "core/unixunix.h"
+#include "core/unixtty.h"
+#include "core/pline.h"
+#include "core/files.h"
+#include "core/end.h"
+#include "core/cmd.h"
 
 #include <errno.h>
 #include <sys/stat.h>

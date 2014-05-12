@@ -6,7 +6,7 @@
 #define DGN_FILE_H
 
 #ifndef ALIGN_H
-#include "align.h"
+#include "core/align.h"
 #endif
 
 /*

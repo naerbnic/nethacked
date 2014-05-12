@@ -8,9 +8,9 @@
 #ifndef DOG_H_
 #define DOG_H_
 
-#include "monst.h"
-#include "obj.h"
-#include "global.h"
+#include "core/monst.h"
+#include "core/obj.h"
+#include "core/global.h"
 
 void initedog(Monster *);
 Monster *make_familiar(Object *, xchar, xchar, bool);

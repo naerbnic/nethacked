@@ -4,18 +4,18 @@
 
 #include <string.h>
 
-#include "hack.h"
-#include "unixtty.h"
-#include "save.h"
-#include "rnd.h"
-#include "restore.h"
-#include "pline.h"
-#include "objnam.h"
-#include "invent.h"
-#include "hacklib.h"
+#include "core/hack.h"
+#include "core/unixtty.h"
+#include "core/save.h"
+#include "core/rnd.h"
+#include "core/restore.h"
+#include "core/pline.h"
+#include "core/objnam.h"
+#include "core/invent.h"
+#include "core/hacklib.h"
 
-#include "artifact.h"
-#include "lev.h" /* save & restore info */
+#include "core/artifact.h"
+#include "core/lev.h" /* save & restore info */
 #include "range.h"
 
 STATIC_DCL void setgemprobs(d_level *);

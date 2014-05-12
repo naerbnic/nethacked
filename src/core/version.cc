@@ -4,11 +4,11 @@
 
 #include <string.h>
 
-#include "hack.h"
-#include "save.h"
-#include "restore.h"
-#include "pline.h"
-#include "date.h"
+#include "core/hack.h"
+#include "core/save.h"
+#include "core/restore.h"
+#include "core/pline.h"
+#include "core/date.h"
 /*
  * All the references to the contents of patchlevel.h have been moved
  * into makedefs....
@@ -16,7 +16,7 @@
 #ifdef SHORT_FILENAMES
 #include "patchlev.h"
 #else
-#include "patchlevel.h"
+#include "core/patchlevel.h"
 #endif
 
 /* #define BETA_INFO "" */ /* "[ beta n]" */

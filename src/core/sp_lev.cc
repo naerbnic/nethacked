@@ -11,29 +11,29 @@
 
 #include <string.h>
 
-#include "hack.h"
-#include "version.h"
-#include "teleport.h"
-#include "shknam.h"
-#include "shk.h"
-#include "rnd.h"
-#include "priest.h"
-#include "pline.h"
-#include "mplayer.h"
-#include "mon.h"
-#include "mkobj.h"
-#include "mkmaze.h"
-#include "mkmap.h"
-#include "mklev.h"
-#include "makemon.h"
-#include "invent.h"
-#include "hacklib.h"
-#include "end.h"
-#include "drawing.h"
-#include "do_name.h"
-#include "dbridge.h"
-#include "cmd.h"
-#include "dlb.h"
+#include "core/hack.h"
+#include "core/version.h"
+#include "core/teleport.h"
+#include "core/shknam.h"
+#include "core/shk.h"
+#include "core/rnd.h"
+#include "core/priest.h"
+#include "core/pline.h"
+#include "core/mplayer.h"
+#include "core/mon.h"
+#include "core/mkobj.h"
+#include "core/mkmaze.h"
+#include "core/mkmap.h"
+#include "core/mklev.h"
+#include "core/makemon.h"
+#include "core/invent.h"
+#include "core/hacklib.h"
+#include "core/end.h"
+#include "core/drawing.h"
+#include "core/do_name.h"
+#include "core/dbridge.h"
+#include "core/cmd.h"
+#include "core/dlb.h"
 /* #define DEBUG */ /* uncomment to enable code debugging */
 
 #ifdef DEBUG
@@ -46,8 +46,8 @@
 #endif
 #endif
 
-#include "sp_lev.h"
-#include "rect.h"
+#include "core/sp_lev.h"
+#include "core/rect.h"
 
 extern void mkmap(lev_init *);
 

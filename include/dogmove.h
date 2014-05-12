@@ -8,8 +8,8 @@
 #ifndef DOGMOVE_H_
 #define DOGMOVE_H_
 
-#include "monst.h"
-#include "obj.h"
+#include "core/monst.h"
+#include "core/obj.h"
 
 int dog_nutrition(Monster *, Object *);
 int dog_eat(Monster *, Object *, int, int, bool);

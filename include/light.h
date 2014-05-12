@@ -8,9 +8,9 @@
 #ifndef LIGHT_H_
 #define LIGHT_H_
 
-#include "global.h"
-#include "obj.h"
-#include "tradstdc.h"
+#include "core/global.h"
+#include "core/obj.h"
+#include "core/tradstdc.h"
 
 void new_light_source(xchar, xchar, int, int, genericptr_t);
 void del_light_source(int, genericptr_t);

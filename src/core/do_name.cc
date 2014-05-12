@@ -2,33 +2,33 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
-#include "do_name.h"
+#include "core/do_name.h"
 
 #include <string.h>
 #include <string>
 
-#include "hack.h"
-#include "worn.h"
-#include "worm.h"
-#include "wield.h"
-#include "shk.h"
-#include "rnd.h"
-#include "priest.h"
-#include "polyself.h"
-#include "pline.h"
-#include "options.h"
-#include "objnam.h"
-#include "o_init.h"
-#include "mon.h"
-#include "mkobj.h"
-#include "light.h"
-#include "invent.h"
-#include "hacklib.h"
-#include "eat.h"
-#include "cmd.h"
+#include "core/hack.h"
+#include "core/worn.h"
+#include "core/worm.h"
+#include "core/wield.h"
+#include "core/shk.h"
+#include "core/rnd.h"
+#include "core/priest.h"
+#include "core/polyself.h"
+#include "core/pline.h"
+#include "core/options.h"
+#include "core/objnam.h"
+#include "core/o_init.h"
+#include "core/mon.h"
+#include "core/mkobj.h"
+#include "core/light.h"
+#include "core/invent.h"
+#include "core/hacklib.h"
+#include "core/eat.h"
+#include "core/cmd.h"
 
-#include "artifact.h"
-#include "botl.h"
+#include "core/artifact.h"
+#include "core/botl.h"
 
 using std::string;
 

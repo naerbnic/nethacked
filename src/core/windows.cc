@@ -2,11 +2,11 @@
 /* Copyright (c) D. Cohrs, 1993. */
 /* NetHack may be freely redistributed.  See license for details. */
 
-#include "hack.h"
-#include "pline.h"
-#include "hacklib.h"
-#include "end.h"
-#include "wintty.h"
+#include "core/hack.h"
+#include "core/pline.h"
+#include "core/hacklib.h"
+#include "core/end.h"
+#include "core/wintty.h"
 
 STATIC_DCL void def_raw_print(const char *s);
 

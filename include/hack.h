@@ -6,7 +6,7 @@
 #define HACK_H
 
 #ifndef CONFIG_H
-#include "config.h"
+#include "core/config.h"
 #endif
 
 /*	For debugging beta code.	*/
@@ -82,14 +82,14 @@
 #define ESCAPED 14
 #define ASCENDED 15
 
-#include "dungeon.h"
-#include "monsym.h"
-#include "mkroom.h"
-#include "objclass.h"
-#include "youprop.h"
-#include "wintype.h"
-#include "decl.h"
-#include "timeout.h"
+#include "core/dungeon.h"
+#include "core/monsym.h"
+#include "core/mkroom.h"
+#include "core/objclass.h"
+#include "core/youprop.h"
+#include "core/wintype.h"
+#include "core/decl.h"
+#include "core/timeout.h"
 
 extern coord bhitpos; /* place where throw or zap hits or stops */
 
@@ -103,16 +103,16 @@ extern coord bhitpos; /* place where throw or zap hits or stops */
 #define MATCH_WARN_OF_MON(mon) \
   (Warn_of_mon && flags.warntype && (flags.warntype & (mon)->data->mflags2))
 
-#include "trap.h"
-#include "flag.h"
-#include "rm.h"
-#include "vision.h"
-#include "display.h"
-#include "engrave.h"
-#include "rect.h"
-#include "region.h"
+#include "core/trap.h"
+#include "core/flag.h"
+#include "core/rm.h"
+#include "core/vision.h"
+#include "core/display.h"
+#include "core/engrave.h"
+#include "core/rect.h"
+#include "core/region.h"
 
-#include "winprocs.h"
+#include "core/winprocs.h"
 
 #define NO_SPELL 0
 

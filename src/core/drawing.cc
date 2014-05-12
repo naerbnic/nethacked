@@ -7,8 +7,8 @@
 
 using std::vector;
 
-#include "hack.h"
-#include "tcap.h"
+#include "core/hack.h"
+#include "core/tcap.h"
 
 /* Relevent header information in rm.h and objclass.h. */
 

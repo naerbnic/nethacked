@@ -8,7 +8,7 @@
 #ifndef BALL_H_
 #define BALL_H_
 
-#include "global.h"
+#include "core/global.h"
 
 extern void ballfall();
 extern void placebc();

@@ -4,21 +4,21 @@
 
 #include <string.h>
 
-#include "hack.h"
-#include "worn.h"
-#include "wield.h"
-#include "weapon.h"
-#include "vault.h"
-#include "rnd.h"
-#include "polyself.h"
-#include "o_init.h"
-#include "mkobj.h"
-#include "invent.h"
-#include "files.h"
-#include "eat.h"
-#include "do_wear.h"
+#include "core/hack.h"
+#include "core/worn.h"
+#include "core/wield.h"
+#include "core/weapon.h"
+#include "core/vault.h"
+#include "core/rnd.h"
+#include "core/polyself.h"
+#include "core/o_init.h"
+#include "core/mkobj.h"
+#include "core/invent.h"
+#include "core/files.h"
+#include "core/eat.h"
+#include "core/do_wear.h"
 
-#include "botl.h"
+#include "core/botl.h"
 
 struct trobj {
   short trotyp;

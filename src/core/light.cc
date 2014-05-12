@@ -2,18 +2,18 @@
 /* Copyright (c) Dean Luick, 1994					*/
 /* NetHack may be freely redistributed.  See license for details.	*/
 
-#include "light.h"
+#include "core/light.h"
 
-#include "hack.h"
-#include "zap.h"
-#include "shk.h"
-#include "save.h"
-#include "restore.h"
-#include "pline.h"
-#include "end.h"
+#include "core/hack.h"
+#include "core/zap.h"
+#include "core/shk.h"
+#include "core/save.h"
+#include "core/restore.h"
+#include "core/pline.h"
+#include "core/end.h"
 
-#include "artifact.h"
-#include "lev.h" /* for checking save modes */
+#include "core/artifact.h"
+#include "core/lev.h" /* for checking save modes */
 
 /*
  * Mobile light sources.

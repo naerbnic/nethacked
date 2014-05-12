@@ -5,9 +5,9 @@
 #ifndef MONST_H
 #define MONST_H
 
-#include "alloc.h"
-#include "config.h"
-#include "permonst.h"
+#include "core/alloc.h"
+#include "core/config.h"
+#include "core/permonst.h"
 
 // Forward declarations
 struct Object;
@@ -40,7 +40,7 @@ struct Object;
 #define MINV_NOLET 0x01
 #define MINV_ALL 0x02
 
-#include "align.h"
+#include "core/align.h"
 
 struct Monster {
   Monster *nmon;

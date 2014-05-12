@@ -3,14 +3,14 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 /* first pass */
-#include "config.h"
-#include "obj.h"
-#include "objclass.h"
-#include "prop.h"
-#include "skills.h"
+#include "core/config.h"
+#include "core/obj.h"
+#include "core/objclass.h"
+#include "core/prop.h"
+#include "core/skills.h"
 
 /* second pass */
-#include "color.h"
+#include "core/color.h"
 #define COLOR_FIELD(X) X,
 
 /* objects have symbols: ) [ = " ( % ! ? + / $ * ` 0 _ . */

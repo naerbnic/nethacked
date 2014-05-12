@@ -6,7 +6,7 @@
 #define MKROOM_H
 
 #include <vector>
-#include "monst.h"
+#include "core/monst.h"
 
 /* mkroom.h - types and structures for room and shop initialization */
 

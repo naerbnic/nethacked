@@ -4,25 +4,25 @@
 
 #include <string.h>
 
-#include "hack.h"
-#include "zap.h"
-#include "shk.h"
-#include "rnd.h"
-#include "pline.h"
-#include "options.h"
-#include "o_init.h"
-#include "mkobj.h"
-#include "mkmaze.h"
-#include "mklev.h"
-#include "makemon.h"
-#include "invent.h"
-#include "extralev.h"
-#include "end.h"
-#include "sp_lev.h"
-#include "dbridge.h"
-#include "cmd.h"
+#include "core/hack.h"
+#include "core/zap.h"
+#include "core/shk.h"
+#include "core/rnd.h"
+#include "core/pline.h"
+#include "core/options.h"
+#include "core/o_init.h"
+#include "core/mkobj.h"
+#include "core/mkmaze.h"
+#include "core/mklev.h"
+#include "core/makemon.h"
+#include "core/invent.h"
+#include "core/extralev.h"
+#include "core/end.h"
+#include "core/sp_lev.h"
+#include "core/dbridge.h"
+#include "core/cmd.h"
 
-#include "bones.h"
+#include "core/bones.h"
 /* #define DEBUG */ /* uncomment to enable code debugging */
 
 #ifdef DEBUG

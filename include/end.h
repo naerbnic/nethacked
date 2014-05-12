@@ -8,9 +8,9 @@
 #ifndef END_H_
 #define END_H_
 
-#include "monst.h"
-#include "obj.h"
-#include "tradstdc.h"
+#include "core/monst.h"
+#include "core/obj.h"
+#include "core/tradstdc.h"
 
 void done1(int);
 int done2();

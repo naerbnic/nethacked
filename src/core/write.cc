@@ -3,16 +3,16 @@
 
 #include <string.h>
 
-#include "hack.h"
-#include "shk.h"
-#include "rnd.h"
-#include "polyself.h"
-#include "pline.h"
-#include "objnam.h"
-#include "mkobj.h"
-#include "invent.h"
-#include "hacklib.h"
-#include "do.h"
+#include "core/hack.h"
+#include "core/shk.h"
+#include "core/rnd.h"
+#include "core/polyself.h"
+#include "core/pline.h"
+#include "core/objnam.h"
+#include "core/mkobj.h"
+#include "core/invent.h"
+#include "core/hacklib.h"
+#include "core/do.h"
 
 STATIC_DCL int cost(Object *);
 

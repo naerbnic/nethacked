@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <cstdint>
 
-#include "config.h"
+#include "core/config.h"
 
 /* #define BETA	*/ /* if a beta-test copy	[MRS] */
 
@@ -82,13 +82,13 @@ typedef schar xchar;
 #define Getchar pgetchar
 #endif
 
-#include "coord.h"
+#include "core/coord.h"
 /*
  * Automatic inclusions for the subsidiary files.
  * Please don't change the order.  It does matter.
  */
 
-#include "unixconf.h"
+#include "core/unixconf.h"
 
 /* Displayable name of this port; don't redefine if defined in *conf.h */
 #define PORT_ID "Unix"

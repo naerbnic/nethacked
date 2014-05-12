@@ -4,8 +4,8 @@
 
 /* Create a set of overview tiles by eliminating even pixels in original */
 
-#include "config.h"
-#include "tile.h"
+#include "core/config.h"
+#include "core/tile.h"
 
 #ifdef __GO32__
 #include <unistd.h>

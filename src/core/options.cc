@@ -5,25 +5,25 @@
 #include <string.h>
 
 #ifdef OPTION_LISTS_ONLY /* (AMIGA) external program for opt lists */
-#include "config.h"
-#include "objclass.h"
-#include "flag.h"
+#include "core/config.h"
+#include "core/objclass.h"
+#include "core/flag.h"
 struct flag flags;            /* provide linkage */
 struct instance_flags iflags; /* provide linkage */
 #define static
 #else
-#include "hack.h"
-#include "windows.h"
-#include "version.h"
-#include "role.h"
-#include "rnd.h"
-#include "pline.h"
-#include "options.h"
-#include "invent.h"
-#include "hacklib.h"
-#include "files.h"
-#include "drawing.h"
-#include "tcap.h"
+#include "core/hack.h"
+#include "core/windows.h"
+#include "core/version.h"
+#include "core/role.h"
+#include "core/rnd.h"
+#include "core/pline.h"
+#include "core/options.h"
+#include "core/invent.h"
+#include "core/hacklib.h"
+#include "core/files.h"
+#include "core/drawing.h"
+#include "core/tcap.h"
 #include <ctype.h>
 #endif
 

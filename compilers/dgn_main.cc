@@ -14,8 +14,8 @@ using std::string;
 
 #include <string.h>
 
-#include "config.h"
-#include "dlb.h"
+#include "core/config.h"
+#include "core/dlb.h"
 
 #define MAX_ERRORS 25
 

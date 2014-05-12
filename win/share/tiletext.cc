@@ -3,8 +3,8 @@
 
 #include <string.h>
 
-#include "config.h"
-#include "tile.h"
+#include "core/config.h"
+#include "core/tile.h"
 
 pixval ColorMap[3][MAXCOLORMAPSIZE];
 int colorsinmap;

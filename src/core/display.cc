@@ -118,18 +118,18 @@
 
 #include <string.h>
 
-#include "hack.h"
-#include "worm.h"
-#include "rnd.h"
-#include "pline.h"
-#include "invent.h"
-#include "hacklib.h"
-#include "end.h"
-#include "dbridge.h"
-#include "cmd.h"
+#include "core/hack.h"
+#include "core/worm.h"
+#include "core/rnd.h"
+#include "core/pline.h"
+#include "core/invent.h"
+#include "core/hacklib.h"
+#include "core/end.h"
+#include "core/dbridge.h"
+#include "core/cmd.h"
 
-#include "botl.h"
-#include "region.h"
+#include "core/botl.h"
+#include "core/region.h"
 
 STATIC_DCL void display_monster(xchar, xchar, Monster *, int, xchar);
 STATIC_DCL int swallow_to_glyph(int, int);

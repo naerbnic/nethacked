@@ -2,28 +2,28 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
-#include "lock.h"
+#include "core/lock.h"
 
-#include "hack.h"
-#include "zap.h"
-#include "worm.h"
-#include "uhitm.h"
-#include "shk.h"
-#include "rnd.h"
-#include "potion.h"
-#include "pline.h"
-#include "pickup.h"
-#include "objnam.h"
-#include "monmove.h"
-#include "mon.h"
-#include "mkobj.h"
-#include "invent.h"
-#include "hacklib.h"
-#include "do_name.h"
-#include "dbridge.h"
-#include "cmd.h"
+#include "core/hack.h"
+#include "core/zap.h"
+#include "core/worm.h"
+#include "core/uhitm.h"
+#include "core/shk.h"
+#include "core/rnd.h"
+#include "core/potion.h"
+#include "core/pline.h"
+#include "core/pickup.h"
+#include "core/objnam.h"
+#include "core/monmove.h"
+#include "core/mon.h"
+#include "core/mkobj.h"
+#include "core/invent.h"
+#include "core/hacklib.h"
+#include "core/do_name.h"
+#include "core/dbridge.h"
+#include "core/cmd.h"
 
-#include "allmain.h"
+#include "core/allmain.h"
 
 STATIC_PTR int picklock();
 STATIC_PTR int forcelock();

@@ -8,8 +8,8 @@
 #ifndef MCASTU_H_
 #define MCASTU_H_
 
-#include "monst.h"
-#include "permonst.h"
+#include "core/monst.h"
+#include "core/permonst.h"
 
 int castmu(Monster *, struct Attack *, bool, bool);
 int buzzmu(Monster *, struct Attack *);

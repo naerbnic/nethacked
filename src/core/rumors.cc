@@ -4,19 +4,19 @@
 
 #include <string.h>
 
-#include "hack.h"
-#include "save.h"
-#include "rnd.h"
-#include "restore.h"
-#include "pline.h"
-#include "invent.h"
-#include "hacklib.h"
-#include "exper.h"
-#include "eat.h"
-#include "do_name.h"
-#include "cmd.h"
-#include "lev.h"
-#include "dlb.h"
+#include "core/hack.h"
+#include "core/save.h"
+#include "core/rnd.h"
+#include "core/restore.h"
+#include "core/pline.h"
+#include "core/invent.h"
+#include "core/hacklib.h"
+#include "core/exper.h"
+#include "core/eat.h"
+#include "core/do_name.h"
+#include "core/cmd.h"
+#include "core/lev.h"
+#include "core/dlb.h"
 
 /*	[note: this comment is fairly old, but still accurate for 3.1]
  * Rumors have been entirely rewritten to speed up the access.  This is

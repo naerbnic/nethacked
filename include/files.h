@@ -8,7 +8,7 @@
 #ifndef FILES_H_
 #define FILES_H_
 
-#include "dungeon.h"
+#include "core/dungeon.h"
 
 char *fname_encode(const char *, char, char *, char *, int);
 char *fname_decode(char, char *, char *, int);

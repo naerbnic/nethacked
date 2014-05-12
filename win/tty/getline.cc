@@ -2,15 +2,15 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
-#include "hack.h"
-#include "pline.h"
-#include "hacklib.h"
-#include "cmd.h"
+#include "core/hack.h"
+#include "core/pline.h"
+#include "core/hacklib.h"
+#include "core/cmd.h"
 
 #define NEWAUTOCOMP
 
-#include "wintty.h"
-#include "func_tab.h"
+#include "core/wintty.h"
+#include "core/func_tab.h"
 
 #ifdef OVL1
 char morc = 0; /* tell the outside world what char you chose */

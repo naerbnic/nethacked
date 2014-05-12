@@ -8,9 +8,9 @@
 #ifndef DIG_H_
 #define DIG_H_
 
-#include "monst.h"
-#include "obj.h"
-#include "tradstdc.h"
+#include "core/monst.h"
+#include "core/obj.h"
+#include "core/tradstdc.h"
 
 bool is_digging();
 int holetime();

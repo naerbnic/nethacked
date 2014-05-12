@@ -8,7 +8,7 @@
 #ifndef HACKLIB_H_
 #define HACKLIB_H_
 
-#include "config.h"
+#include "core/config.h"
 
 bool digit(char);
 bool letter(char);

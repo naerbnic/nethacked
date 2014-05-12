@@ -8,7 +8,7 @@
 #ifndef EAT_H_
 #define EAT_H_
 
-#include "obj.h"
+#include "core/obj.h"
 
 bool is_edible(Object *);
 void init_uhunger();

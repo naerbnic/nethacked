@@ -10,25 +10,25 @@
  * deal with players as well. - 11/89
  */
 
-#include "dbridge.h"
+#include "core/dbridge.h"
 
 #include <string.h>
 
-#include "hack.h"
-#include "worm.h"
-#include "teleport.h"
-#include "steed.h"
-#include "rnd.h"
-#include "pline.h"
-#include "objnam.h"
-#include "mon.h"
-#include "mkobj.h"
-#include "invent.h"
-#include "hacklib.h"
-#include "end.h"
-#include "do_name.h"
-#include "do.h"
-#include "cmd.h"
+#include "core/hack.h"
+#include "core/worm.h"
+#include "core/teleport.h"
+#include "core/steed.h"
+#include "core/rnd.h"
+#include "core/pline.h"
+#include "core/objnam.h"
+#include "core/mon.h"
+#include "core/mkobj.h"
+#include "core/invent.h"
+#include "core/hacklib.h"
+#include "core/end.h"
+#include "core/do_name.h"
+#include "core/do.h"
+#include "core/cmd.h"
 
 #ifdef OVLB
 STATIC_DCL void get_wall_for_db(int *, int *);

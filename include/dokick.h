@@ -8,8 +8,8 @@
 #ifndef DOKICK_H_
 #define DOKICK_H_
 
-#include "monst.h"
-#include "obj.h"
+#include "core/monst.h"
+#include "core/obj.h"
 
 bool ghitm(Monster *, Object *);
 void container_impact_dmg(Object *);

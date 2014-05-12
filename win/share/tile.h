@@ -17,7 +17,7 @@ extern int colorsinmap;
 extern pixval MainColorMap[3][MAXCOLORMAPSIZE];
 extern int colorsinmainmap;
 
-#include "dlb.h" /* for MODEs */
+#include "core/dlb.h" /* for MODEs */
 
 /* size of tiles */
 #ifndef TILE_X

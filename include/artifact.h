@@ -5,10 +5,10 @@
 #ifndef ARTIFACT_H
 #define ARTIFACT_H
 
-#include "obj.h"
-#include "permonst.h"
-#include "prop.h"
-#include "wintype.h"
+#include "core/obj.h"
+#include "core/permonst.h"
+#include "core/prop.h"
+#include "core/wintype.h"
 
 #define SPFX_NONE 0x0000000L    /* no special effects, just a bonus */
 #define SPFX_NOGEN 0x0000001L   /* item is special, bequeathed by gods */

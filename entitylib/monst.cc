@@ -2,13 +2,13 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
-#include "config.h"
-#include "permonst.h"
-#include "monsym.h"
-#include "dungeon.h" /* prerequisite for eshk,vault,epri */
-#include "eshk.h"
-#include "vault.h"
-#include "epri.h"
+#include "core/config.h"
+#include "core/permonst.h"
+#include "core/monsym.h"
+#include "core/dungeon.h" /* prerequisite for eshk,vault,epri */
+#include "core/eshk.h"
+#include "core/vault.h"
+#include "core/epri.h"
 
 #define NO_ATTK \
   { 0, 0, 0, 0 }
@@ -20,7 +20,7 @@
 #undef C
 #endif
 #ifdef TEXTCOLOR
-#include "color.h"
+#include "core/color.h"
 #define C(color) color
 #define HI_DOMESTIC CLR_WHITE /* use for player + friendlies */
 #define HI_LORD CLR_MAGENTA

@@ -2,15 +2,15 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
-#include "botl.h"
+#include "core/botl.h"
 
 #include <string.h>
 
-#include "hack.h"
-#include "hacklib.h"
+#include "core/hack.h"
+#include "core/hacklib.h"
 #if defined(HPMON) && defined(TEXTCOLOR)
 #ifndef WINTTY_H
-#include "wintty.h"
+#include "core/wintty.h"
 #endif
 #endif
 

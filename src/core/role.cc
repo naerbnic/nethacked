@@ -4,9 +4,9 @@
 
 #include <string.h>
 
-#include "hack.h"
-#include "rnd.h"
-#include "hacklib.h"
+#include "core/hack.h"
+#include "core/rnd.h"
+#include "core/hacklib.h"
 
 /*** Table of all roles ***/
 /* According to AD&D, HD for some classes (ex. Wizard) should be smaller

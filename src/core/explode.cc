@@ -2,31 +2,31 @@
 /*	Copyright (C) 1990 by Ken Arromdee */
 /* NetHack may be freely redistributed.  See license for details. */
 
-#include "explode.h"
+#include "core/explode.h"
 
 #include <string.h>
 
-#include "hack.h"
-#include "zap.h"
-#include "worm.h"
-#include "weapon.h"
-#include "shk.h"
-#include "rnd.h"
-#include "polyself.h"
-#include "pline.h"
-#include "objnam.h"
-#include "mthrowu.h"
-#include "monmove.h"
-#include "mon.h"
-#include "mkobj.h"
-#include "invent.h"
-#include "hacklib.h"
-#include "end.h"
-#include "dothrow.h"
-#include "do_name.h"
-#include "cmd.h"
+#include "core/hack.h"
+#include "core/zap.h"
+#include "core/worm.h"
+#include "core/weapon.h"
+#include "core/shk.h"
+#include "core/rnd.h"
+#include "core/polyself.h"
+#include "core/pline.h"
+#include "core/objnam.h"
+#include "core/mthrowu.h"
+#include "core/monmove.h"
+#include "core/mon.h"
+#include "core/mkobj.h"
+#include "core/invent.h"
+#include "core/hacklib.h"
+#include "core/end.h"
+#include "core/dothrow.h"
+#include "core/do_name.h"
+#include "core/cmd.h"
 
-#include "allmain.h"
+#include "core/allmain.h"
 
 #ifdef OVL0
 

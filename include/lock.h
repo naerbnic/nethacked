@@ -8,7 +8,7 @@
 #ifndef LOCK_H_
 #define LOCK_H_
 
-#include "obj.h"
+#include "core/obj.h"
 
 bool picking_lock(int *, int *);
 bool picking_at(int, int);

@@ -8,9 +8,9 @@
 #ifndef DETECT_H_
 #define DETECT_H_
 
-#include "dungeon.h"
-#include "obj.h"
-#include "trap.h"
+#include "core/dungeon.h"
+#include "core/obj.h"
+#include "core/trap.h"
 
 extern Object *o_in(Object *, char);
 extern Object *o_material(Object *, unsigned);

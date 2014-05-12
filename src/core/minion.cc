@@ -2,20 +2,20 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
-#include "hack.h"
-#include "wizard.h"
-#include "teleport.h"
-#include "rnd.h"
-#include "pray.h"
-#include "pline.h"
-#include "mon.h"
-#include "minion.h"
-#include "makemon.h"
-#include "invent.h"
-#include "hacklib.h"
-#include "do_name.h"
-#include "emin.h"
-#include "epri.h"
+#include "core/hack.h"
+#include "core/wizard.h"
+#include "core/teleport.h"
+#include "core/rnd.h"
+#include "core/pray.h"
+#include "core/pline.h"
+#include "core/mon.h"
+#include "core/minion.h"
+#include "core/makemon.h"
+#include "core/invent.h"
+#include "core/hacklib.h"
+#include "core/do_name.h"
+#include "core/emin.h"
+#include "core/epri.h"
 
 /* mon summons a monster */
 void msummon(Monster *mon) {

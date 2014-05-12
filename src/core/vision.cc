@@ -4,11 +4,11 @@
 
 #include <string.h>
 
-#include "hack.h"
-#include "light.h"
-#include "end.h"
-#include "dbridge.h"
-#include "cmd.h"
+#include "core/hack.h"
+#include "core/light.h"
+#include "core/end.h"
+#include "core/dbridge.h"
+#include "core/cmd.h"
 
 /* Circles ==================================================================*/
 
@@ -1560,7 +1560,7 @@ cleardone:
 /*
  * Include the table definitions.
  */
-#include "vis_tab.h"
+#include "core/vis_tab.h"
 
 /* 3D table pointers. */
 static close2d *close_dy[CLOSE_MAX_BC_DY];

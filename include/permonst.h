@@ -5,9 +5,9 @@
 #ifndef PERMONST_H
 #define PERMONST_H
 
-#include "align.h"
-#include "monattk.h"
-#include "monflag.h"
+#include "core/align.h"
+#include "core/monattk.h"
+#include "core/monflag.h"
 
 /*	This structure covers all attack forms.
  *	aatyp is the gross attack type (eg. claw, bite, breath, ...)

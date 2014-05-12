@@ -2,21 +2,21 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
-#include "dungeon.h"
+#include "core/dungeon.h"
 
 #include <string.h>
 
-#include "hack.h"
-#include "version.h"
-#include "save.h"
-#include "rnd.h"
-#include "restore.h"
-#include "pline.h"
-#include "hacklib.h"
-#include "end.h"
-#include "do.h"
-#include "dgn_file.h"
-#include "dlb.h"
+#include "core/hack.h"
+#include "core/version.h"
+#include "core/save.h"
+#include "core/rnd.h"
+#include "core/restore.h"
+#include "core/pline.h"
+#include "core/hacklib.h"
+#include "core/end.h"
+#include "core/do.h"
+#include "core/dgn_file.h"
+#include "core/dlb.h"
 
 #ifdef OVL1
 

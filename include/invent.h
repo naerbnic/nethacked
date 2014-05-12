@@ -8,7 +8,7 @@
 #ifndef INVENT_H_
 #define INVENT_H_
 
-#include "obj.h"
+#include "core/obj.h"
 
 void assigninvlet(Object *);
 Object *merge_choice(Object *, Object *);

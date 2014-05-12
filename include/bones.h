@@ -8,7 +8,7 @@
 #ifndef BONES_H_
 #define BONES_H_
 
-#include "obj.h"
+#include "core/obj.h"
 
 extern bool can_make_bones();
 extern void savebones(Object *);

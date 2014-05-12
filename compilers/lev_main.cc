@@ -17,12 +17,12 @@ using std::vector;
 #define SPEC_LEV /* for MPW */
 /* although, why don't we move those special defines here.. and in dgn_main? */
 
-#include "hack.h"
-#include "drawing.h"
-#include "date.h"
-#include "sp_lev.h"
+#include "core/hack.h"
+#include "core/drawing.h"
+#include "core/date.h"
+#include "core/sp_lev.h"
 #ifdef STRICT_REF_DEF
-#include "tcap.h"
+#include "core/tcap.h"
 #endif
 
 #ifndef O_WRONLY

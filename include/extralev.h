@@ -8,7 +8,7 @@
 #ifndef EXTRALEV_H_
 #define EXTRALEV_H_
 
-#include "config.h"
+#include "core/config.h"
 
 #ifdef REINCARNATION
 void makeroguerooms();

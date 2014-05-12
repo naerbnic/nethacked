@@ -4,18 +4,18 @@
 
 #include <string.h>
 
-#include "hack.h"
-#include "worm.h"
-#include "teleport.h"
-#include "save.h"
-#include "rnd.h"
-#include "restore.h"
-#include "pline.h"
-#include "mhitu.h"
-#include "makemon.h"
-#include "hacklib.h"
-#include "do_name.h"
-#include "lev.h"
+#include "core/hack.h"
+#include "core/worm.h"
+#include "core/teleport.h"
+#include "core/save.h"
+#include "core/rnd.h"
+#include "core/restore.h"
+#include "core/pline.h"
+#include "core/mhitu.h"
+#include "core/makemon.h"
+#include "core/hacklib.h"
+#include "core/do_name.h"
+#include "core/lev.h"
 
 #define newseg() (struct wseg *) alloc(sizeof(struct wseg))
 #define dealloc_seg(wseg) free((genericptr_t)(wseg))

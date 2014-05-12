@@ -2,21 +2,21 @@
 /*	Copyright 1991, M. Stephenson		  */
 /* NetHack may be freely redistributed.  See license for details. */
 
-#include "hack.h"
-#include "worm.h"
-#include "rnd.h"
-#include "questpgr.h"
-#include "pline.h"
-#include "mon.h"
-#include "invent.h"
-#include "do_name.h"
-#include "do.h"
-#include "cmd.h"
+#include "core/hack.h"
+#include "core/worm.h"
+#include "core/rnd.h"
+#include "core/questpgr.h"
+#include "core/pline.h"
+#include "core/mon.h"
+#include "core/invent.h"
+#include "core/do_name.h"
+#include "core/do.h"
+#include "core/cmd.h"
 
 /*  quest dungeon branch routines. */
 
-#include "quest.h"
-#include "qtext.h"
+#include "core/quest.h"
+#include "core/qtext.h"
 
 #define Not_firsttime (on_level(&player.uz0, &player.uz))
 #define Qstat(x) (quest_status.x)

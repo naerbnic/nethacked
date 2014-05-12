@@ -3,8 +3,8 @@
 /* NetHack may be freely redistributed.  See license for details. */
 /* track.c - version 1.0.2 */
 
-#include "hack.h"
-#include "hacklib.h"
+#include "core/hack.h"
+#include "core/hacklib.h"
 
 #define UTSZ 50
 

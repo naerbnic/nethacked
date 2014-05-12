@@ -2,29 +2,29 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
-#include "mail.h"
+#include "core/mail.h"
 
 #include <string.h>
 
-#include "hack.h"
-#include "unixunix.h"
-#include "teleport.h"
-#include "steed.h"
-#include "role.h"
-#include "rnd.h"
-#include "pline.h"
-#include "options.h"
-#include "mon.h"
-#include "mkobj.h"
-#include "makemon.h"
-#include "invent.h"
-#include "hacklib.h"
-#include "end.h"
-#include "do_name.h"
-#include "cmd.h"
+#include "core/hack.h"
+#include "core/unixunix.h"
+#include "core/teleport.h"
+#include "core/steed.h"
+#include "core/role.h"
+#include "core/rnd.h"
+#include "core/pline.h"
+#include "core/options.h"
+#include "core/mon.h"
+#include "core/mkobj.h"
+#include "core/makemon.h"
+#include "core/invent.h"
+#include "core/hacklib.h"
+#include "core/end.h"
+#include "core/do_name.h"
+#include "core/cmd.h"
 
 #ifdef MAIL
-#include "mail.h"
+#include "core/mail.h"
 
 /*
  * Notify user when new mail has arrived.  Idea by Merlyn Leroy.

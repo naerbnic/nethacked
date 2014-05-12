@@ -114,7 +114,7 @@
  */
 /* #define NOTSTDC */ /* define for lying compilers */
 
-#include "tradstdc.h"
+#include "core/tradstdc.h"
 
 /*
  * type schar: small signed integers (8 bits suffice) (eg. TOS)
@@ -277,6 +277,6 @@ typedef std::uint8_t uchar;
 
 /* End of Section 5 */
 
-#include "global.h" /* Define everything else according to choices above */
+#include "core/global.h" /* Define everything else according to choices above */
 
 #endif /* CONFIG_H */

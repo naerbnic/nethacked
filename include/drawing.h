@@ -1,7 +1,7 @@
 #ifndef DRAWING_H
 #define DRAWING_H
 
-#include "global.h"
+#include "core/global.h"
 
 int def_char_to_objclass(char);
 int def_char_to_monclass(char);

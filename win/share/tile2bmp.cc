@@ -11,8 +11,8 @@
 
 /* #pragma warning(4103:disable) */
 
-#include "hack.h"
-#include "tile.h"
+#include "core/hack.h"
+#include "core/tile.h"
 #ifndef __GNUC__
 #include "win32api.h"
 #endif

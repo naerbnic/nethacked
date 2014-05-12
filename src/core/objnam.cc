@@ -4,24 +4,24 @@
 
 #include <string.h>
 
-#include "hack.h"
-#include "zap.h"
-#include "shk.h"
-#include "rnd.h"
-#include "questpgr.h"
-#include "polyself.h"
-#include "pline.h"
-#include "objnam.h"
-#include "mon.h"
-#include "mkobj.h"
-#include "invent.h"
-#include "hacklib.h"
-#include "eat.h"
-#include "drawing.h"
-#include "do_name.h"
+#include "core/hack.h"
+#include "core/zap.h"
+#include "core/shk.h"
+#include "core/rnd.h"
+#include "core/questpgr.h"
+#include "core/polyself.h"
+#include "core/pline.h"
+#include "core/objnam.h"
+#include "core/mon.h"
+#include "core/mkobj.h"
+#include "core/invent.h"
+#include "core/hacklib.h"
+#include "core/eat.h"
+#include "core/drawing.h"
+#include "core/do_name.h"
 
-#include "artifact.h"
-#include "botl.h"
+#include "core/artifact.h"
+#include "core/botl.h"
 
 /* "an uncursed greased partly eaten guardian naga hatchling [corpse]" */
 #define PREFIX 80 /* (56) */

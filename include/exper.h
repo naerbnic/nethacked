@@ -8,7 +8,7 @@
 #ifndef EXPER_H_
 #define EXPER_H_
 
-#include "monst.h"
+#include "core/monst.h"
 
 int experience(Monster *, int);
 void more_experienced(int, int);

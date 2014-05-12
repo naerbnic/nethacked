@@ -3,13 +3,13 @@
 /* Copyright (c) Robert Patrick Rankin, 1991		  */
 /* NetHack may be freely redistributed.  See license for details. */
 
-#include "hacklib.h"
+#include "core/hacklib.h"
 
 #include <string.h>
 
 /* We could include only config.h, except for the overlay definitions... */
-#include "hack.h"
-#include "end.h"
+#include "core/hack.h"
+#include "core/end.h"
 /*=
     Assorted 'small' utility routines.	They're virtually independent of
 NetHack, except that rounddiv may call panic().

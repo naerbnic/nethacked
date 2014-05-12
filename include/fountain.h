@@ -8,9 +8,9 @@
 #ifndef FOUNTAIN_H_
 #define FOUNTAIN_H_
 
-#include "config.h"
-#include "global.h"
-#include "obj.h"
+#include "core/config.h"
+#include "core/global.h"
+#include "core/obj.h"
 
 void floating_above(const char *);
 void dogushforth(int);

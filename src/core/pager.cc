@@ -7,22 +7,22 @@
 
 #include <string.h>
 
-#include "hack.h"
-#include "worm.h"
-#include "unixtty.h"
-#include "rnd.h"
-#include "pline.h"
-#include "pager.h"
-#include "options.h"
-#include "objnam.h"
-#include "monmove.h"
-#include "mkobj.h"
-#include "invent.h"
-#include "hacklib.h"
-#include "do_name.h"
-#include "dbridge.h"
-#include "cmd.h"
-#include "dlb.h"
+#include "core/hack.h"
+#include "core/worm.h"
+#include "core/unixtty.h"
+#include "core/rnd.h"
+#include "core/pline.h"
+#include "core/pager.h"
+#include "core/options.h"
+#include "core/objnam.h"
+#include "core/monmove.h"
+#include "core/mkobj.h"
+#include "core/invent.h"
+#include "core/hacklib.h"
+#include "core/do_name.h"
+#include "core/dbridge.h"
+#include "core/cmd.h"
+#include "core/dlb.h"
 
 STATIC_DCL bool is_swallow_sym(int);
 STATIC_DCL int append_str(char *, const char *);

@@ -10,9 +10,9 @@
 
 #include <string>
 
-#include "monst.h"
-#include "obj.h"
-#include "tradstdc.h"
+#include "core/monst.h"
+#include "core/obj.h"
+#include "core/tradstdc.h"
 
 int getpos(coord *, bool, const char *);
 Monster *christen_monst(Monster *, std::string const&);

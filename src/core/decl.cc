@@ -2,7 +2,7 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
-#include "hack.h"
+#include "core/hack.h"
 
 int (*afternmv)();
 int (*occupation)();
@@ -41,7 +41,7 @@ int in_doagain = 0;
  */
 struct dgn_topology dungeon_topology = {DUMMY};
 
-#include "quest.h"
+#include "core/quest.h"
 struct q_score quest_status = DUMMY;
 
 int smeq[MAXNROFROOMS + 1] = DUMMY;

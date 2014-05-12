@@ -8,7 +8,7 @@
 #ifndef CMD_H_
 #define CMD_H_
 
-#include "config.h"
+#include "core/config.h"
 
 extern void reset_occupations();
 extern void set_occupation(int (*)(void), const char *, int);

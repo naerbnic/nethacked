@@ -7,28 +7,28 @@
  * command.
  */
 
-#include "detect.h"
+#include "core/detect.h"
 
 #include <string.h>
 
-#include "hack.h"
-#include "worm.h"
-#include "vault.h"
-#include "rnd.h"
-#include "potion.h"
-#include "polyself.h"
-#include "pline.h"
-#include "objnam.h"
-#include "o_init.h"
-#include "mon.h"
-#include "mhitu.h"
-#include "invent.h"
-#include "hacklib.h"
-#include "drawing.h"
-#include "do_name.h"
-#include "dbridge.h"
-#include "cmd.h"
-#include "artifact.h"
+#include "core/hack.h"
+#include "core/worm.h"
+#include "core/vault.h"
+#include "core/rnd.h"
+#include "core/potion.h"
+#include "core/polyself.h"
+#include "core/pline.h"
+#include "core/objnam.h"
+#include "core/o_init.h"
+#include "core/mon.h"
+#include "core/mhitu.h"
+#include "core/invent.h"
+#include "core/hacklib.h"
+#include "core/drawing.h"
+#include "core/do_name.h"
+#include "core/dbridge.h"
+#include "core/cmd.h"
+#include "core/artifact.h"
 
 extern bool known; /* from read.c */
 

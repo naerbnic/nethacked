@@ -260,7 +260,7 @@
 
 #define SHELL /* do not delete the '!' command */
 
-#include "system.h"
+#include "core/system.h"
 
 #if defined(POSIX_TYPES) || defined(__GNUC__)
 #include <stdlib.h>

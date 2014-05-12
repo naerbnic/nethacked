@@ -32,7 +32,7 @@
  *	- remove useless variable `j' from srandom()
  */
 
-#include "hack.h"
+#include "core/hack.h"
 
 #ifdef LIBC_SCCS
 #ifndef lint

@@ -6,12 +6,12 @@
    systems (e.g. MUNIX) the include files <termio.h> and <sgtty.h>
    define the same constants, and the C preprocessor complains. */
 
-#include "ioctl.h"
+#include "core/ioctl.h"
 
 #include <sys/ioctl.h>
 
-#include "hack.h"
-#include "pline.h"
+#include "core/hack.h"
+#include "core/pline.h"
 
 #if defined(BSD_JOB_CONTROL) || defined(_BULL_SOURCE)
 #ifdef HPUX
@@ -72,7 +72,7 @@ struct termio termio;
     (defined(BSD) || defined(ULTRIX) || defined(AIX_31) || \
      defined(_BULL_SOURCE) || defined(SVR4))
 #define USE_WIN_IOCTL
-#include "tcap.h" /* for LI and CO */
+#include "core/tcap.h" /* for LI and CO */
 #endif
 
 #ifdef __linux__

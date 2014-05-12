@@ -6,10 +6,10 @@
 
 #define DGN_COMP
 
-#include "alloc.h"
-#include "config.h"
+#include "core/alloc.h"
+#include "core/config.h"
 #include "dgn_parse.hh"
-#include "dgn_file.h"
+#include "core/dgn_file.h"
 
 /*
  * Most of these don't exist in flex, yywrap is macro and

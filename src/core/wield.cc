@@ -4,24 +4,24 @@
 
 #include <string.h>
 
-#include "hack.h"
-#include "worn.h"
-#include "worm.h"
-#include "wield.h"
-#include "shk.h"
-#include "rnd.h"
-#include "potion.h"
-#include "polyself.h"
-#include "pline.h"
-#include "objnam.h"
-#include "o_init.h"
-#include "invent.h"
-#include "hacklib.h"
-#include "do_wear.h"
-#include "do_name.h"
-#include "do.h"
+#include "core/hack.h"
+#include "core/worn.h"
+#include "core/worm.h"
+#include "core/wield.h"
+#include "core/shk.h"
+#include "core/rnd.h"
+#include "core/potion.h"
+#include "core/polyself.h"
+#include "core/pline.h"
+#include "core/objnam.h"
+#include "core/o_init.h"
+#include "core/invent.h"
+#include "core/hacklib.h"
+#include "core/do_wear.h"
+#include "core/do_name.h"
+#include "core/do.h"
 
-#include "artifact.h"
+#include "core/artifact.h"
 
 /* KMH -- Differences between the three weapon slots.
  *

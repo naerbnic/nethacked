@@ -2,14 +2,14 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
-#include "hack.h"
-#include "pline.h"
-#include "hacklib.h"
-#include "end.h"
-#include "cmd.h"
+#include "core/hack.h"
+#include "core/pline.h"
+#include "core/hacklib.h"
+#include "core/end.h"
+#include "core/cmd.h"
 
-#include "tcap.h"
-#include "wintty.h"
+#include "core/tcap.h"
+#include "core/wintty.h"
 #include <ctype.h>
 
 #ifndef C /* this matches src/cmd.c */

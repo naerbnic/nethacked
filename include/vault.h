@@ -5,7 +5,7 @@
 #ifndef VAULT_H
 #define VAULT_H
 
-#include "monst.h"
+#include "core/monst.h"
 
 #define FCSIZ (ROWNO + COLNO)
 struct fakecorridor {

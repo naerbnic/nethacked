@@ -6,7 +6,7 @@
 
 #include <string.h>
 
-#include "config.h"
+#include "core/config.h"
 
 #ifndef TERMCAP /* name of default termcap file */
 #define TERMCAP "/etc/termcap"

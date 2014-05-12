@@ -4,17 +4,17 @@
 
 /*  attribute modification routines. */
 
-#include "attrib.h"
+#include "core/attrib.h"
 
-#include "hack.h"
-#include "weapon.h"
-#include "rnd.h"
-#include "pline.h"
-#include "pickup.h"
-#include "invent.h"
-#include "hacklib.h"
+#include "core/hack.h"
+#include "core/weapon.h"
+#include "core/rnd.h"
+#include "core/pline.h"
+#include "core/pickup.h"
+#include "core/invent.h"
+#include "core/hacklib.h"
 
-#include "artifact.h"
+#include "core/artifact.h"
 
 /* #define DEBUG */ /* uncomment for debugging info */
 

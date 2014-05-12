@@ -3,23 +3,23 @@
 /* NetHack may be freely redistributed.  See license for details. */
 
 /* Ball & Chain =============================================================*/
-#include "ball.h"
+#include "core/ball.h"
 
-#include "hack.h"
-#include "zap.h"
-#include "worn.h"
-#include "wield.h"
-#include "uhitm.h"
-#include "rnd.h"
-#include "polyself.h"
-#include "pline.h"
-#include "objnam.h"
-#include "mkobj.h"
-#include "invent.h"
-#include "hacklib.h"
-#include "dothrow.h"
-#include "do.h"
-#include "dbridge.h"
+#include "core/hack.h"
+#include "core/zap.h"
+#include "core/worn.h"
+#include "core/wield.h"
+#include "core/uhitm.h"
+#include "core/rnd.h"
+#include "core/polyself.h"
+#include "core/pline.h"
+#include "core/objnam.h"
+#include "core/mkobj.h"
+#include "core/invent.h"
+#include "core/hacklib.h"
+#include "core/dothrow.h"
+#include "core/do.h"
+#include "core/dbridge.h"
 
 STATIC_DCL int bc_order();
 STATIC_DCL void litter();

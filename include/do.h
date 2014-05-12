@@ -8,11 +8,11 @@
 #ifndef DO_H_
 #define DO_H_
 
-#include "config.h"
+#include "core/config.h"
 
-#include "dungeon.h"
-#include "obj.h"
-#include "tradstdc.h"
+#include "core/dungeon.h"
+#include "core/obj.h"
+#include "core/tradstdc.h"
 
 int dodrop();
 bool boulder_hits_pool(Object *, int, int, bool);

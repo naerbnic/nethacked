@@ -12,15 +12,15 @@ extern char *tparam();
 #undef hangup
 #undef clear_screen
 
-#include "hack.h"
-#include "unixtty.h"
-#include "hacklib.h"
+#include "core/hack.h"
+#include "core/unixtty.h"
+#include "core/hacklib.h"
 
 #if !defined(NO_TERMS)
 
-#include "wintty.h"
+#include "core/wintty.h"
 
-#include "tcap.h"
+#include "core/tcap.h"
 
 #ifdef MICROPORT_286_BUG
 #define Tgetstr(key) (tgetstr(key, tbuf))

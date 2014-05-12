@@ -10,7 +10,7 @@
 
 #include <exception>
 #include <string>
-#include "tradstdc.h"
+#include "core/tradstdc.h"
 
 class FormattingErrorException : public std::exception {
 public:

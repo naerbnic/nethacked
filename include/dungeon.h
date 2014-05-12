@@ -5,7 +5,7 @@
 #ifndef DUNGEON_H
 #define DUNGEON_H
 
-#include "global.h"
+#include "core/global.h"
 
 typedef struct d_flags {   /* dungeon/level type flags */
   Bitfield(town, 1);       /* is this a town? (levels only) */
