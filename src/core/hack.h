@@ -288,8 +288,6 @@ extern coord bhitpos; /* place where throw or zap hits or stops */
 #define STATIC_OVL static
 #define STATIC_VAR static
 
-/* If not compiling an overlay, compile everything. */
-
 #define STATIC_PTR static
 
 /* The function argument to qsort() requires a particular
