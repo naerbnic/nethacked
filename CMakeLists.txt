@@ -58,8 +58,8 @@ RUN_MAKEDEFS(include/onames.h o)
 RUN_MAKEDEFS(include/vis_tab.h y include/vis_tab.h)
 RUN_MAKEDEFS(include/date.h u)
 
-RUN_MAKEDEFS(src/monstr.cc m)
-RUN_MAKEDEFS(src/vis_tab.cc z ../src/vis_tab.cc)
+RUN_MAKEDEFS(src/core/monstr.cc m)
+RUN_MAKEDEFS(src/core/vis_tab.cc z ../src/core/vis_tab.cc)
 
 RUN_MAKEDEFS(dat/data d)
 RUN_MAKEDEFS(dat/rumors r)
@@ -104,9 +104,9 @@ ADD_EXECUTABLE(dgn_comp
   compilers/dgn_parse.cc
   compilers/dgn_lex.cc
   compilers/dgn_main.cc
-  src/alloc.cc
-  src/decl.cc
-  src/drawing.cc
+  src/core/alloc.cc
+  src/core/decl.cc
+  src/core/drawing.cc
   cxx/buffer.cc
   cxx/json_helpers.cc
   include/pm.h
@@ -270,9 +270,9 @@ ADD_EXECUTABLE(lev_comp
   compilers/panic.cc
   entitylib/monst.cc
   entitylib/objects.cc
-  src/alloc.cc
-  src/decl.cc
-  src/drawing.cc
+  src/core/alloc.cc
+  src/core/decl.cc
+  src/core/drawing.cc
 
   include/pm.h
   include/onames.h
@@ -280,110 +280,110 @@ ADD_EXECUTABLE(lev_comp
 
 ADD_EXECUTABLE(nethacked
   # Base Source
-  src/allmain.cc
-  src/alloc.cc
-  src/apply.cc
-  src/artifact.cc
-  src/attrib.cc
-  src/ball.cc
-  src/bones.cc
-  src/botl.cc
-  src/cmd.cc
-  src/dbridge.cc
-  src/decl.cc
-  src/detect.cc
-  src/dig.cc
-  src/display.cc
-  src/dlb.cc
-  src/do.cc
-  src/do_name.cc
-  src/do_wear.cc
-  src/dog.cc
-  src/dogmove.cc
-  src/dokick.cc
-  src/dothrow.cc
-  src/drawing.cc
-  src/dungeon.cc
-  src/eat.cc
-  src/end.cc
-  src/engrave.cc
-  src/exper.cc
-  src/explode.cc
-  src/extralev.cc
-  src/files.cc
-  src/fountain.cc
-  src/hack.cc
-  src/hacklib.cc
-  src/invent.cc
-  src/light.cc
-  src/lock.cc
-  src/mail.cc
-  src/makemon.cc
-  src/mapglyph.cc
-  src/mcastu.cc
-  src/mhitm.cc
-  src/mhitu.cc
-  src/minion.cc
-  src/mklev.cc
-  src/mkmap.cc
-  src/mkmaze.cc
-  src/mkobj.cc
-  src/mkroom.cc
-  src/mon.cc
-  src/mondata.cc
-  src/monmove.cc
-  src/mplayer.cc
-  src/mthrowu.cc
-  src/muse.cc
-  src/music.cc
-  src/o_init.cc
-  src/objnam.cc
-  src/options.cc
-  src/pager.cc
-  src/pickup.cc
-  src/pline.cc
-  src/polyself.cc
-  src/potion.cc
-  src/pray.cc
-  src/priest.cc
-  src/quest.cc
-  src/questpgr.cc
-  src/read.cc
-  src/rect.cc
-  src/region.cc
-  src/restore.cc
-  src/rip.cc
-  src/rnd.cc
-  src/role.cc
-  src/rumors.cc
-  src/save.cc
-  src/shk.cc
-  src/shknam.cc
-  src/sit.cc
-  src/sounds.cc
-  src/sp_lev.cc
-  src/spell.cc
-  src/steal.cc
-  src/steed.cc
-  src/teleport.cc
-  src/timeout.cc
-  src/topten.cc
-  src/track.cc
-  src/trap.cc
-  src/u_init.cc
-  src/uhitm.cc
-  src/vault.cc
-  src/version.cc
-  src/vision.cc
-  src/weapon.cc
-  src/were.cc
-  src/wield.cc
-  src/windows.cc
-  src/wizard.cc
-  src/worm.cc
-  src/worn.cc
-  src/write.cc
-  src/zap.cc
+  src/core/allmain.cc
+  src/core/alloc.cc
+  src/core/apply.cc
+  src/core/artifact.cc
+  src/core/attrib.cc
+  src/core/ball.cc
+  src/core/bones.cc
+  src/core/botl.cc
+  src/core/cmd.cc
+  src/core/dbridge.cc
+  src/core/decl.cc
+  src/core/detect.cc
+  src/core/dig.cc
+  src/core/display.cc
+  src/core/dlb.cc
+  src/core/do.cc
+  src/core/do_name.cc
+  src/core/do_wear.cc
+  src/core/dog.cc
+  src/core/dogmove.cc
+  src/core/dokick.cc
+  src/core/dothrow.cc
+  src/core/drawing.cc
+  src/core/dungeon.cc
+  src/core/eat.cc
+  src/core/end.cc
+  src/core/engrave.cc
+  src/core/exper.cc
+  src/core/explode.cc
+  src/core/extralev.cc
+  src/core/files.cc
+  src/core/fountain.cc
+  src/core/hack.cc
+  src/core/hacklib.cc
+  src/core/invent.cc
+  src/core/light.cc
+  src/core/lock.cc
+  src/core/mail.cc
+  src/core/makemon.cc
+  src/core/mapglyph.cc
+  src/core/mcastu.cc
+  src/core/mhitm.cc
+  src/core/mhitu.cc
+  src/core/minion.cc
+  src/core/mklev.cc
+  src/core/mkmap.cc
+  src/core/mkmaze.cc
+  src/core/mkobj.cc
+  src/core/mkroom.cc
+  src/core/mon.cc
+  src/core/mondata.cc
+  src/core/monmove.cc
+  src/core/mplayer.cc
+  src/core/mthrowu.cc
+  src/core/muse.cc
+  src/core/music.cc
+  src/core/o_init.cc
+  src/core/objnam.cc
+  src/core/options.cc
+  src/core/pager.cc
+  src/core/pickup.cc
+  src/core/pline.cc
+  src/core/polyself.cc
+  src/core/potion.cc
+  src/core/pray.cc
+  src/core/priest.cc
+  src/core/quest.cc
+  src/core/questpgr.cc
+  src/core/read.cc
+  src/core/rect.cc
+  src/core/region.cc
+  src/core/restore.cc
+  src/core/rip.cc
+  src/core/rnd.cc
+  src/core/role.cc
+  src/core/rumors.cc
+  src/core/save.cc
+  src/core/shk.cc
+  src/core/shknam.cc
+  src/core/sit.cc
+  src/core/sounds.cc
+  src/core/sp_lev.cc
+  src/core/spell.cc
+  src/core/steal.cc
+  src/core/steed.cc
+  src/core/teleport.cc
+  src/core/timeout.cc
+  src/core/topten.cc
+  src/core/track.cc
+  src/core/trap.cc
+  src/core/u_init.cc
+  src/core/uhitm.cc
+  src/core/vault.cc
+  src/core/version.cc
+  src/core/vision.cc
+  src/core/weapon.cc
+  src/core/were.cc
+  src/core/wield.cc
+  src/core/windows.cc
+  src/core/wizard.cc
+  src/core/worm.cc
+  src/core/worn.cc
+  src/core/write.cc
+  src/core/zap.cc
 
   entitylib/monst.cc
   entitylib/objects.cc
@@ -401,8 +401,8 @@ ADD_EXECUTABLE(nethacked
   sys/unix/unixunix.cc
   
   # Generated Source
-  src/monstr.cc
-  src/vis_tab.cc
+  src/core/monstr.cc
+  src/core/vis_tab.cc
 
   # Generated Headers
   include/pm.h

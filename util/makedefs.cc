@@ -67,7 +67,7 @@ static const char SCCS_Id[] = "@(#)makedefs.cc\t3.4\t2002/02/03";
 #define VIS_TAB_C "vis_tab.c"
 /* locations for those files */
 #define INCLUDE_TEMPLATE "../include/%s"
-#define SOURCE_TEMPLATE "../src/%s"
+#define SOURCE_TEMPLATE "../src/core/%s"
 #define DGN_TEMPLATE "../dat/%s" /* where dungeon.pdf file goes */
 #define DATA_TEMPLATE "../dat/%s"
 #define DATA_IN_TEMPLATE "../dat/%s"
