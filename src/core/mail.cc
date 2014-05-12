@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "core/hack.h"
+#include "core/decl.h"
 #include "core/youprop.h"
 #include "core/unixunix.h"
 #include "core/teleport.h"

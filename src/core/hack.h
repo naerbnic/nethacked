@@ -80,7 +80,6 @@
 #define ESCAPED 14
 #define ASCENDED 15
 
-#include "core/decl.h"
 #include "core/timeout.h"
 
 extern coord bhitpos; /* place where throw or zap hits or stops */

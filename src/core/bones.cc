@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "core/hack.h"
+#include "core/decl.h"
 #include "core/worn.h"
 #include "core/steed.h"
 #include "core/save.h"

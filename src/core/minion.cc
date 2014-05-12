@@ -5,6 +5,7 @@
 #include "core/minion.h"
 
 #include "core/hack.h"
+#include "core/decl.h"
 #include "core/youprop.h"
 #include "core/wizard.h"
 #include "core/teleport.h"

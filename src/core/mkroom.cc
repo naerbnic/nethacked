@@ -18,6 +18,7 @@
 #include <string.h>
 
 #include "core/hack.h"
+#include "core/decl.h"
 #include "core/zap.h"
 #include "core/teleport.h"
 #include "core/shknam.h"

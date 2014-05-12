@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "core/hack.h"
+#include "core/decl.h"
 #include "core/zap.h"
 #include "core/shk.h"
 #include "core/rnd.h"

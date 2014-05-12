@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "core/hack.h"
+#include "core/decl.h"
 #include "core/wield.h"
 #include "core/topten.h"
 #include "core/teleport.h"
